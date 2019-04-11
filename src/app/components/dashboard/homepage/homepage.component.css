@@ -1,0 +1,63 @@
+/*
+* ==========================================================
+*     GENERAL STYLES
+* ==========================================================
+*/
+
+.container-fluid {
+    padding: 0 30px;
+  }
+
+.content-inner {
+  position: relative;
+  width: calc(100% - 250px);
+  min-height: calc(100vh - 70px);
+  padding-bottom: 60px;
+}
+
+.content-inner.active {
+  width: calc(100% - 90px);
+}
+  
+
+/*
+* ==========================================================
+*     FORMS
+* ==========================================================
+*/
+.form-control {
+    height: calc(2.25rem + 2px);
+    border: 1px solid #dee2e6;
+    border-radius: 0;
+    padding: 0.375rem 0.75rem;
+  }
+  
+  .form-control::-moz-placeholder {
+    font-size: 0.9em;
+    font-weight: 300;
+    font-family: "Poppins", sans-serif;
+    color: #aaa;
+  }
+  
+  .form-control::-webkit-input-placeholder {
+    font-size: 0.9em;
+    font-weight: 300;
+    font-family: "Poppins", sans-serif;
+    color: #aaa;
+  }
+  
+  .form-control:-ms-input-placeholder {
+    font-size: 0.9em;
+    font-weight: 300;
+    font-family: "Poppins", sans-serif;
+    color: #aaa;
+  }
+  
+  .form-control:focus {
+    color: #495057;
+    background-color: #fff;
+    border-color: #796AEE;
+    outline: none;
+    -webkit-box-shadow: 0 0 0 0.2rem rgba(121, 106, 238, 0.25);
+    box-shadow: 0 0 0 0.2rem rgba(121, 106, 238, 0.25);
+  }
