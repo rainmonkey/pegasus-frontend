@@ -3,7 +3,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { AppRoutingModule } from './app-routing.module';
 import { appRoutes } from './app.routers';
-
+import {UserDetailService} from './user-detail.service';
 import { AppComponent } from './app.component';
 import { LoginComponent } from './components/login/login.component';
 import { HomepageComponent } from './components/dashboard/homepage/homepage.component';
@@ -12,6 +12,7 @@ import { BreadcrumbComponent } from './components/dashboard/breadcrumb/breadcrum
 import { FooterbarComponent } from './components/dashboard/footerbar/footerbar.component';
 import { NavibarComponent } from './components/dashboard/navibar/navibar.component';
 import { ContentareaComponent } from './components/dashboard/contentarea/contentarea.component';
+import {HttpClientModule} from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -27,9 +28,10 @@ import { ContentareaComponent } from './components/dashboard/contentarea/content
   imports: [
     BrowserModule,
     AppRoutingModule,
-    RouterModule.forRoot (appRoutes)
+    RouterModule.forRoot (appRoutes),
+    HttpClientModule
   ],
-  providers: [],
+  providers: [UserDetailService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
