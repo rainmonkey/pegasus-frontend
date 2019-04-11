@@ -13,6 +13,8 @@ import { FooterbarComponent } from './components/dashboard/footerbar/footerbar.c
 import { NavibarComponent } from './components/dashboard/navibar/navibar.component';
 import { ContentareaComponent } from './components/dashboard/contentarea/contentarea.component';
 import {HttpClientModule} from '@angular/common/http';
+import {FormsModule} from '@angular/forms';
+import {ReactiveFormsModule} from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -28,8 +30,10 @@ import {HttpClientModule} from '@angular/common/http';
   imports: [
     BrowserModule,
     AppRoutingModule,
-    RouterModule.forRoot (appRoutes),
-    HttpClientModule
+    RouterModule.forRoot(appRoutes),
+    HttpClientModule,
+    FormsModule,
+    ReactiveFormsModule
   ],
   providers: [UserDetailService],
   bootstrap: [AppComponent]
