@@ -12,40 +12,25 @@
   <!-- Sidebar Navidation Menus-->
   <span class="heading">Main</span>
   <ul class="list-unstyled">
-    <li class="active">
-      <a href="index.html"> 
-        <i class="fas fa-home sidebaricon"></i>Home 
+    <li *ngFor="let item of navitem; let key = index;">
+      <a [routerLink]="[ '/testcontent' ]" routerLinkActive="active"> 
+        <i class="fas sidebaricon" [ngClass]="{'fa-home':key==0,'fa-th':key==1,'fa-chart-bar':key==2, 'fa-clipboard':key==3}"></i>{{item.pagename}}
       </a>
     </li>
     <li>
-      <a href="#"> 
-        <i class="fas fa-th sidebaricon"></i>Tables 
+      <a [routerLink]="['/login']" routerLinkActive="active"> 
+        <i class="far fa-window-restore sidebaricon"></i>Login page
       </a>
     </li>
-    <li>
-      <a href="#"> 
-        <i class="fas fa-chart-bar sidebaricon"></i>Charts 
-      </a>
-    </li>
-    <li>
-      <a ng-href="#"> 
-        <i class="far fa-clipboard sidebaricon"></i>Forms 
-      </a>
-    </li>
-    <li> 
-      <a href="#exampledropdownDropdown" aria-expanded="false" data-toggle="collapse">
-        <i class="far fa-window-restore sidebaricon"></i>Example dropdown 
+   <li> 
+      <a href="#exampledropdownDropdown" aria-expanded="false" data-toggle="collapse" routerLinkActive="active">
+        <i class="far fa-window-restore sidebaricon"></i>Dropdown 
       </a>
       <ul id="exampledropdownDropdown" class="collapse list-unstyled ">
         <li><a href="#">Page</a></li>
         <li><a href="#">Page</a></li>
         <li><a href="#">Page</a></li>
       </ul>
-    </li>
-    <li>
-      <a href="#"> 
-        <i class="far fa-window-restore sidebaricon"></i>Login page 
-      </a>
     </li>
   </ul>
   <span class="heading">Extras</span>
