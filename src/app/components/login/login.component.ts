@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import {UserDetailService} from '../../user-detail.service';
-import {UserDetail} from '../../models/UserDetail';
-import {FormBuilder, FormGroup} from '@angular/forms';
+import { UserDetailService } from '../../user-detail.service';
+import { UserDetail } from '../../models/UserDetail';
+import { FormBuilder, FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'app-login',
@@ -12,7 +12,9 @@ export class LoginComponent implements OnInit {
   detail: any;
   LoginForm: FormGroup;
   // tslint:disable-next-line:variable-name
-  constructor(protected _service: UserDetailService, private fb: FormBuilder) { }
+  constructor(protected _service: UserDetailService, private fb: FormBuilder) {
+
+  }
 
   ngOnInit() {
     this.LoginForm = this.fb.group({
@@ -21,19 +23,21 @@ export class LoginComponent implements OnInit {
     });
   }
 
-  SubmitLoginForm(){
+  SubmitLoginForm() {
     const userLoginDetail = new UserDetail();
     userLoginDetail.username = this.LoginForm.get('username').value;
     userLoginDetail.password = this.LoginForm.get('password').value;
-    this._service.getUserDetail(userLoginDetail).subscribe(data => {
-      if (data.errorMessage === 'Username does not exist.'){
-        alert(data.errorMessage); //自己调
-      } else if (data.errorMessage === 'The password is incorrect') {
-        alert(data.errorMessage); //自己调
-      } else{
+    this._service.getUserDetail(userLoginDetail).subscribe(
+      data => {
+        if (data.errorMessage === 'Username does not exist.') {
+          alert(data.errorMessage); // 自己调
+        } else if (data.errorMessage === 'The password is incorrect') {
+          alert(data.errorMessage); // 自己调
+        } else {
       //  自己写 data.data是数据
+        }
       }
-    });
+    );
   }
 
 }
