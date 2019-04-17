@@ -1,5 +1,5 @@
 import { Component, OnInit } from "@angular/core";
-import { LearnersListService } from "../../../user-detail.service";
+import { LearnersListService } from "./learners-list.service";
 
 import { FormBuilder, Validators } from "@angular/forms";
 import { NgbModal, ModalDismissReasons } from "@ng-bootstrap/ng-bootstrap";

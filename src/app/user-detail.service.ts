@@ -16,20 +16,3 @@ export class UserDetailService {
     return this._http.post<UserDetail>(this._url, usrAndPass);
   }
 }
-
-export class LearnersListService {
-  private _url: string = 'http://192.168.178.76:5000/api/';
-
-  constructor(private http: HttpClient) {}
-
-  getLearners(name): Observable<any[]>{
-    return this.http.get<any[]>(this._url + 'learner/' + name);
-  }
-  getInvoice(id): Observable<any[]>{
-    return this.http.get<any[]>(this._url + 'payment/invoice/' + id)
-  }
-  addFund(fund){
-    return this.http.post(this._url + 'payment/payInvoice', fund, {responseType: 'text'});
-  }
-
-}
