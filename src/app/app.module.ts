@@ -16,6 +16,7 @@ import { FormsModule } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
 import { TestcontentComponent } from './components/contents/testcontent/testcontent.component';
 import { LearnerDetailsComponent } from './components/contents/learner-details/learner-details.component';
+import { RegistrationComponent } from './components/contents/registration/registration.component'
 
 
 @NgModule({
@@ -29,7 +30,8 @@ import { LearnerDetailsComponent } from './components/contents/learner-details/l
     NavibarComponent,
     ContentareaComponent,
     TestcontentComponent,
-    LearnerDetailsComponent
+    LearnerDetailsComponent,
+    RegistrationComponent
   ],
   imports: [
     NgbModule,
