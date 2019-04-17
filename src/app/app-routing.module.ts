@@ -18,10 +18,10 @@ const routes: Routes = [
     path: 'payment',
     component: LearnerDetailsComponent
   },
-  {
-    path: "**",
-    redirectTo: 'Testcontent'
-  },
+  // {
+  //   path: "**",
+  //   redirectTo: 'Testcontent'
+  // },
   {
     path: 'registration',
     component: RegistrationComponent
