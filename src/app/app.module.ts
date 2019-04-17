@@ -1,8 +1,8 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { AppRoutingModule } from './app-routing.module';
 import { UserDetailService } from './user-detail.service';
-import { RouterModule, Routes } from '@angular/router';
 import { AppComponent } from './app.component';
 import { LoginComponent } from './components/login/login.component';
 import { HomepageComponent } from './components/dashboard/homepage/homepage.component';
@@ -16,7 +16,6 @@ import { FormsModule } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
 import { TestcontentComponent } from './components/contents/testcontent/testcontent.component';
 import { LearnerDetailsComponent } from './components/contents/learner-details/learner-details.component';
-import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import { RegistrationComponent } from './components/contents/registration/registration.component'
 
 @NgModule({
