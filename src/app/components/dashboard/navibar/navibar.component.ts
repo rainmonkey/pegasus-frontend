@@ -13,7 +13,7 @@ export class NavibarComponent implements OnInit {
       pagename : 'Home'
     },
     {
-      pagename : 'Table'
+      pagename : 'Tables'
     },
     {
       pagename : 'Charts'

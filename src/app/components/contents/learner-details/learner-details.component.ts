@@ -1,87 +1,96 @@
-import { Component, OnInit } from "@angular/core";
-import { LearnersListService } from "../../../user-detail.service";
+import { Component, OnInit } from '@angular/core';
+import { LearnersListService } from '../../../user-detail.service';
 
-import { FormBuilder, Validators } from "@angular/forms";
-import { NgbModal, ModalDismissReasons } from "@ng-bootstrap/ng-bootstrap";
-import { NgbTabsetConfig } from "@ng-bootstrap/ng-bootstrap";
+import { FormBuilder, Validators } from '@angular/forms';
+import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
+import { NgbTabsetConfig } from '@ng-bootstrap/ng-bootstrap';
 
-import { ILearnerPay } from "./learners";
+import { ILearnerPay } from './learners';
 
 @Component({
-  selector: "app-learner-detail",
-  templateUrl: "./learner-details.component.html",
+  selector: 'app-learner-detail',
+  templateUrl: './learner-details.component.html',
   providers: [NgbTabsetConfig],
-  styleUrls: ["./learner-details.component.css"]
+  styleUrls: ['./learner-details.component.css']
 })
 export class LearnerDetailsComponent implements OnInit {
-  a = false;
-  //learners
-  public name: any = "type..";
-  public learners: any;
-  public data:any;
-  public show: boolean;
-
-  //invoice
-
-  public dataInvoice: any;
-
-  public learnerId: any;
-  public addFund;
-  //post payment
-  public payment: string = "Eftpos";
-  public postPayment: ILearnerPay;
-  //products
-  public productName: any;
-  //public productsT:[''];
-
-  //tabset
-  public array = [];
-  public isCollapsedI = false;
-  //others Switch
-  public showOthers = false;
-
-  //ng-modal variable
-  closeResult: string;
 
   constructor(
     private modalService: NgbModal,
+    // tslint:disable-next-line:variable-name
     private _learnersListService: LearnersListService,
     private fb: FormBuilder,
     config: NgbTabsetConfig
   ) {
     // bootstrap tabset
-    config.justify = "center";
-    config.type = "pills";
+    config.justify = 'center';
+    config.type = 'pills';
   }
+  get search() {
+    return this.searchForm.get('search');
+  }
+  get owing() {
+    return this.invoiceForm.get('owing');
+  }
+  a = false;
+  // learners
+  public name: any = 'type..';
+  public learners: any;
+  public data: any;
+  public show: boolean;
+
+  // invoice
+
+  public dataInvoice: any;
+
+  public learnerId: any;
+  public addFund;
+  // post payment
+  public payment = 'Eftpos';
+  public postPayment: ILearnerPay;
+  // products
+  public productName: any;
+  // public productsT:[''];
+
+  // tabset
+  public array = [];
+  public isCollapsedI = false;
+  // others Switch
+  public showOthers = false;
+
+  // ng-modal variable
+  closeResult: string;
 
   // form-builder
   registrationFormL = this.fb.group({
-    learnerId: [""],
+    learnerId: [''],
     learnerName: [{ value: null, disabled: true }],
     lastName: [{ value: null, disabled: true }],
     middleName: [{ value: null, disabled: true }],
-    age: [""],
+    age: [''],
     email: [{ value: null, disabled: true }],
     phone: [{ value: null, disabled: true }],
-    payment: [""],
-    schedule: [""],
-    owning: [""],
-    address: [""]
+    payment: [''],
+    schedule: [''],
+    owning: [''],
+    address: ['']
   });
 
   searchForm = this.fb.group({
-    search: ["", Validators.required]
+    search: ['', Validators.required]
   });
-  get search() {
-    return this.searchForm.get("search");
-  }
 
   invoiceForm = this.fb.group({
-    owing: ["", Validators.required]
+    owing: ['', Validators.required]
   });
-  get owing() {
-    return this.invoiceForm.get("owing");
-  }
+
+  // products
+
+  registrationFormP = this.fb.group({
+    Guitar: [''],
+    Piano: [''],
+    Drum: ['']
+  });
 
   ngOnInit() {}
 
@@ -121,7 +130,7 @@ export class LearnerDetailsComponent implements OnInit {
 
         if (this.show) {
           this.modalService
-            .open(content, { ariaLabelledBy: "modal-basic-title" })
+            .open(content, { ariaLabelledBy: 'modal-basic-title' })
             .result.then(
               result => {
                 this.closeResult = `Closed with: ${result}`;
@@ -134,7 +143,7 @@ export class LearnerDetailsComponent implements OnInit {
       });
   }
 
-  //middle name method
+  // middle name method
 
   selectChange(dis) {
     const i: number = dis.value;
@@ -160,19 +169,19 @@ export class LearnerDetailsComponent implements OnInit {
 
   private getDismissReason(reason: any): string {
     if (reason === ModalDismissReasons.ESC) {
-      return "by pressing ESC";
+      return 'by pressing ESC';
     } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
-      return "by clicking on a backdrop";
+      return 'by clicking on a backdrop';
     } else {
       return `with: ${reason}`;
     }
   }
 
-  //confirm payment open method
+  // confirm payment open method
   openP(contentP, item) {
     this.addFund = this.invoiceForm.value.owing;
     this.modalService
-      .open(contentP, { ariaLabelledBy: "modal-basic-title" })
+      .open(contentP, { ariaLabelledBy: 'modal-basic-title' })
       .result.then(
         result => {
           this.closeResult = `Closed with: ${result}`;
@@ -187,10 +196,10 @@ export class LearnerDetailsComponent implements OnInit {
 
           this._learnersListService.addFund(this.postPayment).subscribe(
             response => {
-              console.log("Success!", response);
+              console.log('Success!', response);
             },
             error => {
-              console.error("Error!", error);
+              console.error('Error!', error);
             }
           );
         },
@@ -199,20 +208,19 @@ export class LearnerDetailsComponent implements OnInit {
         }
       );
   }
-  //select payment method
+  // select payment method
 
   paymentMethod(method) {
     this.payment = method.value;
   }
 
-  //products
-  registrationFormP = this.fb.group({
-    Guitar: [""],
-    Piano: [""],
-    Drum: [""]
-  });
+  // registrationFormP = this.fb.group({
+  //   Guitar: [''],
+  //   Piano: [''],
+  //   Drum: ['']
+  // });
 
-  //select product
+  // select product
 
   selectDropDown(pro) {
     this.productName = pro.value;
