@@ -19,7 +19,10 @@
     "@angular/platform-browser": "~7.2.0",
     "@angular/platform-browser-dynamic": "~7.2.0",
     "@angular/router": "~7.2.0",
+<<<<<<< HEAD
     "@fortawesome/fontawesome-svg-core": "^1.2.17",
+=======
+>>>>>>> ef1abfc06e8b6d346d3a78dde7af92f460afdc7a
     "@ng-bootstrap/ng-bootstrap": "^4.1.1",
     "bootstrap": "^4.3.1",
     "core-js": "^2.5.4",
