@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { UserDetail } from './models/UserDetail';
+import { UserDetail } from '../models/UserDetail';
 
 @Injectable({
   providedIn: 'root'
@@ -16,8 +16,6 @@ export class UserDetailService {
     return this._http.post<UserDetail>(this._url, usrAndPass);
   }
 }
-<<<<<<< HEAD
-=======
 
 export class LearnersListService {
   // tslint:disable-next-line:variable-name
@@ -36,4 +34,3 @@ export class LearnersListService {
   }
 
 }
->>>>>>> b4da512d1f9dba29fba9b5d294c50e8a2522e17c
