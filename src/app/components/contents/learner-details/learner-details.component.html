@@ -1,0 +1,250 @@
+<!-- bootstrap model -->
+<div class='container'>
+    <div class='row justify-content-md-center'>
+        <div class="col-md-10">
+            <ng-template #content let-modal>
+                <div class="modal-header m-2">
+                    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+
+                <!-- modal body which is only contain middlename selector -->
+                <div class="modal-body">
+                    <div *ngIf='data'>
+                        <H3>Middle Name</H3>
+                        <form novalidate class="form-group">
+                            <select #district class='custom-select' (change)='selectChange(district)'>
+                              <option>Please Select The Middle Name</option>
+                              <option *ngFor="let learner of data; let i = index" [value]="i">Middle Name: {{learner.MiddleName}} Address: {{learner.Address}}</option>
+                            </select>
+                        </form>
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')">Return</button>
+                </div>
+            </ng-template>
+            <!-- others page switch -->
+            <form class="form-group">
+                <div class="row">
+                    <button type="button" class="btn btn-outline-primary btn-sm col-md-2" (click)="showOthers = !showOthers" [attr.aria-expanded]="!showOthers" aria-controls="collapseExample">
+                      <span *ngIf='!showOthers'>Others</span>
+                      <span *ngIf='showOthers'>Invoice/ Products</span>
+                    </button>
+                    <div *ngIf='showOthers' class='row'>
+                        <h6 class="col-md-6">Others:</h6>
+                        <input class="col-md-6" type="text" placeholder="Please type..">
+                    </div>
+                </div>
+            </form>
+            <!-- open method modal& search name-->
+            <form *ngIf='!showOthers' class="form-group" [formGroup]='searchForm'>
+                <div class="row justify-content-start">
+                    <h6 class="col-md-2 align-bottom">Learner's first name:</h6>
+
+                    <div class="col-md-3">
+                        <input type="text" formControlName="search" placeholder="Please enter.." name="firstName" class="form-control" [class.is-invalid]="search.invalid && search.touched">
+                        <small [class.d-none]="search.valid || search.untouched " class="text-danger">Learner's name is required</small>
+                    </div>
+
+                    <div class="col-md-1"></div>
+                    <button style="height:40px;" [disabled]="search.invalid" class="btn btn-outline-primary" (click)="open(content)">Search</button>
+                </div>
+            </form>
+            <!-- <p [class.d-none]='a'>
+            </p> -->
+        </div>
+    </div>
+</div>
+
+<!--attached payment form-->
+<div class='switchOthersContainer' *ngIf='!showOthers'>
+    <div class="container">
+        <div class="row justify-content-md-center">
+            <div class="col-md-10 container-fluid" *ngIf="data">
+                <div class="row">
+                    <div class="col-md">
+                        <h5>Learner's Information</h5>
+                    </div>
+                </div>
+                <form class="mt-2" [formGroup]="registrationFormL">
+                    <div class="row">
+                        <div class="form-group col-md">
+                            <label><h6>First Name:</h6></label>
+                            <input type="text" formControlName="learnerName" class="form-control">
+                        </div>
+
+                        <div class="form-group col-md">
+                            <label><h6>Last Name:</h6></label>
+                            <input type="text" formControlName="lastName" class="form-control">
+                        </div>
+
+                        <div class="form-group col-md">
+                            <label><h6>Middle Name:</h6></label>
+                            <input type="text" formControlName="middleName" class="form-control">
+                        </div>
+
+                        <div class='col-md'>
+                            <label><h6>Contact Number:</h6></label>
+                            <input type="text" formControlName="phone" class="form-control">
+                        </div>
+
+                    </div>
+                    <hr>
+                    <!-- collapse invoice -->
+                    <p>
+                        <button type="button" class="btn btn-outline-primary btn-sm" (click)="isCollapsedI = !isCollapsedI" [attr.aria-expanded]="!isCollapsedI" aria-controls="collapseInvoiceProduct">
+                      <span *ngIf='isCollapsedI'>Products/ Invoice</span>
+                      <span *ngIf='!isCollapsedI'>Invoice/ Products</span>
+                    </button>
+                    </p>
+
+                    <div id="collapseInvoiceProduct" [ngbCollapse]="isCollapsedI">
+                        <!-- tabset -->
+                        <ngb-tabset *ngIf="array.length > 1">
+                            <ngb-tab *ngFor="let item of dataInvoice; let j = index" [title]=array>
+                                <ng-template ngbTabContent>
+                                    <!-- invoice form in tabset -->
+                                    <h5>Invoice</h5>
+                                    <div class='row justify-content-between'>
+                                        <div class="col-md-10">
+                                            <p>13 Lessons of piano from the Date {{item.BeginDate}}</p>
+                                            <p>Concert for term 2, 2019</p>
+                                            <p>Lesson Note term 2, 2019</p>
+
+                                            <p *ngIf="item.other1FeeName">{{item.Other1FeeName}}: ${{item.Other1Fee}}</p>
+                                            <p *ngIf="item.other2FeeName">{{item.Other2FeeName}}: ${{item.Other2Fee}}</p>
+                                            <p *ngIf="item.other3FeeName">{{item.Other3FeeName}}: ${{item.Other3Fee}}</p>
+
+                                            <p>Payment method: <select #districtPayment (change)="paymentMethod(districtPayment)">
+                                              <option value="Eftpos">Eftpos</option>
+                                              <option value="OnlineTransfer">Online Transfer</option>
+                                              <option value="Cash">Cash</option></select></p>
+                                            <p>Learner Paid: ${{item.PaidFee}}</p>
+                                            <p>Learner Owing Fee: ${{item.OwingFee}}</p>
+                                            <div class="row  justify-content-start mt-2" [formGroup]="invoiceForm">
+                                                <h6 class="col-md-3">Learner Add Fund:</h6>
+                                                <input type="number" formControlName="owing" placeholder="Please enter the amount.." class="form-control col-md-3 ml-2" [class.is-invalid]="owing.invalid && owing.touched">
+                                                <div class="col-md-1"></div>
+                                                <button class="btn btn-primary col-md-3 ml-2" [disabled]="owing.invalid" (click)="openP(contentP, item)">Send This Payment</button>
+                                            </div>
+                                        </div>
+                                        <div class="col-2">
+                                            <p>${{item.LessonFee}}</p>
+                                            <p>${{item.ConcertFee}}</p>
+                                            <p>${{item.NoteFee}}</p>
+                                            <p>Due Date: {{item.DueDate}}</p>
+                                            <h6>All Subject in Total: ${{item.TotalFee}}</h6>
+                                        </div>
+                                        <!-- comfirm payment modal-->
+
+                                        <div class='row justify-content-md-center'>
+                                            <div class="col-md-10">
+                                                <ng-template #contentP let-modal>
+                                                    <div class="modal-header m-2">
+                                                        <h4>Please Confirm The Payment</h4>
+                                                        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+                                                <span aria-hidden="true">&times;</span>
+                                              </button>
+                                                    </div>
+                                                    <!-- modal-body -->
+                                                    <div class="d-flex flex-column">
+                                                        <p class='p-2'>Learner Owning Fee: <span class="badge-info">${{item.OwningFee}}</span></p>
+                                                        <p class='p-2'>Learner Add Fund: <span class="badge-warning">${{addFund}}</span></p>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save')">Confirm</button>
+                                                        <button type="button" class="btn btn-outline-dark" (click)="modal.dismiss('Cross click')">Cancel</button>
+                                                    </div>
+                                                </ng-template>
+                                                <!-- open method -->
+                                            </div>
+                                        </div>
+                                    </div>
+                                </ng-template>
+                            </ngb-tab>
+                        </ngb-tabset>
+                        <!-- invoice form out tabset-->
+                        <div *ngIf="array.length == 1">
+                            <h5>Invoice</h5>
+                            <div class='row justify-content-between' *ngFor="let item of dataInvoice; let j = index">
+                                <div class="col-10">
+
+                                    <p>13 Lessons of piano from the Date {{item.BeginDate}}</p>
+                                    <p>Concert for term 2, 2019</p>
+                                    <p>Lesson Note term 2, 2019</p>
+
+                                    <p *ngIf="item.other1FeeName">{{item.Other1FeeName}}: ${{item.Other1Fee}}</p>
+                                    <p *ngIf="item.other2FeeName">{{item.Other2FeeName}}: ${{item.Other2Fee}}</p>
+                                    <p *ngIf="item.other3FeeName">{{item.Other3FeeName}}: ${{item.Other3Fee}}</p>
+
+                                    <p>Payment method: <select #districtPayment (change)="paymentMethod(districtPayment)">
+                                    <option value="Eftpos">Eftpos</option>
+                                    <option value="OnlineTransfer">Online Transfer</option>
+                                    <option value="Cash">Cash</option></select></p>
+                                    <p>Learner Paid: ${{item.PaidFee}}</p>
+                                    <p>Learner Owing Fee: ${{item.OwingFee}}</p>
+                                    <div class="row  justify-content-start mt-2" [formGroup]="invoiceForm">
+                                        <h6 class="col-md-3">Learner Add Fund:</h6>
+                                        <input type="number" formControlName="owing" placeholder="Please enter the amount.." class="form-control col-md-3 ml-2" [class.is-invalid]="owing.invalid && owing.touched">
+                                        <div class="col-md-1"></div>
+                                        <button class="btn btn-primary col-md-3 ml-2" [disabled]="owing.invalid" (click)="openP(contentP, item)">Send This Payment</button>
+                                    </div>
+                                </div>
+                                <div class="col-2">
+                                    <p>${{item.LessonFee}}</p>
+                                    <p>${{item.ConcertFee}}</p>
+                                    <p>${{item.NoteFee}}</p>
+                                    <p>Due Date: {{item.DueDate}}</p>
+                                    <h6>All Subject in Total: ${{item.TotalFee}}</h6>
+                                </div>
+                                <!-- comfirm payment modal-->
+
+                                <div class='row justify-content-md-center'>
+                                    <div class="col-md-10">
+                                        <ng-template #contentP let-modal>
+                                            <div class="modal-header m-2">
+                                                <h4>Please Confirm The Payment</h4>
+                                                <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+                                                  <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                            <!-- modal-body -->
+                                            <div class="d-flex flex-column">
+                                                <p class='p-2'>Learner Owning Fee: <span class="badge-info">${{item.OwingFee}}</span></p>
+                                                <p class='p-2'>Learner Add Fund: <span class="badge-warning">${{addFund}}</span></p>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save')">Confirm</button>
+                                                <button type="button" class="btn btn-outline-dark" (click)="modal.dismiss('Cross click')">Cancel</button>
+                                            </div>
+                                        </ng-template>
+                                        <!-- open method -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- products -->
+                    <div *ngIf="isCollapsedI">
+                        <h5>Products</h5>
+                        <div class='row'>
+                            <form novalidate class="form-group">
+                                <select #districtP class='custom-select' (change)='selectDropDown(districtP)'>
+                          <option value= 'Mike'>Piano</option>
+                          <option value= 'Oliver'>Guitar</option>
+                          <option value= 'Bo'>Drum Kit</option>
+                        </select>
+                            </form>
+                            <p *ngIf="productName == 'Mike'">Piano</p>
+                            <p *ngIf="productName == 'Oliver'">Guitar</p>
+                            <p *ngIf="productName == 'Bo'">Drum Kit</p>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
