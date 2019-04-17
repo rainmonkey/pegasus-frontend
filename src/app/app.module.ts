@@ -16,17 +16,8 @@ import { FormsModule } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
 import { TestcontentComponent } from './components/contents/testcontent/testcontent.component';
 import { LearnerDetailsComponent } from './components/contents/learner-details/learner-details.component';
-<<<<<<< HEAD
-<<<<<<< HEAD
 import { LearnersListService } from './components/contents/learner-details/learners-list.service';
-import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
-=======
-import { RegistrationComponent } from './components/contents/registration/registration.component'
->>>>>>> b4da512d1f9dba29fba9b5d294c50e8a2522e17c
-=======
 import { RegistrationComponent } from './components/contents/registration/registration.component';
-
->>>>>>> e6c4274069a918db9a814d08cfff958dfda9fd40
 
 @NgModule({
   declarations: [
