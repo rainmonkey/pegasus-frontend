@@ -1,10 +1,5 @@
-<<<<<<< HEAD
 import { Component, OnInit } from "@angular/core";
 import { LearnersListService } from "./learners-list.service";
-=======
-import { Component, OnInit } from '@angular/core';
-import { LearnersListService } from '../../../user-detail.service';
->>>>>>> b4da512d1f9dba29fba9b5d294c50e8a2522e17c
 
 import { FormBuilder, Validators } from '@angular/forms';
 import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
