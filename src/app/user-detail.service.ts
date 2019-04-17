@@ -16,24 +16,4 @@ export class UserDetailService {
     return this._http.post<UserDetail>(this._url, usrAndPass);
   }
 }
-<<<<<<< HEAD
-=======
 
-export class LearnersListService {
-  // tslint:disable-next-line:variable-name
-  private _url = 'http://192.168.178.76:5000/api/';
-
-  constructor(private http: HttpClient) {}
-
-  getLearners(name): Observable<any[] > {
-    return this.http.get<any[]>(this._url + 'learner/' + name);
-  }
-  getInvoice(id): Observable<any[] > {
-    return this.http.get<any[]>(this._url + 'payment/invoice/' + id);
-  }
-  addFund(fund) {
-    return this.http.post(this._url + 'payment/payInvoice', fund, {responseType: 'text'});
-  }
-
-}
->>>>>>> b4da512d1f9dba29fba9b5d294c50e8a2522e17c
