@@ -16,7 +16,8 @@ import { FormsModule } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
 import { TestcontentComponent } from './components/contents/testcontent/testcontent.component';
 import { LearnerDetailsComponent } from './components/contents/learner-details/learner-details.component';
-import {NgbModule} from '@ng-bootstrap/ng-bootstrap'
+import { LearnersListService } from './components/contents/learner-details/learners-list.service';
+import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
   declarations: [
@@ -39,7 +40,8 @@ import {NgbModule} from '@ng-bootstrap/ng-bootstrap'
     FormsModule,
     ReactiveFormsModule
   ],
-  providers: [UserDetailService],
+  providers: [UserDetailService,
+    LearnersListService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
