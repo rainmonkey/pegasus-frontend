@@ -17,6 +17,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { TestcontentComponent } from './components/contents/testcontent/testcontent.component';
 import { LearnerDetailsComponent } from './components/contents/learner-details/learner-details.component';
 
+
 @NgModule({
   declarations: [
     AppComponent,
