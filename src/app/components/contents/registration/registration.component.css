@@ -1,0 +1,68 @@
+
+.container {
+    margin-top: 50px;
+    margin-bottom: 50px;
+}
+.nav-link {
+    color: #0699CD;
+}
+.nav-course {
+    border: 1px solid #0699CD;
+    border-radius: 10px;
+}
+.card-body {
+    background-color:#F0F8FF;
+}
+h1 {
+    margin: 20px auto;
+    color: #0699CD;
+}
+h3, h5 {
+    color: #0699CD;
+}
+.fa, u {
+    display: inline-block;
+    font-size: 16px;
+    color: #0699CD;
+    margin-right: 5px;
+}
+.button_add, .button_delete, .button_edit, .button_reset {
+    /* background-color: white;
+    color: #0699CD; */
+    border: 0px;
+    /* padding: 5px 10px; */
+    /* border-radius: 4px; */
+    cursor: pointer;
+    /* font-size: 13px; */
+}
+
+.button_submit, .button_back, .button_next, .button_group, .button_one {
+    background-color: white;
+    color: #0699CD;
+    border: 2px solid #0699CD;
+    padding: 5px 10px;
+    border-radius: 4px;
+    text-align: center;
+    display: inline-block;
+    cursor: pointer;
+    font-size: 13px;
+    }
+.button_submit:hover, .button_back:hover, .button_next:hover {
+    background-color: #0699CD;
+    color: white;
+    }
+.button_submit:disabled, .button_next:disabled {
+    opacity: 0.6;
+    color: black;
+    cursor: not-allowed;
+    } 
+.nav-link.active {
+    color: #0699CD;
+}
+div.photo input {
+    /* background:url(src/assets/picture/photo.jpg) no-repeat; */
+    cursor: pointer;
+    width: 100px;
+    height: 100px;
+    border: none;
+}

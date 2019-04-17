@@ -1,8 +1,8 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { AppRoutingModule } from './app-routing.module';
 import { UserDetailService } from './user-detail.service';
-import { RouterModule, Routes } from '@angular/router';
 import { AppComponent } from './app.component';
 import { LoginComponent } from './components/login/login.component';
 import { HomepageComponent } from './components/dashboard/homepage/homepage.component';
@@ -16,8 +16,12 @@ import { FormsModule } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
 import { TestcontentComponent } from './components/contents/testcontent/testcontent.component';
 import { LearnerDetailsComponent } from './components/contents/learner-details/learner-details.component';
+<<<<<<< HEAD
 import { LearnersListService } from './components/contents/learner-details/learners-list.service';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
+=======
+import { RegistrationComponent } from './components/contents/registration/registration.component'
+>>>>>>> b4da512d1f9dba29fba9b5d294c50e8a2522e17c
 
 @NgModule({
   declarations: [
@@ -30,7 +34,8 @@ import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
     NavibarComponent,
     ContentareaComponent,
     TestcontentComponent,
-    LearnerDetailsComponent
+    LearnerDetailsComponent,
+    RegistrationComponent
   ],
   imports: [
     NgbModule,

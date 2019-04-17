@@ -1,0 +1,465 @@
+
+<div class="container">
+  <!-- <input type="file" [attr.multiple]="multiple ? true : null" (change)="upload()" > -->
+  <div class="title col-md-12">
+    <h1>Course Application</h1>
+    <p class="top10"><i class="fa fa-pencil"></i> Please complete the following form using English alphabet characters
+      <span class="text-underline">only</span>.</p>
+  </div>
+
+  <!-- register form navbar -->
+
+  <form [formGroup]="registrationForm">
+  
+    <!-- learner form -->
+    <div  id="learnerForm">
+      <ul class="nav nav-tabs my-3">
+        <li><a class="nav-link active" >Learner</a></li>
+        <li><a class="nav-link disabled">Guardian</a></li>
+        <li><a class="nav-link disabled">Course</a></li>
+      </ul>
+      <div  formGroupName="learnerForm" class="card">
+        <div class="card-body"> 
+
+          <!-- title -->
+          <div class="d-flex my-3">
+            <div class="photo" style="margin-right: 20px;">
+              <label for="photo"></label>
+              <input formControlName="photo" type="file" name="photo" id="photo" accept="image/*">
+            </div>
+            <h3 class="mr-auto">Learner Detail</h3>
+            <div>
+              <button class="button_edit mx-3" (click)="editLearner()"><i class="fa fa-pencil-square-o"></i></button>
+              <button class="button_reset" (click)="resetLearner()"><i class="fa fa-refresh"></i></button>
+          </div>
+          </div>
+          
+          <!-- learner's name -->
+          <div class="row">
+            <!-- first name -->
+            <div class="col-sm-4 col-md-4">
+              <label for="firstName">First Name</label>
+              <input class="form-control" formControlName="firstName" type="text" name="firstName" id="firstName">
+              <!-- validate first name -->
+              <div *ngIf="firstName.invalid && (firstName.dirty || firstName.touched)" style="color: red; margin-bottom: 5px;">
+                <div *ngIf="firstName.errors.required">
+                  First name is required.
+                </div>
+                <div *ngIf="firstName.errors.pattern">
+                  Using English alphabet characters only.
+                </div>
+              </div>
+            </div>
+            <!-- middle name -->
+            <div class="col-sm-4 col-md-4">
+              <label for="middleName">Middle Name</label>
+              <input class="form-control" formControlName="middleName" type="text" name="middleName" id="middleName">
+            </div>
+            <!-- last name -->
+            <div class="col-sm-4 col-md-4">
+              <label for="lastName">Last Name</label>
+              <input class="form-control" formControlName="lastName" type="text" name="lastName" id="lastName">
+              <!-- validate last name -->
+              <div *ngIf="lastName.invalid && (lastName.dirty || lastName.touched)" style="color: red; margin-bottom: 5px;">
+                <div *ngIf="lastName.errors.required">
+                  Last name is required.
+                </div>
+                <div *ngIf="lastName.errors.pattern">
+                  Using English alphabet characters only.
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- gender and birthday -->
+          <div class="row">
+            <!-- gender -->
+            <div class="col-sm-4 col-md-4">
+              <label for="gender">Gender</label>
+              <select class="form-control" formControlName="gender" name="gender" id="gender">
+                <option value="male">male</option>
+                <option value="female">female</option>
+              </select>
+            </div>
+            <!-- birthday -->
+            <div class="col-sm-4 col-md-4">
+              <label for="birthday">Date of Birth</label>
+              <input class="form-control" formControlName="birthday" type="date" name="birthday" id="birthday">
+            </div>
+            <!-- enrollment date -->
+            <div class="col0sm-4 col-md-4">
+              <label for="enrollmentDate">Date of Enrollment</label>
+              <input class="form-control" formControlName="enrollmentDate" type="text" name="enrollmentDate" id="enrollmentDate">
+            </div>
+          </div>
+
+          <!-- contact -->
+          <div class="row">
+            <!-- contact phone -->
+            <div class="col-sm-6 col-md-6">
+              <label for="contactPhone">Contact Phone</label>
+              <input class="form-control" formControlName="contactPhone" type="tel" name="contactPhone" id="contactPhone">
+              <!-- TODO:validate contact phone -->
+            </div>
+            <!-- email -->
+            <div class="col-sm-6 col-md-6">
+              <label for="email">Email</label>
+              <input class="form-control" formControlName="email" type="email" name="email" id="email">
+              <!-- TODO:validate email -->
+            </div>
+          </div>
+          
+          <!-- physical address -->
+          <div class="row">
+            <div class="col-12">
+              <label for="address">Physical Address</label>
+              <input class="form-control" formControlName="address" type="text" name="address" id="address">
+            </div>
+          </div>
+
+          <!-- ABRSM Theory Grade 5 -->
+          <div class="grade my-3">
+            <label for="grade">If you have ABRSM Theory Grade 5, please upload.</label>
+            <input formControlName="grade" type="file" name="grade" id="grade" accept="image/*">
+          </div>
+          <button class="d-flex ml-auto my-3 button_next" (click)="next('parentForm')" [disabled]="learnerForm.invalid">Next</button>
+
+        </div>
+      </div>   
+    </div>
+      
+    <!--  parent form --> 
+    <div id="parentForm">
+      <ul class="nav nav-tabs my-3">
+        <li><a class="nav-link disabled">Learner</a></li>
+        <li><a class="nav-link active">Guardian</a></li>
+        <li><a class="nav-link disabled">Course</a></li>
+      </ul>
+
+      <div formArrayName="parentForm">
+          <!-- The repeated course form template -->
+        <div *ngFor="let parent of parentForm.controls; let i=index;" class="card my-3">
+          <div [formGroupName]="i">
+            <div class="card-body">
+
+                <!-- title -->
+              <div class="d-flex my-3">
+                <h3 class="mr-auto">Parent or Guardian Detail</h3>
+                <button class="button_edit mx-1" (click)="editParent()"><i class="fa fa-pencil-square-o"></i></button>
+                <button class="button_reset mx-3" (click)="resetParent()"><i class="fa fa-refresh"></i></button>
+                <button class="button_delete" (click)="deleteParent()"><i class="fa fa-close"></i></button>
+              </div>
+
+              <!-- parent's name and relationship -->
+              <div class="row">
+                <!-- first name -->
+                <div class="col-sm-4 col-md-4">
+                  <label for="firstName">First Name</label>
+                  <input class="form-control" formControlName="firstName" type="text" name="firstName" id="firstName">
+                  <!-- validate first name -->
+                  <div *ngIf="parent.controls.firstName.invalid && (parent.controls.firstName.dirty || parent.controls.firstName.touched)" style="color: red; margin-bottom: 5px;">
+                    <div *ngIf="parent.controls.firstName.errors.required">
+                      First name is required.
+                    </div>
+                    <div *ngIf="parent.controls.firstName.errors.pattern">
+                      Using English alphabet characters only.
+                    </div>
+                  </div>
+                </div>
+                <!-- last name -->
+                <div class="col-sm-4 col-md-4">
+                  <label for="lastName">Last Name</label>
+                  <input class="form-control" formControlName="lastName" type="text" name="lastName" id="lastName">
+                  <!-- validate last name -->
+                  <div *ngIf="parent.controls.lastName.invalid && (parent.controls.lastName.dirty || parent.controls.lastName.touched)" style="color: red; margin-bottom: 5px;">
+                    <div *ngIf="parent.controls.lastName.errors.required">
+                      Last name is required.
+                    </div>
+                    <div *ngIf="parent.controls.lastName.errors.pattern">
+                      Using English alphabet characters only.
+                    </div>
+                  </div>
+                </div>
+                <!-- relationship -->
+                <div class="col-sm-4 col-md-4">
+                  <label for="relationship">Relationship</label>
+                  <input class="form-control" formControlName="relationship" type="text" name="relationship" id="relationship">
+                  <!-- validate relationship -->
+                  <div *ngIf="parent.controls.relationship.invalid && (parent.controls.relationship.dirty || parent.controls.relationship.touched)" style="color: red; margin-bottom: 5px;">
+                    <div *ngIf="parent.controls.relationship.errors.required">
+                      Relationship is required.
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- contact -->
+              <div class="row">
+                <!-- parent or guardian's phone -->
+                <div class="col-sm-6 col-md-6">
+                  <label for="contactPhone">Parent or Guardian's Phone</label>
+                  <div class="d-flex">
+                    <select class="form-control" name="contactPhone" id="contactPhone">
+                      <option value="workPhone">work phone</option>
+                      <option value="homePhone">home phone</option>
+                      <option value="mobilePhone">mobile phone</option>
+                    </select>
+                    <input class="form-control" formControlName="contactPhone" type="tel" name="contactPhone" id="contactPhone">
+                  </div>
+                    <!-- validate contact phone -->
+                  <div *ngIf="parent.controls.contactPhone.invalid && (parent.controls.contactPhone.dirty || parent.controls.contactPhone.touched)" style="color: red; margin-bottom: 5px;">
+                    <div *ngIf="parent.controls.contactPhone.errors.required">
+                      You must choose one contact.
+                    </div>
+                    <div *ngIf="parent.controls.contactPhone.errors.pattern">
+                      The phone number should be numbers and six characters long.
+                    </div>
+                  </div>
+                </div>  
+                <!-- parent or guardian's email -->
+                <div class="col-sm-6 col-md-6">
+                  <label for="email">Email</label>
+                  <input class="form-control" formControlName="email" type="email" name="email" id="email">
+                    <!-- validate email -->
+                    <div *ngIf="parent.controls.email.invalid && (parent.controls.email.dirty || parent.controls.email.touched)" style="color: red; margin-bottom: 5px;">
+                    <div *ngIf="parent.controls.email.errors.required">
+                      Email is required.
+                    </div>
+                    <div *ngIf="parent.controls.email.errors.pattern">
+                      Email should be in correct pattern.
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- next and back button -->
+              <div class="d-flex my-3 justify-content-end">
+                <button class="mx-3 button_back" (click)="next('learnerForm')">Back</button>
+                <button class="button_next" (click)="next('courseForm')" [disabled]="parentForm.invalid">Next</button>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="d-flex justify-content-end my-3">
+        <button class="button_add" (click)="addParent()"><i class="fa fa-plus"></i><u><b>Add your parent or guardian</b></u></button>
+      </div>
+    </div>
+  
+    <!-- course form -->
+    <div id="courseForm" >
+      <ul class="nav nav-tabs my-3">
+        <li><a class="nav-link disabled">Learner</a></li>
+        <li><a class="nav-link disabled">Guardian</a></li>
+        <li><a class="nav-link active">Course</a></li>
+      </ul>
+
+      <div class="button">
+        <button class="button_group" (click)="chooseCourse('groupCourse')">Group Class</button>
+        <button class="button_one mx-3" (click)="chooseCourse('customCourse')">Custom Class</button>
+      </div>
+ 
+      <div formArrayName="groupCourse" id="groupCourse">
+  
+        <!-- The repeated group class template -->
+        <div *ngFor="let groupCourse of groupCourse.controls; let i=index;" class="card my-3">
+          <div [formGroupName]="i" class="card-body">
+  
+            <div class="d-flex justify-content-end  my-3"> 
+              <button class="button_edit mx-1" (click)="editgroupCourse()"><i class="fa fa-pencil-square-o"></i></button>
+              <button class="button_reset mx-3" (click)="resetgroupCourse()"><i class="fa fa-refresh"></i></button>
+              <button class="button_delete" (click)="deletegroupCourse()"><i class="fa fa-close"></i></button>
+            </div>
+
+            <!-- choose course and teacher name-->
+            <div class="row">
+              <div class="col-sm-6 col-md-6">
+                <label for="course">Course</label>
+                <select class="form-control" formControlName="course" name="course" id="course">
+                  <option *ngFor="let course of courses" value="{{course}}">{{course}}</option>
+                </select>
+              </div>
+            <!-- TODO:ngif and ng for, teacher name -->
+              <div class="col-sm-6 col-md-6">
+                <label for="teacherName">Teacher name</label>
+                <select class="form-control" formControlName="teacherName" name="teacherName" id="teacherName">
+                  <option value="teacherName">Michael</option>
+                </select>
+              </div>
+            </div>
+
+            <!-- TODO:  ngif and ng for, group class time and location -->
+            <div class="row">
+              <div class="col-sm-6 col-md-6">
+                <label for="groupTime">Course time</label>
+                <select class="form-control" formControlName="groupTime" name="groupTime" id="groupTime">
+                  <option value="groupTime">Guitar</option>
+                </select>
+              </div>
+              <div class="col-sm-6 col-md-6">
+                <label for="branch">Location</label>
+                <select class="form-control" formControlName="branch" name="branch" id="branch">
+                  <option value="branch">City Center</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="d-flex my-3 justify-content-end">
+              <button class="mx-3 button_back" (click)="next('parentForm')">Back</button>
+              <button [disabled]="registrationForm.invalid" class="button_submit" type="submit">Submit</button>
+            </div>
+
+          </div>
+        </div>
+
+        <div class="d-flex justify-content-end my-3">
+          <button class="button_add" (click)="addgroupCourse()"><i class="fa fa-plus"></i><u><b>Add your course</b></u></button>
+        </div>
+
+      </div>
+
+      <div formArrayName="customCourse" id="customCourse">
+
+        <!-- The repeated custom class template -->
+        
+          <div *ngFor="let customCourse of customCourse.controls; let i=index;" class="card my-3">
+            <div [formGroupName]="i" class="card-body">
+              
+              <div class="d-flex justify-content-end  my-3"> 
+                <button class="button_edit mx-1" (click)="editCustomCourse()"><i class="fa fa-pencil-square-o"></i></button>
+                <button class="button_reset mx-3" (click)="resetCustomCourse()"><i class="fa fa-refresh"></i></button>
+                <button class="button_delete" (click)="deleteCustomCourse()"><i class="fa fa-close"></i></button>
+              </div>
+
+              <!-- choose course and learner level-->
+              <div class="row">
+                <div class="col-sm-6 col-md-6">
+                  <label for="course">Course</label>
+                  <select class="form-control" #selectCourse  formControlName="course" name="course" id="course">
+                    <option *ngFor="let course of courses" value="{{course}}">{{course}}</option>
+                  </select>
+                </div>
+                <div class="col-sm-6 col-md-6" *ngIf="selectCourse.value == 'guitar' || selectCourse.value == ''">
+                  <label for="learnerLevel">Your Level</label>
+                  <select class="form-control" formControlName="learnerLevel" name="learnerLevel" id="learnerLevel">
+                    <option *ngFor="let llevel of lLevel.guitar" [value]="llevel">{{llevel}}</option>
+                  </select>
+                </div>
+                <div class="col-sm-6 col-md-6" *ngIf="selectCourse.value == 'drum'">
+                  <label for="learnerLevel">Your Level</label>
+                  <select class="form-control" formControlName="learnerLevel" name="learnerLevel" id="learnerLevel">
+                    <option *ngFor="let llevel of lLevel.drum" [value]="llevel">{{llevel}}</option>
+                  </select>
+                </div>
+                <div class="col-sm-6 col-md-6" *ngIf="selectCourse.value == 'piano'">
+                  <label for="learnerLevel">Your Level</label>
+                  <select class="form-control" formControlName="learnerLevel" name="learnerLevel" id="learnerLevel">
+                    <option *ngFor="let llevel of lLevel.piano" [value]="llevel">{{llevel}}</option>
+                  </select>
+                </div>
+              </div>
+
+                <!-- choose teacher level, teacher name, course time and branch-->
+              <div class="row" *ngIf="tLevel.length>0">
+                <!-- teacher level -->
+                <div class="col-sm-6 col-md-6" *ngIf="selectCourse.value == 'guitar' || selectCourse.value == ''">
+                  <label for="teacherLevel">Teacher Level</label>
+                  <select class="form-control" formControlName="teacherLevel" name="teacherLevel" id="teacherLevel">
+                    <option *ngFor="let tlevel of tLevel[0]['guitar']" value="{{tlevel.teacherLevel}}">{{tlevel.teacherLevel}}</option>
+                  </select>
+                </div>
+                <div class="col-sm-6 col-md-6" *ngIf="selectCourse.value == 'drum'">
+                  <label for="teacherLevel">Teacher Level</label>
+                  <select class="form-control" formControlName="teacherLevel" name="teacherLevel" id="teacherLevel">
+                    <option *ngFor="let tlevel of tLevel[1].drum" [value]="tlevel.teacherLevel">{{tlevel.teacherLevel}}</option>
+                  </select>
+                </div>
+                <div class="col-sm-6 col-md-6" *ngIf="selectCourse.value == 'piano'">
+                  <label for="teacherLevel">Teacher Level</label>
+                  <select class="form-control" formControlName="teacherLevel" name="teacherLevel" id="teacherLevel">
+                    <option *ngFor="let tlevel of tLevel[2].piano" [value]="tlevel.teacherLevel">{{tlevel.teacherLevel}}</option>
+                  </select>
+                </div>
+                <!-- teacher name -->
+                <div class="col-sm-6 col-md-6" *ngIf="selectCourse.value == 'piano' || selectCourse.value == ''">
+                  <label for="teacherName">Teacher Name</label>
+                  <select class="form-control" formControlName="teacherName" name="teacherName" id="teacherName">
+                    <option *ngFor="let tlevel of tLevel[2].piano" value="{{tlevel.teacherName}} ">{{tlevel.teacherName}}</option> 
+                  </select>
+                </div>
+                <div class="col-sm-6 col-md-6" *ngIf="selectCourse.value == 'drum'">
+                  <label for="teacherName">Teacher Name</label>
+                  <select class="form-control" formControlName="teacherName" name="teacherName" id="teacherName">
+                    <option *ngFor="let tlevel of tLevel[1].drum" value="{{tlevel.teacherName}} ">{{tlevel.teacherName}}</option> 
+                  </select>
+                </div>
+                <div class="col-sm-6 col-md-6" *ngIf="selectCourse.value == 'guitar'">
+                  <label for="teacherName">Teacher Name</label>
+                  <select class="form-control" formControlName="teacherName" name="teacherName" id="teacherName">
+                    <option *ngFor="let tlevel of tLevel[0].guitar" value="{{tlevel.teacherName}} ">{{tlevel.teacherName}}</option> 
+                  </select>
+                </div>
+              </div>
+
+              <div class="row">
+                <!--  course time -->
+                <div class="col-sm-6 col-md-6" *ngIf="selectCourse.value == 'piano' || selectCourse.value == ''">
+                  <label for="customTime">Course time</label>
+                  <select class="form-control" formControlName="customTime" name="customTime" id="customTime">
+                    <option *ngFor="let time of courseTime.piano" value="{{time}}">{{time}}</option>
+                  </select>
+                </div>
+                <div class="col-sm-6 col-md-6" *ngIf="selectCourse.value == 'drum'">
+                  <label for="customTime">Course time</label>
+                  <select class="form-control" formControlName="customTime" name="customTime" id="customTime">
+                    <option *ngFor="let time of courseTime.drum" value="{{time}}">{{time}}</option>
+                  </select>
+                </div>
+                <div class="col-sm-6 col-md-6" *ngIf="selectCourse.value == 'guitar'">
+                  <label for="customTime">Course time</label>
+                  <select class="form-control" formControlName="customTime" name="customTime" id="customTime">
+                    <option *ngFor="let time of courseTime.guitar" value="{{time}}">{{time}}</option>
+                  </select>
+                </div>
+                <!-- branch -->
+                <div class="col-sm-6 col-md-6" *ngIf="selectCourse.value == 'piano' || selectCourse.value == ''">
+                  <label for="branch">Location</label>
+                  <select class="form-control" formControlName="branch" name="branch">
+                    <option  *ngFor="let branch of location.piano"  value="{{branch}}">{{branch}}</option>
+                  </select>
+                </div>
+                <div class="col-sm-6 col-md-6" *ngIf="selectCourse.value == 'drum'">
+                  <label for="branch">Location</label>
+                  <select class="form-control" formControlName="branch" name="branch">
+                    <option  *ngFor="let branch of location.drum"  value="{{branch}}">{{branch}}</option>
+                  </select>
+                </div>
+                <div class="col-sm-6 col-md-6" *ngIf="selectCourse.value == 'guitar'">
+                  <label for="branch">Location</label>
+                  <select class="form-control" formControlName="branch" name="branch">
+                    <option  *ngFor="let branch of location.guitar"  value="{{branch}}">{{branch}}</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="d-flex my-3 justify-content-end">
+                <button class="mx-3 button_back" (click)="next('parentForm')">Back</button>
+                <button [disabled]="registrationForm.invalid" class="button_submit" type="submit">Submit</button>
+              </div>
+            </div>
+          </div>
+    
+          <div class="d-flex justify-content-end my-3">
+            <button class="button_add" (click)="addCustomClass()"><i class="fa fa-plus"></i><u><b>Add your course</b></u></button>
+          </div>
+
+      </div>
+      
+    </div>
+            
+
+  </form>
+
+</div>
