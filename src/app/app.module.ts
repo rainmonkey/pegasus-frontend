@@ -16,8 +16,8 @@ import { FormsModule } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
 import { TestcontentComponent } from './components/contents/testcontent/testcontent.component';
 import { LearnerDetailsComponent } from './components/contents/learner-details/learner-details.component';
+import { LearnersListService } from './components/contents/learner-details/learners-list.service';
 import { RegistrationComponent } from './components/contents/registration/registration.component';
-
 
 @NgModule({
   declarations: [
@@ -41,7 +41,8 @@ import { RegistrationComponent } from './components/contents/registration/regist
     FormsModule,
     ReactiveFormsModule
   ],
-  providers: [UserDetailService],
+  providers: [UserDetailService,
+    LearnersListService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
