@@ -229,20 +229,45 @@
                     </div>
                     <!-- products -->
                     <div *ngIf="isCollapsedI">
-                        <h5>Products</h5>
-                        <div class='row'>
-                            <form novalidate class="form-group">
-                                <select #districtP class='custom-select' (change)='selectDropDown(districtP)'>
-                          <option value= 'Mike'>Piano</option>
-                          <option value= 'Oliver'>Guitar</option>
-                          <option value= 'Bo'>Drum Kit</option>
-                        </select>
-                            </form>
-                            <p *ngIf="productName == 'Mike'">Piano</p>
-                            <p *ngIf="productName == 'Oliver'">Guitar</p>
-                            <p *ngIf="productName == 'Bo'">Drum Kit</p>
-                        </div>
+                        <h5>Products Selling To Customer</h5>
+                        <form>
+                            <div class="form-group">
+                                <label for="exampleFormControlSelect1">Category</label>
+                                <select #districtP class="form-control" id="exampleFormControlSelect1" (change)='selectCategory(districtP)'>
+                                  <option *ngFor="let category of categories; let i = index" [value]="i">Choose Category: {{category.MiddleName}}</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <h5>Textbook Selling</h5>
+                                <label for="exampleFormControlSelect2">Select Textbook</label>
+                                <select multiple class="form-control" id="exampleFormControlSelect2">
+                                  <option>1</option>
+                                  <option>2</option>
+                                  <option>3</option>
+                                  <option>4</option>
+                                  <option>5</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <h5>Instruments Selling</h5>
+                                <label for="exampleFormControlSelect2">Example multiple select</label>
+                                <select multiple class="form-control" id="exampleFormControlSelect2">
+                                    <option>1</option>
+                                    <option>2</option>
+                                    <option>3</option>
+                                    <option>4</option>
+                                    <option>5</option>
+                                  </select>
+                                <div class="form-group">
+                                    <label for="exampleFormControlTextarea1">Example textarea</label>
+                                    <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+                                </div>
+                            </div>
+                        </form>
+
+
                     </div>
+
                 </form>
             </div>
         </div>

@@ -17,7 +17,7 @@ export class LearnersListService {
     return this.http.get<any[]>(this._url + 'payment/invoice/' + id)
   }
   addFund(fund){
-    return this.http.post(this._url + 'payment/payInvoice', fund, {responseType: 'text'});
+    return this.http.post(this._url + 'payment/payInvoice', fund, { responseType: 'text'});
   }
 
 }
