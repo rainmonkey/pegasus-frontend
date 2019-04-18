@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { UserDetailService } from '../../services/user-detail.service';
 import { UserDetail } from '../../models/UserDetail';
 import { FormBuilder, FormGroup } from '@angular/forms';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-login',
@@ -12,7 +13,7 @@ export class LoginComponent implements OnInit {
   detail: any;
   LoginForm: FormGroup;
   // tslint:disable-next-line:variable-name
-  constructor(protected _service: UserDetailService, private fb: FormBuilder) {
+  constructor(protected _service: UserDetailService, private fb: FormBuilder, public http: HttpClient) {
 
   }
 
@@ -39,6 +40,7 @@ export class LoginComponent implements OnInit {
       }
     );
   }
+
 
 }
 
