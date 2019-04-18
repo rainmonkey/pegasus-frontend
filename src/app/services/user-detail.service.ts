@@ -13,10 +13,19 @@ export class UserDetailService {
   constructor(private _http: HttpClient) { }
 
   getUserDetail(usrAndPass): Observable<any> {
-<<<<<<< HEAD
-    return this._http.post<UserDetail>(this._url, usrAndPass);
-=======
     return this._http.post<UserDetail>(this.urlLocal, usrAndPass);
->>>>>>> 2528882f694d93044aecf5ebe4f17b29564ce295
   }
+
+  //payment
+  // getLearners(name): Observable<any[]>{
+  //   return this._http.get<any[]>(this.urlLocal + 'learner/' + name);
+  // }
+  // getInvoice(id): Observable<any[]>{
+  //   return this._http.get<any[]>(this.urlLocal + 'payment/invoice/' + id)
+  // }
+  // addFund(fund){
+  //   return this._http.post(this.urlLocal + 'payment/payInvoice', fund, {responseType: 'text'});
+  // }
+
+
 }

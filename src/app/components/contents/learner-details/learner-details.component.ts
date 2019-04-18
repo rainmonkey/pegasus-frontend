@@ -1,8 +1,8 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, Input } from "@angular/core";
 import { LearnersListService } from "./learners-list.service";
 
 import { FormBuilder, Validators } from '@angular/forms';
-import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModal, ModalDismissReasons, } from '@ng-bootstrap/ng-bootstrap';
 import { NgbTabsetConfig } from '@ng-bootstrap/ng-bootstrap';
 
 import { ILearnerPay } from './learners';
@@ -14,7 +14,6 @@ import { ILearnerPay } from './learners';
   styleUrls: ['./learner-details.component.css']
 })
 export class LearnerDetailsComponent implements OnInit {
-
   constructor(
     private modalService: NgbModal,
     // tslint:disable-next-line:variable-name
@@ -50,11 +49,13 @@ export class LearnerDetailsComponent implements OnInit {
   public postPayment: ILearnerPay;
   // products
   public productName: any;
+  public categories = [];
   // public productsT:[''];
 
   // tabset
   public array = [];
   public isCollapsedI = false;
+
   // others Switch
   public showOthers = false;
 
@@ -86,11 +87,11 @@ export class LearnerDetailsComponent implements OnInit {
 
   // products
 
-  registrationFormP = this.fb.group({
-    Guitar: [''],
-    Piano: [''],
-    Drum: ['']
-  });
+  // registrationFormP = this.fb.group({
+  //   Guitar: [''],
+  //   Piano: [''],
+  //   Drum: ['']
+  // });
 
   ngOnInit() {}
 
@@ -200,6 +201,7 @@ export class LearnerDetailsComponent implements OnInit {
             },
             error => {
               console.error('Error!', error);
+              alert(`Can not get data from server ${error}`);
             }
           );
         },
@@ -214,15 +216,9 @@ export class LearnerDetailsComponent implements OnInit {
     this.payment = method.value;
   }
 
-  // registrationFormP = this.fb.group({
-  //   Guitar: [''],
-  //   Piano: [''],
-  //   Drum: ['']
-  // });
-
   // select product
 
-  selectDropDown(pro) {
+  selectCategory(pro) {
     this.productName = pro.value;
     console.log(this.productName);
   }
