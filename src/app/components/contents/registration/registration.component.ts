@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormArray, FormBuilder, Validators } from '@angular/forms';
+import { RegistrationService } from '../../../services/registration.service';
+import { StudentDetail } from '../../../models/StudentDetail';
+import { TestBed } from '@angular/core/testing';
 
 
 @Component({
@@ -9,42 +12,50 @@ import { FormGroup, FormArray, FormBuilder, Validators } from '@angular/forms';
 })
 export class RegistrationComponent implements OnInit {
 
+
   public registrationForm: FormGroup;
+  public students = new StudentDetail; 
+  public selectedImg: File = null;
+  public selectedPhoto: File = null;
+  public errorMsg: string;
 
   constructor(
     private fb: FormBuilder,
-  ) { }
-  
+    private _registrationService: RegistrationService) 
+    { }
+
+   
   ngOnInit() {
-    
+    this.students.Email= "sfdsfa";
+    console.log('pppp', this.students)
     this.registrationForm = this.fb.group({
       // learner form
       learnerForm: this.fb.group({
-        firstName: ['stella', [Validators.required, Validators.pattern('[a-zA-Z]*')]],
-        middleName: [''],
+        firstName: ['', [Validators.required, Validators.pattern('[a-zA-Z]*')]],
+        middleName: ['x'],
         lastName: ['ru', [Validators.required, Validators.pattern('[a-zA-Z]*')]],
-        enrollmentDate: [''],
-        gender: [''],
-        birthday: [''],
+        enrollmentDate: ['2018-11-09'],
+        gender: ['1'],
+        birthday: ['1998-03-03'],
         photo: [''],
-        contactPhone: [''],
-        email: ['stella_ru@outlool.com', [Validators.required, Validators.pattern('[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$')]],
-        address: [''],
+        contactPhone: ['3132323'],
+        email: ['stella_ru@jija.com', [Validators.required, Validators.pattern('[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$')]],
+        address: ['fadsfaefas'],
         grade: ['']
       }),
       // parent form
       parentForm: this.fb.array([
         this.fb.group({
-          relationship: ['father', Validators.required],
-          firstName: ['stella', [Validators.required, Validators.pattern('[a-zA-Z]*')]],
-          lastName: ['ru', [Validators.required, Validators.pattern('[a-zA-Z]*')]],
-          contactPhone: ['021080', [Validators.required, Validators.pattern('[0-9]{6}')]],
-          email: ['stella_ru@outlook.com', [Validators.required, Validators.pattern('[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$')]]
+          relationship: ['1', Validators.required],
+          firstName: ['sfs', [Validators.required, Validators.pattern('[a-zA-Z]*')]],
+          lastName: ['fesfs', [Validators.required, Validators.pattern('[a-zA-Z]*')]],
+          contactPhone: ['23313', [Validators.required, Validators.pattern('[0-9]{6}')]],
+          email: ['fafaf@fas.com', [Validators.required, Validators.pattern('[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$')]]
         })
       ]),
       // group class form
       groupCourse: this.fb.array([
-        this.fb.group({
+        this.fb.group({ 
           course: ['', Validators.required],
           teacherName: [''],
           groupTime: [''],
@@ -63,15 +74,17 @@ export class RegistrationComponent implements OnInit {
         })
       ]),
     });
-    console.log(this.registrationForm);
+
     // initialize card display
     document.getElementById('learnerForm').style.display = 'block';
     document.getElementById('parentForm').style.display = 'none';
     document.getElementById('courseForm').style.display = 'none';
     document.getElementById('groupCourse').style.display = 'block';
     document.getElementById('customCourse').style.display = 'none';
+
   }
 
+  
   // get controls for validation
   get firstName() { return this.registrationForm.get('learnerForm').get('firstName'); }
   get lastName() { return this.registrationForm.get('learnerForm').get('lastName'); }
@@ -81,8 +94,54 @@ export class RegistrationComponent implements OnInit {
   get groupCourse() { return this.registrationForm.get('groupCourse') as FormArray; }
   get customCourse() { return this.registrationForm.get('customCourse') as FormArray; }
 
-  onSubmit() {
 
+  test(e) {
+      console.log(e)
+  }
+
+  // encapsulate student's detail
+  uploadImage(e) {
+    console.log('grade',e);
+    this.selectedImg = <File>e.target.files[0];
+  }
+ 
+  uploadPhoto(e) {
+    console.log('photo', e)
+    this.selectedPhoto = <File>e.target.files[0];
+  }
+
+  onSubmit() {
+    let fd = new FormData();
+    let learner = this.learnerForm.value;
+    fd.append('FirstName', learner.firstName);
+    fd.append('LastName', learner.firstName);
+    fd.append('MiddleName', learner.middleName);
+    fd.append('Gender', learner.gender);
+    fd.append('dob', learner.birthday);
+    fd.append('DateOfEnrollment', learner.enrollmentDate);
+    fd.append('ContactPhone', learner.contactPhone);
+    fd.append('Email', learner.email);
+    fd.append('image', this.selectedPhoto);
+    fd.append('Address', learner.address);
+    fd.append('ABRSM', this.selectedImg);
+    for (let parent of this.parentForm.value) {
+      fd.append('GuardianFirstName', parent.firstName);
+      fd.append('GuardianLastName', parent.lastName);
+      fd.append('GuardianRelationship', parent.relationship);
+      fd.append('GuardianPhone', parent.contactPhone);
+      fd.append('GuardianEmail', parent.email)
+    }
+ 
+    console.log('array',)
+    this._registrationService.postLearner(fd)
+        .subscribe(
+          data => console.log('Success!', data),
+          error => {
+            this.errorMsg = error;
+            console.log('error', this.errorMsg);
+          }
+        )
+        
   }
 
 // operate learner form

@@ -1,16 +1,13 @@
 
 <div class="container">
-  <!-- <input type="file" [attr.multiple]="multiple ? true : null" (change)="upload()" > -->
-  <div class="title col-md-12">
+  <div class="title">
     <h1>Course Application</h1>
-    <p class="top10"><i class="fa fa-pencil"></i> Please complete the following form using English alphabet characters
-      <span class="text-underline">only</span>.</p>
   </div>
-
-  <!-- register form navbar -->
-
-  <form [formGroup]="registrationForm">
   
+  <!-- <pre>{{learnerForm.value | json}}</pre> -->
+
+  <form [formGroup]="registrationForm"  #rForm="ngForm" novalidate>
+   
     <!-- learner form -->
     <div  id="learnerForm">
       <ul class="nav nav-tabs my-3">
@@ -18,44 +15,43 @@
         <li><a class="nav-link disabled">Guardian</a></li>
         <li><a class="nav-link disabled">Course</a></li>
       </ul>
+
       <div  formGroupName="learnerForm" class="card">
         <div class="card-body"> 
-
+         
           <!-- title -->
           <div class="d-flex my-3">
             <div class="photo" style="margin-right: 20px;">
               <label for="photo"></label>
-              <input formControlName="photo" type="file" name="photo" id="photo" accept="image/*">
+              <input formControlName="photo" type="file" (change)="uploadPhoto($event)" name="photo" id="photo" accept="image/*">
             </div>
             <h3 class="mr-auto">Learner Detail</h3>
             <div>
-              <button class="button_edit mx-3" (click)="editLearner()"><i class="fa fa-pencil-square-o"></i></button>
-              <button class="button_reset" (click)="resetLearner()"><i class="fa fa-refresh"></i></button>
+              <button class="button_edit mx-3" (click)="editLearner()">Edit</button>
+              <button class="button_reset" (click)="resetLearner()">Reset</button>
           </div>
           </div>
           
           <!-- learner's name -->
           <div class="row">
-            <!-- first name -->
             <div class="col-sm-4 col-md-4">
               <label for="firstName">First Name</label>
-              <input class="form-control" formControlName="firstName" type="text" name="firstName" id="firstName">
+              <input [class.is-invalid]="learnerForm.get('firstName').invalid && learnerForm.get('firstName').dirty" class="form-control" formControlName="firstName" type="text" name="firstName" id="firstName">
+
               <!-- validate first name -->
-              <div *ngIf="firstName.invalid && (firstName.dirty || firstName.touched)" style="color: red; margin-bottom: 5px;">
-                <div *ngIf="firstName.errors.required">
-                  First name is required.
+              <div *ngIf="firstName.invalid && (firstName.dirty || firstName.touched)" >
+                <div class="text-danger" *ngIf="firstName.errors.required">
+                  <small > name is required.</small>
                 </div>
-                <div *ngIf="firstName.errors.pattern">
-                  Using English alphabet characters only.
+                <div class="text-danger" *ngIf="firstName.errors.pattern">
+                  <small> English alphabet characters only.</small>
                 </div>
               </div>
             </div>
-            <!-- middle name -->
             <div class="col-sm-4 col-md-4">
               <label for="middleName">Middle Name</label>
               <input class="form-control" formControlName="middleName" type="text" name="middleName" id="middleName">
             </div>
-            <!-- last name -->
             <div class="col-sm-4 col-md-4">
               <label for="lastName">Last Name</label>
               <input class="form-control" formControlName="lastName" type="text" name="lastName" id="lastName">
@@ -73,15 +69,13 @@
 
           <!-- gender and birthday -->
           <div class="row">
-            <!-- gender -->
             <div class="col-sm-4 col-md-4">
               <label for="gender">Gender</label>
               <select class="form-control" formControlName="gender" name="gender" id="gender">
-                <option value="male">male</option>
-                <option value="female">female</option>
+                <option value="1">male</option>
+                <option value="2">female</option>
               </select>
             </div>
-            <!-- birthday -->
             <div class="col-sm-4 col-md-4">
               <label for="birthday">Date of Birth</label>
               <input class="form-control" formControlName="birthday" type="date" name="birthday" id="birthday">
@@ -89,7 +83,7 @@
             <!-- enrollment date -->
             <div class="col0sm-4 col-md-4">
               <label for="enrollmentDate">Date of Enrollment</label>
-              <input class="form-control" formControlName="enrollmentDate" type="text" name="enrollmentDate" id="enrollmentDate">
+              <input class="form-control" formControlName="enrollmentDate" type="date" name="enrollmentDate" id="enrollmentDate">
             </div>
           </div>
 
@@ -120,9 +114,9 @@
           <!-- ABRSM Theory Grade 5 -->
           <div class="grade my-3">
             <label for="grade">If you have ABRSM Theory Grade 5, please upload.</label>
-            <input formControlName="grade" type="file" name="grade" id="grade" accept="image/*">
+            <input formControlName="grade" type="file"  (change)="uploadImage($event)" name="grade" id="grade" accept="image/*">
           </div>
-          <button class="d-flex ml-auto my-3 button_next" (click)="next('parentForm')" [disabled]="learnerForm.invalid">Next</button>
+          <button class="d-flex ml-auto my-3 button_next" (click)="next('parentForm')">Next</button>
 
         </div>
       </div>   
@@ -143,16 +137,15 @@
             <div class="card-body">
 
                 <!-- title -->
-              <div class="d-flex my-3">
+              <div class="d-flex my-3"> 
                 <h3 class="mr-auto">Parent or Guardian Detail</h3>
-                <button class="button_edit mx-1" (click)="editParent()"><i class="fa fa-pencil-square-o"></i></button>
-                <button class="button_reset mx-3" (click)="resetParent()"><i class="fa fa-refresh"></i></button>
-                <button class="button_delete" (click)="deleteParent()"><i class="fa fa-close"></i></button>
+                <button class="button_edit mx-1" (click)="editParent()">Edit</button>
+                <button class="button_reset mx-3" (click)="resetParent()">Reset</button>
+                <button class="button_delete" (click)="deleteParent()">Delete</button>
               </div>
 
               <!-- parent's name and relationship -->
               <div class="row">
-                <!-- first name -->
                 <div class="col-sm-4 col-md-4">
                   <label for="firstName">First Name</label>
                   <input class="form-control" formControlName="firstName" type="text" name="firstName" id="firstName">
@@ -166,7 +159,6 @@
                     </div>
                   </div>
                 </div>
-                <!-- last name -->
                 <div class="col-sm-4 col-md-4">
                   <label for="lastName">Last Name</label>
                   <input class="form-control" formControlName="lastName" type="text" name="lastName" id="lastName">
@@ -183,7 +175,12 @@
                 <!-- relationship -->
                 <div class="col-sm-4 col-md-4">
                   <label for="relationship">Relationship</label>
-                  <input class="form-control" formControlName="relationship" type="text" name="relationship" id="relationship">
+                  <select class="form-control" formControlName="relationship" name="relationship" id="relationship">
+                    <option value="1">Father</option>
+                    <option value="2">Mother</option>
+                    <option value="3">Other</option>
+                  </select>
+              
                   <!-- validate relationship -->
                   <div *ngIf="parent.controls.relationship.invalid && (parent.controls.relationship.dirty || parent.controls.relationship.touched)" style="color: red; margin-bottom: 5px;">
                     <div *ngIf="parent.controls.relationship.errors.required">
@@ -235,7 +232,7 @@
               <!-- next and back button -->
               <div class="d-flex my-3 justify-content-end">
                 <button class="mx-3 button_back" (click)="next('learnerForm')">Back</button>
-                <button class="button_next" (click)="next('courseForm')" [disabled]="parentForm.invalid">Next</button>
+                <button class="button_next" (click)="next('courseForm')">Next</button>
               </div>
 
             </div>
@@ -244,7 +241,7 @@
       </div>
 
       <div class="d-flex justify-content-end my-3">
-        <button class="button_add" (click)="addParent()"><i class="fa fa-plus"></i><u><b>Add your parent or guardian</b></u></button>
+        <button class="button_add" (click)="addParent()"><i class="fas fa-plus-square"></i><u><b>Add your parent or guardian</b></u></button>
       </div>
     </div>
   
@@ -263,17 +260,17 @@
  
       <div formArrayName="groupCourse" id="groupCourse">
   
-        <!-- The repeated group class template -->
+       
         <div *ngFor="let groupCourse of groupCourse.controls; let i=index;" class="card my-3">
           <div [formGroupName]="i" class="card-body">
   
             <div class="d-flex justify-content-end  my-3"> 
-              <button class="button_edit mx-1" (click)="editgroupCourse()"><i class="fa fa-pencil-square-o"></i></button>
-              <button class="button_reset mx-3" (click)="resetgroupCourse()"><i class="fa fa-refresh"></i></button>
-              <button class="button_delete" (click)="deletegroupCourse()"><i class="fa fa-close"></i></button>
+              <button class="button_edit mx-1" (click)="editgroupCourse()">Edit</button>
+              <button class="button_reset mx-3" (click)="resetgroupCourse()">Reset</button>
+              <button class="button_delete" (click)="deletegroupCourse()">Delete</button>
             </div>
 
-            <!-- choose course and teacher name-->
+           
             <div class="row">
               <div class="col-sm-6 col-md-6">
                 <label for="course">Course</label>
@@ -281,7 +278,7 @@
                   <option *ngFor="let course of courses" value="{{course}}">{{course}}</option>
                 </select>
               </div>
-            <!-- TODO:ngif and ng for, teacher name -->
+        
               <div class="col-sm-6 col-md-6">
                 <label for="teacherName">Teacher name</label>
                 <select class="form-control" formControlName="teacherName" name="teacherName" id="teacherName">
@@ -290,7 +287,7 @@
               </div>
             </div>
 
-            <!-- TODO:  ngif and ng for, group class time and location -->
+   
             <div class="row">
               <div class="col-sm-6 col-md-6">
                 <label for="groupTime">Course time</label>
@@ -308,7 +305,7 @@
 
             <div class="d-flex my-3 justify-content-end">
               <button class="mx-3 button_back" (click)="next('parentForm')">Back</button>
-              <button [disabled]="registrationForm.invalid" class="button_submit" type="submit">Submit</button>
+              <button (click)="onSubmit()" class="button_submit" type="submit">Submit</button>
             </div>
 
           </div>
@@ -322,9 +319,9 @@
 
       <div formArrayName="customCourse" id="customCourse">
 
-        <!-- The repeated custom class template -->
+    
         
-          <div *ngFor="let customCourse of customCourse.controls; let i=index;" class="card my-3">
+          <!-- <div *ngFor="let customCourse of customCourse.controls; let i=index;" class="card my-3">
             <div [formGroupName]="i" class="card-body">
               
               <div class="d-flex justify-content-end  my-3"> 
@@ -333,7 +330,6 @@
                 <button class="button_delete" (click)="deleteCustomCourse()"><i class="fa fa-close"></i></button>
               </div>
 
-              <!-- choose course and learner level-->
               <div class="row">
                 <div class="col-sm-6 col-md-6">
                   <label for="course">Course</label>
@@ -361,9 +357,10 @@
                 </div>
               </div>
 
-                <!-- choose teacher level, teacher name, course time and branch-->
-              <div class="row" *ngIf="tLevel.length>0">
-                <!-- teacher level -->
+
+            
+              <div class="row">
+          
                 <div class="col-sm-6 col-md-6" *ngIf="selectCourse.value == 'guitar' || selectCourse.value == ''">
                   <label for="teacherLevel">Teacher Level</label>
                   <select class="form-control" formControlName="teacherLevel" name="teacherLevel" id="teacherLevel">
@@ -382,7 +379,7 @@
                     <option *ngFor="let tlevel of tLevel[2].piano" [value]="tlevel.teacherLevel">{{tlevel.teacherLevel}}</option>
                   </select>
                 </div>
-                <!-- teacher name -->
+             
                 <div class="col-sm-6 col-md-6" *ngIf="selectCourse.value == 'piano' || selectCourse.value == ''">
                   <label for="teacherName">Teacher Name</label>
                   <select class="form-control" formControlName="teacherName" name="teacherName" id="teacherName">
@@ -404,7 +401,7 @@
               </div>
 
               <div class="row">
-                <!--  course time -->
+             
                 <div class="col-sm-6 col-md-6" *ngIf="selectCourse.value == 'piano' || selectCourse.value == ''">
                   <label for="customTime">Course time</label>
                   <select class="form-control" formControlName="customTime" name="customTime" id="customTime">
@@ -423,7 +420,7 @@
                     <option *ngFor="let time of courseTime.guitar" value="{{time}}">{{time}}</option>
                   </select>
                 </div>
-                <!-- branch -->
+            
                 <div class="col-sm-6 col-md-6" *ngIf="selectCourse.value == 'piano' || selectCourse.value == ''">
                   <label for="branch">Location</label>
                   <select class="form-control" formControlName="branch" name="branch">
@@ -453,7 +450,7 @@
     
           <div class="d-flex justify-content-end my-3">
             <button class="button_add" (click)="addCustomClass()"><i class="fa fa-plus"></i><u><b>Add your course</b></u></button>
-          </div>
+          </div> -->
 
       </div>
       
