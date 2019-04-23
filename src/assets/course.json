@@ -1,0 +1,57 @@
+{
+    "guitar":
+     [
+       {
+         "id": "1",
+         "classTime": "monday 15:00-16:30",
+         "location": "mount roskill"
+       },
+       {
+         "id": "2",
+         "classTime": "tuesday 18:00-19:00",
+         "location": "mount albert"
+       },
+       {
+         "id": "3",
+         "classTime": "sunday 09:00-10:30",
+         "location": "mount roskill"
+       }
+     ],
+     "piano":
+      [
+       {
+         "id": "1",
+         "classTime": "friday 14:00-16:30",
+         "location": "city"
+       },
+       {
+         "id": "2",
+         "classTime": "sunday 10:00-12:00",
+         "location": "hendersome"
+       }
+     ],
+     "drum":
+      [
+       {
+         "id": "1",
+         "classTime": "tuesday 13:00-14:30",
+         "location": "botany"
+       },
+       {
+         "id": "2",
+         "classTime": "sunday 19:00-21:00",
+         "location": "mount roskill"
+       },
+       {
+         "id": "3",
+         "classTime": "monday 09:00-10:30",
+         "location": "mount ablert"
+       },
+       {
+         "id": "4",
+         "classTime": "monday 15:00-16:30",
+         "location": "mount roskill"
+       }
+     ]
+ }
+ 
