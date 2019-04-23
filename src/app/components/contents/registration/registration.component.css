@@ -36,7 +36,7 @@ h3, h5 {
     /* font-size: 13px; */
 }
 
-.button_submit, .button_back, .button_next, .button_group, .button_one {
+button {
     background-color: white;
     color: #0699CD;
     border: 2px solid #0699CD;
@@ -47,11 +47,11 @@ h3, h5 {
     cursor: pointer;
     font-size: 13px;
     }
-.button_submit:hover, .button_back:hover, .button_next:hover {
+.btn_submit:hover, .btn_back:hover, .btn_next:hover, .btn_reset:hover, .btn_delete:hover, .btn_add:hover {
     background-color: #0699CD;
     color: white;
     }
-.button_submit:disabled, .button_next:disabled {
+.btn_submit:disabled, .btn_next:disabled {
     opacity: 0.6;
     color: black;
     cursor: not-allowed;
