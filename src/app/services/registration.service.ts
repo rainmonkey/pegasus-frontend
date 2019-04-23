@@ -9,17 +9,25 @@ import { throwError } from 'rxjs';
 })
 export class RegistrationService {
   
-  public url: string= 'http://192.168.178.76:5000/api/register1/student';
+  // url given by back-end server
+  public url: string= 'http://192.168.178.76:5000/api/register/student';
+  
+  constructor(private http: HttpClient) { }
 
-  constructor(private _http: HttpClient) { }
+  // get group course data from server
+  getGroupCourse(): Observable<any> {
+    return this.http.get('../assets/course.json');
+  }
 
-  postLearner(student: any): Observable<any> {
-    return this._http.post<any>(this.url, student)
+  // post student's data to server and catch error from server
+  postStudent(student: any): Observable<any> {
+    return this.http.post<any>(this.url, student)
                .pipe(
                  catchError(this.errorHandler)
                )
   }
   
+  // throw error to component
   errorHandler(error: HttpErrorResponse) {
     return throwError(error);
   }
