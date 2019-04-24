@@ -184,7 +184,7 @@ export class LearnerDetailsComponent implements OnInit {
         this._learnersListService
         .getProdType()
         .subscribe(prod => {
-        this.products = prod;
+        this.products = prod['Data'];
         });
 
 

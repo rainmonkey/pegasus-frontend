@@ -260,13 +260,11 @@
                                   </select>
                                 </div>
                                 <div class="form-group">
-                                    <label for="exampleFormControlSelect1">Products</label>
+                                    <label for="exampleFormControlSelect1">Products (hold ctrl to select multiple products)</label>
                                     <select #districtProd class="form-control" (change)='selectProd(districtProd)'>
-                                  <option *ngFor="let category of categories; let i = index" [value]="i">Choose Category: {{category.ProdCatName}}</option>
-                                </select>
+                                    <option *ngFor="let product of products; let i = index" [value]="i">Select Product: {{product.ProductName}}</option>
+                                    </select>
                                 </div>
-
-
                             </div>
                             <button class="btn btn-primary">Sent this Payment</button>
                         </form>
