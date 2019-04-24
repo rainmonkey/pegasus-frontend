@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormArray, FormBuilder, Validators } from '@angular/forms';
 import { RegistrationService } from '../../../services/registration.service';
 import { StudentDetail } from '../../../models/StudentDetail';
+import { Parent } from 'src/app/models/Parent';
 
 
 @Component({
@@ -31,6 +32,7 @@ export class RegistrationComponent implements OnInit {
     'intermediate': ['Andrew', 'Candy', 'Daniel'],
     'senior': ['Ella', 'Flank', 'Hellen']
   }
+  public parents = new Parent();
   
 
 
@@ -60,7 +62,7 @@ export class RegistrationComponent implements OnInit {
         lastName: ['Li', Validators.required],
         gender: ['1', Validators.required],
         birthday: ['2018-01-01'],
-        enrollmentDate: [this.today.toLocaleDateString()],
+        enrollmentDate: ['2018-12-21'],
         contactPhone: ['012345678'],
         email: ['rrrrrr@gamil.com', [Validators.required, Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$')]],
         address: ['110 Station'],
@@ -95,33 +97,31 @@ export class RegistrationComponent implements OnInit {
         })
       ]),
     });
-    console.log('parent', this.registrationForm)
 
     // initialize card display
-    document.getElementById('learnerForm').style.display = 'block';
+    document.getElementById('learnerForm').style.display = 'none';
     document.getElementById('parentForm').style.display = 'none';
-    document.getElementById('courseForm').style.display = 'none';
+    document.getElementById('courseForm').style.display = 'block';
   }
 
   
-
   uploadPhoto(event: any) {
     this.selectedPhoto = <File>event.target.files[0];
   }
   uploadGrade(event: any) {
     this.selectedGrade = <File>event.target.files[0];
   }
-  selectCourse(name: string) {
-    this.selectedCourse =name;
-    this.registrationService.getGroupCourse()
-        .subscribe(
-          data => {
-            this.guitars = data.guitar;
-            this.pianos = data.piano;
-            this.drums = data.drum;
-          }
-        )
-  }
+  // selectCourse(name: string) {
+  //   this.selectedCourse = name;
+  //   this.registrationService.getGroupCourse()
+  //       .subscribe(
+  //         data => {
+  //           this.guitars = data.guitar;
+  //           this.pianos = data.piano;
+  //           this.drums = data.drum;
+  //         }
+  //       )
+  // }
   selectLlevel() {
     this.isSelectedLevel = true;
   }
@@ -139,14 +139,23 @@ export class RegistrationComponent implements OnInit {
     fd.append('Address', learner.address);
     fd.append('image', this.selectedPhoto);
     fd.append('ABRSM', this.selectedGrade);
-    for (let parent of this.parentForm.value) {
-      fd.append('GuardianFirstName', parent.firstName);
-      fd.append('GuardianLastName', parent.lastName);
-      fd.append('GuardianRelationship', parent.relationship);
-      fd.append('GuardianPhone', parent.contactPhone);
-      fd.append('GuardianEmail', parent.email)
+    fd.append('FirstName', learner.firstName);
+    // for (let parent of this.parentForm.value) {
+    //   fd.append('ParentFirstName', parent.firstName);
+    //   fd.append('ParentLastName', parent.lastName);
+    //   fd.append('ParentRelationship', parent.relationship);
+    //   fd.append('ParentContactNum', parent.contactPhone);
+    //   fd.append('ParentEmail', parent.email)
+    // }
+    // fd.append('FirstName', learner.firstName);
+    for(let parent of this.parentForm.value) {
+       this.parents['FirstName']=parent.firstName;
+       this.parents['LastName']=parent.lastName;
+       this.parents['Relationship']=parseInt(parent.relationship);
+       this.parents['ContactNum']=parent.contactPhone;
+       this.parents['Email']=parent.email;
+       fd.append('Parent', JSON.stringify(this.parents));
     }
-    console.log('data posted to server', fd);
     this.registrationService.postStudent(fd)
         .subscribe(
           data => {
@@ -158,7 +167,6 @@ export class RegistrationComponent implements OnInit {
             console.log('Error!', error);
           }
         )
-        
   }
 
   resetLearner() {
@@ -230,5 +238,4 @@ export class RegistrationComponent implements OnInit {
     document.getElementById(id).style.display = 'block';
   }
 
-  
 }
