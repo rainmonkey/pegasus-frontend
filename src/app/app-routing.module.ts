@@ -4,6 +4,7 @@ import { LoginComponent } from './components/login/login.component';
 import { TestcontentComponent } from './components/contents/testcontent/testcontent.component';
 import { LearnerDetailsComponent } from './components/contents/learner-details/learner-details.component';
 import { RegistrationComponent } from './components/contents/registration/registration.component';
+import { TimePickerComponent } from './components/contents/time-picker/time-picker.component';
 
 const routes: Routes = [
   {
@@ -18,13 +19,17 @@ const routes: Routes = [
     path: 'payment',
     component: LearnerDetailsComponent
   },
-  // {
-  //   path: "**",
-  //   redirectTo: 'Testcontent'
-  // },
   {
     path: 'registration',
     component: RegistrationComponent
+  },
+  {
+    path: 'time-picker',
+    component: TimePickerComponent
+  },
+  {
+    path: "**",
+    redirectTo: 'Testcontent'
   }
 ];
 

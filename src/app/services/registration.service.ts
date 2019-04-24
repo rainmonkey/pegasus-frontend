@@ -10,7 +10,7 @@ import { throwError } from 'rxjs';
 export class RegistrationService {
   
   // url given by back-end server
-  public url: string= 'http://192.168.178.76:5000/api/register/student';
+  public url: string= 'http://192.168.178.76:5000/api/studentregister';
   
   constructor(private http: HttpClient) { }
 
