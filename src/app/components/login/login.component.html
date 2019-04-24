@@ -9,34 +9,53 @@
               <div class="logo">
                 <img src="../../../assets/images/loginpage/logo.png">
               </div>
+              <!--End logo-->
               <h1>Content Management System</h1>
             </div>
+            <!--End content margin-left: 3rem;-->
           </div>
+          <!--End info d-flex align-items-center-->
         </div>
+        <!--End col-lg-6-->
         <!-- Form Panel    -->
         <div class="col-lg-6 bg-white">
           <div class="form d-flex align-items-center">
-
-
-            <div class="content" >
+            <div class="content">
               <form class="form-validate" [formGroup]="LoginForm" (ngSubmit)="SubmitLoginForm()">
                 <div class="form-group">
-                  <input id="login-username" class="input-material" type="text" formControlName="username" required>
-                  <label for="login-username" class="label-material">User Name</label>
+                  <mat-form-field class="formfield">
+                    <input matInput placeholder="Username" [formControl]="emailFormControl"
+                      [errorStateMatcher]="matcher">
+                    <mat-error *ngIf="emailFormControl.hasError('email') && !emailFormControl.hasError('required')">
+                      Please enter a valid email address
+                    </mat-error> 
+                    <mat-error *ngIf="emailFormControl.hasError('required')">
+                      Email is <strong>required</strong>
+                    </mat-error>
+                  </mat-form-field>
                 </div>
                 <div class="form-group">
-                  <input id="login-password" class="input-material" type="password" formControlName="password" required>
-                  <label for="login-password" class="label-material">Password</label>
+                  <mat-form-field class="formfield">
+                      <input matInput placeholder="Password" [formControl]="emailFormControl"
+                      [errorStateMatcher]="matcher">
+                  </mat-form-field>
                 </div>
                 <button type="submit" class="btn btn-primary">Login</button>
                 <!-- This should be submit button but I replaced it with <a> for demo purposes-->
-              </form>              
+              </form>
               <a href="#" class="forgot-pass">Forgot Password?</a>
             </div>
+            <!--End content-->
 
           </div>
+          <!--End form d-flex align-items-center-->
         </div>
+        <!--End col-lg-6 bg-white-->
       </div>
+      <!--End row-->
     </div>
+    <!--End form-holder has-shadow-->
   </div>
+  <!--container d-flex align-items-cente-->
 </div>
+<!--End page login-page-->
