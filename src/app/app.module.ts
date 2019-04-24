@@ -18,6 +18,7 @@ import { TestcontentComponent } from './components/contents/testcontent/testcont
 import { LearnerDetailsComponent } from './components/contents/learner-details/learner-details.component';
 import { LearnersListService } from './components/contents/learner-details/learners-list.service';
 import { RegistrationComponent } from './components/contents/registration/registration.component';
+import { TimePickerComponent } from './components/contents/time-picker/time-picker.component';
 
 @NgModule({
   declarations: [
@@ -31,7 +32,8 @@ import { RegistrationComponent } from './components/contents/registration/regist
     ContentareaComponent,
     TestcontentComponent,
     LearnerDetailsComponent,
-    RegistrationComponent
+    RegistrationComponent,
+    TimePickerComponent
   ],
   imports: [
     NgbModule,
