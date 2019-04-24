@@ -26,12 +26,21 @@ export class UserDetailService {
   addFund(fund){
     return this._http.post(this._url + 'payment/payInvoice', fund, { responseType: 'text'});
   }
-  getProducts(){
-    return this._http.get<any[]>('http://192.168.178.96:5000/api/' + 'product/');
+  getProdType(){
+    return this._http.get<any[]>('http://192.168.178.96:5000/api/' + 'product/getCat');
   }
+  getProdCad(catId){
+    return this._http.get('http://192.168.178.96:5000/api/' + 'product/gettypebycat' + catId);
+  }
+  getProdName(typeId){
+    return this._http.get('http://192.168.178.96:5000/api/' + 'product/gettypebytype' + typeId);
+  }
+
+  postProdService(prod){
+    return this._http.post(this._url + 'prod', prod);
+  }
+
   postPaymentService(payment){
     return this._http.post(this._url + 'other', payment);
   }
-
-
 }
