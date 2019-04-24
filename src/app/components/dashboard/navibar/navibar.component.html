@@ -23,13 +23,13 @@
             </a>
         </li>
         <li>
-            <a [routerLink]="['/payment']"  routerLinkActive="active">
-                <i class="far fa-window-restore sidebaricon"></i>Payment
+            <a [routerLink]="['/registration']"  routerLinkActive="active">
+                <i class="far fa-window-restore sidebaricon"></i>Registration
             </a>
         </li>
         <li>
-            <a [routerLink]="['/registration']"  routerLinkActive="active">
-                <i class="far fa-window-restore sidebaricon"></i>Registration
+            <a [routerLink]="['/payment']"  routerLinkActive="active">
+                <i class="far fa-window-restore sidebaricon"></i>Payment
             </a>
         </li>
         <li>
@@ -45,7 +45,7 @@
     </ul>
     <span class="heading">Extras</span>
     <ul class="list-unstyled">
-        <li><a href="#"><i class="fas fa-flask sidebaricon"></i>Demo</a></li>
+        <li><a [routerLink]="['/Testcontent']"><i class="fas fa-flask sidebaricon"></i>Test</a></li>
         <li><a href="#"><i class="fas fa-desktop sidebaricon"></i>Demo</a></li>
         <li><a href="#"><i class="far fa-envelope sidebaricon"></i>Demo</a></li>
         <li><a href="#"><i class="far fa-image sidebaricon"></i>Demo</a></li>
