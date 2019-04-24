@@ -15,7 +15,6 @@ import { HttpClientModule } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { TestcontentComponent } from './components/contents/testcontent/testcontent.component';
 import { LearnerDetailsComponent } from './components/contents/learner-details/learner-details.component';
-import { LearnersListService } from './components/contents/learner-details/learners-list.service';
 import { RegistrationComponent } from './components/contents/registration/registration.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatButtonModule, MatFormFieldModule, MatInputModule } from '@angular/material';
@@ -50,7 +49,6 @@ import { AngularFontAwesomeModule } from 'angular-font-awesome';
   ],
   providers: [
     UserDetailService,
-    LearnersListService
   ],
   bootstrap: [AppComponent]
 })

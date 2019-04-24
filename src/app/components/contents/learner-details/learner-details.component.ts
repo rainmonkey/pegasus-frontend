@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { UserDetailService } from '../../../services/user-detail.service';
 
 import { FormBuilder, Validators, FormArray, FormGroup } from '@angular/forms';
@@ -35,11 +35,15 @@ export class LearnerDetailsComponent implements OnInit {
   public paymentAmount;
   // products
   public productName: any;
+  public types = [];
   public categories = [];
+  public products = [];
+  public prodCatId;
+  public prodTypeId;
+  public productId;
   public payProducts= [1];
   public sectionCount = 1;
-  // public productsT:[''];
-
+  public prodPayObj;
   // tabset
   public array = [];
   //product to invoice
@@ -99,7 +103,7 @@ export class LearnerDetailsComponent implements OnInit {
     }));
   }
   removeOptions(index){
-    if (index==0){alert('This is already the last product list.')}
+    if (this.productList.controls.length == 1){alert('This is already the last product list.')}
     else{
     this.productList.removeAt(index);}
   }
@@ -132,6 +136,7 @@ export class LearnerDetailsComponent implements OnInit {
   }
 
   ngOnInit() {
+    console.log(this.productList.controls)
   }
 
   // bootstrap-modal
@@ -163,12 +168,25 @@ export class LearnerDetailsComponent implements OnInit {
           });
 
 
-        // get product data
-        // this._learnersListService
-        // .getProducts()
-        // .subscribe(products => {
-        // this.categories = products;
-        // });
+        //get product data
+        this._learnersListService
+        .getProdType()
+        .subscribe(types => {
+        this.types = types['Data'];
+        });
+
+        this._learnersListService
+        .getProdCad(this.prodTypeId)
+        .subscribe(cat => {
+        this.categories = cat['Data'];
+        });
+
+        this._learnersListService
+        .getProdType()
+        .subscribe(prod => {
+        this.products = prod;
+        });
+
 
         if (data.length > 1) {
           this.show = true;
@@ -264,20 +282,34 @@ export class LearnerDetailsComponent implements OnInit {
 
   // select product
 
-  selectCategory(pro) {
-    this.productName = pro.value;
-    console.log(this.productName);
+  selectType(dis) {
+    this.prodTypeId = dis.value;
+    console.log(this.prodTypeId);
+  }
+  selectCat(dis) {
+    this.prodCatId = dis.value;
+    console.log(this.prodCatId);
+  }
+  selectProd(dis) {
+    this.productId = dis.value;
+    console.log(this.productId);
   }
 
-  addMore(){
-    this.sectionCount = this.sectionCount + 1;
-    this.payProducts.push(this.sectionCount);
-    console.log(this.payProducts);
+//confirm product payment
+confirmProdSubmit(){
+  this.prodPayObj = {
+    StaffId: 1,
   }
-  deleteThis(j){
-    this.payProducts.splice(j,1);
-    console.log(this.payProducts)
-  }
+  this._learnersListService.postProdService(this.prodPayObj).subscribe(
+    response=>{
+      console.log('Success!', response);
+    },
+    error => {
+      alert(`Can not access server ${error}`);
+    }
+  )
+}
+
 
 //other payment
 
@@ -301,6 +333,7 @@ otherPaymentSubmit(){
   }
 );
 }
+
 }
 
 
