@@ -5,3 +5,9 @@ export interface ILearnerPay {
   PaymentMethod: string;
   Amount: number;
 }
+export interface IOtherPay {
+  StaffId: number;
+  LearnerId: number;
+  title: string;
+  amount: number;
+}

@@ -12,7 +12,7 @@
                 <!-- modal body which is only contain middlename selector -->
                 <div class="modal-body">
                     <div *ngIf='data'>
-                        <H3>Middle Name</H3>
+                        <h3>Middle Name</h3>
                         <form novalidate class="form-group">
                             <select #district class='custom-select' (change)='selectChange(district)'>
                               <option>Please Select The Middle Name</option>
@@ -30,14 +30,24 @@
             <form class="form-group">
                 <div class="row">
                     <button type="button" class="btn btn-outline-primary btn-sm col-md-2" (click)="showOthers = !showOthers" [attr.aria-expanded]="!showOthers" aria-controls="collapseExample">
-                      <span *ngIf='!showOthers'>Others</span>
+                      <span *ngIf='!showOthers'>Other Types</span>
                       <span *ngIf='showOthers'>Invoice/ Products</span>
                     </button>
-                    <div *ngIf='showOthers' class='row'>
-                        <h6 class="col-md-6">Others:</h6>
-                        <input class="col-md-6" type="text" placeholder="Please type..">
-                    </div>
                 </div>
+            </form>
+            <!-- other payment -->
+            <form *ngIf='showOthers' class='form-group' [formGroup]="otherPayment">
+                <h6>Other Payment type:</h6>
+                <div class='row'>
+                    <label class="mt-2">Title of Payment:</label>
+                    <input class="col-md-4 mt-2 ml-2 form-control" formControlName="title" [class.is-invalid]="title.invalid && title.touched" type="text" placeholder="Please indicate the title..">
+                </div>
+                <div class='row'>
+                    <label class="mt-2">Amount of Payment: $</label>
+                    <input class="col-md-2 mt-2 ml-1 form-control" formControlName="amount" [class.is-invalid]="amount.invalid && amount.touched" type="number" placeholder="Amount..">
+                </div>
+                <button class="btn btn-primary col-md-2" [disabled]="title.invalid || amount.invalid" (click)="otherPaymentSubmit()">Submit</button>
+
             </form>
             <!-- open method modal& search name-->
             <form *ngIf='!showOthers' class="form-group" [formGroup]='searchForm'>
@@ -101,7 +111,7 @@
                     </button>
                     </p>
 
-                    <div id="collapseInvoiceProduct" [ngbCollapse]="isCollapsedI">
+                    <div id="collapseInvoiceProduct" *ngIf="!isCollapsedI">
                         <!-- tabset -->
                         <ngb-tabset *ngIf="array.length > 1">
                             <ngb-tab *ngFor="let item of dataInvoice; let j = index" [title]=array>
@@ -124,8 +134,9 @@
                                               <option value="Cash">Cash</option></select></p>
                                             <p>Learner Paid: ${{item.PaidFee}}</p>
                                             <p>Learner Owing Fee: ${{item.OwingFee}}</p>
-                                            <div class="row  justify-content-start mt-2" [formGroup]="invoiceForm">
-                                                <h6 class="col-md-3">Learner Add Fund:</h6>
+                                            <div class="row justify-content-start mt-2" [formGroup]="invoiceForm">
+                                                <h6 class="col-md-3">Learner Add Fund: </h6>
+                                                <p>$</p>
                                                 <input type="number" formControlName="owing" placeholder="Please enter the amount.." class="form-control col-md-3 ml-2" [class.is-invalid]="owing.invalid && owing.touched">
                                                 <div class="col-md-1"></div>
                                                 <button class="btn btn-primary col-md-3 ml-2" [disabled]="owing.invalid" (click)="openP(contentP, item)">Send This Payment</button>
@@ -155,7 +166,7 @@
                                                         <p class='p-2'>Learner Add Fund: <span class="badge-warning">${{addFund}}</span></p>
                                                     </div>
                                                     <div class="modal-footer">
-                                                        <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save')">Confirm</button>
+                                                        <button type="button" class="btn btn-dark" (click)="modal.close('Save')">Confirm</button>
                                                         <button type="button" class="btn btn-outline-dark" (click)="modal.dismiss('Cross click')">Cancel</button>
                                                     </div>
                                                 </ng-template>
@@ -187,7 +198,8 @@
                                     <p>Learner Paid: ${{item.PaidFee}}</p>
                                     <p>Learner Owing Fee: ${{item.OwingFee}}</p>
                                     <div class="row  justify-content-start mt-2" [formGroup]="invoiceForm">
-                                        <h6 class="col-md-3">Learner Add Fund:</h6>
+                                        <h6 class="col-md-3">Learner Add Fund: </h6>
+                                        <p class="mt-1">$</p>
                                         <input type="number" formControlName="owing" placeholder="Please enter the amount.." class="form-control col-md-3 ml-2" [class.is-invalid]="owing.invalid && owing.touched">
                                         <div class="col-md-1"></div>
                                         <button class="btn btn-primary col-md-3 ml-2" [disabled]="owing.invalid" (click)="openP(contentP, item)">Send This Payment</button>
@@ -217,7 +229,7 @@
                                                 <p class='p-2'>Learner Add Fund: <span class="badge-warning">${{addFund}}</span></p>
                                             </div>
                                             <div class="modal-footer">
-                                                <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save')">Confirm</button>
+                                                <button type="button" class="btn btn-dark" (click)="modal.close('Save')">Confirm</button>
                                                 <button type="button" class="btn btn-outline-dark" (click)="modal.dismiss('Cross click')">Cancel</button>
                                             </div>
                                         </ng-template>
@@ -230,44 +242,47 @@
                     <!-- products -->
                     <div *ngIf="isCollapsedI">
                         <h5>Products Selling To Customer</h5>
-                        <form>
-                            <div class="form-group">
-                                <label for="exampleFormControlSelect1">Category</label>
-                                <select #districtP class="form-control" id="exampleFormControlSelect1" (change)='selectCategory(districtP)'>
-                                  <option *ngFor="let category of categories; let i = index" [value]="i">Choose Category: {{category.MiddleName}}</option>
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <h5>Textbook Selling</h5>
-                                <label for="exampleFormControlSelect2">Select Textbook</label>
-                                <select multiple class="form-control" id="exampleFormControlSelect2">
+                        <form class='mb-2' [formGroup]='productListForm'>
+                            <div *ngFor="let li of list.controls; let j = index">
+                                <hr>
+                                <button class="btn btn-secondary btn-sm m-2" (click)='addoptions()'>Select More Products</button>
+                                <button (click)='deleteThis(j)'>Delete This Section</button>
+                                <div class="form-group" formArrayName='list'>
+                                    <label for="exampleFormControlSelect1">Category</label>
+                                    <select #districtP class="form-control" id="exampleFormControlSelect1" (change)='selectCategory(districtP)'>
+                                <option *ngFor="let category of list.controls; let i = index" [formGroupName]="i" [value]="i">Choose Category: {{list.controls[i].catergories}}</option>
+                              </select>
+                                </div>
+                                <div class="form-group">
+                                    <h5>Textbook Selling</h5>
+                                    <label for="exampleFormControlSelect2">Select Textbook</label>
+                                    <select multiple class="form-control" id="exampleFormControlSelect2">
+                                <option>1</option>
+                                <option>2</option>
+                                <option>3</option>
+                                <option>4</option>
+                                <option>5</option>
+                              </select>
+                                </div>
+                                <div class="form-group">
+                                    <h5>Instruments Selling</h5>
+                                    <label for="exampleFormControlSelect2">Example multiple select</label>
+                                    <select multiple class="form-control" id="exampleFormControlSelect2">
                                   <option>1</option>
                                   <option>2</option>
                                   <option>3</option>
                                   <option>4</option>
                                   <option>5</option>
                                 </select>
-                            </div>
-                            <div class="form-group">
-                                <h5>Instruments Selling</h5>
-                                <label for="exampleFormControlSelect2">Example multiple select</label>
-                                <select multiple class="form-control" id="exampleFormControlSelect2">
-                                    <option>1</option>
-                                    <option>2</option>
-                                    <option>3</option>
-                                    <option>4</option>
-                                    <option>5</option>
-                                  </select>
-                                <div class="form-group">
-                                    <label for="exampleFormControlTextarea1">Example textarea</label>
-                                    <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+                                    <div class="form-group">
+                                        <label for="exampleFormControlTextarea1">Example textarea</label>
+                                        <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+                                    </div>
                                 </div>
+                                <button class="btn btn-primary">Sent this Payment</button>
                             </div>
                         </form>
-
-
                     </div>
-
                 </form>
             </div>
         </div>

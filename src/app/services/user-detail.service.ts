@@ -9,6 +9,7 @@ import { environment } from '../../environments/environment';
 })
 export class UserDetailService {
   private urlLocal: any = environment._url;
+  private _url: string = 'http://35.197.183.118:5000/api/';
   // tslint:disable-next-line:variable-name
   constructor(private _http: HttpClient) { }
 
@@ -16,16 +17,21 @@ export class UserDetailService {
     return this._http.post<UserDetail>(this.urlLocal, usrAndPass);
   }
 
-  //payment
-  // getLearners(name): Observable<any[]>{
-  //   return this._http.get<any[]>(this.urlLocal + 'learner/' + name);
-  // }
-  // getInvoice(id): Observable<any[]>{
-  //   return this._http.get<any[]>(this.urlLocal + 'payment/invoice/' + id)
-  // }
-  // addFund(fund){
-  //   return this._http.post(this.urlLocal + 'payment/payInvoice', fund, {responseType: 'text'});
-  // }
+  getLearners(name): Observable<any[]>{
+    return this._http.get<any[]>(this._url + 'learner/' + name);
+  }
+  getInvoice(id): Observable<any[]>{
+    return this._http.get<any[]>(this._url + 'payment/invoice/' + id);
+  }
+  addFund(fund){
+    return this._http.post(this._url + 'payment/payInvoice', fund, { responseType: 'text'});
+  }
+  getProducts(){
+    return this._http.get<any[]>('http://192.168.178.96:5000/api/' + 'product/');
+  }
+  postPaymentService(payment){
+    return this._http.post(this._url + 'other', payment);
+  }
 
 
 }
