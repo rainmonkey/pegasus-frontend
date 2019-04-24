@@ -1,4 +1,4 @@
-<!-- <pre>{{ customCourse.value | json }}</pre> -->
+<pre>{{ parentForm.value | json }}</pre>
 
 <form [formGroup]="registrationForm" class="container">
   <h1 class="registrationForm__title">Student's Registration</h1>
@@ -179,7 +179,7 @@
       <li><a class="nav-link active">Course</a></li>
     </ul>
 
-    <div class="dropdown">
+    <!-- <div class="dropdown">
       <button class="dropdown-toggle mx-3" (click)="chooseCourse('groupCourse')" data-toggle="dropdown">Group Course</button>
       <div class="dropdown-menu">
         <a class="dropdown-item" name="guitar" (click)="selectCourse($event.target.name)">Guitar</a>
@@ -187,7 +187,7 @@
         <a class="dropdown-item" name="drum" (click)="selectCourse($event.target.name)">Drum</a>
       </div>
       <button class="one-on-one-Course" (click)="chooseCourse('customCourse')">One-on-One Course</button>
-    </div>
+    </div> -->
 
     <div class="select-group-course" id="groupCourse">
       <div class="guitar" *ngIf="selectedCourse =='guitar'">
@@ -285,10 +285,10 @@
               <div *ngIf="isSelectedLevel">
                 <span>Did you take exam before?</span><br>
                 <div class="hasExamed d-flex justify-content-around" >
-                  <input formControlName="hasExamed" type="checkbox" name="ABRSM" id="ABRSM"><label for="ABRSM">ABRSM</label>
-                  <input formControlName="hasExamed" type="checkbox" name="Training" id="training"><label for="training">Training</label>
-                  <input formControlName="hasExamed" type="checkbox" name="Other" id="other"><label for="other">Other</label>
-                  <input formControlName="hasExamed" type="checkbox" name="None" id="none"><label for="none">None</label>
+                  <input formControlName="hasExamed" type="checkbox" name="ABRSM" value="a" id="ABRSM"><label for="ABRSM">ABRSM</label>
+                  <input formControlName="hasExamed" type="checkbox" name="Training" value="b" id="training"><label for="training">Training</label>
+                  <input formControlName="hasExamed" type="checkbox" name="Other" value="c" id="other"><label for="other">Other</label>
+                  <input formControlName="hasExamed" type="checkbox" name="None" value="d" id="none"><label for="none">None</label>
                 </div>
               </div>
             </div>
@@ -345,7 +345,7 @@
 
           <div class="d-flex my-3 justify-content-end">
             <button class="mx-3 btn_back" (click)="next('parentForm')">Back</button>
-            <button [disabled]="registrationForm.invalid" class="btn_submit" type="submit">Submit</button>
+            <button [disabled]="registrationForm.invalid" (click)="onSubmit()" class="btn_submit" type="submit">Submit</button>
           </div>
 
         </div>
