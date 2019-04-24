@@ -79,7 +79,7 @@ export class LearnerDetailsComponent implements OnInit {
 
   //product list fb
   productListForm = this.fb.group({
-    list: this.fb.array([
+    productList: this.fb.array([
       this.fb.group({
       categories: [''],
       types: [''],
@@ -88,16 +88,22 @@ export class LearnerDetailsComponent implements OnInit {
   ]),
   });
 
-  get list(){
-    return this.productListForm.get('list') as FormArray;
+  get productList(){
+    return this.productListForm.get('productList') as FormArray;
   }
-  addoptions(){
-    this.list.push(this.fb.group({
+  addOptions(){
+    this.productList.push(this.fb.group({
       categories: [''],
       types: [''],
       products: [''],
     }));
   }
+  removeOptions(index){
+    if (index==0){alert('This is already the last product list.')}
+    else{
+    this.productList.removeAt(index);}
+  }
+
 
 //other fb
   otherPayment = this.fb.group({
@@ -126,7 +132,6 @@ export class LearnerDetailsComponent implements OnInit {
   }
 
   ngOnInit() {
-    console.log(this.list.controls);
   }
 
   // bootstrap-modal

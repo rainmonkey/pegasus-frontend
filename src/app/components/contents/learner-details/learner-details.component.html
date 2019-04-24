@@ -60,7 +60,7 @@
                     </div>
 
                     <div class="col-md-1"></div>
-                    <button style="height:40px;" [disabled]="search.invalid" class="btn btn-outline-primary" (click)="open(content)">Search</button>
+                    <button [disabled]="search.invalid" class="btn btn-outline-primary" (click)="open(content)">Search</button>
                 </div>
             </form>
             <!-- <p [class.d-none]='a'>
@@ -243,14 +243,14 @@
                     <div *ngIf="isCollapsedI">
                         <h5>Products Selling To Customer</h5>
                         <form class='mb-2' [formGroup]='productListForm'>
-                            <div *ngFor="let li of list.controls; let j = index">
+                            <div *ngFor="let li of productList.controls; let j = index" formArrayName='productList'>
                                 <hr>
-                                <button class="btn btn-secondary btn-sm m-2" (click)='addoptions()'>Select More Products</button>
-                                <button (click)='deleteThis(j)'>Delete This Section</button>
-                                <div class="form-group" formArrayName='list'>
+                                <button class="btn btn-outline-secondary btn-sm m-2" (click)='addOptions()'>Select More Products</button>
+                                <button class="btn btn-outline-secondary btn-sm m-2" (click)='removeOptions(j)'>Delete This Section</button>
+                                <div class="form-group">
                                     <label for="exampleFormControlSelect1">Category</label>
                                     <select #districtP class="form-control" id="exampleFormControlSelect1" (change)='selectCategory(districtP)'>
-                                <option *ngFor="let category of list.controls; let i = index" [formGroupName]="i" [value]="i">Choose Category: {{list.controls[i].catergories}}</option>
+                                <option *ngFor="let category of productList.controls; let i = index" [formGroupName]="i" [value]="i">Choose Category: {{productList.controls[i].catergories}}</option>
                               </select>
                                 </div>
                                 <div class="form-group">
@@ -279,8 +279,8 @@
                                         <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
                                     </div>
                                 </div>
-                                <button class="btn btn-primary">Sent this Payment</button>
                             </div>
+                            <button class="btn btn-primary">Sent this Payment</button>
                         </form>
                     </div>
                 </form>
