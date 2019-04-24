@@ -1,11 +1,11 @@
-import { Component, OnInit, Input } from "@angular/core";
-import { LearnersListService } from "./learners-list.service";
+import { Component, OnInit, Input } from '@angular/core';
+import { UserDetailService } from '../../../services/user-detail.service';
 
-import { FormBuilder, Validators } from '@angular/forms';
+import { FormBuilder, Validators, FormArray, FormGroup } from '@angular/forms';
 import { NgbModal, ModalDismissReasons, } from '@ng-bootstrap/ng-bootstrap';
 import { NgbTabsetConfig } from '@ng-bootstrap/ng-bootstrap';
 
-import { ILearnerPay } from './learners';
+import { ILearnerPay, IOtherPay } from './learners';
 
 @Component({
   selector: 'app-learner-detail',
@@ -14,23 +14,6 @@ import { ILearnerPay } from './learners';
   styleUrls: ['./learner-details.component.css']
 })
 export class LearnerDetailsComponent implements OnInit {
-  constructor(
-    private modalService: NgbModal,
-    // tslint:disable-next-line:variable-name
-    private _learnersListService: LearnersListService,
-    private fb: FormBuilder,
-    config: NgbTabsetConfig
-  ) {
-    // bootstrap tabset
-    config.justify = 'center';
-    config.type = 'pills';
-  }
-  get search() {
-    return this.searchForm.get('search');
-  }
-  get owing() {
-    return this.invoiceForm.get('owing');
-  }
   a = false;
   // learners
   public name: any = 'type..';
@@ -39,7 +22,6 @@ export class LearnerDetailsComponent implements OnInit {
   public show: boolean;
 
   // invoice
-
   public dataInvoice: any;
 
   public learnerId: any;
@@ -47,22 +29,40 @@ export class LearnerDetailsComponent implements OnInit {
   // post payment
   public payment = 'Eftpos';
   public postPayment: ILearnerPay;
+  // post other payment
+  public otherPaymentObj: IOtherPay;
+  public paymentTitle;
+  public paymentAmount;
   // products
   public productName: any;
   public categories = [];
+  public payProducts= [1];
+  public sectionCount = 1;
   // public productsT:[''];
 
   // tabset
   public array = [];
+  //product to invoice
   public isCollapsedI = false;
-
   // others Switch
   public showOthers = false;
 
   // ng-modal variable
   closeResult: string;
 
+  constructor(
+    private modalService: NgbModal,
+    private _learnersListService: UserDetailService,
+    private fb: FormBuilder,
+    config: NgbTabsetConfig
+  ) {
+    // bootstrap tabset
+    config.justify = 'center';
+    config.type = 'pills';
+  }
+
   // form-builder
+  // learners information
   registrationFormL = this.fb.group({
     learnerId: [''],
     learnerName: [{ value: null, disabled: true }],
@@ -77,23 +77,57 @@ export class LearnerDetailsComponent implements OnInit {
     address: ['']
   });
 
+  //product list fb
+  productListForm = this.fb.group({
+    list: this.fb.array([
+      this.fb.group({
+      categories: [''],
+      types: [''],
+      products: [''],
+    })
+  ]),
+  });
+
+  get list(){
+    return this.productListForm.get('list') as FormArray;
+  }
+  addoptions(){
+    this.list.push(this.fb.group({
+      categories: [''],
+      types: [''],
+      products: [''],
+    }));
+  }
+
+//other fb
+  otherPayment = this.fb.group({
+    title: ['', Validators.required],
+    amount: ['', Validators.required]
+  });
+  get title() {
+    return this.otherPayment.get('title');
+  }
+  get amount() {
+    return this.otherPayment.get('amount');
+  }
+
   searchForm = this.fb.group({
     search: ['', Validators.required]
   });
+  get search() {
+    return this.searchForm.get('search');
+  }
 
   invoiceForm = this.fb.group({
     owing: ['', Validators.required]
   });
+  get owing() {
+    return this.invoiceForm.get('owing');
+  }
 
-  // products
-
-  // registrationFormP = this.fb.group({
-  //   Guitar: [''],
-  //   Piano: [''],
-  //   Drum: ['']
-  // });
-
-  ngOnInit() {}
+  ngOnInit() {
+    console.log(this.list.controls);
+  }
 
   // bootstrap-modal
 
@@ -123,6 +157,14 @@ export class LearnerDetailsComponent implements OnInit {
             });
           });
 
+
+        // get product data
+        // this._learnersListService
+        // .getProducts()
+        // .subscribe(products => {
+        // this.categories = products;
+        // });
+
         if (data.length > 1) {
           this.show = true;
         } else {
@@ -131,7 +173,7 @@ export class LearnerDetailsComponent implements OnInit {
 
         if (this.show) {
           this.modalService
-            .open(content, { ariaLabelledBy: 'modal-basic-title' })
+            .open(content, { ariaLabelledBy: "modal-basic-title" })
             .result.then(
               result => {
                 this.closeResult = `Closed with: ${result}`;
@@ -193,7 +235,6 @@ export class LearnerDetailsComponent implements OnInit {
             PaymentMethod: this.payment,
             Amount: this.invoiceForm.value.owing
           };
-          console.log(this.postPayment);
 
           this._learnersListService.addFund(this.postPayment).subscribe(
             response => {
@@ -222,4 +263,39 @@ export class LearnerDetailsComponent implements OnInit {
     this.productName = pro.value;
     console.log(this.productName);
   }
+
+  addMore(){
+    this.sectionCount = this.sectionCount + 1;
+    this.payProducts.push(this.sectionCount);
+    console.log(this.payProducts);
+  }
+  deleteThis(j){
+    this.payProducts.splice(j,1);
+    console.log(this.payProducts)
+  }
+
+//other payment
+
+otherPaymentSubmit(){
+
+  this.otherPaymentObj={
+    StaffId: 1,
+    LearnerId: this.learnerId,
+    title: this.otherPayment.value.title,
+    amount: this.otherPayment.value.amount
+
+  }
+
+  this._learnersListService.postPaymentService(this.otherPaymentObj).subscribe(
+    response => {
+    console.log('Success!', response);
+  },
+  error => {
+    console.error('Error!', error);
+    alert(`Can not access server ${error}`);
+  }
+);
 }
+}
+
+
