@@ -35,14 +35,14 @@ export class UserDetailService {
   addFund(fund) {
     return this._http.post(this._url + 'payment/payInvoice', fund, { responseType: 'text'});
   }
-  getProdType() {
-    return this._http.get<any[]>('http://192.168.178.96:5000/api/' + 'product/getCat');
+  getProdType(){
+    return this._http.get<any[]>(this._url + 'product/getCat');
   }
-  getProdCad(catId) {
-    return this._http.get('http://192.168.178.96:5000/api/' + 'product/gettypebycat' + catId);
+  getProdCat(catId){
+    return this._http.get<any[]>(this._url + 'product/gettypebycat/' + catId);
   }
-  getProdName(typeId) {
-    return this._http.get('http://192.168.178.96:5000/api/' + 'product/gettypebytype' + typeId);
+  getProdName(typeId){
+    return this._http.get(this._url + 'product/' + typeId);
   }
 
   postProdService(prod) {
