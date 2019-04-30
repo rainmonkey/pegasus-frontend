@@ -9,7 +9,7 @@ import { UserDetail } from '../_models';
   providedIn: 'root'
 })
 export class UserDetailService {
-  private urlLocal: any = environment._url;
+  private urlLocal: any = environment.baseUrl;
   // tslint:disable-next-line:variable-name
   private _url = 'http://45.76.123.59:5000/api/';
   // tslint:disable-next-line:variable-name

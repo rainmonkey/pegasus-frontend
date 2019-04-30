@@ -13,7 +13,7 @@
   height: 100%;
   display: block;
   z-index: -1;
-  background: url('../../../assets/images/loginpage/background.jpg');
+  background: url('../../../../assets/images/loginpage/background.jpg');
   background-size: 100% 100%;
   -webkit-filter: blur(10px);
   filter: blur(10px);
@@ -49,7 +49,7 @@
 }
 
 .login-page .form-holder .info {
-  background: url("../../../assets/images/loginpage/logo-bcg.jpg");
+  background: url("../../../../assets/images/loginpage/logo-bcg.jpg");
   background-size: cover;
 
 }
