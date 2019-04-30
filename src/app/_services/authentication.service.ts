@@ -27,7 +27,8 @@ export class AuthenticationService {
             // login successful if there's a jwt token in the response
             if (data.IsSuccess) {
                 // store user details and jwt token in local storage to keep user logged in between page refreshes
-                localStorage.setItem('currentUser', JSON.stringify(data.Data));
+                // localStorage.setItem('currentUser', JSON.stringify(data.Data));
+                localStorage.setItem( username, JSON.stringify(data.Data));
                 this.currentUserSubject.next(data);
             }
             return data;
