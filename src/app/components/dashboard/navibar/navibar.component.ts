@@ -40,7 +40,7 @@ export class NavibarComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.loadAllUsers();
+    // this.loadAllUsers();
   }
 
   ngOnDestroy() {
@@ -48,9 +48,9 @@ export class NavibarComponent implements OnInit, OnDestroy {
     this.currentUserSubscription.unsubscribe();
   }
 
-  private loadAllUsers() {
-    this.userService.getAll().pipe(first()).subscribe(users => {
-        this.users = users;
-    });
-  }
+  // private loadAllUsers() {
+  //   this.userService.getAll().pipe(first()).subscribe(users => {
+  //       this.users = users;
+  //   });
+  // }
 }
