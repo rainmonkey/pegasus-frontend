@@ -21,32 +21,30 @@
         <div class="col-lg-6 bg-white">
           <div class="form d-flex align-items-center">
             <div class="content">
-              <form class="form-validate" [formGroup]="LoginForm" (ngSubmit)="SubmitLoginForm()">
+              <form class="form-validate" [formGroup]="loginForm" (ngSubmit)="onSubmit()">
                 <div class="form-group">
                   <mat-form-field class="formfield">
-                    <input matInput placeholder="Username" [formControl]="emailFormControl"
-                      [errorStateMatcher]="matcher">
-                    <mat-error *ngIf="emailFormControl.hasError('email') && !emailFormControl.hasError('required')">
-                      Please enter a valid email address
-                    </mat-error> 
-                    <mat-error *ngIf="emailFormControl.hasError('required')">
-                      Email is <strong>required</strong>
-                    </mat-error>
+                    <input matInput type="text" placeholder="Username" formControlName="username" [ngClass]="{ 'is-invalid': submitted && f.username.errors }" />
+                    <div *ngIf="submitted && f.username.errors" class="invalid-feedback">
+                      <div *ngIf="f.username.errors.required">Username is required</div>
+                    </div>
                   </mat-form-field>
                 </div>
                 <div class="form-group">
                   <mat-form-field class="formfield">
-                      <input matInput placeholder="Password" [formControl]="emailFormControl"
-                      [errorStateMatcher]="matcher">
+                    <input matInput type="password" placeholder="Password" formControlName="password" [ngClass]="{ 'is-invalid': submitted && f.password.errors }" />
+                    <div *ngIf="submitted && f.password.errors" class="invalid-feedback">
+                      <div *ngIf="f.password.errors.required">Password is required</div>
+                    </div>
                   </mat-form-field>
                 </div>
-                <button type="submit" class="btn btn-primary">Login</button>
+                <button [disabled]="loading" class="btn btn-primary">Login</button>
                 <!-- This should be submit button but I replaced it with <a> for demo purposes-->
               </form>
               <a href="#" class="forgot-pass">Forgot Password?</a>
+              {{errorDisplay}}
             </div>
             <!--End content-->
-
           </div>
           <!--End form d-flex align-items-center-->
         </div>

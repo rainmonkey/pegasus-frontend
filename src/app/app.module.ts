@@ -1,25 +1,29 @@
-import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { AppRoutingModule } from './app-routing.module';
-import { UserDetailService } from './services/user-detail.service';
+import { AngularFontAwesomeModule } from 'angular-font-awesome';
 import { AppComponent } from './app.component';
-import { LoginComponent } from './components/login/login.component';
-import { HomepageComponent } from './components/dashboard/homepage/homepage.component';
-import { HeaderbarComponent } from './components/dashboard/headerbar/headerbar.component';
 import { BreadcrumbComponent } from './components/dashboard/breadcrumb/breadcrumb.component';
-import { FooterbarComponent } from './components/dashboard/footerbar/footerbar.component';
-import { NavibarComponent } from './components/dashboard/navibar/navibar.component';
+import { BrowserModule } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ContentareaComponent } from './components/dashboard/contentarea/contentarea.component';
-import { HttpClientModule } from '@angular/common/http';
+import { FooterbarComponent } from './components/dashboard/footerbar/footerbar.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { TestcontentComponent } from './components/contents/testcontent/testcontent.component';
+import { HeaderbarComponent } from './components/dashboard/headerbar/headerbar.component';
+import { HomepageComponent } from './components/dashboard/homepage/homepage.component';
+import { HttpClientModule, HTTP_INTERCEPTORS} from '@angular/common/http';
+import { JwtInterceptor } from './_helpers';
 import { LearnerDetailsComponent } from './components/contents/learner-details/learner-details.component';
 import { LearnersListService } from './components/contents/learner-details/learners-list.service';
-import { RegistrationComponent } from './components/contents/registration/registration.component';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { LoginComponent } from './components/login/login.component';
 import { MatButtonModule, MatFormFieldModule, MatInputModule } from '@angular/material';
-import { AngularFontAwesomeModule } from 'angular-font-awesome';
+import { NavibarComponent } from './components/dashboard/navibar/navibar.component';
+import { NgModule } from '@angular/core';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { RegistrationComponent } from './components/contents/registration/registration.component';
+import { routing } from '../app/app-routing.module';
+import { TestcontentComponent } from './components/contents/testcontent/testcontent.component';
+import { UserDetailService } from './_services';
+
+
+
 
 @NgModule({
   declarations: [
@@ -33,12 +37,11 @@ import { AngularFontAwesomeModule } from 'angular-font-awesome';
     ContentareaComponent,
     TestcontentComponent,
     LearnerDetailsComponent,
-    RegistrationComponent
+    RegistrationComponent,
   ],
   imports: [
     NgbModule,
     BrowserModule,
-    AppRoutingModule,
     HttpClientModule,
     FormsModule,
     ReactiveFormsModule,
@@ -46,11 +49,14 @@ import { AngularFontAwesomeModule } from 'angular-font-awesome';
     MatButtonModule,
     AngularFontAwesomeModule,
     MatFormFieldModule,
-    MatInputModule
+    MatInputModule,
+    routing
   ],
   providers: [
     UserDetailService,
-    LearnersListService
+    LearnersListService,
+    { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true }
+
   ],
   bootstrap: [AppComponent]
 })
