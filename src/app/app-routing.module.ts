@@ -1,5 +1,5 @@
 import { Routes, RouterModule } from '@angular/router';
-import { LoginComponent } from './components/login/login.component';
+import { LoginComponent } from './components/basic/login/login.component';
 import { TestcontentComponent } from './components/contents/testcontent/testcontent.component';
 import { LearnerDetailsComponent } from './components/contents/learner-details/learner-details.component';
 import { RegistrationComponent } from './components/contents/registration/registration.component';
@@ -11,7 +11,7 @@ const routes: Routes = [
   {
     path: '',
     component: HomepageComponent,
-    canActivate: [AuthGuard],
+    // canActivate: [AuthGuard],
 
     children: [
       {
