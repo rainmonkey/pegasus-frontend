@@ -13,7 +13,7 @@ export class UserDetailService {
   // tslint:disable-next-line:variable-name
   private _url = 'http://45.76.123.59:5000/api/';
   // tslint:disable-next-line:variable-name
-  constructor(private _http: HttpClient) {}
+  constructor(private _http: HttpClient) { }
 
   // getUserDetail(usrAndPass): Observable<any> {
   //   return this._http.post<UserDetail>(this.urlLocal, usrAndPass);
@@ -33,15 +33,15 @@ export class UserDetailService {
     return this._http.get<any[]>(this._url + 'payment/invoice/' + id);
   }
   addFund(fund) {
-    return this._http.post(this._url + 'payment/payInvoice', fund, { responseType: 'text'});
+    return this._http.post(this._url + 'payment/payInvoice', fund, { responseType: 'text' });
   }
-  getProdType(){
+  getProdType() {
     return this._http.get<any[]>(this._url + 'product/getCat');
   }
-  getProdCat(catId){
+  getProdCat(catId) {
     return this._http.get<any[]>(this._url + 'product/gettypebycat/' + catId);
   }
-  getProdName(typeId){
+  getProdName(typeId) {
     return this._http.get(this._url + 'product/' + typeId);
   }
 
