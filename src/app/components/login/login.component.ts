@@ -1,62 +1,69 @@
 import { Component, OnInit } from '@angular/core';
-import { UserDetailService } from '../../services/user-detail.service';
-import { UserDetail } from '../../models/UserDetail';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { Router, ActivatedRoute } from '@angular/router';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
-import {FormControl, FormGroupDirective, NgForm, Validators} from '@angular/forms';
-import {ErrorStateMatcher} from '@angular/material/core';
+import { first } from 'rxjs/operators';
+import { AlertService, AuthenticationService } from '../../_services';
 
-/** Error when invalid control is dirty, touched, or submitted. */
-export class MyErrorStateMatcher implements ErrorStateMatcher {
-  isErrorState(control: FormControl | null, form: FormGroupDirective | NgForm | null): boolean {
-    const isSubmitted = form && form.submitted;
-    return !!(control && control.invalid && (control.dirty || control.touched || isSubmitted));
-  }
-}
+
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css']
 })
+
 export class LoginComponent implements OnInit {
-  detail: any;
-  LoginForm: FormGroup;
-  // tslint:disable-next-line:variable-name
-  constructor(protected _service: UserDetailService, private fb: FormBuilder, public http: HttpClient) {
-
+  loginForm: FormGroup;
+  loading = false;
+  submitted = false;
+  returnUrl: string;
+  errorDisplay: any;
+  constructor(
+    public http: HttpClient,
+    private fb: FormBuilder,
+    private route: ActivatedRoute,
+    private router: Router,
+    private authenticationService: AuthenticationService,
+    private alertService: AlertService
+  ) {
+    // redirect to home if already logged in
+    if (this.authenticationService.currentUserValue) {
+      this.router.navigate(['/']);
+    }
   }
-
-  emailFormControl = new FormControl('', [
-    Validators.required,
-    Validators.email,
-  ]);
-  matcher = new MyErrorStateMatcher();
 
   ngOnInit() {
-    this.LoginForm = this.fb.group({
-      username: [''],
-      password: ['']
+    this.loginForm = this.fb.group({
+      username: ['', Validators.required],
+      password: ['', Validators.required]
     });
+
+    // get return url from route parameters or default to '/'
+    this.returnUrl = this.route.snapshot.queryParams.returnUrl || '/';
   }
 
-  SubmitLoginForm() {
-    const userLoginDetail = new UserDetail();
-    userLoginDetail.username = this.LoginForm.get('username').value;
-    userLoginDetail.password = this.LoginForm.get('password').value;
-    this._service.getUserDetail(userLoginDetail).subscribe(
+  // convenience getter for easy access to form fields
+  get f() { return this.loginForm.controls; }
+
+  onSubmit() {
+    this.submitted = true;
+    // stop here if form is invalid
+    if (this.loginForm.invalid) {
+        return;
+    }
+    this.loading = true;
+    this.authenticationService.login(this.f.username.value, this.f.password.value)
+    .pipe(first())
+    .subscribe(
       data => {
-        if (data.errorMessage === 'Username does not exist.') {
-          alert(data.errorMessage); // 自己调
-        } else if (data.errorMessage === 'The password is incorrect') {
-          alert(data.errorMessage); // 自己调
-        } else {
-      //  自己写 data.data是数据
-        }
-      }
-    );
+        this.router.navigate([this.returnUrl]);
+    },
+    error => {
+        this.alertService.error(error);
+        this.loading = false;
+    });
+
   }
-
-
 }
 

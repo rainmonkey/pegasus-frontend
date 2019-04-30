@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormArray, FormBuilder, Validators } from '@angular/forms';
-import { RegistrationService } from '../../../services/registration.service';
-import { StudentDetail } from '../../../models/StudentDetail';
+import { RegistrationService } from '../../../_services/registration.service';
+import { StudentDetail } from '../../../_models/StudentDetail';
 
 
 @Component({
@@ -30,8 +30,8 @@ export class RegistrationComponent implements OnInit {
     "junior": ['Michael', 'Ivy', 'Tom'],
     'intermediate': ['Andrew', 'Candy', 'Daniel'],
     'senior': ['Ella', 'Flank', 'Hellen']
-  }
-  
+  };
+
 
 
   // getter method: simplify the way to capture form controls
@@ -50,9 +50,7 @@ export class RegistrationComponent implements OnInit {
     private registrationService: RegistrationService
     ) { }
 
-   
   ngOnInit() {
-    
     this.registrationForm = this.fb.group({
       learnerForm: this.fb.group({
         firstName: ['Tom', Validators.required],
@@ -77,7 +75,7 @@ export class RegistrationComponent implements OnInit {
         })
       ]),
       groupCourse: this.fb.array([
-        this.fb.group({ 
+        this.fb.group({
           course: [''],
           groupCourseTime: [''],
           location: ['']
@@ -95,7 +93,7 @@ export class RegistrationComponent implements OnInit {
         })
       ]),
     });
-    console.log('parent', this.registrationForm)
+    console.log('parent', this.registrationForm);
 
     // initialize card display
     document.getElementById('learnerForm').style.display = 'block';
@@ -103,7 +101,7 @@ export class RegistrationComponent implements OnInit {
     document.getElementById('courseForm').style.display = 'none';
   }
 
-  
+
 
   uploadPhoto(event: any) {
     this.selectedPhoto = <File>event.target.files[0];
@@ -112,7 +110,7 @@ export class RegistrationComponent implements OnInit {
     this.selectedGrade = <File>event.target.files[0];
   }
   selectCourse(name: string) {
-    this.selectedCourse =name;
+    this.selectedCourse = name;
     this.registrationService.getGroupCourse()
         .subscribe(
           data => {
@@ -120,7 +118,7 @@ export class RegistrationComponent implements OnInit {
             this.pianos = data.piano;
             this.drums = data.drum;
           }
-        )
+        );
   }
   selectLlevel() {
     this.isSelectedLevel = true;
@@ -144,7 +142,7 @@ export class RegistrationComponent implements OnInit {
       fd.append('GuardianLastName', parent.lastName);
       fd.append('GuardianRelationship', parent.relationship);
       fd.append('GuardianPhone', parent.contactPhone);
-      fd.append('GuardianEmail', parent.email)
+      fd.append('GuardianEmail', parent.email);
     }
     console.log('data posted to server', fd);
     this.registrationService.postStudent(fd)
@@ -157,8 +155,8 @@ export class RegistrationComponent implements OnInit {
             this.errorMsg = error;
             console.log('Error!', error);
           }
-        )
-        
+        );
+
   }
 
   resetLearner() {
@@ -216,7 +214,7 @@ export class RegistrationComponent implements OnInit {
       })
     );
   }
-  
+
 // go and next function
   next(id: string) {
     document.getElementById('learnerForm').style.display = 'none';
@@ -229,6 +227,4 @@ export class RegistrationComponent implements OnInit {
     document.getElementById('customCourse').style.display = 'none';
     document.getElementById(id).style.display = 'block';
   }
-
-  
 }

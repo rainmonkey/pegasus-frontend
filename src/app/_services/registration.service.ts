@@ -8,10 +8,9 @@ import { throwError } from 'rxjs';
   providedIn: 'root'
 })
 export class RegistrationService {
-  
   // url given by back-end server
-  public url: string= 'http://192.168.178.76:5000/api/register/student';
-  
+  public url = 'http://192.168.178.76:5000/api/register/student';
+
   constructor(private http: HttpClient) { }
 
   // get group course data from server
@@ -24,9 +23,9 @@ export class RegistrationService {
     return this.http.post<any>(this.url, student)
                .pipe(
                  catchError(this.errorHandler)
-               )
+               );
   }
-  
+
   // throw error to component
   errorHandler(error: HttpErrorResponse) {
     return throwError(error);

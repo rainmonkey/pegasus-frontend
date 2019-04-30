@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { UserDetailService } from '../../../services/user-detail.service';
+import { UserDetailService } from '../../../_services/user-detail.service';
 
 import { FormBuilder, Validators, FormArray, FormGroup } from '@angular/forms';
 import { NgbModal, ModalDismissReasons, } from '@ng-bootstrap/ng-bootstrap';

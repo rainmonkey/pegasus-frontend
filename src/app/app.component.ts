@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { setFirstTemplatePass } from '@angular/core/src/render3/state';
 
 @Component({
   selector: 'app-root',
@@ -9,7 +8,7 @@ import { setFirstTemplatePass } from '@angular/core/src/render3/state';
 export class AppComponent {
   title = 'Pegasus Login';
 
-  public logture = true;
+  // public logture = true;
 
   constructor() { }
 
