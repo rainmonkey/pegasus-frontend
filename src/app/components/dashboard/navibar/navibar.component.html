@@ -5,7 +5,7 @@
             <img src="../../../../assets/images/usersimg/testimg.jpg" alt="..." class="img-fluid rounded-circle">
         </div>
         <div class="title">
-            <h1 class="h4">Chris He</h1>
+            <h1 class="h4">{{currentUser.firstName}} {{currentUser.lastName}}</h1>
             <p>President of US</p>
         </div>
     </div>
@@ -15,11 +15,6 @@
         <li *ngFor="let item of navitem; let key = index;">
             <a [routerLink]="[ '/testcontent' ]" routerLinkActive="active">
                 <i class="fas sidebaricon" [ngClass]="{'fa-home':key==0,'fa-th':key==1,'fa-chart-bar':key==2, 'fa-clipboard':key==3}"></i>{{item.pagename}}
-            </a>
-        </li>
-        <li>
-            <a [routerLink]="['/login']" routerLinkActive="active">
-                <i class="far fa-window-restore sidebaricon"></i>Login page
             </a>
         </li>
         <li>
