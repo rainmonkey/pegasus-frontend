@@ -5,7 +5,7 @@ import { LearnerDetailsComponent } from './components/contents/learner-details/l
 import { RegistrationComponent } from './components/contents/registration/registration.component';
 import { HomepageComponent } from './components/dashboard/homepage/homepage.component';
 
-import { AuthGuard } from './_guards';
+import { AuthGuard } from './guards/auth.guard';
 
 const routes: Routes = [
   {

@@ -3,7 +3,6 @@ import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule, HTTP_INTERCEPTORS} from '@angular/common/http';
-import { JwtInterceptor } from './_helpers';
 import { MatButtonModule, MatFormFieldModule, MatInputModule } from '@angular/material';
 import { NgModule } from '@angular/core';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
@@ -29,7 +28,7 @@ import { LearnerDetailsComponent } from './components/contents/learner-details/l
 // import {}
 
 // Services
-import { UserDetailService } from './_services';
+import { UserDetailService } from './services/user-detail.service';
 
 
 
@@ -65,8 +64,7 @@ import { UserDetailService } from './_services';
     routing
   ],
   providers: [
-    UserDetailService,
-    { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true }
+    UserDetailService
 
   ],
   bootstrap: [AppComponent]

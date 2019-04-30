@@ -2,8 +2,9 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { first } from 'rxjs/operators';
 
-import { UserDetail } from '../../../_models';
-import { UserDetailService, AuthenticationService } from '../../../_services';
+import { UserDetail } from '../../../models/UserDetail';
+import { AuthenticationService } from '../../../services/authentication.service';
+import { UserDetailService } from '../../../services/user-detail.service';
 
 @Component({
   selector: 'app-navibar',
