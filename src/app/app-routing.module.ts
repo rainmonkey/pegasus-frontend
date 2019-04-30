@@ -9,25 +9,28 @@ import { AuthGuard } from './_guards';
 
 const routes: Routes = [
   {
-    path: 'Testcontent',
-    component: TestcontentComponent
+    path: '',
+    component: HomepageComponent,
+    canActivate: [AuthGuard],
+
+    children: [
+      {
+        path: 'Testcontent',
+        component: TestcontentComponent
+      },
+      {
+        path: 'payment',
+        component: LearnerDetailsComponent
+      },
+      {
+        path: 'registration',
+        component: RegistrationComponent
+      }
+    ]
   },
   {
     path: 'login',
     component: LoginComponent
-  },
-  {
-    path: 'payment',
-    component: LearnerDetailsComponent
-  },
-  {
-    path: 'registration',
-    component: RegistrationComponent
-  },
-  {
-    path: '',
-    component: HomepageComponent,
-    canActivate: [AuthGuard]
   },
   {
     path: '**',

@@ -11,7 +11,6 @@ import { HomepageComponent } from './components/dashboard/homepage/homepage.comp
 import { HttpClientModule, HTTP_INTERCEPTORS} from '@angular/common/http';
 import { JwtInterceptor } from './_helpers';
 import { LearnerDetailsComponent } from './components/contents/learner-details/learner-details.component';
-// import { LearnersListService } from './components/contents/learner-details/learners-list.service';
 import { LoginComponent } from './components/login/login.component';
 import { MatButtonModule, MatFormFieldModule, MatInputModule } from '@angular/material';
 import { NavibarComponent } from './components/dashboard/navibar/navibar.component';
@@ -54,7 +53,6 @@ import { UserDetailService } from './_services';
   ],
   providers: [
     UserDetailService,
-    // LearnersListService,
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true }
 
   ],
