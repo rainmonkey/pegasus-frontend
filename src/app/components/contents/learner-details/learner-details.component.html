@@ -129,9 +129,9 @@
                                             <p *ngIf="item.other3FeeName">{{item.Other3FeeName}}: ${{item.Other3Fee}}</p>
 
                                             <p>Payment method: <select #districtPayment (change)="paymentMethod(districtPayment)">
-                                              <option value="Eftpos">Eftpos</option>
-                                              <option value="OnlineTransfer">Online Transfer</option>
-                                              <option value="Cash">Cash</option></select></p>
+                                              <option value=2>Eftpos</option>
+                                              <option value=3>Online Transfer</option>
+                                              <option value=1>Cash</option></select></p>
                                             <p>Learner Paid: ${{item.PaidFee}}</p>
                                             <p>Learner Owing Fee: ${{item.OwingFee}}</p>
                                             <div class="row justify-content-start mt-2" [formGroup]="invoiceForm">
@@ -139,6 +139,7 @@
                                                 <p>$</p>
                                                 <input type="number" formControlName="owing" placeholder="Please enter the amount.." class="form-control col-md-3 ml-2" [class.is-invalid]="owing.invalid && owing.touched">
                                                 <div class="col-md-1"></div>
+                                                <!-- open method for confirm payment modal-->
                                                 <button class="btn btn-primary col-md-3 ml-2" [disabled]="owing.invalid" (click)="openP(contentP, item)">Send This Payment</button>
                                             </div>
                                         </div>
@@ -192,9 +193,9 @@
                                     <p *ngIf="item.other3FeeName">{{item.Other3FeeName}}: ${{item.Other3Fee}}</p>
 
                                     <p>Payment method: <select #districtPayment (change)="paymentMethod(districtPayment)">
-                                    <option value="Eftpos">Eftpos</option>
-                                    <option value="OnlineTransfer">Online Transfer</option>
-                                    <option value="Cash">Cash</option></select></p>
+                                    <option value=2>Eftpos</option>
+                                    <option value=3>Online Transfer</option>
+                                    <option value=1>Cash</option></select></p>
                                     <p>Learner Paid: ${{item.PaidFee}}</p>
                                     <p>Learner Owing Fee: ${{item.OwingFee}}</p>
                                     <div class="row  justify-content-start mt-2" [formGroup]="invoiceForm">
@@ -202,6 +203,7 @@
                                         <p class="mt-1">$</p>
                                         <input type="number" formControlName="owing" placeholder="Please enter the amount.." class="form-control col-md-3 ml-2" [class.is-invalid]="owing.invalid && owing.touched">
                                         <div class="col-md-1"></div>
+                                        <!-- open method for confirm payment modal-->
                                         <button class="btn btn-primary col-md-3 ml-2" [disabled]="owing.invalid" (click)="openP(contentP, item)">Send This Payment</button>
                                     </div>
                                 </div>
@@ -241,32 +243,77 @@
                     </div>
                     <!-- products -->
                     <div *ngIf="isCollapsedI">
-                        <h5>Products Selling To Customer</h5>
                         <form class='mb-2' [formGroup]='productListForm'>
-                            <div *ngFor="let li of productList.controls; let j = index" formArrayName='productList'>
-                                <hr>
-                                <button class="btn btn-outline-secondary btn-sm m-2" (click)='addOptions()'>Select More Products</button>
-                                <button class="btn btn-outline-secondary btn-sm m-2" (click)='removeOptions(j)'>Delete This Section</button>
-                                <div class="form-group">
-                                    <label for="exampleFormControlSelect1">Types</label>
-                                    <select #districtTypes class="form-control" (change)='selectType(districtTypes)'>
-                                      <option *ngFor="let type of types; let i = index" [value]="i">Choose Types: {{type.ProdCatName}}</option>
+                            <div formArrayName="productList">
+                                <div *ngFor="let li of productList.controls; let j = index" [formGroupName]='j'>
+                                    <div class="d-flex justify-content-end">
+                                        <button class="btn btn-outline-success btn-sm m-1" style="border-radius:30%" (click)='addOption()'>+</button>
+                                        <button *ngIf="productList.controls.length !== 1" style="border-radius:30%" class="btn btn-outline-danger btn-sm m-1" (click)='removeOption(j)'>-</button>
+                                    </div>
+                                    <h5>Products Selling To Customer Section {{j+1}}</h5>
+                                    <div class="row">
+                                        <div class="form-group col">
+                                            <label for="exampleFormControlSelect1">Types</label>
+                                            <select #districtTypes class="form-control" (change)='selectType(districtTypes,j)'>
+                                      <option selected>Choose Type..</option>
+                                      <option *ngFor="let type of types[j]; let k = index" [value]="k"> {{type.ProdCatName}}</option>
                                     </select>
-                                </div>
-                                <div class="form-group">
-                                    <label for="exampleFormControlSelect1">Categories</label>
-                                    <select #districtCat class="form-control" (change)='selectCat(districtCat)'>
-                                    <option *ngFor="let category of categories; let i = index" [value]="i">Choose Category: {{category.ProdTypeName}}</option>
-                                  </select>
-                                </div>
-                                <div class="form-group">
-                                    <label for="exampleFormControlSelect1">Products (hold ctrl to select multiple products)</label>
-                                    <select #districtProd class="form-control" (change)='selectProd(districtProd)'>
-                                    <option *ngFor="let product of products; let i = index" [value]="i">Select Product: {{product.ProductName}}</option>
-                                    </select>
+                                        </div>
+                                        <div class="form-group col">
+                                            <label for="exampleFormControlSelect1">Categories</label>
+                                            <select #districtCat class="form-control" (change)='selectCat(districtCat,j)'>
+                                          <option selected>Choose Category..</option>
+                                          <option *ngFor="let category of categories[j].catItem;let l = index" [value]="l">{{category.ProdTypeName}}</option>
+                                        </select>
+                                        </div>
+                                        <div class="form-group col">
+                                            <label for="exampleFormControlSelect1">Products</label>
+                                            <select #districtProd class="form-control" (change)='selectProd(districtProd,j)'>
+                                          <option selected>Choose products..</option>
+                                          <option #productName *ngFor="let product of products[j].prodItem; let i = index" [value]="i">{{product.ProductName}}</option>
+                                        </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row justify-content-end">
+                                        <h5 class="mt-1 mr-4 col-2">please enter:</h5>
+                                        <input type="number" min="1" value="1" class="form-control col-1 mt-1 mr-2">
+                                        <p class="mt-1">Number of Product(s)</p>
+                                        <input type="number" min="0" max="100" value='100' class="form-control col-1 mt-1 mr-2 ml-2">
+                                        <p class="mt-1">% Discount Rate /or</p>
+                                        <input type="number" min="0" value='0' class="form-control col-1 mt-1 mr-2 ml-2">
+                                        <p class="mt-1">$ Discount by Money</p>
+                                    </div>
+                                    <div class="form-group row justify-content-end">
+                                        <input type="number" min="0" value='0' class="form-control col-2 mt-1 mr-2">
+                                        <p class="mt-1">$ Amount</p>
+                                    </div>
+
+                                    <button (click)='getProd()'>temp</button>
+                                    <hr *ngIf="productList.controls.length !== 1">
                                 </div>
                             </div>
-                            <button class="btn btn-primary">Sent this Payment</button>
+                            <!-- open method for product modal-->
+                            <button class="btn btn-primary" (click)="openProd(contentProd)">Send this Payment</button>
+                            <div class='row justify-content-md-center'>
+                                <div class="col-md-10">
+                                    <ng-template #contentProd let-modal>
+                                        <div class="modal-header m-2">
+                                            <h4>Please Confirm</h4>
+                                            <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+                                            <span aria-hidden="true">&times;</span>
+                                          </button>
+                                        </div>
+                                        <!-- modal-body -->
+                                        <div class="d-flex flex-column">
+                                            <p> please confirm</p>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-dark" (click)="modal.close('Save')">Confirm</button>
+                                            <button type="button" class="btn btn-outline-dark" (click)="modal.dismiss('Cross click')">Cancel</button>
+                                        </div>
+                                    </ng-template>
+                                </div>
+                            </div>
                         </form>
                     </div>
                 </form>

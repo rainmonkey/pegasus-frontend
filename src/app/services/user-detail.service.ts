@@ -9,7 +9,7 @@ import { environment } from '../../environments/environment';
 })
 export class UserDetailService {
   private urlLocal: any = environment._url;
-  private _url: string = 'http://35.197.183.118:5000/api/';
+  private _url: string = 'http://45.76.123.59:5000/api/';
   // tslint:disable-next-line:variable-name
   constructor(private _http: HttpClient) { }
 
@@ -27,13 +27,13 @@ export class UserDetailService {
     return this._http.post(this._url + 'payment/payInvoice', fund, { responseType: 'text'});
   }
   getProdType(){
-    return this._http.get<any[]>('http://192.168.178.96:5000/api/' + 'product/getCat');
+    return this._http.get<any[]>(this._url + 'product/getCat');
   }
-  getProdCad(catId){
-    return this._http.get('http://192.168.178.96:5000/api/' + 'product/gettypebycat' + catId);
+  getProdCat(catId){
+    return this._http.get<any[]>(this._url + 'product/gettypebycat/' + catId);
   }
   getProdName(typeId){
-    return this._http.get('http://192.168.178.96:5000/api/' + 'product/gettypebytype' + typeId);
+    return this._http.get(this._url + 'product/' + typeId);
   }
 
   postProdService(prod){
