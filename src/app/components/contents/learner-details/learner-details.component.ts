@@ -323,12 +323,15 @@ export class LearnerDetailsComponent implements OnInit {
     this.types.push(this.typeItem);
     this.categories.push(this.catItem);
     this.products.push(this.prodItem);
-    console.log(this.categories);
+    console.log(this.categories, this.catItem);
   }
   removeOption(index) {
     const conf = confirm('your selection have not submit, do you still want to delete it?');
     if (conf) {
     this.productList.removeAt(index);}
+    this.typeItem.splice(index,1);
+    this.categories.splice(index,1);
+    this.products.splice(index,1);
   }
 
   selectType(dis, j) {
