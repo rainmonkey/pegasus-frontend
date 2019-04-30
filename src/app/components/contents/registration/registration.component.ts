@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormArray, FormBuilder, Validators } from '@angular/forms';
-import { RegistrationService } from '../../../_services/registration.service';
-import { StudentDetail } from '../../../_models/StudentDetail';
+import { RegistrationService } from '../../../services/registration.service';
+import { StudentDetail } from '../../../models/StudentDetail';
 
 
 @Component({

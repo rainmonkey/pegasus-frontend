@@ -3,7 +3,7 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { BehaviorSubject, Observable, throwError } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
 import { environment } from '../../environments/environment';
-import { UserDetail } from '../_models';
+import { UserDetail } from '../models/UserDetail';
 
 @Injectable({ providedIn: 'root' })
 export class AuthenticationService {
