@@ -2,15 +2,16 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { BehaviorSubject, Observable, throwError } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
-
+import { environment } from '../../environments/environment';
 import { UserDetail } from '../_models';
 
 @Injectable({ providedIn: 'root' })
 export class AuthenticationService {
     private currentUserSubject: BehaviorSubject<UserDetail>;
     public currentUser: Observable<UserDetail>;
+    // Gets Base URL
+    baseUrl = environment.baseUrl;
 
-    private url = 'http://45.76.123.59:5000/api/login';
 
     constructor(private http: HttpClient) {
         this.currentUserSubject = new BehaviorSubject<UserDetail>(JSON.parse(localStorage.getItem('currentUser')));
@@ -22,7 +23,7 @@ export class AuthenticationService {
     }
 
     login(username: string, password: string): Observable<any> {
-        return this.http.post<any>(this.url, { username, password })
+        return this.http.post<any>(this.baseUrl + 'login', { username, password })
         .pipe(map(data => {
             // login successful if there's a jwt token in the response
             if (data.IsSuccess) {
