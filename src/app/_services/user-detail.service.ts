@@ -35,14 +35,17 @@ export class UserDetailService {
   addFund(fund) {
     return this._http.post(this._url + 'payment/payInvoice', fund, { responseType: 'text'});
   }
-  getProdType(){
+  getProdType() {
     return this._http.get<any[]>(this._url + 'product/getCat');
   }
-  getProdCat(catId){
+  getProdCat(catId) {
     return this._http.get<any[]>(this._url + 'product/gettypebycat/' + catId);
   }
-  getProdName(typeId){
-    return this._http.get(this._url + 'product/' + typeId);
+  getProdName(typeId) {
+    return this._http.get(this._url + 'product/getProdByType/' + typeId);
+  }
+  getProdItem(prodId) {
+    return this._http.get(this._url + 'product/' + prodId);
   }
 
   postProdService(prod) {
