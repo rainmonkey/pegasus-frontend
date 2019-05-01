@@ -1,3 +1,433 @@
-<p>
-  time-picker works!
-</p>
+<!-- <div class="rmWeeklySchedule">
+
+    <div class="rmws-hour-labels">
+      <div class="rmws-hour-label" >08:00</div>
+      <div class="rmws-hour-label" >09:00</div>
+      <div class="rmws-hour-label" >10:00</div>
+      <div class="rmws-hour-label" >11:00</div>
+      <div class="rmws-hour-label" >12:00</div>
+      <div class="rmws-hour-label" >13:00</div>
+      <div class="rmws-hour-label" >14:00</div>
+      <div class="rmws-hour-label" >15:00</div>
+      <div class="rmws-hour-label" >16:00</div>
+      <div class="rmws-hour-label" >17:00</div>
+      <div class="rmws-hour-label" >18:00</div>
+      <div class="rmws-hour-label" >19:00</div>
+      <div class="rmws-hour-label" >20:00</div>
+      <div class="rmws-hour-label" >21:00</div>
+    </div>
+    <div class="rmws-days">
+      <div class="rmws-day">
+        <div class="rmws-day-label">Monday</div>
+        <div class="rmws-slots" (mousemove)="resize_top($event)"> 
+          
+          <div class="rmws-slot"></div>
+          <div class="rmws-slot"></div>
+          <div class="rmws-slot"></div>
+          <div class="rmws-slot" style="border-bottom: 1px solid rgb(208, 208, 208);"></div>
+          <div class="rmws-slot"></div>
+          <div class="rmws-slot"></div>
+          <div class="rmws-slot"></div>
+          <div class="rmws-slot" style="border-bottom: 1px solid rgb(208, 208, 208);"></div>
+          <div class="rmws-slot"></div>
+          <div class="rmws-slot"></div>
+          <div class="rmws-slot"></div>
+          <div class="rmws-slot" style="border-bottom: 1px solid rgb(208, 208, 208);"></div>
+          <div class="rmws-slot"></div>
+          <div class="rmws-slot"></div>
+          <div class="rmws-slot"></div>
+          <div class="rmws-slot" style="border-bottom: 1px solid rgb(208, 208, 208);"></div>
+          <div class="rmws-slot"></div>
+          <div class="rmws-slot"></div>
+          <div class="rmws-slot"></div>
+          <div class="rmws-slot" style="border-bottom: 1px solid rgb(208, 208, 208);"></div>
+          <div class="rmws-slot"></div>
+          <div class="rmws-slot"></div>
+          <div class="rmws-slot"></div>
+          <div class="rmws-slot" style="border-bottom: 1px solid rgb(208, 208, 208);"></div>
+          <div class="rmws-slot"></div>
+          <div class="rmws-slot"></div>
+          <div class="rmws-slot"></div>
+          <div class="rmws-slot" style="border-bottom: 1px solid rgb(208, 208, 208);"></div>
+          <div class="rmws-slot"></div>
+          <div class="rmws-slot"></div>
+          <div class="rmws-slot"></div>
+          <div class="rmws-slot" style="border-bottom: 1px solid rgb(208, 208, 208);"></div>
+          <div class="rmws-slot"></div>
+          <div class="rmws-slot"></div>
+          <div class="rmws-slot"></div>
+          <div class="rmws-slot" style="border-bottom: 1px solid rgb(208, 208, 208);"></div>
+          <div class="rmws-slot"></div>
+          <div class="rmws-slot"></div>
+          <div class="rmws-slot"></div>
+          <div class="rmws-slot" style="border-bottom: 1px solid rgb(208, 208, 208);"></div>
+          <div class="rmws-slot"></div>
+          <div class="rmws-slot"></div>
+          <div class="rmws-slot"></div>
+          <div class="rmws-slot" style="border-bottom: 1px solid rgb(208, 208, 208);"></div>
+          <div class="rmws-slot"></div>
+          <div class="rmws-slot"></div>
+          <div class="rmws-slot"></div>
+          <div class="rmws-slot" style="border-bottom: 1px solid rgb(208, 208, 208);"></div>
+          <div class="rmws-slot"></div>
+          <div class="rmws-slot"></div>
+          <div class="rmws-slot"></div>
+          <div class="rmws-slot" style="border-bottom: 1px solid rgb(208, 208, 208);"></div>
+        </div>
+      </div>
+      <div class="rmws-day">
+        <div class="rmws-day-label">Tuesday</div>
+        <div class="rmws-slots">
+         
+          <div class="rmws-slot"></div>
+          <div class="rmws-slot"></div>
+          <div class="rmws-slot"></div>
+          <div class="rmws-slot" style="border-bottom: 1px solid rgb(208, 208, 208);"></div>
+          <div class="rmws-slot"></div>
+          <div class="rmws-slot"></div>
+          <div class="rmws-slot"></div>
+          <div class="rmws-slot" style="border-bottom: 1px solid rgb(208, 208, 208);"></div>
+          <div class="rmws-slot"></div>
+          <div class="rmws-slot"></div>
+          <div class="rmws-slot"></div>
+          <div class="rmws-slot" style="border-bottom: 1px solid rgb(208, 208, 208);"></div>
+          <div class="rmws-slot"></div>
+          <div class="rmws-slot"></div>
+          <div class="rmws-slot"></div>
+          <div class="rmws-slot" style="border-bottom: 1px solid rgb(208, 208, 208);"></div>
+          <div class="rmws-slot"></div>
+          <div class="rmws-slot"></div>
+          <div class="rmws-slot"></div>
+          <div class="rmws-slot" style="border-bottom: 1px solid rgb(208, 208, 208);"></div>
+          <div class="rmws-slot"></div>
+          <div class="rmws-slot"></div>
+          <div class="rmws-slot"></div>
+          <div class="rmws-slot" style="border-bottom: 1px solid rgb(208, 208, 208);"></div>
+          <div class="rmws-slot"></div>
+          <div class="rmws-slot"></div>
+          <div class="rmws-slot"></div>
+          <div class="rmws-slot" style="border-bottom: 1px solid rgb(208, 208, 208);"></div>
+          <div class="rmws-slot"></div>
+          <div class="rmws-slot"></div>
+          <div class="rmws-slot"></div>
+          <div class="rmws-slot" style="border-bottom: 1px solid rgb(208, 208, 208);"></div>
+          <div class="rmws-slot"></div>
+          <div class="rmws-slot"></div>
+          <div class="rmws-slot"></div>
+          <div class="rmws-slot" style="border-bottom: 1px solid rgb(208, 208, 208);"></div>
+          <div class="rmws-slot"></div>
+          <div class="rmws-slot"></div>
+          <div class="rmws-slot"></div>
+          <div class="rmws-slot" style="border-bottom: 1px solid rgb(208, 208, 208);"></div>
+          <div class="rmws-slot"></div>
+          <div class="rmws-slot"></div>
+          <div class="rmws-slot"></div>
+          <div class="rmws-slot" style="border-bottom: 1px solid rgb(208, 208, 208);"></div>
+          <div class="rmws-slot"></div>
+          <div class="rmws-slot"></div>
+          <div class="rmws-slot"></div>
+          <div class="rmws-slot" style="border-bottom: 1px solid rgb(208, 208, 208);"></div>
+          <div class="rmws-slot"></div>
+          <div class="rmws-slot"></div>
+          <div class="rmws-slot"></div>
+          <div class="rmws-slot" style="border-bottom: 1px solid rgb(208, 208, 208);"></div>
+        </div>
+      </div>
+      <div class="rmws-day">
+        <div class="rmws-day-label">Wednesday</div>
+        <div class="rmws-slots">
+          
+          <div class="rmws-slot"></div>
+          <div class="rmws-slot"></div>
+          <div class="rmws-slot"></div>
+          <div class="rmws-slot" style="border-bottom: 1px solid rgb(208, 208, 208);"></div>
+          <div class="rmws-slot"></div>
+          <div class="rmws-slot"></div>
+          <div class="rmws-slot"></div>
+          <div class="rmws-slot" style="border-bottom: 1px solid rgb(208, 208, 208);"></div>
+          <div class="rmws-slot"></div>
+          <div class="rmws-slot"></div>
+          <div class="rmws-slot"></div>
+          <div class="rmws-slot" style="border-bottom: 1px solid rgb(208, 208, 208);"></div>
+          <div class="rmws-slot"></div>
+          <div class="rmws-slot"></div>
+          <div class="rmws-slot"></div>
+          <div class="rmws-slot" style="border-bottom: 1px solid rgb(208, 208, 208);"></div>
+          <div class="rmws-slot"></div>
+          <div class="rmws-slot"></div>
+          <div class="rmws-slot"></div>
+          <div class="rmws-slot" style="border-bottom: 1px solid rgb(208, 208, 208);"></div>
+          <div class="rmws-slot"></div>
+          <div class="rmws-slot"></div>
+          <div class="rmws-slot"></div>
+          <div class="rmws-slot" style="border-bottom: 1px solid rgb(208, 208, 208);"></div>
+          <div class="rmws-slot"></div>
+          <div class="rmws-slot"></div>
+          <div class="rmws-slot"></div>
+          <div class="rmws-slot" style="border-bottom: 1px solid rgb(208, 208, 208);"></div>
+          <div class="rmws-slot"></div>
+          <div class="rmws-slot"></div>
+          <div class="rmws-slot"></div>
+          <div class="rmws-slot" style="border-bottom: 1px solid rgb(208, 208, 208);"></div>
+          <div class="rmws-slot"></div>
+          <div class="rmws-slot"></div>
+          <div class="rmws-slot"></div>
+          <div class="rmws-slot" style="border-bottom: 1px solid rgb(208, 208, 208);"></div>
+          <div class="rmws-slot"></div>
+          <div class="rmws-slot"></div>
+          <div class="rmws-slot"></div>
+          <div class="rmws-slot" style="border-bottom: 1px solid rgb(208, 208, 208);"></div>
+          <div class="rmws-slot"></div>
+          <div class="rmws-slot"></div>
+          <div class="rmws-slot"></div>
+          <div class="rmws-slot" style="border-bottom: 1px solid rgb(208, 208, 208);"></div>
+          <div class="rmws-slot"></div>
+          <div class="rmws-slot"></div>
+          <div class="rmws-slot"></div>
+          <div class="rmws-slot" style="border-bottom: 1px solid rgb(208, 208, 208);"></div>
+          <div class="rmws-slot"></div>
+          <div class="rmws-slot"></div>
+          <div class="rmws-slot"></div>
+          <div class="rmws-slot" style="border-bottom: 1px solid rgb(208, 208, 208);"></div>
+        </div>
+      </div>
+      <div class="rmws-day">
+        <div class="rmws-day-label">Thursday</div>
+        <div class="rmws-slots">
+          
+         
+          <div class="rmws-slot"></div>
+          <div class="rmws-slot"></div>
+          <div class="rmws-slot"></div>
+          <div class="rmws-slot" style="border-bottom: 1px solid rgb(208, 208, 208);"></div>
+          <div class="rmws-slot"></div>
+          <div class="rmws-slot"></div>
+          <div class="rmws-slot"></div>
+          <div class="rmws-slot" style="border-bottom: 1px solid rgb(208, 208, 208);"></div>
+          <div class="rmws-slot"></div>
+          <div class="rmws-slot"></div>
+          <div class="rmws-slot"></div>
+          <div class="rmws-slot" style="border-bottom: 1px solid rgb(208, 208, 208);"></div>
+          <div class="rmws-slot"></div>
+          <div class="rmws-slot"></div>
+          <div class="rmws-slot"></div>
+          <div class="rmws-slot" style="border-bottom: 1px solid rgb(208, 208, 208);"></div>
+          <div class="rmws-slot"></div>
+          <div class="rmws-slot"></div>
+          <div class="rmws-slot"></div>
+          <div class="rmws-slot" style="border-bottom: 1px solid rgb(208, 208, 208);"></div>
+          <div class="rmws-slot"></div>
+          <div class="rmws-slot"></div>
+          <div class="rmws-slot"></div>
+          <div class="rmws-slot" style="border-bottom: 1px solid rgb(208, 208, 208);"></div>
+          <div class="rmws-slot"></div>
+          <div class="rmws-slot"></div>
+          <div class="rmws-slot"></div>
+          <div class="rmws-slot" style="border-bottom: 1px solid rgb(208, 208, 208);"></div>
+          <div class="rmws-slot"></div>
+          <div class="rmws-slot"></div>
+          <div class="rmws-slot"></div>
+          <div class="rmws-slot" style="border-bottom: 1px solid rgb(208, 208, 208);"></div>
+          <div class="rmws-slot"></div>
+          <div class="rmws-slot"></div>
+          <div class="rmws-slot"></div>
+          <div class="rmws-slot" style="border-bottom: 1px solid rgb(208, 208, 208);"></div>
+          <div class="rmws-slot"></div>
+          <div class="rmws-slot"></div>
+          <div class="rmws-slot"></div>
+          <div class="rmws-slot" style="border-bottom: 1px solid rgb(208, 208, 208);"></div>
+          <div class="rmws-slot"></div>
+          <div class="rmws-slot"></div>
+          <div class="rmws-slot"></div>
+          <div class="rmws-slot" style="border-bottom: 1px solid rgb(208, 208, 208);"></div>
+          <div class="rmws-slot"></div>
+          <div class="rmws-slot"></div>
+          <div class="rmws-slot"></div>
+          <div class="rmws-slot" style="border-bottom: 1px solid rgb(208, 208, 208);"></div>
+          <div class="rmws-slot"></div>
+          <div class="rmws-slot"></div>
+          <div class="rmws-slot"></div>
+          <div class="rmws-slot" style="border-bottom: 1px solid rgb(208, 208, 208);"></div>
+        </div>
+      </div>
+      <div class="rmws-day">
+        <div class="rmws-day-label">Friday</div>
+        <div class="rmws-slots">
+        
+          <div class="rmws-slot"></div>
+          <div class="rmws-slot"></div>
+          <div class="rmws-slot"></div>
+          <div class="rmws-slot" style="border-bottom: 1px solid rgb(208, 208, 208);"></div>
+          <div class="rmws-slot"></div>
+          <div class="rmws-slot"></div>
+          <div class="rmws-slot"></div>
+          <div class="rmws-slot" style="border-bottom: 1px solid rgb(208, 208, 208);"></div>
+          <div class="rmws-slot"></div>
+          <div class="rmws-slot"></div>
+          <div class="rmws-slot"></div>
+          <div class="rmws-slot" style="border-bottom: 1px solid rgb(208, 208, 208);"></div>
+          <div class="rmws-slot"></div>
+          <div class="rmws-slot"></div>
+          <div class="rmws-slot"></div>
+          <div class="rmws-slot" style="border-bottom: 1px solid rgb(208, 208, 208);"></div>
+          <div class="rmws-slot"></div>
+          <div class="rmws-slot"></div>
+          <div class="rmws-slot"></div>
+          <div class="rmws-slot" style="border-bottom: 1px solid rgb(208, 208, 208);"></div>
+          <div class="rmws-slot"></div>
+          <div class="rmws-slot"></div>
+          <div class="rmws-slot"></div>
+          <div class="rmws-slot" style="border-bottom: 1px solid rgb(208, 208, 208);"></div>
+          <div class="rmws-slot"></div>
+          <div class="rmws-slot"></div>
+          <div class="rmws-slot"></div>
+          <div class="rmws-slot" style="border-bottom: 1px solid rgb(208, 208, 208);"></div>
+          <div class="rmws-slot"></div>
+          <div class="rmws-slot"></div>
+          <div class="rmws-slot"></div>
+          <div class="rmws-slot" style="border-bottom: 1px solid rgb(208, 208, 208);"></div>
+          <div class="rmws-slot"></div>
+          <div class="rmws-slot"></div>
+          <div class="rmws-slot"></div>
+          <div class="rmws-slot" style="border-bottom: 1px solid rgb(208, 208, 208);"></div>
+          <div class="rmws-slot"></div>
+          <div class="rmws-slot"></div>
+          <div class="rmws-slot"></div>
+          <div class="rmws-slot" style="border-bottom: 1px solid rgb(208, 208, 208);"></div>
+          <div class="rmws-slot"></div>
+          <div class="rmws-slot"></div>
+          <div class="rmws-slot"></div>
+          <div class="rmws-slot" style="border-bottom: 1px solid rgb(208, 208, 208);"></div>
+          <div class="rmws-slot"></div>
+          <div class="rmws-slot"></div>
+          <div class="rmws-slot"></div>
+          <div class="rmws-slot" style="border-bottom: 1px solid rgb(208, 208, 208);"></div>
+          <div class="rmws-slot"></div>
+          <div class="rmws-slot"></div>
+          <div class="rmws-slot"></div>
+          <div class="rmws-slot" style="border-bottom: 1px solid rgb(208, 208, 208);"></div>
+          <div class="rmws-event" style="top: 0px; height: 329px;">
+            <div class="rmws-time">0:00—8:15</div>80’s<div class="rmws-close"></div>
+            <div class="rmws-handle rmws-handle-top"></div>
+            <div class="rmws-handle rmws-handle-bottom"></div>
+          </div>
+        </div>
+      </div>
+      <div class="rmws-day">
+        <div class="rmws-day-label">Saturday</div>
+        <div class="rmws-slots">
+          <div class="rmws-slot"></div>
+          <div class="rmws-slot"></div>
+          <div class="rmws-slot"></div>
+          <div class="rmws-slot" style="border-bottom: 1px solid rgb(208, 208, 208);"></div>
+          <div class="rmws-slot"></div>
+          <div class="rmws-slot"></div>
+          <div class="rmws-slot"></div>
+          <div class="rmws-slot" style="border-bottom: 1px solid rgb(208, 208, 208);"></div>
+          <div class="rmws-slot"></div>
+          <div class="rmws-slot"></div>
+          <div class="rmws-slot"></div>
+          <div class="rmws-slot" style="border-bottom: 1px solid rgb(208, 208, 208);"></div>
+          <div class="rmws-slot"></div>
+          <div class="rmws-slot"></div>
+          <div class="rmws-slot"></div>
+          <div class="rmws-slot" style="border-bottom: 1px solid rgb(208, 208, 208);"></div>
+          <div class="rmws-slot"></div>
+          <div class="rmws-slot"></div>
+          <div class="rmws-slot"></div>
+          <div class="rmws-slot" style="border-bottom: 1px solid rgb(208, 208, 208);"></div>
+          <div class="rmws-slot"></div>
+          <div class="rmws-slot"></div>
+          <div class="rmws-slot"></div>
+          <div class="rmws-slot" style="border-bottom: 1px solid rgb(208, 208, 208);"></div>
+          <div class="rmws-slot"></div>
+          <div class="rmws-slot"></div>
+          <div class="rmws-slot"></div>
+          <div class="rmws-slot" style="border-bottom: 1px solid rgb(208, 208, 208);"></div>
+          <div class="rmws-slot"></div>
+          <div class="rmws-slot"></div>
+          <div class="rmws-slot"></div>
+          <div class="rmws-slot" style="border-bottom: 1px solid rgb(208, 208, 208);"></div>
+          <div class="rmws-slot"></div>
+          <div class="rmws-slot"></div>
+          <div class="rmws-slot"></div>
+          <div class="rmws-slot" style="border-bottom: 1px solid rgb(208, 208, 208);"></div>
+          <div class="rmws-slot"></div>
+          <div class="rmws-slot"></div>
+          <div class="rmws-slot"></div>
+          <div class="rmws-slot" style="border-bottom: 1px solid rgb(208, 208, 208);"></div>
+          <div class="rmws-slot"></div>
+          <div class="rmws-slot"></div>
+          <div class="rmws-slot"></div>
+          <div class="rmws-slot" style="border-bottom: 1px solid rgb(208, 208, 208);"></div>
+          <div class="rmws-slot"></div>
+          <div class="rmws-slot"></div>
+          <div class="rmws-slot"></div>
+          <div class="rmws-slot" style="border-bottom: 1px solid rgb(208, 208, 208);"></div>
+          <div class="rmws-slot"></div>
+          <div class="rmws-slot"></div>
+          <div class="rmws-slot"></div>
+          <div class="rmws-slot" style="border-bottom: 1px solid rgb(208, 208, 208);"></div>
+        </div>
+      </div>
+      <div class="rmws-day">
+        <div class="rmws-day-label">Sunday</div>
+        <div class="rmws-slots">
+          
+          <div class="rmws-slot"></div>
+          <div class="rmws-slot"></div>
+          <div class="rmws-slot"></div>
+          <div class="rmws-slot" style="border-bottom: 1px solid rgb(208, 208, 208);"></div>
+          <div class="rmws-slot"></div>
+          <div class="rmws-slot"></div>
+          <div class="rmws-slot"></div>
+          <div class="rmws-slot" style="border-bottom: 1px solid rgb(208, 208, 208);"></div>
+          <div class="rmws-slot"></div>
+          <div class="rmws-slot"></div>
+          <div class="rmws-slot"></div>
+          <div class="rmws-slot" style="border-bottom: 1px solid rgb(208, 208, 208);"></div>
+          <div class="rmws-slot"></div>
+          <div class="rmws-slot"></div>
+          <div class="rmws-slot"></div>
+          <div class="rmws-slot" style="border-bottom: 1px solid rgb(208, 208, 208);"></div>
+          <div class="rmws-slot"></div>
+          <div class="rmws-slot"></div>
+          <div class="rmws-slot"></div>
+          <div class="rmws-slot" style="border-bottom: 1px solid rgb(208, 208, 208);"></div>
+          <div class="rmws-slot"></div>
+          <div class="rmws-slot"></div>
+          <div class="rmws-slot"></div>
+          <div class="rmws-slot" style="border-bottom: 1px solid rgb(208, 208, 208);"></div>
+          <div class="rmws-slot"></div>
+          <div class="rmws-slot"></div>
+          <div class="rmws-slot"></div>
+          <div class="rmws-slot" style="border-bottom: 1px solid rgb(208, 208, 208);"></div>
+          <div class="rmws-slot"></div>
+          <div class="rmws-slot"></div>
+          <div class="rmws-slot"></div>
+          <div class="rmws-slot" style="border-bottom: 1px solid rgb(208, 208, 208);"></div>
+          <div class="rmws-slot"></div>
+          <div class="rmws-slot"></div>
+          <div class="rmws-slot"></div>
+          <div class="rmws-slot" style="border-bottom: 1px solid rgb(208, 208, 208);"></div>
+          <div class="rmws-slot"></div>
+          <div class="rmws-slot"></div>
+          <div class="rmws-slot"></div>
+          <div class="rmws-slot" style="border-bottom: 1px solid rgb(208, 208, 208);"></div>
+          <div class="rmws-slot"></div>
+          <div class="rmws-slot"></div>
+          <div class="rmws-slot"></div>
+          <div class="rmws-slot" style="border-bottom: 1px solid rgb(208, 208, 208);"></div>
+          <div class="rmws-slot"></div>
+          <div class="rmws-slot"></div>
+          <div class="rmws-slot"></div>
+          <div class="rmws-slot" style="border-bottom: 1px solid rgb(208, 208, 208);"></div>
+          <div class="rmws-slot"></div>
+          <div class="rmws-slot"></div>
+          <div class="rmws-slot"></div>
+          <div class="rmws-slot" style="border-bottom: 1px solid rgb(208, 208, 208);"></div>
+        </div>
+      </div>
+    </div>
+
+</div> -->
