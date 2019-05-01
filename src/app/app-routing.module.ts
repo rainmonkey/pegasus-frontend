@@ -15,7 +15,7 @@ const routes: Routes = [
 
     children: [
       {
-        path: 'Testcontent',
+        path: 'testcontent',
         component: TestcontentComponent
       },
       {

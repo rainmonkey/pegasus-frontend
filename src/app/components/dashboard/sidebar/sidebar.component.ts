@@ -18,18 +18,27 @@ export class SidebarComponent implements OnInit, OnDestroy {
 
   public navitem: any[] = [
     {
-      pagename : 'Home'
+      pagename : 'Home',
+      pageicon : 'fa-home',
+      pagelink : 'testcontent'
     },
     {
-      pagename : 'Tables'
+      pagename : 'Registration',
+      pageicon : 'fa-th',
+      pagelink : 'registration'
     },
     {
-      pagename : 'Charts'
+      pagename : 'Payment',
+      pageicon : 'fa-chart-bar',
+      pagelink : 'payment'
     },
     {
-      pagename : 'Forms'
+      pagename : 'Forms',
+      pageicon : 'fa-clipboard',
+      pagelink : ''
     }
   ];
+
 
   constructor(
     private authenticationService: AuthenticationService,
