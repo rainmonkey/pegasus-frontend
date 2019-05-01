@@ -4,7 +4,6 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { first } from 'rxjs/operators';
 import { AuthenticationService } from '../../../services/Auth/authentication.service';
-import { AlertService } from '../../../services/alert.service';
 
 
 @Component({
@@ -18,18 +17,17 @@ export class LoginComponent implements OnInit {
   loading = false;
   submitted = false;
   returnUrl: string;
-  errorMessage:string;
+  errorMessage: string;
 
   constructor(
     public http: HttpClient,
     private fb: FormBuilder,
     private route: ActivatedRoute,
     private router: Router,
-    private authenticationService: AuthenticationService,
-    private alertService: AlertService
+    private authenticationService: AuthenticationService
   ) {
-    // redirect to home if already logged in 
-    // Delete this part 
+    // redirect to home if already logged in
+    // Delete this part
     if (this.authenticationService.currentUserValue) {
       this.router.navigate(['/']);
     }
@@ -40,13 +38,13 @@ export class LoginComponent implements OnInit {
       username: ['', Validators.required],
       password: ['', Validators.required]
     });
-
     // get return url from route parameters or default to '/'
     this.returnUrl = this.route.snapshot.queryParams.returnUrl || '/';
   }
 
   // convenience getter for easy access to form fields
   get f() { return this.loginForm.controls; }
+
 
   onSubmit() {
     this.submitted = true;
@@ -60,20 +58,21 @@ export class LoginComponent implements OnInit {
     .subscribe(
       (data) => {
         this.router.navigate([this.returnUrl]);
-    },
-    (err) => {
-     this.loading = false;
-     this.processError(err)
-    });
+      },
+      (err) => {
+        this.loading = false,
+        this.processError(err);
+      }
+    );
 
   }
 
-  processError(err){
-    if(err.error.ErrorMessage){
-      this.errorMessage = err.error.ErrorMessage
-    }
-    else{
-      this.errorMessage= "Sorry, something went wrong"
+  processError(err) {
+    if (err.error.ErrorMessage) {
+      this.errorMessage = err.error.ErrorMessage;
+    } else {
+      this.errorMessage = 'Sorry, something went wrong';
     }
   }
+  
 }
