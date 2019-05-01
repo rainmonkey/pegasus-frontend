@@ -1,12 +1,12 @@
-/*
-* ==========================================================
-*     GENERAL STYLES
-* ==========================================================
-*/
+/*-------GENERAL STYLES-------*/
+.page {
+  background: #EEF5F9;
+  overflow-x: hidden;
+}
 
-.container-fluid {
-    padding: 0 30px;
-  }
+.page .text-white {
+  color: #fff;
+}
 
 .content-inner {
   position: relative;
@@ -17,14 +17,9 @@
 
 .content-inner.active {
   width: calc(100% - 90px);
-}
-  
+} 
 
-/*
-* ==========================================================
-*     FORMS
-* ==========================================================
-*/
+/*-------FORMS-------*/
 .form-control {
     height: calc(2.25rem + 2px);
     border: 1px solid #dee2e6;
