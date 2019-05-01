@@ -13,9 +13,34 @@
     <span class="heading">Main</span>
     <ul class="list-unstyled">
         <li *ngFor="let item of navitem; let key = index;">
+<<<<<<< HEAD:src/app/components/dashboard/navibar/navibar.component.html
+            <a [routerLink]="[ '/testcontent' ]" routerLinkActive="active">
+                <i class="fas sidebaricon" [ngClass]="{'fa-home':key==0,'fa-th':key==1,'fa-chart-bar':key==2, 'fa-clipboard':key==3}"></i>{{item.pagename}}
+            </a>
+        </li>
+        <li>
+            <a [routerLink]="['/login']" routerLinkActive="active">
+                <i class="far fa-window-restore sidebaricon"></i>Login page
+            </a>
+        </li>
+        <li>
+            <a [routerLink]="['/registration']"  routerLinkActive="active">
+                <i class="far fa-window-restore sidebaricon"></i>Registration
+            </a>
+        </li>
+        <li>
+            <a [routerLink]="['/time-picker']"  routerLinkActive="active">
+                <i class="far fa-window-restore sidebaricon"></i>Time Picker
+            </a>
+        </li>
+        <li>
+            <a [routerLink]="['/payment']"  routerLinkActive="active">
+                <i class="far fa-window-restore sidebaricon"></i>Payment
+=======
             <a [routerLink]="['/',item.pagelink]" routerLinkActive="active">
                 <i class="fas fa-home sidebaricon" [ngClass]="item.pageicon"></i>
                 {{item.pagename}}
+>>>>>>> 99a899d889bd0f58b14843f92ac1f21e0183ef77:src/app/components/dashboard/general/sidebar/sidebar.component.html
             </a>
         </li>
         <!-- 从这 -->
