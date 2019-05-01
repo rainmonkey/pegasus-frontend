@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
-import { LearnersService } from '../../../services/HTTP/learners.service';
-import { PaymentService } from '../../../services/HTTP/payment.service';
+import { LearnersService } from '../../../../services/HTTP/learners.service';
+import { PaymentService } from '../../../../services/HTTP/payment.service';
 
 
 import { FormBuilder, Validators, FormArray, FormGroup, FormControl, NgControl, Form } from '@angular/forms';

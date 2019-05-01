@@ -2,9 +2,9 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { first } from 'rxjs/operators';
 
-import { UserDetail } from '../../../models/UserDetail';
-import { AuthenticationService } from '../../../services/Auth/authentication.service';
-import { UserDetailService } from '../../../services/user-detail.service';
+import { UserDetail } from '../../../../models/UserDetail';
+import { AuthenticationService } from '../../../../services/Auth/authentication.service';
+import { UserDetailService } from '../../../../services/user-detail.service';
 
 @Component({
   selector: 'app-sidebar',
@@ -38,6 +38,14 @@ export class SidebarComponent implements OnInit, OnDestroy {
       pagelink : ''
     }
   ];
+
+  public userDetail =
+    {
+      firstname : 'Chris',
+      lastname : 'He',
+      position : 'President of US',
+      img : '../../../../assets/images/usersimg/testimg.jpg'
+    }  
 
 
   constructor(
