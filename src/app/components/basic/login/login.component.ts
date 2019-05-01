@@ -17,7 +17,8 @@ export class LoginComponent implements OnInit {
   loading = false;
   submitted = false;
   returnUrl: string;
-  errorDisplay: any;
+  errorMessage: string;
+
   constructor(
     public http: HttpClient,
     private fb: FormBuilder,
@@ -44,6 +45,7 @@ export class LoginComponent implements OnInit {
   // convenience getter for easy access to form fields
   get f() { return this.loginForm.controls; }
 
+
   onSubmit() {
     this.submitted = true;
     // stop here if form is invalid
@@ -54,14 +56,23 @@ export class LoginComponent implements OnInit {
     this.authenticationService.login(this.f.username.value, this.f.password.value)
     .pipe(first())
     .subscribe(
-      data => {
+      (data) => {
         this.router.navigate([this.returnUrl]);
-    },
-    error => {
-
-        this.loading = false;
-    });
+      },
+      (err) => {
+        this.loading = false,
+        this.processError(err);
+      }
+    );
 
   }
-}
 
+  processError(err) {
+    if (err.error.ErrorMessage) {
+      this.errorMessage = err.error.ErrorMessage;
+    } else {
+      this.errorMessage = 'Sorry, something went wrong';
+    }
+  }
+  
+}

@@ -30,7 +30,7 @@ export class AuthenticationService {
             if (data.IsSuccess && data.Data) {
                 // store user details and jwt token in local storage to keep user logged in between page refreshes
                 // localStorage.setItem('currentUser', JSON.stringify(data.Data));
-                this.loginSave('current', JSON.stringify(data.Data));
+                this.loginSave('userToken', JSON.stringify(data.Data));
                 this.currentUserSubject.next(data);
             }
             return data;
@@ -39,15 +39,11 @@ export class AuthenticationService {
 
     loginSave(a, b) {
         localStorage.setItem(a, b);
-        localStorage.setItem(a, b);
-
     }
 
     logout() {
         // remove user from local storage to log user out
-        localStorage.removeItem('currentUser');
+        localStorage.removeItem('userToken');
         this.currentUserSubject.next(null);
     }
-
-
 }
