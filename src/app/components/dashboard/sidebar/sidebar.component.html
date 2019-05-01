@@ -13,8 +13,10 @@
     <span class="heading">Main</span>
     <ul class="list-unstyled">
         <li *ngFor="let item of navitem; let key = index;">
-            <a [routerLink]="[ '/testcontent' ]" routerLinkActive="active">
-                <i class="fas sidebaricon" [ngClass]="{'fa-home':key==0,'fa-th':key==1,'fa-chart-bar':key==2, 'fa-clipboard':key==3}"></i>{{item.pagename}}
+            <a [routerLink]="[ '/Testcontent' ]" routerLinkActive="active">
+                <!-- <i class="fas sidebaricon" [ngClass]="{'fa-home':key==0,'fa-th':key==1,'fa-chart-bar':key==2, 'fa-clipboard':key==3}"></i> -->
+                <i class="fas fa-home sidebaricon"></i>
+                {{item.pagename}}
             </a>
         </li>
         <li>
