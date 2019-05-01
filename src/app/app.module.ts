@@ -23,7 +23,6 @@ import { LearnerDetailsComponent } from './components/dashboard/dashboard-compon
 // Guards
 
 // Services
-import { UserDetailService } from './services/user-detail.service';
 import { FooterComponent } from './components/basic/footer/footer.component';
 
 
@@ -56,7 +55,6 @@ import { FooterComponent } from './components/basic/footer/footer.component';
     routing
   ],
   providers: [
-    UserDetailService
 
   ],
   bootstrap: [AppComponent]
