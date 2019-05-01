@@ -22,32 +22,4 @@ export class UserDetailService {
   // getById(id: number) {
   //   return this._http.get('login/' + id);
   // }
-
-
-  getLearners(name): Observable<any[]> {
-    return this._http.get<any[]>(this.baseUrl + 'learner/' + name);
-  }
-  getInvoice(id): Observable<any[]> {
-    return this._http.get<any[]>(this.baseUrl + 'payment/invoice/' + id);
-  }
-  addFund(fund) {
-    return this._http.post(this.baseUrl + 'payment/payInvoice', fund, { responseType: 'text' });
-  }
-  getProdType() {
-    return this._http.get<any[]>(this.baseUrl + 'product/getCat');
-  }
-  getProdCat(catId) {
-    return this._http.get<any[]>(this.baseUrl + 'product/gettypebycat/' + catId);
-  }
-  getProdName(typeId) {
-    return this._http.get(this.baseUrl + 'product/' + typeId);
-  }
-
-  postProdService(prod) {
-    return this._http.post(this.baseUrl + 'prod', prod);
-  }
-
-  postPaymentService(payment) {
-    return this._http.post(this.baseUrl + 'other', payment);
-  }
 }

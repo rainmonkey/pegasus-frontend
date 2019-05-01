@@ -1,11 +1,14 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
-import { UserDetailService } from '../../../services/user-detail.service';
+import { LearnersService } from '../../../services/HTTP/learners.service';
+import { PaymentService } from '../../../services/HTTP/payment.service';
+
 
 import { FormBuilder, Validators, FormArray, FormGroup, FormControl, NgControl, Form } from '@angular/forms';
 import { NgbModal, ModalDismissReasons, } from '@ng-bootstrap/ng-bootstrap';
 import { NgbTabsetConfig } from '@ng-bootstrap/ng-bootstrap';
 
 import { ILearnerPay, IOtherPay, IcatData } from './learners';
+import { ProductsService } from 'src/app/services/HTTP/products.service';
 
 @Component({
   selector: 'app-learner-detail',
@@ -51,7 +54,7 @@ export class LearnerDetailsComponent implements OnInit {
   public userSelcProd = [];
   public userProd;
 
-  @ViewChild ('productName') ProductName: ElementRef;
+  @ViewChild('productName') ProductName: ElementRef;
 
   // tabset
   public array = [];
@@ -65,7 +68,9 @@ export class LearnerDetailsComponent implements OnInit {
 
   constructor(
     private modalService: NgbModal,
-    private _learnersListService: UserDetailService,
+    private learnersListService: LearnersService,
+    private paymentsListService: PaymentService,
+    private productsListService: ProductsService,
     private fb: FormBuilder,
     config: NgbTabsetConfig
   ) {
@@ -92,9 +97,9 @@ export class LearnerDetailsComponent implements OnInit {
   // product list fb
   productListForm = this.fb.group({
     productList: this.fb.array([this.productListGroup]),
-    });
+  });
 
-// other fb
+  // other fb
   otherPayment = this.fb.group({
     title: ['', Validators.required],
     amount: ['', Validators.required]
@@ -130,10 +135,10 @@ export class LearnerDetailsComponent implements OnInit {
 
   open(content) {
     // search learner
-    this._learnersListService
+    this.learnersListService
       .getLearners(this.searchForm.value.search)
       .subscribe(data => {
-        //return (console.log(data))
+        // return (console.log(data))
         this.learners = data['Data'][0];
         this.data = data['Data'];
         this.registrationFormL.patchValue({
@@ -145,7 +150,7 @@ export class LearnerDetailsComponent implements OnInit {
           address: this.learners.Address
         });
         // get invoice
-        this._learnersListService
+        this.paymentsListService
           .getInvoice(this.learners.LearnerId)
           .subscribe(dataInvoice => {
             // return console.log(dataInvoice)
@@ -158,15 +163,15 @@ export class LearnerDetailsComponent implements OnInit {
 
 
         // get product data
-        this._learnersListService
-        .getProdType()
-        .subscribe(types => {
-        this.typeItem = types['Data'];
-        this.types.push(this.typeItem);
-        // console.log(this.types[0]['typeItem'])
-        // this.types['typeItem'] = types['Data'];
-        console.log(this.types)
-        });
+        this.productsListService
+          .getProdType()
+          .subscribe(types => {
+            this.typeItem = types['Data'];
+            this.types.push(this.typeItem);
+            // console.log(this.types[0]['typeItem'])
+            // this.types['typeItem'] = types['Data'];
+            console.log(this.types);
+          });
 
         if (data.length > 1) {
           this.show = true;
@@ -186,7 +191,7 @@ export class LearnerDetailsComponent implements OnInit {
               }
             );
         }
-      },err=>console.log(err));
+      }, err => console.log(err));
   }
 
   // middle name method
@@ -201,7 +206,7 @@ export class LearnerDetailsComponent implements OnInit {
         email: this.data[i].Email,
         phone: this.data[i].ContactNum
       });
-      this._learnersListService
+      this.paymentsListService
         .getInvoice(this.data[i].LearnerId)
         .subscribe(dataInvoice => {
           this.dataInvoice = dataInvoice;
@@ -239,7 +244,7 @@ export class LearnerDetailsComponent implements OnInit {
             Amount: this.invoiceForm.value.owing
           };
 
-          this._learnersListService.addFund(this.postPayment).subscribe(
+          this.paymentsListService.addFund(this.postPayment).subscribe(
             response => {
               console.log('Success!', response);
             },
@@ -258,43 +263,43 @@ export class LearnerDetailsComponent implements OnInit {
   // confirm PRODUCTION selection method
   openProd(contentProd) {
     this.modalService
-    .open(contentProd, { ariaLabelledBy: 'modal-basic-title' })
-    .result.then(
-      result => {
-        this.closeResult = `Closed with: ${result}`;
-        this.postProdPayObj = {
-          StaffId: 1,
+      .open(contentProd, { ariaLabelledBy: 'modal-basic-title' })
+      .result.then(
+        result => {
+          this.closeResult = `Closed with: ${result}`;
+          this.postProdPayObj = {
+            StaffId: 1,
 
-        };
-        // transfer elements from productList to the local userSelcProd
-        this.productList.controls.forEach(x => {
-          if (!isNaN(Number(x.value.products))) {
-          this.userSelcProd.push(Number(x.value.products));
+          };
+          // transfer elements from productList to the local userSelcProd
+          this.productList.controls.forEach(x => {
+            if (!isNaN(Number(x.value.products))) {
+              this.userSelcProd.push(Number(x.value.products));
+            }
+            console.log('x.value.product:', x.value.products);
+          });
+          // confirm product payment
+          this.productsListService.postProdService(this.postProdPayObj).subscribe(
+            response => {
+              console.log('Success!', response);
+            },
+            error => {
+              console.error('Error!', error);
+              alert(`Can not get data from server ${error}`);
+            }
+          );
+        },
+        reason => {
+          this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
         }
-          console.log('x.value.product:', x.value.products);
-        });
-        // confirm product payment
-        this._learnersListService.postProdService(this.postProdPayObj).subscribe(
-          response => {
-            console.log('Success!', response);
-          },
-          error => {
-            console.error('Error!', error);
-            alert(`Can not get data from server ${error}`);
-          }
-        );
-      },
-      reason => {
-        this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
-      }
-    );
+      );
   }
 
   // select payment method
 
   paymentMethod(method) {
     this.payment = method.value;
-    console.log(this.payment)
+    console.log(this.payment);
   }
 
   // select product
@@ -310,15 +315,15 @@ export class LearnerDetailsComponent implements OnInit {
   get productList() {
     return this.productListForm.get('productList') as FormArray;
   }
-  get arraylist(){
+  get arraylist() {
     return this.productListGroup.get('array') as FormArray;
   }
 
   // return this.productListForm.get('productList') as FormArray;
 
   addOption() {
-    this.catItem=[];
-    this.prodItem=[];
+    this.catItem = [];
+    this.prodItem = [];
     this.productList.push(this.productListGroup);
     this.types.push(this.typeItem);
     this.categories.push(this.catItem);
@@ -328,76 +333,77 @@ export class LearnerDetailsComponent implements OnInit {
   removeOption(index) {
     const conf = confirm('your selection have not submit, do you still want to delete it?');
     if (conf) {
-    this.productList.removeAt(index);}
-    this.typeItem.splice(index,1);
-    this.categories.splice(index,1);
-    this.products.splice(index,1);
+      this.productList.removeAt(index);
+    }
+    this.typeItem.splice(index, 1);
+    this.categories.splice(index, 1);
+    this.products.splice(index, 1);
   }
 
   selectType(dis, j) {
-    //return (console.log(this.types[j]))
-    this._learnersListService
-    .getProdCat(this.types[j][dis.value].ProdCatId)
-    .subscribe(cat => {
-      //return console.log(this.categories)
-     this.categories[j].catItem = cat['Data'] ;
-    // this.productList.controls[j].patchValue({
-    //   category: cat['Data'][dis.value].ProdTypeId
-    // })
-    });
+    // return (console.log(this.types[j]))
+    this.productsListService
+      .getProdCat(this.types[j][dis.value].ProdCatId)
+      .subscribe(cat => {
+        // return console.log(this.categories)
+        this.categories[j].catItem = cat['Data'];
+        // this.productList.controls[j].patchValue({
+        //   category: cat['Data'][dis.value].ProdTypeId
+        // })
+      });
   }
   selectCat(dis, j) {
     this.prodCatId = dis.value;
-    this._learnersListService
-    .getProdName(this.prodCatId)
-    .subscribe(prod => {
-    this.products[j].prodItem = prod['Data'];
-    });
+    this.productsListService
+      .getProdName(this.prodCatId)
+      .subscribe(prod => {
+        this.products[j].prodItem = prod['Data'];
+      });
   }
   selectProd(dis, j) {
     // console.log(this.productListForm.controls.productList)
-      this.userProd = this.products[j].prodItem;
-      console.log(this.userProd[0]);
-      this.productList.controls[j].patchValue({
-        product: this.userProd[0].ProductId
-      });
-      this.productList.controls[j].patchValue({
-        price: this.userProd[0].SellPrice
-      });
-      console.log('this.productList', this.productList);
+    this.userProd = this.products[j].prodItem;
+    console.log(this.userProd[0]);
+    this.productList.controls[j].patchValue({
+      product: this.userProd[0].ProductId
+    });
+    this.productList.controls[j].patchValue({
+      price: this.userProd[0].SellPrice
+    });
+    console.log('this.productList', this.productList);
   }
 
-  getProd(){
-    this._learnersListService
-        .getProdType()
-        .subscribe(types => {
+  getProd() {
+    this.productsListService
+      .getProdType()
+      .subscribe(types => {
         this.types = types['Data'];
-        console.log(types)
-        });
+        console.log(types);
+      });
   }
 
-// other payment
+  // other payment
 
-otherPaymentSubmit() {
+  otherPaymentSubmit() {
 
-  this.otherPaymentObj = {
-    StaffId: 1,
-    LearnerId: this.learnerId,
-    title: this.otherPayment.value.title,
-    amount: this.otherPayment.value.amount
+    this.otherPaymentObj = {
+      StaffId: 1,
+      LearnerId: this.learnerId,
+      title: this.otherPayment.value.title,
+      amount: this.otherPayment.value.amount
 
-  };
+    };
 
-  this._learnersListService.postPaymentService(this.otherPaymentObj).subscribe(
-    response => {
-    console.log('Success!', response);
-  },
-  error => {
-    console.error('Error!', error);
-    alert(`Can not access server ${error}`);
+    this.paymentsListService.postPaymentService(this.otherPaymentObj).subscribe(
+      response => {
+        console.log('Success!', response);
+      },
+      error => {
+        console.error('Error!', error);
+        alert(`Can not access server ${error}`);
+      }
+    );
   }
-);
-}
 
 }
 

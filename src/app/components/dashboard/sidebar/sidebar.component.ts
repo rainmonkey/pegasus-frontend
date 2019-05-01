@@ -3,15 +3,15 @@ import { Subscription } from 'rxjs';
 import { first } from 'rxjs/operators';
 
 import { UserDetail } from '../../../models/UserDetail';
-import { AuthenticationService } from '../../../services/authentication.service';
+import { AuthenticationService } from '../../../services/Auth/authentication.service';
 import { UserDetailService } from '../../../services/user-detail.service';
 
 @Component({
-  selector: 'app-navibar',
-  templateUrl: './navibar.component.html',
-  styleUrls: ['./navibar.component.css']
+  selector: 'app-sidebar',
+  templateUrl: './sidebar.component.html',
+  styleUrls: ['./sidebar.component.css']
 })
-export class NavibarComponent implements OnInit, OnDestroy {
+export class SidebarComponent implements OnInit, OnDestroy {
   currentUser: UserDetail;
   currentUserSubscription: Subscription;
   users: UserDetail[] = [];
