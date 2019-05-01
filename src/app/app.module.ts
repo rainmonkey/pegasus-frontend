@@ -13,7 +13,7 @@ import { routing } from '../app/app-routing.module';
 // Components
 import { AppComponent } from './app.component';
 import { BreadcrumbComponent } from './components/dashboard/breadcrumb/breadcrumb.component';
-import { NavibarComponent } from './components/dashboard/navibar/navibar.component';
+import { SidebarComponent } from './components/dashboard/sidebar/sidebar.component';
 import { RegistrationComponent } from './components/contents/registration/registration.component';
 import { TestcontentComponent } from './components/contents/testcontent/testcontent.component';
 import { LoginComponent } from './components/basic/login/login.component';
@@ -44,7 +44,7 @@ import { UserDetailService } from './services/user-detail.service';
     HeaderbarComponent,
     BreadcrumbComponent,
     FooterbarComponent,
-    NavibarComponent,
+    SidebarComponent,
     ContentareaComponent,
     TestcontentComponent,
     LearnerDetailsComponent,
