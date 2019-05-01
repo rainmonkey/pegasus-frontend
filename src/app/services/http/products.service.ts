@@ -17,7 +17,10 @@ export class ProductsService {
     return this.http.get<any[]>(this.baseUrl + 'product/gettypebycat/' + catId);
   }
   getProdName(typeId) {
-    return this.http.get(this.baseUrl + 'product/' + typeId);
+    return this.http.get(this.baseUrl + 'product/getProdByType/' + typeId);
+  }
+  getProdItem(prodId) {
+    return this.http.get(this.baseUrl + 'product/' + prodId);
   }
 
   postProdService(prod) {

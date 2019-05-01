@@ -42,17 +42,20 @@ export class LearnerDetailsComponent implements OnInit {
   public typeItem = [];
   public categories = [];
   public catItem = [];
-  public products = [];
+  public prodMuti = [];
+  public prods = [];
+  public prodItems = [];
   public prodItem = [];
   public prodCatId;
   public prodTypeId: number;
-  public productId: string;
+  public productId;
   public payProducts = [1];
   public sectionCount = 1;
   public postProdPayObj;
   public addOptionCount = 0;
   public userSelcProd = [];
   public userProd;
+  public sellPrice = 0;
 
   @ViewChild('productName') ProductName: ElementRef;
 
@@ -97,7 +100,10 @@ export class LearnerDetailsComponent implements OnInit {
   // product list fb
   productListForm = this.fb.group({
     productList: this.fb.array([this.productListGroup]),
-  });
+    rate:['100'],
+    subMoney:['0'],
+    amount:[]
+    });
 
   // other fb
   otherPayment = this.fb.group({
@@ -128,7 +134,8 @@ export class LearnerDetailsComponent implements OnInit {
   ngOnInit() {
     // this.types.push(this.typeItem);
     this.categories.push(this.catItem);
-    this.products.push(this.prodItem);
+    this.prodMuti.push(this.prods);
+    this.prodItems.push(this.prodItem)
   }
 
   // bootstrap-modal
@@ -138,7 +145,8 @@ export class LearnerDetailsComponent implements OnInit {
     this.learnersListService
       .getLearners(this.searchForm.value.search)
       .subscribe(data => {
-        // return (console.log(data))
+        //return (console.log(data))
+        if (!data['LearnerId']) {this.registrationFormL.value.learnerId=0; console.log(this.learners)}
         this.learners = data['Data'][0];
         this.data = data['Data'];
         this.registrationFormL.patchValue({
@@ -309,15 +317,16 @@ export class LearnerDetailsComponent implements OnInit {
       types: [''],
       product: [''],
       price: [''],
+      number: ['1'],
       index: [0]
     });
   }
   get productList() {
     return this.productListForm.get('productList') as FormArray;
   }
-  get arraylist() {
-    return this.productListGroup.get('array') as FormArray;
-  }
+  // get arraylist(){
+  //   return this.productListGroup.get('array') as FormArray;
+  // }
 
   // return this.productListForm.get('productList') as FormArray;
 
@@ -327,59 +336,63 @@ export class LearnerDetailsComponent implements OnInit {
     this.productList.push(this.productListGroup);
     this.types.push(this.typeItem);
     this.categories.push(this.catItem);
-    this.products.push(this.prodItem);
-    console.log(this.categories, this.catItem);
+    this.prodMuti.push(this.prods);
+    this.prodItems.push(this.prodItem);
   }
   removeOption(index) {
     const conf = confirm('your selection have not submit, do you still want to delete it?');
     if (conf) {
-      this.productList.removeAt(index);
-    }
+    this.productList.removeAt(index);
     this.typeItem.splice(index, 1);
     this.categories.splice(index, 1);
-    this.products.splice(index, 1);
+    this.prodMuti.splice(index, 1);
+    this.prodItems.splice(index, 1);
+    }
   }
 
   selectType(dis, j) {
-    // return (console.log(this.types[j]))
+    this.prodMuti[j].prods = [];
     this.productsListService
-      .getProdCat(this.types[j][dis.value].ProdCatId)
-      .subscribe(cat => {
-        // return console.log(this.categories)
-        this.categories[j].catItem = cat['Data'];
-        // this.productList.controls[j].patchValue({
-        //   category: cat['Data'][dis.value].ProdTypeId
-        // })
-      });
+    .getProdCat(this.types[j][dis.value].ProdCatId)
+    .subscribe(cat => {
+      //return console.log(this.categories)
+     this.categories[j].catItem = cat['Data'] ;
+     console.log(cat['Data'])
+    // this.productList.controls[j].patchValue({
+    //   category: cat['Data'][dis.value].ProdTypeId
+    // })
+    });
   }
   selectCat(dis, j) {
     this.prodCatId = dis.value;
     this.productsListService
-      .getProdName(this.prodCatId)
-      .subscribe(prod => {
-        this.products[j].prodItem = prod['Data'];
-      });
+    .getProdName(this.prodCatId)
+    .subscribe(prod => {
+    this.prodMuti[j].prods = prod['Data'];
+    });
   }
   selectProd(dis, j) {
-    // console.log(this.productListForm.controls.productList)
-    this.userProd = this.products[j].prodItem;
-    console.log(this.userProd[0]);
-    this.productList.controls[j].patchValue({
-      product: this.userProd[0].ProductId
-    });
-    this.productList.controls[j].patchValue({
-      price: this.userProd[0].SellPrice
-    });
-    console.log('this.productList', this.productList);
-  }
-
-  getProd() {
-    this.productsListService
-      .getProdType()
-      .subscribe(types => {
-        this.types = types['Data'];
-        console.log(types);
+     // console.log(this.prodMuti[j].prods[dis.value].ProductId)
+      this.productId = this.prodMuti[j].prods[dis.value].ProductId;
+      this.productsListService
+      .getProdItem(this.productId)
+      .subscribe(item => {
+        this.prodItems[j].prodItem = item['Data'];
+      // this.userProd = this.prodItems[j].prodItem;
+        this.productList.controls[j].patchValue({
+        product: this.prodItems[j].prodItem[0].ProductId
       });
+        this.productList.controls[j].patchValue({
+        price: this.prodItems[j].prodItem[0].SellPrice
+      });
+      this.prodItems.forEach( price => {
+        console.log(price)
+        this.sellPrice = Number(price.prodItem[0].SellPrice) + this.sellPrice;
+        console.log('price.prodItem[0].SellPrice:',Number(price.prodItem[0].SellPrice,))
+      });
+
+      console.log('this.sellPrice:',this.sellPrice)
+    });
   }
 
   // other payment
