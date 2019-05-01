@@ -1,4 +1,5 @@
-<pre>{{ parentForm.value | json }}</pre>
+<!-- <pre>{{ parentForm.value | json }}</pre> -->
+
 
 <form [formGroup]="registrationForm" class="container">
   <h1 class="registrationForm__title">Student's Registration</h1>
@@ -92,7 +93,7 @@
         </div>
 
         <div class="button text-right">
-          <button class="btn_next my-3" [disabled]="learnerForm.invalid" (click)="next('parentForm')">Next</button>
+          <button class="btn_next my-3" [disabled]="learnerForm.invalid" (click)="next({id: 'parentForm', event: $event})">Next</button>
         </div>
       </div>
     </div>  
@@ -159,8 +160,8 @@
           </div>
 
           <div class="parentForm__button my-3 d-flex justify-content-end">
-            <button class="btn_back mx-3" (click)="next('learnerForm')">Back</button>
-            <button class="btn_next" [disabled]="parentForm.invalid" (click)="next('courseForm')">Next</button>
+            <button class="btn_back mx-3" (click)="next({id: 'learnerForm', event: $event})">Back</button>
+            <button class="btn_next" [disabled]="parentForm.invalid" (click)="next({id: 'courseForm', event: $event})">Next</button>
           </div>
 
         </div>  
@@ -210,7 +211,7 @@
           </tbody>
         </table>
         <div class="text-right">
-          <button class="btn_submit" [disabled]="registrationForm.invalid" (click)="onSubmit()">Submit</button>
+          <button class="btn_submit" [disabled]="registrationForm.invalid" >Submit</button>
         </div>
       </div>
       <div class="piano" *ngIf="selectedCourse == 'piano'">
@@ -344,7 +345,7 @@
           </div>
 
           <div class="d-flex my-3 justify-content-end">
-            <button class="mx-3 btn_back" (click)="next('parentForm')">Back</button>
+            <button class="mx-3 btn_back" (click)="next({id: 'parentForm', event: $event})">Back</button>
             <button [disabled]="registrationForm.invalid" (click)="onSubmit()" class="btn_submit" type="submit">Submit</button>
           </div>
 

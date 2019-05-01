@@ -12,7 +12,7 @@ import { Parent } from 'src/app/models/Parent';
 })
 export class RegistrationComponent implements OnInit {
 
-
+  public todays = new Date();
   public registrationForm: FormGroup;  // define the type of registrationForm
   public students = new StudentDetail();  // create an instance of class StudentDetail 
   public selectedPhoto: File = null;
@@ -126,6 +126,7 @@ export class RegistrationComponent implements OnInit {
     this.isSelectedLevel = true;
   }
   onSubmit() {
+    console.log('Test submit');
     let fd = new FormData();
     let learner = this.learnerForm.value;
     fd.append('FirstName', learner.firstName);
@@ -226,11 +227,13 @@ export class RegistrationComponent implements OnInit {
   }
   
 // go and next function
-  next(id: string) {
+  next(value: any) {
+    value.event.preventDefault();
     document.getElementById('learnerForm').style.display = 'none';
     document.getElementById('parentForm').style.display = 'none';
     document.getElementById('courseForm').style.display = 'none';
-    document.getElementById(id).style.display = 'block';
+    document.getElementById(value.id).style.display = 'block';
+    
   }
   chooseCourse(id: any) {
     document.getElementById('groupCourse').style.display = 'none';
