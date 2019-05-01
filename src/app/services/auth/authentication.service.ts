@@ -13,11 +13,13 @@ export class AuthenticationService {
     baseUrl = environment.baseUrl;
 
 
-    constructor(private http: HttpClient) {
+    constructor(private http: HttpClient)
+    {
         this.currentUserSubject = new BehaviorSubject<UserDetail>(JSON.parse(localStorage.getItem('current')));
         this.currentUser = this.currentUserSubject.asObservable();
     }
 
+    // Check for users login status
     public get currentUserValue(): UserDetail {
         return this.currentUserSubject.value;
     }
@@ -29,20 +31,19 @@ export class AuthenticationService {
             // login successful if there's a jwt token in the response
             if (data.IsSuccess && data.Data) {
                 // store user details and jwt token in local storage to keep user logged in between page refreshes
-                // localStorage.setItem('currentUser', JSON.stringify(data.Data));
                 this.loginSave('userToken', JSON.stringify(data.Data));
                 this.currentUserSubject.next(data);
             }
             return data;
         }));
     }
-
+    // Saves returned objects into storage
     loginSave(a, b) {
         localStorage.setItem(a, b);
     }
 
+    // remove user from local storage to log user out
     logout() {
-        // remove user from local storage to log user out
         localStorage.removeItem('userToken');
         this.currentUserSubject.next(null);
     }
