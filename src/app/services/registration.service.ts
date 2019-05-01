@@ -3,19 +3,16 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { throwError } from 'rxjs';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class RegistrationService {
   // url given by back-end server
-<<<<<<< HEAD
-  public url: string= 'http://192.168.178.76:5000/api/studentregister';
-  
-=======
-  public url = 'http://192.168.178.76:5000/api/register/student';
+  private baseUrl: any = environment.baseUrl;
+  public url = this.baseUrl + 'register/student/';
 
->>>>>>> 99a899d889bd0f58b14843f92ac1f21e0183ef77
   constructor(private http: HttpClient) { }
 
   // get group course data from server

@@ -1,13 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormArray, FormBuilder, Validators } from '@angular/forms';
-<<<<<<< HEAD:src/app/components/contents/registration/registration.component.ts
-import { RegistrationService } from '../../../services/registration.service';
-import { StudentDetail } from '../../../models/StudentDetail';
-import { Parent } from 'src/app/models/Parent';
-=======
 import { RegistrationService } from '../../../../services/registration.service';
 import { StudentDetail } from '../../../../models/StudentDetail';
->>>>>>> 99a899d889bd0f58b14843f92ac1f21e0183ef77:src/app/components/dashboard/dashboard-components/registration/registration.component.ts
+import { Parent } from 'src/app/models/Parent';
 
 
 @Component({
@@ -36,14 +31,9 @@ export class RegistrationComponent implements OnInit {
     "junior": ['Michael', 'Ivy', 'Tom'],
     'intermediate': ['Andrew', 'Candy', 'Daniel'],
     'senior': ['Ella', 'Flank', 'Hellen']
-<<<<<<< HEAD:src/app/components/contents/registration/registration.component.ts
-  }
+  };
   public parents = new Parent();
   
-=======
-  };
-
->>>>>>> 99a899d889bd0f58b14843f92ac1f21e0183ef77:src/app/components/dashboard/dashboard-components/registration/registration.component.ts
 
 
   // getter method: simplify the way to capture form controls
@@ -105,10 +95,7 @@ export class RegistrationComponent implements OnInit {
         })
       ]),
     });
-<<<<<<< HEAD:src/app/components/contents/registration/registration.component.ts
-=======
     console.log('parent', this.registrationForm);
->>>>>>> 99a899d889bd0f58b14843f92ac1f21e0183ef77:src/app/components/dashboard/dashboard-components/registration/registration.component.ts
 
     // initialize card display
     document.getElementById('learnerForm').style.display = 'none';
@@ -116,31 +103,14 @@ export class RegistrationComponent implements OnInit {
     document.getElementById('courseForm').style.display = 'block';
   }
 
-<<<<<<< HEAD:src/app/components/contents/registration/registration.component.ts
-  
-=======
 
 
->>>>>>> 99a899d889bd0f58b14843f92ac1f21e0183ef77:src/app/components/dashboard/dashboard-components/registration/registration.component.ts
   uploadPhoto(event: any) {
     this.selectedPhoto = <File>event.target.files[0];
   }
   uploadGrade(event: any) {
     this.selectedGrade = <File>event.target.files[0];
   }
-<<<<<<< HEAD:src/app/components/contents/registration/registration.component.ts
-  // selectCourse(name: string) {
-  //   this.selectedCourse = name;
-  //   this.registrationService.getGroupCourse()
-  //       .subscribe(
-  //         data => {
-  //           this.guitars = data.guitar;
-  //           this.pianos = data.piano;
-  //           this.drums = data.drum;
-  //         }
-  //       )
-  // }
-=======
   selectCourse(name: string) {
     this.selectedCourse = name;
     this.registrationService.getGroupCourse()
@@ -152,7 +122,6 @@ export class RegistrationComponent implements OnInit {
           }
         );
   }
->>>>>>> 99a899d889bd0f58b14843f92ac1f21e0183ef77:src/app/components/dashboard/dashboard-components/registration/registration.component.ts
   selectLlevel() {
     this.isSelectedLevel = true;
   }
@@ -171,7 +140,6 @@ export class RegistrationComponent implements OnInit {
     fd.append('Address', learner.address);
     fd.append('image', this.selectedPhoto);
     fd.append('ABRSM', this.selectedGrade);
-<<<<<<< HEAD:src/app/components/contents/registration/registration.component.ts
     fd.append('FirstName', learner.firstName);
     // for (let parent of this.parentForm.value) {
     //   fd.append('ParentFirstName', parent.firstName);
@@ -188,14 +156,12 @@ export class RegistrationComponent implements OnInit {
        this.parents['ContactNum']=parent.contactPhone;
        this.parents['Email']=parent.email;
        fd.append('Parent', JSON.stringify(this.parents));
-=======
     for (let parent of this.parentForm.value) {
       fd.append('GuardianFirstName', parent.firstName);
       fd.append('GuardianLastName', parent.lastName);
       fd.append('GuardianRelationship', parent.relationship);
       fd.append('GuardianPhone', parent.contactPhone);
       fd.append('GuardianEmail', parent.email);
->>>>>>> 99a899d889bd0f58b14843f92ac1f21e0183ef77:src/app/components/dashboard/dashboard-components/registration/registration.component.ts
     }
     this.registrationService.postStudent(fd)
         .subscribe(
@@ -207,13 +173,9 @@ export class RegistrationComponent implements OnInit {
             this.errorMsg = error;
             console.log('Error!', error);
           }
-<<<<<<< HEAD:src/app/components/contents/registration/registration.component.ts
         )
-=======
-        );
-
->>>>>>> 99a899d889bd0f58b14843f92ac1f21e0183ef77:src/app/components/dashboard/dashboard-components/registration/registration.component.ts
   }
+}
 
   resetLearner() {
     this.learnerForm.reset();
@@ -285,8 +247,4 @@ export class RegistrationComponent implements OnInit {
     document.getElementById('customCourse').style.display = 'none';
     document.getElementById(id).style.display = 'block';
   }
-<<<<<<< HEAD:src/app/components/contents/registration/registration.component.ts
-
-=======
->>>>>>> 99a899d889bd0f58b14843f92ac1f21e0183ef77:src/app/components/dashboard/dashboard-components/registration/registration.component.ts
 }
