@@ -4,15 +4,14 @@ import { Router, CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot } from
 import { AuthenticationService } from '../services/Auth/authentication.service';
 
 @Injectable({ providedIn: 'root' })
-export class AuthGuard implements CanActivate {
+export class DashboardRestrictGuard implements CanActivate {
     constructor(
         private router: Router,
         private authenticationService: AuthenticationService
     ) {}
 
-    canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
-        const currentUser = this.authenticationService.currentUserValue;
-        if (currentUser) {
+    canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
+        if (this.authenticationService.checkLoginStatus()) {
             // authorised so return true
             return true;
         }

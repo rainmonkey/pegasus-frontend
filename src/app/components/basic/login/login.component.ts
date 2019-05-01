@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
-import { first } from 'rxjs/operators';
 import { AuthenticationService } from '../../../services/Auth/authentication.service';
 
 
@@ -28,9 +27,6 @@ export class LoginComponent implements OnInit {
   ) {
     // redirect to home if already logged in
     // Delete this part
-    if (this.authenticationService.currentUserValue) {
-      this.router.navigate(['/']);
-    }
   }
 
   ngOnInit() {
@@ -53,7 +49,7 @@ export class LoginComponent implements OnInit {
         return;
     }
     this.loading = true;
-    this.authenticationService.login(this.f.username.value, this.f.password.value).pipe(first()).subscribe(
+    this.authenticationService.login(this.f.username.value, this.f.password.value).subscribe(
       (data) => {
         this.router.navigate([this.returnUrl]);
       },
@@ -71,5 +67,4 @@ export class LoginComponent implements OnInit {
       this.errorMessage = 'Sorry, something went wrong';
     }
   }
-  
 }

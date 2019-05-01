@@ -1,19 +1,17 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { Subscription } from 'rxjs';
-import { first } from 'rxjs/operators';
 
 import { UserDetail } from '../../../../models/UserDetail';
 import { AuthenticationService } from '../../../../services/Auth/authentication.service';
 import { UserDetailService } from '../../../../services/user-detail.service';
+import { UsersService } from 'src/app/services/http/users.service';
 
 @Component({
   selector: 'app-sidebar',
   templateUrl: './sidebar.component.html',
   styleUrls: ['./sidebar.component.css']
 })
-export class SidebarComponent implements OnInit, OnDestroy {
+export class SidebarComponent implements OnInit {
   currentUser: UserDetail;
-  currentUserSubscription: Subscription;
   users: UserDetail[] = [];
 
   public navitem: any[] = [
@@ -50,25 +48,15 @@ export class SidebarComponent implements OnInit, OnDestroy {
 
   constructor(
     private authenticationService: AuthenticationService,
-    private userService: UserDetailService
+    private userDetailService: UserDetailService,
+    private userService: UsersService
   ) {
-      this.currentUserSubscription = this.authenticationService.currentUser.subscribe(user => {
-      this.currentUser = user;
-    });
   }
 
   ngOnInit() {
-    // this.loadAllUsers();
+    // Get data
+    // this.userService.getSidebar()
   }
 
-  ngOnDestroy() {
-    // unsubscribe to ensure no memory leaks
-    this.currentUserSubscription.unsubscribe();
-  }
 
-  // private loadAllUsers() {
-  //   this.userService.getAll().pipe(first()).subscribe(users => {
-  //       this.users = users;
-  //   });
-  // }
 }
