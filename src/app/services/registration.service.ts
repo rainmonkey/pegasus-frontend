@@ -3,13 +3,15 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { throwError } from 'rxjs';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class RegistrationService {
   // url given by back-end server
-  public url = 'http://192.168.178.76:5000/api/register/student';
+  private baseUrl: any = environment.baseUrl;
+  public url = this.baseUrl + 'register/student/';
 
   constructor(private http: HttpClient) { }
 
