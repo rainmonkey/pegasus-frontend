@@ -12,8 +12,10 @@ export class HeaderbarComponent implements OnInit {
 
   currentUser: UserDetail;
 
-  constructor( private router: Router,  private authenticationService: AuthenticationService) {
-    this.authenticationService.currentUser.subscribe(x => this.currentUser = x);
+  constructor( 
+    private router: Router,
+    private authenticationService: AuthenticationService
+    ) {
   }
 
   ngOnInit() {

@@ -1,15 +1,15 @@
 import { TestBed, async, inject } from '@angular/core/testing';
 
-import { AuthGuard } from './auth.guard';
+import { DashboardRestrictGuard } from './dashboard-restrict.guard';
 
 describe('AuthGuard', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [AuthGuard]
+      providers: [DashboardRestrictGuard]
     });
   });
 
-  it('should ...', inject([AuthGuard], (guard: AuthGuard) => {
+  it('should ...', inject([DashboardRestrictGuard], (guard: DashboardRestrictGuard) => {
     expect(guard).toBeTruthy();
   }));
 });
