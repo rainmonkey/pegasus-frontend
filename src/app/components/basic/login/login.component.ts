@@ -4,7 +4,6 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { first } from 'rxjs/operators';
 import { AuthenticationService } from '../../../services/Auth/authentication.service';
-import { AlertService } from '../../../services/alert.service';
 
 
 @Component({
@@ -24,8 +23,7 @@ export class LoginComponent implements OnInit {
     private fb: FormBuilder,
     private route: ActivatedRoute,
     private router: Router,
-    private authenticationService: AuthenticationService,
-    private alertService: AlertService
+    private authenticationService: AuthenticationService
   ) {
     // redirect to home if already logged in
     // Delete this part
@@ -39,7 +37,6 @@ export class LoginComponent implements OnInit {
       username: ['', Validators.required],
       password: ['', Validators.required]
     });
-
     // get return url from route parameters or default to '/'
     this.returnUrl = this.route.snapshot.queryParams.returnUrl || '/';
   }
@@ -61,7 +58,7 @@ export class LoginComponent implements OnInit {
         this.router.navigate([this.returnUrl]);
     },
     error => {
-        this.alertService.error(error);
+
         this.loading = false;
     });
 
