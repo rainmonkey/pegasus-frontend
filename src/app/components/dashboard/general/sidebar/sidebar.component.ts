@@ -2,7 +2,6 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 
 import { UserDetail } from '../../../../models/UserDetail';
 import { AuthenticationService } from '../../../../services/Auth/authentication.service';
-import { UserDetailService } from '../../../../services/user-detail.service';
 import { UsersService } from 'src/app/services/http/users.service';
 
 @Component({
@@ -48,7 +47,6 @@ export class SidebarComponent implements OnInit {
 
   constructor(
     private authenticationService: AuthenticationService,
-    private userDetailService: UserDetailService,
     private userService: UsersService
   ) {
   }
