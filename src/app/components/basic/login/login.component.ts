@@ -27,8 +27,8 @@ export class LoginComponent implements OnInit {
     private authenticationService: AuthenticationService,
     private alertService: AlertService
   ) {
-    // redirect to home if already logged in 
-    // Delete this part 
+    // redirect to home if already logged in
+    // Delete this part
     if (this.authenticationService.currentUserValue) {
       this.router.navigate(['/']);
     }
