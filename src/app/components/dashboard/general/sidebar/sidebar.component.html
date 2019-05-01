@@ -1,0 +1,41 @@
+<nav class="side-navbar">
+    <!-- Sidebar Header-->
+    <div class="sidebar-header d-flex align-items-center">
+        <div class="avatar">
+            <img src="{{userDetail.img}}" alt="..." class="img-fluid rounded-circle">
+        </div>
+        <div class="title">
+            <h1 class="h4">{{userDetail.firstname}} {{userDetail.lastname}}</h1>
+            <p>{{userDetail.position}}</p>
+        </div>
+    </div>
+    <!-- Sidebar Navidation Menus-->
+    <span class="heading">Main</span>
+    <ul class="list-unstyled">
+        <li *ngFor="let item of navitem; let key = index;">
+            <a [routerLink]="['/',item.pagelink]" routerLinkActive="active">
+                <i class="fas fa-home sidebaricon" [ngClass]="item.pageicon"></i>
+                {{item.pagename}}
+            </a>
+        </li>
+        <!-- 从这 -->
+        <li>
+            <a href="#exampledropdownDropdown" aria-expanded="false" data-toggle="collapse" routerLinkActive="active">
+                <i class="far fa-window-restore sidebaricon"></i>Dropdown
+            </a>
+            <ul id="exampledropdownDropdown" class="collapse list-unstyled ">
+                <li><a href="#">Page</a></li>
+                <li><a href="#">Page</a></li>
+                <li><a href="#">Page</a></li>
+            </ul>
+        </li>
+    </ul>
+    <span class="heading">Extras</span>
+    <ul class="list-unstyled">
+        <li><a [routerLink]="['/testcontent']"><i class="fas fa-flask sidebaricon"></i>Test</a></li>
+        <li><a href="#"><i class="fas fa-desktop sidebaricon"></i>Demo</a></li>
+        <li><a href="#"><i class="far fa-envelope sidebaricon"></i>Demo</a></li>
+        <li><a href="#"><i class="far fa-image sidebaricon"></i>Demo</a></li>
+    </ul>
+    <!-- 到这，别删，前期装B用的 -->
+</nav>
