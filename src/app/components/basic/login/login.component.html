@@ -1,0 +1,64 @@
+<div class="page login-page">
+  <div class="container d-flex align-items-center">
+    <div class="form-holder has-shadow">
+      <div class="row">
+        <!-- Logo & Information Panel-->
+        <div class="col-lg-6">
+          <div class="info d-flex align-items-center">
+            <div class="content" style="margin-left: 3rem;">
+              <div class="logo">
+                <img src="../../../assets/images/loginpage/logo.png">
+              </div>
+              <!--End logo-->
+              <h1>Content Management System</h1>
+            </div>
+            <!--End content margin-left: 3rem;-->
+          </div>
+          <!--End info d-flex align-items-center-->
+        </div>
+        <!--End col-lg-6-->
+        <!-- Form Panel    -->
+        <div class="col-lg-6 bg-white">
+          <div class="form d-flex align-items-center">
+            <div class="content">
+              <div *ngIf="errorMessage" class="">{{errorMessage}}</div>
+
+              <form class="form-validate" [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+                <div class="form-group">
+                  <mat-form-field class="formfield">
+                    <input matInput type="text" placeholder="Username" formControlName="username"
+                      [ngClass]="{ 'is-invalid': submitted && f.username.errors }" />
+                    <div *ngIf="submitted && f.username.errors" class="invalid-feedback">
+                      <div *ngIf="f.username.errors.required">Username is required</div>
+                    </div>
+                  </mat-form-field>
+                </div>
+                <div class="form-group">
+                  <mat-form-field class="formfield">
+                    <input matInput type="password" placeholder="Password" formControlName="password"
+                      [ngClass]="{ 'is-invalid': submitted && f.password.errors }" />
+                    <div *ngIf="submitted && f.password.errors" class="invalid-feedback">
+                      <div *ngIf="f.password.errors.required">Password is required</div>
+                    </div>
+                  </mat-form-field>
+                </div>
+                <button [disabled]="loading" class="btn btn-primary">Login</button>
+                <!-- This should be submit button but I replaced it with <a> for demo purposes-->
+              </form>
+              <a href="#" class="forgot-pass">Forgot Password?</a>
+              {{errorDisplay}}
+            </div>
+            <!--End content-->
+          </div>
+          <!--End form d-flex align-items-center-->
+        </div>
+        <!--End col-lg-6 bg-white-->
+      </div>
+      <!--End row-->
+    </div>
+    <!--End form-holder has-shadow-->
+  </div>
+  <!--container d-flex align-items-cente-->
+</div>
+<!--End page login-page-->
+  
