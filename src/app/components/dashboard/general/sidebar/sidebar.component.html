@@ -2,33 +2,23 @@
     <!-- Sidebar Header-->
     <div class="sidebar-header d-flex align-items-center">
         <div class="avatar">
-            <img src="../../../../assets/images/usersimg/testimg.jpg" alt="..." class="img-fluid rounded-circle">
+            <img src="{{userDetail.img}}" alt="..." class="img-fluid rounded-circle">
         </div>
         <div class="title">
-            <h1 class="h4">Chris He</h1>
-            <p>President of US</p>
+            <h1 class="h4">{{userDetail.firstname}} {{userDetail.lastname}}</h1>
+            <p>{{userDetail.position}}</p>
         </div>
     </div>
     <!-- Sidebar Navidation Menus-->
     <span class="heading">Main</span>
     <ul class="list-unstyled">
         <li *ngFor="let item of navitem; let key = index;">
-            <a [routerLink]="[ '/Testcontent' ]" routerLinkActive="active">
-                <!-- <i class="fas sidebaricon" [ngClass]="{'fa-home':key==0,'fa-th':key==1,'fa-chart-bar':key==2, 'fa-clipboard':key==3}"></i> -->
-                <i class="fas fa-home sidebaricon"></i>
+            <a [routerLink]="['/',item.pagelink]" routerLinkActive="active">
+                <i class="fas fa-home sidebaricon" [ngClass]="item.pageicon"></i>
                 {{item.pagename}}
             </a>
         </li>
-        <li>
-            <a [routerLink]="['/registration']"  routerLinkActive="active">
-                <i class="far fa-window-restore sidebaricon"></i>Registration
-            </a>
-        </li>
-        <li>
-            <a [routerLink]="['/payment']"  routerLinkActive="active">
-                <i class="far fa-window-restore sidebaricon"></i>Payment
-            </a>
-        </li>
+        <!-- 从这 -->
         <li>
             <a href="#exampledropdownDropdown" aria-expanded="false" data-toggle="collapse" routerLinkActive="active">
                 <i class="far fa-window-restore sidebaricon"></i>Dropdown
@@ -42,9 +32,10 @@
     </ul>
     <span class="heading">Extras</span>
     <ul class="list-unstyled">
-        <li><a [routerLink]="['/Testcontent']"><i class="fas fa-flask sidebaricon"></i>Test</a></li>
+        <li><a [routerLink]="['/testcontent']"><i class="fas fa-flask sidebaricon"></i>Test</a></li>
         <li><a href="#"><i class="fas fa-desktop sidebaricon"></i>Demo</a></li>
         <li><a href="#"><i class="far fa-envelope sidebaricon"></i>Demo</a></li>
         <li><a href="#"><i class="far fa-image sidebaricon"></i>Demo</a></li>
     </ul>
+    <!-- 到这，别删，前期装B用的 -->
 </nav>

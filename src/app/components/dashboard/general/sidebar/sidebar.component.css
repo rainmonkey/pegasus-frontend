@@ -93,10 +93,9 @@ nav.side-navbar {
   }
 
   .active{
-    background: rgb(220, 243, 12);
+    background:#796AEE;
+    color: #fff !important;
   }
-
-
   
   .sidebaricon {
     font-size: 1.2em;

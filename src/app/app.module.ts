@@ -12,15 +12,13 @@ import { routing } from '../app/app-routing.module';
 
 // Components
 import { AppComponent } from './app.component';
-import { SidebarComponent } from './components/dashboard/sidebar/sidebar.component';
-import { RegistrationComponent } from './components/contents/registration/registration.component';
-import { TestcontentComponent } from './components/contents/testcontent/testcontent.component';
+import { SidebarComponent } from './components/dashboard/general/sidebar/sidebar.component';
+import { RegistrationComponent } from './components/dashboard/dashboard-components/registration/registration.component';
+import { TestcontentComponent } from './components/testing/testcontent/testcontent.component;
 import { LoginComponent } from './components/basic/login/login.component';
-import { HeaderbarComponent } from './components/dashboard/headerbar/headerbar.component';
+import { HeaderbarComponent } from './components/dashboard/general/headerbar/headerbar.component';
 import { HomepageComponent } from './components/dashboard/homepage/homepage.component';
-import { FooterbarComponent } from './components/dashboard/footerbar/footerbar.component';
-import { ContentareaComponent } from './components/dashboard/contentarea/contentarea.component';
-import { LearnerDetailsComponent } from './components/contents/learner-details/learner-details.component';
+import { LearnerDetailsComponent } from './components/dashboard/dashboard-components/learner-details/learner-details.component';
 
 // Guards
 
@@ -28,6 +26,7 @@ import { LearnerDetailsComponent } from './components/contents/learner-details/l
 
 // Services
 import { UserDetailService } from './services/user-detail.service';
+import { FooterComponent } from './components/basic/footer/footer.component';
 
 
 
@@ -41,12 +40,11 @@ import { UserDetailService } from './services/user-detail.service';
     LoginComponent,
     HomepageComponent,
     HeaderbarComponent,
-    FooterbarComponent,
     SidebarComponent,
-    ContentareaComponent,
     TestcontentComponent,
     LearnerDetailsComponent,
-    RegistrationComponent
+    RegistrationComponent,
+    FooterComponent
   ],
   imports: [
     NgbModule,
