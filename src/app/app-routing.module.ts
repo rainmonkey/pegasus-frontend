@@ -1,8 +1,8 @@
 import { Routes, RouterModule } from '@angular/router';
 import { LoginComponent } from './components/basic/login/login.component';
-import { TestcontentComponent } from './components/contents/testcontent/testcontent.component';
-import { LearnerDetailsComponent } from './components/contents/learner-details/learner-details.component';
-import { RegistrationComponent } from './components/contents/registration/registration.component';
+import { TestcontentComponent } from './components/testing/testcontent/testcontent.component;
+import { LearnerDetailsComponent } from './components/dashboard/dashboard-components/learner-details/learner-details.component';
+import { RegistrationComponent } from './components/dashboard/dashboard-components/registration/registration.component';
 import { HomepageComponent } from './components/dashboard/homepage/homepage.component';
 
 import { AuthGuard } from './guards/auth.guard';
@@ -15,7 +15,7 @@ const routes: Routes = [
 
     children: [
       {
-        path: 'Testcontent',
+        path: 'testcontent',
         component: TestcontentComponent
       },
       {

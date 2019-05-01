@@ -2,9 +2,9 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { first } from 'rxjs/operators';
 
-import { UserDetail } from '../../../models/UserDetail';
-import { AuthenticationService } from '../../../services/Auth/authentication.service';
-import { UserDetailService } from '../../../services/user-detail.service';
+import { UserDetail } from '../../../../models/UserDetail';
+import { AuthenticationService } from '../../../../services/Auth/authentication.service';
+import { UserDetailService } from '../../../../services/user-detail.service';
 
 @Component({
   selector: 'app-sidebar',
@@ -18,18 +18,35 @@ export class SidebarComponent implements OnInit, OnDestroy {
 
   public navitem: any[] = [
     {
-      pagename : 'Home'
+      pagename : 'Home',
+      pageicon : 'fa-home',
+      pagelink : 'testcontent'
     },
     {
-      pagename : 'Tables'
+      pagename : 'Registration',
+      pageicon : 'fa-th',
+      pagelink : 'registration'
     },
     {
-      pagename : 'Charts'
+      pagename : 'Payment',
+      pageicon : 'fa-chart-bar',
+      pagelink : 'payment'
     },
     {
-      pagename : 'Forms'
+      pagename : 'Forms',
+      pageicon : 'fa-clipboard',
+      pagelink : ''
     }
   ];
+
+  public userDetail =
+    {
+      firstname : 'Chris',
+      lastname : 'He',
+      position : 'President of US',
+      img : '../../../../assets/images/usersimg/testimg.jpg'
+    }  
+
 
   constructor(
     private authenticationService: AuthenticationService,
