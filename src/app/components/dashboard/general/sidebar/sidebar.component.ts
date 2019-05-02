@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 
 import { UserDetail } from '../../../../models/UserDetail';
-import { AuthenticationService } from '../../../../services/Auth/authentication.service';
+import { AuthenticationService } from '../../../../services/auth/authentication.service';
 import { UsersService } from 'src/app/services/http/users.service';
 
 @Component({
