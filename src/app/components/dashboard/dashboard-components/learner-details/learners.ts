@@ -12,5 +12,5 @@ export interface IOtherPay {
   amount: number;
 }
 export interface IcatData {
-  Data: Array<object>;
+  Data: Array<any>;
 }

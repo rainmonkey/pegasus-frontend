@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
-import { AuthenticationService } from '../../../services/Auth/authentication.service';
+import { AuthenticationService } from '../../../services/auth/authentication.service';
 
 
 @Component({
