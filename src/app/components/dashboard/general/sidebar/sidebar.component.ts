@@ -24,6 +24,12 @@ export class SidebarComponent implements OnInit {
       pageicon : 'fa-th',
       pagelink : 'registration'
     },
+    // just for test Time-picker
+    {
+      pagename: 'Time-Picker',
+      pageicon: 'fa-th',
+      pagelink: 'timePicker'
+    },
     {
       pagename : 'Payment',
       pageicon : 'fa-chart-bar',
