@@ -19,9 +19,9 @@
     <div class="rmws-days">
       <div class="rmws-day">
         <div class="rmws-day-label">Monday</div>
-        <div class="rmws-slots" (mousemove)="resize_top($event)"> 
+        <div class="rmws-slots"> 
           
-          <div class="rmws-slot"></div>
+          <div class="rmws-slot" #slot (click)="change($event)"></div>
           <div class="rmws-slot"></div>
           <div class="rmws-slot"></div>
           <div class="rmws-slot" style="border-bottom: 1px solid rgb(208, 208, 208);"></div>
