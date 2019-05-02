@@ -3,7 +3,7 @@ import { LoginComponent } from './components/basic/login/login.component';
 import { TestcontentComponent } from './components/testing/testcontent/testcontent.component';
 import { LearnerDetailsComponent } from './components/dashboard/dashboard-components/learner-details/learner-details.component';
 import { RegistrationComponent } from './components/dashboard/dashboard-components/registration/registration.component';
-import { HomepageComponent } from './components/dashboard/homepage/homepage.component';
+import { HomepageComponent } from './components/dashboard/general/homepage/homepage.component';
 import { TimePickerComponent } from './components/dashboard/dashboard-components/time-picker/time-picker.component';
 
 import { DashboardRestrictGuard } from './guards/dashboard-restrict.guard';
