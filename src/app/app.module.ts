@@ -21,6 +21,9 @@ import { HeaderbarComponent } from './components/dashboard/general/headerbar/hea
 import { HomepageComponent } from './components/dashboard/homepage/homepage.component';
 import { LearnerDetailsComponent } from './components/dashboard/dashboard-components/learner-details/learner-details.component';
 import { FooterComponent } from './components/basic/footer/footer.component';
+import { CoursesPanelComponent } from './components/dashboard/dashboard-components/courses/courses-panel/courses-panel.component';
+import { CoursesDetailComponent } from './components/dashboard/dashboard-components/courses/courses-detail/courses-detail.component';
+import { CoursesListComponent } from './components/dashboard/dashboard-components/courses/courses-list/courses-list.component';
 // Guards
 
 // Services
@@ -37,7 +40,10 @@ import { FooterComponent } from './components/basic/footer/footer.component';
     LearnerDetailsComponent,
     RegistrationComponent,
     TimePickerComponent,
-    FooterComponent
+    FooterComponent,
+    CoursesPanelComponent,
+    CoursesDetailComponent,
+    CoursesListComponent
   ],
   imports: [
     NgbModule,
