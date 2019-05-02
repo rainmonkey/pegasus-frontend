@@ -4,7 +4,6 @@ import { RegistrationService } from '../../../../services/registration.service';
 import { StudentDetail } from '../../../../models/StudentDetail';
 import { Parent } from 'src/app/models/Parent';
 
-
 @Component({
   selector: 'app-registration',
   templateUrl: './registration.component.html',

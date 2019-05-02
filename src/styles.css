@@ -2,12 +2,12 @@
 /* You can add global styles to this file, and also import other style files */
 
 body {
-  overflow-x: hidden;
   font-family: "Poppins", sans-serif;
   font-size: 1rem;
   font-weight: 400;
+  color: #212529; 
+  overflow-x: hidden;
   line-height: 1.5;
-  color: #212529;
   background-color: #fff;
 }
 
@@ -21,16 +21,14 @@ small,
  * BUTTONS
  */
 .btn {
-  font-weight: 400;
   border: 1px solid transparent;
   padding: 0.375rem 0.75rem;
-  font-size: 1rem;
   line-height: 1.5;
   border-radius: 0.25rem;
-  -webkit-transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, -webkit-box-shadow 0.15s ease-in-out;
-  transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, -webkit-box-shadow 0.15s ease-in-out;
-  transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
-  transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out, -webkit-box-shadow 0.15s ease-in-out;
+  font-family: "Poppins", sans-serif;
+  font-weight: 400;
+  font-size: 1rem;
+  color: #fff; 
 }
 
 .btn-primary {
@@ -52,54 +50,85 @@ small,
 
 /*-------FONTS-------*/
 
-h1,
-h2,
-h3,
-h4,
-h5,
-h6,
-.h1,
-.h2,
-.h3,
-.h4,
-.h5,
-.h6 {
-  margin-bottom: 0.5rem;
-  font-family: inherit;
+/*Login Title*/
+.font1 {
+  font-family: "Poppins", sans-serif;
+  font-size: 1.7rem;
+  font-weight: 600;
+  color: #fff; 
+}
+/*Header Title*/
+.font2 {
+  font-family: "Poppins", sans-serif;
+  font-size: 1.25rem;
   font-weight: 700;
-  line-height: 1.1;
-  color: inherit;
+  color: #fff; 
 }
-
-h1,
-.h1 {
-  font-size: 1.5rem;
-}
-
-h2,
-.h2 {
-  font-size: 1.3rem;
-}
-
-h3,
-.h3 {
-  font-size: 1.2rem;
-}
-
-h4,
-.h4 {
+/*Table Title*/
+.font3 {
+  font-family: "Poppins", sans-serif;
   font-size: 1.1rem;
+  font-weight: 700;
+  color: #212529; 
 }
 
-h5,
-.h5 {
+/*Content Font*/
+.font4 {
+  font-family: "Poppins", sans-serif;
   font-size: 1rem;
-}
-/* Small font  */
-h6,
-.h6 {
-  font-size: 0.95rem;
+  font-weight: 400;
+  color: #212529; 
 }
 
+/*Label Font*/
+.font5 {
+  font-family: "Poppins", sans-serif;
+  font-size: 0.9rem;
+  font-weight: 400;
+  color: #777;
+}
+
+/*Sidebar Font*/
+.font6 {
+  font-family: "Poppins", sans-serif;
+  font-size: 0.9rem;
+  font-weight: 300;
+  color: #777;
+}
+/*Sidebar Position Font*/
+.font7 {
+  font-family: "Poppins", sans-serif;
+  font-size: 0.9rem;
+  font-weight: 200;
+  color: #aaa;
+}
+/*Small Font for description*/
+.font8 {
+  font-family: "Poppins", sans-serif;
+  font-size: 0.8em;
+  font-weight: 300;
+  color: #999;
+}
+.font9 {
+  font-family: "Poppins", sans-serif;
+  font-size: 0.8rem;
+  font-weight: 300;
+  color: #796AEE;
+}
 
 /*-------ERROR RESPONCE-------*/
+/*Error Font*/
+.errorfont {
+  font-family: "Poppins", sans-serif;
+  font-size: 80%;
+  font-weight: 400;
+  color: #dc3545;
+}
+
+/*Error Font small */
+.errorfontsmall {
+  font-family: "Poppins", sans-serif;
+  font-size: 0.8rem;
+  font-weight: 400;
+  color: #dc3545;
+}

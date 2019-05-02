@@ -2,7 +2,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { LoginComponent } from './components/basic/login/login.component';
 import { TestcontentComponent } from './components/testing/testcontent/testcontent.component';
 import { RegistrationComponent } from './components/dashboard/dashboard-components/registration/registration.component';
-import { HomepageComponent } from './components/dashboard/homepage/homepage.component';
+import { HomepageComponent } from './components/dashboard/general/homepage/homepage.component';
 import { TimePickerComponent } from './components/dashboard/dashboard-components/time-picker/time-picker.component';
 
 import { DashboardRestrictGuard } from './guards/dashboard-restrict.guard';
@@ -27,8 +27,12 @@ const routes: Routes = [
         ]
       },
       { path: 'registration', component: RegistrationComponent },
+<<<<<<< HEAD
 
       { path: 'time-picker', component: TimePickerComponent }
+=======
+      { path: 'timePicker', component: TimePickerComponent }
+>>>>>>> 3b7e311cac9968de450e0cfca74ce63249cb55cb
     ]
   },
   { path: 'login', component: LoginComponent },
