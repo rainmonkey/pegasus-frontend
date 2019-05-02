@@ -15,7 +15,7 @@ const routes: Routes = [
       { path: 'testcontent', component: TestcontentComponent },
       { path: 'payment', component: LearnerDetailsComponent },
       { path: 'registration', component: RegistrationComponent },
-      { path: 'time-picker', component: TimePickerComponent }
+      { path: 'timePicker', component: TimePickerComponent }
     ]
   },
   { path: 'login', component: LoginComponent },
