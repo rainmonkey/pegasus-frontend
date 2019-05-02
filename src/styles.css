@@ -79,6 +79,7 @@ small,
   font-weight: 400;
   color: #212529; 
 }
+
 /*Label Font*/
 .font5 {
   font-family: "Poppins", sans-serif;
@@ -86,6 +87,7 @@ small,
   font-weight: 400;
   color: #777;
 }
+
 /*Sidebar Font*/
 .font6 {
   font-family: "Poppins", sans-serif;
@@ -93,6 +95,7 @@ small,
   font-weight: 300;
   color: #777;
 }
+
 /*Small Font for description*/
 .font7 {
   font-family: "Poppins", sans-serif;
@@ -108,13 +111,15 @@ small,
 }
 
 /*-------ERROR RESPONCE-------*/
-/*Error Font*/
+/*Error Font Large */
 .errorfontlarge {
   font-family: "Poppins", sans-serif;
   font-size: 1.1rem;
   font-weight: 400;
   color: #dc3545;
 }
+
+/*Error Font small */
 .errorfontsmall {
   font-family: "Poppins", sans-serif;
   font-size: 0.8rem;
