@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormArray, FormBuilder, Validators } from '@angular/forms';
 import { RegistrationService } from '../../../../services/registration.service';
 import { StudentDetail } from '../../../../models/StudentDetail';
+import { Parent } from 'src/app/models/Parent';
 
 
 @Component({
@@ -11,7 +12,7 @@ import { StudentDetail } from '../../../../models/StudentDetail';
 })
 export class RegistrationComponent implements OnInit {
 
-
+  public todays = new Date();
   public registrationForm: FormGroup;  // define the type of registrationForm
   public students = new StudentDetail();  // create an instance of class StudentDetail 
   public selectedPhoto: File = null;
@@ -31,7 +32,8 @@ export class RegistrationComponent implements OnInit {
     'intermediate': ['Andrew', 'Candy', 'Daniel'],
     'senior': ['Ella', 'Flank', 'Hellen']
   };
-
+  public parents = new Parent();
+  
 
 
   // getter method: simplify the way to capture form controls
@@ -58,7 +60,7 @@ export class RegistrationComponent implements OnInit {
         lastName: ['Li', Validators.required],
         gender: ['1', Validators.required],
         birthday: ['2018-01-01'],
-        enrollmentDate: [this.today.toLocaleDateString()],
+        enrollmentDate: ['2018-12-21'],
         contactPhone: ['012345678'],
         email: ['rrrrrr@gamil.com', [Validators.required, Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$')]],
         address: ['110 Station'],
@@ -96,9 +98,9 @@ export class RegistrationComponent implements OnInit {
     console.log('parent', this.registrationForm);
 
     // initialize card display
-    document.getElementById('learnerForm').style.display = 'block';
+    document.getElementById('learnerForm').style.display = 'none';
     document.getElementById('parentForm').style.display = 'none';
-    document.getElementById('courseForm').style.display = 'none';
+    document.getElementById('courseForm').style.display = 'block';
   }
 
 
@@ -124,6 +126,7 @@ export class RegistrationComponent implements OnInit {
     this.isSelectedLevel = true;
   }
   onSubmit() {
+    console.log('Test submit');
     let fd = new FormData();
     let learner = this.learnerForm.value;
     fd.append('FirstName', learner.firstName);
@@ -137,6 +140,22 @@ export class RegistrationComponent implements OnInit {
     fd.append('Address', learner.address);
     fd.append('image', this.selectedPhoto);
     fd.append('ABRSM', this.selectedGrade);
+    fd.append('FirstName', learner.firstName);
+    // for (let parent of this.parentForm.value) {
+    //   fd.append('ParentFirstName', parent.firstName);
+    //   fd.append('ParentLastName', parent.lastName);
+    //   fd.append('ParentRelationship', parent.relationship);
+    //   fd.append('ParentContactNum', parent.contactPhone);
+    //   fd.append('ParentEmail', parent.email)
+    // }
+    // fd.append('FirstName', learner.firstName);
+    for(let parent of this.parentForm.value) {
+       this.parents['FirstName']=parent.firstName;
+       this.parents['LastName']=parent.lastName;
+       this.parents['Relationship']=parseInt(parent.relationship);
+       this.parents['ContactNum']=parent.contactPhone;
+       this.parents['Email']=parent.email;
+       fd.append('Parent', JSON.stringify(this.parents));
     for (let parent of this.parentForm.value) {
       fd.append('GuardianFirstName', parent.firstName);
       fd.append('GuardianLastName', parent.lastName);
@@ -144,7 +163,6 @@ export class RegistrationComponent implements OnInit {
       fd.append('GuardianPhone', parent.contactPhone);
       fd.append('GuardianEmail', parent.email);
     }
-    console.log('data posted to server', fd);
     this.registrationService.postStudent(fd)
         .subscribe(
           data => {
@@ -155,9 +173,9 @@ export class RegistrationComponent implements OnInit {
             this.errorMsg = error;
             console.log('Error!', error);
           }
-        );
-
+        )
   }
+}
 
   resetLearner() {
     this.learnerForm.reset();
@@ -216,11 +234,13 @@ export class RegistrationComponent implements OnInit {
   }
 
 // go and next function
-  next(id: string) {
+  next(value: any) {
+    value.event.preventDefault();
     document.getElementById('learnerForm').style.display = 'none';
     document.getElementById('parentForm').style.display = 'none';
     document.getElementById('courseForm').style.display = 'none';
-    document.getElementById(id).style.display = 'block';
+    document.getElementById(value.id).style.display = 'block';
+    
   }
   chooseCourse(id: any) {
     document.getElementById('groupCourse').style.display = 'none';
