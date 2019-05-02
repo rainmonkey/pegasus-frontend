@@ -13,13 +13,6 @@
 .card-body {
     background-color:#F0F8FF;
 }
-h1 {
-    margin: 20px auto;
-    color: #0699CD;
-}
-h3, h5 {
-    color: #0699CD;
-}
 .fa, u {
     display: inline-block;
     font-size: 16px;
