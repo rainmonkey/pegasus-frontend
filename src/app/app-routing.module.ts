@@ -4,6 +4,7 @@ import { TestcontentComponent } from './components/testing/testcontent/testconte
 import { LearnerDetailsComponent } from './components/dashboard/dashboard-components/learner-details/learner-details.component';
 import { RegistrationComponent } from './components/dashboard/dashboard-components/registration/registration.component';
 import { HomepageComponent } from './components/dashboard/homepage/homepage.component';
+import { TimePickerComponent } from './components/dashboard/dashboard-components/time-picker/time-picker.component';
 
 import { DashboardRestrictGuard } from './guards/dashboard-restrict.guard';
 
@@ -13,7 +14,8 @@ const routes: Routes = [
     children: [
       { path: 'testcontent', component: TestcontentComponent },
       { path: 'payment', component: LearnerDetailsComponent },
-      { path: 'registration', component: RegistrationComponent }
+      { path: 'registration', component: RegistrationComponent },
+      { path: 'time-picker', component: TimePickerComponent }
     ]
   },
   { path: 'login', component: LoginComponent },
