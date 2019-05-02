@@ -1,0 +1,85 @@
+<!-- bootstrap model -->
+<div class='container'>
+    <div class='row justify-content-md-center'>
+        <div class="col-md-10">
+            <ng-template #content let-modal>
+                <div class="modal-header m-2">
+                    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+
+                <!-- modal body which is only contain middlename selector -->
+                <div class="modal-body">
+                    <div *ngIf='data'>
+                        <h3>Middle Name</h3>
+                        <form novalidate class="form-group">
+                            <select #district class='custom-select' (change)='selectChange(district)'>
+                            <option>Please Select The Middle Name</option>
+                            <option *ngFor="let learner of data; let i = index" [value]="i">Middle Name: {{learner.MiddleName}} Address: {{learner.Address}}</option>
+                          </select>
+                        </form>
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')">Return</button>
+                </div>
+            </ng-template>
+            <!-- open method modal& search name-->
+            <form *ngIf='!showOthers' class="form-group" [formGroup]='searchForm'>
+                <div class="row justify-content-start">
+                    <h6 class="col-md-2 align-bottom">Learner's first name:</h6>
+
+                    <div class="col-md-3">
+                        <input type="text" formControlName="search" placeholder="Please enter.." name="firstName" class="form-control" [class.is-invalid]="search.invalid && search.touched">
+                        <small [class.d-none]="search.valid || search.untouched " class="text-danger">Learner's name is required</small>
+                    </div>
+
+                    <div class="col-md-1"></div>
+                    <button [disabled]="search.invalid" class="btn btn-outline-primary" (click)="open(content)">Search</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class='switchOthersContainer' *ngIf='!showOthers'>
+    <div class="container">
+        <div class="row justify-content-md-center">
+            <div class="col-md-10 container-fluid" *ngIf="registrationFormL.value.learnerId">
+                <div class="row">
+                    <div class="col-md">
+                        <h5>Learner's Information</h5>
+                    </div>
+                </div>
+                <form class="mt-2" [formGroup]="registrationFormL">
+                    <div class="row">
+                        <div class="form-group col-md">
+                            <label><h6>First Name:</h6></label>
+                            <input type="text" formControlName="learnerName" class="form-control">
+                        </div>
+
+                        <div class="form-group col-md">
+                            <label><h6>Last Name:</h6></label>
+                            <input type="text" formControlName="lastName" class="form-control">
+                        </div>
+
+                        <div class="form-group col-md">
+                            <label><h6>Middle Name:</h6></label>
+                            <input type="text" formControlName="middleName" class="form-control">
+                        </div>
+
+                        <div class='col-md'>
+                            <label><h6>Contact Number:</h6></label>
+                            <input type="text" formControlName="phone" class="form-control">
+                        </div>
+
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<router-outlet></router-outlet>
