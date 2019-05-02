@@ -101,8 +101,6 @@ export class LearnerDetailsComponent implements OnInit {
   // product list fb
   productListForm = this.fb.group({
     productList: this.fb.array([this.productListGroup]),
-    rate:[100],
-    subMoney:[0],
     amount:[]
     });
 
@@ -279,7 +277,8 @@ export class LearnerDetailsComponent implements OnInit {
           this.closeResult = `Closed with: ${result}`;
           this.postProdPayObj = {
             StaffId: 1,
-
+            BranchId: 1,
+            LearnerId: this.learnerId,
           };
           // transfer elements from productList to the local userSelcProd
           this.productList.controls.forEach(x => {
@@ -320,7 +319,9 @@ export class LearnerDetailsComponent implements OnInit {
       product: [''],
       price: [],
       number: [1],
-      index: [0]
+      index: [0],
+      rate: [100],
+      subMoney: [0]
     });
   }
   get productList() {
@@ -346,7 +347,7 @@ export class LearnerDetailsComponent implements OnInit {
     const conf = confirm('your selection have not submit, do you still want to delete it?');
     if (conf) {
     // console.log(this.prodItems[index]);
-    this.sellPrice = this.sellPrice - Number(this.prodItems[index].prodItem[0].SellPrice);
+    this.sellPrice = this.sellPrice - Number(this.prodItems[index].prodItem[0].SellPrice) * this.productList.controls[index].value.number;
     this.sellPriceArr.splice(index, 1);
 
     this.productList.removeAt(index);
@@ -417,7 +418,13 @@ export class LearnerDetailsComponent implements OnInit {
       this.sellPriceArr.push(Number(this.prodItems[j].prodItem[0].SellPrice)*this.productList.controls[j].value.number)
       this.sellPrice = this.sellPriceArr.reduce((sum,price)=>{
         return sum + price;
-      },0)* this.productListForm.controls.rate.value/100 - this.productListForm.controls.subMoney.value;
+      },0)* this.productList.controls[j].value.rate/100 - this.productList.controls[j].value.subMoney;
+      // Math.round(this.sellPrice);
+      // console.log(this.sellPrice)
+  }
+
+  changeRate(j){
+
   }
   // other payment
 

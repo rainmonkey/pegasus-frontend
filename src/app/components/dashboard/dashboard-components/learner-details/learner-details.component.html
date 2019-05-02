@@ -245,15 +245,7 @@
                     <div *ngIf="isCollapsedI">
                         <form class='mb-2' [formGroup]='productListForm'>
                             <div class='row'>
-                                <div class="form-group col">
-                                    <label>Discount by Percentage (%)</label>
-                                    <input type="number" min="0" max="100" value='100' class="form-control mt-1 mr-2 ml-2" formControlName="rate">
-                                </div>
-                                <div class="form-group col">
-                                    <label>Discount by Money ($)</label>
-                                    <input type="number" min="0" value='0' class="form-control mt-1 mr-2 ml-2" formControlName="subMoney">
-                                </div>
-                                <div class="form-group col">
+                                <div class="form-group col-2">
                                     <label>Amount ($)</label>
                                     <input type="number" min="0" value={{sellPrice}} class="form-control mt-1 mr-2" disabled>
                                 </div>
@@ -266,6 +258,16 @@
                                             <button *ngIf="productList.controls.length !== 1" style="border-radius:30%" class="btn btn-outline-danger btn-sm m-1" (click)='removeOption(j)'>-</button>
                                         </div>
                                         <h5>Products Selling To Customer Section {{j+1}}</h5>
+                                        <div class='row'>
+                                            <div class="form-group col">
+                                                <label>Discount by Percentage (%)</label>
+                                                <input type="number" min="0" max="100" value='100' class="form-control mt-1 mr-2 ml-2" formControlName="rate" (click)="changeProductPrice(j)">
+                                            </div>
+                                            <div class="form-group col">
+                                                <label>Discount by Money ($)</label>
+                                                <input type="number" min="0" value='0' class="form-control mt-1 mr-2 ml-2" formControlName="subMoney" (click)="changeProductPrice(j)">
+                                            </div>
+                                        </div>
                                         <div class="row">
                                             <div class="form-group col">
                                                 <label>Types</label>
