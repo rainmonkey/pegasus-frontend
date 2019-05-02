@@ -1,4 +1,4 @@
-import { AngularFontAwesomeModule } from 'angular-font-awesome';
+
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -53,7 +53,6 @@ import { CoursesListComponent } from './components/dashboard/dashboard-component
     ReactiveFormsModule,
     BrowserAnimationsModule,
     MatButtonModule,
-    AngularFontAwesomeModule,
     MatFormFieldModule,
     MatInputModule,
     routing
