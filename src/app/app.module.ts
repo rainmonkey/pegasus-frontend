@@ -14,19 +14,16 @@ import { routing } from '../app/app-routing.module';
 import { AppComponent } from './app.component';
 import { SidebarComponent } from './components/dashboard/general/sidebar/sidebar.component';
 import { RegistrationComponent } from './components/dashboard/dashboard-components/registration/registration.component';
+import { TimePickerComponent } from './components/dashboard/dashboard-components/time-picker/time-picker.component';
 import { TestcontentComponent } from './components/testing/testcontent/testcontent.component';
 import { LoginComponent } from './components/basic/login/login.component';
 import { HeaderbarComponent } from './components/dashboard/general/headerbar/headerbar.component';
 import { HomepageComponent } from './components/dashboard/homepage/homepage.component';
 import { LearnerDetailsComponent } from './components/dashboard/dashboard-components/learner-details/learner-details.component';
-
+import { FooterComponent } from './components/basic/footer/footer.component';
 // Guards
 
 // Services
-import { FooterComponent } from './components/basic/footer/footer.component';
-
-
-
 
 
 @NgModule({
@@ -39,6 +36,7 @@ import { FooterComponent } from './components/basic/footer/footer.component';
     TestcontentComponent,
     LearnerDetailsComponent,
     RegistrationComponent,
+    TimePickerComponent,
     FooterComponent
   ],
   imports: [
