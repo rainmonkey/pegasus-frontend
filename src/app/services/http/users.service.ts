@@ -9,7 +9,7 @@ export class UsersService {
 
   // Call API for sidebar Data
   getSidebar(){
-    
+
   }
 
 
