@@ -1,13 +1,13 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
-import { LearnersService } from '../../../../services/HTTP/learners.service';
-import { PaymentService } from '../../../../services/HTTP/payment.service';
+import { LearnersService } from '../../../../services/http/learners.service';
+import { PaymentService } from '../../../../services/http/payment.service';
 
 import { FormBuilder, Validators, FormArray, FormGroup, FormControl, NgControl, Form } from '@angular/forms';
 import { NgbModal, ModalDismissReasons, } from '@ng-bootstrap/ng-bootstrap';
 import { NgbTabsetConfig } from '@ng-bootstrap/ng-bootstrap';
 
 import { ILearnerPay, IOtherPay, IcatData } from './learners';
-import { ProductsService } from 'src/app/services/HTTP/products.service';
+import { ProductsService } from 'src/app/services/http/products.service';
 
 @Component({
   selector: 'app-learner-detail',
