@@ -292,13 +292,13 @@
                                         <div class="form-group row justify-content-start">
                                             <div class="form-group col-3">
                                                 <label>Number of Product(s)</label>
-                                                <input type="number" min="1" value="1" class="form-control mt-1 mr-2" formControlName="number">
+                                                <input type="number" min="1" value="1" class="form-control mt-1 mr-2" formControlName="number" (change)="changeProductPrice(j)">
                                             </div>
                                         </div>
-                                        <pre>{{productListForm.value | json}}</pre>
                                         <hr *ngIf="productList.controls.length !== 1">
                                     </div>
                                 </div>
+                                <pre>{{productListForm.value | json}}</pre>
                             </div>
                             <!-- open method for product modal-->
                             <button class="btn btn-primary" (click)="openProd(contentProd)">Send this Payment</button>

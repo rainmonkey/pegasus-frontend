@@ -56,6 +56,7 @@ export class LearnerDetailsComponent implements OnInit {
   public userSelcProd = [];
   public userProd;
   public sellPrice = 0;
+  public sellPriceArr = [];
 
   @ViewChild('productName') ProductName: ElementRef;
 
@@ -100,8 +101,8 @@ export class LearnerDetailsComponent implements OnInit {
   // product list fb
   productListForm = this.fb.group({
     productList: this.fb.array([this.productListGroup]),
-    rate:['100'],
-    subMoney:['0'],
+    rate:[100],
+    subMoney:[0],
     amount:[]
     });
 
@@ -149,6 +150,7 @@ export class LearnerDetailsComponent implements OnInit {
         if (!data['LearnerId']) {this.registrationFormL.value.learnerId=0; console.log(this.learners)}
         this.learners = data['Data'][0];
         this.data = data['Data'];
+        console.log(this.data)
         this.registrationFormL.patchValue({
           learnerId: this.learners.LearnerId,
           learnerName: this.learners.FirstName,
@@ -181,7 +183,7 @@ export class LearnerDetailsComponent implements OnInit {
             console.log(this.types);
           });
 
-        if (data.length > 1) {
+        if (this.data.length > 1) {
           this.show = true;
         } else {
           this.show = false;
@@ -316,8 +318,8 @@ export class LearnerDetailsComponent implements OnInit {
       category: [''],
       types: [''],
       product: [''],
-      price: [''],
-      number: ['1'],
+      price: [],
+      number: [1],
       index: [0]
     });
   }
@@ -332,6 +334,7 @@ export class LearnerDetailsComponent implements OnInit {
 
   addOption() {
     this.catItem = [];
+    this.prods = [];
     this.prodItem = [];
     this.productList.push(this.productListGroup);
     this.types.push(this.typeItem);
@@ -342,8 +345,12 @@ export class LearnerDetailsComponent implements OnInit {
   removeOption(index) {
     const conf = confirm('your selection have not submit, do you still want to delete it?');
     if (conf) {
+    // console.log(this.prodItems[index]);
+    this.sellPrice = this.sellPrice - Number(this.prodItems[index].prodItem[0].SellPrice);
+    this.sellPriceArr.splice(index, 1);
+
     this.productList.removeAt(index);
-    this.typeItem.splice(index, 1);
+    this.types.splice(index, 1);
     this.categories.splice(index, 1);
     this.prodMuti.splice(index, 1);
     this.prodItems.splice(index, 1);
@@ -351,7 +358,7 @@ export class LearnerDetailsComponent implements OnInit {
   }
 
   selectType(dis, j) {
-    this.prodMuti[j].prods = [];
+    //console.log(this.prodMuti[j].prods,'this.prodMuti',this.prodMuti)
     this.productsListService
     .getProdCat(this.types[j][dis.value].ProdCatId)
     .subscribe(cat => {
@@ -385,16 +392,33 @@ export class LearnerDetailsComponent implements OnInit {
         this.productList.controls[j].patchValue({
         price: this.prodItems[j].prodItem[0].SellPrice
       });
-      this.prodItems.forEach( price => {
-        console.log(price)
-        this.sellPrice = Number(price.prodItem[0].SellPrice) + this.sellPrice;
-        console.log('price.prodItem[0].SellPrice:',Number(price.prodItem[0].SellPrice,))
-      });
+        this.changeProductPrice(j);
 
-      console.log('this.sellPrice:',this.sellPrice)
+      // return console.log(this.prodItems[j].prodItem[0].SellPrice)
+      // return console.log(this.productList.controls[j])
+
+      // this.sellPriceArr.splice(j, 1)
+      // this.sellPriceArr.push(Number(this.prodItems[j].prodItem[0].SellPrice)*this.productList.controls[j].value.number)
+      // this.sellPrice = this.sellPriceArr.reduce((sum,price)=>{
+      //   return sum + price;
+      // },0)* this.productListForm.controls.rate.value/100 - this.productListForm.controls.subMoney.value;
+
+      // this.prodItems.forEach( price => {
+      //   this.sellPrice = Number(price.prodItem[j].SellPrice) + this.sellPrice;
+      //   console.log('price.prodItem[j].SellPrice:',Number(price.prodItem[j].SellPrice,))
+      // });
+
+      // console.log('this.sellPrice:',this.sellPrice)
     });
   }
 
+  changeProductPrice(j){
+    this.sellPriceArr.splice(j, 1)
+      this.sellPriceArr.push(Number(this.prodItems[j].prodItem[0].SellPrice)*this.productList.controls[j].value.number)
+      this.sellPrice = this.sellPriceArr.reduce((sum,price)=>{
+        return sum + price;
+      },0)* this.productListForm.controls.rate.value/100 - this.productListForm.controls.subMoney.value;
+  }
   // other payment
 
   otherPaymentSubmit() {
