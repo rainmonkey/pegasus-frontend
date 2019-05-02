@@ -27,12 +27,7 @@ const routes: Routes = [
         ]
       },
       { path: 'registration', component: RegistrationComponent },
-<<<<<<< HEAD
-
-      { path: 'time-picker', component: TimePickerComponent }
-=======
       { path: 'timePicker', component: TimePickerComponent }
->>>>>>> 3b7e311cac9968de450e0cfca74ce63249cb55cb
     ]
   },
   { path: 'login', component: LoginComponent },
