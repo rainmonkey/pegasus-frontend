@@ -87,12 +87,3 @@ nav.side-navbar ul li a:hover {
   -webkit-transition: none;
   transition: none;
 }
-
-.h4 {
-  margin-bottom: 0.5rem;
-  font-family: inherit;
-  font-weight: 700;
-  line-height: 1.1;
-  color: inherit;
-  font-size: 1.1rem;
-}
