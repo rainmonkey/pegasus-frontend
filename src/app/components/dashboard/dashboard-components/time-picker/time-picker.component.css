@@ -7,7 +7,7 @@
     color: #666; 
     font-family: Arial, Helvetica, sans-serif;
     background-color: #f5f5fa;
-    width: 80%;
+    width: 90%;
     margin: 50px 50px;
     border: 1px solid #ddd;
     overflow: hidden;
@@ -26,10 +26,10 @@
     text-align: center;
     top: -8px;
   }
-  /* .rmws-days {
+  .rmws-days {
     display: table-cell;
     height: 100%;
-  } */
+  }
   .rmws-day {
     border-left: 1px solid #ddd;
     box-sizing: border-box;
@@ -43,10 +43,10 @@
     line-height: 48px;
     text-align: center;
   }
-  /* .rmws-slots {
+  .rmws-slots {
     height: 100%;
     position: relative;
-  } */
+  }
   .rmws-slot {
     border-bottom: 1px dotted #e0e0e0;
     box-sizing: border-box;
@@ -55,7 +55,7 @@
   /* .rmws-slot:last-child {
     border-bottom: none;
   } */
-  .rmws-event {
+  /* .rmws-event {
     background-color: rgba(255, 0, 0, 0.5);
     border: 1px solid rgba(255, 0, 0, 0.75);
     border-radius: 3px;
@@ -68,7 +68,7 @@
     position: absolute;
     right: 0;
     z-index: 10;
-  }
+  } */
   .rmws-event .rmws-time {
     font-size: 12px;
     font-weight: 300;
