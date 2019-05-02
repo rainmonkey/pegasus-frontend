@@ -12,7 +12,7 @@
   <!-- Sidebar Navidation Menus-->
   <span class="heading">Main</span>
   <ul class="list-unstyled">
-    <li *ngFor="let item of navitem; let key = index;">
+    <li *ngFor="let item of navitem;">
       <a [routerLink]="['/',item.pagelink]" routerLinkActive="active" class="font6">
         <i class="fas fa-home sidebaricon" [ngClass]="item.pageicon"></i>
         {{item.pagename}}
