@@ -42,7 +42,7 @@ export class SidebarComponent implements OnInit {
       lastname : 'He',
       position : 'President of US',
       img : '../../../../assets/images/usersimg/testimg.jpg'
-    }  
+    }
 
 
   constructor(
@@ -55,6 +55,10 @@ export class SidebarComponent implements OnInit {
     // Get data
     // this.userService.getSidebar()
   }
+
+  // Method to assign sidebar data
+
+  
 
 
 }
