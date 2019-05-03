@@ -87,8 +87,7 @@ export class ModalUpdateComponent implements OnInit {
 
     }
 
-    //console.log('original value',this.modalUpdateFormComponentObj.updateForm.value);
-    //console.log('value to be submitted', this.valueToBeSubmitted)
+  
 
 
 
