@@ -1,8 +1,10 @@
 import { Routes, RouterModule } from '@angular/router';
 import { LoginComponent } from './components/basic/login/login.component';
 import { TestcontentComponent } from './components/testing/testcontent/testcontent.component';
-import { RegistrationComponent } from './components/dashboard/dashboard-components/registration/registration.component';
+import { LearnerComponent } from './components/dashboard/dashboard-components/learner-registration/learner/learner.component';
 import { HomepageComponent } from './components/dashboard/general/homepage/homepage.component';
+import { GuardianComponent } from './components/dashboard/dashboard-components/learner-registration/guardian/guardian.component';
+import { CourseComponent } from './components/dashboard/dashboard-components/learner-registration/course/course.component';
 import { TimePickerComponent } from './components/dashboard/dashboard-components/time-picker/time-picker.component';
 
 import { DashboardRestrictGuard } from './guards/dashboard-restrict.guard';
@@ -26,7 +28,9 @@ const routes: Routes = [
         { path: 'payOther', component: AdminLearnerPaymentOtherComponent }
         ]
       },
-      { path: 'registration', component: RegistrationComponent },
+      { path: 'learner', component: LearnerComponent },
+      { path: 'guardian', component: GuardianComponent },
+      { path: 'course', component: CourseComponent },
       { path: 'timePicker', component: TimePickerComponent }
     ]
   },
