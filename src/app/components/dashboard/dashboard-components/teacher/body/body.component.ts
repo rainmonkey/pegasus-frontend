@@ -89,6 +89,7 @@ export class BodyComponent implements OnInit {
     modalRef.componentInstance.witchTeacher = witchTeacher;
   }
 
+  //get data from server
   getData(){
     this.teachersService.getTeachers().subscribe((data) => {
       this.teachersList = data.Data;
