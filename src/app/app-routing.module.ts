@@ -33,7 +33,7 @@ const routes: Routes = [
       children: [
         { path: ':id', component: AdminLearnerPaymentRegistrationComponent },
       ]},
-      { path: 'payOther', component: AdminLearnerPaymentOtherComponent },      
+      { path: 'payment/other', component: AdminLearnerPaymentOtherComponent },      
 
       { path: 'learner', component: LearnerComponent },
       { path: 'guardian', component: GuardianComponent },
