@@ -1,0 +1,93 @@
+<!-- <pre>{{learnerForm.value | json}}</pre> -->
+<ul class="nav my-3">
+  <li><a class="nav-tab" routerLink="/learner" routerLinkActive="active">Learner</a></li>
+  <li><a class="nav-tab" routerLink="/guardian" routerLinkActive="active">Guardian</a></li>
+  <li><a class="nav-tab" routerLink="/course" routerLinkActive="active">Course</a></li>
+</ul>
+
+<div [formGroup]="learnerForm" class="card">
+    <div class="card-body">
+
+      <div class="button text-right">
+        <button class="btn_reset my-3" (click)="reset()">Reset</button>
+      </div>
+
+      <div class="learnerPhoto">
+        <label for="photo"></label>
+        <input formControlName="photo" type="file" (click)="uploadPhoto($event)" id="photo" accept="image/*">
+      </div>
+
+      <div class="learnerName row">
+        <div class="col-sm-4 col-md-4">
+          <label for="firstName">First Name</label>
+          <input class="form-control" formControlName="firstName" type="text" id="firstName">
+          <div *ngIf="firstName.invalid && (firstName.dirty || firstName.touched)" class="text-danger">
+            <small *ngIf="firstName.errors.required"> First name is required</small>
+          </div>
+        </div>
+        <div class="col-sm-4 col-md-4">
+          <label for="middleName">Middle Name</label>
+          <input class="form-control" formControlName="middleName" type="text" id="middleName">
+        </div>
+        <div class="col-sm-4 col-md-4">
+          <label for="lastName">Last Name</label>
+          <input class="form-control" formControlName="lastName" type="text" id="lastName">
+          <div *ngIf="lastName.invalid && (lastName.dirty || lastName.touched)" class="text-danger">
+            <small *ngIf="lastName.errors.required">Last name is required</small>
+          </div>
+        </div>
+      </div>
+
+      <div class="learnerGender-Birthday-EnrollmentDate row">
+        <div class="col-sm-4 col-md-4">
+          <label for="gender">Gender</label>
+          <select class="form-control" formControlName="gender" id="gender">
+            <option value="1">male</option>
+            <option value="2">female</option>
+          </select>
+          <div *ngIf="gender.invalid && (gender.dirty || gender.touched)" class="text-danger">
+            <small>Gender is required</small>
+          </div>
+        </div>
+        <div class="col-sm-4 col-md-4">
+          <label for="birthday">Date of Birth</label>
+          <input class="form-control" formControlName="birthday" type="date" id="birthday">
+        </div>
+        <div class="col-sm-4 col-md-4">
+          <label for="enrollmentDate">Date of Enrollment</label>
+          <input class="form-control" formControlName="enrollmentDate" type="date" id="enrollmentDate">
+        </div>
+      </div>
+
+      <div class="contactPhone-email row">
+        <div class="col-sm-6 col-md-6">
+          <label for="contactPhone">Contact Phone</label>
+          <input class="form-control" formControlName="contactPhone" type="tel" id="contactPhone">
+        </div>
+        <div class="col-sm-6 col-md-6">
+          <label for="email">Email</label>
+          <input class="form-control" formControlName="email" type="email" id="email">
+          <div *ngIf="email.invalid && (email.dirty || email.touched)" class="text-danger">
+            <small *ngIf="email.errors.required">Email is required</small>
+            <small *ngIf="email.errors.pattern">Email is invalid</small>
+          </div>
+        </div>
+      </div>
+
+      <div class="address row">
+        <div class="col-12">
+          <label for="address">Physical Address</label>
+          <input class="form-control" formControlName="address" type="text" id="address">
+        </div>
+      </div>
+
+      <div class="grade my-3">
+        <label for="grade">If you have ABRSM Theory Grade 5, please upload.</label>
+        <input formControlName="grade" type="file" (click)="uploadGrade($event)" id="grade" accept="image/*">
+      </div>
+
+      <div class="my-3 text-right">
+        <button class="btn_next" routerLink="/guardian" routerLinkActive="active">Next</button>
+      </div>
+    </div>
+  </div>
