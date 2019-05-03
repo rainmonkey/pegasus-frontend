@@ -54,10 +54,10 @@ export class SearchNameModuleComponent implements OnInit {
         .getLearners(this.searchForm.value.search)
         .subscribe(data => {
           //return (console.log(data))
-          if (!data['LearnerId']) {this.registrationFormL.value.learnerId=0; console.log(this.learners)}
+          if (!data['LearnerId']) {this.registrationFormL.value.learnerId = 0; console.log(this.learners)}
           this.learners = data['Data'][0];
           this.data = data['Data'];
-          console.log(this.data)
+          console.log(this.learners)
           this.registrationFormL.patchValue({
             learnerId: this.learners.LearnerId,
             learnerName: this.learners.FirstName,
@@ -66,7 +66,10 @@ export class SearchNameModuleComponent implements OnInit {
             phone: this.learners.ContactNum,
             address: this.learners.Address
           });
-          this.onChangePath(this.learners.learnerId);
+
+          // this.onChangePath(this.learners.LearnerId);
+
+
           if (this.data.length > 1) {
             this.show = true;
           } else {
@@ -85,11 +88,15 @@ export class SearchNameModuleComponent implements OnInit {
                 }
               );
           }
+          this.onChangePath(this.learners.LearnerId);
         }, err => console.log(err));
     }
 
     onChangePath(id){
-      this.router.navigate([id]);
+      console.log(id);
+      this.router.navigate(['/payment/invoice/', id]);
+      // this.router.navigate(['/testcontent']);
+      console.log('route, ', this.router.url);
     }
 
     // middle name method
