@@ -1,8 +1,10 @@
 import { Routes, RouterModule } from '@angular/router';
 import { LoginComponent } from './components/basic/login/login.component';
 import { TestcontentComponent } from './components/testing/testcontent/testcontent.component';
-import { RegistrationComponent } from './components/dashboard/dashboard-components/registration/registration.component';
+import { LearnerComponent } from './components/dashboard/dashboard-components/learner-registration/learner/learner.component';
 import { HomepageComponent } from './components/dashboard/general/homepage/homepage.component';
+import { GuardianComponent } from './components/dashboard/dashboard-components/learner-registration/guardian/guardian.component';
+import { CourseComponent } from './components/dashboard/dashboard-components/learner-registration/course/course.component';
 import { TimePickerComponent } from './components/dashboard/dashboard-components/time-picker/time-picker.component';
 
 import { DashboardRestrictGuard } from './guards/dashboard-restrict.guard';
@@ -18,18 +20,28 @@ const routes: Routes = [
 
     children: [
       { path: 'testcontent', component: TestcontentComponent },
-      { path: 'payment', component: AdminLearnerPaymentPanelComponent,
+      // Payments Area
+      { path: 'payment/invoice',  component: AdminLearnerPaymentPanelComponent,
       children: [
-        { path: 'invoice/:id', component: AdminLearnerPaymentInvoiceComponent },
-        { path: 'payProducts/:id', component: AdminLearnerPaymentProductsComponent },
-        { path: 'payRegis/:id', component: AdminLearnerPaymentRegistrationComponent },
-        { path: 'payOther', component: AdminLearnerPaymentOtherComponent }
-        ]
-      },
-      { path: 'registration', component: RegistrationComponent },
+        { path: ':id', component: AdminLearnerPaymentInvoiceComponent },
+      ]},
+      { path: 'payment/products', pathMatch:'prefix', component: AdminLearnerPaymentPanelComponent,
+      children: [
+        { path: ':id', component: AdminLearnerPaymentProductsComponent },
+      ]},
+      { path: 'payment/registration', pathMatch:'prefix', component: AdminLearnerPaymentPanelComponent,
+      children: [
+        { path: ':id', component: AdminLearnerPaymentRegistrationComponent },
+      ]},
+      { path: 'payOther', component: AdminLearnerPaymentOtherComponent },      
+
+      { path: 'learner', component: LearnerComponent },
+      { path: 'guardian', component: GuardianComponent },
+      { path: 'course', component: CourseComponent },
       { path: 'timePicker', component: TimePickerComponent }
     ]
   },
+  
   { path: 'login', component: LoginComponent },
   { path: '**', redirectTo: '' }
 ];
