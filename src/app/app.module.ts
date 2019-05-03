@@ -14,9 +14,6 @@ import { routing } from '../app/app-routing.module';
 import { AppComponent } from './app.component';
 import { SidebarComponent } from './components/dashboard/general/sidebar/sidebar.component';
 import { TimePickerComponent } from './components/dashboard/dashboard-components/time-picker/time-picker.component';
-import { LearnerComponent } from './components/dashboard/dashboard-components/learner-registration/learner/learner.component';
-import { GuardianComponent } from './components/dashboard/dashboard-components/learner-registration/guardian/guardian.component';
-import { CourseComponent } from './components/dashboard/dashboard-components/learner-registration/course/course.component';
 import { TestcontentComponent } from './components/testing/testcontent/testcontent.component';
 import { LoginComponent } from './components/basic/login/login.component';
 import { HeaderbarComponent } from './components/dashboard/general/headerbar/headerbar.component';
@@ -38,6 +35,8 @@ import { ModalUpdateFormComponent } from './components/dashboard/dashboard-compo
 import { GenderFormatPipe } from 'src/assets/pipes/teacher-pipes/gender-format.pipe';
 import { WeekFormatPipe } from 'src/assets/pipes/teacher-pipes/week-format.pipe';
 import { OrgFormatPipe } from 'src/assets/pipes/teacher-pipes/org-format.pipe';
+import { LearnerRegistrationFormComponent } from './components/dashboard/dashboard-components/learner-registration/learner-registration-form/learner-registration-form.component';
+import { LearnerRegistrationEditComponent } from './components/dashboard/dashboard-components/learner-registration/learner-registration-edit/learner-registration-edit.component';
 // Guards
 
 // Services
@@ -62,16 +61,15 @@ import { OrgFormatPipe } from 'src/assets/pipes/teacher-pipes/org-format.pipe';
     CoursesPanelComponent,
     CoursesDetailComponent,
     CoursesListComponent,
-    LearnerComponent,
-    GuardianComponent,
-    CourseComponent,
     BodyComponent,
     ModalDeleteComponent,
     ModalUpdateComponent,
     ModalUpdateFormComponent,
     GenderFormatPipe,
     WeekFormatPipe,
-    OrgFormatPipe
+    OrgFormatPipe,
+    LearnerRegistrationFormComponent,
+    LearnerRegistrationEditComponent
   ],
   imports: [
     NgbModule,
