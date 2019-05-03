@@ -19,7 +19,6 @@ import { TestcontentComponent } from './components/testing/testcontent/testconte
 import { LoginComponent } from './components/basic/login/login.component';
 import { HeaderbarComponent } from './components/dashboard/general/headerbar/headerbar.component';
 import { HomepageComponent } from './components/dashboard/general/homepage/homepage.component';
-import { LearnerDetailsComponent } from './components/dashboard/dashboard-components/learner-details/learner-details.component';
 import { AdminLearnerPaymentPanelComponent } from './components/dashboard/dashboard-components/admin-learner-payment/admin-learner-payment-panel/admin-learner-payment-panel.component';
 import { SearchNameModuleComponent } from './components/dashboard/dashboard-components/support/search-name-module/search-name-module.component';
 import { AdminLearnerPaymentInvoiceComponent } from './components/dashboard/dashboard-components/admin-learner-payment/admin-learner-payment-details/admin-learner-payment-invoice/admin-learner-payment-invoice.component';
@@ -43,7 +42,6 @@ import { CoursesListComponent } from './components/dashboard/dashboard-component
     HeaderbarComponent,
     SidebarComponent,
     TestcontentComponent,
-    LearnerDetailsComponent,
     AdminLearnerPaymentPanelComponent,
     SearchNameModuleComponent,
     AdminLearnerPaymentInvoiceComponent,
