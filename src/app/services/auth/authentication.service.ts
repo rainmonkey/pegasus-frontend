@@ -26,14 +26,13 @@ export class AuthenticationService {
 
     // Check tokens expire time
     checkTokenExpiry(){
-        let tokenExpireTime = localStorage.getItem('TokenExpiry')
-        let now = new Date();
-        return true
-        // if(){
-        //     return true
-        // }else{
-        //     return false
-        // }
+        let tokenExpireTime = Number(localStorage.getItem('TokenExpiry')) 
+        let now = Number((new Date()).getTime()/1000);
+        if(tokenExpireTime > now ){
+            return true
+        }else{
+            return false
+        }
     }
 
 
@@ -59,7 +58,7 @@ export class AuthenticationService {
 
         localStorage.setItem('userFirstName', res.Data.userdetails.firstname);
         localStorage.setItem('userLastName', res.Data.userdetails.lastname);
-        localStorage.setItem('userPosition', res.Data.userdetails.role);
+        localStorage.setItem('userPosition', res.Data.userdetails.position);
     }
 
     // remove user from local storage to log user out

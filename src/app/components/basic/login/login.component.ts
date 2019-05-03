@@ -25,11 +25,11 @@ export class LoginComponent implements OnInit {
     private router: Router,
     private authenticationService: AuthenticationService
   ) {
-    // redirect to home if already logged in
-    // Delete this part
+    
   }
 
   ngOnInit() {
+
     this.loginForm = this.fb.group({
       username: ['', Validators.required],
       password: ['', Validators.required]
