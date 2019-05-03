@@ -31,6 +31,13 @@ import { FooterComponent } from './components/basic/footer/footer.component';
 import { CoursesPanelComponent } from './components/dashboard/dashboard-components/courses/courses-panel/courses-panel.component';
 import { CoursesDetailComponent } from './components/dashboard/dashboard-components/courses/courses-detail/courses-detail.component';
 import { CoursesListComponent } from './components/dashboard/dashboard-components/courses/courses-list/courses-list.component';
+import { BodyComponent } from './components/dashboard/dashboard-components/teacher/body/body.component';
+import { ModalDeleteComponent } from './components/dashboard/dashboard-components/teacher/body/modal-delete/modal-delete.component';
+import { ModalUpdateComponent } from './components/dashboard/dashboard-components/teacher/body/modal-update/modal-update.component';
+import { ModalUpdateFormComponent } from './components/dashboard/dashboard-components/teacher/body/modal-update/modal-update-form/modal-update-form.component';
+import { GenderFormatPipe } from 'src/assets/pipes/teacher-pipes/gender-format.pipe';
+import { WeekFormatPipe } from 'src/assets/pipes/teacher-pipes/week-format.pipe';
+import { OrgFormatPipe } from 'src/assets/pipes/teacher-pipes/org-format.pipe';
 // Guards
 
 // Services
@@ -57,7 +64,14 @@ import { CoursesListComponent } from './components/dashboard/dashboard-component
     CoursesListComponent,
     LearnerComponent,
     GuardianComponent,
-    CourseComponent
+    CourseComponent,
+    BodyComponent,
+    ModalDeleteComponent,
+    ModalUpdateComponent,
+    ModalUpdateFormComponent,
+    GenderFormatPipe,
+    WeekFormatPipe,
+    OrgFormatPipe
   ],
   imports: [
     NgbModule,
@@ -73,6 +87,10 @@ import { CoursesListComponent } from './components/dashboard/dashboard-component
   ],
   providers: [
 
+  ],
+  entryComponents:[
+    ModalUpdateComponent,
+    ModalDeleteComponent
   ],
   bootstrap: [AppComponent]
 })
