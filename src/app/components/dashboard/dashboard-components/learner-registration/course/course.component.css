@@ -1,23 +1,30 @@
 
-.container {
-    margin-top: 50px;
-    margin-bottom: 50px;
+.nav {
+    padding-top: 30px;
 }
-.nav-link {
-    color: #0699CD;
-}
-.nav-course {
-    border: 1px solid #0699CD;
+.nav-tab {
+    color: rgb(77, 102, 240);
+    padding: 10px;
+    margin-left: 10px;
+    border: 1px solid rgb(77, 102, 240);
     border-radius: 10px;
+    border-bottom: none;
 }
 .card-body {
     background-color:#F0F8FF;
 }
-.fa, u {
-    display: inline-block;
-    font-size: 16px;
-    color: #0699CD;
-    margin-right: 5px;
+a {
+    text-decoration: none;
+}
+a:visited {
+    color: rgb(77, 102, 240);
+}
+  
+a:hover {
+    background-color: white;
+}
+a:active {
+    color: rgb(228, 31, 129);
 }
 .button_add, .button_delete, .button_edit, .button_reset {
     /* background-color: white;
@@ -31,8 +38,8 @@
 
 button {
     background-color: white;
-    color: #0699CD;
-    border: 2px solid #0699CD;
+    color: rgb(77, 102, 240);
+    border: 2px solid rgb(77, 102, 240);
     padding: 5px 10px;
     border-radius: 4px;
     text-align: center;
@@ -40,8 +47,8 @@ button {
     cursor: pointer;
     font-size: 13px;
     }
-.btn_submit:hover, .btn_back:hover, .btn_next:hover, .btn_reset:hover, .btn_delete:hover, .btn_add:hover {
-    background-color: #0699CD;
+button:hover {
+    background-color: rgb(77, 102, 240);
     color: white;
     }
 .btn_submit:disabled, .btn_next:disabled {
@@ -50,7 +57,7 @@ button {
     cursor: not-allowed;
     } 
 .nav-link.active {
-    color: #0699CD;
+    color: rgb(77, 102, 240);
 }
 div.photo input {
     /* background:url(src/assets/picture/photo.jpg) no-repeat; */
