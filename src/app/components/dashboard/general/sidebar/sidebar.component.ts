@@ -27,7 +27,7 @@ export class SidebarComponent implements OnInit {
     {
       pagename : 'Registration',
       pageicon : 'fa-th',
-      pagelink : 'learner'
+      pagelink : 'learnerRegistration'
     },
     {
       pagename : 'Payment',

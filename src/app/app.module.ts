@@ -14,9 +14,6 @@ import { routing } from '../app/app-routing.module';
 import { AppComponent } from './app.component';
 import { SidebarComponent } from './components/dashboard/general/sidebar/sidebar.component';
 import { TimePickerComponent } from './components/dashboard/dashboard-components/time-picker/time-picker.component';
-import { LearnerComponent } from './components/dashboard/dashboard-components/learner/learner/learner.component';
-import { GuardianComponent } from './components/dashboard/dashboard-components/learner/guardian/guardian.component';
-import { CourseComponent } from './components/dashboard/dashboard-components/learner/course/course.component';
 import { TestcontentComponent } from './components/testing/testcontent/testcontent.component';
 import { LoginComponent } from './components/basic/login/login.component';
 import { HeaderbarComponent } from './components/dashboard/general/headerbar/headerbar.component';
@@ -72,10 +69,7 @@ import { LearnerRegistrationEditComponent } from './components/dashboard/dashboa
     WeekFormatPipe,
     OrgFormatPipe,
     LearnerRegistrationFormComponent,
-    LearnerRegistrationEditComponent,
-    LearnerComponent,
-    CourseComponent,
-    GuardianComponent
+    LearnerRegistrationEditComponent
   ],
   imports: [
     NgbModule,
