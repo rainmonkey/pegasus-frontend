@@ -39,7 +39,7 @@ const routes: Routes = [
       { path: 'course', component: CourseComponent },
       { path: 'payment/other', component: AdminLearnerPaymentOtherComponent },      
       { path: 'teacher', component: BodyComponent},
-      { path: 'learner/registration', component: LearnerRegistrationFormComponent },
+      { path: 'learner', component: LearnerRegistrationFormComponent },
       { path: 'timePicker', component: TimePickerComponent }
     ]
   },
