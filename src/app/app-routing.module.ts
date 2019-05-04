@@ -1,10 +1,10 @@
 import { Routes, RouterModule } from '@angular/router';
 import { LoginComponent } from './components/basic/login/login.component';
 import { TestcontentComponent } from './components/testing/testcontent/testcontent.component';
-import { LearnerComponent } from './components/dashboard/dashboard-components/learner-registration/learner/learner.component';
+import { LearnerComponent } from './components/dashboard/dashboard-components/learner/learner/learner.component';
 import { HomepageComponent } from './components/dashboard/general/homepage/homepage.component';
-import { GuardianComponent } from './components/dashboard/dashboard-components/learner-registration/guardian/guardian.component';
-import { CourseComponent } from './components/dashboard/dashboard-components/learner-registration/course/course.component';
+import { GuardianComponent } from './components/dashboard/dashboard-components/learner/guardian/guardian.component';
+import { CourseComponent } from './components/dashboard/dashboard-components/learner/course/course.component';
 import { TimePickerComponent } from './components/dashboard/dashboard-components/time-picker/time-picker.component';
 
 import { DashboardRestrictGuard } from './guards/dashboard-restrict.guard';
