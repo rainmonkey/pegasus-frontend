@@ -38,6 +38,8 @@ import { ModalUpdateFormComponent } from './components/dashboard/dashboard-compo
 import { GenderFormatPipe } from 'src/assets/pipes/teacher-pipes/gender-format.pipe';
 import { WeekFormatPipe } from 'src/assets/pipes/teacher-pipes/week-format.pipe';
 import { OrgFormatPipe } from 'src/assets/pipes/teacher-pipes/org-format.pipe';
+import { LearnerRegistrationFormComponent } from './components/dashboard/dashboard-components/learner-registration/learner-registration-form/learner-registration-form.component';
+import { LearnerRegistrationEditComponent } from './components/dashboard/dashboard-components/learner-registration/learner-registration-edit/learner-registration-edit.component';
 // Guards
 
 // Services
@@ -62,16 +64,18 @@ import { OrgFormatPipe } from 'src/assets/pipes/teacher-pipes/org-format.pipe';
     CoursesPanelComponent,
     CoursesDetailComponent,
     CoursesListComponent,
-    LearnerComponent,
-    GuardianComponent,
-    CourseComponent,
     BodyComponent,
     ModalDeleteComponent,
     ModalUpdateComponent,
     ModalUpdateFormComponent,
     GenderFormatPipe,
     WeekFormatPipe,
-    OrgFormatPipe
+    OrgFormatPipe,
+    LearnerRegistrationFormComponent,
+    LearnerRegistrationEditComponent,
+    LearnerComponent,
+    CourseComponent,
+    GuardianComponent
   ],
   imports: [
     NgbModule,

@@ -6,7 +6,7 @@ import { HomepageComponent } from './components/dashboard/general/homepage/homep
 import { GuardianComponent } from './components/dashboard/dashboard-components/learner/guardian/guardian.component';
 import { CourseComponent } from './components/dashboard/dashboard-components/learner/course/course.component';
 import { TimePickerComponent } from './components/dashboard/dashboard-components/time-picker/time-picker.component';
-
+import { LearnerRegistrationFormComponent } from './components/dashboard/dashboard-components/learner-registration/learner-registration-form/learner-registration-form.component';
 import { DashboardRestrictGuard } from './guards/dashboard-restrict.guard';
 import { AdminLearnerPaymentPanelComponent } from './components/dashboard/dashboard-components/admin-learner-payment/admin-learner-payment-panel/admin-learner-payment-panel.component';
 import { AdminLearnerPaymentInvoiceComponent } from './components/dashboard/dashboard-components/admin-learner-payment/admin-learner-payment-details/admin-learner-payment-invoice/admin-learner-payment-invoice.component';
@@ -34,11 +34,12 @@ const routes: Routes = [
       children: [
         { path: ':id', component: AdminLearnerPaymentRegistrationComponent },
       ]},
-      { path: 'payment/other', component: AdminLearnerPaymentOtherComponent },      
-      { path: 'teacher', component: BodyComponent},
       { path: 'learner', component: LearnerComponent },
       { path: 'guardian', component: GuardianComponent },
       { path: 'course', component: CourseComponent },
+      { path: 'payment/other', component: AdminLearnerPaymentOtherComponent },      
+      { path: 'teacher', component: BodyComponent},
+      { path: 'learner/registration', component: LearnerRegistrationFormComponent },
       { path: 'timePicker', component: TimePickerComponent }
     ]
   },
