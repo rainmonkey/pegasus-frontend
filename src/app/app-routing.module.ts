@@ -11,9 +11,6 @@ import { AdminLearnerPaymentProductsComponent } from './components/dashboard/das
 import { AdminLearnerPaymentRegistrationComponent } from './components/dashboard/dashboard-components/admin-learner-payment/admin-learner-payment-details/admin-learner-payment-registration/admin-learner-payment-registration.component';
 import { AdminLearnerPaymentOtherComponent } from './components/dashboard/dashboard-components/admin-learner-payment/admin-learner-payment-details/admin-learner-payment-other/admin-learner-payment-other.component';
 import { BodyComponent } from './components/dashboard/dashboard-components/teacher/body/body.component';
-import { LearnerComponent } from './components/dashboard/dashboard-components/learner/learner/learner.component';
-import { GuardianComponent } from './components/dashboard/dashboard-components/learner/guardian/guardian.component';
-import { CourseComponent } from './components/dashboard/dashboard-components/learner/course/course.component';
 
 
 const routes: Routes = [
@@ -37,11 +34,7 @@ const routes: Routes = [
       { path: 'payment/other', component: AdminLearnerPaymentOtherComponent },      
       { path: 'teacher', component: BodyComponent },
       { path: 'learnerRegistration', component: LearnerRegistrationFormComponent },
-      { path: 'timePicker', component: TimePickerComponent },
-      { path: 'learner', component: LearnerComponent },
-      { path: 'guardian', component: GuardianComponent },
-      { path: 'course', component: CourseComponent },
-      
+      { path: 'timePicker', component: TimePickerComponent }
     ]
   },
   
