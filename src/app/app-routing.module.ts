@@ -1,10 +1,7 @@
 import { Routes, RouterModule } from '@angular/router';
 import { LoginComponent } from './components/basic/login/login.component';
 import { TestcontentComponent } from './components/testing/testcontent/testcontent.component';
-import { LearnerComponent } from './components/dashboard/dashboard-components/learner/learner/learner.component';
 import { HomepageComponent } from './components/dashboard/general/homepage/homepage.component';
-import { GuardianComponent } from './components/dashboard/dashboard-components/learner/guardian/guardian.component';
-import { CourseComponent } from './components/dashboard/dashboard-components/learner/course/course.component';
 import { TimePickerComponent } from './components/dashboard/dashboard-components/time-picker/time-picker.component';
 import { LearnerRegistrationFormComponent } from './components/dashboard/dashboard-components/learner-registration/learner-registration-form/learner-registration-form.component';
 import { DashboardRestrictGuard } from './guards/dashboard-restrict.guard';
@@ -14,6 +11,9 @@ import { AdminLearnerPaymentProductsComponent } from './components/dashboard/das
 import { AdminLearnerPaymentRegistrationComponent } from './components/dashboard/dashboard-components/admin-learner-payment/admin-learner-payment-details/admin-learner-payment-registration/admin-learner-payment-registration.component';
 import { AdminLearnerPaymentOtherComponent } from './components/dashboard/dashboard-components/admin-learner-payment/admin-learner-payment-details/admin-learner-payment-other/admin-learner-payment-other.component';
 import { BodyComponent } from './components/dashboard/dashboard-components/teacher/body/body.component';
+import { LearnerComponent } from './components/dashboard/dashboard-components/learner/learner/learner.component';
+import { GuardianComponent } from './components/dashboard/dashboard-components/learner/guardian/guardian.component';
+import { CourseComponent } from './components/dashboard/dashboard-components/learner/course/course.component';
 
 
 const routes: Routes = [
@@ -34,13 +34,14 @@ const routes: Routes = [
       children: [
         { path: ':id', component: AdminLearnerPaymentRegistrationComponent },
       ]},
+      { path: 'payment/other', component: AdminLearnerPaymentOtherComponent },      
+      { path: 'teacher', component: BodyComponent },
+      { path: 'learnerRegistration', component: LearnerRegistrationFormComponent },
+      { path: 'timePicker', component: TimePickerComponent },
       { path: 'learner', component: LearnerComponent },
       { path: 'guardian', component: GuardianComponent },
       { path: 'course', component: CourseComponent },
-      { path: 'payment/other', component: AdminLearnerPaymentOtherComponent },      
-      { path: 'teacher', component: BodyComponent},
-      { path: 'learner', component: LearnerRegistrationFormComponent },
-      { path: 'timePicker', component: TimePickerComponent }
+      
     ]
   },
   
