@@ -17,7 +17,7 @@
                         <form novalidate class="form-group">
                             <select #district class='custom-select' (change)='selectChange(district)'>
                             <option>Please Select The Middle Name</option>
-                            <option *ngFor="let learner of data; let i = index" [value]="i">Middle Name: {{learner.MiddleName}} Address: {{learner.Address}}</option>
+                            <option *ngFor="let learner of data; let i = index" [value]="i">Last Name: {{learner.LastName}} Middle Name: {{learner.MiddleName}} Address: {{learner.Address}}</option>
                           </select>
                         </form>
                     </div>
@@ -28,7 +28,8 @@
                 </div>
             </ng-template>
             <!-- open method modal& search name-->
-            <form *ngIf='!showOthers' class="form-group" [formGroup]='searchForm'>
+            <form class="form-group mt-2" [formGroup]='searchForm'>
+                <!-- <h5>Please Provide First Name: </h5> -->
                 <div class="row justify-content-start">
                     <h6 class="col-md-2 align-bottom">Learner's first name:</h6>
 
@@ -36,7 +37,6 @@
                         <input type="text" formControlName="search" placeholder="Please enter.." name="firstName" class="form-control" [class.is-invalid]="search.invalid && search.touched">
                         <small [class.d-none]="search.valid || search.untouched " class="text-danger">Learner's name is required</small>
                     </div>
-
                     <div class="col-md-1"></div>
                     <button [disabled]="search.invalid" class="btn btn-outline-primary" (click)="open(content)">Search</button>
                 </div>

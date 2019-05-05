@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { LearnersService } from '../../../../../services/http/learners.service';
-import { FormBuilder, Validators, FormArray, FormGroup, FormControl, NgControl, Form } from '@angular/forms';
+import { FormBuilder, Validators } from '@angular/forms';
 import { NgbModal, ModalDismissReasons, } from '@ng-bootstrap/ng-bootstrap';
 import { Router } from '@angular/router';
 
@@ -15,6 +15,7 @@ export class SearchNameModuleComponent implements OnInit {
     public name: any = 'type..';
     public learners: any;
     public data: any;
+    public errorMsg;
     public show: boolean;
     // ng-modal variable
     closeResult: string;
@@ -48,16 +49,23 @@ export class SearchNameModuleComponent implements OnInit {
     get search() {
       return this.searchForm.get('search');
     }
+
+    // searchEnter(event, content) {
+    //   if (event.key === '') {
+    //     open(content);
+    //   }
+    // }
   open(content) {
       // search learner
       this.learnersListService
         .getLearners(this.searchForm.value.search)
         .subscribe(data => {
-          //return (console.log(data))
-          if (!data['LearnerId']) {this.registrationFormL.value.learnerId = 0; console.log(this.learners)}
+          // return (console.log(data))
+          if (!data['LearnerId']) {this.registrationFormL.value.learnerId = 0;}
+
           this.learners = data['Data'][0];
           this.data = data['Data'];
-          console.log(this.learners)
+
           this.registrationFormL.patchValue({
             learnerId: this.learners.LearnerId,
             learnerName: this.learners.FirstName,
@@ -66,17 +74,10 @@ export class SearchNameModuleComponent implements OnInit {
             phone: this.learners.ContactNum,
             address: this.learners.Address
           });
-
-          // this.onChangePath(this.learners.LearnerId);
-
+          console.log('this.learners.LearnerId')
+          this.onChangePath(this.learners.LearnerId);
 
           if (this.data.length > 1) {
-            this.show = true;
-          } else {
-            this.show = false;
-          }
-
-          if (this.show) {
             this.modalService
               .open(content, { ariaLabelledBy: 'modal-basic-title' })
               .result.then(
@@ -88,19 +89,22 @@ export class SearchNameModuleComponent implements OnInit {
                 }
               );
           }
-          this.onChangePath(this.learners.LearnerId);
-        }, err => console.log(err));
+        },
+          (error) =>
+          // alert(error);
+          console.log(error)
+          );
     }
 
     onChangePath(id){
       console.log(id);
-      this.router.navigate(['/payment/invoice/', id]);
-      // this.router.navigate(['/testcontent']);
+      // this.router.navigate(['/payment/invoice', id]);
+      this.router.navigate(['/payment/products/', id]);
+      // this.router.navigate(['/payment/other', id]);
       console.log('route, ', this.router.url);
     }
 
     // middle name method
-
     selectChange(dis) {
       const i: number = dis.value;
       if (!isNaN(Number(i))) {
@@ -111,6 +115,8 @@ export class SearchNameModuleComponent implements OnInit {
           email: this.data[i].Email,
           phone: this.data[i].ContactNum
         });
+        this.learners.learnerId = this.data[i].LearnerId;
+        this.onChangePath(this.learners.learnerId);
       }
     }
 

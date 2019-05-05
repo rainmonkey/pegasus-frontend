@@ -7,7 +7,6 @@ export interface ILearnerPay {
 }
 export interface IOtherPay {
   StaffId: number;
-  LearnerId: number;
   title: string;
   amount: number;
 }

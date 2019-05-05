@@ -19,25 +19,25 @@ const routes: Routes = [
     children: [
       { path: 'testcontent', component: TestcontentComponent },
       // Payments Area
-      { path: 'payment/invoice',  component: AdminLearnerPaymentPanelComponent,
+      { path: 'payment/invoice', pathMatch: 'prefix', component: AdminLearnerPaymentPanelComponent,
       children: [
         { path: ':id', component: AdminLearnerPaymentInvoiceComponent },
       ]},
-      { path: 'payment/products', pathMatch:'prefix', component: AdminLearnerPaymentPanelComponent,
+      { path: 'payment/products', pathMatch: 'prefix', component: AdminLearnerPaymentPanelComponent,
       children: [
         { path: ':id', component: AdminLearnerPaymentProductsComponent },
       ]},
-      { path: 'payment/registration', pathMatch:'prefix', component: AdminLearnerPaymentPanelComponent,
+      { path: 'payment/registration', pathMatch: 'prefix', component: AdminLearnerPaymentPanelComponent,
       children: [
         { path: ':id', component: AdminLearnerPaymentRegistrationComponent },
       ]},
-      { path: 'payment/other', component: AdminLearnerPaymentOtherComponent },      
+      { path: 'payment/other', component: AdminLearnerPaymentOtherComponent },
       { path: 'teacher', component: BodyComponent },
       { path: 'learnerRegistration', component: LearnerRegistrationFormComponent },
       { path: 'timePicker', component: TimePickerComponent }
     ]
   },
-  
+
   { path: 'login', component: LoginComponent },
   { path: '**', redirectTo: '' }
 ];
