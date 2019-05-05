@@ -7,14 +7,15 @@ import { queueComponentIndexForCheck } from '@angular/core/src/render3/instructi
 @Component({
   selector: 'app-modal-update-form',
   templateUrl: './modal-update-form.component.html',
-  styleUrls: ['./modal-update-form.component.css']
+  styleUrls: ['../../../../../../../../assets/shared/css/teacher-global.css',
+    './modal-update-form.component.css']
+             
 })
 export class ModalUpdateFormComponent implements OnInit {
 
   private photoToSubmit;
   private path;
   private updateForm;
-  private groupObj: any;
   private qualificationsListFromService;
   private languagesListFromService;
   private orgsListFromService;
@@ -24,7 +25,6 @@ export class ModalUpdateFormComponent implements OnInit {
   private idTypeList = [{ 'idTypeId': 1, 'idTypeName': 'Driver Lisence' },
   { 'idTypeId': 2, 'idTypeName': '18+' },
   { 'idTypeId': 3, 'idTypeName': 'Passport' }];
-  private availableDays = [];
   private week = ["Monday", "Tuesday", "Wednsday", "Thursday", "Friday", "Satday", "Sunday"];
 
   @Input() witchTeacher;
@@ -36,56 +36,14 @@ export class ModalUpdateFormComponent implements OnInit {
   ngOnInit() {
     this.isTeacherQualiIdExist();
     this.disableInputs();
-    this.getAvailableDays();
+  
+    //console.log('witchTeacher', this.witchTeacher)
+    this.updateForm = this.fb.group(this.formGroupAssemble());
 
-    console.log('witchTeacher', this.witchTeacher)
-
-    if (this.command == 'Add') {
-      this.groupObj = {
-        FirstName: [null, Validators.required],
-        LastName: [null, Validators.required],
-        Gender: [null, Validators.required],
-        Dob: [null, Validators.required],
-        Qualificatiion: [null, Validators.required],
-        MobilePhone: [null, Validators.required],
-        HomePhone: [null, Validators.required],
-        Email: [null, [Validators.required, Validators.email]],
-        IRDNumber: [null, Validators.required],
-        Language: [null, Validators.required],
-        IDType: [null, Validators.required],
-        IDNumber: [null, Validators.required],
-        ExpiryDate: [null, Validators.required],
-        DayOfWeek: [null, Validators.required]
-      }
-    }
-    else {
-      this.groupObj = {
-        //formControlName 决定了提交表单时的参数名
-        FirstName: [{ value: this.witchTeacher.FirstName, disabled: this.disabledAllInputsFlag }, Validators.required],
-        LastName: [{ value: this.witchTeacher.LastName, disabled: this.disabledAllInputsFlag }, Validators.required],
-        Gender: [{ value: this.witchTeacher.Gender, disabled: this.disabledAllInputsFlag }, Validators.required],
-        //★★★★★只有当日期格式为YYYY-MM-DD的时候 才会显示出formControlName的默认值
-        Dob: [{ value: this.dateFormat(this.witchTeacher.Dob), disabled: this.disabledAllInputsFlag }, Validators.required],
-        Qualificatiion: [{ value: this.teacherQualiName, disabled: this.disabledAllInputsFlag }, Validators.required],
-        MobilePhone: [{ value: this.witchTeacher.MobilePhone, disabled: this.disabledAllInputsFlag }, Validators.required],
-        HomePhone: [{ value: this.witchTeacher.HomePhone, disabled: this.disabledAllInputsFlag }, Validators.required],
-        Email: [{ value: this.witchTeacher.Email, disabled: this.disabledAllInputsFlag }, [Validators.required, Validators.email]],
-        IRDNumber: [{ value: this.witchTeacher.IrdNumber, disabled: this.disabledAllInputsFlag }, Validators.required],
-        Language: [{ value: this.witchTeacher.TeacherLanguage, disabled: this.disabledAllInputsFlag }, Validators.required],
-        IDType: [{ value: this.witchTeacher.IdType, disabled: this.disabledAllInputsFlag }, Validators.required],
-        IDNumber: [{ value: this.witchTeacher.IdNumber, disabled: this.disabledAllInputsFlag }, Validators.required],
-        ExpiryDate: [{ value: this.dateFormat(this.witchTeacher.ExpiryDate), disabled: this.disabledAllInputsFlag }, Validators.required], //用dateFormat
-        DayOfWeek: [{ value: null, disabled: this.disabledAllInputsFlag }, Validators.required]
-      }
-    }
-
-    this.updateForm = this.fb.group(this.groupObj);
     this.teachersService.getApis().subscribe((data) => {
       this.qualificationsListFromService = data.Data.qualifications;
       this.languagesListFromService = data.Data.Languages;
       this.orgsListFromService = data.Data.Orgs;
-      //onsole.log(this.orgsListFromService)
-
     },
       (error) => { console.log(error) })
   }
@@ -99,8 +57,6 @@ export class ModalUpdateFormComponent implements OnInit {
       return (date.substring(0, 10));
     }
   }
-
-
   /*
     we need to show the default value in the select box
     but sometimes there's no teacherQualiId in database, so we need to check it,
@@ -111,7 +67,6 @@ export class ModalUpdateFormComponent implements OnInit {
     if (this.command == 'Edit' || this.command == 'Detail') {
       if (this.witchTeacher.TeacherQualificatiion.length !== 0) {
         this.teacherQualiId = this.witchTeacher.TeacherQualificatiion[0].TeacherQualiId;
-        this.teacherQualiName = this.witchTeacher.TeacherQualificatiion[0].Quali.QualiId;
       }
       else {
         this.teacherQualiId = null;
@@ -123,7 +78,6 @@ export class ModalUpdateFormComponent implements OnInit {
     if (this.witchTeacher !== null) {
       for (let i of this.witchTeacher.TeacherLanguage) {
         if (langId == i.LangId) {
-          //console.log('a')
           return true;
         }
       }
@@ -132,9 +86,6 @@ export class ModalUpdateFormComponent implements OnInit {
     else {
       return false;
     }
-    //console.log('languages',this.witchTeacher.TeacherLanguage);
-    //console.log('langId',langId);
-    //console.log('return',this.witchTeacher.TeacherLanguage.indexOf(langId));
   }
 
   ifBranchesChecked(orgId, week) {
@@ -165,6 +116,7 @@ export class ModalUpdateFormComponent implements OnInit {
     }
   }
 
+ 
   getOrgs(witchDay) {
     if (this.witchTeacher.AvailableDays.length !== 0) {
       let temOrgs = [];
@@ -178,15 +130,22 @@ export class ModalUpdateFormComponent implements OnInit {
       return temOrgs;
     }
   }
+
+  /*
+    to check when the teacher available
+    when the teacher is available, in showDetail mode, just show days available in this list
+  */
   getAvailableDays() {
+    let availableDays = [];
     if (this.command == 'Detail') {
       for (let i of this.witchTeacher.AvailableDays) {
-        if (this.availableDays.indexOf(i.DayOfWeek) == -1) {
-          this.availableDays.push(i.DayOfWeek)
+        //avoid day repeat
+        if (availableDays.indexOf(i.DayOfWeek) == -1) {
+          availableDays.push(i.DayOfWeek)
         }
       }
-      //console.log(this.availableDays)
     }
+    return availableDays;
   }
 
   img(event){
@@ -201,5 +160,48 @@ export class ModalUpdateFormComponent implements OnInit {
     }
     reader.readAsDataURL(this.photoToSubmit);
    
+  }
+
+  formGroupAssemble(){
+    let groupObj:any;
+    if (this.command == 'Add') {
+      groupObj = {
+        FirstName: [null, Validators.required],
+        LastName: [null, Validators.required],
+        Gender: [null, Validators.required],
+        Dob: [null, Validators.required],
+        Qualificatiion: [null, Validators.required],
+        MobilePhone: [null, Validators.required],
+        HomePhone: [null, Validators.required],
+        Email: [null, [Validators.required, Validators.email]],
+        IRDNumber: [null, Validators.required],
+        Language: [null, Validators.required],
+        IDType: [null, Validators.required],
+        IDNumber: [null, Validators.required],
+        ExpiryDate: [null, Validators.required],
+        DayOfWeek: [null, Validators.required]
+     }
+    }
+    else {
+      groupObj = {
+        //formControlName 决定了提交表单时的参数名
+        FirstName: [{ value: this.witchTeacher.FirstName, disabled: this.disabledAllInputsFlag }, Validators.required],
+        LastName: [{ value: this.witchTeacher.LastName, disabled: this.disabledAllInputsFlag }, Validators.required],
+        Gender: [{ value: this.witchTeacher.Gender, disabled: this.disabledAllInputsFlag }, Validators.required],
+        //★★★★★只有当日期格式为YYYY-MM-DD的时候 才会显示出formControlName的默认值
+        Dob: [{ value: this.dateFormat(this.witchTeacher.Dob), disabled: this.disabledAllInputsFlag }, Validators.required],
+        Qualificatiion: [{ value: this.teacherQualiId, disabled: this.disabledAllInputsFlag }, Validators.required],
+        MobilePhone: [{ value: this.witchTeacher.MobilePhone, disabled: this.disabledAllInputsFlag }, Validators.required],
+        HomePhone: [{ value: this.witchTeacher.HomePhone, disabled: this.disabledAllInputsFlag }, Validators.required],
+        Email: [{ value: this.witchTeacher.Email, disabled: this.disabledAllInputsFlag }, [Validators.required, Validators.email]],
+        IRDNumber: [{ value: this.witchTeacher.IrdNumber, disabled: this.disabledAllInputsFlag }, Validators.required],
+        Language: [{ value: this.witchTeacher.TeacherLanguage, disabled: this.disabledAllInputsFlag }, Validators.required],
+        IDType: [{ value: this.witchTeacher.IdType, disabled: this.disabledAllInputsFlag }, Validators.required],
+        IDNumber: [{ value: this.witchTeacher.IdNumber, disabled: this.disabledAllInputsFlag }, Validators.required],
+        ExpiryDate: [{ value: this.dateFormat(this.witchTeacher.ExpiryDate), disabled: this.disabledAllInputsFlag }, Validators.required], //用dateFormat
+        DayOfWeek: [{ value: null, disabled: this.disabledAllInputsFlag }, Validators.required]
+      }
+    }
+    return groupObj;
   }
 }

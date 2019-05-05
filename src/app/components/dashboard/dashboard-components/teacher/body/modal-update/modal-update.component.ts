@@ -28,21 +28,7 @@ export class ModalUpdateComponent implements OnInit {
   }
 
   submit() {
-    this.originalValue = this.modalUpdateFormComponentObj.updateForm.value;
-    this.valueToBeSubmitted = this.modalUpdateFormComponentObj.updateForm.value;  
-
-    this.valueToBeSubmitted.Language = this.checkLanguages();
-    this.valueToBeSubmitted.Qualificatiion = this.checkQualifications()
-    this.valueToBeSubmitted.Gender = this.checkGender();
-    this.valueToBeSubmitted.IDType = this.checkIdType();
-    this.valueToBeSubmitted.DayOfWeek = this.checkOrgs();
-    //this.valueToBeSubmitted.Dob = this.checkDate(this.valueToBeSubmitted.Dob);
-    //this.valueToBeSubmitted.ExpiryDate = this.checkDate(this.valueToBeSubmitted.ExpiryDate)
-
-    //console.log(this.modalUpdateFormComponentObj.branchesCheckBox._results)
-    console.log('submitted',this.valueToBeSubmitted);
-    console.log(typeof(this.valueToBeSubmitted.Dob));
-    console.log(this.modalUpdateFormComponentObj)
+    this.getDataReady();
 
     //判断是否所有的表单都fill 如果有任何一项没有fill 就会使isSubmitFail的值为true
     for(let i in this.valueToBeSubmitted){
@@ -86,12 +72,27 @@ export class ModalUpdateComponent implements OnInit {
     else if(this.command == 'Edit'){
 
     }
+  }
 
-  
+  /*
+    prepare the data to submit
+  */
+  getDataReady(){
+    this.originalValue = this.modalUpdateFormComponentObj.updateForm.value;
+    this.valueToBeSubmitted = this.modalUpdateFormComponentObj.updateForm.value;  
 
+    this.valueToBeSubmitted.Language = this.checkLanguages();
+    this.valueToBeSubmitted.Qualificatiion = this.checkQualifications()
+    this.valueToBeSubmitted.Gender = this.checkGender();
+    this.valueToBeSubmitted.IDType = this.checkIdType();
+    this.valueToBeSubmitted.DayOfWeek = this.checkOrgs();
+    //this.valueToBeSubmitted.Dob = this.checkDate(this.valueToBeSubmitted.Dob);
+    //this.valueToBeSubmitted.ExpiryDate = this.checkDate(this.valueToBeSubmitted.ExpiryDate)
 
-
-
+    //console.log(this.modalUpdateFormComponentObj.branchesCheckBox._results)
+    console.log('submitted',this.valueToBeSubmitted);
+    console.log(typeof(this.valueToBeSubmitted.Dob));
+    console.log(this.modalUpdateFormComponentObj)
   }
 
   //to check which language checked

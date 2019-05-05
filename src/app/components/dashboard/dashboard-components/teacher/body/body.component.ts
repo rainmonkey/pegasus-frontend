@@ -15,8 +15,8 @@ export class BodyComponent implements OnInit {
   private temTeachersList: any;
   private temTeachersListLength: number;
   private temPaginationTeacher = [];
-  private page: number = 1;
-  private pageSize = 10;
+  private page: number = 1;  //pagination current page
+  private pageSize:number = 10;    //[can modify] pagination page size
 
 
   constructor(private teachersService: TeachersService, private modalService: NgbModal) { }
@@ -25,10 +25,9 @@ export class BodyComponent implements OnInit {
     this.getData();
   }
 
-  //search method
+  //search method(serch by first and last name)
   search(e) {
     //reset to initial state
-    //动了就bug
     this.temPaginationTeacher = [];
     this.teachersList = this.temTeachersList;
     this.teachersListLength = this.temTeachersListLength;
