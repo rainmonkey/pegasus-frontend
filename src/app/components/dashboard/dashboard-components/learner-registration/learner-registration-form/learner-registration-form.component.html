@@ -14,7 +14,7 @@
         </div>
         <div class="learnerPhoto">
           <label for="photo"></label>
-          <input formControlName="photo" type="file" (click)="uploadPhoto($event)" id="photo" accept="image/*">
+          <input formControlName="photo" type="file" (change)="uploadPhoto($event)" id="photo" accept="image/*">
         </div>
         <div class="learnerName row">
           <div class="col-sm-4 col-md-4">
@@ -79,7 +79,7 @@
         </div>
         <div class="grade my-3">
           <label for="grade">If you have ABRSM Theory Grade 5, please upload.</label>
-          <input formControlName="grade" type="file" (click)="uploadGrade($event)" id="grade" accept="image/*">
+          <input formControlName="grade" type="file" (change)="uploadGrade($event)" id="grade" accept="image/*">
         </div>
         <div class="button text-right">
           <button class="btn_next my-3" [disabled]="learnerForm.invalid"
