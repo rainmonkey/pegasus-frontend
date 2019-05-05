@@ -4,7 +4,7 @@ import { FormBuilder, Validators, FormArray, FormGroup, FormControl, NgControl, 
 import { NgbModal, ModalDismissReasons, } from '@ng-bootstrap/ng-bootstrap';
 import { NgbTabsetConfig } from '@ng-bootstrap/ng-bootstrap';
 import { ILearnerPay, IOtherPay, IcatData } from './learners';
-
+import { ActivatedRoute, ParamMap } from '@angular/router';
 @Component({
   selector: 'app-admin-learner-payment-invoice',
   templateUrl: './admin-learner-payment-invoice.component.html',
@@ -34,28 +34,13 @@ export class AdminLearnerPaymentInvoiceComponent implements OnInit {
     private modalService: NgbModal,
     private paymentsListService: PaymentService,
     private fb: FormBuilder,
+    private route: ActivatedRoute,
     config: NgbTabsetConfig
   ) {
     // bootstrap tabset
     config.justify = 'center';
     config.type = 'pills';
   }
-
-  // form-builder
-  // learners information
-  registrationFormL = this.fb.group({
-    learnerId: [''],
-    learnerName: [{ value: null, disabled: true }],
-    lastName: [{ value: null, disabled: true }],
-    middleName: [{ value: null, disabled: true }],
-    age: [''],
-    email: [{ value: null, disabled: true }],
-    phone: [{ value: null, disabled: true }],
-    payment: [''],
-    schedule: [''],
-    owning: [''],
-    address: ['']
-  });
 
 // put service method
   private getDismissReason(reason: any): string {
@@ -67,8 +52,13 @@ export class AdminLearnerPaymentInvoiceComponent implements OnInit {
       return `with: ${reason}`;
     }
   }
-    // select payment method
+  userTab(j){
+    this.invoiceForm.patchValue({
+      owing : this.dataInvoice[j].OwingFee
+    })
+  }
 
+    // select payment method
     paymentMethod(method) {
       this.payment = method.value;
     }
@@ -105,7 +95,24 @@ export class AdminLearnerPaymentInvoiceComponent implements OnInit {
         );
     }
 
-  ngOnInit() {
-  }
+    ngOnInit() {
+      // put to service
+      this.route.paramMap.subscribe((obs:ParamMap) => {
+        this.learnerId = parseInt(obs.get('id'))
+        this.paymentsListService
+        .getInvoice(this.learnerId)
+        .subscribe(dataInvoice => {
+          // return console.log(dataInvoice)
+          this.dataInvoice = dataInvoice;
+          this.array = [];
+          this.dataInvoice.forEach((item, index) => {
+            this.array.push(index);
+          });
+          this.invoiceForm.patchValue({
+            owing : this.dataInvoice[0].OwingFee
+          });
+        });
+      });
+    }
 
 }

@@ -1,4 +1,3 @@
-<p>hello</p>
 <!-- bootstrap model -->
 <div class='container'>
     <div class='row justify-content-md-center'>
@@ -17,7 +16,7 @@
                         <form novalidate class="form-group">
                             <select #district class='custom-select' (change)='selectChange(district)'>
                             <option>Please Select The Middle Name</option>
-                            <option *ngFor="let learner of data; let i = index" [value]="i">Middle Name: {{learner.MiddleName}} Address: {{learner.Address}}</option>
+                            <option *ngFor="let learner of data; let i = index" [value]="i">Last Name: {{learner.LastName}} Middle Name: {{learner.MiddleName}} Address: {{learner.Address}}</option>
                           </select>
                         </form>
                     </div>
@@ -28,7 +27,8 @@
                 </div>
             </ng-template>
             <!-- open method modal& search name-->
-            <form *ngIf='!showOthers' class="form-group" [formGroup]='searchForm'>
+            <form class="form-group mt-2" [formGroup]='searchForm'>
+                <!-- <h5>Please Provide First Name: </h5> -->
                 <div class="row justify-content-start">
                     <h6 class="col-md-2 align-bottom">Learner's first name:</h6>
 

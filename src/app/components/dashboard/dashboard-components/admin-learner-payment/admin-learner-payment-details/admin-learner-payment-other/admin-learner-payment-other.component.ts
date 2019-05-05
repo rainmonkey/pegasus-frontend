@@ -1,12 +1,9 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 
 
-import { FormBuilder, Validators, FormArray, FormGroup, FormControl, NgControl, Form } from '@angular/forms';
-import { NgbModal, ModalDismissReasons, } from '@ng-bootstrap/ng-bootstrap';
-import { NgbTabsetConfig } from '@ng-bootstrap/ng-bootstrap';
-
-import { ILearnerPay, IOtherPay, IcatData } from './learners';
-import { ProductsService } from 'src/app/services/http/products.service';
+import { FormBuilder, Validators } from '@angular/forms';
+import { IOtherPay } from './learners';
+import { PaymentService } from 'src/app/services/http/payment.service';
 
 @Component({
   selector: 'app-admin-learner-payment-other',
@@ -18,9 +15,45 @@ export class AdminLearnerPaymentOtherComponent implements OnInit {
   public otherPaymentObj: IOtherPay;
   public paymentTitle;
   public paymentAmount;
-  constructor() { }
+  constructor(
+    private fb: FormBuilder,
+    private paymentOtherService: PaymentService
+    ) { }
+
+  // other fb
+  otherPayment = this.fb.group({
+    title: ['', Validators.required],
+    amount: ['', Validators.required]
+  });
+  get title() {
+    return this.otherPayment.get('title');
+  }
+  get amount() {
+    return this.otherPayment.get('amount');
+  }
 
   ngOnInit() {
   }
+  otherPaymentSubmit() {
+    const title = this.otherPayment.value.title;
+    const amount = this.otherPayment.value.amount;
+    const conf = confirm(`the title of the payment is ${title}, the amount is ${amount}$, Please Confirm`);
+    if (conf) {
+    this.otherPaymentObj = {
+      StaffId: 1,
+      title: this.otherPayment.value.title,
+      amount: this.otherPayment.value.amount
+    };
 
+    this.paymentOtherService.postPaymentService(this.otherPaymentObj).subscribe(
+      response => {
+        console.log('Success!', response);
+      },
+      error => {
+        console.error('Error!', error);
+        alert(`Can not access server ${error}`);
+      }
+    );
+  }
+  }
 }
