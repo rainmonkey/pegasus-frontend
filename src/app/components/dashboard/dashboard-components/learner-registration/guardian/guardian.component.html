@@ -1,0 +1,81 @@
+<!-- <pre>{{guardianForm.value | json}}</pre> -->
+
+<ul class="nav my-3">
+  <li><a class="nav-tab" routerLink="/learner" routerLinkActive="active">Learner</a></li>
+  <li><a class="nav-tab"routerLink="/guardian" routerLinkActive="active">Guardian</a></li>
+  <li><a class="nav-tab" routerLink="/course" routerLinkActive="active">Course</a></li>
+</ul>
+
+<form [formGroup]="guardianForm">
+  <div formArrayName="parentForm">
+    <div *ngFor="let parent of parentForm.controls; let i=index;" class="card my-3">
+      <div [formGroupName]="i" class="card-body">
+
+        <div class="d-flex justify-content-end  my-3">
+          <button class="btn_reset mx-3" (click)="reset()">Reset</button>
+          <button class="btn_delete" (click)="delete()">Delete</button>
+        </div>
+
+        <div class="parentName-relationship row">
+          <div class="col-sm-4 col-md-4">
+            <label for="firstName">First Name</label>
+            <input class="form-control" formControlName="firstName" type="text" id="firstName">
+            <div
+              *ngIf="parent.get('firstName').invalid && (parent.get('firstName').dirty || parent.get('firstName').touched)"
+              class="text-danger">
+              <small *ngIf="parent.get('firstName').errors.required">First name is required.</small>
+            </div>
+          </div>
+          <div class="col-sm-4 col-md-4">
+            <label for="lastName">Last Name</label>
+            <input class="form-control" formControlName="lastName" type="text" id="lastName">
+            <div
+              *ngIf="parent.get('lastName').invalid && (parent.get('lastName').dirty || parent.get('lastName').touched)"
+              class="text-danger">
+              <small *ngIf="parent.get('lastName').errors.required">Last name is required.</small>
+            </div>
+          </div>
+          <div class="col-sm-4 col-md-4">
+            <label for="relationship">Relationship</label>
+            <select class="form-control" formControlName="relationship" id="relationship">
+              <option value="1">Father</option>
+              <option value="2">Mother</option>
+              <option value="3">Other</option>
+            </select>
+            <div
+              *ngIf="parent.get('relationship').invalid && (parent.get('relationship').dirty || parent.get('relationship').touched)"
+              class="text-danger">
+              <small *ngIf="parent.get('relationship').errors.required">Relationship is required.</small>
+            </div>
+          </div>
+        </div>
+
+        <div class="parentContactPhone-Email row">
+          <div class="col-sm-6 col-md-6">
+            <label for="contactPhone">Parent or Guardian's Phone</label>
+            <input class="form-control" formControlName="contactPhone" type="tel" id="contactPhone">
+          </div>
+          <div class="col-sm-6 col-md-6">
+            <label for="email">Email</label>
+            <input class="form-control" formControlName="email" type="email" id="email">
+            <div *ngIf="parent.get('email').invalid && (parent.get('email').dirty || parent.get('email').touched)"
+              style="color: red; margin-bottom: 5px;">
+              <small *ngIf="parent.get('email').errors.required">Email is required.</small>
+              <small *ngIf="parent.get('email').errors.pattern">Email is invalid</small>
+            </div>
+          </div>
+        </div>
+
+        <div class="my-3 d-flex justify-content-end">
+          <button class="btn_back mx-3" routerLink="/learner" routerLinkActive="active">Back</button>
+          <button class="btn_next" routerLink="/course" routerLinkActive="active">Next</button>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <div class="text-right mx-3">
+    <button class="btn_add" (click)="addGuardian()"><b>Add more guardians</b></button>
+  </div>
+</form>

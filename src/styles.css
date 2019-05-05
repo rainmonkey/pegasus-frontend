@@ -49,6 +49,7 @@ small,
   font-weight: 400;
   color: #212529; 
 }
+
 /*Label Font*/
 .font5 {
   font-family: "Poppins", sans-serif;
@@ -56,6 +57,7 @@ small,
   font-weight: 400;
   color: #777;
 }
+
 /*Sidebar Font*/
 .font6 {
   font-family: "Poppins", sans-serif;
@@ -89,6 +91,14 @@ small,
 .errorfont {
   font-family: "Poppins", sans-serif;
   font-size: 80%;
+  font-weight: 400;
+  color: #dc3545;
+}
+
+/*Error Font small */
+.errorfontsmall {
+  font-family: "Poppins", sans-serif;
+  font-size: 0.8rem;
   font-weight: 400;
   color: #dc3545;
 }

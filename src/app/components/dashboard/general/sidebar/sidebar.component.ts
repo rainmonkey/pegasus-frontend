@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 
 import { UserDetail } from '../../../../models/UserDetail';
-import { AuthenticationService } from '../../../../services/Auth/authentication.service';
+import { AuthenticationService } from '../../../../services/auth/authentication.service';
 import { UsersService } from 'src/app/services/http/users.service';
 
 @Component({
@@ -20,9 +20,14 @@ export class SidebarComponent implements OnInit {
       pagelink : 'testcontent'
     },
     {
+      pagename : 'Teachers',
+      pageicon : 'fa-chalkboard-teacher',
+      pagelink : 'teacher'
+    },
+    {
       pagename : 'Registration',
       pageicon : 'fa-th',
-      pagelink : 'registration'
+      pagelink : 'learnerRegistration'
     },
     {
       pagename : 'Payment',
@@ -42,7 +47,7 @@ export class SidebarComponent implements OnInit {
       lastname : 'He',
       position : 'President of US',
       img : '../../../../assets/images/usersimg/testimg.jpg'
-    }  
+    }
 
 
   constructor(
@@ -55,6 +60,10 @@ export class SidebarComponent implements OnInit {
     // Get data
     // this.userService.getSidebar()
   }
+
+  // Method to assign sidebar data
+
+  
 
 
 }

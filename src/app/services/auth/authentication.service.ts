@@ -15,14 +15,26 @@ export class AuthenticationService {
 
     // Check users local storage for login status
     checkLoginStatus(){
-        let token = localStorage.getItem('userToken')
+        let token = localStorage.getItem('Token')
         if(token){
-            return true
+            return this.checkTokenExpiry()
         }
         else{
             return false
         }
     }
+
+    // Check tokens expire time
+    checkTokenExpiry(){
+        let tokenExpireTime = Number(localStorage.getItem('TokenExpiry')) 
+        let now = Number((new Date()).getTime()/1000);
+        if(tokenExpireTime > now ){
+            return true
+        }else{
+            return false
+        }
+    }
+
 
     // login response
     login(username: string, password: string): Observable<any> {
@@ -40,7 +52,13 @@ export class AuthenticationService {
     // Saves returned objects into storage
     loginSave(res) {
         console.log(res)
-        localStorage.setItem('userToken', res.Data);
+        localStorage.setItem('Token', res.Data.token);
+        localStorage.setItem('TokenExpiry', res.Data.expires);
+        localStorage.setItem('Role', res.Data.roleid);
+
+        localStorage.setItem('userFirstName', res.Data.userdetails.firstname);
+        localStorage.setItem('userLastName', res.Data.userdetails.lastname);
+        localStorage.setItem('userPosition', res.Data.userdetails.position);
     }
 
     // remove user from local storage to log user out

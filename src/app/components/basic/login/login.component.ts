@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
-import { AuthenticationService } from '../../../services/Auth/authentication.service';
+import { AuthenticationService } from '../../../services/auth/authentication.service';
 
 
 @Component({
@@ -25,11 +25,11 @@ export class LoginComponent implements OnInit {
     private router: Router,
     private authenticationService: AuthenticationService
   ) {
-    // redirect to home if already logged in
-    // Delete this part
+    
   }
 
   ngOnInit() {
+
     this.loginForm = this.fb.group({
       username: ['', Validators.required],
       password: ['', Validators.required]

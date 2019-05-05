@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { AuthenticationService } from '../../../../services/Auth/authentication.service';
+import { AuthenticationService } from '../../../../services/auth/authentication.service';
 import { UserDetail } from '../../../../models/UserDetail';
 
 @Component({
@@ -24,6 +24,6 @@ export class HeaderbarComponent implements OnInit {
   logout() {
     this.authenticationService.logout();
     this.router.navigate(['/login']);
-}
+  }
 
 }
