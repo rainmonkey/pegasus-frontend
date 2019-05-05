@@ -71,7 +71,8 @@ import { LearnerRegistrationEditComponent } from './components/dashboard/dashboa
     WeekFormatPipe,
     OrgFormatPipe,
     LearnerRegistrationFormComponent,
-    LearnerRegistrationEditComponent
+    LearnerRegistrationEditComponent,
+    NgbdSortableHeader
   ],
   imports: [
     NgbModule,
