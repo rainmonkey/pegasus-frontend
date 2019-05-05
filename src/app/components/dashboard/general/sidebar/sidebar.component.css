@@ -26,6 +26,22 @@ nav.side-navbar a[data-toggle="collapse"]::before {
   right: 20px;
 }
 
+
+nav.side-navbar.shrinked ul li a[data-toggle="collapse"]::before {
+  content: '\f107';
+  -webkit-transform: translateX(50%);
+  transform: translateX(50%);
+  position: absolute;
+  top: auto;
+  right: 50%;
+  bottom: 0;
+  left: auto;
+}
+
+nav.side-navbar.shrinked ul li a[data-toggle="collapse"][aria-expanded="true"]::before {
+  content: '\f106';
+}
+
 nav.side-navbar .sidebar-header {
   padding: 30px 15px;
 }
