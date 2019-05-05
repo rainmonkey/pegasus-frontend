@@ -34,6 +34,7 @@ export class AdminLearnerPaymentProductsComponent implements OnInit {
   public sellPrice = 0;
   public sellPriceTemp = 0;
   public sellPriceArr = [];
+  public postProdsIdArray = [];
   // ng-modal variable
   closeResult: string;
 
@@ -62,11 +63,12 @@ export class AdminLearnerPaymentProductsComponent implements OnInit {
         .result.then(
           result => {
             this.closeResult = `Closed with: ${result}`;
+            this.getProductId();
             this.postProdPayObj = {
               StaffId: 1,
               BranchId: 1,
               LearnerId: this.learnerId,
-              Products: this.productId
+              Products: this.postProdsIdArray
             };
             // transfer elements from productList to the local userSelcProd
             this.productList.controls.forEach(x => {
@@ -110,7 +112,8 @@ export class AdminLearnerPaymentProductsComponent implements OnInit {
         category: [''],
         types: [''],
         product: [''],
-        price: [],
+        productName: [''],
+        price: [''],
         number: [1],
         index: [0],
         rate: [100],
@@ -181,13 +184,25 @@ export class AdminLearnerPaymentProductsComponent implements OnInit {
           this.prodItems[j].prodItem = item['Data'];
         // this.userProd = this.prodItems[j].prodItem;
           this.productList.controls[j].patchValue({
-          product: this.prodItems[j].prodItem[0].ProductId
+           product: this.prodItems[j].prodItem[0].ProductId
         });
           this.productList.controls[j].patchValue({
-          price: this.prodItems[j].prodItem[0].SellPrice
+           price: this.prodItems[j].prodItem[0].SellPrice
+        });
+          this.productList.controls[j].patchValue({
+            productName: this.prodItems[j].prodItem[0].ProductName
         });
           this.changeProductPrice(j);
       });
+    }
+
+    getProductId() {
+      this.productList.controls.forEach(controls => {
+        console.log(controls.value.product)
+        return this.postProdsIdArray.push(controls.value.product);
+
+      });
+      console.log(this.postProdsIdArray);
     }
 
     changeProductPrice(j){
