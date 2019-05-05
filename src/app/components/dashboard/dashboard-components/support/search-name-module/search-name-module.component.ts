@@ -60,12 +60,20 @@ export class SearchNameModuleComponent implements OnInit {
       this.learnersListService
         .getLearners(this.searchForm.value.search)
         .subscribe(data => {
+<<<<<<< HEAD
           // return (console.log(data))
           if (!data['LearnerId']) {this.registrationFormL.value.learnerId = 0;}
 
           this.learners = data['Data'][0];
           this.data = data['Data'];
 
+=======
+          //return (console.log(data))
+          if (!data['LearnerId']) {this.registrationFormL.value.learnerId = 0; console.log(this.learners)}
+          this.learners = data['Data'][0];
+          this.data = data['Data'];
+          console.log(this.learners)
+>>>>>>> f8e711f23203ba53fc29c6ac4d817adfc1425c18
           this.registrationFormL.patchValue({
             learnerId: this.learners.LearnerId,
             learnerName: this.learners.FirstName,
@@ -74,8 +82,20 @@ export class SearchNameModuleComponent implements OnInit {
             phone: this.learners.ContactNum,
             address: this.learners.Address
           });
+<<<<<<< HEAD
           console.log('this.learners.LearnerId')
           this.onChangePath(this.learners.LearnerId);
+=======
+
+          // this.onChangePath(this.learners.LearnerId);
+
+
+          if (this.data.length > 1) {
+            this.show = true;
+          } else {
+            this.show = false;
+          }
+>>>>>>> f8e711f23203ba53fc29c6ac4d817adfc1425c18
 
           if (this.data.length > 1) {
             this.modalService
@@ -89,18 +109,28 @@ export class SearchNameModuleComponent implements OnInit {
                 }
               );
           }
+<<<<<<< HEAD
         },
           (error) =>
           // alert(error);
           console.log(error)
           );
+=======
+          this.onChangePath(this.learners.LearnerId);
+        }, err => console.log(err));
+>>>>>>> f8e711f23203ba53fc29c6ac4d817adfc1425c18
     }
 
     onChangePath(id){
       console.log(id);
+<<<<<<< HEAD
       // this.router.navigate(['/payment/invoice', id]);
       this.router.navigate(['/payment/products/', id]);
       // this.router.navigate(['/payment/other', id]);
+=======
+      this.router.navigate(['/payment/invoice/', id]);
+      // this.router.navigate(['/testcontent']);
+>>>>>>> f8e711f23203ba53fc29c6ac4d817adfc1425c18
       console.log('route, ', this.router.url);
     }
 

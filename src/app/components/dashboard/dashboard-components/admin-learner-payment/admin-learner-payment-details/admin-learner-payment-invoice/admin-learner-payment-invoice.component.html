@@ -2,17 +2,30 @@
 <div class='switchOthersContainer'>
     <div class="container">
         <div class="row justify-content-md-center">
+<<<<<<< HEAD
             <div class="col-md-10 container-fluid" *ngIf="learnerId">
+=======
+            <div class="col-md-10 container-fluid" *ngIf="registrationFormL.value.learnerId">
+>>>>>>> f8e711f23203ba53fc29c6ac4d817adfc1425c18
                 <hr>
                 <div id="collapseInvoiceProduct">
                     <!-- tabset -->
                     <ngb-tabset *ngIf="array.length > 1">
+<<<<<<< HEAD
                         <ngb-tab *ngFor="let item of dataInvoice; let j = index" [title]=array (click)='userTab(j)'>
                             <ng-template ngbTabContent>
                                 <!-- invoice form in tabset -->
                                 <div class='row justify-content-between'>
                                     <div class="col-md-10">
                                         <h5>Invoice</h5>
+=======
+                        <ngb-tab *ngFor="let item of dataInvoice; let j = index" [title]=array>
+                            <ng-template ngbTabContent>
+                                <!-- invoice form in tabset -->
+                                <h5>Invoice</h5>
+                                <div class='row justify-content-between'>
+                                    <div class="col-md-10">
+>>>>>>> f8e711f23203ba53fc29c6ac4d817adfc1425c18
                                         <p>{{item.LessonQuantity}} Lessons of {{item.CourseName}} from the Date {{item.BeginDate}}</p>
                                         <p>Concert for term 2, 2019</p>
                                         <p>Lesson Note term 2, 2019</p>
@@ -30,14 +43,21 @@
                                         <div class="row justify-content-start mt-2" [formGroup]="invoiceForm">
                                             <h6 class="col-md-3">Learner Add Fund: </h6>
                                             <p>$</p>
+<<<<<<< HEAD
                                             <input type="number" formControlName="owing" placeholder="Please enter the amount.." class="form-control col-md-3 ml-2" [class.is-invalid]="owing.invalid && owing.touched" value='item.OwingFee'>
+=======
+                                            <input type="number" formControlName="owing" placeholder="Please enter the amount.." class="form-control col-md-3 ml-2" [class.is-invalid]="owing.invalid && owing.touched">
+>>>>>>> f8e711f23203ba53fc29c6ac4d817adfc1425c18
                                             <div class="col-md-1"></div>
                                             <!-- open method for confirm payment modal-->
                                             <button class="btn btn-primary col-md-3 ml-2" [disabled]="owing.invalid" (click)="openP(contentP, item)">Send This Payment</button>
                                         </div>
                                     </div>
                                     <div class="col-2">
+<<<<<<< HEAD
                                         <h6>Invoice No.{{item.InvoiceNum}}</h6>
+=======
+>>>>>>> f8e711f23203ba53fc29c6ac4d817adfc1425c18
                                         <p>${{item.LessonFee}}</p>
                                         <p>${{item.ConcertFee}}</p>
                                         <p>${{item.NoteFee}}</p>
@@ -74,9 +94,16 @@
                     </ngb-tabset>
                     <!-- invoice form out tabset-->
                     <div *ngIf="array.length == 1">
+<<<<<<< HEAD
                         <div class='row justify-content-between' *ngFor="let item of dataInvoice; let j = index">
                             <div class="col-10">
                                 <h5>Invoice</h5>
+=======
+                        <h5>Invoice</h5>
+                        <div class='row justify-content-between' *ngFor="let item of dataInvoice; let j = index">
+                            <div class="col-10">
+
+>>>>>>> f8e711f23203ba53fc29c6ac4d817adfc1425c18
                                 <p>{{item.LessonQuantity}} Lessons of {{item.CourseName}} from the Date {{item.BeginDate}}</p>
                                 <p>Concert for term 2, 2019</p>
                                 <p>Lesson Note term 2, 2019</p>
@@ -101,7 +128,10 @@
                                 </div>
                             </div>
                             <div class="col-2">
+<<<<<<< HEAD
                                 <h6>Invoice No.{{item.InvoiceNum}}</h6>
+=======
+>>>>>>> f8e711f23203ba53fc29c6ac4d817adfc1425c18
                                 <p>${{item.LessonFee}}</p>
                                 <p>${{item.ConcertFee}}</p>
                                 <p>${{item.NoteFee}}</p>
@@ -134,4 +164,8 @@
                             </div>
                         </div>
                     </div>
+<<<<<<< HEAD
                 </div>
+=======
+                </div>
+>>>>>>> f8e711f23203ba53fc29c6ac4d817adfc1425c18
