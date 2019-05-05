@@ -31,17 +31,9 @@ const routes: Routes = [
       children: [
         { path: ':id', component: AdminLearnerPaymentRegistrationComponent },
       ]},
-<<<<<<< HEAD
       { path: 'payment/other', component: AdminLearnerPaymentOtherComponent },
-
-      { path: 'learner', component: LearnerComponent },
-      { path: 'guardian', component: GuardianComponent },
-      { path: 'course', component: CourseComponent },
-=======
-      { path: 'payment/other', component: AdminLearnerPaymentOtherComponent },      
       { path: 'teacher', component: BodyComponent },
       { path: 'learnerRegistration', component: LearnerRegistrationFormComponent },
->>>>>>> f8e711f23203ba53fc29c6ac4d817adfc1425c18
       { path: 'timePicker', component: TimePickerComponent }
     ]
   },

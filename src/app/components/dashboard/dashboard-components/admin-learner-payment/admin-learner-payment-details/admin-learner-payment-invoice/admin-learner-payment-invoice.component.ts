@@ -4,11 +4,7 @@ import { FormBuilder, Validators, FormArray, FormGroup, FormControl, NgControl, 
 import { NgbModal, ModalDismissReasons, } from '@ng-bootstrap/ng-bootstrap';
 import { NgbTabsetConfig } from '@ng-bootstrap/ng-bootstrap';
 import { ILearnerPay, IOtherPay, IcatData } from './learners';
-<<<<<<< HEAD
 import { ActivatedRoute, ParamMap } from '@angular/router';
-=======
-
->>>>>>> f8e711f23203ba53fc29c6ac4d817adfc1425c18
 @Component({
   selector: 'app-admin-learner-payment-invoice',
   templateUrl: './admin-learner-payment-invoice.component.html',
@@ -46,25 +42,6 @@ export class AdminLearnerPaymentInvoiceComponent implements OnInit {
     config.type = 'pills';
   }
 
-<<<<<<< HEAD
-=======
-  // form-builder
-  // learners information
-  registrationFormL = this.fb.group({
-    learnerId: [''],
-    learnerName: [{ value: null, disabled: true }],
-    lastName: [{ value: null, disabled: true }],
-    middleName: [{ value: null, disabled: true }],
-    age: [''],
-    email: [{ value: null, disabled: true }],
-    phone: [{ value: null, disabled: true }],
-    payment: [''],
-    schedule: [''],
-    owning: [''],
-    address: ['']
-  });
-
->>>>>>> f8e711f23203ba53fc29c6ac4d817adfc1425c18
 // put service method
   private getDismissReason(reason: any): string {
     if (reason === ModalDismissReasons.ESC) {
@@ -75,52 +52,10 @@ export class AdminLearnerPaymentInvoiceComponent implements OnInit {
       return `with: ${reason}`;
     }
   }
-<<<<<<< HEAD
   userTab(j){
     this.invoiceForm.patchValue({
       owing : this.dataInvoice[j].OwingFee
     })
-=======
-    // select payment method
-
-    paymentMethod(method) {
-      this.payment = method.value;
-    }
-
-    // confirm payment open method
-    openP(contentP, item) {
-      this.addFund = this.invoiceForm.value.owing;
-      this.modalService
-        .open(contentP, { ariaLabelledBy: 'modal-basic-title' })
-        .result.then(
-          result => {
-            this.closeResult = `Closed with: ${result}`;
-            this.postPayment = {
-              StaffId: 1,
-              LearnerId: item.LearnerId,
-              InvoiceId: item.InvoiceId,
-              PaymentMethod: this.payment,
-              Amount: this.invoiceForm.value.owing
-            };
-
-            this.paymentsListService.addFund(this.postPayment).subscribe(
-              response => {
-                console.log('Success!', response);
-              },
-              error => {
-                console.error('Error!', error);
-                alert(`Can not get data from server ${error}`);
-              }
-            );
-          },
-          reason => {
-            this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
-          }
-        );
-    }
-
-  ngOnInit() {
->>>>>>> f8e711f23203ba53fc29c6ac4d817adfc1425c18
   }
 
     // select payment method
