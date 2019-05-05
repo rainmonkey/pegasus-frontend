@@ -17,12 +17,12 @@ export class PaymentService {
   }
   addFund(fund) {
     return this.http.post(this.baseUrl + 'payment/payInvoice', fund, { responseType: 'text' })
-    .pipe(
-      catchError(this.errorHandler)
-    );
-  }
-   errorHandler(error: HttpErrorResponse){
-    return Observable.throw(error.message || "Server Error");
+  //   .pipe(
+  //     catchError(this.errorHandler)
+  //   );
+  // }
+  //  errorHandler(error: HttpErrorResponse){
+  //   return Observable.throw(error.message || "Server Error");
    }
 
 

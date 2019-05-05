@@ -49,8 +49,9 @@ export class SearchNameModuleComponent implements OnInit {
     get search() {
       return this.searchForm.get('search');
     }
+
     // searchEnter(event, content) {
-    //   if (event.key === 'Enter') {
+    //   if (event.key === '') {
     //     open(content);
     //   }
     // }
@@ -89,14 +90,17 @@ export class SearchNameModuleComponent implements OnInit {
               );
           }
         },
-          error => alert(error));
+          (error) =>
+          // alert(error);
+          console.log(error)
+          );
     }
 
     onChangePath(id){
       console.log(id);
       // this.router.navigate(['/payment/invoice', id]);
-      this.router.navigate(['/payment/products', id]);
-      this.router.navigate(['/payment/other', id]);
+      this.router.navigate(['/payment/products/', id]);
+      // this.router.navigate(['/payment/other', id]);
       console.log('route, ', this.router.url);
     }
 

@@ -66,6 +66,7 @@ export class AdminLearnerPaymentProductsComponent implements OnInit {
               StaffId: 1,
               BranchId: 1,
               LearnerId: this.learnerId,
+              Products: this.productId
             };
             // transfer elements from productList to the local userSelcProd
             this.productList.controls.forEach(x => {
@@ -79,9 +80,10 @@ export class AdminLearnerPaymentProductsComponent implements OnInit {
               response => {
                 console.log('Success!', response);
               },
-              error => {
-                console.error('Error!', error);
-                alert(`Can not get data from server ${error}`);
+              (error) => {
+                const errorMsg = JSON.parse(error.error);
+                console.log('Error!', errorMsg.ErrorCode);
+                alert(errorMsg.ErrorCode);
               }
             );
           },

@@ -83,9 +83,10 @@ export class AdminLearnerPaymentInvoiceComponent implements OnInit {
               response => {
                 console.log('Success!', response);
               },
-              error => {
-                console.error('Error!', error);
-                alert(`Can not get data from server ${error}`);
+              (error) => {
+                const errorMsg = JSON.parse(error.error);
+                console.log('Error!', errorMsg.ErrorCode);
+                alert(errorMsg.ErrorCode);
               }
             );
           },
