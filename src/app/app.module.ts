@@ -9,8 +9,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { routing } from '../app/app-routing.module';
 
 
-
-import { NgbdSortableHeader } from './components/testing/testcontent/sortable.directive';
+import { NgbdSortableHeader } from './components/directives/sortable.directive';
 
 // Components
 import { AppComponent } from './app.component';

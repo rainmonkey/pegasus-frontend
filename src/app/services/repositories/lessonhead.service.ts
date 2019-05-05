@@ -2,11 +2,13 @@ import {Injectable, PipeTransform} from '@angular/core';
 
 import {BehaviorSubject, Observable, of, Subject} from 'rxjs';
 
-import {LessonHead} from '../../components/testing/testcontent/lessonhead';
-import {LessonDetails} from '../../components/testing/testcontent/lessondetails';
+import { LessonHead } from '../../models/lessonhead';
+import { SortDirection} from '../../components/directives/sortable.directive';
 import {DecimalPipe} from '@angular/common';
 import {debounceTime, delay, switchMap, tap} from 'rxjs/operators';
-import {SortDirection} from '../../components/testing/testcontent/sortable.directive';
+
+// Temporary file
+import { LessonDetails } from '../..//components/testing/testcontent/testcontent.component';
 
 interface SearchResult {
   lessons: LessonHead[];
