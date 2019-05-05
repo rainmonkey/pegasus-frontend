@@ -1,16 +1,40 @@
-import { Component, OnInit } from '@angular/core';
+import { DecimalPipe } from '@angular/common';
+import { Component, OnInit, QueryList, ViewChildren } from '@angular/core';
+import { Observable } from 'rxjs';
+
+import { LessonHead } from './lessonhead';
+import { LessonHeadService } from '../../../services/repositories/lessonhead.service';
+import { NgbdSortableHeader, SortEvent } from './sortable.directive';
 
 
 @Component({
   selector: 'app-testcontent',
   templateUrl: './testcontent.component.html',
-  styleUrls: ['./testcontent.component.css']
+  providers: [LessonHeadService, DecimalPipe]
 })
 export class TestcontentComponent implements OnInit {
+  lessons$: Observable<LessonHead[]>;
+  total$: Observable<number>;
 
-  constructor() { }
+  @ViewChildren(NgbdSortableHeader) headers: QueryList<NgbdSortableHeader>;
+
+  constructor(public service: LessonHeadService) {
+    this.lessons$ = service.lessons$;
+    this.total$ = service.total$;
+  }
+
+  onSort({ column, direction }: SortEvent) {
+    // resetting other headers
+    this.headers.forEach(header => {
+      if (header.sortable !== column) {
+        header.direction = '';
+      }
+    });
+
+    this.service.sortColumn = column;
+    this.service.sortDirection = direction;
+  }
 
   ngOnInit() {
   }
-
 }

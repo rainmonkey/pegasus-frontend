@@ -10,6 +10,8 @@ import { routing } from '../app/app-routing.module';
 
 
 
+import { NgbdSortableHeader } from './components/testing/testcontent/sortable.directive';
+
 // Components
 import { AppComponent } from './app.component';
 import { SidebarComponent } from './components/dashboard/general/sidebar/sidebar.component';
@@ -43,7 +45,8 @@ import { CoursesListComponent } from './components/dashboard/dashboard-component
     FooterComponent,
     CoursesPanelComponent,
     CoursesDetailComponent,
-    CoursesListComponent
+    CoursesListComponent,
+    NgbdSortableHeader
   ],
   imports: [
     NgbModule,
