@@ -20,9 +20,14 @@ export class SidebarComponent implements OnInit {
       pagelink : 'testcontent'
     },
     {
+      pagename : 'Teachers',
+      pageicon : 'fa-chalkboard-teacher',
+      pagelink : 'teacher'
+    },
+    {
       pagename : 'Registration',
       pageicon : 'fa-th',
-      pagelink : 'learner'
+      pagelink : 'learnerRegistration'
     },
     {
       pagename : 'Payment',
