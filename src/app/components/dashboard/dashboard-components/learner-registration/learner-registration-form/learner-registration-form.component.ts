@@ -2,21 +2,17 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormArray, FormBuilder, Validators } from '@angular/forms';
 import { RegistrationService } from '../../../../../services/registration.service';
 
-
 @Component({
   selector: 'app-learner-registration-form',
   templateUrl: './learner-registration-form.component.html',
   styleUrls: ['./learner-registration-form.component.css']
 })
 export class LearnerRegistrationFormComponent implements OnInit {
-  public todays = new Date();
   public registrationForm: FormGroup; // define the type of registrationForm
- 
   public selectedPhoto: File = null;
   public selectedGrade: File = null;
-  public today = new Date();
-  public errorMsg: string; // help us display error message from server in template
-  public successMsg: string; // display message to user when they posted data to server successfully
+  public errorMsg: string; // display error message from server in template
+  public postSuccessMsg: string; // display message to user when they posted data to server successfully
   public guitars: Array<any>;
   public pianos: Array<any>;
   public drums: Array<any>;
@@ -29,9 +25,9 @@ export class LearnerRegistrationFormComponent implements OnInit {
     'intermediate': ['Andrew', 'Candy', 'Daniel'],
     'senior': ['Ella', 'Flank', 'Hellen']
   };
-  public parent = [];
   public fd = new FormData;
   public learner: any;
+  public parent = [];
   public fdObj = {};
 
   // getter method: simplify the way to capture form controls
@@ -48,6 +44,7 @@ export class LearnerRegistrationFormComponent implements OnInit {
     private fb: FormBuilder,
     private registrationService: RegistrationService
   ) { }
+
   ngOnInit() {
     this.registrationForm = this.fb.group({
       learnerForm: this.fb.group({
@@ -93,44 +90,20 @@ export class LearnerRegistrationFormComponent implements OnInit {
     });
 
     // initialize card display
-    document.getElementById('learnerForm').style.display = 'none';
+    document.getElementById('learnerForm').style.display = 'block';
     document.getElementById('parentForm').style.display = 'none';
-    document.getElementById('courseForm').style.display = 'block';
-
-    // form data to post 
-    this.learner = this.learnerForm.value;
-    this.fdObj['FirstName'] = this.learner.firstName;
-    this.fdObj['MiddleName']=this.learner.middleName;
-    this.fdObj['LastName']= this.learner.firstName;
-    this.fdObj['Gender']= this.learner.gender;
-    this.fdObj['dob']= this.learner.birthday;
-    this.fdObj['DateOfEnrollment']= this.learner.enrollmentDate;
-    this.fdObj['ContactPhone']= this.learner.contactPhone;
-    this.fdObj['Email']=this.learner.email;
-    this.fdObj['Address']= this.learner.address;
-    for (let parent of this.parentForm.value) {
-      let tempObj = {}
-      tempObj['FirstName'] = parent.firstName;
-      tempObj['LastName'] = parent.lastName;
-      tempObj['Relationship'] = Number(parent.relationship);
-      tempObj['ContactNum'] = parent.contactPhone;
-      tempObj['Email'] = parent.email;
-      this.parent.push(tempObj);
-    }
-    
-    this.fdObj['Parent'] = this.parent;
-    this.fd.append('details', JSON.stringify(this.fdObj));
-   
+    document.getElementById('courseForm').style.display = 'none';
   }
 
+  // encapsulate files form data
   uploadPhoto(event: any) {
     this.selectedPhoto = <File>event.target.files[0];
-    console.log('sssss',this.selectedPhoto)
+    console.log('photo', this.selectedPhoto);
     this.fd.append('photo', this.selectedPhoto);
-    console.log('sss', this.selectedPhoto)
   }
   uploadGrade(event: any) {
     this.selectedGrade = <File>event.target.files[0];
+    console.log('ABRSM', this.selectedGrade);
     this.fd.append('ABRSM', this.selectedGrade);
   }
  
@@ -149,12 +122,37 @@ export class LearnerRegistrationFormComponent implements OnInit {
   //     );
   // }
  
-
   onSubmit() {
+    // encapsulate learner form data
+    this.learner = this.learnerForm.value;
+    this.fdObj['FirstName'] = this.learner.firstName;
+    this.fdObj['MiddleName']=this.learner.middleName;
+    this.fdObj['LastName']= this.learner.firstName;
+    this.fdObj['Gender']= this.learner.gender;
+    this.fdObj['dob']= this.learner.birthday;
+    this.fdObj['DateOfEnrollment']= this.learner.enrollmentDate;
+    this.fdObj['ContactPhone']= this.learner.contactPhone;
+    this.fdObj['Email']=this.learner.email;
+    this.fdObj['Address']= this.learner.address;
+    // encapsulate parent form data
+    console.log('submit', this.parentForm.value)
+    for (let parent of this.parentForm.value) {
+      let parentTempObj = {};
+      parentTempObj['FirstName'] = parent.firstName;
+      parentTempObj['LastName'] = parent.lastName;
+      parentTempObj['Relationship'] = Number(parent.relationship);
+      parentTempObj['ContactNum'] = parent.contactPhone;
+      parentTempObj['Email'] = parent.email;
+      this.parent.push(parentTempObj);
+      console.log('parent',this.parent);  
+    }
+    this.fdObj['Parent']= this.parent;
+    this.fd.append('details', JSON.stringify(this.fdObj)); 
+
     this.registrationService.postStudent(this.fd)
       .subscribe(
         data => {
-          this.successMsg = data;
+          this.postSuccessMsg = data;
           console.log('Success!', data);
         },
         error => {
@@ -183,23 +181,8 @@ export class LearnerRegistrationFormComponent implements OnInit {
         email: ['', [Validators.required, Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$')]]
       })
     );
+    console.log('addParent', this.parentForm.value)
   }
-  // resetGroupCourse() {
-  // this.groupCourse.reset();
-  // }
-  // deleteGroupCourse(i: number) {
-  // this.groupCourse.removeAt(i);
-  // }
-  // addGroupCourse() {
-  // this.groupCourse.push(
-  // this.fb.group({
-  // course: ['', Validators.required],
-  // teacherName: [''],
-  // groupTime: [''],
-  // branch: ['']
-  // })
-  // );
-  // }
   resetCustomCourse() {
     this.customCourse.reset();
   }
@@ -219,13 +202,14 @@ export class LearnerRegistrationFormComponent implements OnInit {
       })
     );
   }
-  // go and next function
+
   next(value: any) {
     value.event.preventDefault();
     document.getElementById('learnerForm').style.display = 'none';
     document.getElementById('parentForm').style.display = 'none';
     document.getElementById('courseForm').style.display = 'none';
     document.getElementById(value.id).style.display = 'block';
+    console.log('phtotosfdsf',this.selectedPhoto)
   }
   chooseCourse(id: any) {
     document.getElementById('groupCourse').style.display = 'none';
