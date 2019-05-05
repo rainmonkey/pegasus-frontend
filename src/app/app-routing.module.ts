@@ -33,7 +33,7 @@ const routes: Routes = [
       children: [
         { path: ':id', component: AdminLearnerPaymentRegistrationComponent },
       ]},
-      { path: 'payment/other', component: AdminLearnerPaymentOtherComponent },      
+      { path: 'payment/other', component: AdminLearnerPaymentOtherComponent },
 
       { path: 'learner', component: LearnerComponent },
       { path: 'guardian', component: GuardianComponent },
@@ -41,7 +41,7 @@ const routes: Routes = [
       { path: 'timePicker', component: TimePickerComponent }
     ]
   },
-  
+
   { path: 'login', component: LoginComponent },
   { path: '**', redirectTo: '' }
 ];
