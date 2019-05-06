@@ -125,7 +125,7 @@ export class AdminLearnerPaymentProductsComponent implements OnInit {
         index: [0],
         rate: [100],
         subMoney: [0],
-        subtotal: [0]
+        subTotal: [0]
       });
     }
     get productList() {
@@ -153,7 +153,7 @@ export class AdminLearnerPaymentProductsComponent implements OnInit {
       // console.log(this.prodItems[index]);
       // this.sellPrice = this.sellPrice - Number(this.prodItems[index].prodItem[0].SellPrice) * this.productList.controls[index].value.number;
       // this.sellPriceArr.splice(index, 1);
-      this.changeProductPrice();
+      this.changeProductPrice(index);
 
       this.productList.removeAt(index);
       this.types.splice(index, 1);
@@ -229,11 +229,10 @@ export class AdminLearnerPaymentProductsComponent implements OnInit {
         this.sellPriceTemp = item.value.price * Number(item.value.rate) / 100 * item.value.number - item.value.subMoney;
         console.log(Number(item.value.rate));
         this.sellPrice = Math.round(this.sellPriceTemp * 100) / 100 + this.sellPrice;
-      }
-    // this.productList.controls[j].patchValue({
-    //   productName: this.prodItems[j].prodItem[0].ProductName
-    // })
-      );
+      });
+      this.productList.controls[j].patchValue({
+        subTotal: this.prodItems[j].prodItem[0].ProductName
+      })
   }
 
   ngOnInit() {
