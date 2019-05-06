@@ -4,7 +4,7 @@ import { Pipe, PipeTransform } from '@angular/core';
   name: 'weekFormat'
 })
 export class WeekFormatPipe implements PipeTransform {
-
+// 
   transform(value: any): any {
     switch(value){
       case 1:

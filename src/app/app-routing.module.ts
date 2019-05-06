@@ -10,7 +10,7 @@ import { AdminLearnerPaymentInvoiceComponent } from './components/dashboard/dash
 import { AdminLearnerPaymentProductsComponent } from './components/dashboard/dashboard-components/admin-learner-payment/admin-learner-payment-details/admin-learner-payment-products/admin-learner-payment-products.component';
 import { AdminLearnerPaymentRegistrationComponent } from './components/dashboard/dashboard-components/admin-learner-payment/admin-learner-payment-details/admin-learner-payment-registration/admin-learner-payment-registration.component';
 import { AdminLearnerPaymentOtherComponent } from './components/dashboard/dashboard-components/admin-learner-payment/admin-learner-payment-details/admin-learner-payment-other/admin-learner-payment-other.component';
-import { BodyComponent } from './components/dashboard/dashboard-components/teacher/body/body.component';
+import { TutorInfoComponent } from './components/dashboard/dashboard-components/tutor-info/tutor-info-list/tutor-info.component';
 
 
 const routes: Routes = [
@@ -32,7 +32,7 @@ const routes: Routes = [
         { path: ':id', component: AdminLearnerPaymentRegistrationComponent },
       ]},
       { path: 'payment/other', component: AdminLearnerPaymentOtherComponent },
-      { path: 'teacher', component: BodyComponent },
+      { path: 'tutor', component: TutorInfoComponent },
       { path: 'learnerRegistration', component: LearnerRegistrationFormComponent },
       { path: 'timePicker', component: TimePickerComponent }
     ]
