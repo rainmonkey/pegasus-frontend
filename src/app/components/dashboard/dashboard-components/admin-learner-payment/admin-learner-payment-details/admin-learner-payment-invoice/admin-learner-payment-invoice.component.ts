@@ -3,7 +3,7 @@ import { PaymentService } from '../../../../../../services/http/payment.service'
 import { FormBuilder, Validators, FormArray, FormGroup, FormControl, NgControl, Form } from '@angular/forms';
 import { NgbModal, ModalDismissReasons, } from '@ng-bootstrap/ng-bootstrap';
 import { NgbTabsetConfig } from '@ng-bootstrap/ng-bootstrap';
-import { ILearnerPay, IOtherPay, IcatData } from './learners';
+import { ILearnerPay, IOtherPay, IcatData } from '../../../../../../models/learners';
 import { ActivatedRoute, ParamMap } from '@angular/router';
 @Component({
   selector: 'app-admin-learner-payment-invoice',
