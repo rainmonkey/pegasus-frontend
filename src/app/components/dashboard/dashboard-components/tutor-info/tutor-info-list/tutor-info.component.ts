@@ -1,15 +1,16 @@
 import { Component, OnInit } from '@angular/core';
 import { TeachersService } from '../../../../../services/http/teachers.service';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
-import { ModalUpdateComponent } from './modal-update/modal-update.component';
-import { ModalDeleteComponent } from './modal-delete/modal-delete.component';
+
+import { ModalDeleteComponent } from '../tutor-delete-modal/modal-delete.component';
+import { TutorEditModalComponent } from '../tutor-edit-modal/tutor-edit-modal.component';
 
 @Component({
-  selector: 'app-body',
-  templateUrl: './body.component.html',
-  styleUrls: ['./body.component.css']
+  selector: 'app-tutor-info',
+  templateUrl: './tutor-info.component.html',
+  styleUrls: ['./tutor-info.component.css']
 })
-export class BodyComponent implements OnInit {
+export class TutorInfoComponent implements OnInit {
   private teachersList: any;
   private teachersListLength: number;
   private temTeachersList: any;
@@ -57,7 +58,7 @@ export class BodyComponent implements OnInit {
 
   //update method
   update(command, witchTeacher) {
-    const modalRef = this.modalService.open(ModalUpdateComponent, { size: 'lg'});
+    const modalRef = this.modalService.open(TutorEditModalComponent, { size: 'lg'});
     
     let that = this;
     modalRef.result.then(function(){
@@ -83,24 +84,31 @@ export class BodyComponent implements OnInit {
 
   //showDetail method
   showDetail(command, witchTeacher) {
-    const modalRef = this.modalService.open(ModalUpdateComponent, { size: 'lg' })
+    const modalRef = this.modalService.open(TutorEditModalComponent, { size: 'lg' })
     modalRef.componentInstance.command = 'Detail';
     modalRef.componentInstance.witchTeacher = witchTeacher;
   }
 
   //get data from server
   getData(){
-    this.teachersService.getTeachers().subscribe((data) => {
-      this.teachersList = data.Data;
-      //console.log(data)
+    this.teachersService.getTeachers().subscribe(
+      (data) => {
+        this.teachersList = data.Data;
       // console.log(this.teachersList);
-      this.teachersListLength = data.Data.length; //length prop is under Data prop
-      this.temTeachersList = data.Data;
-      this.temTeachersListLength = data.Data.length;
+        this.teachersListLength = data.Data.length; //length prop is under Data prop
+        this.temTeachersList = data.Data;
+        this.temTeachersListLength = data.Data.length;
     },
-      (error) => { console.log(error) })
+      (error) => { console.log(error), this.errorProcess(error) })
+// show error 
 
     //this.update('aa',"aa");
+  }
+
+  errorProcess(error){
+    // if there is error message from server, display error message
+
+    // if there are not error message from server, show server error
   }
 
 }
