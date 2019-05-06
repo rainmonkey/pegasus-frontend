@@ -8,7 +8,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { routing } from '../app/app-routing.module';
 
 
-import { NgbdSortableHeader } from './services/ngbstable/ngbootstraptable.service';
+import { NgbdSortableHeader } from './services/others/ngbootstraptable.service';
 
 // Components
 import { AppComponent } from './app.component';
