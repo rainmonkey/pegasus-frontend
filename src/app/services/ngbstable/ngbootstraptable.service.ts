@@ -1,14 +1,56 @@
-import {Injectable, PipeTransform} from '@angular/core';
-
-import {BehaviorSubject, Observable, of, Subject} from 'rxjs';
-
+import { Injectable, Directive, EventEmitter, Input, Output, PipeTransform } from '@angular/core';
+import { BehaviorSubject, Observable, of, Subject } from 'rxjs';
+import { debounceTime, delay, switchMap, tap } from 'rxjs/operators';
+import { DecimalPipe } from '@angular/common';
 import { LessonHead } from '../../models/lessonhead';
-import { SortDirection} from '../../components/directives/sortable.directive';
-import {DecimalPipe} from '@angular/common';
-import {debounceTime, delay, switchMap, tap} from 'rxjs/operators';
 
-// Temporary file
-import { LessonDetails } from '../..//components/testing/testcontent/testcontent.component';
+@Injectable({
+  providedIn: 'root'
+})
+export class NgbootstraptableService {
+
+  constructor() { }
+}
+
+// Sort Column
+
+// get data
+export const LessonDetails: LessonHead[] = [
+  {
+    id: 1,
+    title: 'forget',
+    name: 'Philp',
+    discipline: 'guita lesson',
+    tutorlevel: 'advance',
+    learnerlevel: 'junior',
+    duration: 2,
+    price: 60,
+    forgetnametwo: 'forget'
+  },
+  {
+    id: 2,
+    title: 'forget',
+    name: 'Styrom',
+    discipline: 'guita lesson',
+    tutorlevel: 'foundation',
+    learnerlevel: 'junior',
+    duration: 1.5,
+    price: 80,
+    forgetnametwo: 'forget'
+  },
+  {
+    id: 3,
+    title: 'forget',
+    name: 'Jarvid',
+    discipline: 'guita lesson',
+    tutorlevel: 'advance',
+    learnerlevel: 'senior',
+    duration: 10.5,
+    price: 10,
+    forgetnametwo: 'forget'
+  }
+]
+// end get data
 
 interface SearchResult {
   lessons: LessonHead[];
@@ -71,7 +113,7 @@ export class LessonHeadService {
       this._lessons$.next(result.lessons);
       this._total$.next(result.total);
     });
-
+    
     this._search$.next();
   }
 
@@ -108,3 +150,35 @@ export class LessonHeadService {
     return of({lessons, total});
   }
 }
+
+export type SortDirection = 'asc' | 'desc' | '';
+const rotate: {[key: string]: SortDirection} = { 'asc': 'desc', 'desc': '', '': 'asc' };
+
+export interface SortEvent {
+  column: string;
+  direction: SortDirection;
+}
+
+@Directive({
+  selector: 'th[sortable]',
+  host: {
+    '[class.asc]': 'direction === "asc"',
+    '[class.desc]': 'direction === "desc"',
+    '(click)': 'rotate()'
+  }
+})
+
+export class NgbdSortableHeader {
+
+  @Input() sortable: string;
+  @Input() direction: SortDirection = '';
+  @Output() sort = new EventEmitter<SortEvent>();
+
+  rotate() {
+    this.direction = rotate[this.direction];
+    this.sort.emit({column: this.sortable, direction: this.direction});
+  }
+}
+
+
+// End Sort Table
