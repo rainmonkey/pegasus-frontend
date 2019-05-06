@@ -1,5 +1,5 @@
 
-.rmWeeklySchedule {
+.rm-weekly-schedule {
   background-color: #f5f5fa;
   border: 1px solid #ddd;
   display: table;
@@ -15,7 +15,7 @@
 .rmws-hour-label {
   box-sizing: border-box;
   font-size: 13px;
-  height: 40px;
+  height: 50px;
   margin-right: 10px;
   position: relative;
   text-align: right;
@@ -45,12 +45,12 @@
 .rmws-slot {
   border-bottom: 1px dotted #e0e0e0;
   box-sizing: border-box;
-  height: 10px;
+  height: 13px;
 }
 .rmws-slot:last-child {
   border-bottom: none;  
-}
-.rmws-event {
+} 
+/* .rmws-event {
   background-color: rgba(255, 0, 0, 0.5);
   border: 1px solid rgba(255, 0, 0, 0.75);
   border-radius: 3px;
@@ -94,4 +94,4 @@
 }
 .rmws-event:hover .rmws-close {
   display: block;
-}
+} */
