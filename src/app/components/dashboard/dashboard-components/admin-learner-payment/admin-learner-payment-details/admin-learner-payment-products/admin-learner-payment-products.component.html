@@ -66,7 +66,11 @@
                 </div>
                 <!-- modal-body -->
                 <div class="d-flex flex-column">
-                    <p> Please Confirm</p>
+                    <p> Amount:{{sellPrice}}</p>
+                    <ul *ngFor='let prods of productList.controls'>
+                        <li>Product Name: {{prods.value.productName}} Price:{{prods.value.price}} Quantity:{{prods.value.number}}</li>
+                    </ul>
+
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-dark" (click)="modal.close('Save')">Confirm</button>

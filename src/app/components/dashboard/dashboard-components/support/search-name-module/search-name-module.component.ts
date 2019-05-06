@@ -55,6 +55,32 @@ export class SearchNameModuleComponent implements OnInit {
     //     open(content);
     //   }
     // }
+    patchRegiFormL(){
+      this.registrationFormL.patchValue({
+        learnerId: this.learners.LearnerId,
+        learnerName: this.learners.FirstName,
+        lastName: this.learners.LastName,
+        email: this.learners.Email,
+        phone: this.learners.ContactNum,
+        address: this.learners.Address
+      });
+      console.log('this.learners.LearnerId')
+      this.onChangePath(this.learners.LearnerId);
+    }
+    modalServiceMethod(content){
+    if (this.data.length > 1) {
+      this.modalService
+        .open(content, { ariaLabelledBy: 'modal-basic-title' })
+        .result.then(
+          result => {
+            this.closeResult = `Closed with: ${result}`;
+          },
+          reason => {
+            this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+          }
+        );
+    }
+  }
   open(content) {
       // search learner
       this.learnersListService
@@ -65,30 +91,9 @@ export class SearchNameModuleComponent implements OnInit {
 
           this.learners = data['Data'][0];
           this.data = data['Data'];
+      this.patchRegiFormL();
+      this.modalServiceMethod(content);
 
-          this.registrationFormL.patchValue({
-            learnerId: this.learners.LearnerId,
-            learnerName: this.learners.FirstName,
-            lastName: this.learners.LastName,
-            email: this.learners.Email,
-            phone: this.learners.ContactNum,
-            address: this.learners.Address
-          });
-          console.log('this.learners.LearnerId')
-          this.onChangePath(this.learners.LearnerId);
-
-          if (this.data.length > 1) {
-            this.modalService
-              .open(content, { ariaLabelledBy: 'modal-basic-title' })
-              .result.then(
-                result => {
-                  this.closeResult = `Closed with: ${result}`;
-                },
-                reason => {
-                  this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
-                }
-              );
-          }
         },
           (error) =>
           // alert(error);
