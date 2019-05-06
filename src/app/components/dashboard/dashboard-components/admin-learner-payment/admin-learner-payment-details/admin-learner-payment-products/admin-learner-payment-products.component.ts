@@ -201,7 +201,7 @@ export class AdminLearnerPaymentProductsComponent implements OnInit {
           this.productList.controls[j].patchValue({
             productName: this.prodItems[j].prodItem[0].ProductName
         });
-          this.changeProductPrice();
+          this.changeProductPrice(j);
       });
     }
 
@@ -231,7 +231,7 @@ export class AdminLearnerPaymentProductsComponent implements OnInit {
         this.sellPrice = Math.round(this.sellPriceTemp * 100) / 100 + this.sellPrice;
       });
       this.productList.controls[j].patchValue({
-        subTotal: this.prodItems[j].prodItem[0].ProductName
+        subTotal: this.sellPriceTemp
       })
   }
 
