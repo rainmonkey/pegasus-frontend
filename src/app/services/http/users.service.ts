@@ -17,11 +17,12 @@ export class UsersService {
   // API Request headers
   prepareHeaders(){
     this.token = localStorage.getItem('Token')
-    return this.httpHeaders = new HttpHeaders({'Authorization': ""+ localStorage.getItem('Token')})
+    return this.httpHeaders = new HttpHeaders({'Authorization': "Bearer "+ localStorage.getItem('Token')})
   }
 
   // Call API for sidebar Data
   getSidebar(){
-    return this.http.get(this.baseUrl + 'login/', {headers: this.httpHeaders})
+    this.prepareHeaders();
+    return this.http.get(this.baseUrl + 'navitems', {headers: this.httpHeaders})
   }
 }

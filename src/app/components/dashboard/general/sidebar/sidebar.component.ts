@@ -30,11 +30,6 @@ export class SidebarComponent implements OnInit {
       pagelink : 'learnerRegistration'
     },
     {
-      pagename : 'Payment',
-      pageicon : 'fa-chart-bar',
-      pagelink : 'payment'
-    },
-    {
       pagename : 'Forms',
       pageicon : 'fa-clipboard',
       pagelink : ''
@@ -48,7 +43,27 @@ export class SidebarComponent implements OnInit {
       position : 'President of US',
       img : '../../../../assets/images/usersimg/testimg.jpg'
     }
-
+  
+    public dropdown: any[] = [
+      {
+        dropname: 'invoice',
+        dropicon: 'fa-file-invoice-dollar',
+        droplink: 'invoice'
+      },
+      {
+        dropname: 'products',
+        dropicon: 'fa-file-invoice-dollar',
+        droplink: 'products'
+      },
+      {
+        dropname: 'registration',
+        droplink: 'registration'
+      },
+      {
+        dropname: 'other',
+        droplink: 'other'
+      }
+    ]
 
   constructor(
     private authenticationService: AuthenticationService,
