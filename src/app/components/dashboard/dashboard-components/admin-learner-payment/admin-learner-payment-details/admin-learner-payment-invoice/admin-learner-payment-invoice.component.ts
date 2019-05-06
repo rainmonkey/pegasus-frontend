@@ -1,9 +1,9 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { PaymentService } from '../../../../../../services/http/payment.service';
-import { FormBuilder, Validators, FormArray, FormGroup, FormControl, NgControl, Form } from '@angular/forms';
+import { FormBuilder, Validators } from '@angular/forms';
 import { NgbModal, ModalDismissReasons, } from '@ng-bootstrap/ng-bootstrap';
 import { NgbTabsetConfig } from '@ng-bootstrap/ng-bootstrap';
-import { ILearnerPay, IOtherPay, IcatData } from '../../../../../../models/learners';
+import { ILearnerPay } from '../../../../../../models/learners';
 import { ActivatedRoute, ParamMap } from '@angular/router';
 @Component({
   selector: 'app-admin-learner-payment-invoice',
@@ -20,6 +20,9 @@ export class AdminLearnerPaymentInvoiceComponent implements OnInit {
   public postPayment: ILearnerPay;
   // tabset
   public array = [];
+  public errorMsg;
+  public successAlert = false;
+  public errorAlert = false;
   // ng-modal variable
   closeResult: string;
 
@@ -62,7 +65,15 @@ export class AdminLearnerPaymentInvoiceComponent implements OnInit {
     paymentMethod(method) {
       this.payment = method.value;
     }
-
+    postPaymentMethod(item) {
+      this.postPayment = {
+        StaffId: 1,
+        LearnerId: item.LearnerId,
+        InvoiceId: item.InvoiceId,
+        PaymentMethod: this.payment,
+        Amount: this.invoiceForm.value.owing
+      };
+    }
     // confirm payment open method
     openP(contentP, item) {
       this.addFund = this.invoiceForm.value.owing;
@@ -71,22 +82,18 @@ export class AdminLearnerPaymentInvoiceComponent implements OnInit {
         .result.then(
           result => {
             this.closeResult = `Closed with: ${result}`;
-            this.postPayment = {
-              StaffId: 1,
-              LearnerId: item.LearnerId,
-              InvoiceId: item.InvoiceId,
-              PaymentMethod: this.payment,
-              Amount: this.invoiceForm.value.owing
-            };
-
+            this.postPaymentMethod(item);
             this.paymentsListService.addFund(this.postPayment).subscribe(
               response => {
                 console.log('Success!', response);
+                this.successAlert = true;
+                alert('Your Payment Has Been Uploaded.');
               },
               (error) => {
-                const errorMsg = JSON.parse(error.error);
-                console.log('Error!', errorMsg.ErrorCode);
-                alert(errorMsg.ErrorCode);
+                this.errorMsg = JSON.parse(error.error);
+                this.errorAlert = true;
+                console.log('Error!', this.errorMsg.ErrorCode);
+                alert(this.errorMsg.ErrorCode);
               }
             );
           },
@@ -94,6 +101,13 @@ export class AdminLearnerPaymentInvoiceComponent implements OnInit {
             this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
           }
         );
+    }
+    // close alert
+    closeSucc(){
+      this.successAlert = false;
+    }
+    closeErro(){
+      this.errorAlert = false;
     }
 
     ngOnInit() {
