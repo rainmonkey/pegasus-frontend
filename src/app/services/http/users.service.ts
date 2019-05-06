@@ -1,15 +1,27 @@
 import { Injectable } from '@angular/core';
+import { environment } from '../../../environments/environment';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
 })
 export class UsersService {
+  httpHeaders: HttpHeaders;
+  token:string
 
-  constructor() { }
+  baseUrl = environment.baseUrl;
+  constructor(private http: HttpClient) {
+   }
+
+  // API Request headers
+  prepareHeaders(){
+    this.token = localStorage.getItem('Token')
+    this.httpHeaders = new HttpHeaders({'Authorization': ""+ localStorage.getItem('Token')})
+  }
 
   // Call API for sidebar Data
   getSidebar(){
-
+    return this.http.get(this.baseUrl + 'login/', {headers: this.httpHeaders})
   }
 
 
