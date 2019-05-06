@@ -3,8 +3,8 @@ import { Component, OnInit, QueryList, ViewChildren } from '@angular/core';
 import { Observable } from 'rxjs';
 
 import { LessonHead } from '../../../models/lessonhead';
-import { LessonHeadService } from '../../../services/ngbstable/ngbootstraptable.service';
-import { NgbdSortableHeader, SortEvent } from '../../../services/ngbstable/ngbootstraptable.service';
+import { LessonHeadService } from '../../../services/others/ngbootstraptable.service';
+import { NgbdSortableHeader, SortEvent } from '../../../services/others/ngbootstraptable.service';
 
 
 @Component({
