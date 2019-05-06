@@ -3,7 +3,7 @@
         <div class='row justify-content-end'>
             <div class="form-group col-2 align-self-end">
                 <label>Amount ($)</label>
-                <input type="number" min="0" value={{sellPriceTemp}} class="form-control" disabled>
+                <input type="number" min="0" value={{sellPrice}} class="form-control" disabled>
             </div>
         </div>
         <div *ngFor="let li of productList.controls; let j = index">
@@ -14,44 +14,44 @@
                 </div>
                 <h5>Products Selling To Customer Section {{j+1}}</h5>
                 <div class='row justify-content-between'>
+                    <div class="row justify-content-between">
+                        <div class="form-group col-3">
+                            <label>Types</label>
+                            <select #districtTypes class="form-control" (change)='selectType(districtTypes,j)'>
+                                <option disabled selected>Choose Type..</option>
+                                <option *ngFor="let type of types[j]; let k = index" [value]="k"> {{type.ProdCatName}}</option>
+                            </select>
+                        </div>
+                        <div class="form-group col-3">
+                            <label>Categories</label>
+                            <select #districtCat class="form-control" (change)='selectCat(districtCat,j)'>
+                                <option selected>Choose Category..</option>
+                                <option *ngFor="let category of categories[j].catItem;let l = index" [value]="category.ProdTypeId">{{category.ProdTypeName}}</option>
+                            </select>
+                        </div>
+                        <div class="form-group col-3">
+                            <label>Products</label>
+                            <select #districtProd class="form-control" (change)='selectProd(districtProd,j)'>
+                                <option selected>Choose products..</option>
+                                <option *ngFor="let product of prodMuti[j].prods; let i = index" [value]="i">{{product.ProductName}}</option>
+                            </select>
+                        </div>
+                    </div>
                     <div class="form-group col-3">
                         <label>Discount by Percentage (%)</label>
-                        <input type="number" min="0" max="100" value='100' class="form-control mt-1 mr-2 ml-2" formControlName="rate" (change)='changeProductPrice(j)'>
+                        <input type="number" min="0" max="100" value='100' class="form-control mt-1 mr-2 ml-2" formControlName="rate" (change)='changeProductPrice()'>
                     </div>
                     <div class="form-group col-3">
                         <label>Discount by Money ($)</label>
-                        <input type="number" min="0" value='0' class="form-control mt-1 mr-2 ml-2" formControlName="subMoney" (change)='changeProductPrice(j)'>
+                        <input type="number" min="0" value='0' class="form-control mt-1 mr-2 ml-2" formControlName="subMoney" (change)='changeProductPrice()'>
                     </div>
                     <div class="form-group col-3">
                         <label>Number of Product(s)</label>
-                        <input type="number" min="1" value="1" class="form-control mt-1 mr-2" formControlName="number" (change)='changeProductPrice(j)'>
+                        <input type="number" min="1" value="1" class="form-control mt-1 mr-2" formControlName="number" (change)='changeProductPrice()'>
                     </div>
                     <div class="form-group col-2 align-self-end">
                         <label>Subtotal ($)</label>
-                        <input type="number" min="0" formcontrolName='subtotal' class="form-control" disabled>
-                    </div>
-                </div>
-                <div class="row justify-content-between">
-                    <div class="form-group col-3">
-                        <label>Types</label>
-                        <select #districtTypes class="form-control" (change)='selectType(districtTypes,j)'>
-                                    <option disabled selected>Choose Type..</option>
-                                    <option *ngFor="let type of types[j]; let k = index" [value]="k"> {{type.ProdCatName}}</option>
-                                  </select>
-                    </div>
-                    <div class="form-group col-3">
-                        <label>Categories</label>
-                        <select #districtCat class="form-control" (change)='selectCat(districtCat,j)'>
-                                        <option selected>Choose Category..</option>
-                                        <option *ngFor="let category of categories[j].catItem;let l = index" [value]="category.ProdTypeId">{{category.ProdTypeName}}</option>
-                                      </select>
-                    </div>
-                    <div class="form-group col-3">
-                        <label>Products</label>
-                        <select #districtProd class="form-control" (change)='selectProd(districtProd,j)'>
-                                        <option selected>Choose products..</option>
-                                        <option *ngFor="let product of prodMuti[j].prods; let i = index" [value]="i">{{product.ProductName}}</option>
-                                      </select>
+                        <input type="number" min="0" formControlName='subTotal' class="form-control mt-1 mr-2" disabled>
                     </div>
                 </div>
                 <hr *ngIf="productList.controls.length !== 1">

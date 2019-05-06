@@ -87,7 +87,7 @@ export class AdminLearnerPaymentProductsComponent implements OnInit {
             this.productsListService.postProdService(this.postProdPayObj).subscribe(
               response => {
                 console.log('Success!', response);
-                alert('Your Payment Has Been Uploaded.');
+                alert('Your Payment Has Been Made');
               },
               (error) => {
                 const errorMsg = JSON.parse(error.error);
@@ -153,14 +153,13 @@ export class AdminLearnerPaymentProductsComponent implements OnInit {
       // console.log(this.prodItems[index]);
       // this.sellPrice = this.sellPrice - Number(this.prodItems[index].prodItem[0].SellPrice) * this.productList.controls[index].value.number;
       // this.sellPriceArr.splice(index, 1);
-      this.changeProductPrice(index);
-
       this.productList.removeAt(index);
       this.types.splice(index, 1);
       this.categories.splice(index, 1);
       this.prodMuti.splice(index, 1);
       this.prodItems.splice(index, 1);
-      }
+      this.changeProductPrice();
+    }
     }
 
     selectType(dis, j) {
@@ -201,7 +200,7 @@ export class AdminLearnerPaymentProductsComponent implements OnInit {
           this.productList.controls[j].patchValue({
             productName: this.prodItems[j].prodItem[0].ProductName
         });
-          this.changeProductPrice(j);
+          this.changeProductPrice();
       });
     }
 
@@ -223,16 +222,16 @@ export class AdminLearnerPaymentProductsComponent implements OnInit {
   //   }, 0) * this.productList.controls[j].value.rate / 100 ;
   //   this.sellPrice = Math.round(this.sellPriceTemp * 100) / 100;
   // }
-  changeProductPrice(j) {
+  changeProductPrice() {
     this.sellPrice = 0;
-    this.productList.controls.forEach((item) => {
+    this.productList.controls.forEach((item, i) => {
         this.sellPriceTemp = item.value.price * Number(item.value.rate) / 100 * item.value.number - item.value.subMoney;
         console.log(Number(item.value.rate));
         this.sellPrice = Math.round(this.sellPriceTemp * 100) / 100 + this.sellPrice;
+        this.productList.controls[i].patchValue({
+          subTotal: this.sellPriceTemp
+        });
       });
-      this.productList.controls[j].patchValue({
-        subTotal: this.sellPriceTemp
-      })
   }
 
   ngOnInit() {
