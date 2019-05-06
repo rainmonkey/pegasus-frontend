@@ -11,7 +11,8 @@ export class UsersService {
 
   baseUrl = environment.baseUrl;
   constructor(private http: HttpClient) {
-   }
+    this.prepareHeaders()
+  }
 
   // API Request headers
   prepareHeaders(){
@@ -21,9 +22,6 @@ export class UsersService {
 
   // Call API for sidebar Data
   getSidebar(){
-    this.prepareHeaders()
     return this.http.get(this.baseUrl + 'navitems/', {headers: this.httpHeaders})
   }
-
-
 }
