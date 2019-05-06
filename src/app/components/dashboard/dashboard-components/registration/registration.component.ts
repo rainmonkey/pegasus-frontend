@@ -6,8 +6,8 @@ import { Parent } from 'src/app/models/Parent';
 
 @Component({
   selector: 'app-registration',
-  templateUrl: './registration.component.html',
-  styleUrls: ['./registration.component.css']
+  // templateUrl: './registration.component.html',
+  // styleUrls: ['./registration.component.css']
 })
 export class RegistrationComponent implements OnInit {
 

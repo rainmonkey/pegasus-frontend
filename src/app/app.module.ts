@@ -1,3 +1,4 @@
+// Dependencies
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -7,7 +8,9 @@ import { NgModule } from '@angular/core';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { routing } from '../app/app-routing.module';
 
+// Guards
 
+// Services
 import { NgbdSortableHeader } from './services/others/ngbootstraptable.service';
 
 // Components
@@ -33,13 +36,11 @@ import { ModalDeleteComponent } from './components/dashboard/dashboard-component
 import { LearnerRegistrationFormComponent } from './components/dashboard/dashboard-components/learner-registration/learner-registration-form/learner-registration-form.component';
 import { LearnerRegistrationEditComponent } from './components/dashboard/dashboard-components/learner-registration/learner-registration-edit/learner-registration-edit.component';
 import { TutorEditModalComponent } from './components/dashboard/dashboard-components/tutor-info/tutor-edit-modal/tutor-edit-modal.component'
-import { GenderFormatPipe } from './shared/pipes/tutor-pipes/gender-format.pipe';
-import { OrgFormatPipe } from './shared/pipes/tutor-pipes/org-format.pipe';
-import { WeekFormatPipe } from './shared/pipes/tutor-pipes/week-format.pipe';
+import { GenderFormatPipe } from './shared/pipes/gender-format.pipe';
+import { OrgFormatPipe } from './shared/pipes/org-format.pipe';
+import { WeekFormatPipe } from './shared/pipes/week-format.pipe';
 import { TutorEditModalFormComponent } from './components/dashboard/dashboard-components/tutor-info/tutor-edit-modal-form/tutor-edit-modal-form.component';
-// Guards
 
-// Services
 
 
 @NgModule({
