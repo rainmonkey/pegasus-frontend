@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormArray, FormBuilder, Validators } from '@angular/forms';
 import { RegistrationService } from '../../../../services/registration.service';
-import { StudentDetail } from '../../../../models/StudentDetail';
 import { Parent } from 'src/app/models/Parent';
 
 @Component({
@@ -13,7 +12,6 @@ export class RegistrationComponent implements OnInit {
 
   public todays = new Date();
   public registrationForm: FormGroup;  // define the type of registrationForm
-  public students = new StudentDetail();  // create an instance of class StudentDetail 
   public selectedPhoto: File = null;
   public selectedGrade: File = null;
   public today = new Date();
