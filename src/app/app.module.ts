@@ -11,7 +11,7 @@ import { routing } from '../app/app-routing.module';
 // Guards
 
 // Services
-import { NgbdSortableHeader } from './services/others/ngbootstraptable.service';
+//import { NgbdSortableHeader } from './services/others/ngbootstraptable.service';
 
 // Components
 import { AppComponent } from './app.component';
