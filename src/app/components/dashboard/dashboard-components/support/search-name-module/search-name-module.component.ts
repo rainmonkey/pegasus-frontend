@@ -7,7 +7,7 @@ import { Router } from '@angular/router';
 @Component({
   selector: 'app-search-name-module',
   templateUrl: './search-name-module.component.html',
-  styleUrls: ['./search-name-module.css']
+  styleUrls: ['./search-name-module.component.css']
 })
 export class SearchNameModuleComponent implements OnInit {
     a = false;

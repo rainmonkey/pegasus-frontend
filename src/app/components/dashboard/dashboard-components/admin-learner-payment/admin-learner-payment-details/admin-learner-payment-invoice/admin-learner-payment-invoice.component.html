@@ -1,4 +1,6 @@
 <!--attached payment form-->
+<ngb-alert *ngIf='successAlert' type="success" (close)="closeSucc()">Your Payment Has Been Uploaded.</ngb-alert>
+<ngb-alert *ngIf='errorAlert' type="success" (close)="closeErro()">{{ errorMsg }}</ngb-alert>
 <div class='switchOthersContainer'>
     <div class="container">
         <div class="row justify-content-md-center">

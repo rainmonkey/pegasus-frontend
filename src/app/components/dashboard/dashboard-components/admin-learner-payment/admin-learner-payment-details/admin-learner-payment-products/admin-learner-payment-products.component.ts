@@ -10,7 +10,7 @@ import { ActivatedRoute, ParamMap } from '@angular/router';
   styleUrls: ['./admin-learner-payment-products.component.css']
 })
 export class AdminLearnerPaymentProductsComponent implements OnInit {
-  //learner
+  // learner
   public learnerId;
   // products
   public productName: any;
@@ -53,8 +53,25 @@ export class AdminLearnerPaymentProductsComponent implements OnInit {
   // product list fb
   productListForm = this.fb.group({
     productList: this.fb.array([this.productListGroup]),
-    amount:[]
+    amount: []
     });
+  postPordPayObjMethod() {
+    this.postProdPayObj = {
+      StaffId: 1,
+      BranchId: 1,
+      LearnerId: this.learnerId,
+      Products: this.postProdsIdArray
+    };
+  }
+  transferFromProdToLocalMethod() {
+    // transfer elements from productList to the local userSelcProd
+    this.productList.controls.forEach(x => {
+      if (!isNaN(Number(x.value.products))) {
+        this.userSelcProd.push(Number(x.value.products));
+      }
+      console.log('x.value.product:', x.value.products);
+    });
+  }
 
     // confirm PRODUCTION selection method
     openProd(contentProd) {
@@ -64,23 +81,13 @@ export class AdminLearnerPaymentProductsComponent implements OnInit {
           result => {
             this.closeResult = `Closed with: ${result}`;
             this.getProductId();
-            this.postProdPayObj = {
-              StaffId: 1,
-              BranchId: 1,
-              LearnerId: this.learnerId,
-              Products: this.postProdsIdArray
-            };
-            // transfer elements from productList to the local userSelcProd
-            this.productList.controls.forEach(x => {
-              if (!isNaN(Number(x.value.products))) {
-                this.userSelcProd.push(Number(x.value.products));
-              }
-              console.log('x.value.product:', x.value.products);
-            });
+            this.postPordPayObjMethod();
+            this.transferFromProdToLocalMethod();
             // confirm product payment
             this.productsListService.postProdService(this.postProdPayObj).subscribe(
               response => {
                 console.log('Success!', response);
+                alert('Your Payment Has Been Uploaded.');
               },
               (error) => {
                 const errorMsg = JSON.parse(error.error);
@@ -117,7 +124,8 @@ export class AdminLearnerPaymentProductsComponent implements OnInit {
         number: [1],
         index: [0],
         rate: [100],
-        subMoney: [0]
+        subMoney: [0],
+        subTotal: [0]
       });
     }
     get productList() {
@@ -143,8 +151,9 @@ export class AdminLearnerPaymentProductsComponent implements OnInit {
       const conf = confirm('your selection have not submit, do you still want to delete it?');
       if (conf) {
       // console.log(this.prodItems[index]);
-      this.sellPrice = this.sellPrice - Number(this.prodItems[index].prodItem[0].SellPrice) * this.productList.controls[index].value.number;
-      this.sellPriceArr.splice(index, 1);
+      // this.sellPrice = this.sellPrice - Number(this.prodItems[index].prodItem[0].SellPrice) * this.productList.controls[index].value.number;
+      // this.sellPriceArr.splice(index, 1);
+      this.changeProductPrice(index);
 
       this.productList.removeAt(index);
       this.types.splice(index, 1);
@@ -155,13 +164,13 @@ export class AdminLearnerPaymentProductsComponent implements OnInit {
     }
 
     selectType(dis, j) {
-      //console.log(this.prodMuti[j].prods,'this.prodMuti',this.prodMuti)
+      // console.log(this.prodMuti[j].prods,'this.prodMuti',this.prodMuti)
       this.productsListService
       .getProdCat(this.types[j][dis.value].ProdCatId)
       .subscribe(cat => {
-        //return console.log(this.categories)
+        // return console.log(this.categories)
        this.categories[j].catItem = cat['Data'] ;
-       console.log(cat['Data'])
+       console.log(cat['Data']);
       // this.productList.controls[j].patchValue({
       //   category: cat['Data'][dis.value].ProdTypeId
       // })
@@ -198,34 +207,41 @@ export class AdminLearnerPaymentProductsComponent implements OnInit {
 
     getProductId() {
       this.productList.controls.forEach(controls => {
-        console.log(controls.value.product)
+        console.log(controls.value.product);
         return this.postProdsIdArray.push(controls.value.product);
 
       });
       console.log(this.postProdsIdArray);
     }
 
-    changeProductPrice(j){
-      this.sellPriceArr.splice(j, 1)
-        this.sellPriceArr.push(Number(this.prodItems[j].prodItem[0].SellPrice)*this.productList.controls[j].value.number)
-        this.sellPriceTemp = this.sellPriceArr.reduce((sum,price)=>{
-          return sum + price;
-        },0)* this.productList.controls[j].value.rate/100 - this.productList.controls[j].value.subMoney;
-        this.sellPrice = Math.round(this.sellPriceTemp*100)/100;
-    }
-
-    changeRate(j){
-
-    }
-
+  // changeProductPrice(j) {
+  //   // this.sellPriceArr.splice(j, 1);
+  //   this.sellPriceArr.push(Number(this.prodItems[j].prodItem[0].SellPrice) * this.productList.controls[j].value.number - this.productList.controls[j].value.subMoney);
+  //   console.log(this.sellPriceArr);
+  //   this.sellPriceTemp = this.sellPriceArr.reduce((sum, price) => {
+  //     return sum + price;
+  //   }, 0) * this.productList.controls[j].value.rate / 100 ;
+  //   this.sellPrice = Math.round(this.sellPriceTemp * 100) / 100;
+  // }
+  changeProductPrice(j) {
+    this.sellPrice = 0;
+    this.productList.controls.forEach((item) => {
+        this.sellPriceTemp = item.value.price * Number(item.value.rate) / 100 * item.value.number - item.value.subMoney;
+        console.log(Number(item.value.rate));
+        this.sellPrice = Math.round(this.sellPriceTemp * 100) / 100 + this.sellPrice;
+      });
+      this.productList.controls[j].patchValue({
+        subTotal: this.sellPriceTemp
+      })
+  }
 
   ngOnInit() {
     this.categories.push(this.catItem);
     this.prodMuti.push(this.prods);
     this.prodItems.push(this.prodItem);
 
-    this.route.paramMap.subscribe((obs:ParamMap) => {
-      this.learnerId = parseInt(obs.get('id'))
+    this.route.paramMap.subscribe((obs: ParamMap) => {
+      this.learnerId = parseInt(obs.get('id'));
     });
 
     this.productsListService

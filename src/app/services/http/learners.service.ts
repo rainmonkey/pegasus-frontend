@@ -32,6 +32,5 @@ export class LearnersService {
   //  errorHandler(error: HttpErrorResponse){
   //   return Observable.throw(error.message || "Server Error");
   //  }
-  //return this.http.get('www/baidu.comwqd' + 'learner/' + name);
   }
 }
