@@ -1,17 +1,15 @@
 import { Component, OnInit, Input, ViewChild, ViewChildren } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
-import { TeachersService } from '../../../../../../../services/http/teachers.service';
-import { Command } from 'protractor';
-import { queueComponentIndexForCheck } from '@angular/core/src/render3/instructions';
+import { TeachersService } from '../../../../../services/http/teachers.service';
 
 @Component({
-  selector: 'app-modal-update-form',
-  templateUrl: './modal-update-form.component.html',
-  styleUrls: ['../../../../../../../../assets/shared/css/teacher-global.css',
-    './modal-update-form.component.css']
+  selector: 'app-tutor-edit-modal-form',
+  templateUrl: './tutor-edit-modal-form.component.html',
+  styleUrls: ['../../../../../../assets/shared/css/teacher-global.css',
+    './tutor-edit-modal-form.component.css']
              
 })
-export class ModalUpdateFormComponent implements OnInit {
+export class TutorEditModalFormComponent implements OnInit {
 
   private photoToSubmit;
   private path;
@@ -41,6 +39,7 @@ export class ModalUpdateFormComponent implements OnInit {
     this.updateForm = this.fb.group(this.formGroupAssemble());
 
     this.teachersService.getApis().subscribe((data) => {
+     
       this.qualificationsListFromService = data.Data.qualifications;
       this.languagesListFromService = data.Data.Languages;
       this.orgsListFromService = data.Data.Orgs;
@@ -148,7 +147,7 @@ export class ModalUpdateFormComponent implements OnInit {
     return availableDays;
   }
 
-  img(event){
+  preViewImg(event){
     this.photoToSubmit = <File>event.target.files[0];
     let reader = new FileReader();
     let photoObj = document.getElementById ('photo')

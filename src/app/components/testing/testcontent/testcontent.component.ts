@@ -2,9 +2,9 @@ import { DecimalPipe } from '@angular/common';
 import { Component, OnInit, QueryList, ViewChildren } from '@angular/core';
 import { Observable } from 'rxjs';
 
-import { LessonHead } from './lessonhead';
-import { LessonHeadService } from '../../../services/repositories/lessonhead.service';
-import { NgbdSortableHeader, SortEvent } from './sortable.directive';
+import { LessonHead } from '../../../models/lessonhead';
+import { LessonHeadService } from '../../../services/ngbstable/ngbootstraptable.service';
+import { NgbdSortableHeader, SortEvent } from '../../../services/ngbstable/ngbootstraptable.service';
 
 
 @Component({
@@ -13,6 +13,7 @@ import { NgbdSortableHeader, SortEvent } from './sortable.directive';
   providers: [LessonHeadService, DecimalPipe]
 })
 export class TestcontentComponent implements OnInit {
+  
   lessons$: Observable<LessonHead[]>;
   total$: Observable<number>;
 

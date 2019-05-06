@@ -1,4 +1,3 @@
-
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -9,8 +8,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { routing } from '../app/app-routing.module';
 
 
-
-import { NgbdSortableHeader } from './components/testing/testcontent/sortable.directive';
+import { NgbdSortableHeader } from './services/ngbstable/ngbootstraptable.service';
 
 // Components
 import { AppComponent } from './app.component';
@@ -30,15 +28,15 @@ import { FooterComponent } from './components/basic/footer/footer.component';
 import { CoursesPanelComponent } from './components/dashboard/dashboard-components/courses/courses-panel/courses-panel.component';
 import { CoursesDetailComponent } from './components/dashboard/dashboard-components/courses/courses-detail/courses-detail.component';
 import { CoursesListComponent } from './components/dashboard/dashboard-components/courses/courses-list/courses-list.component';
-import { BodyComponent } from './components/dashboard/dashboard-components/teacher/body/body.component';
-import { ModalDeleteComponent } from './components/dashboard/dashboard-components/teacher/body/modal-delete/modal-delete.component';
-import { ModalUpdateComponent } from './components/dashboard/dashboard-components/teacher/body/modal-update/modal-update.component';
-import { ModalUpdateFormComponent } from './components/dashboard/dashboard-components/teacher/body/modal-update/modal-update-form/modal-update-form.component';
-import { GenderFormatPipe } from 'src/assets/pipes/teacher-pipes/gender-format.pipe';
-import { WeekFormatPipe } from 'src/assets/pipes/teacher-pipes/week-format.pipe';
-import { OrgFormatPipe } from 'src/assets/pipes/teacher-pipes/org-format.pipe';
+import { TutorInfoComponent } from './components/dashboard/dashboard-components/tutor-info/tutor-info-list/tutor-info.component';
+import { ModalDeleteComponent } from './components/dashboard/dashboard-components/tutor-info/tutor-delete-modal/modal-delete.component';
 import { LearnerRegistrationFormComponent } from './components/dashboard/dashboard-components/learner-registration/learner-registration-form/learner-registration-form.component';
 import { LearnerRegistrationEditComponent } from './components/dashboard/dashboard-components/learner-registration/learner-registration-edit/learner-registration-edit.component';
+import { TutorEditModalComponent } from './components/dashboard/dashboard-components/tutor-info/tutor-edit-modal/tutor-edit-modal.component'
+import { GenderFormatPipe } from './shared/pipes/tutor-pipes/gender-format.pipe';
+import { OrgFormatPipe } from './shared/pipes/tutor-pipes/org-format.pipe';
+import { WeekFormatPipe } from './shared/pipes/tutor-pipes/week-format.pipe';
+import { TutorEditModalFormComponent } from './components/dashboard/dashboard-components/tutor-info/tutor-edit-modal-form/tutor-edit-modal-form.component';
 // Guards
 
 // Services
@@ -63,13 +61,13 @@ import { LearnerRegistrationEditComponent } from './components/dashboard/dashboa
     CoursesPanelComponent,
     CoursesDetailComponent,
     CoursesListComponent,
-    BodyComponent,
+    TutorInfoComponent,
     ModalDeleteComponent,
-    ModalUpdateComponent,
-    ModalUpdateFormComponent,
+    TutorEditModalComponent,
+    TutorEditModalFormComponent,
     GenderFormatPipe,
-    WeekFormatPipe,
     OrgFormatPipe,
+    WeekFormatPipe,
     LearnerRegistrationFormComponent,
     LearnerRegistrationEditComponent,
     NgbdSortableHeader
@@ -90,7 +88,7 @@ import { LearnerRegistrationEditComponent } from './components/dashboard/dashboa
 
   ],
   entryComponents:[
-    ModalUpdateComponent,
+    TutorEditModalComponent,
     ModalDeleteComponent
   ],
   bootstrap: [AppComponent]

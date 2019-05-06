@@ -1,18 +1,16 @@
 import { Component, OnInit, Input, ViewChild, Output, EventEmitter } from '@angular/core';
-import { Command } from 'protractor';
 import { NgbActiveModal, NgbPaginationNumber, NgbDateParserFormatter } from '@ng-bootstrap/ng-bootstrap';
-import { TeachersService } from '../../../../../../services/http/teachers.service';
+import { TeachersService } from '../../../../../services/http/teachers.service'
 
 @Component({
-  selector: 'app-modal-update',
-  templateUrl: './modal-update.component.html',
-  styleUrls: ['./modal-update.component.css']
+  selector: 'app-tutor-edit-modal',
+  templateUrl: './tutor-edit-modal.component.html',
+  styleUrls: ['./tutor-edit-modal.component.css']
 })
-export class ModalUpdateComponent implements OnInit {
+export class TutorEditModalComponent implements OnInit {
 
   private valueToBeSubmitted;
   private originalValue;
-  //是否所有表单都fill
   private isSubmitFail:boolean = false;
   private errorMessage = '';
   
@@ -28,55 +26,18 @@ export class ModalUpdateComponent implements OnInit {
   }
 
   submit() {
+    this.showLoadingGif();
     this.getDataReady();
-
-    //判断是否所有的表单都fill 如果有任何一项没有fill 就会使isSubmitFail的值为true
-    for(let i in this.valueToBeSubmitted){
-      if(this.valueToBeSubmitted[i] == null){
-        //this.isSubmitFail = true;
-        this.errorMessage = 'Please fill all required inputs.';
-        //用户点击save按钮后 遍历触摸(touch)所有的input表单 目的是触发表单的Validator
-        for(let j in this.modalUpdateFormComponentObj.updateForm.controls)
-        {
-          this.modalUpdateFormComponentObj.updateForm.controls[j].touched = true;
-        }
-        return;
-      }
-    }
-
- 
-    //this.isSubmitFail = false;
-    this.errorMessage = '';
-
-    let submit = new FormData();
-    submit.append('details',JSON.stringify(this.valueToBeSubmitted));
-    submit.append('IdPhoto',this.modalUpdateFormComponentObj.photoToSubmit);
-    submit.append('Photo','123456')
-
-    
-    //while push a stream of new data
-    if(this.command == 'Add'){
-      //this.valueToBeSubmitted = JSON.stringify(this.valueToBeSubmitted);
-      this.teachersService.addNew(submit).subscribe(
-        (data)=>{
-          console.log('success',data);
-          this.activeModal.close('Close click');
-        },
-        (error)=>{
-          this.errorMessage = error.error.ErrorMessage;
-          console.log('Error', error);
-        }
-      );
-    }
-    //while update data
-    else if(this.command == 'Edit'){
-
-    }
+    this.isAllInputsFilled();
   }
 
   /*
     prepare the data to submit
   */
+  showLoadingGif(){
+    let loadingGifObj = document.getElementById('loading');
+    loadingGifObj.style.display = 'inline-block';
+  }
   getDataReady(){
     this.originalValue = this.modalUpdateFormComponentObj.updateForm.value;
     this.valueToBeSubmitted = this.modalUpdateFormComponentObj.updateForm.value;  
@@ -97,16 +58,15 @@ export class ModalUpdateComponent implements OnInit {
 
   //to check which language checked
   checkLanguages() {
-    //子集(modal-update-form)中 languagesCheckBox元素的集合
     let languageBoxObj = this.modalUpdateFormComponentObj.languagesCheckBox._results;
     let checkedLanguagesList = [];
     for (let i in languageBoxObj) {
-      //判断如果某languages被选中 就把它添加到temList中
+      //whitchever languages is checked, add it to checkedLanguagesList
       if (languageBoxObj[i].nativeElement.checked == true) {
         checkedLanguagesList.push(Number(languageBoxObj[i].nativeElement.value));
       }
     }
-    //如果checkedLanguagesList是空的 就说明languages没有任何一项被选中 所以return null
+    //if checkedLanguagesList is empty,that is no language was checked, return null
     if(checkedLanguagesList.length !== 0){
       return checkedLanguagesList;
     }
@@ -188,8 +148,64 @@ export class ModalUpdateComponent implements OnInit {
   checkDate(date){
     let newDate = new Date();
     newDate.setTime(Date.parse(date));
-    console.log(Date.parse(date))
-    console.log(newDate);
+    //console.log(Date.parse(date))
+    //console.log(newDate);
     return newDate;
+  }
+
+  /*
+    check all inputs filled?
+    yes-->submit to back-end
+    no-->show error message
+  */
+  isAllInputsFilled(){
+    for(let i in this.valueToBeSubmitted){
+      if(this.valueToBeSubmitted[i] == null){
+        this.errorMessage = 'Please fill all required inputs.';
+        //once user click save btn, touch all inputs form with for-loop, in orde to trigger Validator
+        for(let j in this.modalUpdateFormComponentObj.updateForm.controls)
+        {
+          this.modalUpdateFormComponentObj.updateForm.controls[j].touched = true;
+        }
+        return;
+      }
+    }
+
+    this.readyToSubmit();
+  }
+
+  readyToSubmit(){
+    this.errorMessage = '';
+    let submit = this.stringifySubmitStr();
+    this.modeToSubmit(submit);
+  }
+
+  stringifySubmitStr(){
+    let submit = new FormData();
+    submit.append('details',JSON.stringify(this.valueToBeSubmitted));
+    submit.append('IdPhoto',this.modalUpdateFormComponentObj.photoToSubmit);
+    submit.append('Photo','123456');
+    return submit;
+  }
+
+  modeToSubmit(submitData){
+     //while push a stream of new data
+     if(this.command == 'Add'){
+      //this.valueToBeSubmitted = JSON.stringify(this.valueToBeSubmitted);
+      this.teachersService.addNew(submitData).subscribe(
+        (data)=>{
+          console.log('success',data);
+          this.activeModal.close('Close click');
+        },
+        (error)=>{
+          this.errorMessage = error.error.ErrorMessage;
+          console.log('Error', error);
+        }
+      );
+    }
+    //while update data
+    else if(this.command == 'Edit'){
+
+    }
   }
 }
