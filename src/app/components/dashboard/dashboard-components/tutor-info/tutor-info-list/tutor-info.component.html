@@ -10,7 +10,7 @@
     <!--body search-->
     <div class='col-12 tl_body_search'>
       <span class='fas fa-search'></span>&nbsp;
-      <input type="text" (input)='search($event)' placeholder=" Search by name">
+      <input type="text" (input)='onSearch($event)' placeholder=" Search by name">
     </div>
 
     <!--body main-->
@@ -19,8 +19,8 @@
         <thead>
           <tr>
             <th scope='col' class='tl_body_table_head'>#</th>
-            <th scope='col' class='tl_body_table_head'>First Name</th>
-            <th scope="col" class="tl_body_table_head">Last Name</th>
+            <th scope='col' class='tl_body_table_head' (click)='onSort("FirstName")' class='sorting_item'>First Name</th>
+            <th scope="col" class="tl_body_table_head" (click)='onSort("LastName")' class='sorting_item'>Last Name</th>
             <th scope="col" class="tl_body_table_head">Gender</th>
             <th scope='col' class='tl_body_table_head'>Moblie Phone</th>
             <th scope='col' class='tl_body_table_head'>Email</th>

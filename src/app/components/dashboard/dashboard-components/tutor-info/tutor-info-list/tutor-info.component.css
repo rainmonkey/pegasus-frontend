@@ -50,3 +50,6 @@
 .tl_body_table_btn:nth-child(3):hover{
     color:#dc3545;
 }
+.sorting_item:hover{
+    cursor: pointer;
+}

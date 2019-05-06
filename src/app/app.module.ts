@@ -70,8 +70,7 @@ import { TutorEditModalFormComponent } from './components/dashboard/dashboard-co
     OrgFormatPipe,
     WeekFormatPipe,
     LearnerRegistrationFormComponent,
-    LearnerRegistrationEditComponent,
-    NgbdSortableHeader
+    LearnerRegistrationEditComponent
   ],
   imports: [
     NgbModule,
@@ -86,7 +85,7 @@ import { TutorEditModalFormComponent } from './components/dashboard/dashboard-co
     routing
   ],
   providers: [
-
+    
   ],
   entryComponents:[
     TutorEditModalComponent,

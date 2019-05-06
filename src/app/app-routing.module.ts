@@ -1,6 +1,6 @@
 import { Routes, RouterModule } from '@angular/router';
 import { LoginComponent } from './components/basic/login/login.component';
-import { TestcontentComponent } from './components/testing/testcontent/testcontent.component';
+//import { TestcontentComponent } from './components/testing/testcontent/testcontent.component';
 import { HomepageComponent } from './components/dashboard/general/homepage/homepage.component';
 import { TimePickerComponent } from './components/dashboard/dashboard-components/time-picker/time-picker.component';
 import { LearnerRegistrationFormComponent } from './components/dashboard/dashboard-components/learner-registration/learner-registration-form/learner-registration-form.component';
@@ -17,7 +17,7 @@ const routes: Routes = [
   { path: '', component: HomepageComponent, canActivate: [DashboardRestrictGuard],
 
     children: [
-      { path: 'testcontent', component: TestcontentComponent },
+     // { path: 'testcontent', component: TestcontentComponent },
       // Payments Area
       { path: 'payment/invoice', pathMatch: 'prefix', component: AdminLearnerPaymentPanelComponent,
       children: [
