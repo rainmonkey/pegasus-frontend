@@ -87,10 +87,12 @@
                                 <p *ngIf="item.other2FeeName">{{item.Other2FeeName}}: ${{item.Other2Fee}}</p>
                                 <p *ngIf="item.other3FeeName">{{item.Other3FeeName}}: ${{item.Other3Fee}}</p>
 
-                                <p>Payment method: <select #districtPayment (change)="paymentMethod(districtPayment)">
+                                <p>Payment method: </p>
+                                <select #districtPayment (change)="paymentMethod(districtPayment)" class='form-control col-4'>
+                                  <option selected>pls select..</option>
                                   <option value=2>Eftpos</option>
                                   <option value=3>Online Transfer</option>
-                                  <option value=1>Cash</option></select></p>
+                                  <option value=1>Cash</option></select>
                                 <p>Learner Paid: ${{item.PaidFee}}</p>
                                 <p>Learner Owing Fee: ${{item.OwingFee}}</p>
                                 <div class="row  justify-content-start mt-2" [formGroup]="invoiceForm">

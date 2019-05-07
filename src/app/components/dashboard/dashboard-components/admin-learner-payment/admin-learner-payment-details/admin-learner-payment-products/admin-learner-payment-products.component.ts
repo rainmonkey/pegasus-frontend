@@ -64,8 +64,12 @@ export class AdminLearnerPaymentProductsComponent implements OnInit {
   productListForm = this.fb.group({
     productList: this.fb.array([this.productListGroup]),
     amount: [],
-    paymentMethod: 1
+    paymentMethod: [, Validators.required]
   });
+  get paymentMethod(){
+    return this.productListForm.get('paymentMethod')
+  }
+
   postPordPayObjMethod() {
     this.postProdPayObj = {
       PaymentMethod: this.productListForm.value.paymentMethod,
@@ -132,15 +136,14 @@ export class AdminLearnerPaymentProductsComponent implements OnInit {
   // select product
   get productListGroup(): FormGroup {
     return this.fb.group({
-      category: [""],
-      types: [""],
-      product: [""],
+      category: ["",[Validators.required,Validators.pattern('^[0-9]*$')]],
+      type: ["",[Validators.required,Validators.pattern('^[0-9]*$')]],
+      product: ["",[Validators.required,Validators.pattern('^[0-9]*$')]],
       productName: [""],
-      price: [""],
+      price: [],
       number: [1],
       index: [0],
       subTotal: [0],
-      paymentMethod: [1],
       rate: new FormControl({ value: 100, disabled: false }),
       subMoney: new FormControl({ value: 0, disabled: true })
     });
@@ -298,5 +301,6 @@ export class AdminLearnerPaymentProductsComponent implements OnInit {
       // console.log(this.types[0]['typeItem'])
       // this.types['typeItem'] = types['Data'];
     });
+    console.log(this.productList.controls)
   }
 }

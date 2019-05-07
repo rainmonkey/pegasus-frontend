@@ -16,7 +16,7 @@ export class AdminLearnerPaymentInvoiceComponent implements OnInit {
   public learnerId: any;
   public addFund;
   // post payment
-  public payment = 2;
+  public payment: number;
   public postPayment: ILearnerPay;
   // tabset
   public array = [];

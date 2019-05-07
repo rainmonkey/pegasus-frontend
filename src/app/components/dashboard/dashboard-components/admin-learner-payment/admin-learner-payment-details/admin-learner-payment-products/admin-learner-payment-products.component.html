@@ -4,11 +4,13 @@
 
         <div class='row justify-content-start'>
             <div class='form-group col-2'>
-                <select formControlName="paymentMethod" class='form-control'>
+                <select formControlName="paymentMethod" class='form-control' [class.is-invalid]="paymentMethod.invalid && paymentMethod.touched">
+                    <option disabled>Pls select..</option>
                     <option value=2>Eftpos</option>
                     <option value=3>Online Transfer</option>
                     <option value=1>Cash</option>
                   </select>
+                <small [class.d-none]="paymentMethod.valid || paymentMethod.untouched " class="text-danger">You must select the payment type</small>
             </div>
             <p>Payment method</p>
             <input type="number" min="0" value={{sellPrice}} class="form-control col-1 ml-2 mr-2" disabled> Amount ($)
@@ -24,24 +26,27 @@
                     <div class="row justify-content-start">
                         <div class="form-group col-2">
                             <label>Types</label>
-                            <select #districtTypes class="form-control" (change)='selectType(districtTypes,j)'>
+                            <select #districtTypes class="form-control" (change)='selectType(districtTypes,j)' formControlName="type" [class.is-invalid]="li.get('type').invalid && li.get('type').touched">
                                 <option disabled selected>Choose Type..</option>
-                                <option *ngFor="let type of types[j]; let k = index" [value]="k"> {{type.ProdCatName}}</option>
+                                <option *ngFor="let type of types[j]; let k = index" [value]="k" > {{type.ProdCatName}}</option>
                             </select>
+                            <small [class.d-none]="li.get('product').valid || li.get('product').untouched" class="text-danger">Pls select a type</small>
                         </div>
                         <div class="form-group col-2">
                             <label>Categories</label>
-                            <select #districtCat class="form-control" (change)='selectCat(districtCat,j)'>
+                            <select #districtCat class="form-control" (change)='selectCat(districtCat,j)' formControlName="category" [class.is-invalid]="li.get('category').invalid && li.get('category').touched">
                                 <option selected>Choose Category..</option>
                                 <option *ngFor="let category of categories[j].catItem; let l = index" [value]="category.ProdTypeId">{{category.ProdTypeName}}</option>
                             </select>
+                            <small [class.d-none]="li.get('product').valid || li.get('product').untouched" class="text-danger">Pls select a category</small>
                         </div>
                         <div class="form-group col-2">
                             <label>Products</label>
-                            <select #districtProd class="form-control" (change)='selectProd(districtProd,j)'>
+                            <select #districtProd class="form-control" (change)='selectProd(districtProd,j)' formControlName="product" [class.is-invalid]="li.get('product').invalid && li.get('product').touched">
                                 <option selected>Choose products..</option>
                                 <option *ngFor="let product of prodMuti[j].prods; let i = index" [value]="i">{{product.ProductName}}</option>
                             </select>
+                            <small [class.d-none]="li.get('product').valid || li.get('product').untouched" class="text-danger">Pls select a product</small>
                         </div>
                         <div class="form-group col-3">
                             <label>Number of Product(s)</label>
@@ -69,7 +74,7 @@
             </div>
         </div>
         <!-- open method for product modal-->
-        <button class="btn btn-primary" (click)="openProd(contentProd)">Send this Payment</button>
+        <button class="btn btn-primary" (click)="openProd(contentProd)" [disabled]="paymentMethod.invalid">Send this Payment</button>
         <div class='row justify-content-md-center'>
             <div class="col-md-10">
                 <ng-template #contentProd let-modal>

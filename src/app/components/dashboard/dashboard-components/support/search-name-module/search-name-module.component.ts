@@ -2,8 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { LearnersService } from '../../../../../services/http/learners.service';
 import { FormBuilder, Validators } from '@angular/forms';
 import { NgbModal, ModalDismissReasons, } from '@ng-bootstrap/ng-bootstrap';
-import { Router } from '@angular/router';
-import { stringify } from 'querystring';
+import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 
 @Component({
   selector: 'app-search-name-module',
@@ -18,6 +17,7 @@ export class SearchNameModuleComponent implements OnInit {
   public data: any;
   public errorMsg;
   public show: boolean;
+  public payPath;
   // ng-modal variable
   closeResult: string;
 
@@ -25,7 +25,8 @@ export class SearchNameModuleComponent implements OnInit {
     private modalService: NgbModal,
     private learnersListService: LearnersService,
     private fb: FormBuilder,
-    private router: Router
+    private router: Router,
+    private routeA: ActivatedRoute
   ) { }
 
   // form-builder
@@ -107,7 +108,7 @@ export class SearchNameModuleComponent implements OnInit {
   onChangePath(id) {
     console.log(id);
     // this.router.navigate(['/payment/invoice', id]);
-    this.router.navigate(['/payment/products/', id]);
+    this.router.navigate([this.router.url, id]);
     // this.router.navigate(['/payment/other', id]);
     console.log('route, ', this.router.url);
   }
@@ -137,7 +138,6 @@ export class SearchNameModuleComponent implements OnInit {
       return `with: ${reason}`;
     }
   }
-  ngOnInit() {
-  }
+  ngOnInit() {}
 
 }
