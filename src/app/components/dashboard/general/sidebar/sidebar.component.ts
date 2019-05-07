@@ -3,7 +3,6 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { UserDetail } from '../../../../models/UserDetail';
 import { AuthenticationService } from '../../../../services/auth/authentication.service';
 import { UsersService } from 'src/app/services/http/users.service';
-import { environment } from '../../../../../environments/environment';
 
 @Component({
   selector: 'app-sidebar',
@@ -11,7 +10,6 @@ import { environment } from '../../../../../environments/environment';
   styleUrls: ['./sidebar.component.css']
 })
 export class SidebarComponent implements OnInit {
-  baseUrl = environment.baseUrl;
 
   currentUser: UserDetail;
   users: UserDetail[] = [];

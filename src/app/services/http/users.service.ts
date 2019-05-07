@@ -24,9 +24,4 @@ export class UsersService {
   getSidebar(){
     return this.http.get(this.baseUrl + 'navitems', {headers: this.httpHeaders})
   }
-
-  // Call API for user name
-  getusername(){
-
-  }
 }
