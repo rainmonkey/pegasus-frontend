@@ -20,14 +20,14 @@
     </li> -->
     <!--Form here-->
     <li *ngFor="let item of navitem; let i = index">
-      <a href="#exampledropdownDropdown{{i}}" aria-expanded="false" data-toggle="collapse" routerLinkActive="active">
+      <a href="#exampledropdownDropdown{{i}}" aria-expanded="false" data-toggle="collapse" routerLinkActive="active" class="font6">
         <i class="fas sidebaricon" [ngClass]="item.Icon"></i>
         {{item.PageGroupName}}
       </a>
       <ul id="exampledropdownDropdown{{i}}" class="collapse">
         <li *ngFor="let key of item.Page;">
           <div *ngIf="key.Url != null">
-          <a [routerLink]="['/product/', key.Url]" routerLinkActive="active" class="font6">
+          <a [routerLink]="['/product/', key.Url]" routerLinkActive="active">
             <i class="fas sidebaricon" [ngClass]="key.Icon"></i>
             {{key.PageName}}
           </a>
