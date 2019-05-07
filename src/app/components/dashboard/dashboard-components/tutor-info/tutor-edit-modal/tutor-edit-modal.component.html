@@ -17,6 +17,6 @@
 <div class='modal-footer'>
   <span id='loading'><img src="../../../../../../../assets/images/shared/loading.gif" alt=""></span>
   <span class='tl_mu_submit_error'>{{errorMessage}}</span>
-  <button *ngIf='command!== 1' type='button' class='btn btn-outline-dark' (click)='submit()'>Save</button>
+  <button *ngIf='command!== 1' type='button' class='btn btn-outline-dark' (click)='submit()' id='save'>Save</button>
   <button type="button" class="btn btn-outline-dark" (click)="activeModal.close('Close click')">Close</button>
 </div>

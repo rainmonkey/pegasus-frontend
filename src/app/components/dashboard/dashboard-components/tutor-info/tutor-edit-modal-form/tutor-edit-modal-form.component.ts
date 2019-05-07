@@ -7,7 +7,7 @@ import { TeachersService } from '../../../../../services/http/teachers.service';
   templateUrl: './tutor-edit-modal-form.component.html',
   styleUrls: ['../../../../../../assets/shared/css/teacher-global.css',
     './tutor-edit-modal-form.component.css']
-             
+
 })
 export class TutorEditModalFormComponent implements OnInit {
 
@@ -29,33 +29,18 @@ export class TutorEditModalFormComponent implements OnInit {
   @Input() command;
   @ViewChildren('lan') languagesCheckBox;
   @ViewChildren('branches') branchesCheckBox;
+
   constructor(private fb: FormBuilder, private teachersService: TeachersService) { }
 
   ngOnInit() {
     this.isTeacherQualiIdExist();
     this.disableInputs();
-  
+
     //console.log('whichTeacher', this.whichTeacher)
     this.updateForm = this.fb.group(this.formGroupAssemble());
-
-    this.teachersService.getApis().subscribe((data) => {
-     
-      this.qualificationsListFromService = data.Data.qualifications;
-      this.languagesListFromService = data.Data.Languages;
-      this.orgsListFromService = data.Data.Orgs;
-    },
-      (error) => { console.log(error) })
+    this.getSelectOptions();
   }
 
-  dateFormat(date) {
-    if (date == null) {
-      return null;
-    }
-    else {
-      //console.log(date.substring(0,9));
-      return (date.substring(0, 10));
-    }
-  }
   /*
     we need to show the default value in the select box
     but sometimes there's no teacherQualiId in database, so we need to check it,
@@ -70,6 +55,42 @@ export class TutorEditModalFormComponent implements OnInit {
       else {
         this.teacherQualiId = null;
       }
+    }
+  }
+
+  /*
+    if command is Detail, then only let user to read data, can't modify
+    'this.disabledAllInputsFlag = true' means it's Detail mode, disabled all inputs, only readable
+    'this.disabledAllInputsFlag = false' means it's Add or Edit mode, users can modify
+  */
+  disableInputs() {
+    if (this.command == 1) {
+      this.disabledAllInputsFlag = true;
+    }
+    else {
+      this.disabledAllInputsFlag = false;
+    }
+  }
+
+  /*
+    in the form template, some selection inputs have the default seletion options
+    get the options form server
+  */
+  getSelectOptions() {
+    this.teachersService.getApis().subscribe((data) => {
+      this.qualificationsListFromService = data.Data.qualifications;
+      this.languagesListFromService = data.Data.Languages;
+      this.orgsListFromService = data.Data.Orgs;
+    },
+      (error) => { console.log(error) })
+  }
+
+  dateFormat(date) {
+    if (date == null) {
+      return null;
+    }
+    else {
+      return (date.substring(0, 10));
     }
   }
 
@@ -101,21 +122,6 @@ export class TutorEditModalFormComponent implements OnInit {
     }
   }
 
-  /*
-    if command is Detail, then only let user to read data, can't modify
-    'this.disabledAllInputsFlag = true' means it's Detail mode, disabled all inputs, only readable
-    'this.disabledAllInputsFlag = false' means it's Add or Edit mode, users can modify
-  */
-  disableInputs() {
-    if (this.command == 1) {
-      this.disabledAllInputsFlag = true;
-    }
-    else {
-      this.disabledAllInputsFlag = false;
-    }
-  }
-
- 
   getOrgs(witchDay) {
     if (this.whichTeacher.AvailableDays.length !== 0) {
       let temOrgs = [];
@@ -147,22 +153,22 @@ export class TutorEditModalFormComponent implements OnInit {
     return availableDays;
   }
 
-  preViewImg(event){
+  preViewImg(event) {
     this.photoToSubmit = <File>event.target.files[0];
     let reader = new FileReader();
-    let photoObj = document.getElementById ('photo')
-    
+    let photoObj = document.getElementById('photo')
 
-    reader.onloadend = function(){
+
+    reader.onloadend = function () {
       let result = this.result;
-      photoObj.setAttribute("src",result.toString());
+      photoObj.setAttribute("src", result.toString());
     }
     reader.readAsDataURL(this.photoToSubmit);
-   
+
   }
 
-  formGroupAssemble(){
-    let groupObj:any;
+  formGroupAssemble() {
+    let groupObj: any;
     if (this.command == 0) {
       groupObj = {
         FirstName: [null, Validators.required],
@@ -179,7 +185,7 @@ export class TutorEditModalFormComponent implements OnInit {
         IDNumber: [null, Validators.required],
         ExpiryDate: [null, Validators.required],
         DayOfWeek: [null, Validators.required]
-     }
+      }
     }
     else {
       groupObj = {

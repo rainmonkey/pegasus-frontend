@@ -12,15 +12,14 @@ import { NgbootstraptableService } from 'src/app/services/others/ngbootstraptabl
   styleUrls: ['./tutor-info.component.css']
 })
 export class TutorInfoComponent implements OnInit {
-  private teachersList: any;
+  private teachersList: any; 
   private teachersListLength: number;
-  private temTeachersList: any;
-  private temTeachersListLength: number;
-  private temPaginationTeacher = [];
+  private temTeachersList: any; //save the original teacherList
+  private temTeachersListLength: number; //save the original teacherList length
   private page: number = 1;  //pagination current page
   private pageSize: number = 10;    //[can modify] pagination page size
-  private FirstNameOrder = true;
-  private LastNameOrder = true;
+  private FirstNameOrder = true; //first name order asec
+  private LastNameOrder = true; // last name order asec
 
 
   constructor(private teachersService: TeachersService, private modalService: NgbModal, private ngTable:NgbootstraptableService) { }
@@ -78,11 +77,15 @@ export class TutorInfoComponent implements OnInit {
     update modal
   */
   updateModal(command,whichTeacher){
+    //pop up modal
     const modalRef = this.modalService.open(TutorEditModalComponent, { size: 'lg' });
+    //bind this pointer to that
     let that = this;
+    //refresh after save
     modalRef.result.then(function(){
       that.getData()
     });
+    //pass parameters to pop up modals
     modalRef.componentInstance.command = command;
     modalRef.componentInstance.whichTeacher = whichTeacher;
   }
@@ -117,7 +120,7 @@ export class TutorInfoComponent implements OnInit {
     //should init original list and length
     this.teachersList = this.temTeachersList;
     this.teachersListLength = this.temTeachersListLength;
-
+    
     let searchStr = e.target.value;
     let titlesToSearch = ['FirstName','LastName'];
 
