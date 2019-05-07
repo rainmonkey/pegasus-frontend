@@ -12,15 +12,12 @@ import { NgbootstraptableService } from 'src/app/services/others/ngbootstraptabl
   styleUrls: ['./tutor-info.component.css']
 })
 export class TutorInfoComponent implements OnInit {
-  private teachersList: any; 
-  private teachersListLength: number;
-  private temTeachersList: any; //save the original teacherList
-  private temTeachersListLength: number; //save the original teacherList length
-  private page: number = 1;  //pagination current page
-  private pageSize: number = 10;    //[can modify] pagination page size
-  private FirstNameOrder = true; //first name order asec
-  private LastNameOrder = true; // last name order asec
-
+  public teachersList: any; 
+  public teachersListLength: number;
+  public temTeachersList: any; //save the original teacherList
+  public temTeachersListLength: number; //save the original teacherList length
+  public page: number = 1;  //pagination current page
+  public pageSize: number = 10;    //[can modify] pagination page size
 
   constructor(private teachersService: TeachersService, private modalService: NgbModal, private ngTable:NgbootstraptableService) { }
 
@@ -35,7 +32,10 @@ export class TutorInfoComponent implements OnInit {
     this.teachersService.getTeachers().subscribe(
       (res) => {
         this.teachersList = res.Data;
-        // console.log(this.teachersList);
+        //后台AvailableDays崩了？？？？？？？？？？？？
+        // for(let i of this.teachersList){
+        //   console.log(i.AvailableDays)
+        // }
         this.teachersListLength = res.Data.length; //length prop is under Data prop
         this.temTeachersList = res.Data;
         this.temTeachersListLength = res.Data.length;
@@ -116,30 +116,25 @@ export class TutorInfoComponent implements OnInit {
   /*
     search method
   */
-  onSearch(e){
+ /////////////////////////////////////////////////这个method要精简   -----------by Richard
+  onSearch(event){
     //should init original list and length
     this.teachersList = this.temTeachersList;
     this.teachersListLength = this.temTeachersListLength;
     
-    let searchStr = e.target.value;
+    let searchStr = event.target.value;
+    //
     let titlesToSearch = ['FirstName','LastName'];
 
     this.teachersList = this.ngTable.searching(this.teachersList,titlesToSearch,searchStr);
     this.teachersListLength = this.teachersList.length;
   }
 
+
   /*
     sort method
   */
   onSort(orderBy) {
-    if(this[orderBy+'Order'] == true){
-      this[orderBy+'Order'] = false;
-      this.ngTable.sorting(this.teachersList,orderBy, this[orderBy+'Order']);
-    }
-    else{
-      this[orderBy+'Order'] = true;
-      this.ngTable.sorting(this.teachersList,orderBy, this[orderBy+'Order']);
-    }
-    //console.log(this.teachersList)
+    this.ngTable.sorting(this.teachersList,orderBy);
   }
 }

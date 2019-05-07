@@ -11,19 +11,19 @@ import { TeachersService } from '../../../../../services/http/teachers.service';
 })
 export class TutorEditModalFormComponent implements OnInit {
 
-  private photoToSubmit;
-  private path;
-  private updateForm;
-  private qualificationsListFromService;
-  private languagesListFromService;
-  private orgsListFromService;
-  private teacherQualiId;
-  private teacherQualiName;
-  private disabledAllInputsFlag: boolean = false;
-  private idTypeList = [{ 'idTypeId': 1, 'idTypeName': 'Driver Lisence' },
+  public photoToSubmit;
+  public path;
+  public updateForm;
+  public qualificationsListFromService;
+  public languagesListFromService;
+  public orgsListFromService;
+  public teacherQualiId;
+  public teacherQualiName;
+  public disabledAllInputsFlag: boolean = false;
+  public idTypeList = [{ 'idTypeId': 1, 'idTypeName': 'Driver Lisence' },
   { 'idTypeId': 2, 'idTypeName': '18+' },
   { 'idTypeId': 3, 'idTypeName': 'Passport' }];
-  private week = ["Monday", "Tuesday", "Wednsday", "Thursday", "Friday", "Satday", "Sunday"];
+  public week = ["Monday", "Tuesday", "Wednsday", "Thursday", "Friday", "Satday", "Sunday"];
 
   @Input() whichTeacher;
   @Input() command;

@@ -9,17 +9,17 @@ import { TeachersService } from '../../../../../services/http/teachers.service'
 })
 export class TutorEditModalComponent implements OnInit {
 
-  private valueToBeSubmitted;
-  private originalValue;
-  private isSubmitFail: boolean = false;
-  private errorMessage = '';
+  public valueToBeSubmitted;
+  public originalValue;
+  public isSubmitFail: boolean = false;
+  public errorMessage = '';
 
   @Input() command;
   @Input() whichTeacher;
   @Output() refresh = new EventEmitter;
   @ViewChild('modalUpdateFormComponent') modalUpdateFormComponentObj;
 
-  constructor(private activeModal: NgbActiveModal, private teachersService: TeachersService) { }
+  constructor(public activeModal: NgbActiveModal, private teachersService: TeachersService) { }
 
   ngOnInit() {
   }
@@ -62,10 +62,17 @@ export class TutorEditModalComponent implements OnInit {
     true--> submit to back-end
     false--> show error message
   */
+ //////////////////////tasks to do //////////////////////////////////
+ ////////////////////////////////////////////////////////////////////1、这个method有问题 要重构 ------by Richard
+ ////////////////////////////////////////////////////////////////////2、还要把teacher global css从asstes里拿出来
+ ////////////////////////////////////////////////////////////////////3、剩下的delete update功能实现(等api完事)
+ ////////////////////////////////////////////////////////////////////4、加上添加证件照片的input表单
+ ////////////////////////////////////////////////////////////////////5、fix bugs
   isAllInputsFilled() {
     //once user click save btn, touch all inputs form with for-loop, in orde to trigger Validator
     for (let j in this.modalUpdateFormComponentObj.updateForm.controls) {
       this.modalUpdateFormComponentObj.updateForm.controls[j].touched = true;
+      console.log(this.modalUpdateFormComponentObj.updateForm.controls[j])
     }
 
     for (let i in this.valueToBeSubmitted) {

@@ -11,15 +11,15 @@ export class ModalDeleteComponent implements OnInit {
 
   //不接收变量的话 在html可以使用 但是不能在ts文件下使用
   @Input() command;
-  @Input() witchTeacher;
-  constructor(private activeModal:NgbActiveModal) { }
+  @Input() whichTeacher;
+  constructor(public activeModal:NgbActiveModal) { }
 
   ngOnInit() {
   }
 
 
   delete(){
-    console.log(this.witchTeacher.TeacherId)
+    console.log(this.whichTeacher.TeacherId)
   }
 
 }

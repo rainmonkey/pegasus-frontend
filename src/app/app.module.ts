@@ -40,6 +40,7 @@ import { GenderFormatPipe } from './shared/pipes/gender-format.pipe';
 import { OrgFormatPipe } from './shared/pipes/org-format.pipe';
 import { WeekFormatPipe } from './shared/pipes/week-format.pipe';
 import { TutorEditModalFormComponent } from './components/dashboard/dashboard-components/tutor-info/tutor-edit-modal-form/tutor-edit-modal-form.component';
+import { CommandFormatPipe } from './shared/pipes/command-format.pipe';
 
 
 
@@ -70,7 +71,8 @@ import { TutorEditModalFormComponent } from './components/dashboard/dashboard-co
     OrgFormatPipe,
     WeekFormatPipe,
     LearnerRegistrationFormComponent,
-    LearnerRegistrationEditComponent
+    LearnerRegistrationEditComponent,
+    CommandFormatPipe
   ],
   imports: [
     NgbModule,
