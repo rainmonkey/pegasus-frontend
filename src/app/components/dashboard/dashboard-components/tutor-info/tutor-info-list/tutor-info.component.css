@@ -28,7 +28,7 @@
     font-size:18px;
 }
 .tl_body_table_head{
-    text-align: left;
+    
 }
 .tl_body_table_btns{
     padding-right:0;
@@ -52,4 +52,8 @@
 }
 .sorting_item:hover{
     cursor: pointer;
+}
+table{
+    table-layout: fixed;
+    text-align: center;
 }

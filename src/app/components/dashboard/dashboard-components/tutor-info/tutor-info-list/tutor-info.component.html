@@ -18,12 +18,12 @@
       <table class='table table-striped'>
         <thead>
           <tr>
-            <th scope='col' class='tl_body_table_head'>#</th>
-            <th scope='col' class='tl_body_table_head' (click)='onSort("FirstName")' class='sorting_item'>First Name</th>
-            <th scope="col" class="tl_body_table_head" (click)='onSort("LastName")' class='sorting_item'>Last Name</th>
-            <th scope="col" class="tl_body_table_head">Gender</th>
-            <th scope='col' class='tl_body_table_head'>Moblie Phone</th>
-            <th scope='col' class='tl_body_table_head'>Email</th>
+            <th scope='col' class='tl_body_table_head' style='width: 50px'>#</th>
+            <th scope='col' class='tl_body_table_head' style='width: 150px' (click)='onSort("FirstName")' counter = '0' class='sorting_item'>First Name</th>
+            <th scope='col' class="tl_body_table_head" style='width: 150px' (click)='onSort("LastName")' counter = '0' id='lastName' class='sorting_item'>Last Name</th>
+            <th scope='col' class="tl_body_table_head" style='width: 150px'>Gender</th>
+            <th scope='col' class='tl_body_table_head' style='width: 150px'>Moblie Phone</th>
+            <th scope='col' class='tl_body_table_head' style='width: 300px'>Email</th>
             <th scope='col' class='tl_body_table_head'></th>
           </tr>
         </thead>
@@ -37,8 +37,8 @@
             <td>{{i.MobilePhone}}</td>
             <td>{{i.Email}}</td>
             <td class='tl_body_table_btns'>
-              <span (click)='popUpModals(2,i)' class='tl_body_table_btn'><span class='fas fa-info-circle'></span></span>
-              <span (click)='popUpModals(1,i)' class='tl_body_table_btn'><span class='fas fa-pen'></span></span>
+              <span (click)='popUpModals(1,i)' class='tl_body_table_btn'><span class='fas fa-info-circle'></span></span>
+              <span (click)='popUpModals(2,i)' class='tl_body_table_btn'><span class='fas fa-pen'></span></span>
               <span (click)='popUpModals(3,i)' class='tl_body_table_btn'><span class='fas fa-trash-alt'></span></span>
             </td>
           </tr>

@@ -14,72 +14,33 @@ import { TutorInfoComponent } from './components/dashboard/dashboard-components/
 
 
 const routes: Routes = [
-  {
-    path: '', 
-    component: HomepageComponent, 
-    canActivate: [DashboardRestrictGuard],
+  { path: '', component: HomepageComponent, canActivate: [DashboardRestrictGuard],
     children: [
       // Payments Area
-      {
-        path: 'payment/invoice',
-        pathMatch: 'prefix',
-        component: AdminLearnerPaymentPanelComponent,
+      { path: 'payment/invoice', pathMatch: 'prefix', component: AdminLearnerPaymentPanelComponent,
         children: [
-          {
-            path: ':id',
-            component: AdminLearnerPaymentInvoiceComponent
-          },
+          { path: ':id', component: AdminLearnerPaymentInvoiceComponent }
         ]
       },
-      {
-        path: 'payment/products', 
-        pathMatch: 'prefix', 
-        component: AdminLearnerPaymentPanelComponent,
+      { path: 'payment/products', pathMatch: 'prefix', component: AdminLearnerPaymentPanelComponent,
         children: [
-          { 
-            path: ':id', 
-            component: AdminLearnerPaymentProductsComponent 
-          },
+          { path: ':id', component: AdminLearnerPaymentProductsComponent }
         ]
       },
-      {
-        path: 'payment/registration', 
-        pathMatch: 'prefix', 
-        component: AdminLearnerPaymentPanelComponent,
+      { path: 'payment/registration', pathMatch: 'prefix', component: AdminLearnerPaymentPanelComponent,
         children: [
-          { 
-            path: ':id', 
-            component: AdminLearnerPaymentRegistrationComponent 
-          },
+          { path: ':id', component: AdminLearnerPaymentRegistrationComponent },
         ]
       },
-      {
-        path: 'payment/other',
-        component: AdminLearnerPaymentOtherComponent
-      },
+      { path: 'payment/other', component: AdminLearnerPaymentOtherComponent },
       // End Payment Area
-      { 
-        path: 'tutor', 
-        component: TutorInfoComponent 
-      },
-      { 
-        path: 'learnerRegistration', 
-        component: LearnerRegistrationFormComponent 
-      },
-      { 
-        path: 'timePicker', 
-        component: TimePickerComponent 
-      }
+      { path: 'tutor', component: TutorInfoComponent },
+      { path: 'learnerRegistration', component: LearnerRegistrationFormComponent },
+      { path: 'timePicker', component: TimePickerComponent }
     ]
   },
-  { 
-    path: 'login', 
-    component: LoginComponent 
-  },
-  { 
-    path: '**', 
-    redirectTo: '' 
-  }
+  { path: 'login', component: LoginComponent },
+  { path: '**', redirectTo: '' }
 ];
 
 export const routing = RouterModule.forRoot(routes);
