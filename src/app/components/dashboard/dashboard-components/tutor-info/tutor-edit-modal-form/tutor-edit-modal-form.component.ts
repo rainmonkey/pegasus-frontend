@@ -25,7 +25,7 @@ export class TutorEditModalFormComponent implements OnInit {
   { 'idTypeId': 3, 'idTypeName': 'Passport' }];
   private week = ["Monday", "Tuesday", "Wednsday", "Thursday", "Friday", "Satday", "Sunday"];
 
-  @Input() witchTeacher;
+  @Input() whichTeacher;
   @Input() command;
   @ViewChildren('lan') languagesCheckBox;
   @ViewChildren('branches') branchesCheckBox;
@@ -35,7 +35,7 @@ export class TutorEditModalFormComponent implements OnInit {
     this.isTeacherQualiIdExist();
     this.disableInputs();
   
-    //console.log('witchTeacher', this.witchTeacher)
+    //console.log('whichTeacher', this.whichTeacher)
     this.updateForm = this.fb.group(this.formGroupAssemble());
 
     this.teachersService.getApis().subscribe((data) => {
@@ -63,9 +63,9 @@ export class TutorEditModalFormComponent implements OnInit {
     else show the value
   */
   isTeacherQualiIdExist() {
-    if (this.command == 'Edit' || this.command == 'Detail') {
-      if (this.witchTeacher.TeacherQualificatiion.length !== 0) {
-        this.teacherQualiId = this.witchTeacher.TeacherQualificatiion[0].TeacherQualiId;
+    if (this.command == 2 || this.command == 1) {
+      if (this.whichTeacher.TeacherQualificatiion.length !== 0) {
+        this.teacherQualiId = this.whichTeacher.TeacherQualificatiion[0].TeacherQualiId;
       }
       else {
         this.teacherQualiId = null;
@@ -74,8 +74,8 @@ export class TutorEditModalFormComponent implements OnInit {
   }
 
   ifLanguagesChecked(langId) {
-    if (this.witchTeacher !== null) {
-      for (let i of this.witchTeacher.TeacherLanguage) {
+    if (this.whichTeacher !== null) {
+      for (let i of this.whichTeacher.TeacherLanguage) {
         if (langId == i.LangId) {
           return true;
         }
@@ -88,9 +88,9 @@ export class TutorEditModalFormComponent implements OnInit {
   }
 
   ifBranchesChecked(orgId, week) {
-    if (this.witchTeacher !== null) {
+    if (this.whichTeacher !== null) {
       let weekId = this.week.indexOf(week) + 1;
-      for (let i of this.witchTeacher.AvailableDays) {
+      for (let i of this.whichTeacher.AvailableDays) {
         if (weekId == i.DayOfWeek) {
           if (orgId == i.OrgId) {
             return true;
@@ -107,7 +107,7 @@ export class TutorEditModalFormComponent implements OnInit {
     'this.disabledAllInputsFlag = false' means it's Add or Edit mode, users can modify
   */
   disableInputs() {
-    if (this.command == 'Detail') {
+    if (this.command == 1) {
       this.disabledAllInputsFlag = true;
     }
     else {
@@ -117,9 +117,9 @@ export class TutorEditModalFormComponent implements OnInit {
 
  
   getOrgs(witchDay) {
-    if (this.witchTeacher.AvailableDays.length !== 0) {
+    if (this.whichTeacher.AvailableDays.length !== 0) {
       let temOrgs = [];
-      for (let i of this.witchTeacher.AvailableDays) {
+      for (let i of this.whichTeacher.AvailableDays) {
         if (i.DayOfWeek == witchDay) {
           if (temOrgs.indexOf(i.OrgId) == -1) {
             temOrgs.push(i.OrgId);
@@ -136,8 +136,8 @@ export class TutorEditModalFormComponent implements OnInit {
   */
   getAvailableDays() {
     let availableDays = [];
-    if (this.command == 'Detail') {
-      for (let i of this.witchTeacher.AvailableDays) {
+    if (this.command == 1) {
+      for (let i of this.whichTeacher.AvailableDays) {
         //avoid day repeat
         if (availableDays.indexOf(i.DayOfWeek) == -1) {
           availableDays.push(i.DayOfWeek)
@@ -163,7 +163,7 @@ export class TutorEditModalFormComponent implements OnInit {
 
   formGroupAssemble(){
     let groupObj:any;
-    if (this.command == 'Add') {
+    if (this.command == 0) {
       groupObj = {
         FirstName: [null, Validators.required],
         LastName: [null, Validators.required],
@@ -184,20 +184,20 @@ export class TutorEditModalFormComponent implements OnInit {
     else {
       groupObj = {
         //formControlName 决定了提交表单时的参数名
-        FirstName: [{ value: this.witchTeacher.FirstName, disabled: this.disabledAllInputsFlag }, Validators.required],
-        LastName: [{ value: this.witchTeacher.LastName, disabled: this.disabledAllInputsFlag }, Validators.required],
-        Gender: [{ value: this.witchTeacher.Gender, disabled: this.disabledAllInputsFlag }, Validators.required],
+        FirstName: [{ value: this.whichTeacher.FirstName, disabled: this.disabledAllInputsFlag }, Validators.required],
+        LastName: [{ value: this.whichTeacher.LastName, disabled: this.disabledAllInputsFlag }, Validators.required],
+        Gender: [{ value: this.whichTeacher.Gender, disabled: this.disabledAllInputsFlag }, Validators.required],
         //★★★★★只有当日期格式为YYYY-MM-DD的时候 才会显示出formControlName的默认值
-        Dob: [{ value: this.dateFormat(this.witchTeacher.Dob), disabled: this.disabledAllInputsFlag }, Validators.required],
+        Dob: [{ value: this.dateFormat(this.whichTeacher.Dob), disabled: this.disabledAllInputsFlag }, Validators.required],
         Qualificatiion: [{ value: this.teacherQualiId, disabled: this.disabledAllInputsFlag }, Validators.required],
-        MobilePhone: [{ value: this.witchTeacher.MobilePhone, disabled: this.disabledAllInputsFlag }, Validators.required],
-        HomePhone: [{ value: this.witchTeacher.HomePhone, disabled: this.disabledAllInputsFlag }, Validators.required],
-        Email: [{ value: this.witchTeacher.Email, disabled: this.disabledAllInputsFlag }, [Validators.required, Validators.email]],
-        IRDNumber: [{ value: this.witchTeacher.IrdNumber, disabled: this.disabledAllInputsFlag }, Validators.required],
-        Language: [{ value: this.witchTeacher.TeacherLanguage, disabled: this.disabledAllInputsFlag }, Validators.required],
-        IDType: [{ value: this.witchTeacher.IdType, disabled: this.disabledAllInputsFlag }, Validators.required],
-        IDNumber: [{ value: this.witchTeacher.IdNumber, disabled: this.disabledAllInputsFlag }, Validators.required],
-        ExpiryDate: [{ value: this.dateFormat(this.witchTeacher.ExpiryDate), disabled: this.disabledAllInputsFlag }, Validators.required], //用dateFormat
+        MobilePhone: [{ value: this.whichTeacher.MobilePhone, disabled: this.disabledAllInputsFlag }, Validators.required],
+        HomePhone: [{ value: this.whichTeacher.HomePhone, disabled: this.disabledAllInputsFlag }, Validators.required],
+        Email: [{ value: this.whichTeacher.Email, disabled: this.disabledAllInputsFlag }, [Validators.required, Validators.email]],
+        IRDNumber: [{ value: this.whichTeacher.IrdNumber, disabled: this.disabledAllInputsFlag }, Validators.required],
+        Language: [{ value: this.whichTeacher.TeacherLanguage, disabled: this.disabledAllInputsFlag }, Validators.required],
+        IDType: [{ value: this.whichTeacher.IdType, disabled: this.disabledAllInputsFlag }, Validators.required],
+        IDNumber: [{ value: this.whichTeacher.IdNumber, disabled: this.disabledAllInputsFlag }, Validators.required],
+        ExpiryDate: [{ value: this.dateFormat(this.whichTeacher.ExpiryDate), disabled: this.disabledAllInputsFlag }, Validators.required], //用dateFormat
         DayOfWeek: [{ value: null, disabled: this.disabledAllInputsFlag }, Validators.required]
       }
     }

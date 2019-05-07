@@ -16,7 +16,7 @@ export class TutorEditModalComponent implements OnInit {
   
 
   @Input() command;
-  @Input() witchTeacher;
+  @Input() whichTeacher;
   @Output() refresh = new EventEmitter;
 
   @ViewChild('modalUpdateFormComponent') modalUpdateFormComponentObj;
@@ -190,7 +190,7 @@ export class TutorEditModalComponent implements OnInit {
 
   modeToSubmit(submitData){
      //while push a stream of new data
-     if(this.command == 'Add'){
+     if(this.command == 0){
       //this.valueToBeSubmitted = JSON.stringify(this.valueToBeSubmitted);
       this.teachersService.addNew(submitData).subscribe(
         (data)=>{
@@ -204,7 +204,7 @@ export class TutorEditModalComponent implements OnInit {
       );
     }
     //while update data
-    else if(this.command == 'Edit'){
+    else if(this.command == 2){
 
     }
   }

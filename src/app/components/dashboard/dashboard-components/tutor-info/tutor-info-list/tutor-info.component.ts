@@ -29,60 +29,86 @@ export class TutorInfoComponent implements OnInit {
     this.getData();
   }
 
-  //update method
-  update(command, witchTeacher) {
-    const modalRef = this.modalService.open(TutorEditModalComponent, { size: 'lg' });
-
-    let that = this;
-    modalRef.result.then(function () {
-      //怎么做到不同条件下不同反应
-      that.ngOnInit();
-    });
-    if (command == "Edit") {
-      modalRef.componentInstance.command = 'Edit';
-    }
-    if (command == "Add") {
-      modalRef.componentInstance.command = "Add";
-    }
-    modalRef.componentInstance.witchTeacher = witchTeacher;
-  }
-
-  //delete method
-  delete(command, witchTeacher) {
-    const modalRef = this.modalService.open(ModalDeleteComponent)
-    modalRef.componentInstance.command = 'Delete';
-    modalRef.componentInstance.witchTeacher = witchTeacher;
-
-  }
-
-  //showDetail method
-  showDetail(command, witchTeacher) {
-    const modalRef = this.modalService.open(TutorEditModalComponent, { size: 'lg' })
-    modalRef.componentInstance.command = 'Detail';
-    modalRef.componentInstance.witchTeacher = witchTeacher;
-  }
-
-  //get data from server
+  /*
+    get data form serve
+  */
   getData() {
     this.teachersService.getTeachers().subscribe(
-      (data) => {
-        this.teachersList = data.Data;
+      (res) => {
+        this.teachersList = res.Data;
         // console.log(this.teachersList);
-        this.teachersListLength = data.Data.length; //length prop is under Data prop
-        this.temTeachersList = data.Data;
-        this.temTeachersListLength = data.Data.length;
+        this.teachersListLength = res.Data.length; //length prop is under Data prop
+        this.temTeachersList = res.Data;
+        this.temTeachersListLength = res.Data.length;
       },
-      (error) => { console.log(error), this.errorProcess(error) })
-    // show error 
-
-    //this.update('aa',"aa");
+      (error) => {this.errorProcess(error) })
   }
 
   errorProcess(error) {
-    // if there is error message from server, display error message
-
-    // if there are not error message from server, show server error
+    alert(error.message)
   }
+
+
+  /*
+    pop up modals, when need to pop up a modal, call this method
+    commands:
+      0 --> Add new
+      1 --> show details/show more
+      2 --> Edit/update
+      3 --> delete
+  */
+  popUpModals(command, whichTeacher) {
+    switch(command){
+      case 0:
+        this.updateModal(command,whichTeacher);
+        break;
+      case 1:
+        this.detailModal(command,whichTeacher)
+        break;
+      case 2:
+        this.updateModal(command,whichTeacher);
+        break;
+      case 3:
+        this.deleteModal(command,whichTeacher);
+        break;
+    }
+  }
+
+  /*
+    update modal
+  */
+  updateModal(command,whichTeacher){
+    const modalRef = this.modalService.open(TutorEditModalComponent, { size: 'lg' });
+    let that = this;
+    modalRef.result.then(function(){
+      that.getData()
+    });
+    modalRef.componentInstance.command = command;
+    modalRef.componentInstance.whichTeacher = whichTeacher;
+  }
+
+  /*
+    delete modal
+  */
+  deleteModal(command, whichTeacher) {
+    const modalRef = this.modalService.open(ModalDeleteComponent)
+    let that = this;
+    modalRef.result.then(function(){
+      that.getData()
+    });
+    modalRef.componentInstance.command = command;
+    modalRef.componentInstance.whichTeacher = whichTeacher;
+  }
+
+  /*
+    detail modal
+  */
+  detailModal(command, whichTeacher) {
+    const modalRef = this.modalService.open(TutorEditModalComponent, { size: 'lg' })
+    modalRef.componentInstance.command = command;
+    modalRef.componentInstance.whichTeacher = whichTeacher;
+  }
+
 
   /*
     search method
@@ -99,7 +125,9 @@ export class TutorInfoComponent implements OnInit {
     this.teachersListLength = this.teachersList.length;
   }
 
-
+  /*
+    sort method
+  */
   onSort(orderBy) {
     if(this[orderBy+'Order'] == true){
       this[orderBy+'Order'] = false;

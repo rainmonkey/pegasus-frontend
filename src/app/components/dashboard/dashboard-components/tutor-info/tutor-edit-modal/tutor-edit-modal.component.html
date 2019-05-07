@@ -1,8 +1,8 @@
 <!--modal header-->
 <div class="modal-header">
-  <h4 class="modal-title" *ngIf='command == "Add"'>Add More...</h4>
-  <h4 class="modal-title" *ngIf='command == "Detail"'>{{command}}s of <span class='tl_mu_title'>{{witchTeacher.FirstName}} {{witchTeacher.LastName}}</span></h4>
-  <h4 class='modal-title' *ngIf='command == "Edit"'>Update <span class='tl_mu_title'>{{witchTeacher.FirstName}} {{witchTeacher.LastName}}</span></h4>
+  <h4 class="modal-title" *ngIf='command == 0'>Add More...</h4>
+  <h4 class="modal-title" *ngIf='command == 1'>{{command}}s of <span class='tl_mu_title'>{{whichTeacher.FirstName}} {{whichTeacher.LastName}}</span></h4>
+  <h4 class='modal-title' *ngIf='command == 2'>Update <span class='tl_mu_title'>{{whichTeacher.FirstName}} {{whichTeacher.LastName}}</span></h4>
   <button type="button" class='btn btn-sm btn-info tl_mu_btn' aria-label="Close" (click)="activeModal.dismiss('Cross click')">
     <span aria-hidden="true">&times;</span>
   </button>
@@ -10,13 +10,13 @@
 
 <!--modal body-->
 <div class='modal-body'>
-  <app-tutor-edit-modal-form #modalUpdateFormComponent [witchTeacher]='witchTeacher' [command]='command'></app-tutor-edit-modal-form>
+  <app-tutor-edit-modal-form #modalUpdateFormComponent [whichTeacher]='whichTeacher' [command]='command'></app-tutor-edit-modal-form>
 </div>
 
 <!--modal footer-->
 <div class='modal-footer'>
   <span id='loading'><img src="../../../../../../../assets/images/shared/loading.gif" alt=""></span>
   <span class='tl_mu_submit_error'>{{errorMessage}}</span>
-  <button *ngIf='command!== "Detail"' type='button' class='btn btn-outline-dark' (click)='submit()'>Save</button>
+  <button *ngIf='command!== 1' type='button' class='btn btn-outline-dark' (click)='submit()'>Save</button>
   <button type="button" class="btn btn-outline-dark" (click)="activeModal.close('Close click')">Close</button>
 </div>
