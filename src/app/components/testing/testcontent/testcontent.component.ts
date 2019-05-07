@@ -36,6 +36,8 @@ export class TestcontentComponent implements OnInit {
 //     this.service.sortDirection = direction;
 //   }
 
+ constructor(){}
+
   ngOnInit() {
   }
 }

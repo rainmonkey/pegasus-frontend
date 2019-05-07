@@ -10,7 +10,7 @@ export class NgbootstraptableService {
     sorting method
     receive 3 parameters: 
       listToOrder --> object list to be sorted
-      orderBy --> order by what (eg: FirstName,LastName ....) !!★!! orderBy must as same as the obj name in listToOrder
+      orderBy --> which column to order (eg: FirstName,LastName ....) !!★!! orderBy must as same as the obj name in listToOrder
       order --> true: asec  false: dsec
   **********************************************/
   sorting(listToOrder:Array<any>, orderBy:string, order:boolean) {
@@ -21,7 +21,7 @@ export class NgbootstraptableService {
     searching method
     receice 3 parameters:
       listToSearch --> in whitch list to search
-      searchBy --> search in what items (eg: FirstName,LastName ....) !!★!! searchBy must as same as the obj name in listToSearch
+      searchBy --> search in which columns (eg: FirstName,LastName ....) !!★!! searchBy must as same as the obj name in listToSearch
       searchStr --> searching string
   **********************************************/
   searching(listToSearch:Array<any>, searchBy:Array<string>,searchStr:string) {
@@ -48,26 +48,42 @@ export class NgbootstraptableService {
     return function (obj1, obj2) {
       let val1 = obj1[orderBy];
       let val2 = obj2[orderBy];
-      if (order == true) {
-        if (val1 < val2) { //asec
+      if (order == true) { //asec
+        //if has null value, put it at the end of list
+        if(val1 == null){
           return 1;
-        } else if (val1 > val2) {
+        }
+        else if (val2 == null){
           return -1;
-        } else {
+        }
+        else if (val1 < val2) {
+          return 1;
+        } 
+        else if (val1 > val2) {
+          return -1;
+        } 
+        else {
           return 0;
         }
       }
-      else {
-        if (val1 > val2) { //dsec
+      else { //dsec
+        //if has null value, put it at the end of list
+        if(val1 == null){
           return 1;
-        } else if (val1 < val2) {
+        }
+        else if (val2 == null){
           return -1;
-        } else {
+        }
+        else if (val1 > val2) { 
+          return 1;
+        } 
+        else if (val1 < val2) {
+          return -1;
+        } 
+        else {
           return 0;
         }
       }
     }
   }
-
-
 }

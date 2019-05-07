@@ -3,6 +3,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { UserDetail } from '../../../../models/UserDetail';
 import { AuthenticationService } from '../../../../services/auth/authentication.service';
 import { UsersService } from 'src/app/services/http/users.service';
+import { environment } from '../../../../../environments/environment';
 
 @Component({
   selector: 'app-sidebar',
@@ -10,36 +11,11 @@ import { UsersService } from 'src/app/services/http/users.service';
   styleUrls: ['./sidebar.component.css']
 })
 export class SidebarComponent implements OnInit {
+  baseUrl = environment.baseUrl;
+
   currentUser: UserDetail;
   users: UserDetail[] = [];
-
-  public navitem: any[] = [
-    {
-      pagename : 'Home',
-      pageicon : 'fa-home',
-      pagelink : 'testcontent'
-    },
-    {
-      pagename : 'Tutors',
-      pageicon : 'fa-chalkboard-teacher',
-      pagelink : 'tutor'
-    },
-    {
-      pagename : 'Registration',
-      pageicon : 'fa-th',
-      pagelink : 'learnerRegistration'
-    },
-    {
-      pagename : 'Payment',
-      pageicon : 'fa-chart-bar',
-      pagelink : 'payment'
-    },
-    {
-      pagename : 'Forms',
-      pageicon : 'fa-clipboard',
-      pagelink : ''
-    }
-  ];
+  navitem: any;
 
   public userDetail =
     {
@@ -48,24 +24,49 @@ export class SidebarComponent implements OnInit {
       position : 'President of US',
       img : '../../../../assets/images/usersimg/testimg.jpg'
     }
-
+  
+    public dropdown: any[] = [
+      {
+        dropname: 'invoice',
+        dropicon: 'fa-file-invoice-dollar',
+        droplink: 'invoice'
+      },
+      {
+        dropname: 'products',
+        dropicon: 'fa-shopping-cart',
+        droplink: 'products'
+      },
+      {
+        dropname: 'registration',
+        dropicon: 'fa-registered',
+        droplink: 'registration'
+      },
+      {
+        dropname: 'other',
+        dropicon: 'fa-window-restore',
+        droplink: 'other'
+      }
+    ]
 
   constructor(
     private authenticationService: AuthenticationService,
     private userService: UsersService
-  ) {
-  }
+  ) {}
 
   ngOnInit() {
     // Get data
+    let arrayqwe: any[];
     this.userService.getSidebar().subscribe(
-      (res)=>{console.log(res)},
+      (res)=>this.processData(res),
       (err)=>{console.warn(err)}
     )
   }
 
   // Method to assign sidebar data
-
+  processData(res){
+    console.log(res.Data);
+    this.navitem = res.Data;
+  }
   
 
 
