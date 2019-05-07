@@ -55,7 +55,6 @@ export class SidebarComponent implements OnInit {
 
   ngOnInit() {
     // Get data
-    let arrayqwe: any[];
     this.userService.getSidebar().subscribe(
       (res)=>this.processData(res),
       (err)=>{console.warn(err)}
@@ -67,7 +66,7 @@ export class SidebarComponent implements OnInit {
     console.log(res.Data);
     this.navitem = res.Data;
   }
-  
+
 
 
 }

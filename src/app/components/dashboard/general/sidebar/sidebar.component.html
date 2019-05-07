@@ -26,8 +26,8 @@
       </a>
       <ul id="exampledropdownDropdown{{i}}" class="collapse">
         <li *ngFor="let key of item.Page;">
-          <div *ngIf="key.Url != null">
-          <a [routerLink]="['/product/', key.Url]" routerLinkActive="active">
+          <div *ngIf="key.Url">
+          <a [routerLink]="[key.Url]" routerLinkActive="active">
             <i class="fas sidebaricon" [ngClass]="key.Icon"></i>
             {{key.PageName}}
           </a>
