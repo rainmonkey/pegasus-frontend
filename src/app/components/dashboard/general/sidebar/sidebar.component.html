@@ -11,24 +11,27 @@
   </div>
   <!-- Sidebar Navidation Menus-->
   <span class="heading">Main</span>
-  <ul class="list-unstyled">
-    <li *ngFor="let item of navitem;">
-      <a [routerLink]="['/',item.pagelink]" routerLinkActive="active" class="font6">
-        <i class="fas sidebaricon" [ngClass]="item.pageicon"></i>
-        {{item.pagename}}
+  <ul>
+    <!-- <li *ngFor="let item of navitem;">
+      <a [routerLink]="['/',item.pageurl]" routerLinkActive="active" class="font6">
+        <i class="fas sidebaricon" [ngClass]="item.Page[0].Icon"></i>
+        {{item.PageGroupName}}
       </a>
-    </li>
+    </li> -->
     <!--Form here-->
-    <li>
-      <a href="#exampledropdownDropdown" aria-expanded="false" data-toggle="collapse" routerLinkActive="active">
-        <i class="far fa-window-restore sidebaricon"></i>Payment
+    <li *ngFor="let item of navitem; let i = index">
+      <a href="#exampledropdownDropdown{{i}}" aria-expanded="false" data-toggle="collapse" routerLinkActive="active">
+        <i class="fas sidebaricon" [ngClass]="item.Icon"></i>
+        {{item.PageGroupName}}
       </a>
-      <ul id="exampledropdownDropdown" class="collapse list-unstyled ">
-        <li *ngFor="let item of dropdown;">
-          <a [routerLink]="['/payment/',item.droplink]" routerLinkActive="active" class="font6">
-            <i class="fas sidebaricon" [ngClass]="item.dropicon"></i>
-            {{item.dropname}}
+      <ul id="exampledropdownDropdown{{i}}" class="collapse">
+        <li *ngFor="let key of item.Page;">
+          <div *ngIf="key.Url != null">
+          <a [routerLink]="['/product/', key.Url]" routerLinkActive="active" class="font6">
+            <i class="fas sidebaricon" [ngClass]="key.Icon"></i>
+            {{key.PageName}}
           </a>
+        </div>
         </li>
       </ul>
     </li>

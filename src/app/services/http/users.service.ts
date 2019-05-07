@@ -22,7 +22,11 @@ export class UsersService {
 
   // Call API for sidebar Data
   getSidebar(){
-    this.prepareHeaders();
     return this.http.get(this.baseUrl + 'navitems', {headers: this.httpHeaders})
+  }
+
+  // Call API for user name
+  getusername(){
+
   }
 }
