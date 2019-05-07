@@ -87,7 +87,7 @@ export class AdminLearnerPaymentInvoiceComponent implements OnInit {
               response => {
                 console.log('Success!', response);
                 this.successAlert = true;
-                alert('Your Payment Has Been Uploaded.');
+                alert('Your Payment Has Been Made');
               },
               (error) => {
                 this.errorMsg = JSON.parse(error.error);
