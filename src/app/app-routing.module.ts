@@ -1,6 +1,5 @@
 import { Routes, RouterModule } from '@angular/router';
 import { LoginComponent } from './components/basic/login/login.component';
-//import { TestcontentComponent } from './components/testing/testcontent/testcontent.component';
 import { HomepageComponent } from './components/dashboard/general/homepage/homepage.component';
 import { TimePickerComponent } from './components/dashboard/dashboard-components/time-picker/time-picker.component';
 import { LearnerRegistrationFormComponent } from './components/dashboard/dashboard-components/learner-registration/learner-registration-form/learner-registration-form.component';
@@ -11,10 +10,13 @@ import { AdminLearnerPaymentProductsComponent } from './components/dashboard/das
 import { AdminLearnerPaymentRegistrationComponent } from './components/dashboard/dashboard-components/admin-learner-payment/admin-learner-payment-details/admin-learner-payment-registration/admin-learner-payment-registration.component';
 import { AdminLearnerPaymentOtherComponent } from './components/dashboard/dashboard-components/admin-learner-payment/admin-learner-payment-details/admin-learner-payment-other/admin-learner-payment-other.component';
 import { TutorInfoComponent } from './components/dashboard/dashboard-components/tutor-info/tutor-info-list/tutor-info.component';
+import { CoursesListComponent } from './components/dashboard/dashboard-components/courses/courses-list/courses-list.component'
 
 
 const routes: Routes = [
-  { path: '', component: HomepageComponent, canActivate: [DashboardRestrictGuard],
+  { path: '', 
+    component: HomepageComponent, 
+    canActivate: [DashboardRestrictGuard],
     children: [
       // Payments Area
       { path: 'payment/invoice', pathMatch: 'prefix', component: AdminLearnerPaymentPanelComponent,
@@ -36,7 +38,8 @@ const routes: Routes = [
       // End Payment Area
       { path: 'tutor', component: TutorInfoComponent },
       { path: 'learnerRegistration', component: LearnerRegistrationFormComponent },
-      { path: 'timePicker', component: TimePickerComponent }
+      { path: 'timePicker', component: TimePickerComponent },
+      { path: 'courseslist', component: CoursesListComponent}
     ]
   },
   { path: 'login', component: LoginComponent },
