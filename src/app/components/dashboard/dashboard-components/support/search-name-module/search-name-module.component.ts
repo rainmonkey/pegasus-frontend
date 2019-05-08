@@ -107,7 +107,7 @@ export class SearchNameModuleComponent implements OnInit {
   onChangePath(id) {
     console.log('route, ', this.router);
 
-    this.router.navigate([this.router.url, id]);
+    this.router.navigate(['payment/product', id]);
   }
 
   // middle name method

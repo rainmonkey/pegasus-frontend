@@ -109,7 +109,7 @@ export class AdminLearnerPaymentInvoiceComponent implements OnInit {
     validMethodI(contentP, item){
       if(this.invoiceForm.invalid) {
         for (let i in this.invoiceForm.controls){
-        this.invoiceForm.controls[i].touched=true;
+        // this.invoiceForm.controls[i].touched=true;
       }
     } else {
       this.openP(contentP, item)
