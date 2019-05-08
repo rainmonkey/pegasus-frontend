@@ -137,6 +137,14 @@
               </li>
             </ul>
           </li> -->
+          <li class="nav-item">
+            <div style="width: 42px; height: 42px; margin-right: 1rem;" class="avatar">
+              <img src="{{userDetail.img}}" alt="..." class="img-fluid rounded-circle">
+            </div>
+          </li>
+          <li class="nav-item">
+              {{userDetail.firstName}} {{userDetail.lastName}}
+          </li>
           <!-- Logout    -->
           <li class="nav-item">
             <a style="cursor: pointer;" class="nav-link logout" (click)="logout()"> 

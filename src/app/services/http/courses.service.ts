@@ -13,4 +13,8 @@ export class CoursesService {
   getCourses():any{
     return this.http.get(this.baseUrl +'courses');
   }
+
+  addNew(data):any{
+    return this.http.post(this.baseUrl+'courses',data)
+  }
 }

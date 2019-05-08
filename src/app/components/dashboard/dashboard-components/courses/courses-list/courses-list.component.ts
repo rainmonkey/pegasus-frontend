@@ -120,7 +120,7 @@ export class CoursesListComponent implements OnInit {
     
     let searchStr = event.target.value;
     //
-    let titlesToSearch = ['FirstName','LastName'];
+    let titlesToSearch = ['CourseName'];
 
     this.coursesList = this.ngTable.searching(this.coursesList,titlesToSearch,searchStr);
     this.coursesListLength = this.coursesList.length;

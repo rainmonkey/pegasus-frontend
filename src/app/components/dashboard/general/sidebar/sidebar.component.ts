@@ -22,29 +22,7 @@ export class SidebarComponent implements OnInit {
       position : 'President of US',
       img : '../../../../assets/images/usersimg/testimg.jpg'
     }
-  
-    public dropdown: any[] = [
-      {
-        dropname: 'invoice',
-        dropicon: 'fa-file-invoice-dollar',
-        droplink: 'invoice'
-      },
-      {
-        dropname: 'products',
-        dropicon: 'fa-shopping-cart',
-        droplink: 'products'
-      },
-      {
-        dropname: 'registration',
-        dropicon: 'fa-registered',
-        droplink: 'registration'
-      },
-      {
-        dropname: 'other',
-        dropicon: 'fa-window-restore',
-        droplink: 'other'
-      }
-    ]
+
 
   constructor(
     private authenticationService: AuthenticationService,
@@ -54,7 +32,7 @@ export class SidebarComponent implements OnInit {
   ngOnInit() {
     // Get data
     this.userService.getSidebar().subscribe(
-      (res)=>this.processData(res),
+      (res)=>{console.log(res), this.processData(res)},
       (err)=>{console.warn(err)}
     )
   }
@@ -64,7 +42,4 @@ export class SidebarComponent implements OnInit {
     console.log(res.Data);
     this.navitem = res.Data;
   }
-
-
-
 }
