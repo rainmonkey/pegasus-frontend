@@ -45,6 +45,7 @@ import { TutorEditModalFormComponent } from './components/dashboard/dashboard-co
 import { SessionsPanelComponent } from './components/dashboard/dashboard-components/sessions/sessions-panel/sessions-panel.component';
 import { SessionsListViewComponent } from './components/dashboard/dashboard-components/sessions/sessions-list-view/sessions-list-view.component';
 import { SessionsCalendarViewComponent } from './components/dashboard/dashboard-components/sessions/sessions-calendar-view/sessions-calendar-view.component';
+import { SessionDetailModalComponent } from './components/dashboard/dashboard-components/sessions/session-detail-modal/session-detail-modal.component';
 
 
 
@@ -80,7 +81,8 @@ import { SessionsCalendarViewComponent } from './components/dashboard/dashboard-
     CommandFormatPipe,
     SessionsPanelComponent,
     SessionsListViewComponent,
-    SessionsCalendarViewComponent
+    SessionsCalendarViewComponent,
+    SessionDetailModalComponent
   ],
   imports: [
     NgbModule,
