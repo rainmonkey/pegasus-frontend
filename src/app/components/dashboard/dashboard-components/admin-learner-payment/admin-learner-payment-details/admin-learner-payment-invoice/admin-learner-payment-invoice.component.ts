@@ -18,6 +18,7 @@ export class AdminLearnerPaymentInvoiceComponent implements OnInit {
   // post payment
   public postPayment: ILearnerPay;
   // tabset
+  public errorMsg;
   public array = [];
   public successAlert = false;
   public errorAlert = false;
