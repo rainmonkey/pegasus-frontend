@@ -24,6 +24,7 @@ export class ProductsService {
   }
 
   postProdService(prod) {
-    return this.http.post(this.baseUrl + 'prod', prod);
+    return this.http.post(this.baseUrl + 'payment/SaveProdPayment', prod);
   }
+
 }

@@ -3,6 +3,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { AuthenticationService } from '../../../services/auth/authentication.service';
+import { Title } from '@angular/platform-browser';
 
 
 @Component({
@@ -19,6 +20,7 @@ export class LoginComponent implements OnInit {
   errorMessage: string;
 
   constructor(
+    public titleService: Title,
     public http: HttpClient,
     private fb: FormBuilder,
     private route: ActivatedRoute,
@@ -29,6 +31,7 @@ export class LoginComponent implements OnInit {
   }
 
   ngOnInit() {
+  	this.titleService.setTitle('Login');
 
     this.loginForm = this.fb.group({
       username: ['', Validators.required],

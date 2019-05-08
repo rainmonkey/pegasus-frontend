@@ -16,23 +16,27 @@ export class AdminLearnerPaymentInvoiceComponent implements OnInit {
   public learnerId: any;
   public addFund;
   // post payment
-  public payment: number;
   public postPayment: ILearnerPay;
   // tabset
-  public array = [];
   public errorMsg;
+  public array = [];
   public successAlert = false;
   public errorAlert = false;
+  public errMsg = false;
   // ng-modal variable
   closeResult: string;
 
   invoiceForm = this.fb.group({
-    owing: ['', Validators.required]
+    owing: ['', Validators.required],
+    paymentMethodI: [,Validators.required]
   });
   get owing() {
     return this.invoiceForm.get('owing');
   }
-
+  // paymentMethod FB
+  get paymentMethodI(){
+  return this.invoiceForm.get('paymentMethodI');
+  }
     constructor(
     private modalService: NgbModal,
     private paymentsListService: PaymentService,
@@ -44,6 +48,7 @@ export class AdminLearnerPaymentInvoiceComponent implements OnInit {
     config.justify = 'center';
     config.type = 'pills';
   }
+
 
 // put service method
   private getDismissReason(reason: any): string {
@@ -61,19 +66,17 @@ export class AdminLearnerPaymentInvoiceComponent implements OnInit {
     })
   }
 
-    // select payment method
-    paymentMethod(method) {
-      this.payment = method.value;
-    }
+    // create post obj
     postPaymentMethod(item) {
       this.postPayment = {
         StaffId: 1,
         LearnerId: item.LearnerId,
         InvoiceId: item.InvoiceId,
-        PaymentMethod: this.payment,
+        PaymentMethod: this.paymentMethodI.value,
         Amount: this.invoiceForm.value.owing
       };
     }
+
     // confirm payment open method
     openP(contentP, item) {
       this.addFund = this.invoiceForm.value.owing;
@@ -101,6 +104,16 @@ export class AdminLearnerPaymentInvoiceComponent implements OnInit {
             this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
           }
         );
+    }
+    // valid payment method
+    validMethodI(contentP, item){
+      if(this.invoiceForm.invalid) {
+        for (let i in this.invoiceForm.controls){
+        // this.invoiceForm.controls[i].touched=true;
+      }
+    } else {
+      this.openP(contentP, item)
+    }
     }
     // close alert
     closeSucc(){
@@ -130,4 +143,7 @@ export class AdminLearnerPaymentInvoiceComponent implements OnInit {
       });
     }
 
+  testMe(){
+    console.log(this.paymentMethodI)
+  }
 }

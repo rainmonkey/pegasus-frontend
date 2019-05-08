@@ -7,11 +7,16 @@ import { MatButtonModule, MatFormFieldModule, MatInputModule } from '@angular/ma
 import { NgModule } from '@angular/core';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { routing } from '../app/app-routing.module';
-
 // Guards
 
 // Services
 //import { NgbdSortableHeader } from './services/others/ngbootstraptable.service';
+
+// Pipes
+import { CommandFormatPipe } from './shared/pipes/command-format.pipe';
+import { GenderFormatPipe } from './shared/pipes/gender-format.pipe';
+import { OrgFormatPipe } from './shared/pipes/org-format.pipe';
+import { WeekFormatPipe } from './shared/pipes/week-format.pipe';
 
 // Components
 import { AppComponent } from './app.component';
@@ -35,11 +40,12 @@ import { ModalDeleteComponent } from './components/dashboard/dashboard-component
 import { LearnerRegistrationFormComponent } from './components/dashboard/dashboard-components/learner-registration/learner-registration-form/learner-registration-form.component';
 import { LearnerRegistrationEditComponent } from './components/dashboard/dashboard-components/learner-registration/learner-registration-edit/learner-registration-edit.component';
 import { TutorEditModalComponent } from './components/dashboard/dashboard-components/tutor-info/tutor-edit-modal/tutor-edit-modal.component'
-import { GenderFormatPipe } from './shared/pipes/gender-format.pipe';
-import { OrgFormatPipe } from './shared/pipes/org-format.pipe';
-import { WeekFormatPipe } from './shared/pipes/week-format.pipe';
 import { TutorEditModalFormComponent } from './components/dashboard/dashboard-components/tutor-info/tutor-edit-modal-form/tutor-edit-modal-form.component';
-import { CommandFormatPipe } from './shared/pipes/command-format.pipe';
+import { SessionsPanelComponent } from './components/dashboard/dashboard-components/sessions/sessions-panel/sessions-panel.component';
+import { SessionsListViewComponent } from './components/dashboard/dashboard-components/sessions/sessions-list-view/sessions-list-view.component';
+import { SessionsCalendarViewComponent } from './components/dashboard/dashboard-components/sessions/sessions-calendar-view/sessions-calendar-view.component';
+import { SessionDetailModalComponent } from './components/dashboard/dashboard-components/sessions/session-detail-modal/session-detail-modal.component';
+
 
 
 
@@ -70,7 +76,11 @@ import { CommandFormatPipe } from './shared/pipes/command-format.pipe';
     WeekFormatPipe,
     LearnerRegistrationFormComponent,
     LearnerRegistrationEditComponent,
-    CommandFormatPipe
+    CommandFormatPipe,
+    SessionsPanelComponent,
+    SessionsListViewComponent,
+    SessionsCalendarViewComponent,
+    SessionDetailModalComponent
   ],
   imports: [
     NgbModule,
@@ -82,7 +92,7 @@ import { CommandFormatPipe } from './shared/pipes/command-format.pipe';
     MatButtonModule,
     MatFormFieldModule,
     MatInputModule,
-    routing
+    routing,
   ],
   providers: [
     

@@ -10,15 +10,24 @@ import { UserDetail } from '../../../../models/UserDetail';
 })
 export class HeaderbarComponent implements OnInit {
 
-  currentUser: UserDetail;
+  userDetail =
+    {
+      img : '../../../../assets/images/usersimg/testimg.jpg'
+    }
 
-  constructor( 
+  constructor(
     private router: Router,
     private authenticationService: AuthenticationService
     ) {
   }
 
   ngOnInit() {
+    this.getUserDetail()
+  }
+
+  getUserDetail(){
+    this.userDetail['firstName'] = localStorage.getItem('userFirstName')
+    this.userDetail['lastName'] = localStorage.getItem('userLastName')
   }
 
   logout() {
