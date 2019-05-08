@@ -10,7 +10,7 @@
     <!--body search-->
     <div class='col-12 tl_body_search'>
       <span class='fas fa-search'></span>&nbsp;
-      <input type="text" (input)='onSearch($event)' placeholder=" Search by name">
+      <input type="text" (input)='onSearch($event)' placeholder=" Search by Course">
     </div>
 
     <!--body main-->
@@ -19,13 +19,13 @@
         <thead>
           <tr>
             <th scope='col' class='tl_body_table_head' style="width:1rem;">#</th>
-            <th scope='col' class='tl_body_table_head sorting_item' style="width:16rem;" (click)='onSort("CourseName")' counter = '0'>Course Name</th>
-            <th scope='col' class='tl_body_table_head' style="width:5rem;">Type</th>
-            <th scope='col' class='tl_body_table_head' style="width:9rem;">Learner Level</th>
-            <th scope='col' class='tl_body_table_head' style="width:9rem;">Teacher Level</th>
-            <th scope='col' class='tl_body_table_head' style="width:6rem;">Duration</th>
-            <th scope='col' class='tl_body_table_head' style="width:6rem;">Price</th>
-            <th scope='col' class='tl_body_table_head' style="width:7rem;">Category</th>
+            <th scope='col' class='tl_body_table_head sorting_item' style="width:16rem;" (click)='onSort("CourseName")'>Course Name</th>
+            <th scope='col' class='tl_body_table_head sorting_item' style="width:5rem;" (click)='onSort("CourseType")'>Type</th>
+            <th scope='col' class='tl_body_table_head sorting_item' style="width:9rem;" (click)='onSort("Level")'>Learner Level</th>
+            <th scope='col' class='tl_body_table_head sorting_item' style="width:9rem;" (click)='onSort("TeacherLevel")'>Teacher Level</th>
+            <th scope='col' class='tl_body_table_head sorting_item' style="width:6rem;" (click)='onSort("Duration")'>Duration</th>
+            <th scope='col' class='tl_body_table_head sorting_item' style="width:6rem;" (click)='onSort("Price")'>Price</th>
+            <th scope='col' class='tl_body_table_head sorting_item' style="width:7rem;" (click)='onSort("CourseCategory.CourseCategoryName")'>Category</th>
             <th scope='col' class='tl_body_table_head' style="width:8rem;">Edit & Delete</th>
           </tr>
         </thead>
