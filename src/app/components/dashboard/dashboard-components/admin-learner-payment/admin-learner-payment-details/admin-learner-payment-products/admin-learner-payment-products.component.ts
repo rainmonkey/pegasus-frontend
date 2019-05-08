@@ -45,6 +45,7 @@ export class AdminLearnerPaymentProductsComponent implements OnInit {
   public checkRate = true;
   public checkMoney = true;
   public fd = new FormData;
+  public showErrMsg = false;
   // ng-modal variable
   closeResult: string;
 
@@ -69,16 +70,28 @@ export class AdminLearnerPaymentProductsComponent implements OnInit {
   get paymentMethod(){
     return this.productListForm.get('paymentMethod')
   }
-
+  // post products to server
   postPordPayObjMethod() {
     this.postProdPayObj = {
       PaymentMethod: this.productListForm.value.paymentMethod,
       StaffId: 1,
       OrgId: 1,
-      Amout: this.sellPrice,
+      Amount: this.sellPrice,
       LearnerId: this.learnerId,
       SoldTransaction: this.postProdsIdArray
     };
+  }
+  getProductId() {
+    this.productList.controls.forEach(controls => {
+      console.log(controls.value.product);
+      return this.postProdsIdArray.push({
+        ProductId: controls.value.product,
+        SoldQuantity: controls.value.number,
+        DiscountAmount: controls.value.subMoney ? controls.value.subMoney : 0,
+        DiscountRate: (controls.value.rate ? controls.value.rate : 100) / 100,
+      });
+    });
+    console.log(this.postProdsIdArray);
   }
   transferFromProdToLocalMethod() {
     // transfer elements from productList to the local userSelcProd
@@ -90,8 +103,8 @@ export class AdminLearnerPaymentProductsComponent implements OnInit {
     });
   }
 
-  // this.fd.append('details', JSON.stringify(this.fdObj));
-  // confirm PRODUCTION selection method
+  // this.fd.append('paymentTranList', JSON.stringify(this.fdObj));
+  // modal method
   openProd(contentProd) {
     this.modalService
       .open(contentProd, { ariaLabelledBy: "modal-basic-title" })
@@ -102,8 +115,13 @@ export class AdminLearnerPaymentProductsComponent implements OnInit {
           this.postPordPayObjMethod();
           this.transferFromProdToLocalMethod();
           // confirm product payment
+
+          this.fd.append('paymentTranList', JSON.stringify(this.postProdPayObj));
+          console.log(this.postProdPayObj)
+          console.log(JSON.stringify(this.postProdPayObj))
+        //  return console.log(this.fd);
           this.productsListService
-            .postProdService(this.postProdPayObj)
+            .postProdService(this.fd)
             .subscribe(
               response => {
                 console.log("Success!", response);
@@ -122,6 +140,14 @@ export class AdminLearnerPaymentProductsComponent implements OnInit {
       );
   }
 
+  //validation method
+  validMethod(contentProd){
+    if (this.productListForm.invalid) {
+      this.showErrMsg = true;
+    } else {
+      this.openProd(contentProd);
+    }
+  }
   // put to service
   private getDismissReason(reason: any): string {
     if (reason === ModalDismissReasons.ESC) {
@@ -136,9 +162,9 @@ export class AdminLearnerPaymentProductsComponent implements OnInit {
   // select product
   get productListGroup(): FormGroup {
     return this.fb.group({
-      category: ["",[Validators.required,Validators.pattern('^[0-9]*$')]],
-      type: ["",[Validators.required,Validators.pattern('^[0-9]*$')]],
-      product: ["",[Validators.required,Validators.pattern('^[0-9]*$')]],
+      category: [null,[Validators.required,Validators.pattern('^[0-9]*$')]],
+      type: [null,[Validators.required,Validators.pattern('^[0-9]*$')]],
+      product: [null,[Validators.required,Validators.pattern('^[0-9]*$')]],
       productName: [""],
       price: [],
       number: [1],
@@ -206,27 +232,35 @@ export class AdminLearnerPaymentProductsComponent implements OnInit {
 
   selectType(dis, j) {
     // console.log(this.prodMuti[j].prods,'this.prodMuti',this.prodMuti)
+    this.emptyProductList(j);
     this.productsListService
-      .getProdCat(this.types[j][dis.value].ProdCatId)
+      .getProdCat(dis.value)
       .subscribe(cat => {
         // return console.log(this.categories)
-        this.categories[j].catItem = cat["Data"];
-        console.log(cat["Data"]);
+        this.categories[j].catItem = cat["Data"][0]['ProdType'];
         // this.productList.controls[j].patchValue({
         //   category: cat['Data'][dis.value].ProdTypeId
         // })
       });
+      console.log(this.productList.controls[j]['controls'].type);
+
   }
   selectCat(dis, j) {
+    this.emptyProductList(j);
     this.prodCatId = dis.value;
-    this.productsListService.getProdName(this.prodCatId).subscribe(prod => {
+    this.productsListService
+    .getProdName(this.prodCatId)
+    .subscribe(prod => {
       this.prodMuti[j].prods = prod["Data"];
     });
   }
   selectProd(dis, j) {
     // console.log(this.prodMuti[j].prods[dis.value].ProductId)
-    this.productId = this.prodMuti[j].prods[dis.value].ProductId;
-    this.productsListService.getProdItem(this.productId).subscribe(item => {
+    // this.productId = this.prodMuti[j].prods[dis.value].ProductId;
+    this.productsListService
+    .getProdItem(dis.value)
+    .subscribe(item => {
+      this.prodItems[j].prodItem = [];
       this.prodItems[j].prodItem = item["Data"];
       // this.userProd = this.prodItems[j].prodItem;
       this.productList.controls[j].patchValue({
@@ -241,18 +275,18 @@ export class AdminLearnerPaymentProductsComponent implements OnInit {
       this.changeProductPrice();
     });
   }
-
-  getProductId() {
-    this.productList.controls.forEach(controls => {
-      console.log(controls.value.product);
-      return this.postProdsIdArray.push([{
-        ProductId: controls.value.product,
-        SoldQuantity: controls.value.number,
-        DiscountAmount: controls.value.subMoney,
-        DiscountRate: controls.value.rate / 100,
-      }]);
+  emptyProductList(j){
+    this.prodItems[j].prodItem = [];
+    this.productList.controls[j].patchValue({
+      product: null
     });
-    console.log(this.postProdsIdArray);
+    this.productList.controls[j].patchValue({
+      price: null
+    });
+    this.productList.controls[j].patchValue({
+      productName: null
+    });
+    this.changeProductPrice();
   }
 
   changeProductPrice() {
@@ -298,9 +332,9 @@ export class AdminLearnerPaymentProductsComponent implements OnInit {
     this.productsListService.getProdType().subscribe(types => {
       this.typeItem = types["Data"];
       this.types.push(this.typeItem);
+      console.log(this.typeItem)
       // console.log(this.types[0]['typeItem'])
       // this.types['typeItem'] = types['Data'];
     });
-    console.log(this.productList.controls)
   }
 }
