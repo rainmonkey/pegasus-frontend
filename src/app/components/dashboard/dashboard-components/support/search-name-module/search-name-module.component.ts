@@ -25,8 +25,7 @@ export class SearchNameModuleComponent implements OnInit {
     private modalService: NgbModal,
     private learnersListService: LearnersService,
     private fb: FormBuilder,
-    private router: Router,
-    private routeA: ActivatedRoute
+    private router: Router
   ) { }
 
   // form-builder
@@ -66,7 +65,6 @@ export class SearchNameModuleComponent implements OnInit {
       phone: this.learners.ContactNum,
       address: this.learners.Address
     });
-    console.log('this.learners.LearnerId')
     this.onChangePath(this.learners.LearnerId);
   }
   modalServiceMethod(content) {
@@ -95,6 +93,7 @@ export class SearchNameModuleComponent implements OnInit {
         else {
           this.learners = data['Data'][0];
           this.data = data['Data'];
+          this.onChangePath(this.learners.LearnerId);
           this.patchRegiFormL();
           this.modalServiceMethod(content);
         }
@@ -106,11 +105,9 @@ export class SearchNameModuleComponent implements OnInit {
   }
 
   onChangePath(id) {
-    console.log(id);
-    // this.router.navigate(['/payment/invoice', id]);
+    console.log('route, ', this.router);
+
     this.router.navigate([this.router.url, id]);
-    // this.router.navigate(['/payment/other', id]);
-    console.log('route, ', this.router.url);
   }
 
   // middle name method

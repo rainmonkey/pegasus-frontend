@@ -13,7 +13,7 @@
                             <ng-template ngbTabContent>
                                 <!-- invoice form in tabset -->
                                 <div class='row justify-content-between'>
-                                    <div class="col-md-10">
+                                    <div class="col-md-10" [formGroup]='invoiceForm'>
                                         <h5>Invoice</h5>
                                         <p>{{item.LessonQuantity}} Lessons of {{item.CourseName}} from the Date {{item.BeginDate}}</p>
                                         <p>Concert for term 2, 2019</p>
@@ -22,20 +22,23 @@
                                         <p *ngIf="item.other1FeeName">{{item.Other1FeeName}}: ${{item.Other1Fee}}</p>
                                         <p *ngIf="item.other2FeeName">{{item.Other2FeeName}}: ${{item.Other2Fee}}</p>
                                         <p *ngIf="item.other3FeeName">{{item.Other3FeeName}}: ${{item.Other3Fee}}</p>
-
-                                        <p>Payment method: <select #districtPayment (change)="paymentMethod(districtPayment)">
-                                            <option value=2>Eftpos</option>
-                                            <option value=3>Online Transfer</option>
-                                            <option value=1>Cash</option></select></p>
+                                        <label>Payment Method</label>
+                                        <select formControlName="paymentMethodI" class='form-control col-2' [class.is-invalid]="paymentMethodI.invalid && paymentMethodI.touched" (change)='testMe()'>
+                                          <option disabled>Pls select..</option>
+                                          <option value=2>Eftpos</option>
+                                          <option value=3>Online Transfer</option>
+                                          <option value=1>Cash</option>
+                                        </select>
+                                        <small [class.d-none]="paymentMethodI.valid || paymentMethodI.untouched" class="text-danger">You must select the payment type</small>
                                         <p>Learner Paid: ${{item.PaidFee}}</p>
                                         <p>Learner Owing Fee: ${{item.OwingFee}}</p>
                                         <div class="row justify-content-start mt-2" [formGroup]="invoiceForm">
                                             <h6 class="col-md-3">Learner Add Fund: </h6>
                                             <p>$</p>
-                                            <input type="number" formControlName="owing" placeholder="Please enter the amount.." class="form-control col-md-3 ml-2" [class.is-invalid]="owing.invalid && owing.touched" value='item.OwingFee'>
+                                            <input type="number" formControlName="owing" onkeypress='return (/[\d]/.test(String.fromCharCode(event.keyCode)))' placeholder="Please enter the amount.." class="form-control col-md-3 ml-2" [class.is-invalid]="owing.invalid && owing.touched" value='item.OwingFee'>
                                             <div class="col-md-1"></div>
                                             <!-- open method for confirm payment modal-->
-                                            <button class="btn btn-primary col-md-3 ml-2" [disabled]="owing.invalid" (click)="openP(contentP, item)">Send This Payment</button>
+                                            <button class="btn btn-primary col-md-3 ml-2" [disabled]="owing.invalid" (click)="validMethodI(contentP, item)">Send This Payment</button>
                                         </div>
                                     </div>
                                     <div class="col-2">
@@ -76,7 +79,7 @@
                     </ngb-tabset>
                     <!-- invoice form out tabset-->
                     <div *ngIf="array.length == 1">
-                        <div class='row justify-content-between' *ngFor="let item of dataInvoice; let j = index">
+                        <div class='row justify-content-between' *ngFor="let item of dataInvoice; let j = index" [formGroup]="invoiceForm">
                             <div class="col-10">
                                 <h5>Invoice</h5>
                                 <p>{{item.LessonQuantity}} Lessons of {{item.CourseName}} from the Date {{item.BeginDate}}</p>
@@ -87,21 +90,24 @@
                                 <p *ngIf="item.other2FeeName">{{item.Other2FeeName}}: ${{item.Other2Fee}}</p>
                                 <p *ngIf="item.other3FeeName">{{item.Other3FeeName}}: ${{item.Other3Fee}}</p>
 
-                                <p>Payment method: </p>
-                                <select #districtPayment (change)="paymentMethod(districtPayment)" class='form-control col-4'>
-                                  <option selected>pls select..</option>
+                                <label>Payment Method</label>
+                                <select formControlName="paymentMethodI" class='form-control col-3' [class.is-invalid]="paymentMethodI.invalid && paymentMethodI.touched" (change)='testMe()'>
+                                  <option disabled>Pls select..</option>
                                   <option value=2>Eftpos</option>
                                   <option value=3>Online Transfer</option>
-                                  <option value=1>Cash</option></select>
+                                  <option value=1>Cash</option>
+                                </select>
+                                <small [class.d-none]="paymentMethodI.valid || paymentMethodI.untouched" class="text-danger">You must select the payment type</small>
                                 <p>Learner Paid: ${{item.PaidFee}}</p>
                                 <p>Learner Owing Fee: ${{item.OwingFee}}</p>
                                 <div class="row  justify-content-start mt-2" [formGroup]="invoiceForm">
                                     <h6 class="col-md-3">Learner Add Fund: </h6>
                                     <p class="mt-1">$</p>
-                                    <input type="number" formControlName="owing" placeholder="Please enter the amount.." class="form-control col-md-3 ml-2" [class.is-invalid]="owing.invalid && owing.touched">
+                                    <input type="number" formControlName="owing" onkeypress='return (/[\d]/.test(String.fromCharCode(event.keyCode)))' placeholder="Please enter the amount.." class="form-control col-md-3 ml-2" [class.is-invalid]="owing.invalid && owing.touched">
                                     <div class="col-md-1"></div>
                                     <!-- open method for confirm payment modal-->
-                                    <button class="btn btn-primary col-md-3 ml-2" [disabled]="owing.invalid" (click)="openP(contentP, item)">Send This Payment</button>
+                                    <button class="btn btn-primary col-md-3 ml-2" [disabled]="owing.invalid" (click)="validMethodI(contentP, item)">Send This Payment</button>
+                                    <small *ngIf="errMsg" class="text-danger">Pls select the payment method</small>
                                 </div>
                             </div>
                             <div class="col-2">
