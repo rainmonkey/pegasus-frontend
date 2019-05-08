@@ -69,7 +69,6 @@
                         </div>
                     </div>
                     <hr *ngIf="productList.controls.length !== 1">
-
                 </div>
             </div>
         </div>
@@ -104,3 +103,5 @@
         </div>
     </form>
 </div>
+<ngb-alert *ngIf='successAlert' type="success" (close)="closeSucc()">Your Payment Has Been Made</ngb-alert>
+<ngb-alert *ngIf='errorAlert' type="danger" (close)="closeErro()">{{ errorMsg.ErrorCode }}</ngb-alert>

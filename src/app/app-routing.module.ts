@@ -9,29 +9,33 @@ import { AdminLearnerPaymentInvoiceComponent } from './components/dashboard/dash
 import { AdminLearnerPaymentProductsComponent } from './components/dashboard/dashboard-components/admin-learner-payment/admin-learner-payment-details/admin-learner-payment-products/admin-learner-payment-products.component';
 import { AdminLearnerPaymentRegistrationComponent } from './components/dashboard/dashboard-components/admin-learner-payment/admin-learner-payment-details/admin-learner-payment-registration/admin-learner-payment-registration.component';
 import { AdminLearnerPaymentOtherComponent } from './components/dashboard/dashboard-components/admin-learner-payment/admin-learner-payment-details/admin-learner-payment-other/admin-learner-payment-other.component';
+import { AdminLearnerPaymentSussessComponent } from './components/dashboard/dashboard-components/admin-learner-payment/admin-learner-payment-details/admin-learner-payment-sussess/admin-learner-payment-sussess.component';
 import { TutorInfoComponent } from './components/dashboard/dashboard-components/tutor-info/tutor-info-list/tutor-info.component';
 import { CoursesListComponent } from './components/dashboard/dashboard-components/courses/courses-list/courses-list.component'
 
 
 const routes: Routes = [
-  { path: '', 
-    component: HomepageComponent, 
+  { path: '',
+    component: HomepageComponent,
     canActivate: [DashboardRestrictGuard],
     children: [
       // Payments Area
       { path: 'payment/invoice', pathMatch: 'prefix', component: AdminLearnerPaymentPanelComponent,
         children: [
-          { path: ':id', component: AdminLearnerPaymentInvoiceComponent }
+          { path: 'success', component: AdminLearnerPaymentSussessComponent, },
+          { path: ':id', component: AdminLearnerPaymentInvoiceComponent },
         ]
       },
       { path: 'payment/products', pathMatch: 'prefix', component: AdminLearnerPaymentPanelComponent,
         children: [
-          { path: ':id', component: AdminLearnerPaymentProductsComponent }
+          { path: 'success', component: AdminLearnerPaymentSussessComponent, },
+          { path: ':id', component: AdminLearnerPaymentProductsComponent, },
         ]
       },
       { path: 'payment/registration', pathMatch: 'prefix', component: AdminLearnerPaymentPanelComponent,
         children: [
-          { path: ':id', component: AdminLearnerPaymentRegistrationComponent },
+          { path: 'success', component: AdminLearnerPaymentSussessComponent, },
+          { path: ':id', component: AdminLearnerPaymentRegistrationComponent, },
         ]
       },
       { path: 'payment/other', component: AdminLearnerPaymentOtherComponent },

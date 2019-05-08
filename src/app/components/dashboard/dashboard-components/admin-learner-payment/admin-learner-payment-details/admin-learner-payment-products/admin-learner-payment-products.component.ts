@@ -9,7 +9,7 @@ import {
 import { NgbModal, ModalDismissReasons } from "@ng-bootstrap/ng-bootstrap";
 import { NgbTabsetConfig } from "@ng-bootstrap/ng-bootstrap";
 import { ProductsService } from "src/app/services/http/products.service";
-import { ActivatedRoute, ParamMap } from "@angular/router";
+import { ActivatedRoute, ParamMap, Router } from "@angular/router";
 @Component({
   selector: "app-admin-learner-payment-products",
   templateUrl: "./admin-learner-payment-products.component.html",
@@ -46,14 +46,22 @@ export class AdminLearnerPaymentProductsComponent implements OnInit {
   public checkMoney = true;
   public fd = new FormData;
   public showErrMsg = false;
+  public errorMsg;
+  public payPath;
   // ng-modal variable
   closeResult: string;
+  // ng-alert
+  public successAlert = false;
+  public errorAlert = false;
+  public errMsgM = false;
+  public errMsgO = false;
 
   constructor(
     private modalService: NgbModal,
     private productsListService: ProductsService,
     private fb: FormBuilder,
-    private route: ActivatedRoute,
+    private router: Router,
+    private activatedRouter: ActivatedRoute,
     config: NgbTabsetConfig
   ) {
     // bootstrap tabset
@@ -91,17 +99,7 @@ export class AdminLearnerPaymentProductsComponent implements OnInit {
       });
     });
   }
-  // transferFromProdToLocalMethod() {
-  //   // transfer elements from productList to the local userSelcProd
-  //   this.productList.controls.forEach(x => {
-  //     if (!isNaN(Number(x.value.products))) {
-  //       this.userSelcProd.push(Number(x.value.products));
-  //     }
-  //     console.log("x.value.product:", x.value.products);
-  //   });
-  // }
 
-  // this.fd.append('paymentTranList', JSON.stringify(this.fdObj));
   // modal method
   openProd(contentProd) {
     this.modalService
@@ -122,12 +120,13 @@ export class AdminLearnerPaymentProductsComponent implements OnInit {
             .subscribe(
               response => {
                 console.log("Success!", response);
-                alert("Your Payment Has Been Made");
+                this.successAlert = true;
+                this.router.navigate(['../success'],{relativeTo: this.activatedRouter});
               },
               error => {
-                const errorMsg = JSON.parse(error.error);
-                console.log("Error!", errorMsg.ErrorCode);
-                alert(errorMsg.ErrorCode);
+                this.errorMsg = JSON.parse(error.error);
+                console.log("Error!", this.errorMsg.ErrorCode);
+                this.errorAlert = false;
               }
             );
         },
@@ -175,11 +174,6 @@ export class AdminLearnerPaymentProductsComponent implements OnInit {
   get productList() {
     return this.productListForm.get("productList") as FormArray;
   }
-  // get arraylist(){
-  //   return this.productListGroup.get('array') as FormArray;
-  // }
-
-  // return this.productListForm.get('productList') as FormArray;
 
   checkRateClick(j) {
     // console.log(this.productList.controls);
@@ -228,16 +222,11 @@ export class AdminLearnerPaymentProductsComponent implements OnInit {
   }
 
   selectType(dis, j) {
-    // console.log(this.prodMuti[j].prods,'this.prodMuti',this.prodMuti)
     this.emptyProductList(j);
     this.productsListService
       .getProdCat(dis.value)
       .subscribe(cat => {
-        // return console.log(this.categories)
         this.categories[j].catItem = cat["Data"][0]['ProdType'];
-        // this.productList.controls[j].patchValue({
-        //   category: cat['Data'][dis.value].ProdTypeId
-        // })
       });
   }
   selectCat(dis, j) {
@@ -250,8 +239,6 @@ export class AdminLearnerPaymentProductsComponent implements OnInit {
     });
   }
   selectProd(dis, j) {
-    // console.log(this.prodMuti[j].prods[dis.value].ProductId)
-    // this.productId = this.prodMuti[j].prods[dis.value].ProductId;
     this.productsListService
     .getProdItem(dis.value)
     .subscribe(item => {
@@ -262,7 +249,6 @@ export class AdminLearnerPaymentProductsComponent implements OnInit {
     });
   }
   patchProductItems(j){
-    // this.userProd = this.prodItems[j].prodItem;
     this.productList.controls[j].patchValue({
       product: this.prodItems[j].prodItem[0].ProductId
     });
@@ -308,20 +294,29 @@ export class AdminLearnerPaymentProductsComponent implements OnInit {
     });
   }
   // search new users patch new data
-  patchProd(){
+  patchProd() {
     this.productList.controls.forEach((item, index) => {
       this.productList.removeAt(index);
     });
     this.productList.push(this.productListGroup);
     this.productListForm.value.paymentMethod = 1;
   }
+
+  // close alert
+  closeSucc(){
+    this.successAlert = false;
+  }
+  closeErro(){
+    this.errorAlert = false;
+  }
+
   // reload
   ngOnInit() {
     this.categories.push(this.catItem);
     this.prodMuti.push(this.prods);
     this.prodItems.push(this.prodItem);
 
-    this.route.paramMap.subscribe((obs: ParamMap) => {
+    this.activatedRouter.paramMap.subscribe((obs: ParamMap) => {
       this.learnerId = parseInt(obs.get("id"));
       this.patchProd();
     });
@@ -329,8 +324,6 @@ export class AdminLearnerPaymentProductsComponent implements OnInit {
     this.productsListService.getProdType().subscribe(types => {
       this.typeItem = types["Data"];
       this.types.push(this.typeItem);
-      // console.log(this.types[0]['typeItem'])
-      // this.types['typeItem'] = types['Data'];
     });
   }
 }

@@ -1,6 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-
-
 import { FormBuilder, Validators } from '@angular/forms';
 import { IOtherPay } from '../../../../../../models/learners';
 import { PaymentService } from 'src/app/services/http/payment.service';

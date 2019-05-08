@@ -25,6 +25,9 @@ export class PaymentService {
   //   return Observable.throw(error.message || "Server Error");
    }
 
+  postRegiPaymentService(payment){
+    return this.http.post(this.baseUrl + 'regi', payment)
+  }
 
   // other Pay
   postPaymentService(payment) {

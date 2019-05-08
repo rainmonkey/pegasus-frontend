@@ -4,7 +4,7 @@ import { FormBuilder, Validators } from '@angular/forms';
 import { NgbModal, ModalDismissReasons, } from '@ng-bootstrap/ng-bootstrap';
 import { NgbTabsetConfig } from '@ng-bootstrap/ng-bootstrap';
 import { ILearnerPay } from '../../../../../../models/learners';
-import { ActivatedRoute, ParamMap } from '@angular/router';
+import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 
 @Component({
   selector: 'app-admin-learner-payment-invoice',
@@ -43,7 +43,8 @@ export class AdminLearnerPaymentInvoiceComponent implements OnInit {
     private modalService: NgbModal,
     private paymentsListService: PaymentService,
     private fb: FormBuilder,
-    private route: ActivatedRoute,
+    private router: Router,
+    private activatedRouter: ActivatedRoute,
     config: NgbTabsetConfig
   ) {
     // bootstrap tabset
@@ -93,6 +94,7 @@ export class AdminLearnerPaymentInvoiceComponent implements OnInit {
                 console.log('Success!', response);
                 this.successAlert = true;
                 alert('Your Payment Has Been Made');
+                this.router.navigate(['../success'], {relativeTo: this.activatedRouter});
               },
               (error) => {
                 this.errorMsg = JSON.parse(error.error);
@@ -138,7 +140,7 @@ export class AdminLearnerPaymentInvoiceComponent implements OnInit {
 
     ngOnInit() {
       // put to service
-      this.route.paramMap.subscribe((obs:ParamMap) => {
+      this.activatedRouter.paramMap.subscribe((obs:ParamMap) => {
         this.learnerId = parseInt(obs.get('id'))
         this.paymentsListService
         .getInvoice(this.learnerId)

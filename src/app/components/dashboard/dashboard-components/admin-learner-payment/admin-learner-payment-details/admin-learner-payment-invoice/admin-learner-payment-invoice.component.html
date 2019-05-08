@@ -1,6 +1,4 @@
 <!--attached payment form-->
-<ngb-alert *ngIf='successAlert' type="success" (close)="closeSucc()">Your Payment Has Been Made</ngb-alert>
-<ngb-alert *ngIf='errorAlert' type="danger" (close)="closeErro()">{{ errorMsg.ErrorCode }}</ngb-alert>
 <div class='switchOthersContainer'>
     <div class="container">
         <div class="row justify-content-md-center">
@@ -150,3 +148,5 @@
                         </div>
                     </div>
                 </div>
+                <ngb-alert *ngIf='successAlert' type="success" (close)="closeSucc()">Your Payment Has Been Made</ngb-alert>
+                <ngb-alert *ngIf='errorAlert' type="danger" (close)="closeErro()">{{ errorMsg.ErrorCode }}</ngb-alert>

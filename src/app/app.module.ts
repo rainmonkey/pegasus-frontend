@@ -31,6 +31,7 @@ import { AdminLearnerPaymentInvoiceComponent } from './components/dashboard/dash
 import { AdminLearnerPaymentProductsComponent } from './components/dashboard/dashboard-components/admin-learner-payment/admin-learner-payment-details/admin-learner-payment-products/admin-learner-payment-products.component';
 import { AdminLearnerPaymentRegistrationComponent } from './components/dashboard/dashboard-components/admin-learner-payment/admin-learner-payment-details/admin-learner-payment-registration/admin-learner-payment-registration.component';
 import { AdminLearnerPaymentOtherComponent } from './components/dashboard/dashboard-components/admin-learner-payment/admin-learner-payment-details/admin-learner-payment-other/admin-learner-payment-other.component';
+import { AdminLearnerPaymentSussessComponent } from './components/dashboard/dashboard-components/admin-learner-payment/admin-learner-payment-details/admin-learner-payment-sussess/admin-learner-payment-sussess.component'
 import { FooterComponent } from './components/basic/footer/footer.component';
 import { CoursesPanelComponent } from './components/dashboard/dashboard-components/courses/courses-panel/courses-panel.component';
 import { CoursesDetailComponent } from './components/dashboard/dashboard-components/courses/courses-detail/courses-detail.component';
@@ -62,6 +63,7 @@ import { SessionDetailModalComponent } from './components/dashboard/dashboard-co
     AdminLearnerPaymentProductsComponent,
     AdminLearnerPaymentRegistrationComponent,
     AdminLearnerPaymentOtherComponent,
+    AdminLearnerPaymentSussessComponent,
     TimePickerComponent,
     FooterComponent,
     CoursesPanelComponent,
@@ -95,7 +97,7 @@ import { SessionDetailModalComponent } from './components/dashboard/dashboard-co
     routing,
   ],
   providers: [
-    
+
   ],
   entryComponents:[
     TutorEditModalComponent,

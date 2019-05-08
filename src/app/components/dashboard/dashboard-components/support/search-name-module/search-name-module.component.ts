@@ -136,11 +136,9 @@ export class SearchNameModuleComponent implements OnInit {
   }
   ngOnInit() {
     this.activatedRouter.url.subscribe(url => {
-      console.log(url);
       const path1 = url[0].path;
       const path2 = url[1].path;
       this.payPath = `/${path1}/${path2}/`
-      console.log(this.payPath)
     });
   }
 
