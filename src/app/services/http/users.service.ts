@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { environment } from '../../../environments/environment';
+import { environment } from '../../../environments/environment.prod';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 @Injectable({
@@ -23,10 +23,5 @@ export class UsersService {
   // Call API for sidebar Data
   getSidebar(){
     return this.http.get(this.baseUrl + 'navitems', {headers: this.httpHeaders})
-  }
-
-  // Call API for user name
-  getusername(){
-
   }
 }

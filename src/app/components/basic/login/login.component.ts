@@ -61,8 +61,13 @@ export class LoginComponent implements OnInit {
   }
 
   processError(err) {
-    if (err.error.ErrorMessage) {
-      this.errorMessage = err.error.ErrorMessage;
+    console.warn(err)
+    if (err.error) {
+      if(err.error.ErrorMessage){
+        this.errorMessage = err.error.ErrorMessage;
+      } else {
+        this.errorMessage = 'Sorry, something went wrong';
+      }
     } else {
       this.errorMessage = 'Sorry, something went wrong';
     }

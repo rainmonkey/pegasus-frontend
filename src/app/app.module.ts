@@ -17,7 +17,6 @@ import { routing } from '../app/app-routing.module';
 import { AppComponent } from './app.component';
 import { SidebarComponent } from './components/dashboard/general/sidebar/sidebar.component';
 import { TimePickerComponent } from './components/dashboard/dashboard-components/time-picker/time-picker.component';
-import { TestcontentComponent } from './components/testing/testcontent/testcontent.component';
 import { LoginComponent } from './components/basic/login/login.component';
 import { HeaderbarComponent } from './components/dashboard/general/headerbar/headerbar.component';
 import { HomepageComponent } from './components/dashboard/general/homepage/homepage.component';
@@ -51,7 +50,6 @@ import { CommandFormatPipe } from './shared/pipes/command-format.pipe';
     HomepageComponent,
     HeaderbarComponent,
     SidebarComponent,
-    TestcontentComponent,
     AdminLearnerPaymentPanelComponent,
     SearchNameModuleComponent,
     AdminLearnerPaymentInvoiceComponent,

@@ -1,3 +1,61 @@
-<p>
-  courses-list works!
-</p>
+<div class='container tl_body'>
+  <div class='row'>
+    <!--body head-->
+    <div class='col-12 tl_body_title'>
+      Courses List
+      <!--add more btn-->
+      <span class='tl_body_add btn btn-info' (click)='popUpModals(0,null)'>+ Add More</span>
+    </div>
+
+    <!--body search-->
+    <div class='col-12 tl_body_search'>
+      <span class='fas fa-search'></span>&nbsp;
+      <input type="text" (input)='onSearch($event)' placeholder=" Search by name">
+    </div>
+
+    <!--body main-->
+    <div class='col-12'>
+      <table class='table table-striped' style="text-align: center;">
+        <thead>
+          <tr>
+            <th scope='col' class='tl_body_table_head' style="width:1rem;">#</th>
+            <th scope='col' class='tl_body_table_head sorting_item' style="width:16rem;" (click)='onSort("CourseName")' counter = '0'>Course Name</th>
+            <th scope='col' class='tl_body_table_head' style="width:5rem;">Type</th>
+            <th scope='col' class='tl_body_table_head' style="width:9rem;">Learner Level</th>
+            <th scope='col' class='tl_body_table_head' style="width:9rem;">Teacher Level</th>
+            <th scope='col' class='tl_body_table_head' style="width:6rem;">Duration</th>
+            <th scope='col' class='tl_body_table_head' style="width:6rem;">Price</th>
+            <th scope='col' class='tl_body_table_head' style="width:7rem;">Category</th>
+            <th scope='col' class='tl_body_table_head' style="width:8rem;">Edit & Delete</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- dataTable-->
+          <tr *ngFor = 'let i of coursesList | slice: (page-1)* pageSize : (page-1) * pageSize + pageSize; let j = index'>
+            <th scope="row">{{j+1}}</th>
+            <td>{{i.CourseName}}</td>
+            <td *ngIf="i.CourseType == 1">1 to 1</td>
+            <td *ngIf="i.CourseType == 2">Group</td>
+            <td *ngIf="i.Level == 1">Junior</td>
+            <td *ngIf="i.Level == 2">Intermediate</td>
+            <td *ngIf="i.Level == 3">Senior</td>
+            <td>{{i.TeacherLevel}}</td>
+            <td>{{i.Duration}} hrs</td>
+            <td>${{i.Price}}</td>
+            <td>{{i.CourseCategory.CourseCategoryName}}</td>
+            <td class='tl_body_table_btns'>
+                <span (click)='popUpModals(2,i)' class='tl_body_table_btn' style="margin-right: 2rem;"><i class='fas fa-pen'></i></span>
+                <span (click)='popUpModals(3,i)' class='tl_body_table_btn'><i class='fas fa-trash-alt'></i></span>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <!--body pagination-->
+    <div class='col-12'>
+      <ngb-pagination [collectionSize] = 'coursesListLength' [(page)] ='page' [pageSize]='pageSize'></ngb-pagination>
+    </div>
+
+
+  </div>
+</div>
