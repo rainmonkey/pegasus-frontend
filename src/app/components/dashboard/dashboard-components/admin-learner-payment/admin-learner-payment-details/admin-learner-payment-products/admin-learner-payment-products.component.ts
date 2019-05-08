@@ -83,7 +83,6 @@ export class AdminLearnerPaymentProductsComponent implements OnInit {
   }
   getProductId() {
     this.productList.controls.forEach(controls => {
-      console.log(controls.value.product);
       return this.postProdsIdArray.push({
         ProductId: controls.value.product,
         SoldQuantity: controls.value.number,
@@ -91,17 +90,16 @@ export class AdminLearnerPaymentProductsComponent implements OnInit {
         DiscountRate: (controls.value.rate ? controls.value.rate : 100) / 100,
       });
     });
-    console.log(this.postProdsIdArray);
   }
-  transferFromProdToLocalMethod() {
-    // transfer elements from productList to the local userSelcProd
-    this.productList.controls.forEach(x => {
-      if (!isNaN(Number(x.value.products))) {
-        this.userSelcProd.push(Number(x.value.products));
-      }
-      console.log("x.value.product:", x.value.products);
-    });
-  }
+  // transferFromProdToLocalMethod() {
+  //   // transfer elements from productList to the local userSelcProd
+  //   this.productList.controls.forEach(x => {
+  //     if (!isNaN(Number(x.value.products))) {
+  //       this.userSelcProd.push(Number(x.value.products));
+  //     }
+  //     console.log("x.value.product:", x.value.products);
+  //   });
+  // }
 
   // this.fd.append('paymentTranList', JSON.stringify(this.fdObj));
   // modal method
@@ -113,7 +111,6 @@ export class AdminLearnerPaymentProductsComponent implements OnInit {
           this.closeResult = `Closed with: ${result}`;
           this.getProductId();
           this.postPordPayObjMethod();
-          this.transferFromProdToLocalMethod();
           // confirm product payment
 
           this.fd.append('paymentTranList', JSON.stringify(this.postProdPayObj));
@@ -242,8 +239,6 @@ export class AdminLearnerPaymentProductsComponent implements OnInit {
         //   category: cat['Data'][dis.value].ProdTypeId
         // })
       });
-      console.log(this.productList.controls[j]['controls'].type);
-
   }
   selectCat(dis, j) {
     this.emptyProductList(j);
@@ -262,17 +257,20 @@ export class AdminLearnerPaymentProductsComponent implements OnInit {
     .subscribe(item => {
       this.prodItems[j].prodItem = [];
       this.prodItems[j].prodItem = item["Data"];
-      // this.userProd = this.prodItems[j].prodItem;
-      this.productList.controls[j].patchValue({
-        product: this.prodItems[j].prodItem[0].ProductId
-      });
-      this.productList.controls[j].patchValue({
-        price: this.prodItems[j].prodItem[0].SellPrice
-      });
-      this.productList.controls[j].patchValue({
-        productName: this.prodItems[j].prodItem[0].ProductName
-      });
+      this.patchProductItems(j);
       this.changeProductPrice();
+    });
+  }
+  patchProductItems(j){
+    // this.userProd = this.prodItems[j].prodItem;
+    this.productList.controls[j].patchValue({
+      product: this.prodItems[j].prodItem[0].ProductId
+    });
+    this.productList.controls[j].patchValue({
+      price: this.prodItems[j].prodItem[0].SellPrice
+    });
+    this.productList.controls[j].patchValue({
+      productName: this.prodItems[j].prodItem[0].ProductName
     });
   }
   emptyProductList(j){
@@ -292,7 +290,6 @@ export class AdminLearnerPaymentProductsComponent implements OnInit {
   changeProductPrice() {
     this.sellPrice = 0;
     this.productList.controls.forEach((item, i) => {
-      console.log(item.value);
       if (item.value.rate === undefined) {
         item.value.rate = 100;
       }
@@ -332,7 +329,6 @@ export class AdminLearnerPaymentProductsComponent implements OnInit {
     this.productsListService.getProdType().subscribe(types => {
       this.typeItem = types["Data"];
       this.types.push(this.typeItem);
-      console.log(this.typeItem)
       // console.log(this.types[0]['typeItem'])
       // this.types['typeItem'] = types['Data'];
     });

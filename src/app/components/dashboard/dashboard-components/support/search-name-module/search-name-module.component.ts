@@ -25,7 +25,8 @@ export class SearchNameModuleComponent implements OnInit {
     private modalService: NgbModal,
     private learnersListService: LearnersService,
     private fb: FormBuilder,
-    private router: Router
+    private router: Router,
+    private activatedRouter: ActivatedRoute
   ) { }
 
   // form-builder
@@ -105,9 +106,7 @@ export class SearchNameModuleComponent implements OnInit {
   }
 
   onChangePath(id) {
-    console.log('route, ', this.router);
-
-    this.router.navigate(['payment/product', id]);
+    this.router.navigate([this.payPath, id]);
   }
 
   // middle name method
@@ -135,6 +134,14 @@ export class SearchNameModuleComponent implements OnInit {
       return `with: ${reason}`;
     }
   }
-  ngOnInit() {}
+  ngOnInit() {
+    this.activatedRouter.url.subscribe(url => {
+      console.log(url);
+      const path1 = url[0].path;
+      const path2 = url[1].path;
+      this.payPath = `/${path1}/${path2}/`
+      console.log(this.payPath)
+    });
+  }
 
 }

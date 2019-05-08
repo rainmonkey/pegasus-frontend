@@ -18,7 +18,7 @@
         <div formArrayName="productList">
             <div *ngFor="let li of productList.controls; let j = index">
                 <div [formGroupName]='j'>
-                    <div class="d-flex justify-content-end">
+                    <div class="d-flex justify-content-start">
                         <button class="btn btn-outline-success btn-sm m-1" style="border-radius:30%" (click)='addOption()'>+</button>
                         <button *ngIf="productList.controls.length !== 1" style="border-radius:30%" class="btn btn-outline-danger btn-sm m-1" (click)='removeOption(j)'>-</button>
                     </div>
@@ -87,12 +87,13 @@
                                         </button>
                     </div>
                     <!-- modal-body -->
+                    <div class="container">
                     <div class="d-flex flex-column">
                         <p> Amount:{{sellPrice}}</p>
-                        <ul *ngFor='let prods of productList.controls'>
-                            <li>Product Name: {{prods.value.productName}} Price:{{prods.value.price}} Quantity:{{prods.value.number}}</li>
+                        <ul *ngFor='let prods of productList.controls' style='border: 1px solid'>
+                            <li>Product Name: {{prods.value.productName}} <br> Price:{{prods.value.price}} &nbsp; Quantity:{{prods.value.number}} &nbsp; Rate: {{prods.value.rate}} &nbsp; Money subtraction($): {{prods.value.subMoney}} &nbsp; Subtotal($): {{prods.value.subTotal}}</li>
                         </ul>
-
+                        </div>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-dark" (click)="modal.close('Save')">Confirm</button>

@@ -5,6 +5,7 @@ import { NgbModal, ModalDismissReasons, } from '@ng-bootstrap/ng-bootstrap';
 import { NgbTabsetConfig } from '@ng-bootstrap/ng-bootstrap';
 import { ILearnerPay } from '../../../../../../models/learners';
 import { ActivatedRoute, ParamMap } from '@angular/router';
+
 @Component({
   selector: 'app-admin-learner-payment-invoice',
   templateUrl: './admin-learner-payment-invoice.component.html',
@@ -22,7 +23,8 @@ export class AdminLearnerPaymentInvoiceComponent implements OnInit {
   public array = [];
   public successAlert = false;
   public errorAlert = false;
-  public errMsg = false;
+  public errMsgM = false;
+  public errMsgO = false;
   // ng-modal variable
   closeResult: string;
 
@@ -60,10 +62,10 @@ export class AdminLearnerPaymentInvoiceComponent implements OnInit {
       return `with: ${reason}`;
     }
   }
-  userTab(j){
+  userTab(j) {
     this.invoiceForm.patchValue({
-      owing : this.dataInvoice[j].OwingFee
-    })
+      owing : Math.abs(this.dataInvoice[j].OwingFee)
+    });
   }
 
     // create post obj
@@ -107,14 +109,25 @@ export class AdminLearnerPaymentInvoiceComponent implements OnInit {
     }
     // valid payment method
     validMethodI(contentP, item){
-      if(this.invoiceForm.invalid) {
-        for (let i in this.invoiceForm.controls){
-        // this.invoiceForm.controls[i].touched=true;
+      switch (true) {
+        case this.invoiceForm.invalid===true :
+          this.errMsgM = true;
+        case this.invoiceForm.value.owing === 0 :
+          this.errMsgO = true;
+        break;
+        default:
+          this.openP(contentP, item);
+          break;
       }
-    } else {
-      this.openP(contentP, item)
-    }
-    }
+    //   if(this.invoiceForm.invalid || this.invoiceForm.value.owing === 0) {
+    //     this.errMsgM = true;
+    //     for (let i in this.invoiceForm.controls){
+    //     // this.invoiceForm.controls[i].touched=true;
+    //   }
+    // } else {
+    //   this.openP(contentP, item)
+    // }
+  }
     // close alert
     closeSucc(){
       this.successAlert = false;
@@ -137,13 +150,9 @@ export class AdminLearnerPaymentInvoiceComponent implements OnInit {
             this.array.push(index);
           });
           this.invoiceForm.patchValue({
-            owing : this.dataInvoice[0].OwingFee
+            owing : Math.abs(this.dataInvoice[0].OwingFee)
           });
         });
       });
     }
-
-  testMe(){
-    console.log(this.paymentMethodI)
-  }
 }
