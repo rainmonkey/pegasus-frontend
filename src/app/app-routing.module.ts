@@ -21,7 +21,6 @@ import { AdminLearnerPanelComponent } from './components/dashboard/dashboard-com
 import { AdminLearnerListComponent } from './components/dashboard/dashboard-components/admin-learner/admin-learner-list/admin-learner-list.component';
 import { InventoryPanelComponent } from './components/dashboard/dashboard-components/inventory/inventory-panel/inventory-panel.component';
 import { InventoryListComponent } from './components/dashboard/dashboard-components/inventory/inventory-list/inventory-list.component';
-
 import { InvoiceDataEntryComponent } from './components/dashboard/dashboard-components/invoice-data-entry/invoice-data-entry-list/invoice-data-entry.component';
 
 const routes: Routes = [
