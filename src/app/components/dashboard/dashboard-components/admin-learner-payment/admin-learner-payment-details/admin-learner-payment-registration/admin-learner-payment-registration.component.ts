@@ -24,7 +24,7 @@ export class AdminLearnerPaymentRegistrationComponent implements OnInit {
   // other fb
   regiPayment = this.fb.group({
     title: ['Registration Fee', Validators.required],
-    amount: ['', Validators.required]
+    amount: [20, Validators.required]
   });
   get title() {
     return this.regiPayment.get('title');

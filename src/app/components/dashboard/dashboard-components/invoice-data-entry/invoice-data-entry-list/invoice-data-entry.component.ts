@@ -19,7 +19,8 @@ export class InvoiceDataEntryComponent implements OnInit {
   //error alert
   public errorMsg;
   public errorAlert = false;
-
+  public errMsgM;
+  public errMsgO;
   constructor(
     private modalService: NgbModal,
     private ngTable:NgbootstraptableService,
@@ -52,6 +53,19 @@ export class InvoiceDataEntryComponent implements OnInit {
 
   onSort(orderBy) {
     this.ngTable.sorting(this.learnerList, orderBy);
+  }
+
+  onSearch(event){
+    //should init original list and length
+    this.learnerList = this.temLearnerList;
+    this.learnerListLength = this.temLearnerListLength;
+
+    let searchStr = event.target.value;
+    //
+    let titlesToSearch = ['FirstName','LastName'];
+
+    this.learnerList = this.ngTable.searching(this.learnerList,titlesToSearch,searchStr);
+    this.learnerListLength = this.learnerList.length;
   }
 
 

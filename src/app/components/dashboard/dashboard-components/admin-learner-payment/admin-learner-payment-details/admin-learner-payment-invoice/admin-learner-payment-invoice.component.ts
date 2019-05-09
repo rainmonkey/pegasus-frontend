@@ -24,6 +24,7 @@ export class AdminLearnerPaymentInvoiceComponent implements OnInit {
   public errorAlert = false;
   public errMsgM = false;
   public errMsgO = false;
+  public arrayInv = []
   // ng-modal variable
   closeResult: string;
 
@@ -146,6 +147,10 @@ export class AdminLearnerPaymentInvoiceComponent implements OnInit {
         .subscribe(dataInvoice => {
           // return console.log(dataInvoice)
           this.dataInvoice = dataInvoice;
+          // in case have mutiple invoices
+          this.arrayInv = [];
+          this.dataInvoice.forEach((item, index) => {
+            this.arrayInv.push(index);})
           this.invoiceForm.patchValue({
             owing : Math.abs(this.dataInvoice[0].OwingFee)
           });

@@ -8,11 +8,41 @@
 
 <!--modal body-->
 <div class='modal-body'>
- hello
+  <div>
+  <h5>Invoice</h5>
+  <input type="number">(Lesson quantity)
+  <p>Lessons of <input type="text"> (CourseName) from the Date <input type="date"> (BeginDate)</p>
+  <p>Concert for term 2, 2019</p>
+  <p>Lesson Note term 2, 2019</p>
+
+  <p><input type="text"> : <input type="number"> Other1FeeName:Other1Fee</p>
+  <p><input type="text"> : <input type="number"> Other2FeeName:Other2Fee</p>
+  <p><input type="text"> : <input type="number"> Other3FeeName:Other3Fee</p>
+
+  <p>Learner Paid:</p> <input type="number">
+  <p>Learner Owing Fee: <input type="number"> OwingFee</p>
+  <div class="row  justify-content-start mt-2" >
+      <h6 class="col-md-3">Learner Add Fund: </h6>
+      <p class="mt-1">$</p>
+      <input type="number"  min="0" onkeypress='return (/[\d]/.test(String.fromCharCode(event.keyCode)))' placeholder="Please enter the amount.." class="form-control col-md-3 ml-2">
+      <div class="col-md-1"></div>
+  </div>
+</div>
+<div class="col-2">
+  <h6>Invoice No. <input type="number"> InvoiceNum</h6>
+  <p><input type="number"> LessonFee</p>
+  <p><input type="number"> ConcertFee</p>
+  <p><input type="number"> NoteFee</p>
+  <p>Due Date: <input type="date"> DueDate</p>
+  <h6>All Subject in Total: <input type="number"> TotalFee</h6>
+</div>
 </div>
 
 <!--modal footer-->
 <div class='modal-footer'>
   <button type='button' class='btn btn-outline-dark' (click)='sendMail()' id='save'>Sent Email</button>
+  <small *ngIf="errMsgM" class="text-danger">Pls select the payment method</small>
+  <br>
+  <small *ngIf="errMsgO" class="text-danger">Pls enter a validate number of the transaction</small>
   <button type="button" class="btn btn-outline-dark" (click)="activeModal.close('Close click')">Close</button>
 </div>

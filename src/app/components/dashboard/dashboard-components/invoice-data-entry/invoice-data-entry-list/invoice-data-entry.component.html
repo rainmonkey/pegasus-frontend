@@ -4,6 +4,10 @@
     <div class='col-12 tl_body_title'>
       <h2>Invoice Edit & Email</h2>
   </div>
+    <!--body search-->
+    <div class='col-12 tl_body_search'>
+      <input type="text" (input)='onSearch($event)' placeholder=" Search by name">
+    </div>
 
     <!--body main-->
     <div class='col-12'>
@@ -16,6 +20,7 @@
             <th scope='col' class="tl_body_table_head" style='width: 150px'>Middle Name</th>
             <th scope='col' class='tl_body_table_head' style='width: 150px'>Moblie Phone</th>
             <th scope='col' class='tl_body_table_head' style='width: 300px'>Email</th>
+            <th scope='col' class='tl_body_table_head' style='width: 300px' (click)='onSort("Status")'>Reminder Status</th>
             <th scope='col' class='tl_body_table_head'></th>
           </tr>
         </thead>
@@ -28,6 +33,7 @@
             <td>{{i.MiddleName}}</td>
             <td>{{i.MobilePhone}}</td>
             <td>{{i.Email}}</td>
+            <td>{{i.Status}}</td>
             <td>
               <a (click)='open()'>Edit</a>
             </td>
