@@ -13,6 +13,7 @@ export class AdminLearnerPaymentOtherComponent implements OnInit {
   public otherPaymentObj: IOtherPay;
   public paymentTitle;
   public paymentAmount;
+  public errorMsg;
   constructor(
     private fb: FormBuilder,
     private paymentOtherService: PaymentService
@@ -46,10 +47,12 @@ export class AdminLearnerPaymentOtherComponent implements OnInit {
     this.paymentOtherService.postPaymentService(this.otherPaymentObj).subscribe(
       response => {
         console.log('Success!', response);
+
       },
       error => {
-        console.error('Error!', error);
-        alert(`Can not access server ${error}`);
+        this.errorMsg = JSON.parse(error.error);
+        console.error('Error!', this.errorMsg.ErrorCode);
+        alert(`Can not access server ${this.errorMsg.ErrorCode}`);
       }
     );
   }

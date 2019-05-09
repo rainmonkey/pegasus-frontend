@@ -38,7 +38,11 @@ const routes: Routes = [
           { path: ':id', component: AdminLearnerPaymentRegistrationComponent, },
         ]
       },
-      { path: 'payment/other', component: AdminLearnerPaymentOtherComponent },
+      { path: 'payment/other', pathMatch: 'prefix', component: AdminLearnerPaymentOtherComponent,
+        children: [
+          { path: 'success', component: AdminLearnerPaymentSussessComponent, },
+        ]
+      },
       // End Payment Area
       { path: 'tutor', component: TutorInfoComponent },
       { path: 'learnerRegistration', component: LearnerRegistrationFormComponent },
