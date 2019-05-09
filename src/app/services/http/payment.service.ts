@@ -33,4 +33,9 @@ export class PaymentService {
   postPaymentService(payment) {
     return this.http.post(this.baseUrl + 'other', payment);
   }
+
+  //email invoice
+  emailInvoice(invoice) {
+    return this.http.post(this.baseUrl + 'invoice', invoice);
+  }
 }

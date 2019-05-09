@@ -63,6 +63,7 @@ export class AdminLearnerPaymentInvoiceComponent implements OnInit {
       return `with: ${reason}`;
     }
   }
+  // put owing fee to mutiple invoice at ng-bootstrap tab
   userTab(j) {
     this.invoiceForm.patchValue({
       owing : Math.abs(this.dataInvoice[j].OwingFee)

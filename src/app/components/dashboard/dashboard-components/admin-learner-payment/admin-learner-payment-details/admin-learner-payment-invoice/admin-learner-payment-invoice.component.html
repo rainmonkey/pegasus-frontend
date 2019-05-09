@@ -14,7 +14,7 @@
                                     <div class="col-md-10" [formGroup]='invoiceForm'>
                                         <h5>Invoice</h5>
                                         <p>{{item.LessonQuantity}} Lessons of {{item.CourseName}} from the Date {{item.BeginDate}}</p>
-                                        <p>Concert for term 2, 2019</p>
+                                        <p>Concert for term {{item.Term.TermId}}, {{item.Term.BeginDate}}</p>
                                         <p>Lesson Note term 2, 2019</p>
 
                                         <p *ngIf="item.other1FeeName">{{item.Other1FeeName}}: ${{item.Other1Fee}}</p>
@@ -84,7 +84,7 @@
                             <div class="col-10">
                                 <h5>Invoice</h5>
                                 <p>{{item.LessonQuantity}} Lessons of {{item.CourseName}} from the Date {{item.BeginDate}}</p>
-                                <p>Concert for term 2, 2019</p>
+                                <p>Concert for term {{item.Term.TermId}}, {{item.Term.BeginDate}}</p>
                                 <p>Lesson Note term 2, 2019</p>
 
                                 <p *ngIf="item.other1FeeName">{{item.Other1FeeName}}: ${{item.Other1Fee}}</p>

@@ -1,3 +1,4 @@
+
 <!--modal header-->
 <div class="modal-header">
   <h4 class="modal-title">Invoice Editing</h4>
@@ -40,9 +41,26 @@
 
 <!--modal footer-->
 <div class='modal-footer'>
-  <button type='button' class='btn btn-outline-dark' (click)='sendMail()' id='save'>Sent Email</button>
+  <button type='button' class='btn btn-outline-dark' (click)='sendMail(confirmModal)' id='save'>Sent Email</button>
   <small *ngIf="errMsgM" class="text-danger">Pls select the payment method</small>
   <br>
   <small *ngIf="errMsgO" class="text-danger">Pls enter a validate number of the transaction</small>
-  <button type="button" class="btn btn-outline-dark" (click)="activeModal.close('Close click')">Close</button>
+  <button type="button" class="btn btn-outline-dark" (click)="activeModal.dismiss('Click click')">Close</button>
 </div>
+
+<ng-template #confirmModal let-modal>
+  <div class="modal-header m-2">
+      <h4>Please Confirm</h4>
+      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+<span aria-hidden="true">&times;</span>
+</button>
+  </div>
+  <!-- modal-body -->
+  <div class="d-flex justify-content-center">
+    <p>Do you want email this invoice to the customer?</p>
+  </div>
+  <div class="modal-footer">
+      <button type="button" class="btn btn-dark" (click)="modal.close('Save')">Confirm</button>
+      <button type="button" class="btn btn-outline-dark" (click)="modal.dismiss('Cross click')">Cancel</button>
+  </div>
+</ng-template>
