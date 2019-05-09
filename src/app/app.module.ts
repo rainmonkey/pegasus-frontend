@@ -46,6 +46,11 @@ import { SessionsPanelComponent } from './components/dashboard/dashboard-compone
 import { SessionsListViewComponent } from './components/dashboard/dashboard-components/sessions/sessions-list-view/sessions-list-view.component';
 import { SessionsCalendarViewComponent } from './components/dashboard/dashboard-components/sessions/sessions-calendar-view/sessions-calendar-view.component';
 import { SessionDetailModalComponent } from './components/dashboard/dashboard-components/sessions/session-detail-modal/session-detail-modal.component';
+import { TutorInfoPanelComponent } from './components/dashboard/dashboard-components/tutor-info/tutor-info-panel/tutor-info-panel.component';
+import { AdminLearnerPanelComponent } from './components/dashboard/dashboard-components/admin-learner/admin-learner-panel/admin-learner-panel.component';
+import { AdminLearnerListComponent } from './components/dashboard/dashboard-components/admin-learner/admin-learner-list/admin-learner-list.component';
+import { InventoryPanelComponent } from './components/dashboard/dashboard-components/inventory/inventory-panel/inventory-panel.component';
+import { InventoryListComponent } from './components/dashboard/dashboard-components/inventory/inventory-list/inventory-list.component';
 import { InvoiceDataEntryComponent } from './components/dashboard/dashboard-components/invoice-data-entry/invoice-data-entry-list/invoice-data-entry.component';
 import { InvoiceDataEntryModalComponent } from './components/dashboard/dashboard-components/invoice-data-entry/invoice-data-entry-modal/invoice-data-entry-modal.component';
 
@@ -83,6 +88,11 @@ import { InvoiceDataEntryModalComponent } from './components/dashboard/dashboard
     SessionsListViewComponent,
     SessionsCalendarViewComponent,
     SessionDetailModalComponent,
+    TutorInfoPanelComponent,
+    AdminLearnerPanelComponent,
+    AdminLearnerListComponent,
+    InventoryPanelComponent,
+    InventoryListComponent,
     InvoiceDataEntryComponent,
     InvoiceDataEntryModalComponent
   ],
