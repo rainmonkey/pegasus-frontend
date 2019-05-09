@@ -49,6 +49,8 @@ import { SessionDetailModalComponent } from './components/dashboard/dashboard-co
 import { TutorInfoPanelComponent } from './components/dashboard/dashboard-components/tutor-info/tutor-info-panel/tutor-info-panel.component';
 import { AdminLearnerPanelComponent } from './components/dashboard/dashboard-components/admin-learner/admin-learner-panel/admin-learner-panel.component';
 import { AdminLearnerListComponent } from './components/dashboard/dashboard-components/admin-learner/admin-learner-list/admin-learner-list.component';
+import { InventoryPanelComponent } from './components/dashboard/dashboard-components/inventory/inventory-panel/inventory-panel.component';
+import { InventoryListComponent } from './components/dashboard/dashboard-components/inventory/inventory-list/inventory-list.component';
 
 
 
@@ -89,6 +91,8 @@ import { AdminLearnerListComponent } from './components/dashboard/dashboard-comp
     TutorInfoPanelComponent,
     AdminLearnerPanelComponent,
     AdminLearnerListComponent,
+    InventoryPanelComponent,
+    InventoryListComponent,
   ],
   imports: [
     NgbModule,

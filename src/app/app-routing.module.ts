@@ -19,6 +19,8 @@ import { CoursesPanelComponent } from './components/dashboard/dashboard-componen
 import { TutorInfoPanelComponent } from './components/dashboard/dashboard-components/tutor-info/tutor-info-panel/tutor-info-panel.component';
 import { AdminLearnerPanelComponent } from './components/dashboard/dashboard-components/admin-learner/admin-learner-panel/admin-learner-panel.component';
 import { AdminLearnerListComponent } from './components/dashboard/dashboard-components/admin-learner/admin-learner-list/admin-learner-list.component';
+import { InventoryPanelComponent } from './components/dashboard/dashboard-components/inventory/inventory-panel/inventory-panel.component';
+import { InventoryListComponent } from './components/dashboard/dashboard-components/inventory/inventory-list/inventory-list.component';
 
 
 const routes: Routes = [
@@ -66,6 +68,12 @@ const routes: Routes = [
         children:[
           {path: 'list', component: AdminLearnerListComponent}
       ]},
+      // Inventory Area
+      { path: 'inventory', component: InventoryPanelComponent, 
+        children:[
+          {path:'list', component: InventoryListComponent}
+        ]},
+      // Below to be rearranged
       { path: 'learnerRegistration', component: LearnerRegistrationFormComponent },
       { path: 'timePicker', component: TimePickerComponent },
     ]
