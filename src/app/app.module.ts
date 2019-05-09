@@ -46,6 +46,9 @@ import { SessionsPanelComponent } from './components/dashboard/dashboard-compone
 import { SessionsListViewComponent } from './components/dashboard/dashboard-components/sessions/sessions-list-view/sessions-list-view.component';
 import { SessionsCalendarViewComponent } from './components/dashboard/dashboard-components/sessions/sessions-calendar-view/sessions-calendar-view.component';
 import { SessionDetailModalComponent } from './components/dashboard/dashboard-components/sessions/session-detail-modal/session-detail-modal.component';
+import { TutorInfoPanelComponent } from './components/dashboard/dashboard-components/tutor-info/tutor-info-panel/tutor-info-panel.component';
+import { AdminLearnerPanelComponent } from './components/dashboard/dashboard-components/admin-learner/admin-learner-panel/admin-learner-panel.component';
+import { AdminLearnerListComponent } from './components/dashboard/dashboard-components/admin-learner/admin-learner-list/admin-learner-list.component';
 
 
 
@@ -82,7 +85,10 @@ import { SessionDetailModalComponent } from './components/dashboard/dashboard-co
     SessionsPanelComponent,
     SessionsListViewComponent,
     SessionsCalendarViewComponent,
-    SessionDetailModalComponent
+    SessionDetailModalComponent,
+    TutorInfoPanelComponent,
+    AdminLearnerPanelComponent,
+    AdminLearnerListComponent,
   ],
   imports: [
     NgbModule,

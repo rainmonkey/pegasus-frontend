@@ -12,12 +12,18 @@ import { AdminLearnerPaymentOtherComponent } from './components/dashboard/dashbo
 import { AdminLearnerPaymentSussessComponent } from './components/dashboard/dashboard-components/admin-learner-payment/admin-learner-payment-details/admin-learner-payment-sussess/admin-learner-payment-sussess.component';
 import { TutorInfoComponent } from './components/dashboard/dashboard-components/tutor-info/tutor-info-list/tutor-info.component';
 import { CoursesListComponent } from './components/dashboard/dashboard-components/courses/courses-list/courses-list.component'
+import { SessionsListViewComponent } from './components/dashboard/dashboard-components/sessions/sessions-list-view/sessions-list-view.component';
+import { SessionsPanelComponent } from './components/dashboard/dashboard-components/sessions/sessions-panel/sessions-panel.component';
+import { SessionsCalendarViewComponent } from './components/dashboard/dashboard-components/sessions/sessions-calendar-view/sessions-calendar-view.component';
+import { CoursesPanelComponent } from './components/dashboard/dashboard-components/courses/courses-panel/courses-panel.component';
+import { TutorInfoPanelComponent } from './components/dashboard/dashboard-components/tutor-info/tutor-info-panel/tutor-info-panel.component';
+import { AdminLearnerPanelComponent } from './components/dashboard/dashboard-components/admin-learner/admin-learner-panel/admin-learner-panel.component';
+import { AdminLearnerListComponent } from './components/dashboard/dashboard-components/admin-learner/admin-learner-list/admin-learner-list.component';
 
 
 const routes: Routes = [
   { path: '',
-    component: HomepageComponent,
-    canActivate: [DashboardRestrictGuard],
+    component: HomepageComponent, canActivate: [DashboardRestrictGuard],
     children: [
       // Payments Area
       { path: 'payment/invoice', pathMatch: 'prefix', component: AdminLearnerPaymentPanelComponent,
@@ -34,16 +40,34 @@ const routes: Routes = [
       },
       { path: 'payment/registration', pathMatch: 'prefix', component: AdminLearnerPaymentPanelComponent,
         children: [
-          { path: 'success', component: AdminLearnerPaymentSussessComponent, },
-          { path: ':id', component: AdminLearnerPaymentRegistrationComponent, },
+          { path: 'success', component: AdminLearnerPaymentSussessComponent },
+          { path: ':id', component: AdminLearnerPaymentRegistrationComponent },
         ]
       },
       { path: 'payment/other', component: AdminLearnerPaymentOtherComponent },
-      // End Payment Area
-      { path: 'tutor', component: TutorInfoComponent },
+      // Tutor Area
+      { path: 'tutor', component: TutorInfoPanelComponent,
+        children:[
+          { path: 'list', component: TutorInfoComponent }
+        ]},
+      // Sessions Area
+      { path: 'sessions', component: SessionsPanelComponent, 
+        children:[
+          {path: 'list', component: SessionsListViewComponent},
+          {path: 'calendar', component: SessionsCalendarViewComponent}
+      ]},
+      // Courses Area
+      { path: 'courses', component: CoursesPanelComponent, 
+        children:[
+        { path: 'list', component: CoursesListComponent}
+      ]},
+      // Learner Area
+      { path: 'learner', component:AdminLearnerPanelComponent,
+        children:[
+          {path: 'list', component: AdminLearnerListComponent}
+      ]},
       { path: 'learnerRegistration', component: LearnerRegistrationFormComponent },
       { path: 'timePicker', component: TimePickerComponent },
-      { path: 'courseslist', component: CoursesListComponent}
     ]
   },
   { path: 'login', component: LoginComponent },

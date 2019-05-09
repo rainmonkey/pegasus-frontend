@@ -293,7 +293,7 @@ export class AdminLearnerPaymentProductsComponent implements OnInit {
       });
     });
   }
-  // search new users patch new data
+  // search new users patch new data (3)
   patchProd() {
     this.productList.controls.forEach((item, index) => {
       this.productList.removeAt(index);
@@ -310,7 +310,7 @@ export class AdminLearnerPaymentProductsComponent implements OnInit {
     this.errorAlert = false;
   }
 
-  // reload
+  // reload   (1)
   ngOnInit() {
     this.categories.push(this.catItem);
     this.prodMuti.push(this.prods);
@@ -320,7 +320,7 @@ export class AdminLearnerPaymentProductsComponent implements OnInit {
       this.learnerId = parseInt(obs.get("id"));
       this.patchProd();
     });
-
+    //(2)
     this.productsListService.getProdType().subscribe(types => {
       this.typeItem = types["Data"];
       this.types.push(this.typeItem);
