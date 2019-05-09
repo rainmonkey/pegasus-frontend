@@ -46,7 +46,7 @@ import { SessionsPanelComponent } from './components/dashboard/dashboard-compone
 import { SessionsListViewComponent } from './components/dashboard/dashboard-components/sessions/sessions-list-view/sessions-list-view.component';
 import { SessionsCalendarViewComponent } from './components/dashboard/dashboard-components/sessions/sessions-calendar-view/sessions-calendar-view.component';
 import { SessionDetailModalComponent } from './components/dashboard/dashboard-components/sessions/session-detail-modal/session-detail-modal.component';
-
+import { InvoiceDataEntryComponent } from './components/dashboard/dashboard-components/invoice-data-entry/invoice-data-entry.component';
 
 
 
@@ -82,7 +82,8 @@ import { SessionDetailModalComponent } from './components/dashboard/dashboard-co
     SessionsPanelComponent,
     SessionsListViewComponent,
     SessionsCalendarViewComponent,
-    SessionDetailModalComponent
+    SessionDetailModalComponent,
+    InvoiceDataEntryComponent
   ],
   imports: [
     NgbModule,
