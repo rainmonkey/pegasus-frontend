@@ -1,5 +1,8 @@
 <div class="container">
-    <hr>
+  <hr>
+    <div class="row justify-content-center">
+        <div class="col-md-10 container-fluid">
+
     <form class='mb-2 ml-2 mr-2' [formGroup]='productListForm' (keydown.enter)="$event.preventDefault()">
 
         <div class='row justify-content-start'>
@@ -10,17 +13,17 @@
                     <option value=3>Online Transfer</option>
                     <option value=1>Cash</option>
                   </select>
-                <small [class.d-none]="!showErrMsg" class="text-danger">You must select the payment type</small>
+                <small [class.d-none]="paymentMethod.valid || paymentMethod.untouched" class="text-danger">You must select the payment type</small>
             </div>
             <p>Payment method</p>
-            <input type="number" min="0" value={{sellPrice}} class="form-control col-1 ml-2 mr-2" disabled> Amount ($)
+            <input type="number" min="0" value={{sellPrice}} class="form-control col-1 ml-2 mr-2" disabled>Total Amount ($)
         </div>
         <div formArrayName="productList">
             <div *ngFor="let li of productList.controls; let j = index">
                 <div [formGroupName]='j'>
                     <div class="d-flex justify-content-start">
-                        <button class="btn btn-outline-success btn-sm m-1" style="border-radius:30%" (click)='addOption()'>+</button>
-                        <button *ngIf="productList.controls.length !== 1" style="border-radius:30%" class="btn btn-outline-danger btn-sm m-1" (click)='removeOption(j)'>-</button>
+                        <button class="btn btn-outline-success btn-sm m-1" style="border-radius:30%" (click)='addOption()'>Add More Selection</button>
+                        <button *ngIf="productList.controls.length !== 1" style="border-radius:30%" class="btn btn-outline-danger btn-sm m-1" (click)='removeOption(j)'>Delete This Selection</button>
                     </div>
                     <h5>Products Selling To Customer Section {{j+1}}</h5>
                     <div class="row justify-content-start">
@@ -56,11 +59,11 @@
                     <div class='row justify-content-start'>
 
                         <div class="form-group col-3">
-                            <input type="radio" name='discount' (click)='checkRateClick(j)' value='rate' checked='true'><label>Discount by Percentage (%)</label>
+                            <input type="radio" name='discount' (click)='checkRateClick(j)' value='rate' checked='true'><label>Percentage Discount</label>
                             <input type="number" min="0" max="100" value='100' class="form-control" formControlName="rate" (change)='changeProductPrice()' onkeypress='return (/[\d]/.test(String.fromCharCode(event.keyCode)))'>
                         </div>
                         <div class="form-group col-3">
-                            <input type="radio" name='discount' (click)='checkMoneyClick(j)' value='money'><label>Discount by Money ($)</label>
+                            <input type="radio" name='discount' (click)='checkMoneyClick(j)' value='money'><label>Money Discount($)</label>
                             <input type="number" min="0" value='0' class="form-control" formControlName="subMoney" (change)='changeProductPrice()' onkeypress='return (/[\d]/.test(String.fromCharCode(event.keyCode)))'>
                         </div>
                         <div class="form-group col-2">
@@ -74,8 +77,8 @@
         </div>
         <!-- open method for product modal-->
         <button class="btn btn-primary" (click)="validMethod(contentProd)">Send this Payment</button>
-        <small class="text-danger" *ngIf="paymentMethod.invalid && paymentMethod.touched">Please select the payment method on this transacion</small> <br>
-        <small class='text-danger' *ngIf='showErrMsg'>You have to select all required fields</small>
+        <small class="text-danger m-2" *ngIf="paymentMethod.invalid && paymentMethod.touched">Please select the payment method on this transacion</small> <br>
+        <small class='text-danger m-2' *ngIf='showErrMsg'>You have to select all required fields</small>
         <div class='row justify-content-md-center'>
             <div class="col-md-10">
                 <ng-template #contentProd let-modal>
@@ -102,6 +105,8 @@
             </div>
         </div>
     </form>
+  </div>
+</div>
 </div>
 <ngb-alert *ngIf='successAlert' type="success" (close)="closeSucc()">Your Payment Has Been Made</ngb-alert>
 <ngb-alert *ngIf='errorAlert' type="danger" (close)="closeErro()">{{ errorMsg.ErrorCode }}</ngb-alert>

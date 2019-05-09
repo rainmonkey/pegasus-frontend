@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { PaymentService } from 'src/app/services/http/payment.service';
-import { ActivatedRoute, ParamMap } from '@angular/router';
+import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 @Component({
   selector: 'app-admin-learner-payment-registration',
   templateUrl: './admin-learner-payment-registration.component.html',
@@ -13,16 +13,18 @@ export class AdminLearnerPaymentRegistrationComponent implements OnInit {
   public paymentTitle;
   public paymentAmount;
   public learnerId;
+  public errorMsg;
   constructor(
     private fb: FormBuilder,
     private paymentRegiService: PaymentService,
     private activatedRouter: ActivatedRoute,
+    private router: Router
     ) { }
 
   // other fb
   regiPayment = this.fb.group({
     title: ['Registration Fee', Validators.required],
-    amount: ['', Validators.required]
+    amount: [20, Validators.required]
   });
   get title() {
     return this.regiPayment.get('title');
@@ -51,10 +53,12 @@ export class AdminLearnerPaymentRegistrationComponent implements OnInit {
     this.paymentRegiService.postRegiPaymentService(this.regiPaymentObj).subscribe(
       response => {
         console.log('Success!', response);
+        this.router.navigate(['./success'], {relativeTo: this.activatedRouter});
       },
       error => {
-        console.error('Error!', error);
-        alert(`Can not access server ${error}`);
+        this.errorMsg = JSON.parse(error.error)
+        console.error('Error!', this.errorMsg.ErrorCode);
+        alert(`Can not access server ${this.errorMsg.ErrorCode}`);
       }
     );
   }

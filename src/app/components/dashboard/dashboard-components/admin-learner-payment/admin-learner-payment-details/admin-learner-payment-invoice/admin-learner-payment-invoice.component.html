@@ -6,8 +6,8 @@
                 <hr>
                 <div id="collapseInvoiceProduct">
                     <!-- tabset -->
-                    <ngb-tabset *ngIf="array.length > 1">
-                        <ngb-tab *ngFor="let item of dataInvoice; let j = index" [title]=array (click)='userTab(j)'>
+                    <ngb-tabset *ngIf="arrayInv.length > 1">
+                        <ngb-tab *ngFor="let item of dataInvoice; let j = index" [title]=j+1 (click)='userTab(j)'>
                             <ng-template ngbTabContent>
                                 <!-- invoice form in tabset -->
                                 <div class='row justify-content-between'>
@@ -79,7 +79,7 @@
                         </ngb-tab>
                     </ngb-tabset>
                     <!-- invoice form out tabset-->
-                    <div *ngIf="array.length == 1">
+                    <div *ngIf="arrayInv.length == 1">
                         <div class='row justify-content-between' *ngFor="let item of dataInvoice; let j = index" [formGroup]="invoiceForm">
                             <div class="col-10">
                                 <h5>Invoice</h5>

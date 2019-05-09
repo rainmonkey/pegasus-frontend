@@ -13,7 +13,7 @@ export class PaymentService {
   constructor(private http: HttpClient) { }
 
   getInvoice(id): Observable<any[]> {
-    return this.http.get<any[]>(this.baseUrl + 'payment/invoice/' + id);
+    return this.http.get<any[]>(this.baseUrl + 'invoice/' + id);
   }
   addFund(fund) {
     return this.http.post(this.baseUrl + 'payment/payInvoice', fund, { responseType: 'text' })

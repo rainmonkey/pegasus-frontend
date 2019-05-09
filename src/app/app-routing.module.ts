@@ -22,6 +22,7 @@ import { AdminLearnerListComponent } from './components/dashboard/dashboard-comp
 import { InventoryPanelComponent } from './components/dashboard/dashboard-components/inventory/inventory-panel/inventory-panel.component';
 import { InventoryListComponent } from './components/dashboard/dashboard-components/inventory/inventory-list/inventory-list.component';
 
+import { InvoiceDataEntryComponent } from './components/dashboard/dashboard-components/invoice-data-entry/invoice-data-entry-list/invoice-data-entry.component';
 
 const routes: Routes = [
   { path: '',
@@ -76,6 +77,17 @@ const routes: Routes = [
       // Below to be rearranged
       { path: 'learnerRegistration', component: LearnerRegistrationFormComponent },
       { path: 'timePicker', component: TimePickerComponent },
+      { path: 'payment/other', pathMatch: 'prefix', component: AdminLearnerPaymentOtherComponent,
+        children: [
+          { path: 'success', component: AdminLearnerPaymentSussessComponent, },
+        ]
+      },
+      // End Payment Area
+      { path: 'tutor', component: TutorInfoComponent },
+      { path: 'learnerRegistration', component: LearnerRegistrationFormComponent },
+      { path: 'timePicker', component: TimePickerComponent },
+      { path: 'courseslist', component: CoursesListComponent},
+      { path: 'invoicedataentry', component: InvoiceDataEntryComponent }
     ]
   },
   { path: 'login', component: LoginComponent },

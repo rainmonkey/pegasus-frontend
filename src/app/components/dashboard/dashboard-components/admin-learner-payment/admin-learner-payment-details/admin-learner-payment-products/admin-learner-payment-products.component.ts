@@ -126,7 +126,7 @@ export class AdminLearnerPaymentProductsComponent implements OnInit {
               error => {
                 this.errorMsg = JSON.parse(error.error);
                 console.log("Error!", this.errorMsg.ErrorCode);
-                this.errorAlert = false;
+                this.errorAlert = true;
               }
             );
         },
@@ -158,7 +158,7 @@ export class AdminLearnerPaymentProductsComponent implements OnInit {
   // select product
   get productListGroup(): FormGroup {
     return this.fb.group({
-      category: [null,[Validators.required,Validators.pattern('^[0-9]*$')]],
+      category: [null,[Validators.required,Validators.pattern('^[0-9]*$')] ],
       type: [null,[Validators.required,Validators.pattern('^[0-9]*$')]],
       product: [null,[Validators.required,Validators.pattern('^[0-9]*$')]],
       productName: [""],
