@@ -20,7 +20,6 @@ export class AdminLearnerPaymentInvoiceComponent implements OnInit {
   public postPayment: ILearnerPay;
   // tabset
   public errorMsg;
-  public array = [];
   public successAlert = false;
   public errorAlert = false;
   public errMsgM = false;
@@ -147,10 +146,6 @@ export class AdminLearnerPaymentInvoiceComponent implements OnInit {
         .subscribe(dataInvoice => {
           // return console.log(dataInvoice)
           this.dataInvoice = dataInvoice;
-          this.array = [];
-          this.dataInvoice.forEach((item, index) => {
-            this.array.push(index);
-          });
           this.invoiceForm.patchValue({
             owing : Math.abs(this.dataInvoice[0].OwingFee)
           });

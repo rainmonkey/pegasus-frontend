@@ -15,7 +15,7 @@ export class NgbootstraptableService {
 
   /*********************************************
     sorting method
-    receive 2 parameters: 
+    receive 2 parameters:
       listToOrder --> object list to be sorted
       orderBy --> which column to order (eg: FirstName,LastName ....) !!★!! orderBy must as same as the obj name in listToOrder
   **********************************************/
@@ -27,7 +27,7 @@ export class NgbootstraptableService {
   /*********************************************
     searching method
     receice 3 parameters:
-      listToSearch --> in whitch list to search
+      listToSearch --> in which list to search
       searchBy --> search in which columns (eg: FirstName,LastName ....) !!★!! searchBy must as same as the obj name in listToSearch
       searchStr --> searching string
   **********************************************/
@@ -66,7 +66,7 @@ export class NgbootstraptableService {
   }
 
   /*
-    algorithm of sorting, DO NOT alter anything in this method  
+    algorithm of sorting, DO NOT alter anything in this method
   */
   compare(orderBy): any {
     let that = this;

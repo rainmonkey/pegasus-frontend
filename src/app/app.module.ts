@@ -46,8 +46,8 @@ import { SessionsPanelComponent } from './components/dashboard/dashboard-compone
 import { SessionsListViewComponent } from './components/dashboard/dashboard-components/sessions/sessions-list-view/sessions-list-view.component';
 import { SessionsCalendarViewComponent } from './components/dashboard/dashboard-components/sessions/sessions-calendar-view/sessions-calendar-view.component';
 import { SessionDetailModalComponent } from './components/dashboard/dashboard-components/sessions/session-detail-modal/session-detail-modal.component';
-import { InvoiceDataEntryComponent } from './components/dashboard/dashboard-components/invoice-data-entry/invoice-data-entry.component';
-
+import { InvoiceDataEntryComponent } from './components/dashboard/dashboard-components/invoice-data-entry/invoice-data-entry-list/invoice-data-entry.component';
+import { InvoiceDataEntryModalComponent } from './components/dashboard/dashboard-components/invoice-data-entry/invoice-data-entry-modal/invoice-data-entry-modal.component';
 
 
 @NgModule({
@@ -83,7 +83,8 @@ import { InvoiceDataEntryComponent } from './components/dashboard/dashboard-comp
     SessionsListViewComponent,
     SessionsCalendarViewComponent,
     SessionDetailModalComponent,
-    InvoiceDataEntryComponent
+    InvoiceDataEntryComponent,
+    InvoiceDataEntryModalComponent
   ],
   imports: [
     NgbModule,
@@ -102,7 +103,8 @@ import { InvoiceDataEntryComponent } from './components/dashboard/dashboard-comp
   ],
   entryComponents:[
     TutorEditModalComponent,
-    ModalDeleteComponent
+    ModalDeleteComponent,
+    InvoiceDataEntryModalComponent,
   ],
   bootstrap: [AppComponent]
 })

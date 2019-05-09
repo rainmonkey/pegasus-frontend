@@ -1,0 +1,18 @@
+<!--modal header-->
+<div class="modal-header">
+  <h4 class="modal-title">Invoice Editing</h4>
+  <button type="button" class='btn btn-sm btn-info tl_mu_btn' aria-label="Close" (click)="activeModal.dismiss('Cross click')">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+
+<!--modal body-->
+<div class='modal-body'>
+ hello
+</div>
+
+<!--modal footer-->
+<div class='modal-footer'>
+  <button type='button' class='btn btn-outline-dark' (click)='sendMail()' id='save'>Sent Email</button>
+  <button type="button" class="btn btn-outline-dark" (click)="activeModal.close('Close click')">Close</button>
+</div>

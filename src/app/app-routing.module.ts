@@ -11,8 +11,8 @@ import { AdminLearnerPaymentRegistrationComponent } from './components/dashboard
 import { AdminLearnerPaymentOtherComponent } from './components/dashboard/dashboard-components/admin-learner-payment/admin-learner-payment-details/admin-learner-payment-other/admin-learner-payment-other.component';
 import { AdminLearnerPaymentSussessComponent } from './components/dashboard/dashboard-components/admin-learner-payment/admin-learner-payment-details/admin-learner-payment-sussess/admin-learner-payment-sussess.component';
 import { TutorInfoComponent } from './components/dashboard/dashboard-components/tutor-info/tutor-info-list/tutor-info.component';
-import { CoursesListComponent } from './components/dashboard/dashboard-components/courses/courses-list/courses-list.component'
-
+import { CoursesListComponent } from './components/dashboard/dashboard-components/courses/courses-list/courses-list.component';
+import { InvoiceDataEntryComponent } from './components/dashboard/dashboard-components/invoice-data-entry/invoice-data-entry-list/invoice-data-entry.component';
 
 const routes: Routes = [
   { path: '',
@@ -47,7 +47,8 @@ const routes: Routes = [
       { path: 'tutor', component: TutorInfoComponent },
       { path: 'learnerRegistration', component: LearnerRegistrationFormComponent },
       { path: 'timePicker', component: TimePickerComponent },
-      { path: 'courseslist', component: CoursesListComponent}
+      { path: 'courseslist', component: CoursesListComponent},
+      { path: 'invoicedataentry', component: InvoiceDataEntryComponent }
     ]
   },
   { path: 'login', component: LoginComponent },
