@@ -3,13 +3,14 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { NgbootstraptableService } from 'src/app/services/others/ngbootstraptable.service';
 import { LearnersService } from '../../../../../services/http/learners.service';
 import { TeachersService } from '../../../../../services/http/teachers.service';
-import { InvoiceDataEntryModalComponent } from '../invoice-data-entry-modal/invoice-data-entry-modal.component';
+import { AdminInvoiceEditModalComponent } from '../admin-invoice-edit-modal/admin-invoice-edit-modal.component';
+
 @Component({
-  selector: 'app-invoice-data-entry',
-  templateUrl: './invoice-data-entry.component.html',
-  styleUrls: ['./invoice-data-entry.component.css']
+  selector: 'app-admin-invoice-list',
+  templateUrl: './admin-invoice-list.component.html',
+  styleUrls: ['./admin-invoice-list.component.css']
 })
-export class InvoiceDataEntryComponent implements OnInit {
+export class AdminInvoiceListComponent implements OnInit {
   public learnerList: any;
   public learnerListLength: number;
   public temLearnerList: any; //save the original teacherList
@@ -33,7 +34,7 @@ export class InvoiceDataEntryComponent implements OnInit {
   }
 
   open(){
-    const modalRef = this.modalService.open(InvoiceDataEntryModalComponent, { size: 'lg' });
+    const modalRef = this.modalService.open(AdminInvoiceEditModalComponent, { size: 'lg' });
   }
 
   getData() {
@@ -67,6 +68,4 @@ export class InvoiceDataEntryComponent implements OnInit {
     this.learnerList = this.ngTable.searching(this.learnerList,titlesToSearch,searchStr);
     this.learnerListLength = this.learnerList.length;
   }
-
-
 }

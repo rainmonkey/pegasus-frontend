@@ -4,51 +4,67 @@ import { HomepageComponent } from './components/dashboard/general/homepage/homep
 import { TimePickerComponent } from './components/dashboard/dashboard-components/time-picker/time-picker.component';
 import { LearnerRegistrationFormComponent } from './components/dashboard/dashboard-components/learner-registration/learner-registration-form/learner-registration-form.component';
 import { DashboardRestrictGuard } from './guards/dashboard-restrict.guard';
-import { AdminLearnerPaymentPanelComponent } from './components/dashboard/dashboard-components/admin-learner-payment/admin-learner-payment-panel/admin-learner-payment-panel.component';
-import { AdminLearnerPaymentInvoiceComponent } from './components/dashboard/dashboard-components/admin-learner-payment/admin-learner-payment-details/admin-learner-payment-invoice/admin-learner-payment-invoice.component';
-import { AdminLearnerPaymentProductsComponent } from './components/dashboard/dashboard-components/admin-learner-payment/admin-learner-payment-details/admin-learner-payment-products/admin-learner-payment-products.component';
-import { AdminLearnerPaymentRegistrationComponent } from './components/dashboard/dashboard-components/admin-learner-payment/admin-learner-payment-details/admin-learner-payment-registration/admin-learner-payment-registration.component';
-import { AdminLearnerPaymentOtherComponent } from './components/dashboard/dashboard-components/admin-learner-payment/admin-learner-payment-details/admin-learner-payment-other/admin-learner-payment-other.component';
-import { AdminLearnerPaymentSussessComponent } from './components/dashboard/dashboard-components/admin-learner-payment/admin-learner-payment-details/admin-learner-payment-sussess/admin-learner-payment-sussess.component';
+import { AdminLearnerPaymentPanelComponent } from './components/dashboard/dashboard-components/admin-payment/admin-learner-payment-panel/admin-learner-payment-panel.component';
+import { AdminLearnerPaymentInvoiceComponent } from './components/dashboard/dashboard-components/admin-payment/admin-learner-payment-invoice/admin-learner-payment-invoice.component';
+import { AdminLearnerPaymentProductsComponent } from './components/dashboard/dashboard-components/admin-payment/admin-learner-payment-products/admin-learner-payment-products.component';
+import { AdminLearnerPaymentRegistrationComponent } from './components/dashboard/dashboard-components/admin-payment/admin-learner-payment-registration/admin-learner-payment-registration.component';
+import { AdminLearnerPaymentOtherComponent } from './components/dashboard/dashboard-components/admin-payment/admin-learner-payment-other/admin-learner-payment-other.component';
+import { AdminLearnerPaymentSuccessComponent } from './components/dashboard/dashboard-components/admin-payment/admin-learner-payment-success/admin-learner-payment-success.component';
 import { TutorInfoComponent } from './components/dashboard/dashboard-components/tutor-info/tutor-info-list/tutor-info.component';
 import { CoursesListComponent } from './components/dashboard/dashboard-components/courses/courses-list/courses-list.component'
 import { SessionsListViewComponent } from './components/dashboard/dashboard-components/sessions/sessions-list-view/sessions-list-view.component';
 import { SessionsPanelComponent } from './components/dashboard/dashboard-components/sessions/sessions-panel/sessions-panel.component';
-import { SessionsCalendarViewComponent } from './components/dashboard/dashboard-components/sessions/sessions-calendar-view/sessions-calendar-view.component';
 import { CoursesPanelComponent } from './components/dashboard/dashboard-components/courses/courses-panel/courses-panel.component';
 import { TutorInfoPanelComponent } from './components/dashboard/dashboard-components/tutor-info/tutor-info-panel/tutor-info-panel.component';
 import { AdminLearnerPanelComponent } from './components/dashboard/dashboard-components/admin-learner/admin-learner-panel/admin-learner-panel.component';
 import { AdminLearnerListComponent } from './components/dashboard/dashboard-components/admin-learner/admin-learner-list/admin-learner-list.component';
 import { InventoryPanelComponent } from './components/dashboard/dashboard-components/inventory/inventory-panel/inventory-panel.component';
 import { InventoryListComponent } from './components/dashboard/dashboard-components/inventory/inventory-list/inventory-list.component';
-import { InvoiceDataEntryComponent } from './components/dashboard/dashboard-components/invoice-data-entry/invoice-data-entry-list/invoice-data-entry.component';
+import { PayrollPanelComponent } from './components/dashboard/dashboard-components/admin-payroll/payroll-panel/payroll-panel.component';
+import { PayrollListComponent } from './components/dashboard/dashboard-components/admin-payroll/payroll-list/payroll-list.component';
+import { AdminInvoiceListComponent } from './components/dashboard/dashboard-components/admin-transactions/admin-invoice-list/admin-invoice-list.component';
+import { TransactionsPanelComponent } from './components/dashboard/dashboard-components/admin-transactions/transactions-panel/transactions-panel.component';
+import { AdminPaymentListComponent } from './components/dashboard/dashboard-components/admin-transactions/admin-payment-list/admin-payment-list.component';
+import { AdminSalesListComponent } from './components/dashboard/dashboard-components/admin-transactions/admin-sales-list/admin-sales-list.component';
+import { SessionsCalendarViewAdminComponent } from './components/dashboard/dashboard-components/sessions/sessions-calendar-view-admin/sessions-calendar-view-admin.component';
+import { SessionsCalendarViewTutorComponent } from './components/dashboard/dashboard-components/sessions/sessions-calendar-view-tutor/sessions-calendar-view-tutor.component';
+
 
 const routes: Routes = [
-  { path: '',
-    component: HomepageComponent, canActivate: [DashboardRestrictGuard],
+  { path: '', component: HomepageComponent, canActivate: [DashboardRestrictGuard],
     children: [
-      // Payments Area
-      { path: 'payment/invoice', pathMatch: 'prefix', component: AdminLearnerPaymentPanelComponent,
+      // Payment Area
+      { path: 'payment/invoice', component: AdminLearnerPaymentPanelComponent, 
+        children:[
+          { path: 'pay/:id', component: AdminLearnerPaymentInvoiceComponent },
+          { path: 'pay/success', component: AdminLearnerPaymentSuccessComponent },
+      ]},
+      { path: 'payment/product', pathMatch: 'prefix', component: AdminLearnerPaymentPanelComponent,
         children: [
-          { path: 'success', component: AdminLearnerPaymentSussessComponent, },
-          { path: ':id', component: AdminLearnerPaymentInvoiceComponent },
-        ]
-      },
-      { path: 'payment/products', pathMatch: 'prefix', component: AdminLearnerPaymentPanelComponent,
-        children: [
-          { path: 'success', component: AdminLearnerPaymentSussessComponent, },
-          { path: ':id', component: AdminLearnerPaymentProductsComponent, },
+          { path: 'success', component: AdminLearnerPaymentSuccessComponent },
+          { path: ':id', component: AdminLearnerPaymentProductsComponent },
         ]
       },
       { path: 'payment/registration', pathMatch: 'prefix', component: AdminLearnerPaymentPanelComponent,
         children: [
-          { path: 'success', component: AdminLearnerPaymentSussessComponent },
+          { path: 'success', component: AdminLearnerPaymentSuccessComponent },
           { path: ':id', component: AdminLearnerPaymentRegistrationComponent },
         ]
       },
-      { path: 'payment/other', component: AdminLearnerPaymentOtherComponent },
+      { path: 'payment/other', pathMatch: 'prefix', component: AdminLearnerPaymentOtherComponent,
+        children: [
+          { path: 'success', component: AdminLearnerPaymentSuccessComponent },
+        ]
+      },
+      // Transaction Area
+      { path: 'transaction', component: TransactionsPanelComponent,
+        children: [
+          { path: 'invoices', component: AdminInvoiceListComponent},
+          { path: 'payments', component: AdminPaymentListComponent},
+          { path: 'sales', component: AdminSalesListComponent}
+        ]},
       // Tutor Area
-      { path: 'tutor', component: TutorInfoPanelComponent,
+      { path: 'tutors', component: TutorInfoPanelComponent,
         children:[
           { path: 'list', component: TutorInfoComponent }
         ]},
@@ -56,7 +72,8 @@ const routes: Routes = [
       { path: 'sessions', component: SessionsPanelComponent, 
         children:[
           {path: 'list', component: SessionsListViewComponent},
-          {path: 'calendar', component: SessionsCalendarViewComponent}
+          {path: 'calendar/admin', component: SessionsCalendarViewAdminComponent},
+          {path: 'calendar/tutor', component: SessionsCalendarViewTutorComponent}
       ]},
       // Courses Area
       { path: 'courses', component: CoursesPanelComponent, 
@@ -66,23 +83,22 @@ const routes: Routes = [
       // Learner Area
       { path: 'learner', component:AdminLearnerPanelComponent,
         children:[
-          {path: 'list', component: AdminLearnerListComponent}
+          {path: 'list', component: AdminLearnerListComponent},
+          {path: 'registration', component: LearnerRegistrationFormComponent}
       ]},
       // Inventory Area
       { path: 'inventory', component: InventoryPanelComponent, 
         children:[
           {path:'list', component: InventoryListComponent}
-        ]},
-      // Below to be rearranged
-      { path: 'learnerRegistration', component: LearnerRegistrationFormComponent },
-      { path: 'timePicker', component: TimePickerComponent },
-      { path: 'payment/other', pathMatch: 'prefix', component: AdminLearnerPaymentOtherComponent,
-        children: [
-          { path: 'success', component: AdminLearnerPaymentSussessComponent },
+      ]},
+      // Payroll Area
+      { path: 'payroll' , component: PayrollPanelComponent, 
+        children:[
+          {path:'list', component:PayrollListComponent}
         ]
       },
-      // End Payment Area
-      { path: 'invoicedataentry', component: InvoiceDataEntryComponent }
+      // Below to be rearranged
+      { path: 'timePicker', component: TimePickerComponent },
     ]
   },
   { path: 'login', component: LoginComponent },

@@ -3,21 +3,21 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { DebugElement } from '@angular/core';
 
-import { AdminLearnerPaymentSussessComponent } from './admin-learner-payment-sussess.component';
+import { AdminInvoiceEditModalComponent } from './admin-invoice-edit-modal.component';
 
-describe('AdminLearnerPaymentSussessComponent', () => {
-  let component: AdminLearnerPaymentSussessComponent;
-  let fixture: ComponentFixture<AdminLearnerPaymentSussessComponent>;
+describe('AdminInvoiceEditModalComponent', () => {
+  let component: AdminInvoiceEditModalComponent;
+  let fixture: ComponentFixture<AdminInvoiceEditModalComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ AdminLearnerPaymentSussessComponent ]
+      declarations: [ AdminInvoiceEditModalComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(AdminLearnerPaymentSussessComponent);
+    fixture = TestBed.createComponent(AdminInvoiceEditModalComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
