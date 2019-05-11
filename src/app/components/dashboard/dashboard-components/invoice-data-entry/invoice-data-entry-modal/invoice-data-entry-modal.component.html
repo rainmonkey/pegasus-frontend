@@ -1,66 +1,180 @@
-
 <!--modal header-->
 <div class="modal-header">
   <h4 class="modal-title">Invoice Editing</h4>
-  <button type="button" class='btn btn-sm btn-info tl_mu_btn' aria-label="Close" (click)="activeModal.dismiss('Cross click')">
+  <button
+    type="button"
+    class="btn btn-sm btn-info tl_mu_btn"
+    aria-label="Close"
+    (click)="activeModal.dismiss('Cross click')"
+  >
     <span aria-hidden="true">&times;</span>
   </button>
 </div>
 
 <!--modal body-->
-<div class='modal-body'>
-  <div>
-  <h5>Invoice</h5>
-  <input type="number">(Lesson quantity)
-  <p>Lessons of <input type="text"> (CourseName) from the Date <input type="date"> (BeginDate)</p>
-  <p>Concert for term 2, 2019</p>
-  <p>Lesson Note term 2, 2019</p>
+<div class="modal-body">
+  <form [formGroup]="invoiceEditForm" class="justify-content-between">
+    <div class="form-group row">
+      <div class="col-5">
+        <div>
+          <label> Invoice No.</label>
+          <input class="form-control" type="number" />
+        </div>
+        <div>
+          <label> Number of lessons:</label>
+          <input class="form-control" type="number" />
+          <small>(Lesson quantity)</small>
+        </div>
+      </div>
 
-  <p><input type="text"> : <input type="number"> Other1FeeName:Other1Fee</p>
-  <p><input type="text"> : <input type="number"> Other2FeeName:Other2Fee</p>
-  <p><input type="text"> : <input type="number"> Other3FeeName:Other3Fee</p>
+      <div class="col-5">
+        <div>
+          <label> CoursName:</label> <input class="form-control" type="text" />
+          <small>(CourseName)</small>
+        </div>
+        <div>
+          <label> from the Date:</label>
+          <input class="form-control" type="date" />
+          <small>(BeginDate)</small>
+        </div>
+      </div>
+        <div class="col-5">
+          <label> Concert term and date:</label
+          ><input class="form-control" type="text" /><small
+            >e.g.,concert for term 1, yyyy-dd-mm</small
+          >
+        </div>
+        <div class="col-5">
+          <label> Note term and date:</label>
+          <input class="form-control" type="text" /><small
+            >e.g.,Lesson Note term 1, yyyy-dd-mm</small
+          >
+        </div>
+    </div>
+    <hr>
+    <div class="form-group row">
+      <div class="col-5">
+        <label> Other title 1:</label>
+        <input class="form-control" type="text" /><small
+          >(Other1 Fee title)</small
+        >
+      </div>
+      <div class="col-5">
+        <label> Other Fee 1:</label>
+        <input class="form-control" type="number" /><small>(Other1 Fee)</small>
+      </div>
 
-  <p>Learner Paid:</p> <input type="number">
-  <p>Learner Owing Fee: <input type="number"> OwingFee</p>
-  <div class="row  justify-content-start mt-2" >
-      <h6 class="col-md-3">Learner Add Fund: </h6>
-      <p class="mt-1">$</p>
-      <input type="number"  min="0" onkeypress='return (/[\d]/.test(String.fromCharCode(event.keyCode)))' placeholder="Please enter the amount.." class="form-control col-md-3 ml-2">
-      <div class="col-md-1"></div>
+      <div class="col-5">
+        <label> Other title 2:</label>
+        <input class="form-control" type="text" /><small
+          >(Other2 Fee title)</small
+        >
+      </div>
+      <div class="col-5">
+        <label> Other Fee 2:</label>
+        <input
+          class="form-control"
+          type="number"
+          onkeypress="return (/[\d]/.test(String.fromCharCode(event.keyCode)))"
+        /><small>(Other2 Fee)</small>
+      </div>
+      <div class="col-5">
+        <label> Other title3:</label>
+        <input class="form-control" type="text" /><small
+          >(Other3 Fee title)</small
+        >
+      </div>
+      <div class="col-5">
+        <label> Other Fee 3:</label>
+        <input class="form-control" type="number" /><small>(Other3 Fee)</small>
+      </div>
+      <div class="col-5">
+        <label> Learner Paid:</label>
+        <input class="form-control" type="number" />
+      </div>
+      <div class="col-5">
+        <label> Learner Owing Fee:</label>
+        <input class="form-control" type="number" />
+      </div>
+      <div class="col-5">
+        <label> Lesson Fee:</label> <input class="form-control" type="number" />
+      </div>
+      <div class="col-5">
+        <label> Concert Fee:</label>
+        <input class="form-control" type="number" />
+      </div>
+      <div class="col-5">
+        <label> Note Fee</label> <input class="form-control" type="number" />
+      </div>
+    </div>
+    <hr>
+    <div class="form-group row justify-content-end">
+    <div class="col-5">
+      <label> All Subject in Total:</label>
+      <input class="form-control" type="number" />
+    </div>
+    <div class="col-4">
+      <label> Due Date:</label> <input class="form-control" type="date" />
+    </div>
+    <div class="col-1"></div>
   </div>
-</div>
-<div class="col-2">
-  <h6>Invoice No. <input type="number"> InvoiceNum</h6>
-  <p><input type="number"> LessonFee</p>
-  <p><input type="number"> ConcertFee</p>
-  <p><input type="number"> NoteFee</p>
-  <p>Due Date: <input type="date"> DueDate</p>
-  <h6>All Subject in Total: <input type="number"> TotalFee</h6>
-</div>
+  </form>
 </div>
 
 <!--modal footer-->
-<div class='modal-footer'>
-  <button type='button' class='btn btn-outline-dark' (click)='sendMail(confirmModal)' id='save'>Sent Email</button>
-  <small *ngIf="errMsgM" class="text-danger">Pls select the payment method</small>
-  <br>
-  <small *ngIf="errMsgO" class="text-danger">Pls enter a validate number of the transaction</small>
-  <button type="button" class="btn btn-outline-dark" (click)="activeModal.dismiss('Click click')">Close</button>
+<div class="modal-footer">
+  <button
+    type="button"
+    class="btn btn-outline-dark"
+    (click)="sendMail(confirmModal)"
+    id="save"
+  >
+    Sent Email
+  </button>
+  <small *ngIf="errMsgM" class="text-danger"
+    >Pls select the payment method</small
+  >
+  <br />
+  <small *ngIf="errMsgO" class="text-danger"
+    >Pls enter a validate number of the transaction</small
+  >
+  <button
+    type="button"
+    class="btn btn-outline-dark"
+    (click)="activeModal.dismiss('Click click')"
+  >
+    Close
+  </button>
 </div>
 
 <ng-template #confirmModal let-modal>
   <div class="modal-header m-2">
-      <h4>Please Confirm</h4>
-      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
-<span aria-hidden="true">&times;</span>
-</button>
+    <h4>Please Confirm</h4>
+    <button
+      type="button"
+      class="close"
+      aria-label="Close"
+      (click)="modal.dismiss('Cross click')"
+    >
+      <span aria-hidden="true">&times;</span>
+    </button>
   </div>
   <!-- modal-body -->
+  <div class="container">
   <div class="d-flex justify-content-center">
-    <p>Do you want email this invoice to the customer?</p>
+    <p>Please click send button by sending this email to the customer</p>
   </div>
+</div>
   <div class="modal-footer">
-      <button type="button" class="btn btn-dark" (click)="modal.close('Save')">Confirm</button>
-      <button type="button" class="btn btn-outline-dark" (click)="modal.dismiss('Cross click')">Cancel</button>
+    <button type="button" class="btn btn-dark" (click)="modal.close('Save')">
+      Confirm
+    </button>
+    <button
+      type="button"
+      class="btn btn-outline-dark"
+      (click)="modal.dismiss('Cross click')"
+    >
+      Cancel
+    </button>
   </div>
 </ng-template>
