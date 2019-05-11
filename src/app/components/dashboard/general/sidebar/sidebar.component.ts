@@ -10,36 +10,10 @@ import { UsersService } from 'src/app/services/http/users.service';
   styleUrls: ['./sidebar.component.css']
 })
 export class SidebarComponent implements OnInit {
+
   currentUser: UserDetail;
   users: UserDetail[] = [];
-
-  public navitem: any[] = [
-    {
-      pagename : 'Home',
-      pageicon : 'fa-home',
-      pagelink : 'testcontent'
-    },
-    {
-      pagename : 'Tutors',
-      pageicon : 'fa-chalkboard-teacher',
-      pagelink : 'tutor'
-    },
-    {
-      pagename : 'Registration',
-      pageicon : 'fa-th',
-      pagelink : 'learnerRegistration'
-    },
-    {
-      pagename : 'Payment',
-      pageicon : 'fa-chart-bar',
-      pagelink : 'payment'
-    },
-    {
-      pagename : 'Forms',
-      pageicon : 'fa-clipboard',
-      pagelink : ''
-    }
-  ];
+  navitem: any;
 
   public userDetail =
     {
@@ -53,20 +27,19 @@ export class SidebarComponent implements OnInit {
   constructor(
     private authenticationService: AuthenticationService,
     private userService: UsersService
-  ) {
-  }
+  ) {}
 
   ngOnInit() {
     // Get data
     this.userService.getSidebar().subscribe(
-      (res)=>{console.log(res)},
+      (res)=>{console.log(res), this.processData(res)},
       (err)=>{console.warn(err)}
     )
   }
 
   // Method to assign sidebar data
-
-  
-
-
+  processData(res){
+    console.log(res.Data);
+    this.navitem = res.Data;
+  }
 }

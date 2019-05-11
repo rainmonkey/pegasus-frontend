@@ -1,6 +1,6 @@
 <!--modal header-->
 <div class="modal-header">
-    <h4 class="modal-title">{{command}}</h4>
+    <h4 class="modal-title">{{command | commandFormat}}</h4>
     <button type="button" class='btn btn-sm btn-info tl_md_btn' aria-label="Close" (click)="activeModal.dismiss('Cross click')">
       <span aria-hidden="true">&times;</span>
     </button>
@@ -8,7 +8,7 @@
   
   <!--modal body-->
   <div class='modal-body tl_md_body'>
-    Are you sure to delete <span class='tl_md_body_name'>{{witchTeacher.FirstName}} {{witchTeacher.LastName}}?</span>
+    Are you sure to delete <span class='tl_md_body_name'>{{whichTeacher.FirstName}} {{whichTeacher.LastName}}?</span>
   </div>
   
   <!--modal footer-->

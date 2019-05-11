@@ -6,7 +6,7 @@
         <div class='row'>
           <!--img area-->
           <div class='col-3 tl_muf_photo_area'>
-            <!-- <img src={{witchTeacher.Photo}} alt=""> -->
+            <!-- <img src={{whichTeacher.Photo}} alt=""> -->
             <img class='tl_muf_photo' src="" alt="" id='photo'>
             <input *ngIf='!disabledAllInputsFlag' type="file" name="file" id="file" class="tl_muf_upload_img" accept="image/*" (change)='preViewImg($event)' /> 
             <label *ngIf='!disabledAllInputsFlag' for="file" class='btn btn-sm tl_muf_upload_img_btn'><span class='fas fa-plus tl_muf_upload_img_title'></span></label> 
@@ -181,7 +181,7 @@
         </div>
 
         <!--line7 detail mode-->
-        <div *ngIf='command=="Detail"' class='row tl_muf_weeks_area'>
+        <div *ngIf='command==1' class='row tl_muf_weeks_area'>
           <div class='col-12 tl_muf_weeks_title'>Available Days</div>
           <div *ngFor='let i of getAvailableDays()' class='col-4 tl_muf_weeks'>
             <div class='row tl_muf_each_week'>
@@ -193,7 +193,7 @@
         </div>
 
         <!--line7 Add or Edit mode-->
-        <div *ngIf='command!=="Detail"' class='row' id='tl_muf_branches_select_area'>
+        <div *ngIf='command!==1' class='row' id='tl_muf_branches_select_area'>
           <div class='col-12' id='tl_muf_branches_select_title'>Please Select Branches</div>
           <div *ngFor='let i of week' class='col-4'>
             <div class='row tl_muf_each_week'>

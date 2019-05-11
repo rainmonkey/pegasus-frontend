@@ -4,13 +4,13 @@
     <div class='col-12 tl_body_title'>
       Teachers List
       <!--add more btn-->
-      <span class='tl_body_add btn btn-info' (click)='update("Add",null)'>+ Add More</span>
+      <span class='tl_body_add btn btn-info' (click)='popUpModals(0,null)'>+ Add More</span>
     </div>
 
     <!--body search-->
     <div class='col-12 tl_body_search'>
       <span class='fas fa-search'></span>&nbsp;
-      <input type="text" (input)='search($event)' placeholder=" Search by name">
+      <input type="text" (input)='onSearch($event)' placeholder=" Search by name">
     </div>
 
     <!--body main-->
@@ -18,12 +18,12 @@
       <table class='table table-striped'>
         <thead>
           <tr>
-            <th scope='col' class='tl_body_table_head'>#</th>
-            <th scope='col' class='tl_body_table_head'>First Name</th>
-            <th scope="col" class="tl_body_table_head">Last Name</th>
-            <th scope="col" class="tl_body_table_head">Gender</th>
-            <th scope='col' class='tl_body_table_head'>Moblie Phone</th>
-            <th scope='col' class='tl_body_table_head'>Email</th>
+            <th scope='col' class='tl_body_table_head' style='width: 50px'>#</th>
+            <th scope='col' class='tl_body_table_head' style='width: 150px' (click)='onSort("FirstName")' counter = '0' class='sorting_item'>First Name</th>
+            <th scope='col' class="tl_body_table_head" style='width: 150px' (click)='onSort("LastName")' counter = '0' id='lastName' class='sorting_item'>Last Name</th>
+            <th scope='col' class="tl_body_table_head" style='width: 150px'>Gender</th>
+            <th scope='col' class='tl_body_table_head' style='width: 150px'>Moblie Phone</th>
+            <th scope='col' class='tl_body_table_head' style='width: 300px'>Email</th>
             <th scope='col' class='tl_body_table_head'></th>
           </tr>
         </thead>
@@ -37,9 +37,9 @@
             <td>{{i.MobilePhone}}</td>
             <td>{{i.Email}}</td>
             <td class='tl_body_table_btns'>
-              <span (click)='showDetail("Detail",i)' class='tl_body_table_btn'><span class='fas fa-info-circle'></span></span>
-              <span (click)='update("Edit",i)' class='tl_body_table_btn'><span class='fas fa-pen'></span></span>
-              <span (click)='delete("Delete",i)' class='tl_body_table_btn'><span class='fas fa-trash-alt'></span></span>
+              <span (click)='popUpModals(1,i)' class='tl_body_table_btn'><span class='fas fa-info-circle'></span></span>
+              <span (click)='popUpModals(2,i)' class='tl_body_table_btn'><span class='fas fa-pen'></span></span>
+              <span (click)='popUpModals(3,i)' class='tl_body_table_btn'><span class='fas fa-trash-alt'></span></span>
             </td>
           </tr>
         </tbody>
@@ -49,7 +49,7 @@
     <!--body pagination-->
     <div class='col-12'>
       <ngb-pagination [collectionSize] = 'teachersListLength' [(page)] ='page' [pageSize]='pageSize'></ngb-pagination>
-    </div> 
+    </div>
 
 
   </div>

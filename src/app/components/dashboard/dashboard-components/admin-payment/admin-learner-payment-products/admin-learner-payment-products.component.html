@@ -1,0 +1,147 @@
+<div class="container">
+  <hr>
+    <div class="row justify-content-center">
+        <div class="col-md-10 container-fluid">
+
+    <form class='mb-2 ml-2 mr-2' [formGroup]='productListForm' (keydown.enter)="$event.preventDefault()">
+
+        <div class='row justify-content-start'>
+            <div class='form-group col-2'>
+                <select formControlName="paymentMethod" class='form-control' [class.is-invalid]="paymentMethod.invalid && paymentMethod.touched">
+                    <option disabled>Pls select..</option>
+                    <option value=2>Eftpos</option>
+                    <option value=3>Online Transfer</option>
+                    <option value=1>Cash</option>
+                  </select>
+                <small [class.d-none]="paymentMethod.valid || paymentMethod.untouched" class="text-danger">You must select the payment type</small>
+            </div>
+            <p>Payment method</p>
+            <input type="number" min="0" value={{sellPrice}} class="form-control col-1 ml-2 mr-2" disabled>Total Amount ($)
+        </div>
+        <div formArrayName="productList">
+            <div *ngFor="let li of productList.controls; let j = index">
+                <div [formGroupName]='j'>
+                    <div class="d-flex justify-content-start">
+                        <button class="btn btn-outline-success btn-sm m-1" style="border-radius:30%" (click)='addOption()'>Add More Selection</button>
+                        <button *ngIf="productList.controls.length !== 1" style="border-radius:30%" class="btn btn-outline-danger btn-sm m-1" (click)='removeOption(j, confirmModal)'>Delete This Selection</button>
+                        <!-- the modal section is at the bottom of this html file -->
+                    </div>
+                    <h5>Products Selling To Customer Section {{j+1}}</h5>
+                    <div class="row justify-content-start">
+                        <div class="form-group col-2">
+                            <label>Types</label>
+                            <select #districtTypes class="form-control" (change)='selectType(districtTypes,j)' formControlName="type" [class.is-invalid]="li.get('type').invalid && li.get('type').touched">
+                                <option selected>Choose Type..</option>
+                                <option *ngFor="let type of types[j]; let k = index" [value]="type.ProdCatId" > {{type.ProdCatName}}</option>
+                            </select>
+                            <small [class.d-none]="li.get('type').valid || li.get('type').untouched" class="text-danger">Pls select a type</small>
+                        </div>
+                        <div class="form-group col-2">
+                            <label>Categories</label>
+                            <select #districtCat class="form-control" (change)='selectCat(districtCat,j)' formControlName="category" [class.is-invalid]="li.get('category').invalid && li.get('category').touched">
+                                <option selected>Choose Category..</option>
+                                <option *ngFor="let category of categories[j].catItem; let l = index" [value]="category.ProdTypeId">{{category.ProdTypeName}}</option>
+                            </select>
+                            <small [class.d-none]="li.get('category').valid || li.get('category').untouched" class="text-danger">Pls select a category</small>
+                        </div>
+                        <div class="form-group col-2">
+                            <label>Products</label>
+                            <select #districtProd class="form-control" (change)='selectProd(districtProd,j)' formControlName="product" [class.is-invalid]="li.get('product').invalid && li.get('product').touched">
+                                <option selected>Choose products..</option>
+                                <option *ngFor="let product of prodMuti[j].prods; let i = index" [value]="product.ProductId">{{product.ProductName}}</option>
+                            </select>
+                            <small [class.d-none]="li.get('product').valid || li.get('product').untouched" class="text-danger">Pls select a product</small>
+                        </div>
+                        <div class="form-group col-3">
+                            <label>Number of Product(s)</label>
+                            <input type="number" min="1" value="1" class="form-control" formControlName="number" onkeypress='return (/[\d]/.test(String.fromCharCode(event.keyCode)))' (keydown)='changeProductPrice()' (change)='changeProductPrice()'>
+                        </div>
+                    </div>
+                    <div class='row justify-content-start'>
+
+                        <div class="form-group col-3">
+                            <input type="radio" name='discount' (click)='checkRateClick(j)' value='rate' checked='true'><label>Percentage Discount</label>
+                            <input type="number" min="0" max="100" value='100' class="form-control" formControlName="rate" (change)='changeProductPrice()' onkeypress='return (/[\d]/.test(String.fromCharCode(event.keyCode)))'>
+                        </div>
+                        <div class="form-group col-3">
+                            <input type="radio" name='discount' (click)='checkMoneyClick(j)' value='money'><label>Money Discount($)</label>
+                            <input type="number" min="0" value='0' class="form-control" formControlName="subMoney" (change)='changeProductPrice()' onkeypress='return (/[\d]/.test(String.fromCharCode(event.keyCode)))'>
+                        </div>
+                        <div class="form-group col-2">
+                            <label>Subtotal ($)</label>
+                            <input type="number" formControlName="subTotal" class="form-control" disabled>
+                        </div>
+                    </div>
+                    <hr *ngIf="productList.controls.length !== 1">
+                </div>
+            </div>
+        </div>
+        <!-- open method for product modal-->
+        <button class="btn btn-primary" (click)="validMethod(contentProd)">Send this Payment</button>
+        <small class="text-danger m-2" *ngIf="paymentMethod.invalid && paymentMethod.touched">Please select the payment method on this transacion</small> <br>
+        <small class='text-danger m-2' *ngIf='showErrMsg'>You have to select all required fields</small>
+        <div class='row justify-content-md-center'>
+            <div class="col-md-10">
+                <ng-template #contentProd let-modal>
+                    <div class="modal-header m-2">
+                        <h4>Please Confirm</h4>
+                        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+                                          <span aria-hidden="true">&times;</span>
+                                        </button>
+                    </div>
+                    <!-- modal-body -->
+                    <div class="container">
+                    <div class="d-flex flex-column">
+                        <p> Amount:{{sellPrice}}</p>
+                        <ul *ngFor='let prods of productList.controls' style='border: 1px solid'>
+                            <li>Product Name: {{prods.value.productName}} <br> Price:{{prods.value.price}} &nbsp; Quantity:{{prods.value.number}} &nbsp; Rate: {{prods.value.rate}} &nbsp; Money subtraction($): {{prods.value.subMoney}} &nbsp; Subtotal($): {{prods.value.subTotal}}</li>
+                        </ul>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-dark" (click)="modal.close('Save')">Confirm</button>
+                        <button type="button" class="btn btn-outline-dark" (click)="modal.dismiss('Cross click')">Cancel</button>
+                    </div>
+                </ng-template>
+            </div>
+        </div>
+    </form>
+  </div>
+</div>
+</div>
+<!-- ng bootstrap alert -->
+<ngb-alert *ngIf='successAlert' type="success" (close)="closeSucc()">Your Payment Has Been Made</ngb-alert>
+<ngb-alert *ngIf='errorAlert' type="danger" (close)="closeErro()">{{ errorMsg.ErrorCode }}</ngb-alert>
+
+<!-- delete confirm -->
+<ng-template #confirmModal let-modal>
+  <div class="modal-header m-2">
+    <h4>Please Confirm</h4>
+    <button
+      type="button"
+      class="close"
+      aria-label="Close"
+      (click)="modal.dismiss('Cross click')"
+    >
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <!-- modal-body -->
+  <div class="container">
+  <div class="d-flex justify-content-center">
+    <p>Your selection have not submit, click confirm to delete this selection</p>
+  </div>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-dark" (click)="modal.close('Save')">
+      Confirm
+    </button>
+    <button
+      type="button"
+      class="btn btn-outline-dark"
+      (click)="modal.dismiss('Cross click')"
+    >
+      Cancel
+    </button>
+  </div>
+</ng-template>

@@ -4,6 +4,7 @@ import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 
 import { ModalDeleteComponent } from '../tutor-delete-modal/modal-delete.component';
 import { TutorEditModalComponent } from '../tutor-edit-modal/tutor-edit-modal.component';
+import { NgbootstraptableService } from 'src/app/services/others/ngbootstraptable.service';
 
 @Component({
   selector: 'app-tutor-info',
@@ -11,104 +12,129 @@ import { TutorEditModalComponent } from '../tutor-edit-modal/tutor-edit-modal.co
   styleUrls: ['./tutor-info.component.css']
 })
 export class TutorInfoComponent implements OnInit {
-  private teachersList: any;
-  private teachersListLength: number;
-  private temTeachersList: any;
-  private temTeachersListLength: number;
-  private temPaginationTeacher = [];
-  private page: number = 1;  //pagination current page
-  private pageSize:number = 10;    //[can modify] pagination page size
+  public teachersList: any; 
+  public teachersListLength: number;
+  public temTeachersList: any; //save the original teacherList
+  public temTeachersListLength: number; //save the original teacherList length
+  public page: number = 1;  //pagination current page
+  public pageSize: number = 10;    //[can modify] pagination page size
 
-
-  constructor(private teachersService: TeachersService, private modalService: NgbModal) { }
+  constructor(private teachersService: TeachersService, private modalService: NgbModal, private ngTable:NgbootstraptableService) { }
 
   ngOnInit() {
     this.getData();
   }
 
-  //search method(serch by first and last name)
-  search(e) {
-    //reset to initial state
-    this.temPaginationTeacher = [];
-    this.teachersList = this.temTeachersList;
-    this.teachersListLength = this.temTeachersListLength;
-    //动了就bug
-    for (let i of this.teachersList) {
-      if (i['FirstName'] == null && ((i['LastName'].toLowerCase()).search(e.target.value.toLowerCase())) !== -1) {
-        this.temPaginationTeacher.push(i)
-      }
-      else if (i['LastName'] == null && ((i['FirstName'].toLowerCase()).search(e.target.value.toLowerCase())) !== -1) {
-        this.temPaginationTeacher.push(i)
-      }
-      else if (i['FirstName'] == null && i['LastName'] == null) {
+  /*
+    get data form serve
+  */
+  getData() {
+    this.teachersService.getTeachers().subscribe(
+      (res) => {
+        this.teachersList = res.Data;
+        //后台AvailableDays崩了？？？？？？？？？？？？
+        // for(let i of this.teachersList){
+        //   console.log(i.AvailableDays)
+        // }
+        this.teachersListLength = res.Data.length; //length prop is under Data prop
+        this.temTeachersList = res.Data;
+        this.temTeachersListLength = res.Data.length;
+      },
+      (error) => {this.errorProcess(error) })
+  }
+
+  errorProcess(error) {
+    alert(error.message)
+  }
+
+
+  /*
+    pop up modals, when need to pop up a modal, call this method
+    commands:
+      0 --> Add new
+      1 --> show details/show more
+      2 --> Edit/update
+      3 --> delete
+  */
+  popUpModals(command, whichTeacher) {
+    switch(command){
+      case 0:
+        this.updateModal(command,whichTeacher);
         break;
-      }
-      else if (i['FirstName'] !== null && i['LastName'] !== null) {
-        if (((i['FirstName'].toLowerCase()).search(e.target.value.toLowerCase())) !== -1 || ((i['LastName'].toLowerCase()).search(e.target.value.toLowerCase())) !== -1) {
-          this.temPaginationTeacher.push(i)
-        }
-      }
-      else {
-        continue;
-      }
-      this.teachersList = this.temPaginationTeacher;
-      this.teachersListLength = this.temPaginationTeacher.length;
+      case 1:
+        this.detailModal(command,whichTeacher)
+        break;
+      case 2:
+        this.updateModal(command,whichTeacher);
+        break;
+      case 3:
+        this.deleteModal(command,whichTeacher);
+        break;
     }
   }
 
-  //update method
-  update(command, witchTeacher) {
-    const modalRef = this.modalService.open(TutorEditModalComponent, { size: 'lg'});
-    
+  /*
+    update modal
+  */
+  updateModal(command,whichTeacher){
+    //pop up modal
+    const modalRef = this.modalService.open(TutorEditModalComponent, { size: 'lg' });
+    //bind this pointer to that
+    let that = this;
+    //refresh after save
+    modalRef.result.then(function(){
+      that.getData()
+    });
+    //pass parameters to pop up modals
+    modalRef.componentInstance.command = command;
+    modalRef.componentInstance.whichTeacher = whichTeacher;
+  }
+
+  /*
+    delete modal
+  */
+  deleteModal(command, whichTeacher) {
+    const modalRef = this.modalService.open(ModalDeleteComponent)
     let that = this;
     modalRef.result.then(function(){
-      //怎么做到不同条件下不同反应
-      that.ngOnInit();
+      that.getData()
     });
-    if (command == "Edit") {
-      modalRef.componentInstance.command = 'Edit';
-    }
-    if (command == "Add") {
-      modalRef.componentInstance.command = "Add";
-    }
-    modalRef.componentInstance.witchTeacher = witchTeacher;
+    modalRef.componentInstance.command = command;
+    modalRef.componentInstance.whichTeacher = whichTeacher;
   }
 
-  //delete method
-  delete(command, witchTeacher) {
-    const modalRef = this.modalService.open(ModalDeleteComponent)
-    modalRef.componentInstance.command = 'Delete';
-    modalRef.componentInstance.witchTeacher = witchTeacher;
-
-  }
-
-  //showDetail method
-  showDetail(command, witchTeacher) {
+  /*
+    detail modal
+  */
+  detailModal(command, whichTeacher) {
     const modalRef = this.modalService.open(TutorEditModalComponent, { size: 'lg' })
-    modalRef.componentInstance.command = 'Detail';
-    modalRef.componentInstance.witchTeacher = witchTeacher;
+    modalRef.componentInstance.command = command;
+    modalRef.componentInstance.whichTeacher = whichTeacher;
   }
 
-  //get data from server
-  getData(){
-    this.teachersService.getTeachers().subscribe(
-      (data) => {
-        this.teachersList = data.Data;
-      // console.log(this.teachersList);
-        this.teachersListLength = data.Data.length; //length prop is under Data prop
-        this.temTeachersList = data.Data;
-        this.temTeachersListLength = data.Data.length;
-    },
-      (error) => { console.log(error), this.errorProcess(error) })
-// show error 
 
-    //this.update('aa',"aa");
+  /*
+    search method
+  */
+ /////////////////////////////////////////////////这个method要精简   -----------by Richard
+  onSearch(event){
+    //should init original list and length
+    this.teachersList = this.temTeachersList;
+    this.teachersListLength = this.temTeachersListLength;
+    
+    let searchStr = event.target.value;
+    //
+    let titlesToSearch = ['FirstName','LastName'];
+
+    this.teachersList = this.ngTable.searching(this.teachersList,titlesToSearch,searchStr);
+    this.teachersListLength = this.teachersList.length;
   }
 
-  errorProcess(error){
-    // if there is error message from server, display error message
 
-    // if there are not error message from server, show server error
+  /*
+    sort method
+  */
+  onSort(orderBy) {
+    this.ngTable.sorting(this.teachersList,orderBy);
   }
-
 }

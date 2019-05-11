@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { BehaviorSubject, Observable, throwError } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
-import { environment } from '../../../environments/environment';
+import { environment } from '../../../environments/environment.prod';
 
 @Injectable({ providedIn: 'root' })
 
@@ -38,7 +38,7 @@ export class AuthenticationService {
 
     // login response
     login(username: string, password: string): Observable<any> {
-        return this.http.post<any>(this.baseUrl + 'login/', { username, password })
+        return this.http.post<any>(this.baseUrl + 'login', { username, password })
         .pipe(map(res => {
             // login successful if there's a jwt token in the response
             if (res.IsSuccess && res.Data) {

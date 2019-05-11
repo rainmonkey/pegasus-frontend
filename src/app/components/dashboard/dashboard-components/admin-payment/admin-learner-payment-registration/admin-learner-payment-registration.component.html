@@ -1,0 +1,19 @@
+<hr>
+<div class="container mt-2">
+  <div class="row justify-content-center">
+    <div class="col-md-10 container-fluid">
+      <form class='form-group col-md-10' [formGroup]="regiPayment">
+        <h5>Registration Payment:</h5>
+        <div class='row'>
+            <label class="mt-2">Title of Payment:</label>
+            <input class="col-md-3 mt-2 ml-2 form-control" formControlName="title" [class.is-invalid]="title.invalid && title.touched" type="text" placeholder="Please indicate the title..">
+        </div>
+        <div class='row'>
+            <label class="mt-2">Amount of Payment: $</label>
+            <input class="col-md-2 mt-2 ml-1 form-control" formControlName="amount" [class.is-invalid]="amount.invalid && amount.touched" type="number" placeholder="Amount..">
+        </div>
+        <button class="btn btn-primary mt-2 col-md-2" [disabled]="title.invalid || amount.invalid" (click)="regiPaymentSubmit()">Submit</button>
+      </form>
+      </div>
+  </div>
+</div>
