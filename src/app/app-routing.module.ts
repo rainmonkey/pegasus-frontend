@@ -34,7 +34,7 @@ const routes: Routes = [
   { path: '', component: HomepageComponent, canActivate: [DashboardRestrictGuard],
     children: [
       // Payment Area
-      { path: 'payment/invoice', component: AdminLearnerPaymentPanelComponent, 
+      { path: 'payment/invoice', component: AdminLearnerPaymentPanelComponent,
         children:[
           { path: 'pay/:id', component: AdminLearnerPaymentInvoiceComponent },
           { path: 'pay/success', component: AdminLearnerPaymentSuccessComponent },
@@ -69,14 +69,14 @@ const routes: Routes = [
           { path: 'list', component: TutorInfoComponent }
         ]},
       // Sessions Area
-      { path: 'sessions', component: SessionsPanelComponent, 
+      { path: 'sessions', component: SessionsPanelComponent,
         children:[
           {path: 'list', component: SessionsListViewComponent},
           {path: 'calendar/admin', component: SessionsCalendarViewAdminComponent},
           {path: 'calendar/tutor', component: SessionsCalendarViewTutorComponent}
       ]},
       // Courses Area
-      { path: 'courses', component: CoursesPanelComponent, 
+      { path: 'courses', component: CoursesPanelComponent,
         children:[
         { path: 'list', component: CoursesListComponent}
       ]},
@@ -87,12 +87,12 @@ const routes: Routes = [
           {path: 'registration', component: LearnerRegistrationFormComponent}
       ]},
       // Inventory Area
-      { path: 'inventory', component: InventoryPanelComponent, 
+      { path: 'inventory', component: InventoryPanelComponent,
         children:[
           {path:'list', component: InventoryListComponent}
       ]},
       // Payroll Area
-      { path: 'payroll' , component: PayrollPanelComponent, 
+      { path: 'payroll' , component: PayrollPanelComponent,
         children:[
           {path:'list', component:PayrollListComponent}
         ]
