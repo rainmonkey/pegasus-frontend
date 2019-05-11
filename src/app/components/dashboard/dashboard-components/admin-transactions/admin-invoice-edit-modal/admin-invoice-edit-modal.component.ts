@@ -5,11 +5,11 @@ import { FormBuilder } from '@angular/forms';
 import { PaymentService } from '../../../../../services/http/payment.service';
 
 @Component({
-  selector: 'app-invoice-data-entry-modal',
-  templateUrl: './invoice-data-entry-modal.component.html',
-  styleUrls: ['./invoice-data-entry-modal.component.css'],
+  selector: 'app-admin-invoice-edit-modal',
+  templateUrl: './admin-invoice-edit-modal.component.html',
+  styleUrls: ['./admin-invoice-edit-modal.component.css'],
 })
-export class InvoiceDataEntryModalComponent implements OnInit {
+export class AdminInvoiceEditModalComponent implements OnInit {
   public learnerList;
   public errorMsg;
   public errorAlert = false;

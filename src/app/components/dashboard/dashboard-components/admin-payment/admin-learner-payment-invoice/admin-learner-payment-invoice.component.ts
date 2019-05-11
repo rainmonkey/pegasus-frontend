@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { PaymentService } from '../../../../../../services/http/payment.service';
+import { PaymentService } from '../../../../../services/http/payment.service';
 import { FormBuilder, Validators } from '@angular/forms';
 import { NgbModal, ModalDismissReasons, } from '@ng-bootstrap/ng-bootstrap';
 import { NgbTabsetConfig } from '@ng-bootstrap/ng-bootstrap';
-import { ILearnerPay } from '../../../../../../models/learners';
+import { ILearnerPay } from '../../../../../models/learners';
 import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 
 @Component({

@@ -3,21 +3,21 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { DebugElement } from '@angular/core';
 
-import { InvoiceDataEntryModalComponent } from './invoice-data-entry-modal.component';
+import { AdminInvoiceListComponent } from './admin-invoice-list.component';
 
-describe('InvoiceDataEntryModalComponent', () => {
-  let component: InvoiceDataEntryModalComponent;
-  let fixture: ComponentFixture<InvoiceDataEntryModalComponent>;
+describe('AdminInvoiceListComponent', () => {
+  let component: AdminInvoiceListComponent;
+  let fixture: ComponentFixture<AdminInvoiceListComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ InvoiceDataEntryModalComponent ]
+      declarations: [ AdminInvoiceListComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(InvoiceDataEntryModalComponent);
+    fixture = TestBed.createComponent(AdminInvoiceListComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
