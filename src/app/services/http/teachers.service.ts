@@ -11,15 +11,15 @@ export class TeachersService {
   constructor(private http:HttpClient) { 
   }
 
-  getTeachers():any{
-    return this.http.get(this.baseUrl +'teacher');
+  getTeachersInfo():any{
+    return this.http.get(this.baseUrl + 'teacher');
   }
 
-  getApis():any{
+  deleteTeacher(teacherId):any{
+    return this.http.delete(this.baseUrl + 'teacher/' + teacherId);
+  }
+
+  getDropdownOptions():any{
     return this.http.get(this.baseUrl + 'qualificationslanguagesorgs');
-  }
-
-  addNew(data):any{
-    return this.http.post(this.baseUrl+'teacherregister',data)
   }
 }

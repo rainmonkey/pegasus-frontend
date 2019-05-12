@@ -51,7 +51,7 @@ export class AdminInvoiceEditModalComponent implements OnInit {
   }
 // get invoice from server
   getInvoiceData() {
-    this.teachersService.getTeachers().subscribe(
+    this.teachersService.getTeachersInfo().subscribe(
       (res) => {
         this.learnerList = res.Data;
         //this.patchToInvoice()

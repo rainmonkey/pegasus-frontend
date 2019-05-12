@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { TutorInfoPanelComponent } from './tutor-info-panel.component';
+import { TeacherDetailModalComponent } from './teacher-detail-modal.component';
 
-describe('TutorInfoPanelComponent', () => {
-  let component: TutorInfoPanelComponent;
-  let fixture: ComponentFixture<TutorInfoPanelComponent>;
+describe('TeacherDetailModalComponent', () => {
+  let component: TeacherDetailModalComponent;
+  let fixture: ComponentFixture<TeacherDetailModalComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ TutorInfoPanelComponent ]
+      declarations: [ TeacherDetailModalComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(TutorInfoPanelComponent);
+    fixture = TestBed.createComponent(TeacherDetailModalComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

@@ -1,21 +1,14 @@
-.tl_mu_title{
+.t_dm_name{
     font-weight: bold;
     font-style: italic;
 }
-.tl_mu_btn{
+.tl_dm_btn{
     background: white;
     border: 1px solid black;
     color:black;
 }
-.tl_mu_btn:hover{
+.tl_dm_btn:hover{
     background: #343A40;
     border: 1px solid #343a40;
     color:white;
-}
-.tl_mu_submit_error{
-    color: #dc3545;
-}
-#loading img{
-    width: 20px;
-    display: none;
 }

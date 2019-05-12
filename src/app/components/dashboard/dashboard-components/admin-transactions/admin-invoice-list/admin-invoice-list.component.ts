@@ -38,7 +38,7 @@ export class AdminInvoiceListComponent implements OnInit {
   }
 
   getData() {
-    this.teachersService.getTeachers().subscribe(
+    this.teachersService.getTeachersInfo().subscribe(
       (res) => {
         this.learnerList = res.Data;
         this.learnerListLength = res.Data.length; //length prop is under Data prop
