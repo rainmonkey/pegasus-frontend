@@ -34,7 +34,7 @@ const routes: Routes = [
   { path: '', component: HomepageComponent, canActivate: [DashboardRestrictGuard],
     children: [
       // Payment Area
-      { path: 'payment/invoice', component: AdminLearnerPaymentPanelComponent, 
+      { path: 'payment/invoice', pathMatch: 'prefix', component: AdminLearnerPaymentPanelComponent, 
         children:[
           { path: 'pay/:id', component: AdminLearnerPaymentInvoiceComponent },
           { path: 'pay/success', component: AdminLearnerPaymentSuccessComponent },
