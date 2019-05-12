@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { PaymentService } from '../../../../../services/http/payment.service';
 import { FormBuilder, Validators } from '@angular/forms';
-import { NgbModal, ModalDismissReasons, } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModal, ModalDismissReasons, NgbTab, NgbTabTitle, } from '@ng-bootstrap/ng-bootstrap';
 import { NgbTabsetConfig } from '@ng-bootstrap/ng-bootstrap';
 import { ILearnerPay } from '../../../../../models/learners';
 import { ActivatedRoute, ParamMap, Router } from '@angular/router';
@@ -63,11 +63,20 @@ export class AdminLearnerPaymentInvoiceComponent implements OnInit {
       return `with: ${reason}`;
     }
   }
-  // put owing fee to mutiple invoice at ng-bootstrap tab
-  userTab(j) {
-    this.invoiceForm.patchValue({
-      owing : Math.abs(this.dataInvoice[j].OwingFee)
-    });
+  // In case learner have two invoice at ng-bootstrap tab
+  fetchNews(event){
+    const id = Number(event.activeId.slice(8));
+    switch (id){
+      case 0:
+      this.invoiceForm.patchValue({
+        owing : Math.abs(this.dataInvoice[1].OwingFee)
+      });
+      break;
+      case 1:
+      this.invoiceForm.patchValue({
+        owing : Math.abs(this.dataInvoice[0].OwingFee)
+      });
+    }
   }
 
     // create post obj
@@ -138,6 +147,7 @@ export class AdminLearnerPaymentInvoiceComponent implements OnInit {
     closeErro(){
       this.errorAlert = false;
     }
+
 
     ngOnInit() {
       // put to service

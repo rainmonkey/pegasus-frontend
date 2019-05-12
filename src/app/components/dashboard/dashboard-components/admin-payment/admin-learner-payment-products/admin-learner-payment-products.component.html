@@ -23,7 +23,8 @@
                 <div [formGroupName]='j'>
                     <div class="d-flex justify-content-start">
                         <button class="btn btn-outline-success btn-sm m-1" style="border-radius:30%" (click)='addOption()'>Add More Selection</button>
-                        <button *ngIf="productList.controls.length !== 1" style="border-radius:30%" class="btn btn-outline-danger btn-sm m-1" (click)='removeOption(j)'>Delete This Selection</button>
+                        <button *ngIf="productList.controls.length !== 1" style="border-radius:30%" class="btn btn-outline-danger btn-sm m-1" (click)='removeOption(j, confirmModal)'>Delete This Selection</button>
+                        <!-- the modal section is at the bottom of this html file -->
                     </div>
                     <h5>Products Selling To Customer Section {{j+1}}</h5>
                     <div class="row justify-content-start">
@@ -108,5 +109,39 @@
   </div>
 </div>
 </div>
+<!-- ng bootstrap alert -->
 <ngb-alert *ngIf='successAlert' type="success" (close)="closeSucc()">Your Payment Has Been Made</ngb-alert>
 <ngb-alert *ngIf='errorAlert' type="danger" (close)="closeErro()">{{ errorMsg.ErrorCode }}</ngb-alert>
+
+<!-- delete confirm -->
+<ng-template #confirmModal let-modal>
+  <div class="modal-header m-2">
+    <h4>Please Confirm</h4>
+    <button
+      type="button"
+      class="close"
+      aria-label="Close"
+      (click)="modal.dismiss('Cross click')"
+    >
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <!-- modal-body -->
+  <div class="container">
+  <div class="d-flex justify-content-center">
+    <p>Your selection have not submit, click confirm to delete this selection</p>
+  </div>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-dark" (click)="modal.close('Save')">
+      Confirm
+    </button>
+    <button
+      type="button"
+      class="btn btn-outline-dark"
+      (click)="modal.dismiss('Cross click')"
+    >
+      Cancel
+    </button>
+  </div>
+</ng-template>

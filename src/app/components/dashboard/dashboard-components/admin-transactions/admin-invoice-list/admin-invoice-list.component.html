@@ -6,6 +6,7 @@
   </div>
     <!--body search-->
     <div class='col-12 tl_body_search'>
+        <span class='fas fa-search'></span>&nbsp;
       <input type="text" (input)='onSearch($event)' placeholder=" Search by name">
     </div>
 
@@ -15,12 +16,12 @@
         <thead>
           <tr>
             <th scope='col' class='tl_body_table_head' style='width: 50px'>#</th>
-            <th scope='col' class='tl_body_table_head' style='width: 150px' (click)='onSort("FirstName")' counter = '0' class='sorting_item'>First Name</th>
-            <th scope='col' class="tl_body_table_head" style='width: 150px' (click)='onSort("LastName")' counter = '0' id='lastName' class='sorting_item'>Last Name</th>
+            <th scope='col' class='tl_body_table_head' style='width: 150px' (click)='onSort("FirstName")' counter = '0' class='sorting_item' style="cursor: pointer;">First Name</th>
+            <th scope='col' class="tl_body_table_head" style='width: 150px' (click)='onSort("LastName")' counter = '0' id='lastName' class='sorting_item' style="cursor: pointer;">Last Name</th>
             <th scope='col' class="tl_body_table_head" style='width: 150px'>Middle Name</th>
-            <th scope='col' class='tl_body_table_head' style='width: 150px'>Moblie Phone</th>
+            <th scope='col' class='tl_body_table_head' style='width: 150px' (click)='onSort("OwingFee")' style="cursor: pointer;">Owing Fee</th>
             <th scope='col' class='tl_body_table_head' style='width: 300px'>Email</th>
-            <th scope='col' class='tl_body_table_head' style='width: 300px' (click)='onSort("Status")'>Reminder Status</th>
+            <th scope='col' class='tl_body_table_head' style='width: 300px' (click)='onSort("Status")' style="cursor: pointer;">Reminder Status</th>
             <th scope='col' class='tl_body_table_head'></th>
           </tr>
         </thead>
@@ -31,11 +32,11 @@
             <td>{{i.FirstName}}</td>
             <td>{{i.LastName}}</td>
             <td>{{i.MiddleName}}</td>
-            <td>{{i.MobilePhone}}</td>
+            <td>{{i.OwingFee}}</td>
             <td>{{i.Email}}</td>
             <td>{{i.Status}}</td>
             <td>
-              <a (click)='open()'>Edit</a>
+              <a (click)='open()' style="cursor: pointer;"><span class='fas fa-pen'></span>&nbsp;Edit</a>
             </td>
           </tr>
         </tbody>

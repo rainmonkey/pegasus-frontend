@@ -1,13 +1,23 @@
-<div class="rm-weekly-schedule">
-  <div class="rmws-hour-labels">
-    <div class="rmws-hour-label" *ngFor="let hour of hours">{{hour}}:00</div>
-  </div>
-  <div class="rmws-days">
-    <div class="rmws-day" *ngFor="let x of xIndex">
-      <div class="rmws-day-label">{{weekdays[x]}}</div>
-      <div class="rmws-slots">
-        <div class="rmws-slot" *ngFor="let y of yIndex" (click)="onClick(x,y)"></div>
+<!-- <div class="rmws-hour-labels">
+  <div class="rmws-hour-label" *ngFor="let hour of hours">{{hour}}:00</div>
+</div> -->
+<div class="time-picker"> 
+  <div class="weekly-schedule">
+    <div class="hour-labels">
+      <div class="hour-label" *ngFor="let hour of hours">{{hour}}:00</div>
+    </div>
+    <div class="days">
+      <div class="day" *ngFor="let x of xIndex">
+        <div class="day-label">{{weekdays[x]}}</div>
+        <div class="slots">
+          <div class="slot" *ngFor="let y of yIndex; let i = index" 
+          [ngClass]="{'event': timeArray[x][y], 'slot-bottom': i%4==3}" 
+          (mousedown)="mousedown(x,y)"  (mouseup)="mouseup(x,y)">
+            <!-- <small *ngIf="timeArray[x][y]">{{startTime}}-{{endTime}}</small> -->
+          </div>
+        </div>
       </div>
     </div>
-  </div>
-</div> 
+  </div> 
+  <div><button (click)="checkASum()">Confirm</button></div>
+</div>

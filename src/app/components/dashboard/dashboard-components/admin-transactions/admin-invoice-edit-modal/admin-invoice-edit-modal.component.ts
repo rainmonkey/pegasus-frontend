@@ -34,6 +34,8 @@ export class AdminInvoiceEditModalComponent implements OnInit {
     CourseName: [],
     LessonQuantity: [],
     BeginDate: [],
+    Concert: [],
+    Note: [],
     Other1FeeName: [],
     Other2FeeName: [],
     Other3FeeName: [],

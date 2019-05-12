@@ -110,10 +110,7 @@ export class AdminLearnerPaymentProductsComponent implements OnInit {
           this.getProductId();
           this.postPordPayObjMethod();
           // confirm product payment
-
           this.fd.append('paymentTranList', JSON.stringify(this.postProdPayObj));
-          console.log(this.postProdPayObj)
-          console.log(JSON.stringify(this.postProdPayObj))
         //  return console.log(this.fd);
           this.productsListService
             .postProdService(this.fd)
@@ -207,18 +204,19 @@ export class AdminLearnerPaymentProductsComponent implements OnInit {
     this.prodMuti.push(this.prods);
     this.prodItems.push(this.prodItem);
   }
-  removeOption(index) {
-    const conf = confirm(
-      "your selection have not submit, do you still want to delete it?"
-    );
-    if (conf) {
+
+  removeOption(index, confirmModal) {
+    this.modalService
+    .open(confirmModal)
+    .result.then(
+      result => {
       this.productList.removeAt(index);
       this.types.splice(index, 1);
       this.categories.splice(index, 1);
       this.prodMuti.splice(index, 1);
       this.prodItems.splice(index, 1);
       this.changeProductPrice();
-    }
+      });
   }
 
   selectType(dis, j) {
@@ -259,6 +257,8 @@ export class AdminLearnerPaymentProductsComponent implements OnInit {
       productName: this.prodItems[j].prodItem[0].ProductName
     });
   }
+
+  // clear the productList Array if users search new name
   emptyProductList(j){
     this.prodItems[j].prodItem = [];
     this.productList.controls[j].patchValue({
@@ -273,6 +273,7 @@ export class AdminLearnerPaymentProductsComponent implements OnInit {
     this.changeProductPrice();
   }
 
+  // price showing
   changeProductPrice() {
     this.sellPrice = 0;
     this.productList.controls.forEach((item, i) => {
@@ -289,10 +290,11 @@ export class AdminLearnerPaymentProductsComponent implements OnInit {
       this.sellSubtotal = Math.round(this.sellPriceTemp * 100) / 100;
       this.sellPrice = this.sellSubtotal + this.sellPrice;
       this.productList.controls[i].patchValue({
-        subTotal: this.sellSubtotal
+        subTotal: this.sellSubtotal < 0 ? 0 : this.sellSubtotal
       });
     });
   }
+
   // search new users patch new data (3)
   patchProd() {
     this.productList.controls.forEach((item, index) => {
