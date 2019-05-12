@@ -30,13 +30,13 @@ export class AdminLearnerPaymentInvoiceComponent implements OnInit {
 
   invoiceForm = this.fb.group({
     owing: ['', Validators.required],
-    paymentMethodI: [,Validators.required]
+    paymentMethodI: [, Validators.required]
   });
   get owing() {
     return this.invoiceForm.get('owing');
   }
   // paymentMethod FB
-  get paymentMethodI(){
+  get paymentMethodI() {
   return this.invoiceForm.get('paymentMethodI');
   }
     constructor(
@@ -65,8 +65,14 @@ export class AdminLearnerPaymentInvoiceComponent implements OnInit {
   }
   // In case learner have two invoice at ng-bootstrap tab
   fetchNews(event){
+    console.log(event)
+    if (this.dataInvoice.length > 3) {
+      this.invoiceForm.patchValue({
+        owing : 0
+      });
+    } else {
     const id = Number(event.activeId.slice(8));
-    switch (id){
+    switch (id) {
       case 0:
       this.invoiceForm.patchValue({
         owing : Math.abs(this.dataInvoice[1].OwingFee)
@@ -77,6 +83,7 @@ export class AdminLearnerPaymentInvoiceComponent implements OnInit {
         owing : Math.abs(this.dataInvoice[0].OwingFee)
       });
     }
+  }
   }
 
     // create post obj
@@ -120,11 +127,11 @@ export class AdminLearnerPaymentInvoiceComponent implements OnInit {
         );
     }
     // valid payment method
-    validMethodI(contentP, item){
+    validMethodI(contentP, item, j) {
       switch (true) {
-        case this.invoiceForm.invalid===true :
+        case this.invoiceForm.invalid === true :
           this.errMsgM = true;
-        case this.invoiceForm.value.owing === 0 :
+        case this.invoiceForm.value.owing <= 0 || this.invoiceForm.value.owing > this.dataInvoice[j].OwingFee :
           this.errMsgO = true;
         break;
         default:
@@ -148,23 +155,30 @@ export class AdminLearnerPaymentInvoiceComponent implements OnInit {
       this.errorAlert = false;
     }
 
+    // make new search
+    reSearchPrepare() {
+      // in case have mutiple invoices
+      this.arrayInv = [];
+      this.dataInvoice.forEach((item, index) => {
+        this.arrayInv.push(index); });
+      this.invoiceForm.patchValue({
+        owing : Math.abs(this.dataInvoice[0].OwingFee),
+        paymentMethodI: null
+      });
+    }
 
     ngOnInit() {
       // put to service
       this.activatedRouter.paramMap.subscribe((obs:ParamMap) => {
         this.learnerId = parseInt(obs.get('id'))
+        this.errMsgM = false;
+        this.errMsgO = false;
         this.paymentsListService
         .getInvoice(this.learnerId)
         .subscribe(dataInvoice => {
           // return console.log(dataInvoice)
           this.dataInvoice = dataInvoice;
-          // in case have mutiple invoices
-          this.arrayInv = [];
-          this.dataInvoice.forEach((item, index) => {
-            this.arrayInv.push(index);})
-          this.invoiceForm.patchValue({
-            owing : Math.abs(this.dataInvoice[0].OwingFee)
-          });
+          this.reSearchPrepare();
         });
       });
     }

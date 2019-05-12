@@ -1,4 +1,4 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, ViewChild } from "@angular/core";
 import {
   FormBuilder,
   Validators,
@@ -44,8 +44,9 @@ export class AdminLearnerPaymentProductsComponent implements OnInit {
   public postProdsIdArray = [];
   public checkRate = true;
   public checkMoney = true;
-  public fd = new FormData;
+  public fd = new FormData ();
   public showErrMsg = false;
+  public showErrMsgSub = false;
   public errorMsg;
   public payPath;
   // ng-modal variable
@@ -133,11 +134,21 @@ export class AdminLearnerPaymentProductsComponent implements OnInit {
       );
   }
 
+    // isAllInputsFilled() {
+    //   //once user click save btn, touch all inputs form with for-loop, in orde to trigger Validator
+    //   for (let j in this.modalUpdateFormComponentObj.updateForm.controls) {
+    //     this.modalUpdateFormComponentObj.updateForm.controls[j].touched = true;
+    //     console.log(this.modalUpdateFormComponentObj.updateForm.controls[j])
+    //   }
   //validation method
   validMethod(contentProd){
+    // read-only
+    // this.productListForm.controls[0].touched = true;
+    // this.paymentMethod.errors.invalid = true;
+    // this.paymentMethod.errors.touched = true;
     if (this.productListForm.invalid) {
       this.showErrMsg = true;
-    } else {
+    } else if (!this.showErrMsgSub) {
       this.openProd(contentProd);
     }
   }
@@ -168,6 +179,7 @@ export class AdminLearnerPaymentProductsComponent implements OnInit {
     });
   }
 
+  // short hand of form group items
   get productList() {
     return this.productListForm.get("productList") as FormArray;
   }
@@ -183,7 +195,7 @@ export class AdminLearnerPaymentProductsComponent implements OnInit {
     this.productList.controls[j]['controls'].subMoney.disable();
     this.changeProductPrice();
     }
-
+  // single option for rate or money
   checkMoneyClick(j) {
     this.productList.controls[j].patchValue({
       rate: 100,
@@ -193,7 +205,7 @@ export class AdminLearnerPaymentProductsComponent implements OnInit {
     this.productList.controls[j]['controls'].rate.disable();
     this.changeProductPrice();
   }
-
+  // add more section
   addOption() {
     this.catItem = [];
     this.prods = [];
@@ -204,7 +216,7 @@ export class AdminLearnerPaymentProductsComponent implements OnInit {
     this.prodMuti.push(this.prods);
     this.prodItems.push(this.prodItem);
   }
-
+  // delete more section
   removeOption(index, confirmModal) {
     this.modalService
     .open(confirmModal)
@@ -218,7 +230,7 @@ export class AdminLearnerPaymentProductsComponent implements OnInit {
       this.changeProductPrice();
       });
   }
-
+  // user select type
   selectType(dis, j) {
     this.emptyProductList(j);
     this.productsListService
@@ -227,6 +239,7 @@ export class AdminLearnerPaymentProductsComponent implements OnInit {
         this.categories[j].catItem = cat["Data"][0]['ProdType'];
       });
   }
+  // user select category
   selectCat(dis, j) {
     this.emptyProductList(j);
     this.prodCatId = dis.value;
@@ -236,6 +249,7 @@ export class AdminLearnerPaymentProductsComponent implements OnInit {
       this.prodMuti[j].prods = prod["Data"];
     });
   }
+  // user select product
   selectProd(dis, j) {
     this.productsListService
     .getProdItem(dis.value)
@@ -246,6 +260,7 @@ export class AdminLearnerPaymentProductsComponent implements OnInit {
       this.changeProductPrice();
     });
   }
+  // patch value to form group
   patchProductItems(j){
     this.productList.controls[j].patchValue({
       product: this.prodItems[j].prodItem[0].ProductId
@@ -292,16 +307,23 @@ export class AdminLearnerPaymentProductsComponent implements OnInit {
       this.productList.controls[i].patchValue({
         subTotal: this.sellSubtotal < 0 ? 0 : this.sellSubtotal
       });
+      if (this.productList.controls[i].value.subTotal < this.productList.controls[i].value.subMoney || this.sellPrice < 0)
+      {this.showErrMsgSub = true;} else {this.showErrMsgSub = false;}
     });
   }
 
   // search new users patch new data (3)
   patchProd() {
+    this.showErrMsgSub = false;
+    this.showErrMsg = false;
+    this.showErrMsgSub = false;
     this.productList.controls.forEach((item, index) => {
       this.productList.removeAt(index);
     });
     this.productList.push(this.productListGroup);
-    this.productListForm.value.paymentMethod = 1;
+    this.productListForm.patchValue({
+      paymentMethod: null
+    });
   }
 
   // close alert
@@ -312,17 +334,23 @@ export class AdminLearnerPaymentProductsComponent implements OnInit {
     this.errorAlert = false;
   }
 
+  compareFn(c1,c2): boolean {
+    return c1 && c2 ? c1.id === c2.id : c1 === c2;
+  }
+
   // reload   (1)
   ngOnInit() {
+    // init framework of the user interface
     this.categories.push(this.catItem);
     this.prodMuti.push(this.prods);
     this.prodItems.push(this.prodItem);
 
-    this.activatedRouter.paramMap.subscribe((obs: ParamMap) => {
+    this.activatedRouter.paramMap
+    .subscribe((obs: ParamMap) => {
       this.learnerId = parseInt(obs.get("id"));
       this.patchProd();
     });
-    //(2)
+    // init types instance of the user interface, waiting select (2)
     this.productsListService.getProdType().subscribe(types => {
       this.typeItem = types["Data"];
       this.types.push(this.typeItem);
