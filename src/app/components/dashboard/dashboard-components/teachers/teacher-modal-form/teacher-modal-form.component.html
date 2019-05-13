@@ -247,7 +247,7 @@
         <div class='row'>
           <div class='col-12 t_mf_label' style='text-align: center'>
             Languages:
-            <small class='text-danger errorfontsmall' style='text-align: center'
+            <small class='text-danger errorfontsmall' style='text-align: center;margin-left:10px'
                   *ngIf='updateForm.get("Language").invalid && updateForm.get("Language").touched && updateForm.get("Language").errors?.required'>required</small>
           </div>
           <div class='col-12 t_mf_language' [class.t_mf_error_div]='updateForm.get("Language").invalid &&
@@ -255,11 +255,11 @@
             <div class='row'>
               <!--ngFor-->
               <div *ngFor='let i of languageOptions' class='col-3 t_mf_language_option'>
-                <label for={{i.LangName}} class='t_mf_label'>{{i.LangName}} &nbsp;</label>
+                <label for={{i.LangName}} class=''>{{i.LangName}}&nbsp;&nbsp;</label>
                 <input #lan type="checkbox" name={{i.LangName}} id={{i.LangName}} value={{i.LangId}}
                   formControlName='Language'
                   [class.t_mf_error_border]='updateForm.get("Language").invalid && updateForm.get("Language").touched'
-                  [checked]='isLanguageCheck(i.LangId)'>
+                  [checked]='setDefaultLanguageSelection(i.LangId)'>
               </div>
             </div>
           </div>
@@ -285,7 +285,7 @@
           <div class='col-12 t_mf_branch_label'>Please Select Branches:</div>
           <div *ngFor='let i of week' class='col-3'>
             <div class='row t_mf_branch_weeks'>
-              <div class='col-12 t_mf_branch_week' (click)='showBranchOptions($event,i)'>{{i}}</div>
+              <div class='col-12 t_mf_branch_week' (click)='toggleBranchOptions($event,i)'>{{i}}</div>
               <div id={{i}} style="display:none" class='col-12'>
                 <div *ngFor='let j of orgOptions' class='col-12'>
                   <label class='col-11 t_mf_branch_orgs'>{{j.OrgName.replace('BRANCH','').toLowerCase()}}</label>
