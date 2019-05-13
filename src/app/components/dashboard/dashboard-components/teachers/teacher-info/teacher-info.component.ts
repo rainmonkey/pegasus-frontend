@@ -13,7 +13,7 @@ import { TeacherDeleteModalComponent } from '../teacher-delete-modal/teacher-del
   styleUrls: ['./teacher-info.component.css']
 })
 export class TeacherInfoComponent implements OnInit {
-  //what columns showed in the info page, can get from back-end in the future.
+  //what columns showed in the info page, can get from back-end in the future. must as same as database
   public columnsToShow: Array<string> = ['FirstName', 'LastName', 'Gender', 'MobilePhone', 'Email'];
   //teachers data from database
   public teachersList: Array<any>;
@@ -21,7 +21,7 @@ export class TeacherInfoComponent implements OnInit {
   public teachersListCopy: Array<any>;
   //how many datas in teachersList
   public teachersListLength: number; s
-  //search by which columns 
+  //search by which columns, determine by users
   public columnsToSearch: Array<string> = [];
   public currentPage: number = 1;
   public pageSize: number = 10;
@@ -32,7 +32,7 @@ export class TeacherInfoComponent implements OnInit {
     this.getDataFromSever();
   }
 
-  /////////////////////////////////////////////data handlers/////////////////////////////////////////////////
+  /////////////////////////////////////////////////data handlers////////////////////////////////////////////////////
   /*
     get data from service
   */
@@ -44,7 +44,7 @@ export class TeacherInfoComponent implements OnInit {
         this.teachersList = res.Data;
         this.teachersListCopy = this.teachersList;
         this.teachersListLength = res.Data.length;
-        //console.log(this.teachersList)
+        console.log(this.teachersList)
         //this.toggleLoadingGif('show')  'show' 'hide'
         this.toggleLoadingGif('hide');
       },
@@ -116,6 +116,9 @@ export class TeacherInfoComponent implements OnInit {
     this.ngTable.sorting(this.teachersList, orderBy);
   }
 
+  /*
+    search method
+  */
   onSearch(event) {
     if (this.columnsToSearch.length == 0) {
       return;

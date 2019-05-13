@@ -1,4 +1,5 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { TeachersService } from './../../../../../services/http/teachers.service';
+import { Component, OnInit, Input, ViewChild } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
@@ -7,13 +8,167 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
   styleUrls: ['./teacher-update-modal.component.css']
 })
 export class TeacherUpdateModalComponent implements OnInit {
+  public errorMessage: string = '';
 
   @Input() command;
   @Input() whichTeacher;
 
-  constructor(public activeModal: NgbActiveModal) { }
+  @ViewChild('modalUpdateFormComponent') modalUpdateFormComponentObj;
+
+  constructor(public activeModal: NgbActiveModal, private teachersService: TeachersService) { }
 
   ngOnInit() {
   }
 
+  onSubmit() {
+    this.showLoadingGif();
+    let vailadValue = this.checkInputVailad();
+    if(vailadValue !== null){
+      this.stringifySubmitStr(vailadValue)
+    }
+    console.log('aaaaa')
+  }
+
+
+
+  showLoadingGif() {
+
+  }
+
+  checkInputVailad() {
+    let valueToSubmit = this.modalUpdateFormComponentObj.updateForm.value;
+    //once click save btn, touch all inputs form with for-loop. In order to trigger Validator
+    for (let i in this.modalUpdateFormComponentObj.updateForm.controls) {
+      this.modalUpdateFormComponentObj.updateForm.controls[i].touched = true;
+    }
+
+    for (let j in valueToSubmit) {
+      if (valueToSubmit[j] == null) {
+        if (j == 'DayOfWeek') {
+          continue;
+        }
+        else {
+          this.errorMessage = 'Please fill all required inputs.'
+          return null;
+        }
+      }
+    }
+    return this.prepareSubmitData(valueToSubmit)
+  }
+
+  prepareSubmitData(valueToSubmit) {
+    valueToSubmit.Gender = this.checkGender(valueToSubmit);
+    valueToSubmit.Language = this.checkLanguages();
+    valueToSubmit.DayOfWeek = this.checkOrgs();
+    valueToSubmit.Qualificatiion = this.checkQualifications(valueToSubmit);
+    return valueToSubmit;
+  }
+
+  stringifySubmitStr(vailadValue){
+    console.log(vailadValue)
+    this.errorMessage = '';
+    let submit = new FormData();
+    submit.append('details',JSON.stringify(vailadValue));
+    submit.append('Photo',this.modalUpdateFormComponentObj.photoToSubmit);
+    submit.append('IdPhoto',this.modalUpdateFormComponentObj.idPhotoToSubmit);
+    this.submitByMode(submit)
+  }
+
+   /*
+    push the data to diffrent api
+  */
+ submitByMode(submitData) {
+  //while push a stream of new data
+  if (this.command == 0) {
+
+    this.teachersService.addNew(submitData).subscribe(
+      (res) => {
+        console.log('success', res);
+        
+      },
+      (err) => {
+        //this.errorMessage = err.error.ErrorMessage;
+        console.log('Error', err);
+      }
+    );
+  }
+  //while update data
+  else if (this.command == 2) {
+
+  }
+}
+
+
+
+  checkGender(valueToSubmit) {
+    switch (valueToSubmit.Gender) {
+      case 'Female':
+        return 0;
+      case 'Male':
+        return 1;
+      case 'Other':
+        return 2;
+    }
+  }
+
+  /*
+   to check which language checked
+ */
+  checkLanguages() {
+    let languageBoxObj = this.modalUpdateFormComponentObj.languagesCheckBox._results;
+    let checkedLanguagesList = [];
+    for (let i in languageBoxObj) {
+      //whitchever languages is checked, add it to checkedLanguagesList
+      if (languageBoxObj[i].nativeElement.checked == true) {
+        checkedLanguagesList.push(Number(languageBoxObj[i].nativeElement.value));
+      }
+    }
+    return checkedLanguagesList;
+  }
+
+  
+  checkOrgs() {
+    //console.log(this.modalUpdateFormComponentObj)
+    let temBranches = this.modalUpdateFormComponentObj.branchesCheckBox._results;
+    let temBranchesList = [[], [], [], [], [], [], []];
+    
+    for (let i of temBranches) {
+      console.log(i.nativeElement.name )
+      if (i.nativeElement.checked == true) {
+        if (i.nativeElement.name == 'Monday') {
+          temBranchesList[0].push(Number(i.nativeElement.defaultValue))
+        }
+        if (i.nativeElement.name == 'Tuesday') {
+          temBranchesList[1].push(Number(i.nativeElement.defaultValue))
+        }
+        if (i.nativeElement.name == 'Wednsday') {
+          temBranchesList[2].push(Number(i.nativeElement.defaultValue))
+        }
+        if (i.nativeElement.name == 'Thursday') {
+          temBranchesList[3].push(Number(i.nativeElement.defaultValue))
+        }
+        if (i.nativeElement.name == 'Friday') {
+          temBranchesList[4].push(Number(i.nativeElement.defaultValue))
+        }
+        if (i.nativeElement.name == 'Satday') {
+          temBranchesList[5].push(Number(i.nativeElement.defaultValue))
+        }
+        if (i.nativeElement.name == 'Sunday') {
+          temBranchesList[6].push(Number(i.nativeElement.defaultValue))
+        }
+      }
+    }
+    return temBranchesList;
+  }
+
+  checkQualifications(valueToSubmit) {
+    let checkQualificationsList = [];
+    if (valueToSubmit.Qualificatiion !== undefined) {
+      checkQualificationsList.push(Number(valueToSubmit.Qualificatiion));
+    }
+
+   
+      return checkQualificationsList;
+
+  }
 }

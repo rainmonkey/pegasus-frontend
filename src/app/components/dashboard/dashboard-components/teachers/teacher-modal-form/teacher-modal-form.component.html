@@ -21,14 +21,18 @@
               </div>
             </div>
             <div class='row t_mf_img' id='img_left'>
-              <img src='../../../../../../assets/images/teacher-img/photo.jpg' id='userPhoto'/>
-              <input *ngIf='!readOnlyFlag' type="file" name="file1" id="file1" class="tl_muf_upload_img" accept="image/*" (change)='preViewImg($event,0)' /> 
-              <label *ngIf='!readOnlyFlag' for="file1" class='btn btn-sm tl_mf_upload_btn'><span class='fas fa-plus tl_mf_upload_title'></span></label> 
+              <img src='' id='userPhoto' />
+              <input *ngIf='!readOnlyFlag' type="file" name="file1" id="file1" class="tl_muf_upload_img"
+                accept="image/*" (change)='preViewImg($event,0)' />
+              <label *ngIf='!readOnlyFlag' for="file1" class='btn btn-sm tl_mf_upload_btn'><span
+                  class='fas fa-plus tl_mf_upload_title'></span></label>
             </div>
             <div class='row t_mf_img' id='img_right' style="display:none">
-              <img src="../../../../../../assets/images/teacher-img/id.png" id='userIdPhoto'>
-              <input *ngIf='!readOnlyFlag' type="file" name="file2" id="file2" class="tl_muf_upload_img" accept="image/*" (change)='preViewImg($event,1)' /> 
-              <label *ngIf='!readOnlyFlag' for="file2" class='btn btn-sm tl_mf_upload_btn'><span class='fas fa-plus tl_mf_upload_title'></span></label> 
+              <img src="" id='userIdPhoto'>
+              <input *ngIf='!readOnlyFlag' type="file" name="file2" id="file2" class="tl_muf_upload_img"
+                accept="image/*" (change)='preViewImg($event,1)' />
+              <label *ngIf='!readOnlyFlag' for="file2" class='btn btn-sm tl_mf_upload_btn'><span
+                  class='fas fa-plus tl_mf_upload_title'></span></label>
             </div>
           </div>
 
@@ -42,9 +46,14 @@
                   <div class='row'>
                     <div class='col-6'>
                       <label for='FirstName' style='margin-right: 10px' class='t_mf_label'>First Name:</label>
+                      <small class='text-danger errorfontsmall' style='text-align: center'
+                        *ngIf='updateForm.get("FirstName").invalid && updateForm.get("FirstName").touched && updateForm.get("FirstName").errors?.required'>required</small>
                     </div>
                     <div class='col-6'>
-                      <label for='LastName' style='margin-left: 10px' class='t_mf_label'>Last Name:</label>
+                      <label for='LastName' style='margin-left: 10px;margin-right:10px' class='t_mf_label'>Last
+                        Name:&nbsp;</label>
+                      <small class='text-danger errorfontsmall' style='text-align: center'
+                        *ngIf='updateForm.get("LastName").invalid && updateForm.get("LastName").touched && updateForm.get("LastName").errors?.required'>required</small>
                     </div>
                   </div>
                   <!--line1 input-->
@@ -68,9 +77,13 @@
                   <div class='row'>
                     <div class='col-6'>
                       <label for='Dob' style='margin-right: 10px' class='t_mf_label'>Date Of Birth:</label>
+                      <small class='text-danger col-12 errorfontsmall' style='text-align: center'
+                        *ngIf='updateForm.get("Dob").invalid && updateForm.get("Dob").touched && updateForm.get("Dob").errors?.required'>required</small>
                     </div>
                     <div class='col-6'>
-                      <label for='Gender' style='margin-left: 10px' class='t_mf_label'>Gender:</label>
+                      <label for='Gender' style='margin-left: 10px;margin-right:10px' class='t_mf_label'>Gender:</label>
+                      <small class='text-danger col-12 errorfontsmall' style='text-align: center'
+                        *ngIf='updateForm.get("Gender").invalid && updateForm.get("Gender").touched && updateForm.get("Gender").errors?.required'>required</small>
                     </div>
                   </div>
                   <!--line2 input-->
@@ -84,9 +97,9 @@
                       <select name='Gender' type="text" style='margin-left: 10px' class='col-12 t_mf_input'
                         formControlName='Gender'
                         [class.t_mf_error_border]='updateForm.get("Gender").invalid && updateForm.get("Gender").touched'>
-                        <option value="0">Female</option>
-                        <option value="1">Male</option>
-                        <option value="2">Other</option>
+                        <option value="Female">Female</option>
+                        <option value="Male">Male</option>
+                        <option value="Other">Other</option>
                       </select>
                     </div>
                   </div>
@@ -98,9 +111,14 @@
                   <div class='row'>
                     <div class='col-6'>
                       <label for='MobilePhone' style='margin-right: 10px' class='t_mf_label'>Mobile Phone:</label>
+                      <small class='text-danger col-12 errorfontsmall' style='text-align: center'
+                        *ngIf='updateForm.get("MobilePhone").invalid && updateForm.get("MobilePhone").touched && updateForm.get("MobilePhone").errors?.required'>required</small>
                     </div>
                     <div class='col-6'>
-                      <label for='HomePhone' style='margin-left: 10px' class='t_mf_label'>Home Phone:</label>
+                      <label for='HomePhone' style='margin-left: 10px;margin-right: 10px' class='t_mf_label'>Home
+                        Phone:</label>
+                      <small class='text-danger errorfontsmall' style='text-align: center'
+                        *ngIf='updateForm.get("HomePhone").invalid && updateForm.get("HomePhone").touched && updateForm.get("HomePhone").errors?.required'>required</small>
                     </div>
                   </div>
                   <!--line3 input-->
@@ -124,9 +142,14 @@
                   <div class='row'>
                     <div class='col-6'>
                       <label for='Email' style='margin-right: 10px' class='t_mf_label'>Email:</label>
+                      <small class='text-danger errorfontsmall' style='text-align: center'
+                        *ngIf='updateForm.get("Email").invalid && updateForm.get("Email").touched && updateForm.get("Email").errors?.required'>required</small>
                     </div>
                     <div class='col-6'>
-                      <label for='IRDNumber' style='margin-left: 10px' class='t_mf_label'>IRDNumber:</label>
+                      <label for='IRDNumber' style='margin-left: 10px;margin-right: 10px'
+                        class='t_mf_label'>IRDNumber:</label>
+                      <small class='text-danger errorfontsmall' style='text-align: center'
+                        *ngIf='updateForm.get("IRDNumber").invalid && updateForm.get("IRDNumber").touched && updateForm.get("IRDNumber").errors?.required'>required</small>
                     </div>
                   </div>
                   <!--line4 input-->
@@ -151,7 +174,9 @@
               <!--line5 label-->
               <div class='row'>
                 <div class='col-12'>
-                  <label for='Qualificatiion' class='t_mf_label'>Qualification:</label>
+                  <label for='Qualificatiion' class='t_mf_label' style="margin-right: 10px">Qualification:</label>
+                  <small class='text-danger errorfontsmall' style='text-align: center'
+                    *ngIf='updateForm.get("Qualificatiion").invalid && updateForm.get("Qualificatiion").touched && updateForm.get("Qualificatiion").errors?.required'>required</small>
                 </div>
               </div>
               <!--line5 input-->
@@ -178,12 +203,18 @@
             <div class='row'>
               <div class='col-4'>
                 <label for='IDType' class='t_mf_label'>ID Type:</label>
+                <small class='text-danger errorfontsmall' style='text-align: center'
+                  *ngIf='updateForm.get("IDType").invalid && updateForm.get("IDType").touched && updateForm.get("IDType").errors?.required'>required</small>
               </div>
               <div class='col-4'>
                 <label for='IDNumber' style='margin:0 5px' class='t_mf_label'>ID Number:</label>
+                <small class='text-danger errorfontsmall' style='text-align: center'
+                  *ngIf='updateForm.get("IDNumber").invalid && updateForm.get("IDNumber").touched && updateForm.get("IDNumber").errors?.required'>required</small>
               </div>
               <div class='col-4'>
                 <label for='ExpiryDate' style='margin-left: 10px' class='t_mf_label'>Expiry Date:</label>
+                <small class='text-danger errorfontsmall' style='text-align: center'
+                  *ngIf='updateForm.get("ExpiryDate").invalid && updateForm.get("ExpiryDate").touched && updateForm.get("ExpiryDate").errors?.required'>required</small>
               </div>
             </div>
 
@@ -193,7 +224,7 @@
                 <select name='IDType' type="text" class='col-12 t_mf_input' formControlName='IDType'
                   [class.t_mf_error_border]='updateForm.get("IDType").invalid && updateForm.get("IDType").touched'>
                   <!--让后台传id type-->
-                  <option value=""></option>
+                  <option *ngFor='let i of idTypeList' value={{i.idTypeId}}>{{i.idTypeName}}</option>
                 </select>
               </div>
               <div class='col-4'>
@@ -216,13 +247,16 @@
         <div class='row'>
           <div class='col-12 t_mf_label' style='text-align: center'>
             Languages:
+            <small class='text-danger errorfontsmall' style='text-align: center'
+                  *ngIf='updateForm.get("Language").invalid && updateForm.get("Language").touched && updateForm.get("Language").errors?.required'>required</small>
           </div>
-          <div class='col-12 t_mf_language'>
+          <div class='col-12 t_mf_language' [class.t_mf_error_div]='updateForm.get("Language").invalid &&
+          updateForm.get("Language").touched'>
             <div class='row'>
               <!--ngFor-->
               <div *ngFor='let i of languageOptions' class='col-3 t_mf_language_option'>
                 <label for={{i.LangName}} class='t_mf_label'>{{i.LangName}} &nbsp;</label>
-                <input type="checkbox" name={{i.LangName}} id={{i.LangName}} value={{i.LangId}}
+                <input #lan type="checkbox" name={{i.LangName}} id={{i.LangName}} value={{i.LangId}}
                   formControlName='Language'
                   [class.t_mf_error_border]='updateForm.get("Language").invalid && updateForm.get("Language").touched'
                   [checked]='isLanguageCheck(i.LangId)'>
@@ -232,7 +266,7 @@
         </div>
       </div>
 
-      <!--line8-->
+      <!--line8 detail-->
       <div class='col-12' style="margin-top:10px">
         <div *ngIf='command == 1' class='row'>
           <div class='col-12 t_mf_label' style='text-align: center'>Available Days:</div>
@@ -244,6 +278,28 @@
           </div>
         </div>
       </div>
+
+      <!--line8 add/update-->
+      <div class='col-12'>
+        <div *ngIf='command !== 1' class='row'>
+          <div class='col-12 t_mf_branch_label'>Please Select Branches:</div>
+          <div *ngFor='let i of week' class='col-3'>
+            <div class='row t_mf_branch_weeks'>
+              <div class='col-12 t_mf_branch_week' (click)='showBranchOptions($event,i)'>{{i}}</div>
+              <div id={{i}} style="display:none" class='col-12'>
+                <div *ngFor='let j of orgOptions' class='col-12'>
+                  <label class='col-11 t_mf_branch_orgs'>{{j.OrgName.replace('BRANCH','').toLowerCase()}}</label>
+                  <!--attribute NAME is important, do not touch-->
+                  <input #branches class='col-1 tl_muf_orgName' type='checkbox' name={{i}} value={{j.OrgId}}>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+
     </div>
   </form>
 </div>
