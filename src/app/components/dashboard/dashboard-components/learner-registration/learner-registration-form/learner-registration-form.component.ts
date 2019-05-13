@@ -83,7 +83,10 @@ export class LearnerRegistrationFormComponent implements OnInit {
           hasExamed: [''],
           teacherLevel: [''],
           teacherName: [''],
+          customday: [''],
           customTime: [''],
+          customHour: [''],      
+          customMinute: [''],                           
           location: ['']
         })
       ]),
@@ -110,17 +113,17 @@ export class LearnerRegistrationFormComponent implements OnInit {
   selectLlevel() {
     this.isSelectedLevel = true;
   }
-  // selectCourse(name: string) {
-  //   this.selectedCourse = name;
-  //   this.registrationService.getGroupCourse()
-  //     .subscribe(
-  //       data => {
-  //         this.guitars = data.guitar;
-  //         this.pianos = data.piano;
-  //         this.drums = data.drum;
-  //       }
-  //     );
-  // }
+  selectCourse(name: string) {
+    this.selectedCourse = name;
+    this.registrationService.getGroupCourse()
+      .subscribe(
+        data => {
+          this.guitars = data.guitar;
+          this.pianos = data.piano;
+          this.drums = data.drum;
+        }
+      );
+  }
  
   onSubmit() {
     // encapsulate learner form data
@@ -212,6 +215,7 @@ export class LearnerRegistrationFormComponent implements OnInit {
     console.log('phtotosfdsf',this.selectedPhoto)
   }
   chooseCourse(id: any) {
+    console.log(id);
     document.getElementById('groupCourse').style.display = 'none';
     document.getElementById('customCourse').style.display = 'none';
     document.getElementById(id).style.display = 'block';

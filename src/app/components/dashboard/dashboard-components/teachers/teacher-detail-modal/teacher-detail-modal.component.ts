@@ -7,7 +7,6 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
   styleUrls: ['./teacher-detail-modal.component.css']
 })
 export class TeacherDetailModalComponent implements OnInit {
-  public a = [{},{},{},{},{},{},{},{}]
   @Input() command;
   @Input() whichTeacher;
 

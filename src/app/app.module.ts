@@ -17,7 +17,6 @@ import {DatePipe} from '@angular/common';
 
 // Pipes
 import { CommandFormatPipe } from './shared/pipes/command-format.pipe';
-import { GenderFormatPipe } from './shared/pipes/gender-format.pipe';
 import { OrgFormatPipe } from './shared/pipes/org-format.pipe';
 import { WeekFormatPipe } from './shared/pipes/week-format.pipe';
 
@@ -84,7 +83,6 @@ import { TeacherPanelComponent } from './components/dashboard/dashboard-componen
     CoursesPanelComponent,
     CoursesDetailComponent,
     CoursesListComponent,
-    GenderFormatPipe,
     OrgFormatPipe,
     WeekFormatPipe,
     LearnerRegistrationFormComponent,

@@ -35,6 +35,7 @@
 .t_mf_label{
     font-weight: bold;
     margin-bottom: 0px;
+    font-size: 14px;
 }
 .t_mf_input{
     border: none;
@@ -53,17 +54,23 @@
     text-align: center;
     height: 30px;
     line-height: 30px;
+    font-weight: normal!important;
 }
 .t_mf_language_option input{
     zoom: 150%;
     line-height: 30px;
     position: relative;
-    top:3px;
+    top:1px;
 }
 
 .t_mf_error_border{
     border: 1px solid #dc3545;
     border-radius:5px;
+    outline: none;
+}
+.t_mf_error_div{
+    border: 1px solid #dc3545;
+    border-radius: 5px;
     outline: none;
 }
 .t_mf_week{
@@ -83,7 +90,7 @@
 .tl_mf_upload_title{
     position: relative;
     left: -7px;
-    top:-5px;
+    top:-4px;
 }
 .tl_muf_upload_img{
     opacity: 0;
@@ -107,4 +114,27 @@
     cursor: pointer;
     background:   #343a40;
     color: white;
+}
+.t_mf_branch_label{
+    font-weight: bold;
+    font-size:14px;
+    text-align: center;
+    margin-bottom: 10px!important;
+}
+.t_mf_branch_weeks{
+    margin:5px!important;
+    border: 1px solid lightgrey;
+    border-radius: 3px;
+}
+.t_mf_branch_week{
+    text-align: center;
+    margin-bottom: 5px;
+    background: rgb(173, 216, 230, 0.1);
+}
+.t_mf_branch_week:hover{
+    cursor: pointer;
+}
+.t_mf_branch_orgs{
+    text-transform: capitalize;
+    text-align: center;
 }
