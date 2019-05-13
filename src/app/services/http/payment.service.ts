@@ -12,7 +12,7 @@ export class PaymentService {
 
   constructor(private http: HttpClient) { }
 
-  getInvoice(id): Observable<any[]> {
+  getInvoice(id){
     return this.http.get<any[]>(this.baseUrl + 'invoice/' + id);
   }
   addFund(fund) {
