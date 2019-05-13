@@ -7,6 +7,9 @@ import { MatButtonModule, MatFormFieldModule, MatInputModule } from '@angular/ma
 import { NgModule } from '@angular/core';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { routing } from '../app/app-routing.module';
+import { FullCalendarModule} from 'ng-fullcalendar';
+import {DatePipe} from '@angular/common';
+
 // Guards
 
 // Services
@@ -119,9 +122,10 @@ import { TeacherPanelComponent } from './components/dashboard/dashboard-componen
     MatFormFieldModule,
     MatInputModule,
     routing,
+    FullCalendarModule
   ],
   providers: [
-
+    DatePipe
   ],
   entryComponents:[
     TeacherDeleteModalComponent,
