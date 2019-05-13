@@ -141,7 +141,7 @@ export class AdminLearnerPaymentProductsComponent implements OnInit {
     //     console.log(this.modalUpdateFormComponentObj.updateForm.controls[j])
     //   }
   //validation method
-  validMethod(contentProd){
+  validMethod(contentProd) {
     // read-only
     // this.productListForm.controls[0].touched = true;
     // this.paymentMethod.errors.invalid = true;
@@ -229,6 +229,10 @@ export class AdminLearnerPaymentProductsComponent implements OnInit {
       this.prodItems.splice(index, 1);
       this.changeProductPrice();
       });
+  }
+  // select payment method
+  changePayment(){
+    this.showErrMsg = false;
   }
   // user select type
   selectType(dis, j) {

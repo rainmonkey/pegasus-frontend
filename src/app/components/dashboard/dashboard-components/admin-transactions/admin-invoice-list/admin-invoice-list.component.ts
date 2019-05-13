@@ -24,7 +24,7 @@ export class AdminInvoiceListComponent implements OnInit {
   public errMsgO;
   constructor(
     private modalService: NgbModal,
-    private ngTable:NgbootstraptableService,
+    private ngTable: NgbootstraptableService,
     // private learnersservice: LearnersService,
     private teachersService: TeachersService
     ) { }
@@ -33,10 +33,12 @@ export class AdminInvoiceListComponent implements OnInit {
     this.getData();
   }
 
+  // modal method
   open(){
     const modalRef = this.modalService.open(AdminInvoiceEditModalComponent, { size: 'lg' });
   }
 
+  // get data from server side
   getData() {
     this.teachersService.getTeachersInfo().subscribe(
       (res) => {
@@ -52,12 +54,13 @@ export class AdminInvoiceListComponent implements OnInit {
       });
   }
 
+  // sort name
   onSort(orderBy) {
     this.ngTable.sorting(this.learnerList, orderBy);
   }
-
+  // search name
   onSearch(event){
-    //should init original list and length
+    // should init original list and length
     this.learnerList = this.temLearnerList;
     this.learnerListLength = this.temLearnerListLength;
 

@@ -30,8 +30,8 @@
           <tr *ngFor = 'let i of learnerList | slice: (page-1)* pageSize : (page-1) * pageSize + pageSize; let j = index'>
             <th scope="row">{{j+1}}</th>
             <td>{{i.FirstName}}</td>
-            <td>{{i.LastName}}</td>
             <td>{{i.MiddleName}}</td>
+            <td>{{i.LastName}}</td>
             <td>{{i.OwingFee}}</td>
             <td>{{i.Email}}</td>
             <td>{{i.Status}}</td>
