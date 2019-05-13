@@ -17,7 +17,6 @@ import {DatePipe} from '@angular/common';
 
 // Pipes
 import { CommandFormatPipe } from './shared/pipes/command-format.pipe';
-import { GenderFormatPipe } from './shared/pipes/gender-format.pipe';
 import { OrgFormatPipe } from './shared/pipes/org-format.pipe';
 import { WeekFormatPipe } from './shared/pipes/week-format.pipe';
 
@@ -86,7 +85,6 @@ import { TestoneComponent } from './components/testcomponent/testone/testone.com
     FooterComponent,
     CoursesPanelComponent,
     CoursesListComponent,
-    GenderFormatPipe,
     OrgFormatPipe,
     WeekFormatPipe,
     LearnerRegistrationFormComponent,

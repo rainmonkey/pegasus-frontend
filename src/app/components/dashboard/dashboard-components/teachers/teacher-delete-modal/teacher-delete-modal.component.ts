@@ -21,6 +21,9 @@ export class TeacherDeleteModalComponent implements OnInit {
   ngOnInit() {
   }
 
+  /*
+    delete data
+  */
   delete(){
     let teacherId = this.whichTeacher.TeacherId;
     this.teachersService.deleteTeacher(teacherId).subscribe(
@@ -32,7 +35,6 @@ export class TeacherDeleteModalComponent implements OnInit {
       (err) => {
         //失败信息
         this.isDeleteFail = true;
-        console.log('err',err)
       }
     );
   }

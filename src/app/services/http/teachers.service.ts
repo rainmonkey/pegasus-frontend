@@ -7,6 +7,7 @@ import { environment } from '../../../environments/environment.prod';
 })
 export class TeachersService {
   private baseUrl: any = environment.baseUrl;
+  private url = 'http://192.168.178.76:5000/api/'
 
   constructor(private http:HttpClient) { 
   }
@@ -21,5 +22,9 @@ export class TeachersService {
 
   getDropdownOptions():any{
     return this.http.get(this.baseUrl + 'qualificationslanguagesorgs');
+  }
+
+  addNew(data):any{
+    return this.http.post(this.baseUrl+'teacher',data)
   }
 }
