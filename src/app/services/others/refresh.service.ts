@@ -18,6 +18,5 @@ export class RefreshService {
     let requestFlagToReturn = this.requestFlag;
     this.requestFlag = false;
     return [requestFlagToReturn,this.tutorToDelete];
-
   }
 }

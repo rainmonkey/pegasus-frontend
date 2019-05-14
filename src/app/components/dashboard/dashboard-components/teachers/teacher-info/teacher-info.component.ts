@@ -206,5 +206,4 @@ export class TeacherInfoComponent implements OnInit {
     }
   }
 
-
 }
