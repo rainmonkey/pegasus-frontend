@@ -35,9 +35,9 @@
               <td>{{i.CourseName}}</td>
               <td>{{i.TrailCourse}}</td>
               <td>
-                <a (click)='openE()' style="cursor: pointer;"><u>Edit</u></a><br>
-                <a (click)='openCan()' style="cursor: pointer;"><u>Confirm</u></a><br>
-                <a (click)='openCon()' style="cursor: pointer;"><u>Cancel</u></a>
+                <a (click)='openE()' style="cursor: pointer;"><button class="btn btn-primary" style="width: 70px; height: 20px; font-size: 12px; line-height: 12px" >Edit</button></a><br>
+                <a (click)='openCon(confirmModal,1)' style="cursor: pointer;"><button class="btn btn-success" style="width: 70px; height: 20px; font-size: 12px; line-height: 12px">Confirm</button></a><br>
+                <a (click)='openCon(confirmModal,2)' style="cursor: pointer;"><button class="btn btn-danger" style="width: 70px; height: 20px; font-size: 12px; line-height: 12px">Cancel</button></a>
               </td>
             </tr>
           </tbody>
@@ -50,6 +50,47 @@
       </div>
     </div>
   </div>
+
+
+  <ng-template #confirmModal let-modal>
+      <div class="modal-header m-2">
+        <h4>Please Confirm</h4>
+        <button
+          type="button"
+          class="close"
+          aria-label="Close"
+          (click)="modal.dismiss('Cross click')"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <!-- modal-body -->
+      <div class="container">
+        <div class="d-flex justify-content-center row">
+          <p *ngIf="confirmButton">Please confirm the course has been achieved</p>
+          <p *ngIf="cancelButton">Please confirm the course has been canceled</p>
+          <div *ngIf="cancelButton">
+            <div class="row mb-2">
+              <label class="mt-2">Canceled Reason</label>
+              <input class="form-control" type="text"/>
+
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-dark" (click)="modal.close('Save')">
+          Confirm
+        </button>
+        <button
+          type="button"
+          class="btn btn-outline-dark"
+          (click)="modal.dismiss('Cross click')"
+        >
+          Cancel
+        </button>
+      </div>
+    </ng-template>
 
 
   <!-- <div class="form-group row justify-content-center">

@@ -1,24 +1,14 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../environments/environment.prod';
-
 @Injectable({
   providedIn: 'root'
 })
-export class CoursesService {
+export class LearnerListService {
   private baseUrl: any = environment.baseUrl;
-
   constructor(private http:HttpClient) { }
 
-  getCourses():any{
-    return this.http.get(this.baseUrl +'courses');
-  }
-
-  addNew(data):any{
-    return this.http.post(this.baseUrl+'courses',data)
-  }
-
-  deleteCourse(courseId):any{
-    return this.http.delete(this.baseUrl + 'courses/' + courseId);
+  getLearnerList(){
+    return this.http.get(this.baseUrl+'learner')
   }
 }

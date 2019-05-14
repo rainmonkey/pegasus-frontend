@@ -36,13 +36,12 @@ import { AdminLearnerPaymentOtherComponent } from './components/dashboard/dashbo
 import { AdminLearnerPaymentSuccessComponent } from './components/dashboard/dashboard-components/admin-payment/admin-learner-payment-success/admin-learner-payment-success.component';
 import { FooterComponent } from './components/basic/footer/footer.component';
 import { CoursesPanelComponent } from './components/dashboard/dashboard-components/courses/courses-panel/courses-panel.component';
-import { CoursesDetailComponent } from './components/dashboard/dashboard-components/courses/courses-detail/courses-detail.component';
 import { CoursesListComponent } from './components/dashboard/dashboard-components/courses/courses-list/courses-list.component';
 import { LearnerRegistrationFormComponent } from './components/dashboard/dashboard-components/learner-registration/learner-registration-form/learner-registration-form.component';
 import { LearnerRegistrationEditComponent } from './components/dashboard/dashboard-components/learner-registration/learner-registration-edit/learner-registration-edit.component';
 import { SessionsPanelComponent } from './components/dashboard/dashboard-components/sessions/sessions-panel/sessions-panel.component';
 import { SessionsListViewComponent } from './components/dashboard/dashboard-components/sessions/sessions-list-view/sessions-list-view.component';
-import { SessionsEditModalComponent } from './components/dashboard/dashboard-components/sessions/sessions-list-view-modal/sessions-list-view-modal.component';
+import { SessionsEditModalComponent } from './components/dashboard/dashboard-components/sessions/sessions-edit-modal/sessions-edit-modal.component';
 import { SessionDetailModalComponent } from './components/dashboard/dashboard-components/sessions/session-detail-modal/session-detail-modal.component';
 import { AdminLearnerPanelComponent } from './components/dashboard/dashboard-components/admin-learner/admin-learner-panel/admin-learner-panel.component';
 import { AdminLearnerListComponent } from './components/dashboard/dashboard-components/admin-learner/admin-learner-list/admin-learner-list.component';
@@ -63,6 +62,10 @@ import { TeacherUpdateModalComponent } from './components/dashboard/dashboard-co
 import { TeacherModalFormComponent } from './components/dashboard/dashboard-components/teachers/teacher-modal-form/teacher-modal-form.component';
 import { TeacherInfoComponent } from './components/dashboard/dashboard-components/teachers/teacher-info/teacher-info.component';
 import { TeacherPanelComponent } from './components/dashboard/dashboard-components/teachers/teacher-panel/teacher-panel.component';
+import { CourseDetailModalComponent } from './components/dashboard/dashboard-components/courses/course-detail-modal/course-detail-modal.component';
+import { CourseDeleteModalComponent } from './components/dashboard/dashboard-components/courses/course-delete-modal/course-delete-modal.component';
+import { CourseModalFormComponent } from './components/dashboard/dashboard-components/courses/course-modal-form/course-modal-form.component';
+import { TestoneComponent } from './components/testcomponent/testone/testone.component';
 
 @NgModule({
   declarations: [
@@ -81,7 +84,6 @@ import { TeacherPanelComponent } from './components/dashboard/dashboard-componen
     TimePickerComponent,
     FooterComponent,
     CoursesPanelComponent,
-    CoursesDetailComponent,
     CoursesListComponent,
     OrgFormatPipe,
     WeekFormatPipe,
@@ -110,7 +112,11 @@ import { TeacherPanelComponent } from './components/dashboard/dashboard-componen
     TeacherDetailModalComponent,
     TeacherUpdateModalComponent,
     TeacherModalFormComponent,
-    TeacherPanelComponent
+    TeacherPanelComponent,
+    CourseDetailModalComponent,
+    CourseDeleteModalComponent,
+    CourseModalFormComponent,
+    TestoneComponent
   ],
   imports: [
     NgbModule,
@@ -133,7 +139,9 @@ import { TeacherPanelComponent } from './components/dashboard/dashboard-componen
     TeacherDetailModalComponent,
     TeacherUpdateModalComponent,
     AdminInvoiceEditModalComponent,
-    SessionsEditModalComponent,
+    CourseDeleteModalComponent,
+    CourseDetailModalComponent,
+    SessionsEditModalComponent
   ],
   bootstrap: [AppComponent]
 })
