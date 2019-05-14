@@ -3,7 +3,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { NgbootstraptableService } from 'src/app/services/others/ngbootstraptable.service';
 import { LearnersService } from '../../../../../services/http/learners.service';
 import { TeachersService } from '../../../../../services/http/teachers.service';
-import { SessionsListViewModalComponent } from '../sessions-list-view-modal/sessions-list-view-modal.component';
+import { SessionsEditModalComponent } from '../sessions-list-view-modal/sessions-list-view-modal.component';
 
 @Component({
   selector: 'app-sessions-list-view',
@@ -24,16 +24,17 @@ export class SessionsListViewComponent implements OnInit {
   public errMsgO;
   public titleArray = [
     '#',
-    'Learner',
-    'Room',
     'Teacher',
+    'Learner',
     'Course Name',
+    'Trial Course',
     'Begin Time',
     'End Time',
+    'Room',
+    'Branch',
     'Canceled',
     'Canceled Reason',
-    'Branch',
-    'Trial Course',
+
   ];
   constructor(
     private modalService: NgbModal,
@@ -47,8 +48,8 @@ export class SessionsListViewComponent implements OnInit {
   }
 
   // modal method
-  open(){
-    const modalRef = this.modalService.open(SessionsListViewModalComponent, { size: 'lg' });
+  openE(){
+    const modalRef = this.modalService.open(SessionsEditModalComponent, { size: 'lg' });
   }
 
   // get data from server side
@@ -69,7 +70,6 @@ export class SessionsListViewComponent implements OnInit {
 
   // sort name
   onSort(orderBy) {
-    console.log(orderBy)
     this.ngTable.sorting(this.learnerList, orderBy);
   }
   // search name
