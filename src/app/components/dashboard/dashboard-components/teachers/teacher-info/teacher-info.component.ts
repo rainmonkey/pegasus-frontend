@@ -26,7 +26,11 @@ export class TeacherInfoComponent implements OnInit {
   public currentPage: number = 1;
   public pageSize: number = 10;
 
-  constructor(private teachersService: TeachersService, private ngTable: NgbootstraptableService, private modalService: NgbModal, private refreshService: RefreshService) { }
+  constructor(
+    private teachersService: TeachersService, 
+    private ngTable: NgbootstraptableService,
+     private modalService: NgbModal, 
+     private refreshService: RefreshService) { }
 
   ngOnInit() {
     this.getDataFromSever();
