@@ -5,6 +5,10 @@ import { catchError } from 'rxjs/operators';
 import { throwError } from 'rxjs';
 import { environment } from '../../environments/environment.prod';
 
+
+@Injectable({ providedIn: 'root' })
+
+
 @Injectable({
   providedIn: 'root'
 })
@@ -18,8 +22,8 @@ export class RegistrationService {
 
   // get group course data from server
   getGroupCourse(): Observable<any> {
-    let url = 'http://localhost:5000/api';
-    return this.http.get(url+'/GroupCourseInstance');
+    //let url = 'http://localhost:5000/api';
+    return this.http.get(this.baseUrl+'/GroupCourseInstance');
   }
 
   // post student's data to server and catch error from server
