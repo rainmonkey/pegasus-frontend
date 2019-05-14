@@ -139,12 +139,8 @@ import { TestoneComponent } from './components/testcomponent/testone/testone.com
     TeacherDetailModalComponent,
     TeacherUpdateModalComponent,
     AdminInvoiceEditModalComponent,
-<<<<<<< HEAD
     CourseDeleteModalComponent,
     CourseDetailModalComponent
-=======
-    SessionsEditModalComponent,
->>>>>>> 62f69c7c2c791ccfa8caa23e98c337fb0bbdb2a9
   ],
   bootstrap: [AppComponent]
 })
