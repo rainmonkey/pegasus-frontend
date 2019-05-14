@@ -28,13 +28,18 @@ import { SessionsCalendarViewAdminComponent } from './components/dashboard/dashb
 import { SessionsCalendarViewTutorComponent } from './components/dashboard/dashboard-components/sessions/sessions-calendar-view-tutor/sessions-calendar-view-tutor.component';
 import { TeacherPanelComponent } from './components/dashboard/dashboard-components/teachers/teacher-panel/teacher-panel.component';
 import { TeacherInfoComponent } from './components/dashboard/dashboard-components/teachers/teacher-info/teacher-info.component';
+import { TestoneComponent } from './components/testcomponent/testone/testone.component';
 
 
 const routes: Routes = [
   { path: '', component: HomepageComponent, canActivate: [DashboardRestrictGuard],
     children: [
+      // Testing path
+      {
+        path:'testone', component: TestoneComponent,
+      },
       // Payment Area
-      { path: 'payment/invoice', pathMatch: 'prefix', component: AdminLearnerPaymentPanelComponent, 
+      { path: 'payment/invoice', pathMatch: 'prefix', component: AdminLearnerPaymentPanelComponent,
         children:[
           { path: 'pay/:id', component: AdminLearnerPaymentInvoiceComponent },
           { path: 'pay/success', component: AdminLearnerPaymentSuccessComponent },
@@ -59,9 +64,10 @@ const routes: Routes = [
       // Transaction Area
       { path: 'transaction', component: TransactionsPanelComponent,
         children: [
-          { path: 'invoices', component: AdminInvoiceListComponent},
-          { path: 'payments', component: AdminPaymentListComponent},
-          { path: 'sales', component: AdminSalesListComponent}
+          { path: 'invoices', component: AdminInvoiceListComponent },
+          { path: 'success', component: AdminLearnerPaymentSuccessComponent },
+          { path: 'payments', component: AdminPaymentListComponent },
+          { path: 'sales', component: AdminSalesListComponent }
         ]},
       // Teacher Area
       { path: 'tutors', component: TeacherPanelComponent,

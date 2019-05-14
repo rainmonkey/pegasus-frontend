@@ -1,6 +1,7 @@
 import { TeachersService } from './../../../../../services/http/teachers.service';
 import { Component, OnInit, Input, ViewChild } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { RefreshService } from 'src/app/services/others/refresh.service';
 
 @Component({
   selector: 'app-teacher-update-modal',
@@ -9,13 +10,14 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 })
 export class TeacherUpdateModalComponent implements OnInit {
   public errorMessage: string = '';
+  public successMessage: string = '';
 
   @Input() command;
   @Input() whichTeacher;
   //in order to get the form from child component(TeacherModalFormDComponent)
   @ViewChild('modalUpdateFormComponent') modalUpdateFormComponentObj;
 
-  constructor(public activeModal: NgbActiveModal, private teachersService: TeachersService) { }
+  constructor(public activeModal: NgbActiveModal, private teachersService: TeachersService, private refreshService: RefreshService) { }
 
   ngOnInit() {
   }
@@ -85,20 +87,40 @@ export class TeacherUpdateModalComponent implements OnInit {
 
       this.teachersService.addNew(submitData).subscribe(
         (res) => {
-          //
-          console.log('success', res);
-
+          this.successMessage = 'Submit success!'
         },
         (err) => {
-          //this.errorMessage = err.error.ErrorMessage;
+          if (err.error.ErrorMessage == 'Teacher has exist.') {
+            this.errorMessage = err.error.ErrorMessage;
+          }
+          else {
+            this.errorMessage = 'Error! Please check your input.'
+
+          }
           console.log('Error', err);
         }
       );
     }
     //while update data
     else if (this.command == 2) {
+      this.teachersService.update(submitData, this.whichTeacher.TeacherId).subscribe(
+        (res) => {
+          this.successMessage = 'Submit success!'
+        },
+        (err) => {
 
+          console.log(err)
+
+        }
+
+
+
+      )
     }
+  }
+
+  subscribtion(res, err) {
+
   }
 
 
@@ -173,5 +195,12 @@ export class TeacherUpdateModalComponent implements OnInit {
 
     return checkQualificationsList;
 
+  }
+
+
+  ////////////////////////////////////////methods called by HTML element and event/////////////////////////////////////////////////////
+  requestRefreshPage() {
+    this.activeModal.close('Cross click');
+    this.refreshService.sendRefreshRequest();
   }
 }

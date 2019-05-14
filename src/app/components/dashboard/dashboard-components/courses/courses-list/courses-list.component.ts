@@ -3,6 +3,9 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { CoursesService } from '../../../../../services/http/courses.service';
 import { NgbootstraptableService } from 'src/app/services/others/ngbootstraptable.service';
 
+import { CourseDetailModalComponent } from '../course-detail-modal/course-detail-modal.component';
+import { CourseDeleteModalComponent } from '../course-delete-modal/course-delete-modal.component';
+
 @Component({
   selector: 'app-courses-list',
   templateUrl: './courses-list.component.html',
@@ -11,8 +14,8 @@ import { NgbootstraptableService } from 'src/app/services/others/ngbootstraptabl
 export class CoursesListComponent implements OnInit {
   public coursesList: any; 
   public coursesListLength: number;
-  public temCoursesList: any; //save the original teacherList
-  public temCoursesListLength: number; //save the original teacherList length
+  public temCoursesList: any; //save the original courseList
+  public temCoursesListLength: number; //save the original courseList length
   public page: number = 1;  //pagination current page
   public pageSize: number = 10;    //[can modify] pagination page size
 
@@ -38,7 +41,7 @@ export class CoursesListComponent implements OnInit {
   }
 
   errorProcess(error) {
-    alert(error.message)
+    // alert(error.message)
   }
 
 
@@ -52,61 +55,64 @@ export class CoursesListComponent implements OnInit {
       2 --> Edit/update
       3 --> delete
   */
-  // popUpModals(command, whichTeacher) {
-  //   switch(command){
-  //     case 0:
-  //       this.updateModal(command,whichTeacher);
-  //       break;
-  //     case 1:
-  //       this.detailModal(command,whichTeacher)
-  //       break;
-  //     case 2:
-  //       this.updateModal(command,whichTeacher);
-  //       break;
-  //     case 3:
-  //       this.deleteModal(command,whichTeacher);
-  //       break;
-  //   }
-  // }
+  popUpModals(command, whichCourse) {
+    switch(command){
+      case 0:
+      case 1:
+        this.detailModal(command,whichCourse);
+        break;
+      case 2:
+        this.deleteModal(command,whichCourse);
+        break;
+    }
+  }
 
   /*
     update modal
   */
-  // updateModal(command,whichTeacher){
-  //   //pop up modal
-  //   const modalRef = this.modalService.open(TutorEditModalComponent, { size: 'lg' });
-  //   //bind this pointer to that
-  //   let that = this;
-  //   //refresh after save
-  //   modalRef.result.then(function(){
-  //     that.getData()
-  //   });
-  //   //pass parameters to pop up modals
-  //   modalRef.componentInstance.command = command;
-  //   modalRef.componentInstance.whichTeacher = whichTeacher;
-  // }
+  detailModal(command,whichCourse){
+    //pop up modal
+    const modalRef = this.modalService.open(CourseDetailModalComponent, { size: 'lg' });
+    //bind this pointer to that
+    let that = this;
+    //refresh after save
+    modalRef.result.then(function(){
+      that.getData()
+    });
+    //pass parameters to pop up modals
+    modalRef.componentInstance.command = command;
+    modalRef.componentInstance.whichCourse = whichCourse;
+  }
 
-  // /*
-  //   delete modal
-  // */
-  // deleteModal(command, whichTeacher) {
-  //   const modalRef = this.modalService.open(ModalDeleteComponent)
-  //   let that = this;
-  //   modalRef.result.then(function(){
-  //     that.getData()
-  //   });
-  //   modalRef.componentInstance.command = command;
-  //   modalRef.componentInstance.whichTeacher = whichTeacher;
-  // }
+  /*
+    delete modal
+  */
+ deleteModal(command, whichCourse) {
+  const modalRef = this.modalService.open(CourseDeleteModalComponent);
+  let that = this;
+  modalRef.result.then(that.refreshPage(that));
+  modalRef.componentInstance.command = command;
+  modalRef.componentInstance.whichCourseer = whichCourse;
+}
 
-  // /*
-  //   detail modal
-  // */
-  // detailModal(command, whichTeacher) {
-  //   const modalRef = this.modalService.open(TutorEditModalComponent, { size: 'lg' })
-  //   modalRef.componentInstance.command = command;
-  //   modalRef.componentInstance.whichTeacher = whichTeacher;
-  // }
+  /*
+    After data modified(delete,add,update), refresh the page
+  */
+refreshPage(pointer) {
+  return function () {
+    let refreshFlag, courseToDelete;
+    [refreshFlag, courseToDelete] = pointer.refreshService.getRefreshRequest();
+    if (refreshFlag == true) {
+      //
+      pointer.coursesList.forEach(function (current) {
+        if (current.CourseId === courseToDelete) {
+          pointer.coursesList.splice(pointer.coursesList.findIndex(i => i.CourseId === courseToDelete), 1)
+          pointer.coursesListLength--;
+        }
+      })
+    }
+  }
+}
 
 
   /*

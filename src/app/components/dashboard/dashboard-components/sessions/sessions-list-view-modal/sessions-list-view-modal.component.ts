@@ -6,11 +6,11 @@ import { FormBuilder, Validator, Validators, RequiredValidator } from '@angular/
 import { PaymentService } from '../../../../../services/http/payment.service';
 
 @Component({
-  selector: 'app-admin-invoice-edit-modal',
-  templateUrl: './admin-invoice-edit-modal.component.html',
-  styleUrls: ['./admin-invoice-edit-modal.component.css'],
+  selector: 'app-sessions-edit-modal',
+  templateUrl: './sessions-edit-modal.component.html',
+  styleUrls: ['./sessions-edit-modal.component.css'],
 })
-export class AdminInvoiceEditModalComponent implements OnInit {
+export class SessionsEditModalComponent implements OnInit {
   public learnerList;
   public errorMsg;
   public errorAlert = false;
@@ -32,24 +32,16 @@ export class AdminInvoiceEditModalComponent implements OnInit {
 
   // invoice list fb
   invoiceEditForm = this.fb.group({
-    InvoiceNum: ['00000001'],
-    DueDate: ['5-4-2019'],
+    EndTime: ['18:00, 5-4-2019'],
     CourseName: ['Piano'],
-    LessonQuantity: ['13'],
-    BeginDate: ['10-4-2019'],
-    LessonFee: [390],
-    Concert: ['Concert for term 2, 2019'],
-    ConcertFee: ['15'],
-    Note: ['Lesson Note Term 2, 2019'],
+    Room: ['13'],
+    BeginTime: ['15:00, 10-4-2019'],
+    Teacher: ['Zhu'],
+    Canceled: ['No'],
+    CanceledReason: [''],
     NoteFee: [3],
-    Other1FeeName: ['Enroll Fee'],
-    Other2FeeName: [],
-    Other3FeeName: [],
-    Other1Fee: [20],
-    Other2Fee: [],
-    Other3Fee: [],
-    PaidFee: [],
-    OwingFee: [428]
+    TrialCourse: ['No'],
+    Branch: ['AMA Pakuranga Branch']
   });
 
   ngOnInit() {
