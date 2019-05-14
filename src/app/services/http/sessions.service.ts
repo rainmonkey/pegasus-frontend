@@ -6,7 +6,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
   providedIn: 'root'
 })
 export class SessionsService {
-  baseUrl: any = environment.baseUrl;
+  baseUrl = environment.baseUrl;
   token:string
   httpHeaders: HttpHeaders;
 

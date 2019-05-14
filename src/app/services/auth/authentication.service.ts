@@ -55,10 +55,10 @@ export class AuthenticationService {
         localStorage.setItem('Token', res.Data.token);
         localStorage.setItem('TokenExpiry', res.Data.expires);
         localStorage.setItem('Role', res.Data.roleid);
-
         localStorage.setItem('userFirstName', res.Data.userdetails.firstname);
         localStorage.setItem('userLastName', res.Data.userdetails.lastname);
         localStorage.setItem('userPosition', res.Data.userdetails.position);
+        localStorage.setItem('userID', res.Data.userid);
     }
 
     // remove user from local storage to log user out

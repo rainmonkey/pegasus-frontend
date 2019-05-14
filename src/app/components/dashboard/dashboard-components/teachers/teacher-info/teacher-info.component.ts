@@ -14,7 +14,7 @@ import { TeacherDeleteModalComponent } from '../teacher-delete-modal/teacher-del
 })
 export class TeacherInfoComponent implements OnInit {
   //what columns showed in the info page, can get from back-end in the future. must as same as database
-  public columnsToShow: Array<string> = ['FirstName', 'LastName', 'Gender', 'MobilePhone', 'Email'];
+  public columnsToShow: Array<string> = ['FirstName', 'LastName',  'Email'];
   //teachers data from database
   public teachersList: Array<any>;
   //teachers list copy. Using in searching method, in order to initialize data to original
@@ -212,6 +212,5 @@ export class TeacherInfoComponent implements OnInit {
       }
     }
   }
-
 
 }
