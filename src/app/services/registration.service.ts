@@ -23,7 +23,7 @@ export class RegistrationService {
   // get group course data from server
   getGroupCourse(): Observable<any> {
     //let url = 'http://localhost:5000/api';
-    return this.http.get(this.baseUrl+'/GroupCourseInstance');
+    return this.http.get(this.baseUrl+'GroupCourseInstance');
   }
 
   // post student's data to server and catch error from server
