@@ -41,6 +41,7 @@ import { LearnerRegistrationFormComponent } from './components/dashboard/dashboa
 import { LearnerRegistrationEditComponent } from './components/dashboard/dashboard-components/learner-registration/learner-registration-edit/learner-registration-edit.component';
 import { SessionsPanelComponent } from './components/dashboard/dashboard-components/sessions/sessions-panel/sessions-panel.component';
 import { SessionsListViewComponent } from './components/dashboard/dashboard-components/sessions/sessions-list-view/sessions-list-view.component';
+import { SessionsEditModalComponent } from './components/dashboard/dashboard-components/sessions/sessions-list-view-modal/sessions-list-view-modal.component';
 import { SessionDetailModalComponent } from './components/dashboard/dashboard-components/sessions/session-detail-modal/session-detail-modal.component';
 import { AdminLearnerPanelComponent } from './components/dashboard/dashboard-components/admin-learner/admin-learner-panel/admin-learner-panel.component';
 import { AdminLearnerListComponent } from './components/dashboard/dashboard-components/admin-learner/admin-learner-list/admin-learner-list.component';
@@ -65,7 +66,6 @@ import { CourseDetailModalComponent } from './components/dashboard/dashboard-com
 import { CourseDeleteModalComponent } from './components/dashboard/dashboard-components/courses/course-delete-modal/course-delete-modal.component';
 import { CourseModalFormComponent } from './components/dashboard/dashboard-components/courses/course-modal-form/course-modal-form.component';
 import { TestoneComponent } from './components/testcomponent/testone/testone.component';
-
 
 @NgModule({
   declarations: [
@@ -92,6 +92,7 @@ import { TestoneComponent } from './components/testcomponent/testone/testone.com
     CommandFormatPipe,
     SessionsPanelComponent,
     SessionsListViewComponent,
+    SessionsEditModalComponent,
     SessionDetailModalComponent,
     AdminLearnerPanelComponent,
     AdminLearnerListComponent,
@@ -138,8 +139,12 @@ import { TestoneComponent } from './components/testcomponent/testone/testone.com
     TeacherDetailModalComponent,
     TeacherUpdateModalComponent,
     AdminInvoiceEditModalComponent,
+<<<<<<< HEAD
     CourseDeleteModalComponent,
     CourseDetailModalComponent
+=======
+    SessionsEditModalComponent,
+>>>>>>> 62f69c7c2c791ccfa8caa23e98c337fb0bbdb2a9
   ],
   bootstrap: [AppComponent]
 })
