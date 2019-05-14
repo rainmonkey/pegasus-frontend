@@ -2,7 +2,7 @@
 <div class='modal-header'>
   <h4 *ngIf='command == 0' class='modal-title'>{{command | commandFormat}}</h4>
   <h4 *ngIf='command == 2' class="modal-title">{{command | commandFormat}} of <span class='t_um_title'>{{whichTeacher.FirstName}} {{whichTeacher.LastName}}</span></h4>
-  <button type="button" class='btn btn-sm btn-info tl_um_close_btn' aria-label="Close" (click)="activeModal.close('Cross click')">
+  <button type="button" class='btn btn-sm btn-info tl_um_close_btn' aria-label="Close" (click)="requestRefreshPage()">
     <span aria-hidden="true">&times;</span>
   </button>
 </div>
@@ -15,6 +15,7 @@
 <!--modal footer-->
 <div class='modal-footer'>
   <span class='m_um_error_msg errorfont'>{{errorMessage}}</span>
-  <button type='button' class='btn btn-outline-dark' (click)='onSubmit()'>Save</button>
-  <button type="button" class="btn btn-outline-dark" (click)="activeModal.close('Close click')">Close</button>
+  <span class='m_um_error_msg errorfont text-success'>{{successMessage}}</span>
+  <button *ngIf='!isSubmitionSuccess' type='button' class='btn btn-outline-dark' (click)='onSubmit()'>Save</button>
+  <button type="button" class="btn btn-outline-dark" (click)="requestRefreshPage()">Close</button>
 </div>
