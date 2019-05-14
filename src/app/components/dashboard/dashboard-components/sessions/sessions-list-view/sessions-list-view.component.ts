@@ -4,7 +4,7 @@ import { NgbootstraptableService } from 'src/app/services/others/ngbootstraptabl
 import { LearnersService } from '../../../../../services/http/learners.service';
 import { TeachersService } from '../../../../../services/http/teachers.service';
 import { SessionsEditModalComponent } from '../sessions-list-view-modal/sessions-list-view-modal.component';
-
+import { PaymentService } from '../../../../../services/http/payment.service';
 @Component({
   selector: 'app-sessions-list-view',
   templateUrl: './sessions-list-view.component.html',
@@ -22,6 +22,8 @@ export class SessionsListViewComponent implements OnInit {
   public errorAlert = false;
   public errMsgM;
   public errMsgO;
+  public confirmButton = false;
+  public cancelButton = false;
   public titleArray = [
     '#',
     'Teacher',
@@ -40,7 +42,8 @@ export class SessionsListViewComponent implements OnInit {
     private modalService: NgbModal,
     private ngTable: NgbootstraptableService,
     // private learnersservice: LearnersService,
-    private teachersService: TeachersService
+    private teachersService: TeachersService,
+    private paymentService: PaymentService,
     ) { }
 
   ngOnInit() {
@@ -50,6 +53,38 @@ export class SessionsListViewComponent implements OnInit {
   // modal method
   openE(){
     const modalRef = this.modalService.open(SessionsEditModalComponent, { size: 'lg' });
+  }
+  openC(c){
+    this.modalService
+    .open(c)
+    .result.then(
+      result => {
+        this.paymentService.emailInvoice(1).subscribe(
+          response => {
+            console.log('Success!', response);
+            alert('Your Payment Has Been Made');
+          },
+          (error) => {
+            this.errorMsg = JSON.parse(error.error);
+            this.errorAlert = true;
+            console.log('Error!', this.errorMsg.ErrorCode);
+            alert(this.errorMsg.ErrorCode);
+          }
+        );
+      });
+  }
+  openCon(confirmModal,j) {
+    if (j===1){
+      this.confirmButton=false;
+      this.cancelButton=false;
+      this.confirmButton=true;
+      this.openC(confirmModal);
+    } else {
+      this.confirmButton=false;
+      this.cancelButton=false;
+      this.cancelButton = true;
+      this.openC(confirmModal);
+    }
   }
 
   // get data from server side
