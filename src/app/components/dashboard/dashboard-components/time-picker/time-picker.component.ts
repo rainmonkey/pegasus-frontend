@@ -48,9 +48,9 @@ export class TimePickerComponent implements OnInit {
         this.textArray[i][j] = false;
       }
     }
-    console.log('ss', this.timeArray)
-    this.startTotalMinutes = 480 + this.timeArray[0][0]*15;
-    console.log('sssss', this.startTotalMinutes)
+    // console.log('ss', this.timeArray)
+    // this.startTotalMinutes = 480 + this.timeArray[0][0]*15;
+    // console.log('sssss', this.startTotalMinutes)
     // this.endTotalMinutes = 480 + (y+1)*15;
     // this.startHour = Math.floor(this.startTotalMinutes/60);
     // this.startMinutes = this.startTotalMinutes%60 == 0 ? '00' : this.startTotalMinutes%60;

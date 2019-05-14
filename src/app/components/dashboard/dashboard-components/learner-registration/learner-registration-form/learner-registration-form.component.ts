@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormArray, FormBuilder, Validators } from '@angular/forms';
-import { RegistrationService } from '../../../../../services/registration.service';
-import { OrgFormatPipe } from '../../../../../shared/pipes/org-format.pipe';
+import { LearnerRegistrationService } from '../../../../../services/http/learner-registration.service';
 
 
 @Component({
@@ -45,7 +44,7 @@ export class LearnerRegistrationFormComponent implements OnInit {
 
   constructor(
     private fb: FormBuilder,
-    private registrationService: RegistrationService
+    private registrationService: LearnerRegistrationService
   ) { }
 
   ngOnInit() {

@@ -3,20 +3,16 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { throwError } from 'rxjs';
-import { environment } from '../../environments/environment.prod';
-
-
-@Injectable({ providedIn: 'root' })
+import { environment } from '../../../environments/environment.prod';
 
 
 @Injectable({
   providedIn: 'root'
 })
-export class RegistrationService {
-  // url given by back-end server
+export class LearnerRegistrationService {
+  
   private baseUrl: any = environment.baseUrl;
   public url = this.baseUrl + 'register/student/';
-  
 
   constructor(private http: HttpClient) { }
 
