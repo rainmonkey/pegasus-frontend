@@ -34,7 +34,7 @@ const routes: Routes = [
   { path: '', component: HomepageComponent, canActivate: [DashboardRestrictGuard],
     children: [
       // Payment Area
-      { path: 'payment/invoice', pathMatch: 'prefix', component: AdminLearnerPaymentPanelComponent, 
+      { path: 'payment/invoice', pathMatch: 'prefix', component: AdminLearnerPaymentPanelComponent,
         children:[
           { path: 'pay/:id', component: AdminLearnerPaymentInvoiceComponent },
           { path: 'pay/success', component: AdminLearnerPaymentSuccessComponent },
@@ -59,9 +59,10 @@ const routes: Routes = [
       // Transaction Area
       { path: 'transaction', component: TransactionsPanelComponent,
         children: [
-          { path: 'invoices', component: AdminInvoiceListComponent},
-          { path: 'payments', component: AdminPaymentListComponent},
-          { path: 'sales', component: AdminSalesListComponent}
+          { path: 'invoices', component: AdminInvoiceListComponent },
+          { path: 'success', component: AdminLearnerPaymentSuccessComponent },
+          { path: 'payments', component: AdminPaymentListComponent },
+          { path: 'sales', component: AdminSalesListComponent }
         ]},
       // Teacher Area
       { path: 'tutors', component: TeacherPanelComponent,
