@@ -12,7 +12,9 @@ export class PaymentService {
   token:string
   httpHeaders: HttpHeaders;
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {
+    this.prepareHeaders()
+  }
 
   // API Request headers
   prepareHeaders(){
