@@ -7,13 +7,13 @@
 
         <div class='row justify-content-start'>
             <div class='form-group col-2'>
-                <select formControlName="paymentMethod" [compareWith]="compareFn" class='form-control' [class.is-invalid]="paymentMethod.invalid && paymentMethod.touched">
+                <select formControlName="paymentMethod" class='form-control' [class.is-invalid]="(paymentMethod.invalid && paymentMethod.touched) || showErrMsg" (change)='changePayment()'>
                     <option disabled>Pls select..</option>
                     <option [ngValue]=2>Eftpos</option>
                     <option [ngValue]=3>Online Transfer</option>
                     <option [ngValue]=1>Cash</option>
                   </select>
-                <small [class.d-none]="paymentMethod.valid || paymentMethod.untouched" class="text-danger">You must select the payment type</small>
+                <small [class.d-none]="(paymentMethod.valid || paymentMethod.untouched) && !showErrMsg" class="text-danger">You must select the payment type</small>
             </div>
             <p>Payment method</p>
             <input type="number" min="0" value={{sellPrice}} class="form-control col-1 ml-2 mr-2" disabled>Total Amount ($)
@@ -77,8 +77,8 @@
             </div>
         </div>
         <!-- open method for product modal-->
-        <button class="btn btn-primary" (click)="validMethod(contentProd)">Send this Payment</button>
-        <small class="text-danger m-2" *ngIf="paymentMethod.invalid && paymentMethod.touched">Please select the payment method on this transacion</small> <br>
+        <button class="btn btn-primary" (click)="validMethod(contentProd)">Send this Payment</button><br>
+        <small class="text-danger m-2" *ngIf="(paymentMethod.invalid && paymentMethod.touched) || showErrMsg">Please select the payment method on this transacion</small> <br>
         <small class='text-danger m-2' *ngIf='showErrMsg'>You have to select all required fields</small> <br>
         <small class="text-danger" *ngIf="showErrMsgSub">Do not give any discount more than the selling price!</small>
         <div class='row justify-content-md-center'>

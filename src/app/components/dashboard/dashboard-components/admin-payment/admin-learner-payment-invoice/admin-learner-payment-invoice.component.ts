@@ -116,7 +116,6 @@ export class AdminLearnerPaymentInvoiceComponent implements OnInit {
               (error) => {
                 this.errorMsg = JSON.parse(error.error);
                 this.errorAlert = true;
-                console.log('Error!', this.errorMsg.ErrorCode);
                 alert(this.errorMsg.ErrorCode);
               }
             );
