@@ -36,14 +36,14 @@ export class SessionsCalendarViewAdminComponent implements OnInit {
     this.searchForm = this.fb.group({
       dateOfLesson: ['']
     })
-    this.sessionService.getRoom().subscribe(data => {
+    this.sessionService.getReceptionistRoom().subscribe(data => {
       this.resourceData = data.Data;
       const date = this.datePipe.transform(new Date(), 'yyyy-MM-dd');
-      this.sessionService.getLesson(date).subscribe(event => {
+      this.sessionService.getReceptionistLesson(date).subscribe(event => {
         this.eventsModel = this.generateEventData(event.Data);
       });
       this.options = {
-
+        themeSystem: 'jquery-ui',
         editable: true,
         resourceLabelText: 'Rooms',
         customButtons: {
@@ -89,7 +89,7 @@ export class SessionsCalendarViewAdminComponent implements OnInit {
     if (model.buttonType === 'next' || model.buttonType === 'today' || model.buttonType === 'prev') {
       const datefromcalendar = model.data;
       const date = this.datePipe.transform(datefromcalendar, 'yyyy-MM-dd')
-      this.sessionService.getLesson(date).subscribe(event => {
+      this.sessionService.getReceptionistLesson(date).subscribe(event => {
         this.eventData = this.generateEventData(event.Data);
         this.eventsModel = this.eventData;
       });
@@ -120,8 +120,9 @@ export class SessionsCalendarViewAdminComponent implements OnInit {
     const month = this.searchForm.get('dateOfLesson').value.month;
     const day = this.searchForm.get('dateOfLesson').value.day;
     const date = year + '-' + month + '-' + day + ' 12:00:00';
-    this.fullcalendar.calendar.gotoDate(date);
-    this.sessionService.getLesson(date).subscribe(event => {
+    const datetoshow = this.datePipe.transform(date, 'yyyy-MM-dd');
+    this.fullcalendar.calendar.gotoDate(datetoshow);
+    this.sessionService.getReceptionistLesson(date).subscribe(event => {
       this.eventData = this.generateEventData(event.Data);
       this.eventsModel = this.eventData;
     });

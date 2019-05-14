@@ -3,7 +3,7 @@ import {OptionsInput} from '@fullcalendar/core';
 import interactionPlugin from '@fullcalendar/interaction';
 import {CalendarComponent} from 'ng-fullcalendar';
 declare let $: any;
-import timeGridPlugin from '@fullcalendar/timegrid'
+import timeGridPlugin from '@fullcalendar/timegrid';
 import Swal from 'sweetalert2';
 
 @Component({
@@ -13,11 +13,9 @@ import Swal from 'sweetalert2';
 })
 export class SessionsCalendarViewTutorComponent implements OnInit {
   options: OptionsInput;
-  teacher: string;
   @ViewChild('fullcalendar') fullcalendar: CalendarComponent;
   constructor() { }
   ngOnInit() {
-    this.teacher = 'John';
     this.options = {
       editable: true,
       height: 700,
@@ -34,18 +32,6 @@ export class SessionsCalendarViewTutorComponent implements OnInit {
           }
         );
       },
-      // eventRender: (info) => {
-      //   console.log(info);
-      //   if (info.event.extendedProps.group){
-      //     const tooltip = new Tooltip(info.el, {
-      //       title: 'Student: Mike Oliver Lee',
-      //       html: true,
-      //       placement: 'top',
-      //       trigger: 'hover',
-      //       container: 'body'
-      //     });
-      //   }
-      // },
       events: [
         {
           title: 'Group',
