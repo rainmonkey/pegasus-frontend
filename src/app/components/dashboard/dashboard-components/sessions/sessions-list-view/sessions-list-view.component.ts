@@ -3,7 +3,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { NgbootstraptableService } from 'src/app/services/others/ngbootstraptable.service';
 import { LearnersService } from '../../../../../services/http/learners.service';
 import { TeachersService } from '../../../../../services/http/teachers.service';
-import { SessionsEditModalComponent } from '../sessions-list-view-modal/sessions-list-view-modal.component';
+import { SessionsEditModalComponent } from '../sessions-edit-modal/sessions-edit-modal.component';
 import { PaymentService } from '../../../../../services/http/payment.service';
 @Component({
   selector: 'app-sessions-list-view',

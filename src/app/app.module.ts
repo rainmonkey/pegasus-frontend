@@ -41,7 +41,7 @@ import { LearnerRegistrationFormComponent } from './components/dashboard/dashboa
 import { LearnerRegistrationEditComponent } from './components/dashboard/dashboard-components/learner-registration/learner-registration-edit/learner-registration-edit.component';
 import { SessionsPanelComponent } from './components/dashboard/dashboard-components/sessions/sessions-panel/sessions-panel.component';
 import { SessionsListViewComponent } from './components/dashboard/dashboard-components/sessions/sessions-list-view/sessions-list-view.component';
-import { SessionsEditModalComponent } from './components/dashboard/dashboard-components/sessions/sessions-list-view-modal/sessions-list-view-modal.component';
+import { SessionsEditModalComponent } from './components/dashboard/dashboard-components/sessions/sessions-edit-modal/sessions-edit-modal.component';
 import { SessionDetailModalComponent } from './components/dashboard/dashboard-components/sessions/session-detail-modal/session-detail-modal.component';
 import { AdminLearnerPanelComponent } from './components/dashboard/dashboard-components/admin-learner/admin-learner-panel/admin-learner-panel.component';
 import { AdminLearnerListComponent } from './components/dashboard/dashboard-components/admin-learner/admin-learner-list/admin-learner-list.component';
@@ -140,7 +140,8 @@ import { TestoneComponent } from './components/testcomponent/testone/testone.com
     TeacherUpdateModalComponent,
     AdminInvoiceEditModalComponent,
     CourseDeleteModalComponent,
-    CourseDetailModalComponent
+    CourseDetailModalComponent,
+    SessionsEditModalComponent
   ],
   bootstrap: [AppComponent]
 })
