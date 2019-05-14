@@ -3,7 +3,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { DebugElement } from '@angular/core';
 
-import { SessionsEditModalComponent } from './sessions-list-view-modal.component';
+import { SessionsEditModalComponent } from './sessions-edit-modal.component';
 
 describe('SessionsListViewModalComponent', () => {
   let component: SessionsEditModalComponent;

@@ -20,15 +20,19 @@ export class SessionsService {
     return this.httpHeaders = new HttpHeaders({'Authorization': "Bearer "+ localStorage.getItem('Token')})
   }
 
-  getRoom() {
+  getReceptionistRoom() {
     console.log(this.httpHeaders)
     return this.http.get<any>(this.baseUrl + 'room/forCalendar', {headers: this.httpHeaders});
   }
 
-  getLesson(date) {
+  getReceptionistLesson(date) {
     console.log(this.httpHeaders)
     return this.http.get<any>(this.baseUrl + 'lesson/' + date , {headers: this.httpHeaders});
 
+  }
+
+  getTeacherLesson() {
+    console.log(this.httpHeaders);
   }
 
 }
