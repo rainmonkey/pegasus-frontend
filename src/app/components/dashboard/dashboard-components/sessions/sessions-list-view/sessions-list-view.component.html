@@ -35,7 +35,9 @@
               <td>{{i.CourseName}}</td>
               <td>{{i.TrailCourse}}</td>
               <td>
-                <a (click)='open()' style="cursor: pointer;"><span class='fas fa-pen'></span>&nbsp;Edit</a>
+                <a (click)='openE()' style="cursor: pointer;"><u>Edit</u></a><br>
+                <a (click)='openCon(confirmModal,1)' style="cursor: pointer;"><u>Confirm</u></a><br>
+                <a (click)='openCon(confirmModal,2)' style="cursor: pointer;"><u>Cancel</u></a>
               </td>
             </tr>
           </tbody>
@@ -46,7 +48,66 @@
       <div class='col-12'>
         <ngb-pagination [collectionSize] = 'learnerListLength' [(page)] ='page' [pageSize]='pageSize'></ngb-pagination>
       </div>
-
-
     </div>
   </div>
+
+
+  <ng-template #confirmModal let-modal>
+      <div class="modal-header m-2">
+        <h4>Please Confirm</h4>
+        <button
+          type="button"
+          class="close"
+          aria-label="Close"
+          (click)="modal.dismiss('Cross click')"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <!-- modal-body -->
+      <div class="container">
+        <div class="d-flex justify-content-center row">
+          <p *ngIf="confirmButton">Please confirm the course has been achieved</p>
+          <p *ngIf="cancelButton">Please confirm the course has been canceled</p>
+          <div *ngIf="cancelButton">
+            <div class="row">
+              <label class="mt-2">Canceled Reason</label>
+              <input class="form-control" type="text"/>
+
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-dark" (click)="modal.close('Save')">
+          Confirm
+        </button>
+        <button
+          type="button"
+          class="btn btn-outline-dark"
+          (click)="modal.dismiss('Cross click')"
+        >
+          Cancel
+        </button>
+      </div>
+    </ng-template>
+
+
+  <!-- <div class="form-group row justify-content-center">
+    <div class="col-5">
+      <label class="mt-2">Canceled</label>
+      <input class="form-control" type="text" formControlName="Canceled"/>
+    </div>
+    <div class="col-5">
+      <label class="mt-2">Canceled Reason</label>
+      <input class="form-control" type="text" formControlName="CanceledReason"/>
+
+    </div>
+
+    <div class="col-5">
+      <label class="mt-2">Trial Course</label>
+      <input class="form-control" type="text" formControlName="TrialCourse"/>
+
+    </div>
+
+  </div> -->

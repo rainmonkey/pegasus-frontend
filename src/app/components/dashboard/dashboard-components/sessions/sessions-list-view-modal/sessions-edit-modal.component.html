@@ -41,39 +41,11 @@
           </div>
         </div>
         <div class="col-5">
-          <label class="mt-2">End Time</label>
-          <input class="form-control" type="text" formControlName='EndTime'/>
-          <!-- <small *ngIf="invoiceEditForm.get('EndTime').touched"
-            >(e.g.,Lesson Note term 1, yyyy-dd-mm)</small
-          > -->
-        </div>
-        <div class='col-5'></div>
-      </div>
-      <hr />
-      <div class="form-group row justify-content-center">
-        <div class="col-5">
-          <label class="mt-2">Canceled</label>
-          <input class="form-control" type="text" formControlName="Canceled"/>
-          <!-- <small *ngIf="invoiceEditForm.get('Canceled').touched">(Other1 Fee title)</small> -->
-        </div>
-        <div class="col-5">
-          <label class="mt-2">Canceled Reason</label>
-          <input class="form-control" type="text" formControlName="CanceledReason"/>
-          <!-- <small *ngIf="invoiceEditForm.get('CanceledReason').touched">(Other1 Fee)</small> -->
-        </div>
-
-        <div class="col-5">
-          <label class="mt-2">Trial Course</label>
-          <input class="form-control" type="text" formControlName="TrialCourse"/>
-          <!-- <small *ngIf="invoiceEditForm.get('TrialCourse').touched && invoiceEditForm.get('Other2FeeName').invalid"
-            >(Other2 Fee title)</small
-          > -->
-        </div>
-        <div class="col-5">
             <label class="mt-2">Branch</label>
             <input class="form-control" type="text" formControlName="Branch"/>
             <!-- <small *ngIf="invoiceEditForm.get('Branch').touched">(Other1 Fee)</small> -->
           </div>
+        <div class='col-5'></div>
       </div>
     </form>
   </div>
@@ -86,11 +58,8 @@
       (click)="sendMail(confirmModal)"
       id="save"
     >
-      Sent Email
+      Confirm
     </button>
-    <small *ngIf="errMsgM" class="text-danger"
-      >Please select the payment method</small
-    >
     <br />
     <small *ngIf="errMsgO" class="text-danger"
       >Please enter a validate number of the transaction</small

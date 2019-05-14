@@ -1,17 +1,14 @@
-.t_um_title{
+.t_dm_name{
     font-weight: bold;
     font-style: italic;
 }
-.tl_um_close_btn{
+.tl_dm_btn{
     background: white;
     border: 1px solid black;
     color:black;
 }
-.tl_um_close_btn:hover{
+.tl_dm_btn:hover{
     background: #343A40;
     border: 1px solid #343a40;
     color:white;
-}
-.m_um_error_msg{
-    margin-right: 10px;
 }

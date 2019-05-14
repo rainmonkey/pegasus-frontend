@@ -3,21 +3,21 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { DebugElement } from '@angular/core';
 
-import { SessionsListViewModalComponent } from './sessions-list-view-modal.component';
+import { SessionsEditModalComponent } from './sessions-list-view-modal.component';
 
 describe('SessionsListViewModalComponent', () => {
-  let component: SessionsListViewModalComponent;
-  let fixture: ComponentFixture<SessionsListViewModalComponent>;
+  let component: SessionsEditModalComponent;
+  let fixture: ComponentFixture<SessionsEditModalComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ SessionsListViewModalComponent ]
+      declarations: [ SessionsEditModalComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(SessionsListViewModalComponent);
+    fixture = TestBed.createComponent(SessionsEditModalComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

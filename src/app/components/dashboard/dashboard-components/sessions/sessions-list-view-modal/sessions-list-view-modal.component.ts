@@ -6,11 +6,11 @@ import { FormBuilder, Validator, Validators, RequiredValidator } from '@angular/
 import { PaymentService } from '../../../../../services/http/payment.service';
 
 @Component({
-  selector: 'app-sessions-list-view-modal',
-  templateUrl: './sessions-list-view-modal.component.html',
-  styleUrls: ['./sessions-list-view-modal.component.css'],
+  selector: 'app-sessions-edit-modal',
+  templateUrl: './sessions-edit-modal.component.html',
+  styleUrls: ['./sessions-edit-modal.component.css'],
 })
-export class SessionsListViewModalComponent implements OnInit {
+export class SessionsEditModalComponent implements OnInit {
   public learnerList;
   public errorMsg;
   public errorAlert = false;
