@@ -5,6 +5,7 @@ import {CalendarComponent} from 'ng-fullcalendar';
 declare let $: any;
 import timeGridPlugin from '@fullcalendar/timegrid';
 import Swal from 'sweetalert2';
+import {SessionsService} from '../../../../../services/http/sessions.service';
 
 @Component({
   selector: 'app-sessions-calendar-view-tutor',
@@ -15,41 +16,51 @@ import Swal from 'sweetalert2';
 export class SessionsCalendarViewTutorComponent implements OnInit {
   options: OptionsInput;
   @ViewChild('fullcalendar') fullcalendar: CalendarComponent;
-  constructor() { }
+  eventsModel: any;
+  constructor(private sessionsService: SessionsService) { }
   ngOnInit() {
-    this.options = {
-      editable: true,
-      height: 700,
-      scrollTime: '09:00',
-      header: {
-        left: 'prev,next today',
-        center: 'title',
-        right: 'timeGridWeek'
-      },
-      eventClick: (info) => {
-        Swal.fire({
-          type: 'info',
-          title: 'Student',
-          html: '<p>John Lee</p><p>Oliver Liu</p><p>Oliver Liu</p><p>Oliver Liu</p><p>Oliver Liu</p>'
-          }
-        );
-      },
-      events: [
-        {
-          title: 'Group',
-          start: '2019-04-05T14:30:00',
-          end: '2019-04-05T17:00:00',
-          group: true
+    this.sessionsService.getTeacherLesson().subscribe(data => {
+      this.eventsModel = this.generateEventData(data.Data);
+      this.options = {
+        editable: true,
+        height: 700,
+        scrollTime: '09:00',
+        header: {
+          left: 'prev,next today',
+          center: 'title',
+          right: 'timeGridWeek'
         },
-        {
-          title: 'One to One\nStudent: Oliver',
-          start: '2019-04-05T17:30:00',
-          end: '2019-04-05T19:30:00',
-          group: false
-        }
-      ],
-      plugins: [timeGridPlugin]
-    };
+        slotDuration: '00:15',
+        eventClick: (info) => {
+          Swal.fire({
+              type: 'info',
+              html: info.event.extendedProps.description
+            }
+          );
+        },
+        events: data.Data,
+        plugins: [timeGridPlugin]
+      };
+    });
+  }
+  generateEventData = (data) => {
+    data.forEach(s => {
+      s.title += '\n' + s.orgName
+      s.description += '<h4>Students Name</h4><div class="row">';
+      if (s.student.length === 1) {
+        s.description = '<h4>Students Name</h4>' + s.student[0];
+        s.description += '</div><h4>Room Name</h4>' + s.roomName + ' (' + s.orgName + ')'
+          + '<h4>Course Name</h4>' + s.courseName;
+        return data;
+      }
+      s.student.forEach(w => {
+        s.description += '<div class="col-4">' + w + '</div> ';
+
+      });
+      s.description += '</div><h4>Room Name</h4>' + s.roomName + ' (' + s.orgName + ')'
+                        + '<h4>Course Name</h4>' + s.courseName;
+    });
+    return data;
   }
 
 }

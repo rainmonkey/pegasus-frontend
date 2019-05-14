@@ -8,9 +8,28 @@
 @import "~sweetalert2/dist/sweetalert2.min.css";
 
 .container{
-  padding: 30px;
+  padding: 20px;
 }
 
 .fc-content{
   color: aliceblue;
+}
+.fc-title{
+  font-size: 10px;
+}
+
+span{
+  font-size: 10px;
+}
+
+th{
+  font-size: 12px;
+}
+
+.fc-time-grid .fc-slats td{
+  height: 1.2em;
+}
+
+button{
+  font-size: 10px;
 }

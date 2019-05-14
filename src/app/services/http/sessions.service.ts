@@ -33,6 +33,7 @@ export class SessionsService {
 
   getTeacherLesson() {
     console.log(this.httpHeaders);
+    return this.http.get<any>('http://localhost:5000/api/lesson/user/1');
   }
 
 }

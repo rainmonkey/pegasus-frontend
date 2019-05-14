@@ -68,18 +68,24 @@ export class SessionsCalendarViewAdminComponent implements OnInit {
         timeZone: 'UTC',
         defaultView: 'resourceTimeGridDay',
         schedulerLicenseKey: 'GPL-My-Project-Is-Open-Source',
-        scrollTime: '09:00',
-        height: 700,
+        minTime: '08:00',
+        maxTime: '21:00',
+        scrollTime: '08:00',
+        height: 660,
         views: {
           resourceTimeGridDay: {
-            buttonText: 'Lesson',
+            buttonText: 'Day',
             slotDuration: '00:15'
+          },
+          resourceTimeGridWeek: {
+            buttonText: 'Week',
+            duration: {days: 7}
           }
         },
         header: {
           left: 'today prev,next DayPickerButton',
           center: 'title',
-          right: ''
+          right: 'resourceTimeGridDay resourceTimeGridWeek'
         },
         plugins: [timeslot, interactionPlugin]
       };
@@ -97,13 +103,19 @@ export class SessionsCalendarViewAdminComponent implements OnInit {
   }
   generateEventData = (data) => {
     data.forEach(s => {
-      s.title += '\nTeacher: ' + s.teacher;
+      s.title += '\nTutor: ' + s.teacher;
       if (s.IsGroup === false) {
-        s.title += '\nStudent: ' + s.student[0];
+        s.title += '\nLearner: ' + s.student[0];
       }
+      if (s.student.length === 1) {
+        s.description = s.student[0];
+        return data;
+      }
+      s.description += '<div class="row">';
       s.student.forEach(w => {
-        s.description += '<p>' + w + '</p> ';
+       s.description += '<div class="col-4 col-centered">' + w + '</div>';
       });
+      s.description += '</div>';
     });
     return data;
   }
