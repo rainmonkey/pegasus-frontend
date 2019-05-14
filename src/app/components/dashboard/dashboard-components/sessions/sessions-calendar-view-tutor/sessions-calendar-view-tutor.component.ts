@@ -1,4 +1,4 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
+import {Component, OnInit, ViewChild, ViewEncapsulation} from '@angular/core';
 import {OptionsInput} from '@fullcalendar/core';
 import interactionPlugin from '@fullcalendar/interaction';
 import {CalendarComponent} from 'ng-fullcalendar';
@@ -9,7 +9,8 @@ import Swal from 'sweetalert2';
 @Component({
   selector: 'app-sessions-calendar-view-tutor',
   templateUrl: './sessions-calendar-view-tutor.component.html',
-  styleUrls: ['./sessions-calendar-view-tutor.component.css']
+  styleUrls: ['./sessions-calendar-view-tutor.component.css'],
+  encapsulation: ViewEncapsulation.None
 })
 export class SessionsCalendarViewTutorComponent implements OnInit {
   options: OptionsInput;
@@ -19,6 +20,7 @@ export class SessionsCalendarViewTutorComponent implements OnInit {
     this.options = {
       editable: true,
       height: 700,
+      scrollTime: '09:00',
       header: {
         left: 'prev,next today',
         center: 'title',
