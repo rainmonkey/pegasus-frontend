@@ -41,7 +41,7 @@ export class CoursesListComponent implements OnInit {
   }
 
   errorProcess(error) {
-    alert(error.message)
+    // alert(error.message)
   }
 
 

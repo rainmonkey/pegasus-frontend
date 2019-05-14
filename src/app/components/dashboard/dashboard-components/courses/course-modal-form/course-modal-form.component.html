@@ -1,143 +1,40 @@
 <div class='t_mf_form'>
-  <form action='' [formGroup]='updateForm'>
-    <div class='row'>
-      <!--上半部分-->
-      
-      <!--input area-->
-      <div class=''>
-        <div style="margin-right:10px">
-          <div class='t_mf_imput_right'>
-            <!--line1-->
-            <div>
-              <!--line1 label-->
-              <div class='row'>
-                <div class='col-6'>
-                  <label for='FirstName' style='margin-right: 10px' class='t_mf_label'>First Name:</label>
-                </div>
-                <div class='col-6'>
-                  <label for='LastName' style='margin-left: 10px' class='t_mf_label'>Last Name:</label>
-                </div>
-              </div>
-              <!--line1 input-->
-              <div class='row'>
-                <div class='col-6'>
-                  <input name='FirstName' type="text" style='margin-right: 10px' class='col-12 t_mf_input'
-                    formControlName='FirstName'
-                    [class.t_mf_error_border]='updateForm.get("FirstName").invalid && updateForm.get("FirstName").touched'>
-                </div>
-                <div class='col-6'>
-                  <input name='LastName' type="text" style='margin-left: 10px' class='col-12 t_mf_input'
-                    formControlName='LastName'
-                    [class.t_mf_error_border]='updateForm.get("LastName").invalid && updateForm.get("LastName").touched'>
-                </div>
-              </div>
-            </div>
-
-            <!--line2-->
-            <div>
-              <!--line2 label-->
-              <div class='row'>
-                <div class='col-6'>
-                  <label for='Dob' style='margin-right: 10px' class='t_mf_label'>Date Of Birth:</label>
-                </div>
-                <div class='col-6'>
-                  <label for='Gender' style='margin-left: 10px' class='t_mf_label'>Gender:</label>
-                </div>
-              </div>
-              <!--line2 input-->
-              <div class='row'>
-                <div class='col-6'>
-                  <input name='Dob' type="date" style='margin-right: 10px' class='col-12 t_mf_input'
-                    formControlName='Dob'
-                    [class.t_mf_error_border]='updateForm.get("Dob").invalid && updateForm.get("Dob").touched'>
-                </div>
-                <div class='col-6'>
-                  <select name='Gender' type="text" style='margin-left: 10px' class='col-12 t_mf_input'
-                    formControlName='Gender'
-                    [class.t_mf_error_border]='updateForm.get("Gender").invalid && updateForm.get("Gender").touched'>
-                    <option value="0">Female</option>
-                    <option value="1">Male</option>
-                    <option value="2">Other</option>
-                  </select>
-                </div>
-              </div>
-            </div>
-
-            <!--line3-->
-            <div>
-              <!--line3 label-->
-              <div class='row'>
-                <div class='col-6'>
-                  <label for='MobilePhone' style='margin-right: 10px' class='t_mf_label'>Mobile Phone:</label>
-                </div>
-                <div class='col-6'>
-                  <label for='HomePhone' style='margin-left: 10px' class='t_mf_label'>Home Phone:</label>
-                </div>
-              </div>
-              <!--line3 input-->
-              <div class='row'>
-                <div class='col-6'>
-                  <input name='MobilePhone' type="text" style='margin-right: 10px' class='col-12 t_mf_input'
-                    formControlName='MobilePhone'
-                    [class.t_mf_error_border]='updateForm.get("MobilePhone").invalid && updateForm.get("MobilePhone").touched'>
-                </div>
-                <div class='col-6'>
-                  <input name='HomePhone' type="text" style='margin-left: 10px' class='col-12 t_mf_input'
-                    formControlName='HomePhone'
-                    [class.t_mf_error_border]='updateForm.get("HomePhone").invalid && updateForm.get("HomePhone").touched'>
-                </div>
-              </div>
-            </div>
-
-            <!--line4-->
-            <div>
-              <!--line4 label-->
-              <div class='row'>
-                <div class='col-6'>
-                  <label for='Email' style='margin-right: 10px' class='t_mf_label'>Email:</label>
-                </div>
-                <div class='col-6'>
-                  <label for='IRDNumber' style='margin-left: 10px' class='t_mf_label'>IRDNumber:</label>
-                </div>
-              </div>
-              <!--line4 input-->
-              <div class='row'>
-                <div class='col-6'>
-                  <input name='Email' type="text" style='margin-right: 10px; width:100%' class='t_mf_input'
-                    formControlName='Email'
-                    [class.t_mf_error_border]='updateForm.get("Email").invalid && updateForm.get("Email").touched'>
-                </div>
-                <div class='col-6'>
-                  <input name='IRDNumber' type="text" style='margin-left: 10px; width:100%' class='t_mf_input'
-                    formControlName='IRDNumber'
-                    [class.t_mf_error_border]='updateForm.get("IRDNumber").invalid && updateForm.get("IRDNumber").touched'>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!--line5-->
-        <div style="margin-left:10px">
-          <!--line5 label-->
-          <div class='row'>
-            <div class='col-12'>
-              <label for='Qualificatiion' class='t_mf_label'>Qualification:</label>
-            </div>
-          </div>
-          <!--line5 input-->
-          <div class='row'>
-            <div class='col-12'>
-              <select name='Qualificatiion' type="text" style='width: 100%' class='t_mf_input'
-                formControlName='Qualificatiion'
-                [class.t_mf_error_border]='updateForm.get("Qualificatiion").invalid && updateForm.get("Qualificatiion").touched'>
-                <option *ngFor='let i of qualificationOptions' value={{i.QualiId}}>{{i.QualiName}}</option>
-              </select>
-            </div>
-          </div>
-        </div>
-      </div><!--End input area-->
-
+  <form [formGroup]='updateForm'>
+    <div class="row">
+      <div class="col-6">
+        <label for='CourseName' class='t_mf_label'>Course Name:</label>
+        <input name='CourseName' type="text" class='col-12 t_mf_input' formControlName='CourseName' [class.t_mf_error_border]='updateForm.get("CourseName").invalid && updateForm.get("CourseName").touched'>
+        <label for='LearnerLevel' class='t_mf_label'>Learner Level:</label>
+        <select name='Level' type="text" class='col-12 t_mf_input' formControlName='Level' [class.t_mf_error_border]='updateForm.get("Level").invalid && updateForm.get("Level").touched'>
+          <option value="junior">Junior</option>
+          <option value="intermediate">Intermediate</option>
+          <option value="senior">Senior</option>
+        </select>
+        <label for='category' class='t_mf_label'>Category:</label>
+        <select name='CourseCategoryName' type="text" class='col-12 t_mf_input' formControlName='CourseCategoryName' [class.t_mf_error_border]='updateForm.get("CourseCategoryName").invalid && updateForm.get("CourseCategoryName").touched'>
+          <option value="piano">Piano</option>
+          <option value="guita">Guita</option>
+          <option value="drum">Drum</option>
+        </select>
+        <label for='duration' class='t_mf_label'>Duration(hrs):</label>
+        <input name='Duration' type="text" class='col-12 t_mf_input' formControlName='Duration' [class.t_mf_error_border]='updateForm.get("Duration").invalid && updateForm.get("Duration").touched'>
+      </div>
+      <div class="col-6">
+        <div style="height: 3.1rem"></div><!--Occupied div-->
+        <label for='type' class='t_mf_label'>Type:</label>
+        <select name='Level' type="text" class='col-12 t_mf_input' formControlName='Level' [class.t_mf_error_border]='updateForm.get("Level").invalid && updateForm.get("Level").touched'>
+          <option value="121">1 to 1</option>
+          <option value="group">Group</option>
+        </select>
+        <label for='teacherLevel' class='t_mf_label'>Teacher Level:</label>
+        <select name='TeacherLevel' type="text" class='col-12 t_mf_input' formControlName='TeacherLevel' [class.t_mf_error_border]='updateForm.get("TeacherLevel").invalid && updateForm.get("TeacherLevel").touched'>
+          <option value="junior">Junior</option>
+          <option value="intermediate">Intermediate</option>
+          <option value="senior">Senior</option>
+        </select>
+        <label for='price' class='t_mf_label'>Price(Total):</label>
+        <input name='Price' type="text" class='col-12 t_mf_input' formControlName='Price' [class.t_mf_error_border]='updateForm.get("Price").invalid && updateForm.get("Price").touched'>
+      </div>
     </div>
   </form>
 </div>
