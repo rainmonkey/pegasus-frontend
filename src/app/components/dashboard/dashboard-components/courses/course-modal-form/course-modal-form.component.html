@@ -3,37 +3,43 @@
     <div class="row">
       <div class="col-6">
         <label for='CourseName' class='t_mf_label'>Course Name:</label>
-        <input name='CourseName' type="text" class='col-12 t_mf_input' formControlName='CourseName' [class.t_mf_error_border]='updateForm.get("CourseName").invalid && updateForm.get("CourseName").touched'>
-        <label for='LearnerLevel' class='t_mf_label'>Learner Level:</label>
-        <select name='Level' type="text" class='col-12 t_mf_input' formControlName='Level' [class.t_mf_error_border]='updateForm.get("Level").invalid && updateForm.get("Level").touched'>
-          <option value="junior">Junior</option>
-          <option value="intermediate">Intermediate</option>
-          <option value="senior">Senior</option>
+        <input name='CourseName' type="text" class='col-12 t_mf_input' formControlName='CourseName'
+          [class.t_mf_error_border]='updateForm.get("CourseName").invalid && updateForm.get("CourseName").touched'>
+        <label for='coursetype' class='t_mf_label'>Type:</label>
+        <select name='CourseType' type="text" class='col-12 t_mf_input' formControlName='CourseType'
+          [class.t_mf_error_border]='updateForm.get("CourseType").invalid && updateForm.get("CourseType").touched'>
+          <option value='1 to 1'>1 to 1</option>
+          <option value='Group'>Group</option>
         </select>
+        <label for='teacherlevel' class='t_mf_label'>Teacher Level:</label>
+        <select name='TeacherLevel' type="text" class='col-12 t_mf_input' formControlName='TeacherLevel'
+          [class.t_mf_error_border]='updateForm.get("TeacherLevel").invalid && updateForm.get("TeacherLevel").touched'>
+          <option value='Junior'>Junior</option>
+          <option value='Intermediate'>Intermediate</option>
+          <option value='Senior'>Senior</option>
+        </select>
+        <label for='LearnerLevel' class='t_mf_label'>Learner Level:</label>
+        <select name='Level' type="text" class='col-12 t_mf_input' formControlName='Level'
+          [class.t_mf_error_border]='updateForm.get("Level").invalid && updateForm.get("Level").touched'>
+          <option value='Junior'>Junior</option>
+          <option value='Intermediate'>Intermediate</option>
+          <option value='Senior'>Senior</option>
+        </select>
+      </div>
+      <div class="col-6">
         <label for='category' class='t_mf_label'>Category:</label>
-        <select name='CourseCategoryName' type="text" class='col-12 t_mf_input' formControlName='CourseCategoryName' [class.t_mf_error_border]='updateForm.get("CourseCategoryName").invalid && updateForm.get("CourseCategoryName").touched'>
+        <select name='CourseCategoryName' type="text" class='col-12 t_mf_input' formControlName='CourseCategoryName'
+          [class.t_mf_error_border]='updateForm.get("CourseCategoryName").invalid && updateForm.get("CourseCategoryName").touched'>
           <option value="piano">Piano</option>
           <option value="guita">Guita</option>
           <option value="drum">Drum</option>
         </select>
         <label for='duration' class='t_mf_label'>Duration(hrs):</label>
-        <input name='Duration' type="text" class='col-12 t_mf_input' formControlName='Duration' [class.t_mf_error_border]='updateForm.get("Duration").invalid && updateForm.get("Duration").touched'>
-      </div>
-      <div class="col-6">
-        <div style="height: 3.1rem"></div><!--Occupied div-->
-        <label for='type' class='t_mf_label'>Type:</label>
-        <select name='Level' type="text" class='col-12 t_mf_input' formControlName='Level' [class.t_mf_error_border]='updateForm.get("Level").invalid && updateForm.get("Level").touched'>
-          <option value="121">1 to 1</option>
-          <option value="group">Group</option>
-        </select>
-        <label for='teacherLevel' class='t_mf_label'>Teacher Level:</label>
-        <select name='TeacherLevel' type="text" class='col-12 t_mf_input' formControlName='TeacherLevel' [class.t_mf_error_border]='updateForm.get("TeacherLevel").invalid && updateForm.get("TeacherLevel").touched'>
-          <option value="junior">Junior</option>
-          <option value="intermediate">Intermediate</option>
-          <option value="senior">Senior</option>
-        </select>
+        <input name='Duration' type="text" class='col-12 t_mf_input' formControlName='Duration'
+          [class.t_mf_error_border]='updateForm.get("Duration").invalid && updateForm.get("Duration").touched'>
         <label for='price' class='t_mf_label'>Price(Total):</label>
-        <input name='Price' type="text" class='col-12 t_mf_input' formControlName='Price' [class.t_mf_error_border]='updateForm.get("Price").invalid && updateForm.get("Price").touched'>
+        <input name='Price' type="text" class='col-12 t_mf_input' formControlName='Price'
+          [class.t_mf_error_border]='updateForm.get("Price").invalid && updateForm.get("Price").touched'>
       </div>
     </div>
   </form>

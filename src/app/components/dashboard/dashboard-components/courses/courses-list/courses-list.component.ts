@@ -35,7 +35,8 @@ export class CoursesListComponent implements OnInit {
         this.coursesListLength = res.Data.length; //length prop is under Data prop
         this.temCoursesList = res.Data;
         this.temCoursesListLength = res.Data.length;
-        console.log(this.coursesList);
+        // console.log(this.coursesList);
+        // console.log(res);
       },
       (error) => {this.errorProcess(error) })
   }
