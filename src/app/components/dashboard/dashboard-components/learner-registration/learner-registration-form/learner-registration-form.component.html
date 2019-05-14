@@ -53,7 +53,7 @@
           </div>
           <div class="col-sm-4 col-md-4">
             <label for="enrollmentDate">Date of Enrollment</label>
-            <input class="form-control" formControlName="enrollmentDate" type="text" id="enrollmentDate"
+            <input class="form-control" formControlName="enrollmentDate" type="date" id="enrollmentDate"
               value="{{today | date }}">
           </div>
         </div>
@@ -167,32 +167,32 @@
       <li><a class="nav-link disabled">Guardian</a></li>
       <li><a class="nav-link active">Course</a></li>
     </ul>
-    <!-- <div class="dropdown">
-    <button class="dropdown-toggle mx-3" (click)="chooseCourse('groupCourse')" data-toggle="dropdown">Group Course</button>
-    <div class="dropdown-menu">
-    <a class="dropdown-item" name="guitar" (click)="selectCourse($event.target.name)">Guitar</a>
-    <a class="dropdown-item" name="piano" (click)="selectCourse($event.target.name)">Piano</a>
-    <a class="dropdown-item" name="drum" (click)="selectCourse($event.target.name)">Drum</a>
-    </div>
+    <div class="dropdown">
+    <button class=" mx-3" (click)="chooseCourse('groupCourse')" >Group Course</button>
+
     <button class="one-on-one-Course" (click)="chooseCourse('customCourse')">One-on-One Course</button>
-    </div> -->
-    <div class="select-group-course" id="groupCourse">
-      <div class="guitar" *ngIf="selectedCourse =='guitar'">
+    </div> 
+    <div class="card">
+    <div class="select-group-course card-body" id="groupCourse">
+      <div class="guitar">
         <table class="table">
           <thead>
             <tr>
-              <th>guitar</th>
-              <th>id</th>
-              <th>class time</th>
-              <th>location</th>
+              <th>Please Check</th>
+              <th>Course</th>
+              <th>Session time</th>
+              <th>Location</th>
+           
             </tr>
           </thead>
           <tbody>
-            <tr *ngFor="let guitar of guitars">
+            <tr *ngFor="let groupCourseInstance of groupCourseInstance">
               <td><input type="checkbox"></td>
-              <td>{{guitar.id}}</td>
-              <td>{{guitar.classTime}}</td>
-              <td>{{guitar.location}}</td>
+              <td>{{groupCourseInstance.Course}}</td>             
+
+              <td>{{groupCourseInstance.BeginDate}}</td>
+              <td>{{groupCourseInstance.OrgId}}</td>
+                      
             </tr>
           </tbody>
         </table>
@@ -200,53 +200,8 @@
           <button class="btn_submit" [disabled]="registrationForm.invalid">Submit</button>
         </div>
       </div>
-      <div class="piano" *ngIf="selectedCourse == 'piano'">
-        <table class="table">
-          <thead>
-            <tr>
-              <th>piano</th>
-              <th>id</th>
-              <th>class time</th>
-              <th>location</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr *ngFor="let piano of pianos">
-              <td><input type="checkbox"></td>
-              <td>{{piano.id}}</td>
-              <td>{{piano.classTime}}</td>
-              <td>{{piano.location}}</td>
-            </tr>
-          </tbody>
-        </table>
-        <div class="text-right">
-          <button class="btn_submit" [disabled]="registrationForm.invalid" (click)="onSubmit()">Submit</button>
-        </div>
-      </div>
-      <div class="drum" *ngIf="selectedCourse == 'drum'">
-        <table class="table">
-          <thead>
-            <tr>
-              <th>drum</th>
-              <th>id</th>
-              <th>class time</th>
-              <th>location</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr *ngFor="let drum of drums">
-              <td><input type="checkbox"></td>
-              <td>{{drum.id}}</td>
-              <td>{{drum.classTime}}</td>
-              <td>{{drum.location}}</td>
-            </tr>
-          </tbody>
-        </table>
-        <div class="text-right">
-          <button class="btn_submit" [disabled]="registrationForm.invalid" (click)="onSubmit()">Submit</button>
-        </div>
-      </div>
     </div>
+  </div>
     <div formArrayName="customCourse" id="customCourse">
       <div *ngFor="let course of customCourse.controls; let i=index;" class="card my-3">
         <div [formGroupName]="i" class="card-body">
@@ -269,13 +224,13 @@
               <div *ngIf="isSelectedLevel">
                 <span>Did you take exam before?</span><br>
                 <div class="hasExamed d-flex justify-content-around">
-                  <input formControlName="hasExamed" type="checkbox" name="ABRSM" value="a" id="ABRSM"><label
+                  <input formControlName="hasExamed" type="radio" name="ABRSM" value="a" id="ABRSM"><label
                     for="ABRSM">ABRSM</label>
-                  <input formControlName="hasExamed" type="checkbox" name="Training" value="b" id="training"><label
+                  <input formControlName="hasExamed" type="radio" name="Training" value="b" id="training"><label
                     for="training">Training</label>
-                  <input formControlName="hasExamed" type="checkbox" name="Other" value="c" id="other"><label
+                  <input formControlName="hasExamed" type="radio" name="Other" value="c" id="other"><label
                     for="other">Other</label>
-                  <input formControlName="hasExamed" type="checkbox" name="None" value="d" id="none"><label
+                  <input formControlName="hasExamed" type="radio" name="None" value="d" id="none"><label
                     for="none">None</label>
                 </div>
               </div>
@@ -311,23 +266,53 @@
             </div>
           </div>
           <div class="courseTime-location row">
+              <div class="col-sm-6 col-md-6">
+                  <label for="location">Location</label>
+                  <select class="form-control" formControlName="location" id="location">
+                    <option value="Mount Roskill">Mount Roskill</option>
+                    <option value="Mount Albert">Mount Albert</option>
+                    <option value="Botany">Botany</option>
+                    <option value="City Centre">City Centre</option>
+                  </select>
+                </div>            
             <div class="col-sm-6 col-md-6">
-              <label for="customTime">Course time</label>
-              <select class="form-control" formControlName="customTime" id="customTime">
-                <option value="Monday">Monday 15:00-16:00</option>
-                <option value="Tuesday">Tuesday 16:00-16:45</option>
-                <option value="Friday">Friday 15:30-16:15</option>
+              <label for="customday">Course day</label>
+              <select class="form-control" formControlName="customday" id="customday">
+                <option value="1">Monday</option>
+                <option value="2">Tuesday</option>
+                <option value="3">Wednesday</option>
+                <option value="4">Thursday</option>
+                <option value="5">Friday</option>
+                <option value="6">Saturday</option>                
+                <option value="7">Sunday</option>                
               </select>
             </div>
             <div class="col-sm-6 col-md-6">
-              <label for="location">Location</label>
-              <select class="form-control" formControlName="location" id="location">
-                <option value="Mount Roskill">Mount Roskill</option>
-                <option value="Mount Albert">Mount Albert</option>
-                <option value="Botany">Botany</option>
-                <option value="City Centre">City Centre</option>
+              <label for="customHour">Course Hour</label>
+              <select class="form-control" formControlName="customHour" id="customHour">
+                <option value="9">9:00 AM</option>
+                <option value="10">10:00 AM</option>
+                <option value="11">11:00 AM</option>
+                <option value="12">12:00</option>
+                <option value="13">1:00 PM</option>
+                <option value="14">2:00 PM</option>
+                <option value="15">3:00 PM</option>
+                <option value="16">4:00 PM</option>
+                <option value="17">5:00 PM</option>
+                <option value="18">6:00 PM</option>
+                <option value="19">7:00 PM</option>
+                <option value="20">8:00 PM</option>
               </select>
-            </div>
+            </div>   
+            <div class="col-sm-6 col-md-6">
+                <label for="customMinute">Course Minute</label>
+                <select class="form-control" formControlName="customMinute" id="customMinute">
+                  <option value="0">:00 </option>
+                  <option value="1">:15 </option>
+                  <option value="2">:30 </option>
+                  <option value="3">:45 </option>
+                </select>
+              </div>                      
           </div>
           <div class="d-flex my-3 justify-content-end">
             <button class="mx-3 btn_back" (click)="next({id: 'parentForm', event: $event})">Back</button>

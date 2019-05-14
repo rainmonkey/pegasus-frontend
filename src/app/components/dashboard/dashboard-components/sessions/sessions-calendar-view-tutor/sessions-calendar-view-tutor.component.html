@@ -1,3 +1,8 @@
-<p>
-  sessions-calendar-view-tutor works!
-</p>
+<div class="container">
+  <div *ngIf="options">
+    <ng-fullcalendar
+      #fullcalendar
+      [options]="options"
+    ></ng-fullcalendar>
+  </div>
+</div>

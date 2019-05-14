@@ -1,0 +1,140 @@
+.t_mf_img_switch{
+    text-align: center;
+    border: 1px solid lightgrey;
+    border-radius: 3px;
+    margin-bottom: 5px;
+}
+.t_mf_img_area{
+    margin-right: 10px;
+}
+.t_mf_img_switch_left{
+    background: #343a40;
+    color:white;
+}
+.t_mf_img_switch_right{
+    background: #343a40;
+    color:white;
+}
+.t_mf_img_switch:hover{
+    cursor: pointer;
+}
+.t_mf_img{
+    border: 1px solid lightgrey;
+    border-radius: 3px;
+    height: 220px;
+    text-align: center!important;
+    display: block;
+}
+.t_mf_img img{
+    max-width: 100%;
+    max-height: 100%;
+}
+.t_mf_imput_right{
+    margin-left: 10px;
+}
+.t_mf_label{
+    font-weight: bold;
+    margin-bottom: 0px;
+    font-size: 14px;
+}
+.t_mf_input{
+    border: none;
+    border: 1px solid lightgrey;
+    border-radius: 3px;
+    text-align: center;
+    text-align-last: center;
+    background: rgb(173, 216, 230, 0.1);
+    height: 26px;
+}   
+.t_mf_language{
+    border: 1px solid lightgray;
+    border-radius: 3px;
+}
+.t_mf_language_option{
+    text-align: center;
+    height: 30px;
+    line-height: 30px;
+    font-weight: normal!important;
+}
+.t_mf_language_option input{
+    zoom: 150%;
+    line-height: 30px;
+    position: relative;
+    top:3.5px;
+}
+
+.t_mf_error_border{
+    border: 1px solid #dc3545;
+    border-radius:5px;
+    outline: none;
+}
+.t_mf_error_div{
+    border: 1px solid #dc3545;
+    border-radius: 5px;
+    outline: none;
+}
+.t_mf_week{
+    border: 1px solid lightgrey;
+    border-radius: 3px;
+    margin: 5px!important;
+    margin-bottom: 10px!important;
+    text-align: center;
+
+}
+.t_mf_week_title{
+    text-align: center;
+    font-weight: bold;
+    border-bottom: 1px solid lightgrey;
+    background: rgb(243, 241, 241)
+}
+.tl_mf_upload_title{
+    position: relative;
+    left: -6.8px;
+    top:-4px;
+}
+.tl_muf_upload_img{
+    opacity: 0;
+    position: absolute;
+}
+.tl_mf_upload_btn{
+    color:  #343a40;
+    width: 20px;
+    height: 20px;
+    font-size: 18px;
+    line-height: 20px;
+    background: white;
+    border: 1px solid   #343a40;
+    border-radius: 50%;
+    position: absolute;
+    left: 230px;
+    top:227px;
+    box-shadow: 0px 0px 0px 2px white;
+}
+.tl_mf_upload_btn:hover{
+    cursor: pointer;
+    background:   #343a40;
+    color: white;
+}
+.t_mf_branch_label{
+    font-weight: bold;
+    font-size:14px;
+    text-align: center;
+    margin-bottom: 10px!important;
+}
+.t_mf_branch_weeks{
+    margin:5px!important;
+    border: 1px solid lightgrey;
+    border-radius: 3px;
+}
+.t_mf_branch_week{
+    text-align: center;
+    margin-bottom: 5px;
+    background: rgb(173, 216, 230, 0.1);
+}
+.t_mf_branch_week:hover{
+    cursor: pointer;
+}
+.t_mf_branch_orgs{
+    text-transform: capitalize;
+    text-align: center;
+}

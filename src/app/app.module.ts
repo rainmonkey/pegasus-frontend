@@ -7,6 +7,9 @@ import { MatButtonModule, MatFormFieldModule, MatInputModule } from '@angular/ma
 import { NgModule } from '@angular/core';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { routing } from '../app/app-routing.module';
+import { FullCalendarModule} from 'ng-fullcalendar';
+import {DatePipe} from '@angular/common';
+
 // Guards
 
 // Services
@@ -14,7 +17,6 @@ import { routing } from '../app/app-routing.module';
 
 // Pipes
 import { CommandFormatPipe } from './shared/pipes/command-format.pipe';
-import { GenderFormatPipe } from './shared/pipes/gender-format.pipe';
 import { OrgFormatPipe } from './shared/pipes/org-format.pipe';
 import { WeekFormatPipe } from './shared/pipes/week-format.pipe';
 
@@ -34,18 +36,13 @@ import { AdminLearnerPaymentOtherComponent } from './components/dashboard/dashbo
 import { AdminLearnerPaymentSuccessComponent } from './components/dashboard/dashboard-components/admin-payment/admin-learner-payment-success/admin-learner-payment-success.component';
 import { FooterComponent } from './components/basic/footer/footer.component';
 import { CoursesPanelComponent } from './components/dashboard/dashboard-components/courses/courses-panel/courses-panel.component';
-import { CoursesDetailComponent } from './components/dashboard/dashboard-components/courses/courses-detail/courses-detail.component';
 import { CoursesListComponent } from './components/dashboard/dashboard-components/courses/courses-list/courses-list.component';
-import { TutorInfoComponent } from './components/dashboard/dashboard-components/tutor-info/tutor-info-list/tutor-info.component';
-import { ModalDeleteComponent } from './components/dashboard/dashboard-components/tutor-info/tutor-delete-modal/modal-delete.component';
 import { LearnerRegistrationFormComponent } from './components/dashboard/dashboard-components/learner-registration/learner-registration-form/learner-registration-form.component';
 import { LearnerRegistrationEditComponent } from './components/dashboard/dashboard-components/learner-registration/learner-registration-edit/learner-registration-edit.component';
-import { TutorEditModalComponent } from './components/dashboard/dashboard-components/tutor-info/tutor-edit-modal/tutor-edit-modal.component'
-import { TutorEditModalFormComponent } from './components/dashboard/dashboard-components/tutor-info/tutor-edit-modal-form/tutor-edit-modal-form.component';
 import { SessionsPanelComponent } from './components/dashboard/dashboard-components/sessions/sessions-panel/sessions-panel.component';
 import { SessionsListViewComponent } from './components/dashboard/dashboard-components/sessions/sessions-list-view/sessions-list-view.component';
+import { SessionsEditModalComponent } from './components/dashboard/dashboard-components/sessions/sessions-edit-modal/sessions-edit-modal.component';
 import { SessionDetailModalComponent } from './components/dashboard/dashboard-components/sessions/session-detail-modal/session-detail-modal.component';
-import { TutorInfoPanelComponent } from './components/dashboard/dashboard-components/tutor-info/tutor-info-panel/tutor-info-panel.component';
 import { AdminLearnerPanelComponent } from './components/dashboard/dashboard-components/admin-learner/admin-learner-panel/admin-learner-panel.component';
 import { AdminLearnerListComponent } from './components/dashboard/dashboard-components/admin-learner/admin-learner-list/admin-learner-list.component';
 import { InventoryPanelComponent } from './components/dashboard/dashboard-components/inventory/inventory-panel/inventory-panel.component';
@@ -59,7 +56,16 @@ import { AdminPaymentListComponent } from './components/dashboard/dashboard-comp
 import { AdminSalesListComponent } from './components/dashboard/dashboard-components/admin-transactions/admin-sales-list/admin-sales-list.component';
 import { SessionsCalendarViewTutorComponent } from './components/dashboard/dashboard-components/sessions/sessions-calendar-view-tutor/sessions-calendar-view-tutor.component';
 import { SessionsCalendarViewAdminComponent } from './components/dashboard/dashboard-components/sessions/sessions-calendar-view-admin/sessions-calendar-view-admin.component';
-
+import { TeacherDeleteModalComponent } from './components/dashboard/dashboard-components/teachers/teacher-delete-modal/teacher-delete-modal.component';
+import { TeacherDetailModalComponent } from './components/dashboard/dashboard-components/teachers/teacher-detail-modal/teacher-detail-modal.component';
+import { TeacherUpdateModalComponent } from './components/dashboard/dashboard-components/teachers/teacher-update-modal/teacher-update-modal.component';
+import { TeacherModalFormComponent } from './components/dashboard/dashboard-components/teachers/teacher-modal-form/teacher-modal-form.component';
+import { TeacherInfoComponent } from './components/dashboard/dashboard-components/teachers/teacher-info/teacher-info.component';
+import { TeacherPanelComponent } from './components/dashboard/dashboard-components/teachers/teacher-panel/teacher-panel.component';
+import { CourseDetailModalComponent } from './components/dashboard/dashboard-components/courses/course-detail-modal/course-detail-modal.component';
+import { CourseDeleteModalComponent } from './components/dashboard/dashboard-components/courses/course-delete-modal/course-delete-modal.component';
+import { CourseModalFormComponent } from './components/dashboard/dashboard-components/courses/course-modal-form/course-modal-form.component';
+import { TestoneComponent } from './components/testcomponent/testone/testone.component';
 
 @NgModule({
   declarations: [
@@ -78,13 +84,7 @@ import { SessionsCalendarViewAdminComponent } from './components/dashboard/dashb
     TimePickerComponent,
     FooterComponent,
     CoursesPanelComponent,
-    CoursesDetailComponent,
     CoursesListComponent,
-    TutorInfoComponent,
-    ModalDeleteComponent,
-    TutorEditModalComponent,
-    TutorEditModalFormComponent,
-    GenderFormatPipe,
     OrgFormatPipe,
     WeekFormatPipe,
     LearnerRegistrationFormComponent,
@@ -92,8 +92,8 @@ import { SessionsCalendarViewAdminComponent } from './components/dashboard/dashb
     CommandFormatPipe,
     SessionsPanelComponent,
     SessionsListViewComponent,
+    SessionsEditModalComponent,
     SessionDetailModalComponent,
-    TutorInfoPanelComponent,
     AdminLearnerPanelComponent,
     AdminLearnerListComponent,
     InventoryPanelComponent,
@@ -106,7 +106,17 @@ import { SessionsCalendarViewAdminComponent } from './components/dashboard/dashb
     AdminPaymentListComponent,
     AdminSalesListComponent,
     SessionsCalendarViewTutorComponent,
-    SessionsCalendarViewAdminComponent
+    SessionsCalendarViewAdminComponent,
+    TeacherInfoComponent,
+    TeacherDeleteModalComponent,
+    TeacherDetailModalComponent,
+    TeacherUpdateModalComponent,
+    TeacherModalFormComponent,
+    TeacherPanelComponent,
+    CourseDetailModalComponent,
+    CourseDeleteModalComponent,
+    CourseModalFormComponent,
+    TestoneComponent
   ],
   imports: [
     NgbModule,
@@ -119,14 +129,19 @@ import { SessionsCalendarViewAdminComponent } from './components/dashboard/dashb
     MatFormFieldModule,
     MatInputModule,
     routing,
+    FullCalendarModule
   ],
   providers: [
-
+    DatePipe
   ],
   entryComponents:[
-    TutorEditModalComponent,
-    ModalDeleteComponent,
+    TeacherDeleteModalComponent,
+    TeacherDetailModalComponent,
+    TeacherUpdateModalComponent,
     AdminInvoiceEditModalComponent,
+    CourseDeleteModalComponent,
+    CourseDetailModalComponent,
+    SessionsEditModalComponent
   ],
   bootstrap: [AppComponent]
 })

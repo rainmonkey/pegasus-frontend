@@ -1,3 +1,113 @@
-<p>
-  sessions-list-view works!
-</p>
+<div class='container tl_body'>
+    <div class='row'>
+      <!--body head-->
+      <div class='col-12 tl_body_title'>
+        <h2>Session List</h2>
+    </div>
+      <!--body search-->
+      <div class='col-12 tl_body_search'>
+          <span class='fas fa-search'></span>&nbsp;
+        <input type="text" (input)='onSearch($event)' placeholder=" Search by name">
+      </div>
+
+      <!--body main-->
+      <div class='col-12'>
+        <table class='table table-striped'>
+          <thead>
+            <tr>
+              <th *ngFor="let item of titleArray, let i = index" scope='col' class='tl_body_table_head' style='width: 300px; cursor: pointer' (click)='onSort(item)' >{{item}}</th>
+              <th scope='col' class='tl_body_table_head'>Edit</th>
+              <th scope='col' class='tl_body_table_head'></th>
+            </tr>
+          </thead>
+          <tbody>
+            <!-- dataTable-->
+            <tr *ngFor = 'let i of learnerList | slice: (page-1)* pageSize : (page-1) * pageSize + pageSize; let j = index'>
+              <th scope="row">{{j+1}}</th>
+              <td>{{i.FirstName}}</td>
+              <td>{{i.Room}}</td>
+              <td>{{i.LastName}}</td>
+              <td>{{i.Branch}}</td>
+              <td>{{i.BeginTime}}</td>
+              <td>{{i.EndTime}}</td>
+              <td>{{i.Cancel}}</td>
+              <td>{{i.CancelReason}}</td>
+              <td>{{i.CourseName}}</td>
+              <td>{{i.TrailCourse}}</td>
+              <td>
+                <a (click)='openE()' style="cursor: pointer;"><button class="btn btn-primary" style="width: 70px; height: 20px; font-size: 12px; line-height: 12px" >Edit</button></a><br>
+                <a (click)='openCon(confirmModal,1)' style="cursor: pointer;"><button class="btn btn-success" style="width: 70px; height: 20px; font-size: 12px; line-height: 12px">Confirm</button></a><br>
+                <a (click)='openCon(confirmModal,2)' style="cursor: pointer;"><button class="btn btn-danger" style="width: 70px; height: 20px; font-size: 12px; line-height: 12px">Cancel</button></a>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!--body pagination-->
+      <div class='col-12'>
+        <ngb-pagination [collectionSize] = 'learnerListLength' [(page)] ='page' [pageSize]='pageSize'></ngb-pagination>
+      </div>
+    </div>
+  </div>
+
+
+  <ng-template #confirmModal let-modal>
+      <div class="modal-header m-2">
+        <h4>Please Confirm</h4>
+        <button
+          type="button"
+          class="close"
+          aria-label="Close"
+          (click)="modal.dismiss('Cross click')"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <!-- modal-body -->
+      <div class="container">
+        <div class="d-flex justify-content-center row">
+          <p *ngIf="confirmButton">Please confirm the course has been achieved</p>
+          <p *ngIf="cancelButton">Please confirm the course has been canceled</p>
+          <div *ngIf="cancelButton">
+            <div class="row mb-2">
+              <label class="mt-2">Canceled Reason</label>
+              <input class="form-control" type="text"/>
+
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-dark" (click)="modal.close('Save')">
+          Confirm
+        </button>
+        <button
+          type="button"
+          class="btn btn-outline-dark"
+          (click)="modal.dismiss('Cross click')"
+        >
+          Cancel
+        </button>
+      </div>
+    </ng-template>
+
+
+  <!-- <div class="form-group row justify-content-center">
+    <div class="col-5">
+      <label class="mt-2">Canceled</label>
+      <input class="form-control" type="text" formControlName="Canceled"/>
+    </div>
+    <div class="col-5">
+      <label class="mt-2">Canceled Reason</label>
+      <input class="form-control" type="text" formControlName="CanceledReason"/>
+
+    </div>
+
+    <div class="col-5">
+      <label class="mt-2">Trial Course</label>
+      <input class="form-control" type="text" formControlName="TrialCourse"/>
+
+    </div>
+
+  </div> -->

@@ -36,7 +36,7 @@
                                               <input type="number" formControlName="owing" min=0 onkeypress='return (/[\d]/.test(String.fromCharCode(event.keyCode)))' placeholder="Please enter the amount.." class="form-control col-md-3 ml-2" [class.is-invalid]="owing.invalid && owing.touched" value='item.OwingFee'>
                                               <div class="col-md-1"></div>
                                               <!-- open method for confirm payment modal-->
-                                              <button class="btn btn-primary col-md-3 ml-2" [disabled]="owing.invalid" (click)="validMethodI(contentP, item)">Send This Payment</button>
+                                              <button class="btn btn-primary col-md-3 ml-2" [disabled]="owing.invalid" (click)="validMethodI(contentP, item, 0)">Send This Payment</button>
                                               <small *ngIf="errMsgM" class="text-danger">Pls select the payment method</small>
                                               <br>
                                               <small *ngIf="errMsgO" class="text-danger">Pls enter a validate number of the transaction</small>
@@ -107,7 +107,7 @@
                                     <input type="number" formControlName="owing" min="0" onkeypress='return (/[\d]/.test(String.fromCharCode(event.keyCode)))' placeholder="Please enter the amount.." class="form-control col-md-3 ml-2" [class.is-invalid]="owing.invalid && owing.touched">
                                     <div class="col-md-1"></div>
                                     <!-- open method for confirm payment modal-->
-                                    <button class="btn btn-primary col-md-3 ml-2" [disabled]="owing.invalid" (click)="validMethodI(contentP, item)">Send This Payment</button>
+                                    <button class="btn btn-primary col-md-3 ml-2" [disabled]="owing.invalid" (click)="validMethodI(contentP, item, j)">Send This Payment</button>
                                     <small *ngIf="errMsgM" class="text-danger">Pls select the payment method</small>
                                     <br>
                                     <small *ngIf="errMsgO" class="text-danger">Pls enter a validate number of the transaction</small>

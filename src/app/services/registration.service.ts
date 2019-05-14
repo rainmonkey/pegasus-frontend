@@ -5,6 +5,10 @@ import { catchError } from 'rxjs/operators';
 import { throwError } from 'rxjs';
 import { environment } from '../../environments/environment.prod';
 
+
+@Injectable({ providedIn: 'root' })
+
+
 @Injectable({
   providedIn: 'root'
 })
@@ -12,12 +16,14 @@ export class RegistrationService {
   // url given by back-end server
   private baseUrl: any = environment.baseUrl;
   public url = this.baseUrl + 'register/student/';
+  
 
   constructor(private http: HttpClient) { }
 
   // get group course data from server
   getGroupCourse(): Observable<any> {
-    return this.http.get('../assets/course.json');
+    //let url = 'http://localhost:5000/api';
+    return this.http.get(this.baseUrl+'GroupCourseInstance');
   }
 
   // post student's data to server and catch error from server

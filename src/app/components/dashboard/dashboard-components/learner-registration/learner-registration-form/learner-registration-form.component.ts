@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormArray, FormBuilder, Validators } from '@angular/forms';
 import { RegistrationService } from '../../../../../services/registration.service';
+import { OrgFormatPipe } from '../../../../../shared/pipes/org-format.pipe';
+
 
 @Component({
   selector: 'app-learner-registration-form',
@@ -16,7 +18,8 @@ export class LearnerRegistrationFormComponent implements OnInit {
   public guitars: Array<any>;
   public pianos: Array<any>;
   public drums: Array<any>;
-  public selectedCourse: string;
+  public groupCourseInstance: Array<any>;
+  //public selectedCourse: string;
   public isSelectedLevel: boolean = false;
   public courses = ['guitar', 'piano', 'drum'];
   public learnerLevel = ['L0', 'L1', 'L2', 'L3', 'L4', 'L5', 'L6', 'L7', 'L8', 'L9', 'L10', 'L11', 'L12'];
@@ -83,7 +86,10 @@ export class LearnerRegistrationFormComponent implements OnInit {
           hasExamed: [''],
           teacherLevel: [''],
           teacherName: [''],
+          customday: [''],
           customTime: [''],
+          customHour: [''],      
+          customMinute: [''],                           
           location: ['']
         })
       ]),
@@ -93,6 +99,11 @@ export class LearnerRegistrationFormComponent implements OnInit {
     document.getElementById('learnerForm').style.display = 'block';
     document.getElementById('parentForm').style.display = 'none';
     document.getElementById('courseForm').style.display = 'none';
+
+    document.getElementById('groupCourse').style.display = 'block';
+    document.getElementById('customCourse').style.display = 'none';    
+    //get group courses
+    this.getCourse();
   }
 
   // encapsulate files form data
@@ -110,17 +121,19 @@ export class LearnerRegistrationFormComponent implements OnInit {
   selectLlevel() {
     this.isSelectedLevel = true;
   }
-  // selectCourse(name: string) {
-  //   this.selectedCourse = name;
-  //   this.registrationService.getGroupCourse()
-  //     .subscribe(
-  //       data => {
-  //         this.guitars = data.guitar;
-  //         this.pianos = data.piano;
-  //         this.drums = data.drum;
-  //       }
-  //     );
-  // }
+  getCourse() {
+   // this.selectedCourse = name;
+    this.registrationService.getGroupCourse()
+      .subscribe(
+        data => {
+          console.log(data);
+          this.groupCourseInstance = data.Data;
+        },
+        err => {
+          console.log(err);          
+        })       
+      }
+
  
   onSubmit() {
     // encapsulate learner form data
@@ -212,6 +225,7 @@ export class LearnerRegistrationFormComponent implements OnInit {
     console.log('phtotosfdsf',this.selectedPhoto)
   }
   chooseCourse(id: any) {
+    console.log(id);
     document.getElementById('groupCourse').style.display = 'none';
     document.getElementById('customCourse').style.display = 'none';
     document.getElementById(id).style.display = 'block';

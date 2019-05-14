@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../../../environments/environment.prod';
 import { catchError } from 'rxjs/operators';
@@ -8,11 +8,21 @@ import { catchError } from 'rxjs/operators';
   providedIn: 'root'
 })
 export class PaymentService {
-  private baseUrl: any = environment.baseUrl;
+  baseUrl = environment.baseUrl;
+  token:string
+  httpHeaders: HttpHeaders;
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {
+    this.prepareHeaders()
+  }
 
-  getInvoice(id): Observable<any[]> {
+  // API Request headers
+  prepareHeaders(){
+    this.token = localStorage.getItem('Token')
+    return this.httpHeaders = new HttpHeaders({'Authorization': "Bearer "+ localStorage.getItem('Token')})
+  }
+
+  getInvoice(id){
     return this.http.get<any[]>(this.baseUrl + 'invoice/' + id);
   }
   addFund(fund) {

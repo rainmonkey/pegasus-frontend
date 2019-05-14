@@ -23,7 +23,7 @@ export class WeekFormatPipe implements PipeTransform {
         return "Friday";
         break;
       case 6:
-        return "Satday";
+        return "Saturday";
         break;
       case 7:
         return "Sunday";

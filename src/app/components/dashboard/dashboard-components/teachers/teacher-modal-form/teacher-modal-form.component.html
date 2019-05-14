@@ -1,0 +1,305 @@
+<div class='t_mf_form'>
+  <form action='' [formGroup]='updateForm'>
+    <div class='row'>
+      <!--上半部分-->
+      <div class='col-12'>
+        <div class='row'>
+          <!--img area-->
+          <div class='col-4'>
+            <div class='row'>
+              <div class='col-6'>
+                <div class='t_mf_img_switch' [class.t_mf_img_switch_left]='showLeftImgFlag' id='img_left_control'
+                  (click)='showPhotos(0)' style="margin-right:5px">
+                  <span class='fas fa-image'></span><span> Teacher</span>
+                </div>
+              </div>
+              <div class='col-6'>
+                <div class='t_mf_img_switch' [class.t_mf_img_switch_right]='showRightImgFlag' id='img_right_control'
+                  (click)='showPhotos(1)' style="margin-left: 5px;">
+                  <span class='fas fa-address-card'></span><span> Id</span>
+                </div>
+              </div>
+            </div>
+            <div class='row t_mf_img' id='img_left'>
+              <img src='' id='userPhoto' />
+              <input *ngIf='!readOnlyFlag' type="file" name="file1" id="file1" class="tl_muf_upload_img"
+                accept="image/*" (change)='preViewImg($event,0)' />
+              <label *ngIf='!readOnlyFlag' for="file1" class='btn btn-sm tl_mf_upload_btn'><span
+                  class='fas fa-plus tl_mf_upload_title'></span></label>
+            </div>
+            <div class='row t_mf_img' id='img_right' style="display:none">
+              <img src="" id='userIdPhoto'>
+              <input *ngIf='!readOnlyFlag' type="file" name="file2" id="file2" class="tl_muf_upload_img"
+                accept="image/*" (change)='preViewImg($event,1)' />
+              <label *ngIf='!readOnlyFlag' for="file2" class='btn btn-sm tl_mf_upload_btn'><span
+                  class='fas fa-plus tl_mf_upload_title'></span></label>
+            </div>
+          </div>
+
+          <!--input area-->
+          <div class='col-8'>
+            <div style="margin-right:10px">
+              <div class='t_mf_imput_right'>
+                <!--line1-->
+                <div>
+                  <!--line1 label-->
+                  <div class='row'>
+                    <div class='col-6'>
+                      <label for='FirstName' style='margin-right: 10px' class='t_mf_label'>First Name:</label>
+                      <small class='text-danger errorfontsmall' style='text-align: center'
+                        *ngIf='updateForm.get("FirstName").invalid && updateForm.get("FirstName").touched && updateForm.get("FirstName").errors?.required'>required</small>
+                    </div>
+                    <div class='col-6'>
+                      <label for='LastName' style='margin-left: 10px;margin-right:10px' class='t_mf_label'>Last
+                        Name:&nbsp;</label>
+                      <small class='text-danger errorfontsmall' style='text-align: center'
+                        *ngIf='updateForm.get("LastName").invalid && updateForm.get("LastName").touched && updateForm.get("LastName").errors?.required'>required</small>
+                    </div>
+                  </div>
+                  <!--line1 input-->
+                  <div class='row'>
+                    <div class='col-6'>
+                      <input name='FirstName' type="text" style='margin-right: 10px' class='col-12 t_mf_input'
+                        formControlName='FirstName'
+                        [class.t_mf_error_border]='updateForm.get("FirstName").invalid && updateForm.get("FirstName").touched'>
+                    </div>
+                    <div class='col-6'>
+                      <input name='LastName' type="text" style='margin-left: 10px' class='col-12 t_mf_input'
+                        formControlName='LastName'
+                        [class.t_mf_error_border]='updateForm.get("LastName").invalid && updateForm.get("LastName").touched'>
+                    </div>
+                  </div>
+                </div>
+
+                <!--line2-->
+                <div>
+                  <!--line2 label-->
+                  <div class='row'>
+                    <div class='col-6'>
+                      <label for='Dob' style='margin-right: 10px' class='t_mf_label'>Date Of Birth:</label>
+                      <small class='text-danger col-12 errorfontsmall' style='text-align: center'
+                        *ngIf='updateForm.get("Dob").invalid && updateForm.get("Dob").touched && updateForm.get("Dob").errors?.required'>required</small>
+                    </div>
+                    <div class='col-6'>
+                      <label for='Gender' style='margin-left: 10px;margin-right:10px' class='t_mf_label'>Gender:</label>
+                      <small class='text-danger col-12 errorfontsmall' style='text-align: center'
+                        *ngIf='updateForm.get("Gender").invalid && updateForm.get("Gender").touched && updateForm.get("Gender").errors?.required'>required</small>
+                    </div>
+                  </div>
+                  <!--line2 input-->
+                  <div class='row'>
+                    <div class='col-6'>
+                      <input name='Dob' type="date" style='margin-right: 10px' class='col-12 t_mf_input'
+                        formControlName='Dob'
+                        [class.t_mf_error_border]='updateForm.get("Dob").invalid && updateForm.get("Dob").touched'>
+                    </div>
+                    <div class='col-6'>
+                      <select name='Gender' type="text" style='margin-left: 10px' class='col-12 t_mf_input'
+                        formControlName='Gender'
+                        [class.t_mf_error_border]='updateForm.get("Gender").invalid && updateForm.get("Gender").touched'>
+                        <option value="Female">Female</option>
+                        <option value="Male">Male</option>
+                        <option value="Other">Other</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+
+                <!--line3-->
+                <div>
+                  <!--line3 label-->
+                  <div class='row'>
+                    <div class='col-6'>
+                      <label for='MobilePhone' style='margin-right: 10px' class='t_mf_label'>Mobile Phone:</label>
+                      <small class='text-danger col-12 errorfontsmall' style='text-align: center'
+                        *ngIf='updateForm.get("MobilePhone").invalid && updateForm.get("MobilePhone").touched && updateForm.get("MobilePhone").errors?.required'>required</small>
+                    </div>
+                    <div class='col-6'>
+                      <label for='HomePhone' style='margin-left: 10px;margin-right: 10px' class='t_mf_label'>Home
+                        Phone:</label>
+                      <small class='text-danger errorfontsmall' style='text-align: center'
+                        *ngIf='updateForm.get("HomePhone").invalid && updateForm.get("HomePhone").touched && updateForm.get("HomePhone").errors?.required'>required</small>
+                    </div>
+                  </div>
+                  <!--line3 input-->
+                  <div class='row'>
+                    <div class='col-6'>
+                      <input name='MobilePhone' type="text" style='margin-right: 10px' class='col-12 t_mf_input'
+                        formControlName='MobilePhone'
+                        [class.t_mf_error_border]='updateForm.get("MobilePhone").invalid && updateForm.get("MobilePhone").touched'>
+                    </div>
+                    <div class='col-6'>
+                      <input name='HomePhone' type="text" style='margin-left: 10px' class='col-12 t_mf_input'
+                        formControlName='HomePhone'
+                        [class.t_mf_error_border]='updateForm.get("HomePhone").invalid && updateForm.get("HomePhone").touched'>
+                    </div>
+                  </div>
+                </div>
+
+                <!--line4-->
+                <div>
+                  <!--line4 label-->
+                  <div class='row'>
+                    <div class='col-6'>
+                      <label for='Email' style='margin-right: 10px' class='t_mf_label'>Email:</label>
+                      <small class='text-danger errorfontsmall' style='text-align: center'
+                        *ngIf='updateForm.get("Email").invalid && updateForm.get("Email").touched && updateForm.get("Email").errors?.required'>required</small>
+                    </div>
+                    <div class='col-6'>
+                      <label for='IRDNumber' style='margin-left: 10px;margin-right: 10px'
+                        class='t_mf_label'>IRDNumber:</label>
+                      <small class='text-danger errorfontsmall' style='text-align: center'
+                        *ngIf='updateForm.get("IRDNumber").invalid && updateForm.get("IRDNumber").touched && updateForm.get("IRDNumber").errors?.required'>required</small>
+                    </div>
+                  </div>
+                  <!--line4 input-->
+                  <div class='row'>
+                    <div class='col-6'>
+                      <input name='Email' type="text" style='margin-right: 10px; width:100%' class='t_mf_input'
+                        formControlName='Email'
+                        [class.t_mf_error_border]='updateForm.get("Email").invalid && updateForm.get("Email").touched'>
+                    </div>
+                    <div class='col-6'>
+                      <input name='IRDNumber' type="text" style='margin-left: 10px; width:100%' class='t_mf_input'
+                        formControlName='IRDNumber'
+                        [class.t_mf_error_border]='updateForm.get("IRDNumber").invalid && updateForm.get("IRDNumber").touched'>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!--line5-->
+            <div style="margin-left:10px">
+              <!--line5 label-->
+              <div class='row'>
+                <div class='col-12'>
+                  <label for='Qualificatiion' class='t_mf_label' style="margin-right: 10px">Qualification:</label>
+                  <small class='text-danger errorfontsmall' style='text-align: center'
+                    *ngIf='updateForm.get("Qualificatiion").invalid && updateForm.get("Qualificatiion").touched && updateForm.get("Qualificatiion").errors?.required'>required</small>
+                </div>
+              </div>
+              <!--line5 input-->
+              <div class='row'>
+                <div class='col-12'>
+                  <select name='Qualificatiion' type="text" style='width: 100%' class='t_mf_input'
+                    formControlName='Qualificatiion'
+                    [class.t_mf_error_border]='updateForm.get("Qualificatiion").invalid && updateForm.get("Qualificatiion").touched'>
+                    <option *ngFor='let i of qualificationOptions' value={{i.QualiId}}>{{i.QualiName}}</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!--下半部分-->
+      <div class='col-12'>
+        <div style="margin-right:10px">
+          <!--line6-->
+          <div>
+            <!--line6 label-->
+            <div class='row'>
+              <div class='col-4'>
+                <label for='IDType' class='t_mf_label'>ID Type:</label>
+                <small class='text-danger errorfontsmall' style='text-align: center'
+                  *ngIf='updateForm.get("IDType").invalid && updateForm.get("IDType").touched && updateForm.get("IDType").errors?.required'>required</small>
+              </div>
+              <div class='col-4'>
+                <label for='IDNumber' style='margin:0 5px' class='t_mf_label'>ID Number:</label>
+                <small class='text-danger errorfontsmall' style='text-align: center'
+                  *ngIf='updateForm.get("IDNumber").invalid && updateForm.get("IDNumber").touched && updateForm.get("IDNumber").errors?.required'>required</small>
+              </div>
+              <div class='col-4'>
+                <label for='ExpiryDate' style='margin-left: 10px' class='t_mf_label'>Expiry Date:</label>
+                <small class='text-danger errorfontsmall' style='text-align: center'
+                  *ngIf='updateForm.get("ExpiryDate").invalid && updateForm.get("ExpiryDate").touched && updateForm.get("ExpiryDate").errors?.required'>required</small>
+              </div>
+            </div>
+
+            <!--line6 input-->
+            <div class='row'>
+              <div class='col-4'>
+                <select name='IDType' type="text" class='col-12 t_mf_input' formControlName='IDType'
+                  [class.t_mf_error_border]='updateForm.get("IDType").invalid && updateForm.get("IDType").touched'>
+                  <!--让后台传id type-->
+                  <option *ngFor='let i of idTypeList' value={{i.idTypeId}}>{{i.idTypeName}}</option>
+                </select>
+              </div>
+              <div class='col-4'>
+                <input name='IDNumber' type="text" style='margin:0 5px' class='col-12 t_mf_input'
+                  formControlName='IDNumber'
+                  [class.t_mf_error_border]='updateForm.get("IDNumber").invalid && updateForm.get("IDNumber").touched'>
+              </div>
+              <div class='col-4'>
+                <input name='ExpiryDate' type="date" style='margin-left:10px' class='col-12 t_mf_input'
+                  formControlName='ExpiryDate'
+                  [class.t_mf_error_border]='updateForm.get("ExpiryDate").invalid && updateForm.get("ExpiryDate").touched'>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!--line7-->
+      <div class='col-12' style="margin-top:10px">
+        <div class='row'>
+          <div class='col-12 t_mf_label' style='text-align: center'>
+            Languages:
+            <small class='text-danger errorfontsmall' style='text-align: center;margin-left:10px'
+                  *ngIf='updateForm.get("Language").invalid && updateForm.get("Language").touched && updateForm.get("Language").errors?.required'>required</small>
+          </div>
+          <div class='col-12 t_mf_language' [class.t_mf_error_div]='updateForm.get("Language").invalid &&
+          updateForm.get("Language").touched'>
+            <div class='row'>
+              <!--ngFor-->
+              <div *ngFor='let i of languageOptions' class='col-3 t_mf_language_option'>
+                <label for={{i.LangName}} class=''>{{i.LangName}}&nbsp;&nbsp;</label>
+                <input #lan type="checkbox" name={{i.LangName}} id={{i.LangName}} value={{i.LangId}}
+                  formControlName='Language'
+                  [class.t_mf_error_border]='updateForm.get("Language").invalid && updateForm.get("Language").touched'
+                  [checked]='setDefaultLanguageSelection(i.LangId)'>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!--line8 detail-->
+      <div class='col-12' style="margin-top:10px">
+        <div *ngIf='command == 1' class='row'>
+          <div class='col-12 t_mf_label' style='text-align: center'>Available Days:</div>
+          <div *ngFor='let i of getAvailableDays()' class='col-4'>
+            <div class='row t_mf_week'>
+              <div class='col-12 t_mf_week_title'>{{i | weekFormat}}</div>
+              <div *ngFor='let j of getAvailableOrgs(i)' class='col-12'>{{j | orgFormat}}</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!--line8 add/update-->
+      <div class='col-12'>
+        <div *ngIf='command !== 1' class='row'>
+          <div class='col-12 t_mf_branch_label'>Please Select Branches:</div>
+          <div *ngFor='let i of week' class='col-3'>
+            <div class='row t_mf_branch_weeks'>
+              <div class='col-12 t_mf_branch_week' (click)='toggleBranchOptions($event,i)'>{{i}}</div>
+              <div id={{i}} style="display:none" class='col-12'>
+                <div *ngFor='let j of orgOptions' class='col-12'>
+                  <label class='col-11 t_mf_branch_orgs'>{{j.OrgName.replace('BRANCH','').toLowerCase()}}</label>
+                  <!--attribute NAME is important, do not touch-->
+                  <input #branches class='col-1 tl_muf_orgName' type='checkbox' name={{i}} value={{j.OrgId}}>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+
+    </div>
+  </form>
+</div>
