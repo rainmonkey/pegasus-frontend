@@ -7,8 +7,8 @@ import { MatButtonModule, MatFormFieldModule, MatInputModule } from '@angular/ma
 import { NgModule } from '@angular/core';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { routing } from '../app/app-routing.module';
-import { FullCalendarModule} from 'ng-fullcalendar';
-import {DatePipe} from '@angular/common';
+import { FullCalendarModule } from 'ng-fullcalendar';
+import { DatePipe } from '@angular/common';
 
 // Guards
 
@@ -141,7 +141,7 @@ import { TestoneComponent } from './components/testcomponent/testone/testone.com
     AdminInvoiceEditModalComponent,
     CourseDeleteModalComponent,
     CourseDetailModalComponent,
-    SessionsEditModalComponent
+    SessionEditModalComponent
   ],
   bootstrap: [AppComponent]
 })
