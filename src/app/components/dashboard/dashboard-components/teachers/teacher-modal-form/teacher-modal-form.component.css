@@ -54,12 +54,13 @@
     text-align: center;
     height: 30px;
     line-height: 30px;
+    font-weight: normal!important;
 }
 .t_mf_language_option input{
     zoom: 150%;
     line-height: 30px;
     position: relative;
-    top:3px;
+    top:3.5px;
 }
 
 .t_mf_error_border{
@@ -88,8 +89,8 @@
 }
 .tl_mf_upload_title{
     position: relative;
-    left: -7px;
-    top:-5px;
+    left: -6.8px;
+    top:-4px;
 }
 .tl_muf_upload_img{
     opacity: 0;
@@ -116,6 +117,7 @@
 }
 .t_mf_branch_label{
     font-weight: bold;
+    font-size:14px;
     text-align: center;
     margin-bottom: 10px!important;
 }

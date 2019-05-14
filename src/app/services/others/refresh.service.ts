@@ -3,21 +3,34 @@ import { Injectable } from '@angular/core';
 @Injectable({
   providedIn: 'root'
 })
+
+/*********************************************
+  this service is used to refresh page after user modify data streams(update, add, delete...)  
+**********************************************/
 export class RefreshService {
-  public requestFlag:boolean ;
-  public tutorToDelete:number;
+  public requestFlag: boolean;
+  public tutorToDelete: number;
 
   constructor() { }
 
-  sendRefreshRequest(tutorId){
+  /*
+    1, called [sendRefreshRequest] after delete operation, tutorId !!REQUIRED!!
+    2, called [sendRefreshRequest] after update and add operation, tutorId not required
+  */
+  sendRefreshRequest(tutorId?) {
     this.requestFlag = true;
-    this.tutorToDelete = tutorId;
+    if (tutorId !== null && tutorId !== undefined) {
+      this.tutorToDelete = tutorId;
+    }
+    else {
+      this.tutorToDelete = null;
+    }
   }
 
-  getRefreshRequest(){
+  getRefreshRequest() {
     let requestFlagToReturn = this.requestFlag;
     this.requestFlag = false;
-    return [requestFlagToReturn,this.tutorToDelete];
+    return [requestFlagToReturn, this.tutorToDelete];
 
   }
 }

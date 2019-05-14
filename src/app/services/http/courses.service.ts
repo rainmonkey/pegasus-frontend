@@ -17,4 +17,8 @@ export class CoursesService {
   addNew(data):any{
     return this.http.post(this.baseUrl+'courses',data)
   }
+
+  deleteCourse(courseId):any{
+    return this.http.delete(this.baseUrl + 'courses/' + courseId);
+  }
 }

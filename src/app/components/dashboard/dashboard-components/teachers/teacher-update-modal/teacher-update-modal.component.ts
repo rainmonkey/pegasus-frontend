@@ -1,6 +1,7 @@
 import { TeachersService } from './../../../../../services/http/teachers.service';
 import { Component, OnInit, Input, ViewChild } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { RefreshService } from 'src/app/services/others/refresh.service';
 
 @Component({
   selector: 'app-teacher-update-modal',
@@ -9,13 +10,14 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 })
 export class TeacherUpdateModalComponent implements OnInit {
   public errorMessage: string = '';
+  public successMessage: string = '';
 
   @Input() command;
   @Input() whichTeacher;
-
+  //in order to get the form from child component(TeacherModalFormDComponent)
   @ViewChild('modalUpdateFormComponent') modalUpdateFormComponentObj;
 
-  constructor(public activeModal: NgbActiveModal, private teachersService: TeachersService) { }
+  constructor(public activeModal: NgbActiveModal, private teachersService: TeachersService, private refreshService: RefreshService) { }
 
   ngOnInit() {
   }
@@ -23,39 +25,38 @@ export class TeacherUpdateModalComponent implements OnInit {
   onSubmit() {
     this.showLoadingGif();
     let vailadValue = this.checkInputVailad();
-    if(vailadValue !== null){
+    if (vailadValue !== null) {
       this.stringifySubmitStr(vailadValue)
     }
-    console.log('aaaaa')
   }
-
-
 
   showLoadingGif() {
 
   }
-
+  ////////////////////////////////////////handler of submition/////////////////////////////////////////////////////
+  /*
+    check whether data vailad or not(ruled by Validators).
+  */
   checkInputVailad() {
     let valueToSubmit = this.modalUpdateFormComponentObj.updateForm.value;
     //once click save btn, touch all inputs form with for-loop. In order to trigger Validator
     for (let i in this.modalUpdateFormComponentObj.updateForm.controls) {
       this.modalUpdateFormComponentObj.updateForm.controls[i].touched = true;
     }
-
-    for (let j in valueToSubmit) {
-      if (valueToSubmit[j] == null) {
-        if (j == 'DayOfWeek') {
-          continue;
-        }
-        else {
-          this.errorMessage = 'Please fill all required inputs.'
-          return null;
-        }
-      }
+    //when input value pass the check of Validators, there is a [status] attr equal to 'VALID'
+    if (this.modalUpdateFormComponentObj.updateForm.status == 'VALID') {
+      return this.prepareSubmitData(valueToSubmit);
     }
-    return this.prepareSubmitData(valueToSubmit)
+    else {
+      this.errorMessage = 'Please check your input.'
+      return null;
+    }
   }
 
+  /*
+    back-end limited submition data's type.
+    this method is used to convert data to correct type.
+  */
   prepareSubmitData(valueToSubmit) {
     valueToSubmit.Gender = this.checkGender(valueToSubmit);
     valueToSubmit.Language = this.checkLanguages();
@@ -64,39 +65,63 @@ export class TeacherUpdateModalComponent implements OnInit {
     return valueToSubmit;
   }
 
-  stringifySubmitStr(vailadValue){
+  /*
+    after stringify submition string, data is ready to submit
+  */
+  stringifySubmitStr(vailadValue) {
     console.log(vailadValue)
     this.errorMessage = '';
     let submit = new FormData();
-    submit.append('details',JSON.stringify(vailadValue));
-    submit.append('Photo',this.modalUpdateFormComponentObj.photoToSubmit);
-    submit.append('IdPhoto',this.modalUpdateFormComponentObj.idPhotoToSubmit);
+    submit.append('details', JSON.stringify(vailadValue));
+    submit.append('Photo', this.modalUpdateFormComponentObj.photoToSubmit);
+    submit.append('IdPhoto', this.modalUpdateFormComponentObj.idPhotoToSubmit);
     this.submitByMode(submit)
   }
 
-   /*
-    push the data to diffrent api
-  */
- submitByMode(submitData) {
-  //while push a stream of new data
-  if (this.command == 0) {
+  /*
+   post the data by diffrent api
+ */
+  submitByMode(submitData) {
+    //while push a stream of new data
+    if (this.command == 0) {
 
-    this.teachersService.addNew(submitData).subscribe(
-      (res) => {
-        console.log('success', res);
-        
-      },
-      (err) => {
-        //this.errorMessage = err.error.ErrorMessage;
-        console.log('Error', err);
-      }
-    );
+      this.teachersService.addNew(submitData).subscribe(
+        (res) => {
+          this.successMessage = 'Submit success!'
+        },
+        (err) => {
+          if (err.error.ErrorMessage == 'Teacher has exist.') {
+            this.errorMessage = err.error.ErrorMessage;
+          }
+          else {
+            this.errorMessage = 'Error! Please check your input.'
+
+          }
+          console.log('Error', err);
+        }
+      );
+    }
+    //while update data
+    else if (this.command == 2) {
+      this.teachersService.update(submitData, this.whichTeacher.TeacherId).subscribe(
+        (res) => {
+          this.successMessage = 'Submit success!'
+        },
+        (err) => {
+
+          console.log(err)
+
+        }
+
+
+
+      )
+    }
   }
-  //while update data
-  else if (this.command == 2) {
+
+  subscribtion(res, err) {
 
   }
-}
 
 
 
@@ -126,14 +151,14 @@ export class TeacherUpdateModalComponent implements OnInit {
     return checkedLanguagesList;
   }
 
-  
+
   checkOrgs() {
     //console.log(this.modalUpdateFormComponentObj)
     let temBranches = this.modalUpdateFormComponentObj.branchesCheckBox._results;
     let temBranchesList = [[], [], [], [], [], [], []];
-    
+
     for (let i of temBranches) {
-      console.log(i.nativeElement.name )
+      console.log(i.nativeElement.name)
       if (i.nativeElement.checked == true) {
         if (i.nativeElement.name == 'Monday') {
           temBranchesList[0].push(Number(i.nativeElement.defaultValue))
@@ -167,8 +192,15 @@ export class TeacherUpdateModalComponent implements OnInit {
       checkQualificationsList.push(Number(valueToSubmit.Qualificatiion));
     }
 
-   
-      return checkQualificationsList;
 
+    return checkQualificationsList;
+
+  }
+
+
+  ////////////////////////////////////////methods called by HTML element and event/////////////////////////////////////////////////////
+  requestRefreshPage() {
+    this.activeModal.close('Cross click');
+    this.refreshService.sendRefreshRequest();
   }
 }

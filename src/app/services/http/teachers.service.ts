@@ -1,15 +1,22 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { environment } from '../../../environments/environment.prod';
 
 @Injectable({
   providedIn: 'root'
 })
 export class TeachersService {
-  private baseUrl: any = environment.baseUrl;
-  private url = 'http://192.168.178.76:5000/api/'
+  baseUrl: any = environment.baseUrl;
+  httpHeaders: HttpHeaders;
+  token:string
 
-  constructor(private http:HttpClient) { 
+  constructor(
+    private http:HttpClient
+    ) {  }
+  // API Request headers
+  prepareHeaders(){
+    this.token = localStorage.getItem('Token')
+    return this.httpHeaders = new HttpHeaders({'Authorization': "Bearer "+ localStorage.getItem('Token')})
   }
 
   getTeachersInfo():any{
@@ -24,7 +31,15 @@ export class TeachersService {
     return this.http.get(this.baseUrl + 'qualificationslanguagesorgs');
   }
 
+  searching(searchString,columnToSearch):any{
+    return this.http.get(this.baseUrl + 'teacher/' + searchString, columnToSearch) 
+  }
+
   addNew(data):any{
-    return this.http.post(this.baseUrl+'teacher',data)
+    return this.http.post(this.baseUrl +'teacher',data)
+  }
+
+  update(data,teacherId):any{
+    return this.http.put(this.baseUrl + 'teacher/' + teacherId, data)
   }
 }

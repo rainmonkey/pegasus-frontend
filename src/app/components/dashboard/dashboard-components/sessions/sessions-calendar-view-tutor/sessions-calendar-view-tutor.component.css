@@ -1,4 +1,16 @@
+@import "~fullcalendar/dist/fullcalendar.min.css";
+@import "~font-awesome/css/font-awesome.css";
+@import "~@fullcalendar/core/main.css";
+@import "~@fullcalendar/daygrid/main.css";
+@import "~@fullcalendar/resource-timeline/main.css";
+@import "~@fullcalendar/timeline/main.css";
+@import "~@fullcalendar/timegrid/main.css";
+@import "~sweetalert2/dist/sweetalert2.min.css";
+.fc-content{
+  color: aliceblue;
+}
+
 .container{
     padding: 30px;
   }
-  
+

@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { Router, ActivatedRoute } from '@angular/router';
 import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { TeachersService } from '../../../../../services/http/teachers.service';
-import { FormBuilder } from '@angular/forms';
+import { FormBuilder, Validator, Validators, RequiredValidator } from '@angular/forms';
 import { PaymentService } from '../../../../../services/http/payment.service';
 
 @Component({
@@ -22,28 +23,33 @@ export class AdminInvoiceEditModalComponent implements OnInit {
     private fb: FormBuilder,
     public modalService: NgbModal,
     private teachersService: TeachersService,
-    private paymentService: PaymentService
+    private paymentService: PaymentService,
+    private router: Router,
+    private activatedRoute: ActivatedRoute
     ) {
 
      }
 
   // invoice list fb
   invoiceEditForm = this.fb.group({
-    InvoiceNum: [],
-    DueDate: [],
-    CourseName: [],
-    LessonQuantity: [],
-    BeginDate: [],
-    Concert: [],
-    Note: [],
-    Other1FeeName: [],
+    InvoiceNum: ['00000001'],
+    DueDate: ['5-4-2019'],
+    CourseName: ['Piano'],
+    LessonQuantity: ['13'],
+    BeginDate: ['10-4-2019'],
+    LessonFee: [390],
+    Concert: ['Concert for term 2, 2019'],
+    ConcertFee: ['15'],
+    Note: ['Lesson Note Term 2, 2019'],
+    NoteFee: [3],
+    Other1FeeName: ['Enroll Fee'],
     Other2FeeName: [],
     Other3FeeName: [],
-    Other1Fee: [],
+    Other1Fee: [20],
     Other2Fee: [],
     Other3Fee: [],
     PaidFee: [],
-    OwingFee: []
+    OwingFee: [428]
   });
 
   ngOnInit() {
@@ -68,10 +74,28 @@ export class AdminInvoiceEditModalComponent implements OnInit {
 
     });
   }
+  // close alert
+  closeSucc(){
+    this.successAlert = false;
+  }
+  closeErro(){
+    this.errorAlert = false;
+  }
 
 // post data to server side
   sendMail(confirmModal) {
     this.open(confirmModal);
+    this.paymentService.emailInvoice(this.invoiceEditForm.value)
+    .subscribe(
+      (res) => {
+        this.router.navigate(['../success'], {relativeTo: this.activatedRoute});
+      },
+      (error) => {
+        this.errorMsg = JSON.parse(error.error);
+        this.errorAlert = true;
+        alert(this.errorMsg.ErrorCode);
+      }
+    );
   }
 
 // confirm Modal
