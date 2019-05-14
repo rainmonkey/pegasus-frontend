@@ -42,7 +42,6 @@ export class AdminLearnerListComponent implements OnInit {
     this.LearnerListService.getLearnerList().subscribe(
       (res) =>  {
         console.log(res)
-<<<<<<< HEAD
        // @ts-ignore
         this.learnerList = res.Data;
         // @ts-ignore
@@ -50,15 +49,6 @@ export class AdminLearnerListComponent implements OnInit {
         // @ts-ignore
         this.learnerListLength =res.Data.length;
        
-=======
-        //@ts-ignore
-       this.learnerList = res.Data;
-       //@ts-ignore
-       this.learnerListCopy = this.learnerList;
-       //@ts-ignore
-       this.learnerListLength=res.Data.length;
-
->>>>>>> 3e2b9623631676f302581f93b173b24854ea502d
       },
     (err) => {
       console.log(err); this.errorMessage="Wrong"
