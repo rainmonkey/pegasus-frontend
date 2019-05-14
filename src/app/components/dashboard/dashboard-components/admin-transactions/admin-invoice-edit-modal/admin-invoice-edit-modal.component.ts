@@ -34,10 +34,10 @@ export class AdminInvoiceEditModalComponent implements OnInit {
   invoiceEditForm = this.fb.group({
     InvoiceNum: ['00000001'],
     DueDate: ['5-4-2019'],
-    CourseName: ['Piano'],
-    LessonQuantity: ['13'],
+    CourseName: ['Piano',Validators.required],
+    LessonQuantity: ['13',Validators.required],
     BeginDate: ['10-4-2019'],
-    LessonFee: [390],
+    LessonFee: [390,Validators.required],
     Concert: ['Concert for term 2, 2019'],
     ConcertFee: ['15'],
     Note: ['Lesson Note Term 2, 2019'],
@@ -84,6 +84,8 @@ export class AdminInvoiceEditModalComponent implements OnInit {
 
 // post data to server side
   sendMail(confirmModal) {
+    if (this.invoiceEditForm.valid){
+    this.errMsgM = true;
     this.open(confirmModal);
     this.paymentService.emailInvoice(this.invoiceEditForm.value)
     .subscribe(
@@ -95,7 +97,7 @@ export class AdminInvoiceEditModalComponent implements OnInit {
         this.errorAlert = true;
         alert(this.errorMsg.ErrorCode);
       }
-    );
+    );}
   }
 
 // confirm Modal

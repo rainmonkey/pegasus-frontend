@@ -19,6 +19,7 @@ import {DatePipe} from '@angular/common';
 import { CommandFormatPipe } from './shared/pipes/command-format.pipe';
 import { OrgFormatPipe } from './shared/pipes/org-format.pipe';
 import { WeekFormatPipe } from './shared/pipes/week-format.pipe';
+import { MyTypePipe } from './shared/pipes/myType-format.pipe';
 
 // Components
 import { AppComponent } from './app.component';
@@ -100,6 +101,7 @@ import { TestoneComponent } from './components/testcomponent/testone/testone.com
     InventoryListComponent,
     AdminInvoiceListComponent,
     AdminInvoiceEditModalComponent,
+    MyTypePipe,
     PayrollPanelComponent,
     PayrollListComponent,
     TransactionsPanelComponent,

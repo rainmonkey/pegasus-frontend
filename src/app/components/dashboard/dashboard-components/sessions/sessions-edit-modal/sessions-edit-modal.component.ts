@@ -1,9 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { TeachersService } from '../../../../../services/http/teachers.service';
 import { FormBuilder, Validator, Validators, RequiredValidator } from '@angular/forms';
-import { PaymentService } from '../../../../../services/http/payment.service';
+import { TransactionService } from '../../../../../services/http/transaction.service';
 
 @Component({
   selector: 'app-sessions-edit-modal',
@@ -17,13 +16,13 @@ export class SessionsEditModalComponent implements OnInit {
   public errMsgO = false;
   public errMsgM = false;
   public successAlert = false;
+  public staffId = 3;
 
   constructor(
     public activeModal: NgbActiveModal,
     private fb: FormBuilder,
     public modalService: NgbModal,
-    private teachersService: TeachersService,
-    private paymentService: PaymentService,
+    private transactionService: TransactionService,
     private router: Router,
     private activatedRoute: ActivatedRoute
     ) {
@@ -49,7 +48,7 @@ export class SessionsEditModalComponent implements OnInit {
   }
 // get invoice from server
   getInvoiceData() {
-    this.teachersService.getTeachersInfo().subscribe(
+    this.transactionService.getLearnerInvo(this.staffId).subscribe(
       (res) => {
         this.learnerList = res.Data;
         //this.patchToInvoice()
@@ -77,7 +76,7 @@ export class SessionsEditModalComponent implements OnInit {
 // post data to server side
   sendMail(confirmModal) {
     this.open(confirmModal);
-    this.paymentService.emailInvoice(this.invoiceEditForm.value)
+    this.transactionService.update(this.invoiceEditForm.value)
     .subscribe(
       (res) => {
         this.router.navigate(['../success'], {relativeTo: this.activatedRoute});
@@ -96,7 +95,7 @@ export class SessionsEditModalComponent implements OnInit {
     .open(confirmModal)
     .result.then(
       result => {
-        this.paymentService.emailInvoice(this.invoiceEditForm.controls.value).subscribe(
+        this.transactionService.update(this.invoiceEditForm.controls.value).subscribe(
           response => {
             console.log('Success!', response);
             this.successAlert = true;

@@ -1,8 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { NgbootstraptableService } from 'src/app/services/others/ngbootstraptable.service';
-import { LearnersService } from '../../../../../services/http/learners.service';
-import { TeachersService } from '../../../../../services/http/teachers.service';
+import { SessionsService } from '../../../../../services/http/sessions.service';
 import { SessionsEditModalComponent } from '../sessions-edit-modal/sessions-edit-modal.component';
 import { PaymentService } from '../../../../../services/http/payment.service';
 @Component({
@@ -24,6 +23,7 @@ export class SessionsListViewComponent implements OnInit {
   public errMsgO;
   public confirmButton = false;
   public cancelButton = false;
+  public date = '2019-04-29';
   public titleArray = [
     '#',
     'Teacher',
@@ -41,8 +41,7 @@ export class SessionsListViewComponent implements OnInit {
   constructor(
     private modalService: NgbModal,
     private ngTable: NgbootstraptableService,
-    // private learnersservice: LearnersService,
-    private teachersService: TeachersService,
+    private sessionsService: SessionsService,
     private paymentService: PaymentService,
     ) { }
 
@@ -89,8 +88,9 @@ export class SessionsListViewComponent implements OnInit {
 
   // get data from server side
   getData() {
-    this.teachersService.getTeachersInfo().subscribe(
+    this.sessionsService.getReceptionistLesson(this.date).subscribe(
       (res) => {
+        console.log(res)
         this.learnerList = res.Data;
         this.learnerListLength = res.Data.length; //length prop is under Data prop
         this.temLearnerList = res.Data;

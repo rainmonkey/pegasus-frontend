@@ -1,8 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { NgbootstraptableService } from 'src/app/services/others/ngbootstraptable.service';
-import { LearnersService } from '../../../../../services/http/learners.service';
-import { TeachersService } from '../../../../../services/http/teachers.service';
+import { TransactionService } from '../../../../../services/http/transaction.service';
 import { AdminInvoiceEditModalComponent } from '../admin-invoice-edit-modal/admin-invoice-edit-modal.component';
 
 @Component({
@@ -22,11 +21,12 @@ export class AdminInvoiceListComponent implements OnInit {
   public errorAlert = false;
   public errMsgM;
   public errMsgO;
+  public staffId = 3;
   constructor(
     private modalService: NgbModal,
     private ngTable: NgbootstraptableService,
     // private learnersservice: LearnersService,
-    private teachersService: TeachersService
+    private transactionService: TransactionService
     ) { }
 
   ngOnInit() {
@@ -40,7 +40,7 @@ export class AdminInvoiceListComponent implements OnInit {
 
   // get data from server side
   getData() {
-    this.teachersService.getTeachersInfo().subscribe(
+    this.transactionService.getLearnerInvo(this.staffId).subscribe(
       (res) => {
         this.learnerList = res.Data;
         this.learnerListLength = res.Data.length; //length prop is under Data prop
