@@ -1,0 +1,140 @@
+<!--modal header-->
+<div class="modal-header">
+    <h4 class="modal-title col-4">Session Editing </h4>
+    <button
+      type="button"
+      class="btn btn-sm btn-info tl_mu_btn"
+      aria-label="Close"
+      (click)="activeModal.dismiss('Cross click')"
+    >
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+
+  <!--modal body-->
+  <div class="modal-body">
+    <form [formGroup]="invoiceEditForm" class="justify-content-between">
+      <div class="form-group row justify-content-center">
+        <div class="col-5">
+          <div>
+            <label class="mt-2">Course Name</label>
+            <input class="form-control" type="text" formControlName="CourseName"/>
+            <!-- <small *ngIf="invoiceEditForm.get('CourseName').touched && invoiceEditForm.get('CourseName').invalid">(Course Name)</small> -->
+          </div>
+          <div>
+            <label class="mt-2">Begining at</label>
+            <input class="form-control" type="text" formControlName='BeginTime'/>
+            <!-- <small *ngIf="invoiceEditForm.get('BeginTime').touched">(Begining Date)</small> -->
+          </div>
+        </div>
+
+        <div class="col-5">
+          <div>
+            <label class="mt-2">Room</label>
+            <input class="form-control" type="number" formControlName="Room"/>
+            <!-- <small *ngIf="invoiceEditForm.get('Room').touched">(Lesson quantity)</small> -->
+          </div>
+          <div>
+            <label class="mt-2">Teacher</label>
+            <input class="form-control" type="text" formControlName="Teacher"/>
+            <!-- <small *ngIf="invoiceEditForm.get('Teacher').touched">(Lesson Fee)</small> -->
+          </div>
+        </div>
+        <div class="col-5">
+          <label class="mt-2">End Time</label>
+          <input class="form-control" type="text" formControlName='EndTime'/>
+          <!-- <small *ngIf="invoiceEditForm.get('EndTime').touched"
+            >(e.g.,Lesson Note term 1, yyyy-dd-mm)</small
+          > -->
+        </div>
+        <div class='col-5'></div>
+      </div>
+      <hr />
+      <div class="form-group row justify-content-center">
+        <div class="col-5">
+          <label class="mt-2">Canceled</label>
+          <input class="form-control" type="text" formControlName="Canceled"/>
+          <!-- <small *ngIf="invoiceEditForm.get('Canceled').touched">(Other1 Fee title)</small> -->
+        </div>
+        <div class="col-5">
+          <label class="mt-2">Canceled Reason</label>
+          <input class="form-control" type="text" formControlName="CanceledReason"/>
+          <!-- <small *ngIf="invoiceEditForm.get('CanceledReason').touched">(Other1 Fee)</small> -->
+        </div>
+
+        <div class="col-5">
+          <label class="mt-2">Trial Course</label>
+          <input class="form-control" type="text" formControlName="TrialCourse"/>
+          <!-- <small *ngIf="invoiceEditForm.get('TrialCourse').touched && invoiceEditForm.get('Other2FeeName').invalid"
+            >(Other2 Fee title)</small
+          > -->
+        </div>
+        <div class="col-5">
+            <label class="mt-2">Branch</label>
+            <input class="form-control" type="text" formControlName="Branch"/>
+            <!-- <small *ngIf="invoiceEditForm.get('Branch').touched">(Other1 Fee)</small> -->
+          </div>
+      </div>
+    </form>
+  </div>
+
+  <!--modal footer-->
+  <div class="modal-footer">
+    <button
+      type="button"
+      class="btn btn-outline-dark"
+      (click)="sendMail(confirmModal)"
+      id="save"
+    >
+      Sent Email
+    </button>
+    <small *ngIf="errMsgM" class="text-danger"
+      >Please select the payment method</small
+    >
+    <br />
+    <small *ngIf="errMsgO" class="text-danger"
+      >Please enter a validate number of the transaction</small
+    >
+    <button
+      type="button"
+      class="btn btn-outline-dark"
+      (click)="activeModal.dismiss('Click click')"
+    >
+      Close
+    </button>
+  </div>
+  <!-- ng bootstrap alert -->
+  <ngb-alert *ngIf='successAlert' type="success" (close)="closeSucc()">Your Edit has succeed</ngb-alert>
+  <ngb-alert *ngIf='errorAlert' type="danger" (close)="closeErro()">{{ errorMsg.ErrorCode }}</ngb-alert>
+
+  <ng-template #confirmModal let-modal>
+    <div class="modal-header m-2">
+      <h4>Please Confirm</h4>
+      <button
+        type="button"
+        class="close"
+        aria-label="Close"
+        (click)="modal.dismiss('Cross click')"
+      >
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <!-- modal-body -->
+    <div class="container">
+      <div class="d-flex justify-content-center">
+        <p>Please confirm the new editing</p>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-dark" (click)="modal.close('Save')">
+        Confirm
+      </button>
+      <button
+        type="button"
+        class="btn btn-outline-dark"
+        (click)="modal.dismiss('Cross click')"
+      >
+        Cancel
+      </button>
+    </div>
+  </ng-template>
