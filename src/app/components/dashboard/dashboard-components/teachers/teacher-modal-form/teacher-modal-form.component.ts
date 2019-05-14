@@ -88,7 +88,8 @@ export class TeacherModalFormComponent implements OnInit {
   getQualiId() {
     if (this.whichTeacher.TeacherQualificatiion.length !== 0) {
       console.log(this.whichTeacher)
-      return this.whichTeacher.TeacherQualificatiion[0].TeacherQualiId;
+      console.log( this.whichTeacher.TeacherQualificatiion[0].QualiId)
+      return this.whichTeacher.TeacherQualificatiion[0].QualiId;
     }
     else {
       return null;
