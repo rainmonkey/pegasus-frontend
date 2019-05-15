@@ -3,7 +3,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { NgbootstraptableService } from 'src/app/services/others/ngbootstraptable.service';
 import { PaymentService } from 'src/app/services/http/payment.service';
 import { TeachersService } from 'src/app/services/http/teachers.service';
-import { SessionEditModalComponent } from '../../session-modals/session-edit-modal/session-edit-modal.component';
+import { SessionDetailEditModalComponent } from '../../session-modals/session-detail-edit-modal/session-detail-edit-modal.component';
 
 @Component({
   selector: 'app-sessions-list-view',
@@ -52,7 +52,7 @@ export class SessionsListViewComponent implements OnInit {
 
   // modal method
   openE(){
-    const modalRef = this.modalService.open(SessionEditModalComponent, { size: 'lg' });
+    const modalRef = this.modalService.open(SessionDetailEditModalComponent, { size: 'lg' });
   }
   openC(c){
     this.modalService
