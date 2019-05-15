@@ -178,20 +178,21 @@
         <table class="table">
           <thead>
             <tr>
+              <th>Please Check</th>
               <th>Course</th>
-              <th>id</th>
               <th>Session time</th>
               <th>Location</th>
-              <th></th>              
+           
             </tr>
           </thead>
           <tbody>
-            <tr *ngFor="let guitar of guitars">
+            <tr *ngFor="let groupCourseInstance of groupCourseInstance">
               <td><input type="checkbox"></td>
-              <td>{{guitar.id}}</td>
-              <td>{{guitar.classTime}}</td>
-              <td>{{guitar.location}}</td>
-              <td><input  type="checkbox" name="operation" ></td>              
+              <td>{{groupCourseInstance.Course}}</td>             
+
+              <td>{{groupCourseInstance.BeginDate}}</td>
+              <td>{{groupCourseInstance.OrgId}}</td>
+                      
             </tr>
           </tbody>
         </table>

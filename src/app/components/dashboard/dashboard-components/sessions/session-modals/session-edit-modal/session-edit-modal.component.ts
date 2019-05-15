@@ -2,14 +2,16 @@ import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { FormBuilder, Validator, Validators, RequiredValidator } from '@angular/forms';
-import { TransactionService } from '../../../../../services/http/transaction.service';
+import { TransactionService } from '../../../../../../services/http/transaction.service';
+import { TeachersService } from '../../../../../../services/http/teachers.service';
+import { PaymentService } from 'src/app/services/http/payment.service';
 
 @Component({
-  selector: 'app-sessions-edit-modal',
-  templateUrl: './sessions-edit-modal.component.html',
-  styleUrls: ['./sessions-edit-modal.component.css'],
+  selector: 'app-session-edit-modal',
+  templateUrl: './session-edit-modal.component.html',
+  styleUrls: ['./session-edit-modal.component.css'],
 })
-export class SessionsEditModalComponent implements OnInit {
+export class SessionEditModalComponent implements OnInit {
   public learnerList;
   public errorMsg;
   public errorAlert = false;

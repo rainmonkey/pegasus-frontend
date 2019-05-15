@@ -1,9 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { NgbootstraptableService } from 'src/app/services/others/ngbootstraptable.service';
-import { SessionsService } from '../../../../../services/http/sessions.service';
-import { SessionsEditModalComponent } from '../sessions-edit-modal/sessions-edit-modal.component';
-import { PaymentService } from '../../../../../services/http/payment.service';
+import { SessionsService } from '../../../../../../services/http/sessions.service';
+import { PaymentService } from 'src/app/services/http/payment.service';
+import { TeachersService } from 'src/app/services/http/teachers.service';
+import { SessionEditModalComponent } from '../../session-modals/session-edit-modal/session-edit-modal.component';
+
 @Component({
   selector: 'app-sessions-list-view',
   templateUrl: './sessions-list-view.component.html',
@@ -51,7 +53,7 @@ export class SessionsListViewComponent implements OnInit {
 
   // modal method
   openE(){
-    const modalRef = this.modalService.open(SessionsEditModalComponent, { size: 'lg' });
+    const modalRef = this.modalService.open(SessionEditModalComponent, { size: 'lg' });
   }
   openC(c){
     this.modalService
