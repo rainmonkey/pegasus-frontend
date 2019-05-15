@@ -126,7 +126,7 @@ refreshPage(pointer) {
     
     let searchStr = event.target.value;
     //
-    let titlesToSearch = ['CourseName'];
+    let titlesToSearch = 'CourseName';
 
     this.coursesList = this.ngTable.searching(this.coursesList,titlesToSearch,searchStr);
     this.coursesListLength = this.coursesList.length;
