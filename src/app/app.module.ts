@@ -42,7 +42,7 @@ import { LearnerRegistrationFormComponent } from './components/dashboard/dashboa
 import { LearnerRegistrationEditComponent } from './components/dashboard/dashboard-components/learner-registration/learner-registration-edit/learner-registration-edit.component';
 import { SessionsPanelComponent } from './components/dashboard/dashboard-components/sessions/sessions-panel/sessions-panel.component';
 import { SessionsListViewComponent } from './components/dashboard/dashboard-components/sessions/sessions-views/sessions-list-view/sessions-list-view.component';
-import { SessionEditModalComponent } from './components/dashboard/dashboard-components/sessions/session-modals/session-edit-modal/session-edit-modal.component';
+import { SessionDetailEditModalComponent } from './components/dashboard/dashboard-components/sessions/session-modals/session-detail-edit-modal/session-detail-edit-modal.component';
 import { SessionDetailModalComponent } from './components/dashboard/dashboard-components/sessions/session-modals/session-detail-modal/session-detail-modal.component';
 import { AdminLearnerPanelComponent } from './components/dashboard/dashboard-components/admin-learner/admin-learner-panel/admin-learner-panel.component';
 import { AdminLearnerListComponent } from './components/dashboard/dashboard-components/admin-learner/admin-learner-list/admin-learner-list.component';
@@ -96,7 +96,7 @@ import { SessionCompletedModalComponent } from './components/dashboard/dashboard
     CommandFormatPipe,
     SessionsPanelComponent,
     SessionsListViewComponent,
-    SessionEditModalComponent,
+    SessionDetailEditModalComponent,
     SessionDetailModalComponent,
     AdminLearnerPanelComponent,
     AdminLearnerListComponent,
@@ -149,7 +149,7 @@ import { SessionCompletedModalComponent } from './components/dashboard/dashboard
     AdminInvoiceEditModalComponent,
     CourseDeleteModalComponent,
     CourseDetailModalComponent,
-    SessionEditModalComponent
+    SessionDetailEditModalComponent
   ],
   bootstrap: [AppComponent]
 })

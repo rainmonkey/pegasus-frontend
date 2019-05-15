@@ -7,11 +7,11 @@ import { TeachersService } from '../../../../../../services/http/teachers.servic
 import { PaymentService } from 'src/app/services/http/payment.service';
 
 @Component({
-  selector: 'app-session-edit-modal',
-  templateUrl: './session-edit-modal.component.html',
-  styleUrls: ['./session-edit-modal.component.css'],
+  selector: 'app-session-detail-edit-modal',
+  templateUrl: './session-detail-edit-modal.component.html',
+  styleUrls: ['./session-detail-edit-modal.component.css'],
 })
-export class SessionEditModalComponent implements OnInit {
+export class SessionDetailEditModalComponent implements OnInit {
   public learnerList;
   public errorMsg;
   public errorAlert = false;
