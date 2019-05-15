@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { NgbootstraptableService } from 'src/app/services/others/ngbootstraptable.service';
-import { LearnersService } from '../../../../../services/http/learners.service';
-import { TeachersService } from '../../../../../services/http/teachers.service';
+import { TransactionService } from '../../../../../services/http/transaction.service';
 import { AdminInvoiceEditModalComponent } from '../admin-invoice-edit-modal/admin-invoice-edit-modal.component';
+
 
 @Component({
   selector: 'app-admin-invoice-list',
@@ -11,10 +11,11 @@ import { AdminInvoiceEditModalComponent } from '../admin-invoice-edit-modal/admi
   styleUrls: ['./admin-invoice-list.component.css']
 })
 export class AdminInvoiceListComponent implements OnInit {
+
   public learnerList: any;
   public learnerListLength: number;
-  public temLearnerList: any; //save the original teacherList
-  public temLearnerListLength: number; //save the original teacherList length
+  public temLearnerList: any; //save the original List
+  public temLearnerListLength: number; //save the original List length
   public page: number = 1;  //pagination current page
   public pageSize: number = 10;    //[can modify] pagination page size
   //error alert
@@ -22,11 +23,12 @@ export class AdminInvoiceListComponent implements OnInit {
   public errorAlert = false;
   public errMsgM;
   public errMsgO;
+  public staffId = 3;
   constructor(
     private modalService: NgbModal,
     private ngTable: NgbootstraptableService,
     // private learnersservice: LearnersService,
-    private teachersService: TeachersService
+    private transactionService: TransactionService
     ) { }
 
   ngOnInit() {
@@ -34,13 +36,17 @@ export class AdminInvoiceListComponent implements OnInit {
   }
 
   // modal method
-  open(){
+  open(i){
     const modalRef = this.modalService.open(AdminInvoiceEditModalComponent, { size: 'lg' });
+    let that = this;
+    console.log(modalRef)
+    //pass parameters to edit modals
+    modalRef.componentInstance.item = i;
   }
 
   // get data from server side
   getData() {
-    this.teachersService.getTeachersInfo().subscribe(
+    this.transactionService.getLearnerInvo(this.staffId).subscribe(
       (res) => {
         this.learnerList = res.Data;
         this.learnerListLength = res.Data.length; //length prop is under Data prop
@@ -66,7 +72,7 @@ export class AdminInvoiceListComponent implements OnInit {
 
     let searchStr = event.target.value;
     //
-    let titlesToSearch = ['FirstName','LastName'];
+    let titlesToSearch = 'FirstName';
 
     this.learnerList = this.ngTable.searching(this.learnerList,titlesToSearch,searchStr);
     this.learnerListLength = this.learnerList.length;

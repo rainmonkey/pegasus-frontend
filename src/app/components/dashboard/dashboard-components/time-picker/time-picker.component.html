@@ -11,9 +11,9 @@
         <div class="day-label">{{weekdays[x]}}</div>
         <div class="slots">
           <div class="slot" *ngFor="let y of yIndex; let i = index" 
-          [ngClass]="{'event': timeArray[x][y], 'slot-bottom': i%4==3}" 
-          (mousedown)="mousedown(x,y)"  (mouseup)="mouseup(x,y)">
-            <!-- <small *ngIf="timeArray[x][y]">{{startTime}}-{{endTime}}</small> -->
+          [ngClass]="{'event': displayArray[x][y], 'slot-bottom': i%4==3}" 
+          (mousedown)="mousedown(x,y,$event)"  (mouseup)="mouseup(x,y,$event)">
+            <small *ngIf="textArray[x][y] && displayArray[x][y]">{{startTime}}-{{endTime}}</small>
           </div>
         </div>
       </div>

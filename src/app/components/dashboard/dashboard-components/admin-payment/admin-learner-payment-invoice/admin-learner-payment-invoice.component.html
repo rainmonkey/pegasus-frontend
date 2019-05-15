@@ -13,7 +13,7 @@
                                   <div class='row justify-content-between'>
                                       <div class="col-md-10" [formGroup]='invoiceForm'>
                                           <h5>Invoice</h5>
-                                          <p>{{item.LessonQuantity}} Lessons of {{item.CourseName}} from the Date {{item.BeginDate}}</p>
+                                          <p>{{item.LessonQuantity}} Lessons of {{item.CourseName}} from the Date {{item.BeginDate|date}}</p>
                                           <p>{{item.ConcertFeeName}}</p>
                                           <p>{{item.LessonNoteFeeName}}</p>
 
@@ -37,9 +37,9 @@
                                               <div class="col-md-1"></div>
                                               <!-- open method for confirm payment modal-->
                                               <button class="btn btn-primary col-md-3 ml-2" [disabled]="owing.invalid" (click)="validMethodI(contentP, item, 0)">Send This Payment</button>
-                                              <small *ngIf="errMsgM" class="text-danger">Pls select the payment method</small>
+                                              <small *ngIf="errMsgM" class="text-danger">Please select the payment method &nbsp;</small>
                                               <br>
-                                              <small *ngIf="errMsgO" class="text-danger">Pls enter a validate number of the transaction</small>
+                                              <small *ngIf="errMsgO" class="text-danger">Please enter a validate number of the transaction</small>
                                           </div>
                                       </div>
                                       <div class="col-2">
@@ -47,7 +47,7 @@
                                           <p>${{item.LessonFee}}</p>
                                           <p>${{item.ConcertFee}}</p>
                                           <p>${{item.NoteFee}}</p>
-                                          <p>Due Date: {{item.DueDate}}</p>
+                                          <p>Due Date: {{item.DueDate|date:'medium'}}</p>
                                           <h6>All Subject in Total: ${{item.TotalFee}}</h6>
                                       </div>
                                       <!-- comfirm payment modal-->
@@ -83,7 +83,7 @@
                         <div class='row justify-content-between' *ngFor="let item of dataInvoice; let j = index" [formGroup]="invoiceForm">
                             <div class="col-10">
                                 <h5>Invoice</h5>
-                                <p>{{item.LessonQuantity}} Lessons of {{item.CourseName}} from the Date {{item.BeginDate}}</p>
+                                <p>{{item.LessonQuantity}} Lessons of {{item.CourseName}} from the Date: {{item.BeginDate|date:'medium'}}</p>
                                 <p>{{item.ConcertFeeName}}</p>
                                 <p>{{item.LessonNoteFeeName}}</p>
 
@@ -108,9 +108,9 @@
                                     <div class="col-md-1"></div>
                                     <!-- open method for confirm payment modal-->
                                     <button class="btn btn-primary col-md-3 ml-2" [disabled]="owing.invalid" (click)="validMethodI(contentP, item, j)">Send This Payment</button>
-                                    <small *ngIf="errMsgM" class="text-danger">Pls select the payment method</small>
-                                    <br>
-                                    <small *ngIf="errMsgO" class="text-danger">Pls enter a validate number of the transaction</small>
+                                    <small *ngIf="errMsgM" class="text-danger">Please select the payment method &nbsp;</small>
+                                    <br/>
+                                    <small *ngIf="errMsgO" class="text-danger">Please enter a validate number of the transaction</small>
                                 </div>
                             </div>
                             <div class="col-2">
@@ -118,7 +118,7 @@
                                 <p>${{item.LessonFee}}</p>
                                 <p>${{item.ConcertFee}}</p>
                                 <p>${{item.NoteFee}}</p>
-                                <p>Due Date: {{item.DueDate}}</p>
+                                <p>Due Date: {{item.DueDate|date:'medium'}}</p>
                                 <h6>All Subject in Total: ${{item.TotalFee}}</h6>
                             </div>
                             <!-- comfirm payment modal-->

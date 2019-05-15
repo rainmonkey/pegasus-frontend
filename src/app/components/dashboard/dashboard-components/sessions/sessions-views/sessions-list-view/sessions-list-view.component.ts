@@ -1,10 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { NgbootstraptableService } from 'src/app/services/others/ngbootstraptable.service';
-import { LearnersService } from '../../../../../services/http/learners.service';
-import { TeachersService } from '../../../../../services/http/teachers.service';
-import { SessionsEditModalComponent } from '../sessions-edit-modal/sessions-edit-modal.component';
-import { PaymentService } from '../../../../../services/http/payment.service';
+import { SessionsService } from '../../../../../../services/http/sessions.service';
+import { PaymentService } from 'src/app/services/http/payment.service';
+import { TeachersService } from 'src/app/services/http/teachers.service';
+import { SessionDetailEditModalComponent } from '../../session-modals/session-detail-edit-modal/session-detail-edit-modal.component';
+
 @Component({
   selector: 'app-sessions-list-view',
   templateUrl: './sessions-list-view.component.html',
@@ -24,6 +25,7 @@ export class SessionsListViewComponent implements OnInit {
   public errMsgO;
   public confirmButton = false;
   public cancelButton = false;
+  public date = '2019-04-29';
   public titleArray = [
     '#',
     'Teacher',
@@ -41,8 +43,7 @@ export class SessionsListViewComponent implements OnInit {
   constructor(
     private modalService: NgbModal,
     private ngTable: NgbootstraptableService,
-    // private learnersservice: LearnersService,
-    private teachersService: TeachersService,
+    private sessionsService: SessionsService,
     private paymentService: PaymentService,
     ) { }
 
@@ -52,7 +53,7 @@ export class SessionsListViewComponent implements OnInit {
 
   // modal method
   openE(){
-    const modalRef = this.modalService.open(SessionsEditModalComponent, { size: 'lg' });
+    const modalRef = this.modalService.open(SessionDetailEditModalComponent, { size: 'lg' });
   }
   openC(c){
     this.modalService
@@ -89,8 +90,9 @@ export class SessionsListViewComponent implements OnInit {
 
   // get data from server side
   getData() {
-    this.teachersService.getTeachersInfo().subscribe(
+    this.sessionsService.getReceptionistLesson(this.date).subscribe(
       (res) => {
+        console.log(res)
         this.learnerList = res.Data;
         this.learnerListLength = res.Data.length; //length prop is under Data prop
         this.temLearnerList = res.Data;
@@ -115,7 +117,7 @@ export class SessionsListViewComponent implements OnInit {
 
     let searchStr = event.target.value;
     //
-    let titlesToSearch = ['FirstName','LastName'];
+    let titlesToSearch = 'FirstName';
 
     this.learnerList = this.ngTable.searching(this.learnerList,titlesToSearch,searchStr);
     this.learnerListLength = this.learnerList.length;
