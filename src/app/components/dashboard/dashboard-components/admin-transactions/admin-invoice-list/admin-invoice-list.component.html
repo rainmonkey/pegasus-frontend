@@ -34,7 +34,7 @@
             <td>{{i.LastName}}</td>
             <td>{{i.OwingFee}}</td>
             <td>{{i.Email}}</td>
-            <td>{{i.Status}}</td>
+            <td>{{i.IsEmailSent|MyType:'status'}}</td>
             <td>
               <a (click)='open()' style="cursor: pointer;"><span class='fas fa-pen'></span>&nbsp;Edit</a>
             </td>
