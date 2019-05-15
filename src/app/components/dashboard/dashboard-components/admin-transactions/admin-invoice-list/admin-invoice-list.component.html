@@ -27,16 +27,16 @@
         </thead>
         <tbody>
           <!-- dataTable-->
-          <tr *ngFor = 'let i of learnerList | slice: (page-1)* pageSize : (page-1) * pageSize + pageSize; let j = index'>
+          <tr *ngFor = 'let item of learnerList | slice: (page-1)* pageSize : (page-1) * pageSize + pageSize; let j = index'>
             <th scope="row">{{j+1}}</th>
-            <td>{{i.FirstName}}</td>
-            <td>{{i.MiddleName}}</td>
-            <td>{{i.LastName}}</td>
-            <td>{{i.OwingFee}}</td>
-            <td>{{i.Email}}</td>
-            <td>{{i.IsEmailSent|MyType:'status'}}</td>
+            <td>{{item.FirstName}}</td>
+            <td>{{item.MiddleName}}</td>
+            <td>{{item.LastName}}</td>
+            <td>{{item.OwingFee}}</td>
+            <td>{{item.Email}}</td>
+            <td>{{item.IsEmailSent|MyType:'status'}}</td>
             <td>
-              <a (click)='open()' style="cursor: pointer;"><span class='fas fa-pen'></span>&nbsp;Edit</a>
+              <a (click)='open(item)' style="cursor: pointer;"><span class='fas fa-pen'></span>&nbsp;Edit</a>
             </td>
           </tr>
         </tbody>

@@ -4,16 +4,18 @@ import { NgbootstraptableService } from 'src/app/services/others/ngbootstraptabl
 import { TransactionService } from '../../../../../services/http/transaction.service';
 import { AdminInvoiceEditModalComponent } from '../admin-invoice-edit-modal/admin-invoice-edit-modal.component';
 
+
 @Component({
   selector: 'app-admin-invoice-list',
   templateUrl: './admin-invoice-list.component.html',
   styleUrls: ['./admin-invoice-list.component.css']
 })
 export class AdminInvoiceListComponent implements OnInit {
+
   public learnerList: any;
   public learnerListLength: number;
-  public temLearnerList: any; //save the original teacherList
-  public temLearnerListLength: number; //save the original teacherList length
+  public temLearnerList: any; //save the original List
+  public temLearnerListLength: number; //save the original List length
   public page: number = 1;  //pagination current page
   public pageSize: number = 10;    //[can modify] pagination page size
   //error alert
@@ -34,8 +36,12 @@ export class AdminInvoiceListComponent implements OnInit {
   }
 
   // modal method
-  open(){
+  open(i){
     const modalRef = this.modalService.open(AdminInvoiceEditModalComponent, { size: 'lg' });
+    let that = this;
+    console.log(modalRef.result)
+    //pass parameters to edit modals
+    modalRef.componentInstance.item = i;
   }
 
   // get data from server side
