@@ -52,9 +52,8 @@ export class CoursesListComponent implements OnInit {
     pop up modals, when need to pop up a modal, call this method
     commands:
       0 --> Add new
-      1 --> show details/show more
-      2 --> Edit/update
-      3 --> delete
+      1 --> Edit/update
+      2 --> delete
   */
   popUpModals(command, whichCourse) {
     switch(command){
