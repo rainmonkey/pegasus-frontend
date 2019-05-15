@@ -16,12 +16,21 @@ export class LearnerRegistrationService {
 
   constructor(private http: HttpClient) { }
 
+  //get learn form data
+  getLookups(typeId: number): Observable<any> {
+    return this.http.get(this.baseUrl + 'lookups/'+ typeId);
+  }
   // get group course data from server
   getGroupCourse(): Observable<any> {
-    //let url = 'http://localhost:5000/api';
-    return this.http.get(this.baseUrl+'GroupCourseInstance');
+    return this.http.get(this.baseUrl + 'GroupCourseInstance');
   }
-
+  //get location/branch data
+  getOrgs(): Observable<any> {
+    return this.http.get(this.baseUrl + 'orgs');
+  }
+  getTeacherFilter(): Observable<any> {
+    return this.http.get(this.baseUrl + 'TeacherFilter');
+  }
   // post student's data to server and catch error from server
   postStudent(student: any): Observable<any> {
     return this.http.post<any>(this.url, student)
