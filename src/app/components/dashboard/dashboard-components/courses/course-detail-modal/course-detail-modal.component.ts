@@ -26,7 +26,7 @@ export class CourseDetailModalComponent implements OnInit {
 
   onSubmit() {  
     let vailadValue = this.checkInputVailad();
-    if (vailadValue !== null) {
+    if (vailadValue != null) {
       this.stringifySubmitStr(vailadValue)
     }
   }
@@ -51,7 +51,7 @@ export class CourseDetailModalComponent implements OnInit {
   prepareSubmitData(valueToSubmit) {
     valueToSubmit.CourseType = this.checkCourseType(valueToSubmit);
     valueToSubmit.Level = this.checkLevel(valueToSubmit);
-    valueToSubmit.CourseCategoryName = this.checkCourseCategoryName(valueToSubmit);
+    valueToSubmit.CourseCategoryId = this.checkCourseCategoryId(valueToSubmit);
     valueToSubmit.TeacherLevel = this.checkTeacherLevel(valueToSubmit);
     return valueToSubmit;
   }
@@ -62,33 +62,31 @@ export class CourseDetailModalComponent implements OnInit {
   stringifySubmitStr(vailadValue) {
     // console.log(vailadValue)
     this.errorMessage = '';
-    let submit: any[];
-    this.submitByMode(submit)
+    this.submitByMode()
   }
 
-  submitByMode(submitData) {
+  submitByMode() {
     //while push a stream of new data
     if (this.command == 0) {
-      this.coursesService.addNew(submitData).subscribe(
+      this.coursesService.addNew(this.whichCourse.value).subscribe(
         (res) => {
           this.successMessage = 'Submit success!'
-          console.log(res);
         },
         (err) => {
-          // if (err.error.Message != null) {
-          //   this.errorMessage = JSON.parse(err.error.Message);
-          //   console.log(this.errorMessage);
-          // }
-          // else {
-          //   this.errorMessage = 'Error! Please check your input.'
-          // }
-          console.log(err);
+          if (err.error.Message != null) {
+            this.errorMessage = JSON.parse(err.error.Message);
+            console.log(this.errorMessage);
+          }
+          else {
+            this.errorMessage = 'Error! Please check your input.'
+          }
+          // console.log(err);
         }
       );
     }
     //while update data
     else if (this.command == 1) {
-      this.coursesService.update(submitData, this.whichCourse.CourseId).subscribe(
+      this.coursesService.update(this.whichCourse.value, this.whichCourse.CourseId).subscribe(
         (res) => {
           this.successMessage = 'Submit success!'
         },
@@ -119,13 +117,16 @@ export class CourseDetailModalComponent implements OnInit {
     }
   }
 
-  checkCourseCategoryName(valueToSubmit) {
-    let checkCourseCategoryName = [];
-    if (valueToSubmit.Qualificatiion !== undefined) {
-      checkCourseCategoryName.push(Number(valueToSubmit.CourseCategoryName));
+  checkCourseCategoryId(valueToSubmit) {
+    switch (valueToSubmit.CourseCategoryId) {
+      case 'Piano':
+        return 1;
+      case 'Guita':
+        return 2;
+      case 'Drum':
+        return 3;
     }
-    return checkCourseCategoryName;
-    }
+  }
 
     checkTeacherLevel(valueToSubmit) {
       switch (valueToSubmit.TeacherLevel) {

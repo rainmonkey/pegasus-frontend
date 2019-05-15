@@ -3,7 +3,7 @@
     <div class="row">
       <div class="col-6">
         <label class='t_mf_label'>Course Name:</label>
-        <input name="CourseName" type="text" class='col-12 t_mf_input' formControlName='CourseName'
+        <input type="text" class='col-12 t_mf_input' formControlName='CourseName'
           [class.t_mf_error_border]='updateForm.get("CourseName").invalid && updateForm.get("CourseName").touched'>
         <label class='t_mf_label'>Type:</label>
         <select type="text" class='col-12 t_mf_input' formControlName='CourseType'
@@ -28,17 +28,17 @@
       </div>
       <div class="col-6">
         <label class='t_mf_label'>Category:</label>
-        <select type="text" class='col-12 t_mf_input' formControlName='CourseCategoryName'
-          [class.t_mf_error_border]='updateForm.get("CourseCategoryName").invalid && updateForm.get("CourseCategoryName").touched'>
-          <option value="piano">Piano</option>
-          <option value="guita">Guita</option>
-          <option value="drum">Drum</option>
+        <select type="text" class='col-12 t_mf_input' formControlName='CourseCategoryId'
+          [class.t_mf_error_border]='updateForm.get("CourseCategoryId").invalid && updateForm.get("CourseCategoryId").touched'>
+          <option value="Piano">Piano</option>
+          <option value="Guita">Guita</option>
+          <option value="Drum">Drum</option>
         </select>
         <label class='t_mf_label'>Duration(hrs):</label>
-        <input type="text" class='col-12 t_mf_input' formControlName='Duration'
+        <input type="number" class='col-12 t_mf_input' formControlName='Duration'
           [class.t_mf_error_border]='updateForm.get("Duration").invalid && updateForm.get("Duration").touched'>
         <label class='t_mf_label'>Price(Total):</label>
-        <input type="text" class='col-12 t_mf_input' formControlName='Price'
+        <input type="number" class='col-12 t_mf_input' formControlName='Price'
           [class.t_mf_error_border]='updateForm.get("Price").invalid && updateForm.get("Price").touched'>
       </div>
     </div>

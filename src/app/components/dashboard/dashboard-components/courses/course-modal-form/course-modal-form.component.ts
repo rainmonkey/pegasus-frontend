@@ -29,7 +29,7 @@ export class CourseModalFormComponent implements OnInit {
         TeacherLevel: [null, Validators.required],
         Duration: [null, Validators.required],
         Price: [null, Validators.required],
-        CourseCategoryName: [null, Validators.required]
+        CourseCategoryId: [null, Validators.required]
       }
     }
     else {
@@ -41,7 +41,7 @@ export class CourseModalFormComponent implements OnInit {
         TeacherLevel: [{ value: this.whichCourse.TeacherLevel }, Validators.required],
         Duration: [{ value: this.whichCourse.Duration }, Validators.required],
         Price: [{ value: this.whichCourse.Price }, Validators.required],
-        CourseCategoryName: [{ value: this.whichCourse.CourseCategoryName }, Validators.required]
+        CourseCategoryId: [{ value: this.whichCourse.CourseCategoryId }, Validators.required]
       }
     }
     return groupObj;
