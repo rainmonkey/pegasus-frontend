@@ -23,7 +23,7 @@ export class AdminLearnerListComponent implements OnInit {
   errorMessage:string;
 
   //search by which columns, determine by users
-  public columnsToSearch: Array<string> = [];
+  public columnsToSearch:string;
   public currentPage: number = 1;
   public pageSize: number = 10;
 

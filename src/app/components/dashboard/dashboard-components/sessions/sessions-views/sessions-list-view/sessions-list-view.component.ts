@@ -117,7 +117,7 @@ export class SessionsListViewComponent implements OnInit {
 
     let searchStr = event.target.value;
     //
-    let titlesToSearch = ['FirstName','LastName'];
+    let titlesToSearch = 'FirstName';
 
     this.learnerList = this.ngTable.searching(this.learnerList,titlesToSearch,searchStr);
     this.learnerListLength = this.learnerList.length;
