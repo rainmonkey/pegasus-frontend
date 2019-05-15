@@ -39,7 +39,7 @@ export class AdminInvoiceListComponent implements OnInit {
   open(i){
     const modalRef = this.modalService.open(AdminInvoiceEditModalComponent, { size: 'lg' });
     let that = this;
-    console.log(modalRef.result)
+    console.log(modalRef)
     //pass parameters to edit modals
     modalRef.componentInstance.item = i;
   }
