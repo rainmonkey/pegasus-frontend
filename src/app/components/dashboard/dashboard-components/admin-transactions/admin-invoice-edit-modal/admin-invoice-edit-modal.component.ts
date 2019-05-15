@@ -1,9 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { TeachersService } from '../../../../../services/http/teachers.service';
 import { FormBuilder, Validator, Validators, RequiredValidator } from '@angular/forms';
-import { PaymentService } from '../../../../../services/http/payment.service';
+import { TransactionService } from '../../../../../services/http/transaction.service';
 
 @Component({
   selector: 'app-admin-invoice-edit-modal',
@@ -17,15 +16,15 @@ export class AdminInvoiceEditModalComponent implements OnInit {
   public errMsgO = false;
   public errMsgM = false;
   public successAlert = false;
+  public staffId = 3;
 
   constructor(
     public activeModal: NgbActiveModal,
     private fb: FormBuilder,
     public modalService: NgbModal,
-    private teachersService: TeachersService,
-    private paymentService: PaymentService,
     private router: Router,
-    private activatedRoute: ActivatedRoute
+    private activatedRoute: ActivatedRoute,
+    private transactionService: TransactionService
     ) {
 
      }
@@ -34,10 +33,10 @@ export class AdminInvoiceEditModalComponent implements OnInit {
   invoiceEditForm = this.fb.group({
     InvoiceNum: ['00000001'],
     DueDate: ['5-4-2019'],
-    CourseName: ['Piano'],
-    LessonQuantity: ['13'],
+    CourseName: ['Piano',Validators.required],
+    LessonQuantity: ['13',Validators.required],
     BeginDate: ['10-4-2019'],
-    LessonFee: [390],
+    LessonFee: [390,Validators.required],
     Concert: ['Concert for term 2, 2019'],
     ConcertFee: ['15'],
     Note: ['Lesson Note Term 2, 2019'],
@@ -57,7 +56,7 @@ export class AdminInvoiceEditModalComponent implements OnInit {
   }
 // get invoice from server
   getInvoiceData() {
-    this.teachersService.getTeachersInfo().subscribe(
+    this.transactionService.getLearnerInvo(this.staffId).subscribe(
       (res) => {
         this.learnerList = res.Data;
         //this.patchToInvoice()
@@ -84,18 +83,11 @@ export class AdminInvoiceEditModalComponent implements OnInit {
 
 // post data to server side
   sendMail(confirmModal) {
-    this.open(confirmModal);
-    this.paymentService.emailInvoice(this.invoiceEditForm.value)
-    .subscribe(
-      (res) => {
-        this.router.navigate(['../success'], {relativeTo: this.activatedRoute});
-      },
-      (error) => {
-        this.errorMsg = JSON.parse(error.error);
-        this.errorAlert = true;
-        alert(this.errorMsg.ErrorCode);
-      }
-    );
+    if (this.invoiceEditForm.invalid){
+    this.errMsgM = true;
+    } else {
+      this.open(confirmModal);
+    }
   }
 
 // confirm Modal
@@ -104,16 +96,14 @@ export class AdminInvoiceEditModalComponent implements OnInit {
     .open(confirmModal)
     .result.then(
       result => {
-        this.paymentService.emailInvoice(this.invoiceEditForm.controls.value).subscribe(
-          response => {
-            console.log('Success!', response);
-            this.successAlert = true;
-            alert('Your Payment Has Been Made');
+        this.transactionService.update(this.invoiceEditForm.controls.value)
+        .subscribe(
+          (res) => {
+            this.router.navigate(['../success'], {relativeTo: this.activatedRoute});
           },
           (error) => {
             this.errorMsg = JSON.parse(error.error);
             this.errorAlert = true;
-            console.log('Error!', this.errorMsg.ErrorCode);
             alert(this.errorMsg.ErrorCode);
           }
         );
