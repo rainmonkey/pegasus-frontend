@@ -33,4 +33,8 @@ export class LearnersService {
   //   return Observable.throw(error.message || "Server Error");
   //  }
   }
+
+  getLearnerList(){
+    return this.http.get(this.baseUrl+'learner')
+  }
 }

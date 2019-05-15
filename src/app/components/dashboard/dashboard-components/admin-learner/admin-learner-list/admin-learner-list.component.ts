@@ -1,6 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { LearnerListService } from '../../../../../services/http/learner-list.service';
 import { NgbootstraptableService } from 'src/app/services/others/ngbootstraptable.service';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { LearnersService } from 'src/app/services/http/learners.service';
+import {  LearnerUpdateModalComponent } from '../learner-update-modal/learner-update-modal.component';
+import {LearnerDeleteModalComponent } from '../learner-delete-modal/learner-delete-modal.component';
+import {LearnerDetailModalComponent } from '../learner-detail-modal/learner-detail-modal.component';
+
 @Component({
   selector: 'app-admin-learner-list',
   templateUrl: './admin-learner-list.component.html',
@@ -28,8 +33,9 @@ export class AdminLearnerListComponent implements OnInit {
   public pageSize: number = 10;
 
   constructor(
-    private LearnerListService: LearnerListService,
+    private LearnerListService: LearnersService,
     private ngTable: NgbootstraptableService,
+    private modalService: NgbModal,
   ) { }
 
   ngOnInit() {
@@ -42,8 +48,11 @@ export class AdminLearnerListComponent implements OnInit {
     this.LearnerListService.getLearnerList().subscribe(
       (res) =>  {
         console.log(res)
+      //@ts-ignore
        this.learnerList = res.Data;
+       //@ts-ignore
        this.learnerListCopy = this.learnerList;
+       //@ts-ignore
        this.learnerListLength=res.Data.length;
        
       },
@@ -100,4 +109,83 @@ export class AdminLearnerListComponent implements OnInit {
   }
 }
 
+
+ ///////////////////////////////////////handler of angular-bootstrap modals/////////////////////////////////////
+  /*
+    pop up modals, when need to pop up a modal, call this method
+    commands:
+      0 --> Add new
+      1 --> show details/show more
+      2 --> Edit/update
+      3 --> delete
+  */
+ popUpModal(command, whichLearner) {
+  switch (command) {
+    case 0:
+      this.updateModal(command, whichLearner);
+      break;
+    case 1:
+      this.detailModal(command, whichLearner)
+      break;
+    case 2:
+      this.updateModal(command, whichLearner);
+      break;
+    case 3:
+      this.deleteModal(command, whichLearner);
+      break;
+  }
+}
+
+/*
+  update modal
+*/
+updateModal(command, whichLearner) {
+  const modalRef = this.modalService.open(LearnerUpdateModalComponent, { size: 'lg' });
+  let that = this;
+  modalRef.result.then(that.refreshPage(that,command));
+  modalRef.componentInstance.command = command;
+  modalRef.componentInstance.whichLearner = whichLearner;
+}
+
+/*
+  delete modal
+*/
+deleteModal(command, whichLearner) {
+  const modalRef = this.modalService.open(LearnerDeleteModalComponent);
+  let that = this;
+  modalRef.result.then(that.refreshPage(that,command));
+  modalRef.componentInstance.command = command;
+  modalRef.componentInstance.whichLearner = whichLearner;
+}
+
+/*
+  detail modal
+*/
+detailModal(command, whichLearner) {
+  const modalRef = this.modalService.open(LearnerDetailModalComponent, { size: 'lg' });
+  modalRef.componentInstance.command = command;
+  modalRef.componentInstance.whichLearner = whichLearner;
+}
+
+/*
+  After data modified(delete,add,update), refresh the page
+*/
+refreshPage(pointer,command) {
+  return function () {
+    let refreshFlag, learnerToDelete;
+    [refreshFlag, learnerToDelete] = pointer.refreshService.getRefreshRequest();
+    if (refreshFlag == true && command == 3) {
+      //
+      pointer.learnerList.forEach(function (current) {
+        if (current.LearnerId === learnerToDelete) {
+          pointer.learnerList.splice(pointer.learnerList.findIndex(i => i.TeacherId === learnerToDelete), 1)
+          pointer.learnerListLength--;
+        }
+      })
+    }
+    else{
+      pointer.getDataFromSever();
+    }
+  }
+}
 }

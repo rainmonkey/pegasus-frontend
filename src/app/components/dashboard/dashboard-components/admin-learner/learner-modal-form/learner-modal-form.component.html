@@ -1,0 +1,166 @@
+<div class='t_mf_form'>
+  <form [formGroup]='updateForm'>
+    <div class="row">
+      <div class="col-12">
+        <div class="row">
+
+          <!-- img -->
+          <div class='col-4'>
+            <div class='row'>
+              <div class='col-6'>
+                <div class='t_mf_img_switch' [class.t_mf_img_switch_left]='showLeftImgFlag' id='img_left_control'
+                  (click)='showPhotos(0)' style="margin-right:5px">
+                  <span class='fas fa-image'></span><span> Student</span>
+                </div>
+              </div>
+              <div class='col-6'>
+                <div class='t_mf_img_switch' [class.t_mf_img_switch_right]='showRightImgFlag' id='img_right_control'
+                  (click)='showPhotos(1)' style="margin-left: 5px;">
+                  <span class='fas fa-address-card'></span><span> Id</span>
+                </div>
+              </div>
+            </div>
+            <div class='row t_mf_img' id='img_left'>
+              <img src='' id='userPhoto' />
+              <input *ngIf='!readOnlyFlag' type="file" name="file1" id="file1" class="tl_muf_upload_img"
+                accept="image/*" (change)='preViewImg($event,0)' />
+              <label *ngIf='!readOnlyFlag' for="file1" class='btn btn-sm tl_mf_upload_btn'><span
+                  class='fas fa-plus tl_mf_upload_title'></span></label>
+            </div>
+            <div class='row t_mf_img' id='img_right' style="display:none">
+              <img src="" id='userIdPhoto'>
+              <input *ngIf='!readOnlyFlag' type="file" name="file2" id="file2" class="tl_muf_upload_img"
+                accept="image/*" (change)='preViewImg($event,1)' />
+              <label *ngIf='!readOnlyFlag' for="file2" class='btn btn-sm tl_mf_upload_btn'><span
+                  class='fas fa-plus tl_mf_upload_title'></span></label>
+            </div>
+          </div>
+
+          <!-- input -->
+          <div class="col-8">
+            <div style="margin-right:10px">
+              <div class='t_mf_imput_right'>
+
+                <!-- input First Name -->
+                <div class='row'>
+                  <div class='col-6'>
+                    <label for='FirstName' style='margin-right: 10px' class='t_mf_label'>First Name:</label>
+                    <small class='text-danger errorfontsmall' style='text-align: center'
+                      *ngIf='updateForm.get("FirstName").invalid && updateForm.get("FirstName").touched && updateForm.get("FirstName").errors?.required'>required</small>
+                    <input name='FirstName' type="text" style='margin-right: 10px' class='col-12 t_mf_input'
+                      formControlName='FirstName'
+                      [class.t_mf_error_border]='updateForm.get("FirstName").invalid && updateForm.get("FirstName").touched'>
+                  </div>
+
+                  <!-- input middle name -->
+                  <div class='col-6'>
+                    <label for='MiddleName' style='margin-left: 10px; margin-right:10px' class='t_mf_label'>Middle Name
+                      (if applicable):&nbsp;</label>
+                    <input name='MiddleName' type="text" style='margin-left: 10px' class='col-12 t_mf_input'
+                      formControlName='MiddleName'
+                      [class.t_mf_error_border]='updateForm.get("MiddleName").invalid && updateForm.get("MiddleName").touched'>
+                  </div>
+
+
+                  <!-- input Last Name -->
+                  <div class='col-6'>
+                    <label for='LastName' style='margin-right: 10px' class='t_mf_label'>Last Name:</label>
+                    <small class='text-danger errorfontsmall' style='text-align: center'
+                      *ngIf='updateForm.get("LastName").invalid && updateForm.get("LastName").touched && updateForm.get("LastName").errors?.required'>required</small>
+                    <input name='LastName' type="text" style='margin-right: 10px' class='col-12 t_mf_input'
+                      formControlName='LastName'
+                      [class.t_mf_error_border]='updateForm.get("LastName").invalid && updateForm.get("LastName").touched'>
+                  </div>
+
+                  <!-- Enroll Date -->
+                  <div class='col-6'>
+                      <label for='EnrollDate' style='margin-left:10px; margin-right: 10px' class='t_mf_label'>Enroll Date:</label>
+                      <small class='text-danger errorfontsmall' style='text-align: center'
+                        *ngIf='updateForm.get("EnrollDate").invalid && updateForm.get("EnrollDate").touched && updateForm.get("EnrollDate").errors?.required'>required</small>
+                      <input name='LastName' type="text" style='margin-left: 10px' class='col-12 t_mf_input'
+                        formControlName='EnrollDate'
+                        [class.t_mf_error_border]='updateForm.get("EnrollDate").invalid && updateForm.get("EnrollDate").touched'>
+                    </div>
+
+                  <!-- Contact Num -->
+                  <div class='col-6'>
+                      <label for='ContactNum' style='margin-right: 10px' class='t_mf_label'>Contact Number:</label>
+                      <small class='text-danger errorfontsmall' style='text-align: center'
+                        *ngIf='updateForm.get("ContactNum").invalid && updateForm.get("ContactNum").touched && updateForm.get("ContactNum").errors?.required '>required</small>
+                        <small class='text-danger errorfontsmall' style="text-align:center" 
+                        *ngIf='updateForm.get("ContactNum").errors?.pattern'>Numbers Only</small>
+                      <input name='ContactNum' type="text" style='margin-right: 10px' class='col-12 t_mf_input'
+                        formControlName='ContactNum'
+                        [class.t_mf_error_border]='updateForm.get("ContactNum").invalid && updateForm.get("ContactNum").touched'>
+                    </div>
+                  
+                    <!-- email -->
+                    <div class='col-6'>
+                        <label for='Email' style='margin-left:10px; margin-right: 10px' class='t_mf_label'>Email:</label>
+                        <small class='text-danger errorfontsmall' style='text-align: center'
+                          *ngIf='updateForm.get("Email").invalid && updateForm.get("Email").touched && updateForm.get("Email").errors?.required'>required</small>
+                        <small class='text-danger errorfontsmall' style='text-align: center'
+                          *ngIf='updateForm.get("Email").errors?.email'>Should Be Email Format</small>
+                          <input name='Email' type="text" style='margin-left: 10px' class='col-12 t_mf_input'
+                          formControlName='Email'
+                          [class.t_mf_error_border]='updateForm.get("Email").invalid && updateForm.get("Email").touched'>
+                      </div>
+
+                      <!--Address  -->
+                      <div class='col-6'>
+                          <label for='Address' style='margin-right: 10px' class='t_mf_label'>Address:</label>
+                          <small class='text-danger errorfontsmall' style='text-align: center'
+                            *ngIf='updateForm.get("Address").invalid && updateForm.get("Address").touched && updateForm.get("Address").errors?.required '>required</small>
+                          <input name='Address' type="text" style='margin-right: 10px' class='col-12 t_mf_input'
+                            formControlName='Address'
+                            [class.t_mf_error_border]='updateForm.get("Address").invalid && updateForm.get("Address").touched'>
+                        </div>
+
+                        <!-- isUnder 18? -->
+                        <div class='col-6'>
+                            <label for='IsUnder18' style='margin-left:10px; margin-right: 10px' class='t_mf_label'>Is Under 18?:</label>
+                            <small class='text-danger errorfontsmall' style='text-align: center'
+                              *ngIf='updateForm.get("IsUnder18").invalid && updateForm.get("IsUnder18").touched && updateForm.get("IsUnder18").errors?.required'>required</small>
+                              <input name='IsUnder18' type="text" style='margin-left: 10px' class='col-12 t_mf_input'
+                              formControlName='IsUnder18'
+                              [class.t_mf_error_border]='updateForm.get("IsUnder18").invalid && updateForm.get("IsUnder18").touched'>
+                          </div>
+
+                          <!-- dob -->
+                          <div class='col-6'>
+                              <label for='Dob' style='margin-right: 10px' class='t_mf_label'>Date Of Birth:</label>
+                              <small class='text-danger col-12 errorfontsmall' style='text-align: center'
+                                *ngIf='updateForm.get("Dob").invalid && updateForm.get("Dob").touched && updateForm.get("Dob").errors?.required'>required</small>
+                                <input name='Dob' type="date" style='margin-right: 10px' class='col-12 t_mf_input'
+                                formControlName='Dob'
+                                [class.t_mf_error_border]='updateForm.get("Dob").invalid && updateForm.get("Dob").touched'>
+                              </div>
+
+                          <!-- Gender -->
+                          <div class='col-6'>
+                              <label for='Gender' style='margin-left: 10px;margin-right:10px' class='t_mf_label'>Gender:</label>
+                              <small class='text-danger col-12 errorfontsmall' style='text-align: center'
+                                *ngIf='updateForm.get("Gender").invalid && updateForm.get("Gender").touched && updateForm.get("Gender").errors?.required'>required</small>
+                                <select name='Gender' type="text" style='margin-left: 10px' class='col-12 t_mf_input'
+                                formControlName='Gender'
+                                [class.t_mf_error_border]='updateForm.get("Gender").invalid && updateForm.get("Gender").touched'>
+                                <option value="Female">Female</option>
+                                <option value="Male">Male</option>
+                                <option value="Other">Other</option>
+                              </select>
+                              </div>
+
+                </div>
+              </div>
+            </div>
+          </div>
+
+
+
+
+
+        </div>
+      </div>
+    </div>
+  </form>
+</div>

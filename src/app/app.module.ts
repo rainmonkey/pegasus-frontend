@@ -66,7 +66,10 @@ import { CourseDetailModalComponent } from './components/dashboard/dashboard-com
 import { CourseDeleteModalComponent } from './components/dashboard/dashboard-components/courses/course-delete-modal/course-delete-modal.component';
 import { CourseModalFormComponent } from './components/dashboard/dashboard-components/courses/course-modal-form/course-modal-form.component';
 import { TestoneComponent } from './components/testcomponent/testone/testone.component';
-
+import { LearnerDeleteModalComponent } from './components/dashboard/dashboard-components/admin-learner/learner-delete-modal/learner-delete-modal.component';
+import { LearnerDetailModalComponent } from './components/dashboard/dashboard-components/admin-learner/learner-detail-modal/learner-detail-modal.component';
+import { LearnerUpdateModalComponent } from './components/dashboard/dashboard-components/admin-learner/learner-update-modal/learner-update-modal.component';
+import { LearnerModalFormComponent } from './components/dashboard/dashboard-components/admin-learner/learner-modal-form/learner-modal-form.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -116,7 +119,11 @@ import { TestoneComponent } from './components/testcomponent/testone/testone.com
     CourseDetailModalComponent,
     CourseDeleteModalComponent,
     CourseModalFormComponent,
-    TestoneComponent
+    TestoneComponent,
+    LearnerDeleteModalComponent,
+    LearnerDetailModalComponent,
+    LearnerUpdateModalComponent,
+    LearnerModalFormComponent
   ],
   imports: [
     NgbModule,
@@ -140,7 +147,11 @@ import { TestoneComponent } from './components/testcomponent/testone/testone.com
     TeacherUpdateModalComponent,
     AdminInvoiceEditModalComponent,
     CourseDeleteModalComponent,
-    CourseDetailModalComponent
+    CourseDetailModalComponent,
+    LearnerDeleteModalComponent,
+    LearnerDetailModalComponent,
+    LearnerUpdateModalComponent,
+
   ],
   bootstrap: [AppComponent]
 })
