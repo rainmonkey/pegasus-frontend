@@ -114,10 +114,10 @@
      <div class="form-group row justify-content-center">
       <div class="col-5">
         <label class="mt-2"> All Subject in Total:</label>
-        <input class="form-control" type="number" min="0" formControlName="OwingFee" disabled/>
+        <p>{{owingFeeLocal}}</p>
       </div>
       <div class="col-5">
-        <label class="mt-2"> Due Date:</label> <input class="form-control" type="text" formControlName="DueDate"/>
+        <label class="mt-2"> Due Date:</label> <p>{{dueDateLocal|date:'medium'}}</p>
       </div>
     </div>
   </form>
@@ -131,7 +131,7 @@
     (click)="sendMail(confirmModal)"
     id="save"
   >
-    Sent Email
+    Save
   </button>
   <small *ngIf="errMsgM" class="text-danger"
     >Please make sure all field are correct</small
@@ -163,7 +163,7 @@
   <!-- modal-body -->
   <div class="container">
     <div class="d-flex justify-content-center">
-      <p>Please click send button by sending this email to the customer</p>
+      <p>Please click send button by update this invoice to database</p>
     </div>
   </div>
   <div class="modal-footer">
