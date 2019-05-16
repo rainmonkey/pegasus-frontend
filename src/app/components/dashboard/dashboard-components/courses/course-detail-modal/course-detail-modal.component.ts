@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, ViewChild } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { CoursesService } from './../../../../../services/http/courses.service';
+import { CoursesService } from '../../../../../services/http/courses.service';
 
 @Component({
   selector: 'app-course-detail-modal',
@@ -10,11 +10,11 @@ import { CoursesService } from './../../../../../services/http/courses.service';
 export class CourseDetailModalComponent implements OnInit {
   public errorMessage: string;
   public successMessage: string;
+  
 
   @Input() command;
   @Input() whichCourse;
   @ViewChild('modalUpdateFormComponent') modalUpdateFormComponentObj;
-
 
   constructor(
     public activeModal: NgbActiveModal, 
@@ -22,6 +22,7 @@ export class CourseDetailModalComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    
   }
 
   onSubmit() {  
@@ -37,7 +38,6 @@ export class CourseDetailModalComponent implements OnInit {
     for (let i in this.modalUpdateFormComponentObj.updateForm.controls) {
       this.modalUpdateFormComponentObj.updateForm.controls[i].touched = true;
     }
-    console.log(this.modalUpdateFormComponentObj.updateForm);
     //when input value pass the check of Validators, there is a [status] attr equal to 'VALID'
     if (this.modalUpdateFormComponentObj.updateForm.status == 'VALID') {
       return this.prepareSubmitData(valueToSubmit);
@@ -60,7 +60,6 @@ export class CourseDetailModalComponent implements OnInit {
     after stringify submition string, data is ready to submit
   */
   stringifySubmitStr(vailadValue) {
-    // console.log(vailadValue)
     this.errorMessage = '';
     this.submitByMode()
   }
@@ -68,9 +67,10 @@ export class CourseDetailModalComponent implements OnInit {
   submitByMode() {
     //while push a stream of new data
     if (this.command == 0) {
-      this.coursesService.addNew(this.whichCourse.value).subscribe(
+      this.coursesService.addNew(this.modalUpdateFormComponentObj.updateForm.value).subscribe(
         (res) => {
-          this.successMessage = 'Submit success!'
+          this.successMessage = 'Submit success!';
+          // this.activeModal.close();
         },
         (err) => {
           if (err.error.Message != null) {
@@ -80,7 +80,6 @@ export class CourseDetailModalComponent implements OnInit {
           else {
             this.errorMessage = 'Error! Please check your input.'
           }
-          // console.log(err);
         }
       );
     }
