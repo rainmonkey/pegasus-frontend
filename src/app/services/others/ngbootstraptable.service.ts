@@ -22,8 +22,8 @@ export class NgbootstraptableService {
       listToOrder --> object list to be sorted
       orderBy --> which column to order (eg: FirstName,LastName ....) !!★!! orderBy must as same as the obj name in listToOrder
   **********************************************/
-  sorting(listToOrder: Array<any>, orderBy: string) {
-    this.getColumnOrderControl(orderBy);
+  sorting(listToOrder: Array<any>, orderBy: string, orderControls?:number) {
+    this.getColumnOrderControl(orderBy,orderControls);
     listToOrder.sort(this.compare(orderBy))
     return this.columnOrderControl;
   }
@@ -54,13 +54,14 @@ export class NgbootstraptableService {
   /*
     push key and value pair to columnOrderControl obj
   */
-  getColumnOrderControl(orderBy) {
-    
-    if (this.previousOrderBy !== orderBy) {
+  getColumnOrderControl(orderBy,orderControls?) {
+    if(orderControls !== undefined){
+      this.columnOrderControl = orderControls;
+    }
+    else if (this.previousOrderBy !== orderBy) {
    
       this.columnOrderControl = 1;
     }
-   
     else {
       this.columnOrderControl++;
     }
