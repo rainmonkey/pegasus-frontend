@@ -6,21 +6,26 @@ import { Injectable } from '@angular/core';
 export class NgbootstraptableService {
 
   /*********************************************
-    columnOrderControl is an obj, stored key and value pairs
-    key: orderBy --> let orderBy as the key
-    value: integer --> let integer as the value. if even, sort in asec; if odd, sort in dsec
+    columnOrderControl, stored a number, the number stand the asec or dsec
+      if number is odd: sort in asec
+      if number is even: sort in dsec 
   **********************************************/
   public columnOrderControl:number;
 
+  /*********************************************
+    previousOrderBy, stored the previous order that pass to this service
+      if number previous equal to current, means sort by the same column
+  **********************************************/
   public previousOrderBy = null;
 
   constructor() { }
 
   /*********************************************
     sorting method
-    receive 2 parameters: 
+    receive 3 parameters: 
       listToOrder --> object list to be sorted
       orderBy --> which column to order (eg: FirstName,LastName ....) !!★!! orderBy must as same as the obj name in listToOrder
+      orderControls? --> is a optional param, it only exist when router has this param
   **********************************************/
   sorting(listToOrder: Array<any>, orderBy: string, orderControls?:number) {
     this.getColumnOrderControl(orderBy,orderControls);
@@ -52,7 +57,7 @@ export class NgbootstraptableService {
 
   ///////////////////////////////////////methods that implement sorting and searching/////////////////////////////////////////
   /*
-    push key and value pair to columnOrderControl obj
+    assign value to columnOrderControl
   */
   getColumnOrderControl(orderBy,orderControls?) {
     if(orderControls !== undefined){

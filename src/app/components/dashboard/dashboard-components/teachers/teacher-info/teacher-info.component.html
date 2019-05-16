@@ -33,9 +33,6 @@
             <th *ngFor='let i of columnsToShow' scope='col' (click)='onSort(i)' counter='0' style='width: 110px'
               class='t_sort_title'>
               {{AddSpaceInString(i)}}</th>
-            <!--要删掉-->
-            <th scope='col' style='width: 85px'>Course 1</th>
-            <th scope='col' style='width: 85px'>Course 2</th>
             <th scope='col' style='width: 150px'></th>
           </tr>
         </thead>
@@ -46,9 +43,6 @@
             *ngFor='let i of teachersList | slice: (currentPage-1)* pageSize : (currentPage-1) * pageSize + pageSize; let index = index'>
             <th scope="row">{{index + 1}}</th>
             <td *ngFor='let j of columnsToShow'>{{i[j]}}</td>
-            <!--要删掉-->
-            <td>Piano</td>
-            <td>Guitar</td>
             <td>
               <span class='t_info_table_btn' (click)='popUpModal(1,i)'><span class='fas fa-info-circle'></span></span>
               <span class='t_info_table_btn' (click)='popUpModal(2,i)'><span class='fas fa-pen'></span></span>
@@ -62,7 +56,7 @@
     <!--info page pagination-->
     <div class='col-12'>
       <!--pagination is here-->
-      <ngb-pagination [collectionSize]='teachersListLength' [(page)]='currentPage' [pageSize]='pageSize'>
+      <ngb-pagination #pagination [collectionSize]='teachersListLength' [(page)]='currentPage' [pageSize]='pageSize' (click)='getCurrentPage()'>
       </ngb-pagination>
     </div>
 
