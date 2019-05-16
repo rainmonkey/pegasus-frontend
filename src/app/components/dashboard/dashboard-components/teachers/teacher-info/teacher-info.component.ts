@@ -1,13 +1,12 @@
 import { TeacherDetailModalComponent } from './../teacher-detail-modal/teacher-detail-modal.component';
 import { TeacherUpdateModalComponent } from './../teacher-update-modal/teacher-update-modal.component';
-import { RefreshService } from '../../../../../services/others/refresh.service';
 import { NgbootstraptableService } from '../../../../../services/others/ngbootstraptable.service';
 import { Component, OnInit } from '@angular/core';
 import { TeachersService } from '../../../../../services/http/teachers.service';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { TeacherDeleteModalComponent } from '../teacher-delete-modal/teacher-delete-modal.component';
 import { stringify } from '@angular/core/src/render3/util';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-teacher-info',
@@ -24,6 +23,7 @@ export class TeacherInfoComponent implements OnInit {
   //how many datas in teachersList
   public teachersListLength: number; s
   //search by which columns, determine by users
+  public queryParams: object = {};
   public columnsToSearch: Array<string> = [];
   public currentPage: number = 1;
   public pageSize: number = 10;
@@ -32,10 +32,10 @@ export class TeacherInfoComponent implements OnInit {
     private teachersService: TeachersService,
     private ngTable: NgbootstraptableService,
     private modalService: NgbModal,
-    private refreshService: RefreshService,
-    private router: Router) { }
+    private router: Router,
+    private activatedRoute: ActivatedRoute) { }
 
-  ngOnInit() {
+  ngOnInit():any {
     this.getDataFromSever();
   }
 
@@ -51,9 +51,10 @@ export class TeacherInfoComponent implements OnInit {
         this.teachersList = res.Data;
         this.teachersListCopy = this.teachersList;
         this.teachersListLength = res.Data.length;
-        console.log(this.teachersList)
+        //console.log(this.teachersList)
         //this.toggleLoadingGif('show')  'show' 'hide'
         this.toggleLoadingGif('hide');
+        this.refreshPageControl();
       },
       (err) => {
         //报错误信息
@@ -61,6 +62,17 @@ export class TeacherInfoComponent implements OnInit {
     )
   }
 
+  refreshPageControl(){
+    this.activatedRoute.queryParams.subscribe(res => {
+      let {searchString,searchBy,orderBy,orderControl} = res;
+      if(searchString !==undefined && searchBy !==undefined){
+        this.onSearch(null, {'searchString':searchString,'searchBy':searchBy})
+      }
+      if(orderBy !==undefined && orderControl !== undefined){
+        this.onSort(orderBy,orderControl)
+      }
+    })
+  }
   ///////////////////////////////////////////called by other methods//////////////////////////////////////////////
 
   toggleLoadingGif(command) {
@@ -118,9 +130,10 @@ export class TeacherInfoComponent implements OnInit {
   /*
     sort method
   */
-  onSort(orderBy) {
-    let orderControl = this.ngTable.sorting(this.teachersList, orderBy);
-
+  onSort(orderBy,orderControls?) {
+    let orderControl = this.ngTable.sorting(this.teachersList, orderBy,orderControls);
+    this.setQueryParams('orderBy',orderBy);
+    this.setQueryParams('orderControl',orderControl);
   }
 
   /*
@@ -142,12 +155,32 @@ export class TeacherInfoComponent implements OnInit {
       this.teachersList = this.ngTable.searching(this.teachersListCopy, searchBy, searchString);
       this.teachersListLength = this.teachersList.length;
       optionsObj['value'] = searchBy;
+
+      this.setQueryParams('searchBy',searchBy);
+      this.setQueryParams('searchString',searchString);
     }
 
   }
+  /*
+    items of queryParams:
+      1, searchString
+      2, searchBy
+      3, orderBy
+      4, orderControl
+  */
+  setQueryParams(paraName, paraValue) {
 
-  setQueryParams(){
-    
+    if (paraValue == '') {
+      delete this.queryParams[paraName];
+      delete this.queryParams['searchBy'];
+    }
+    else {
+      this.queryParams[paraName] = paraValue;
+    }
+
+    this.router.navigate(['tutors/list'], {
+      queryParams: this.queryParams
+    });
   }
 
   ///////////////////////////////////////handler of angular-bootstrap modals/////////////////////////////////////
@@ -182,7 +215,9 @@ export class TeacherInfoComponent implements OnInit {
   updateModal(command, whichTeacher) {
     const modalRef = this.modalService.open(TeacherUpdateModalComponent, { size: 'lg' });
     let that = this;
-    modalRef.result.then(that.refreshPage(that, command));
+    modalRef.result.then(function(){
+      that.ngOnInit()
+    })
     modalRef.componentInstance.command = command;
     modalRef.componentInstance.whichTeacher = whichTeacher;
   }
@@ -193,7 +228,9 @@ export class TeacherInfoComponent implements OnInit {
   deleteModal(command, whichTeacher) {
     const modalRef = this.modalService.open(TeacherDeleteModalComponent);
     let that = this;
-    modalRef.result.then(that.refreshPage(that, command));
+    modalRef.result.then(function(){
+      that.ngOnInit()
+    })
     modalRef.componentInstance.command = command;
     modalRef.componentInstance.whichTeacher = whichTeacher;
   }
@@ -206,27 +243,4 @@ export class TeacherInfoComponent implements OnInit {
     modalRef.componentInstance.command = command;
     modalRef.componentInstance.whichTeacher = whichTeacher;
   }
-
-  /*
-    After data modified(delete,add,update), refresh the page
-  */
-  refreshPage(pointer, command) {
-    return function () {
-      let refreshFlag, teacherToDelete;
-      [refreshFlag, teacherToDelete] = pointer.refreshService.getRefreshRequest();
-      if (refreshFlag == true && command == 3) {
-        //
-        pointer.teachersList.forEach(function (current) {
-          if (current.TeacherId === teacherToDelete) {
-            pointer.teachersList.splice(pointer.teachersList.findIndex(i => i.TeacherId === teacherToDelete), 1)
-            pointer.teachersListLength--;
-          }
-        })
-      }
-      else {
-        pointer.getDataFromSever();
-      }
-    }
-  }
-
 }

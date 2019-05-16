@@ -10,7 +10,9 @@ export class TimePickerComponent implements OnInit {
   public hours = [8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20];
   public xIndex = [0, 1, 2, 3, 4, 5, 6];
   public yIndex = [];
-  public timeArray = []; 
+  public displayArray = []; 
+  public timeArray = [];
+  public textArray = [];
   public selectedY: number[] = [];
   public eventTrigger : boolean = false;
   public styleObject = {};
@@ -35,39 +37,59 @@ export class TimePickerComponent implements OnInit {
     for(let i = 0; i < 48; i++) {
       this.yIndex.push(i);
     }
-    // define timeArray
+    // define displayArray
     for (let i = 0; i < 7; i++) {
+      this.displayArray[i] = [];
+      this.textArray[i] = [];
       this.timeArray[i] = [];
       for (let j = 0; j < 48; j++) {
-        this.timeArray[i][j] = false;
+        this.timeArray[i][j] = j;
+        this.displayArray[i][j] = false;
+        this.textArray[i][j] = false;
       }
     }
+    // console.log('ss', this.timeArray)
+    // this.startTotalMinutes = 480 + this.timeArray[0][0]*15;
+    // console.log('sssss', this.startTotalMinutes)
+    // this.endTotalMinutes = 480 + (y+1)*15;
+    // this.startHour = Math.floor(this.startTotalMinutes/60);
+    // this.startMinutes = this.startTotalMinutes%60 == 0 ? '00' : this.startTotalMinutes%60;
+    // this.startTime = this.startHour + ":" + this.startMinutes;
+    // this.endHour = Math.floor(this.endTotalMinutes/60 );
+    // this.endMinutes = this.endTotalMinutes%60 == 0 ? '00' : this.endTotalMinutes%60;
+    // this.endTime = this.endHour + ":" + this.endMinutes;
+    // console.log('time:', this.startTime, this.endTime);
   }
 
-  mousedown(x: number, y: number) {
+  mousedown(x: number, y: number, event: any) {
     // event.stopPropagation();
     this.tempXY['x'] = x;
     this.tempXY['y'] = y;
-    // this.timeArray[x][y] = !this.timeArray[x][y];
+    console.log('y', y);
+    // this.displayArray[x][y] = false;
+    // this.startTotalMinutes = 480 + y*15;
+    this.textArray[x][y] = !this.textArray[x][y];
   }
    
-  mouseup(x: number, y: number) {
-    this.timeArray[x][y] = !this.timeArray[x][y];
-    let tempRange = y - this.tempXY['y'];
-    console.log('tempRange', tempRange)
-    for(let i = this.tempXY['y']; i < y; i++) {
-      this.timeArray[x][i] = !this.timeArray[x][i];
+  mouseup(x: number, y: number, event: any) {
+    // this.displayArray[x][y] = !this.displayArray[x][y];
+    // let tempRange = y - this.tempXY['y'];
+    // console.log('tempRange', tempRange)
+    for(let i = this.tempXY['y']; i < y+1; i++) {
+      this.displayArray[x][i] = !this.displayArray[x][i];
+      // console.log('displayArray1', this.displayArray)
     }
+    console.log('mouseup', this.displayArray);
     // update time label
     this.startTotalMinutes = 480 + this.tempXY['y']*15;
     this.endTotalMinutes = 480 + (y+1)*15;
     this.startHour = Math.floor(this.startTotalMinutes/60);
-    this.startMinutes = this.startTotalMinutes%60 ==0 ? '00' : this.startTotalMinutes%60;
+    this.startMinutes = this.startTotalMinutes%60 == 0 ? '00' : this.startTotalMinutes%60;
     this.startTime = this.startHour + ":" + this.startMinutes;
     this.endHour = Math.floor(this.endTotalMinutes/60 );
-    this.endMinutes = this.endTotalMinutes%60 ==0 ? '00' : this.endTotalMinutes%60;
+    this.endMinutes = this.endTotalMinutes%60 == 0 ? '00' : this.endTotalMinutes%60;
     this.endTime = this.endHour + ":" + this.endMinutes;
-    console.log('time:', this.startTime, this.endTime)
+    console.log('time:', this.startTime, this.endTime);
   }
 
   checkASum() {

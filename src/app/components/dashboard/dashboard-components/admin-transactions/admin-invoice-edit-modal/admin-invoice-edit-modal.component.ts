@@ -32,7 +32,6 @@ export class AdminInvoiceEditModalComponent implements OnInit {
 
   // invoice list fb
   invoiceEditForm = this.fb.group({
-    InvoiceNum: [null],
     DueDate: [null],
     CourseName: [null, Validators.required],
     LessonQuantity: [null, Validators.required],
@@ -97,8 +96,10 @@ export class AdminInvoiceEditModalComponent implements OnInit {
 
 // confirm Modal
   open(confirmModal) {
+    console.log(this.router);
     let {...itemTemp } = this.item;
     Object.assign(itemTemp, this.invoiceEditForm.value);
+    console.log(itemTemp)
     this.modalService
     .open(confirmModal)
     .result.then(
@@ -106,7 +107,8 @@ export class AdminInvoiceEditModalComponent implements OnInit {
         this.transactionService.update(itemTemp)
         .subscribe(
           (res) => {
-            this.router.navigate(['../success'], {relativeTo: this.activatedRoute});
+            console.log(res);
+            this.router.navigate(['/transaction/success']);
           },
           (error) => {
             this.errorMsg = JSON.parse(error.error);

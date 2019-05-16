@@ -1,7 +1,6 @@
 import { TeachersService } from '../../../../../services/http/teachers.service';
 import { Component, OnInit, Input } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { RefreshService } from '../../../../../services/others/refresh.service';
 
 @Component({
   selector: 'app-teacher-delete-modal',
@@ -16,7 +15,7 @@ export class TeacherDeleteModalComponent implements OnInit {
   @Input() command;
   @Input() whichTeacher;
 
-  constructor(public activeModal: NgbActiveModal,public teachersService:TeachersService,public refreshService: RefreshService) { }
+  constructor(public activeModal: NgbActiveModal,public teachersService:TeachersService) { }
 
   ngOnInit() {
   }
@@ -30,7 +29,7 @@ export class TeacherDeleteModalComponent implements OnInit {
       (res) => {
         this.isDeleteSuccess = true;
         //成功信息
-        this.refreshService.sendRefreshRequest(teacherId);
+        //this.refreshService.sendRefreshRequest(teacherId);
       },
       (err) => {
         //失败信息
