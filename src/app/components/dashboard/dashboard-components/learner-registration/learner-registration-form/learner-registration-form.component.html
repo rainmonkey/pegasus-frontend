@@ -1,4 +1,5 @@
 
+
 <!-- <pre>{{ parentForm.value | json }}</pre> -->
 <form [formGroup]="registrationForm" class="container">
   <h1 class="font3">Student's Registration</h1>
@@ -292,20 +293,20 @@
             <div class="location-teacherLevel row">
               <div class="col-sm-6 col-md-6">
                 <label for="location">Location</label>
-                <select class="form-control"  formControlName="location" id="location">
-                  <option *ngFor="let cInstance of customCourseInstance" [value]="cInstance.OrgName">{{cInstance.OrgName}}</option>
+                <select class="form-control"  formControlName="location" id="location" (change)="onSelect($event.target.value)">
+                  <option *ngFor="let cInstance of customCourseInstance; let i = index" [value]="i">{{cInstance.OrgName}}</option>
                 </select>
               </div>
               <div class="col-sm-6 col-md-6">
                 <label for="teacherLevel">Teacher Level</label>
-                <select class="form-control" formControlName="teacherLevel" id="teacherLevel">
-                  <option *ngFor="let tlevel of teacherLevel" [value]="tlevel.levelName">{{tlevel.levelName}}</option>
+                <select class="form-control" formControlName="teacherLevel" id="teacherLevel" (change)="selectTl($event.target.value)">
+                  <option *ngFor="let tlevel of teacherLevel; let i = index" [value]="i">{{tlevel.levelName}}</option>
                 </select>
               </div>    
               <div class="col-sm-6 col-md-6">
                 <label for="teacherName">Teacher Name</label>
                 <select class="form-control" formControlName="teacherName" id="teacherName">
-                  <option *ngFor="let tName of teacherInfo" [value]="tName.TeacherInfo">{{tName.TeacherName}}</option>
+                  <option *ngFor="let tName of teacherName; let i = index" [value]="i">{{tName.TeacherName}}</option>
                 </select>
               </div>
               <div class="col-sm-6 col-md-6">
@@ -340,7 +341,7 @@
             <div class="row">
               <div class="col-12">
                 <label for="customTime">Course Time</label>
-                <input class="form-control" type="time" id="customTime">
+                <ngb-timepicker [ngModelOptions]="{standalone: true}" [(ngModel)]="time" [size]="'small'" [hourStep]="hourStep" [minuteStep]="minuteStep" ></ngb-timepicker>
               </div>                   
             </div>
             <div class="d-flex my-3 justify-content-end">

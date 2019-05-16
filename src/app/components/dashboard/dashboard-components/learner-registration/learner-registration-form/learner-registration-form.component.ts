@@ -9,10 +9,9 @@ import { NgbTimeStruct } from '@ng-bootstrap/ng-bootstrap';
   styleUrls: ['./learner-registration-form.component.css']
 })
 export class LearnerRegistrationFormComponent implements OnInit {
-  time: NgbTimeStruct = {hour: 13, minute: 30, second: 0};
-  hourStep = 1;
-  minuteStep = 15;
-  secondStep = 30;
+  // time: NgbTimeStruct = {hour: 13, minute: 30, second: 0};
+  public hourStep = 1;
+  public minuteStep = 15;
   public registrationForm: FormGroup; // define the type of registrationForm
   public selectedPhoto: File = null;
   public selectedGrade: File = null;
@@ -29,7 +28,7 @@ export class LearnerRegistrationFormComponent implements OnInit {
   public customCourseInstance: Array<any>;
   public customCourseRoom: Array<any>;
   public teacherLevel: Array<any>;
-  public teacherInfo: Array<any>;
+  public teacherName: Array<any>;
   //public selectedCourse: string;
   public isSelectedLevel: boolean = false;
   public courses = ['guitar', 'piano', 'drum'];
@@ -43,8 +42,8 @@ export class LearnerRegistrationFormComponent implements OnInit {
   public learner: any;
   public parent = [];
   public fdObj = {};
-  public isGroupCourse: boolean = true;
-  public isCustomCourse: boolean = false;
+  public isGroupCourse: boolean = false;
+  public isCustomCourse: boolean = true;
 
   // getter method: simplify the way to capture form controls
   get firstName() { return this.registrationForm.get('learnerForm').get('firstName'); }
@@ -205,25 +204,50 @@ export class LearnerRegistrationFormComponent implements OnInit {
     this.registrationService.getTeacherFilter()
       .subscribe(
         data => {
-          console.log('teacher filter', data);
+          console.log('teacher filter', data.Data);
           this.customCourseInstance = data.Data;
-          data.Data.map(element => {
-            this.teacherLevel = element.Level;
-          });
-          console.log('teacher level', this.teacherLevel);
-          data.Data.map(element => {
-            this.customCourseRoom = element.Room;
-          });
-          console.log('room', this.customCourseRoom);
-          this.teacherLevel.map(element => {
-            this.teacherInfo = element.teacher;
-          });
-          console.log('teacher info', this.teacherInfo);
+          for (let tl of data.Data) {
+            this.teacherLevel = tl.Level;
+          }
+          console.log('teacherlevel', this.teacherLevel);
+          console.log('teacherName', this.teacherName);
+          // data.Data.map(element => {
+          //   this.teacherLevel = element.Level;
+          //   this.customCourseRoom = element.Room;
+          // });
+          // console.log('teacher level', this.teacherLevel);
+          // data.Data.map(element => {
+          //   this.customCourseRoom = element.Room;
+          // });
+          // console.log('room', this.customCourseRoom);
+          // this.teacherLevel.map(element => {
+          //   this.teacherInfo = element.teacher;
+          // });
+          // console.log('teacher info', this.teacherInfo);
         },
         err => {
           console.log('teacher filter err', err);
         }
       )
+  }
+  onSelect(i: number) {
+    // console.log('location i', i);
+    this.registrationService.getTeacherFilter().subscribe(
+      (data) => {
+        let tempArray = data.Data.filter((item) => (item.OrgId-1) == i);
+        this.customCourseRoom = tempArray[0].Room;
+        console.log('filterArray', tempArray);
+        console.log('Room', this.customCourseRoom);
+        this.teacherLevel = tempArray[0].Level;
+        console.log('teacherLevel', this.teacherLevel);
+      }
+    )
+  }
+  selectTl(i: number) {
+    // console.log('teacherlevel i', i);
+    let tempArray = this.teacherLevel.filter((item) => (item.levelId-1) == i);
+    this.teacherName = tempArray[0].teacher;
+    console.log('teacherName', this.teacherName)
   }
   getOrgs() {
     this.registrationService.getOrgs()
