@@ -1,11 +1,10 @@
 import { TeacherDetailModalComponent } from './../teacher-detail-modal/teacher-detail-modal.component';
 import { TeacherUpdateModalComponent } from './../teacher-update-modal/teacher-update-modal.component';
 import { NgbootstraptableService } from '../../../../../services/others/ngbootstraptable.service';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { TeachersService } from '../../../../../services/http/teachers.service';
-import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModal, NgbModalRef, NgbPagination } from '@ng-bootstrap/ng-bootstrap';
 import { TeacherDeleteModalComponent } from '../teacher-delete-modal/teacher-delete-modal.component';
-import { stringify } from '@angular/core/src/render3/util';
 import { Router, ActivatedRoute } from '@angular/router';
 
 @Component({
@@ -21,12 +20,12 @@ export class TeacherInfoComponent implements OnInit {
   //teachers list copy. Using in searching method, in order to initialize data to original
   public teachersListCopy: Array<any>;
   //how many datas in teachersList
-  public teachersListLength: number; s
-  //search by which columns, determine by users
+  public teachersListLength: number;
   public queryParams: object = {};
-  public columnsToSearch: Array<string> = [];
   public currentPage: number = 1;
   public pageSize: number = 10;
+
+  @ViewChild('pagination') pagination;
 
   constructor(
     private teachersService: TeachersService,
@@ -51,7 +50,7 @@ export class TeacherInfoComponent implements OnInit {
         this.teachersList = res.Data;
         this.teachersListCopy = this.teachersList;
         this.teachersListLength = res.Data.length;
-        //console.log(this.teachersList)
+        console.log(this.teachersList)
         //this.toggleLoadingGif('show')  'show' 'hide'
         this.toggleLoadingGif('hide');
         this.refreshPageControl();
@@ -62,22 +61,51 @@ export class TeacherInfoComponent implements OnInit {
     )
   }
 
+  /*
+    set the default params when after page refresh
+  */
   refreshPageControl(){
     this.activatedRoute.queryParams.subscribe(res => {
-      let {searchString,searchBy,orderBy,orderControl} = res;
+      let {searchString,searchBy,orderBy,orderControl,currentPage} = res;
       if(searchString !==undefined && searchBy !==undefined){
         this.onSearch(null, {'searchString':searchString,'searchBy':searchBy})
       }
       if(orderBy !==undefined && orderControl !== undefined){
         this.onSort(orderBy,orderControl)
       }
+      if(currentPage !== undefined){
+        this.currentPage = currentPage;
+      }
     })
+    return;
   }
   ///////////////////////////////////////////called by other methods//////////////////////////////////////////////
 
   toggleLoadingGif(command) {
 
   }
+
+  /*
+    items of queryParams:
+      1, searchString
+      2, searchBy
+      3, orderBy
+      4, orderControl
+  */
+ setQueryParams(paraName, paraValue) {
+
+  if (paraValue == '') {
+    delete this.queryParams[paraName];
+    delete this.queryParams['searchBy'];
+  }
+  else {
+    this.queryParams[paraName] = paraValue;
+  }
+
+  this.router.navigate(['tutors/list'], {
+    queryParams: this.queryParams
+  });
+}
 
 
 
@@ -89,44 +117,7 @@ export class TeacherInfoComponent implements OnInit {
   AddSpaceInString(strToAdd) {
     return strToAdd.replace(/(?=[A-Z])/g, ' ');
   }
-
-  /*
-    let user decide in which column to search 
-  */
-  showSearchingSelection(event) {
-    let dropDownObj = document.getElementById('t_info_search_by_btn');
-    event.target.attributes.flag = !event.target.attributes.flag;
-
-    if (event.target.attributes.flag == true) {
-      let searchingInputObj = document.getElementById('searchingInput');
-      searchingInputObj['value'] = null;
-      dropDownObj.style.display = 'inline-block';
-    }
-    else {
-      dropDownObj.style.display = 'none';
-    }
-  }
-
-  /*
-   let user decide in which column to search 
-   handler of user's selection
- */
-  showSelectStyle(event?) {
-    event.target.attributes.flag = !event.target.attributes.flag;
-    let attributes = event.target.attributes;
-    if (attributes.flag == true) {
-      //选中状态
-      attributes.class.value = 't_selected'; //please keep class name as same as it in css file
-      this.columnsToSearch.push(event.target.innerText);
-    }
-    else {
-      //非选中状态
-      attributes.class.value = '';
-      this.columnsToSearch.splice(this.columnsToSearch.findIndex(i => i === event.target.innerText), 1)
-    }
-  }
-
-
+ 
   /*
     sort method
   */
@@ -161,26 +152,10 @@ export class TeacherInfoComponent implements OnInit {
     }
 
   }
-  /*
-    items of queryParams:
-      1, searchString
-      2, searchBy
-      3, orderBy
-      4, orderControl
-  */
-  setQueryParams(paraName, paraValue) {
 
-    if (paraValue == '') {
-      delete this.queryParams[paraName];
-      delete this.queryParams['searchBy'];
-    }
-    else {
-      this.queryParams[paraName] = paraValue;
-    }
-
-    this.router.navigate(['tutors/list'], {
-      queryParams: this.queryParams
-    });
+  getCurrentPage(){
+    let currentPage = this.pagination.page;
+    this.setQueryParams('currentPage',currentPage)
   }
 
   ///////////////////////////////////////handler of angular-bootstrap modals/////////////////////////////////////
