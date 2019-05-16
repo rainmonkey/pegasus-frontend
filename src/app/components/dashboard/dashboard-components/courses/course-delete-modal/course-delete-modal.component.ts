@@ -32,6 +32,7 @@ export class CourseDeleteModalComponent implements OnInit {
         this.isDeleteSuccess = true;
         //successful info
         this.refreshService.sendRefreshRequest(courseId);
+        console.log(res);
       },
       (err) => {
         //fail info

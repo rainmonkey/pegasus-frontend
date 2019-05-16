@@ -70,7 +70,7 @@ export class CourseDetailModalComponent implements OnInit {
       this.coursesService.addNew(this.modalUpdateFormComponentObj.updateForm.value).subscribe(
         (res) => {
           this.successMessage = 'Submit success!';
-          // this.activeModal.close();
+          this.activeModal.close();
         },
         (err) => {
           if (err.error.Message != null) {

@@ -44,8 +44,8 @@
             <td>${{i.Price}}</td>
             <td>{{i.CourseCategory.CourseCategoryName}}</td>
             <td class='tl_body_table_btns'>
-                <span (click)='popUpModals(2,i)' class='tl_body_table_btn' style="margin-right: 2rem;"><i class='fas fa-pen'></i></span>
-                <span (click)='popUpModals(3,i)' class='tl_body_table_btn'><i class='fas fa-trash-alt'></i></span>
+                <span (click)='popUpModals(1,i)' class='tl_body_table_btn' style="margin-right: 2rem;"><i class='fas fa-pen'></i></span>
+                <span (click)='popUpModals(2,i)' class='tl_body_table_btn'><i class='fas fa-trash-alt'></i></span>
             </td>
           </tr>
         </tbody>
@@ -55,7 +55,5 @@
     <div class='col-12'>
       <ngb-pagination [collectionSize] = 'coursesListLength' [(page)] ='page' [pageSize]='pageSize'></ngb-pagination>
     </div>
-
-
   </div>
 </div>

@@ -42,7 +42,6 @@ export class CoursesListComponent implements OnInit {
   }
 
   errorProcess(error) {
-    // alert(error.message)
   }
 
 
@@ -75,11 +74,7 @@ export class CoursesListComponent implements OnInit {
     const modalRef = this.modalService.open(CourseDetailModalComponent, { size: 'lg' });
     //bind this pointer to that
     let that = this;
-    //refresh after save
-    modalRef.result.then(function(){
-      that.getData()
-    });
-    //pass parameters to pop up modals
+    modalRef.result.then(that.refreshPage(that, command));
     modalRef.componentInstance.command = command;
     modalRef.componentInstance.whichCourse = whichCourse;
   }
@@ -89,20 +84,20 @@ export class CoursesListComponent implements OnInit {
   */
  deleteModal(command, whichCourse) {
   const modalRef = this.modalService.open(CourseDeleteModalComponent);
-  let that = this;
-  modalRef.result.then(that.refreshPage(that));
-  modalRef.componentInstance.command = command;
-  modalRef.componentInstance.whichCourseer = whichCourse;
+    let that = this;
+    modalRef.result.then(that.refreshPage(that, command));
+    modalRef.componentInstance.command = command;
+    modalRef.componentInstance.whichCourse = whichCourse;
 }
 
   /*
     After data modified(delete,add,update), refresh the page
   */
-refreshPage(pointer) {
+refreshPage(pointer,command) {
   return function () {
     let refreshFlag, courseToDelete;
     [refreshFlag, courseToDelete] = pointer.refreshService.getRefreshRequest();
-    if (refreshFlag == true) {
+    if (refreshFlag == true && command == 2) {
       //
       pointer.coursesList.forEach(function (current) {
         if (current.CourseId === courseToDelete) {
@@ -110,6 +105,9 @@ refreshPage(pointer) {
           pointer.coursesListLength--;
         }
       })
+    }
+    else {
+      pointer.getDataFromSever();
     }
   }
 }
