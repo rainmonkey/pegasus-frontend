@@ -54,7 +54,7 @@ export class AdminLearnerPaymentProductsComponent implements OnInit {
   // ng-alert
   public successAlert = false;
   public errorAlert = false;
-  public errMsgM = false;
+  public errMsgP = false;
   public errMsgO = false;
 
   constructor(
@@ -148,6 +148,7 @@ export class AdminLearnerPaymentProductsComponent implements OnInit {
     // this.paymentMethod.errors.touched = true;
     if (this.productListForm.invalid) {
       this.showErrMsg = true;
+      if(this.paymentMethod.invalid){this.errMsgP = true;}
     } else if (!this.showErrMsgSub) {
       this.openProd(contentProd);
     }
@@ -232,7 +233,8 @@ export class AdminLearnerPaymentProductsComponent implements OnInit {
   }
   // select payment method
   changePayment(){
-    this.showErrMsg = false;
+    this.errMsgP = false;
+    console.log(this.errMsgP)
   }
   // user select type
   selectType(dis, j) {
@@ -318,6 +320,7 @@ export class AdminLearnerPaymentProductsComponent implements OnInit {
 
   // search new users patch new data (3)
   patchProd() {
+    this.errMsgP = false;
     this.showErrMsgSub = false;
     this.showErrMsg = false;
     this.showErrMsgSub = false;
