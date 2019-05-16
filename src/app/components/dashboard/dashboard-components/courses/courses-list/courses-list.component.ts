@@ -43,8 +43,6 @@ export class CoursesListComponent implements OnInit {
         this.coursesList = res.Data;
         this.coursesListCopy = this.coursesList;
         this.coursesListLength = res.Data.length; //length prop is under Data prop
-        // console.log(this.coursesList);
-        // console.log(res);
         this.refreshPageControl();
       },
       (error) => {this.errorProcess(error) })
@@ -81,7 +79,7 @@ export class CoursesListComponent implements OnInit {
     else {
       this.queryParams[paraName] = paraValue;
     }
-    this.router.navigate(['tutors/list'], {
+    this.router.navigate(['courses/list'], {
       queryParams: this.queryParams
     });
   }

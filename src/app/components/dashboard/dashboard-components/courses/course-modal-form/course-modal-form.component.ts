@@ -1,5 +1,4 @@
 import { Component, OnInit, Input, ViewChildren } from '@angular/core';
-import { CoursesService } from '../../../../../services/http/courses.service';
 import { FormBuilder, Validators } from '@angular/forms';
 
 @Component({
@@ -13,7 +12,7 @@ export class CourseModalFormComponent implements OnInit {
   @Input() command;
   @Input() whichCourse;
 
-  constructor(private fb: FormBuilder, private coursesService: CoursesService) { }
+  constructor(private fb: FormBuilder) { }
 
   ngOnInit() {
     this.updateForm = this.fb.group(this.formGroupAssemble());
