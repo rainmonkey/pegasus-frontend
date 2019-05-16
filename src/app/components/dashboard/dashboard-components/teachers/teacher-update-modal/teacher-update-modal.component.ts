@@ -1,7 +1,6 @@
 import { TeachersService } from './../../../../../services/http/teachers.service';
 import { Component, OnInit, Input, ViewChild } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { RefreshService } from 'src/app/services/others/refresh.service';
 
 @Component({
   selector: 'app-teacher-update-modal',
@@ -17,7 +16,7 @@ export class TeacherUpdateModalComponent implements OnInit {
   //in order to get the form from child component(TeacherModalFormDComponent)
   @ViewChild('modalUpdateFormComponent') modalUpdateFormComponentObj;
 
-  constructor(public activeModal: NgbActiveModal, private teachersService: TeachersService, private refreshService: RefreshService) { }
+  constructor(public activeModal: NgbActiveModal, private teachersService: TeachersService) { }
 
   ngOnInit() {
   }
@@ -195,12 +194,5 @@ export class TeacherUpdateModalComponent implements OnInit {
 
     return checkQualificationsList;
 
-  }
-
-
-  ////////////////////////////////////////methods called by HTML element and event/////////////////////////////////////////////////////
-  requestRefreshPage() {
-    this.activeModal.close('Cross click');
-    this.refreshService.sendRefreshRequest();
   }
 }

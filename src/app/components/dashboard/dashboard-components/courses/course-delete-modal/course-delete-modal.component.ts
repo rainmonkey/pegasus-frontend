@@ -1,7 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { CoursesService } from '../../../../../services/http/courses.service';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { RefreshService } from '../../../../../services/others/refresh.service';
 
 @Component({
   selector: 'app-course-delete-modal',
@@ -19,7 +18,6 @@ export class CourseDeleteModalComponent implements OnInit {
   constructor(
     public activeModal: NgbActiveModal,
     public coursesService:CoursesService,
-    public refreshService: RefreshService
   ) { }
 
   ngOnInit() {
@@ -31,7 +29,7 @@ export class CourseDeleteModalComponent implements OnInit {
       (res) => {
         this.isDeleteSuccess = true;
         //successful info
-        this.refreshService.sendRefreshRequest(courseId);
+        // this.refreshService.sendRefreshRequest(courseId);
         console.log(res);
       },
       (err) => {
