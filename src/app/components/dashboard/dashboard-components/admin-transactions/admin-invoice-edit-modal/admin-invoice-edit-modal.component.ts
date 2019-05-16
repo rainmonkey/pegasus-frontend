@@ -1,8 +1,9 @@
 import { Component, OnInit, Input, Output } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { NgbActiveModal, NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 import { FormBuilder, Validator, Validators, RequiredValidator } from '@angular/forms';
 import { TransactionService } from '../../../../../services/http/transaction.service';
+import { restoreView } from '@angular/core/src/render3';
 
 @Component({
   selector: 'app-admin-invoice-edit-modal',
@@ -16,6 +17,9 @@ export class AdminInvoiceEditModalComponent implements OnInit {
   public errMsgM = false;
   public successAlert = false;
   public staffId = 3;
+  closeResult: string;
+  dueDateLocal;
+  owingFeeLocal;
 
   @Input() item;
 
@@ -41,27 +45,28 @@ export class AdminInvoiceEditModalComponent implements OnInit {
     ConcertFee: [null],
     Note: [null],
     NoteFee: [null],
-    Other1FeeName: [null],
-    Other2FeeName: [null],
-    Other3FeeName: [null],
-    Other1Fee: [null],
-    Other2Fee: [null],
-    Other3Fee: [null],
+    Other1FeeName: [' '],
+    Other2FeeName: [' '],
+    Other3FeeName: [' '],
+    Other1Fee: [],
+    Other2Fee: [],
+    Other3Fee: [],
     PaidFee: [null],
     OwingFee: [null]
   });
 
   ngOnInit() {
     this.patchToInvoice();
+    this.dueDateLocal = this.item.DueDate;
+    this.owingFeeLocal = this.item.OwingFee;
   }
 
 // patch data to invoiceEditForm
   patchToInvoice() {
     this.invoiceEditForm.patchValue({
-      DueDate: this.item.DueDate,
       CourseName: this.item.CourseName,
       LessonQuantity: this.item.LessonQuantity,
-      BeginDate: this.item.BeginDate,
+      BeginDate: this.item.BeginDate === null ? null : this.item.BeginDate.slice(0, 10),
       LessonFee: this.item.LessonFee,
       Concert: this.item.Concert,
       ConcertFee: this.item.ConcertFee,
@@ -73,8 +78,7 @@ export class AdminInvoiceEditModalComponent implements OnInit {
       Other1Fee: this.item.Other1Fee,
       Other2Fee: this.item.Other2Fee,
       Other3Fee: this.item.Other3Fee,
-      PaidFee: this.item.PaidFee,
-      OwingFee: this.item.OwingFee
+      PaidFee: this.item.PaidFee
     });
   }
 
@@ -96,10 +100,26 @@ export class AdminInvoiceEditModalComponent implements OnInit {
 
 // confirm Modal
   open(confirmModal) {
-    console.log(this.router);
+    let valueObj = this.invoiceEditForm.value;
+    let {
+      LessonFee,
+      ConcertFee,
+      Other1Fee,
+      Other2Fee,
+      Other3Fee,
+      ...rest
+    } = valueObj;
+    let valueTemp = {
+      LessonFee : null ? 0 : this.invoiceEditForm.controls.LessonFee.value,
+      ConcertFee: null ? 0 : this.invoiceEditForm.controls.ConcertFee.value,
+      Other1Fee: null ? 0  : this.invoiceEditForm.controls.Other1Fee.value,
+      Other2Fee: null ? 0 : this.invoiceEditForm.controls.Other2Fee.value,
+      Other3Fee: null ? 0 : this.invoiceEditForm.controls.Other3Fee.value,
+    };
+    Object.assign(valueTemp, rest);
+    console.log(valueTemp);
     let {...itemTemp } = this.item;
-    Object.assign(itemTemp, this.invoiceEditForm.value);
-    console.log(itemTemp)
+    Object.assign(itemTemp, valueTemp);
     this.modalService
     .open(confirmModal)
     .result.then(
@@ -108,6 +128,7 @@ export class AdminInvoiceEditModalComponent implements OnInit {
         .subscribe(
           (res) => {
             console.log(res);
+            this.activeModal.dismiss();
             this.router.navigate(['/transaction/success']);
           },
           (error) => {
@@ -116,7 +137,19 @@ export class AdminInvoiceEditModalComponent implements OnInit {
             alert(this.errorMsg.ErrorCode);
           },
         );
+      }, (reason) => {
+        this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
       });
+  }
+
+  private getDismissReason(reason: any): string {
+    if (reason === ModalDismissReasons.ESC) {
+      return 'by pressing ESC';
+    } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
+      return 'by clicking on a backdrop';
+    } else {
+      return  `with: ${reason}`;
+    }
   }
 
 }
