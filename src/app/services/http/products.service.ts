@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { environment } from '../../../environments/environment.prod';
 
 @Injectable({
@@ -7,8 +7,19 @@ import { environment } from '../../../environments/environment.prod';
 })
 export class ProductsService {
 
-  private baseUrl: any = environment.baseUrl;
-  constructor(private http: HttpClient) { }
+  baseUrl = environment.baseUrl;
+  token:string
+  httpHeaders: HttpHeaders;
+
+  constructor(
+    private http: HttpClient
+    ) { }
+  
+  // API Request headers
+  prepareHeaders(){
+    this.token = localStorage.getItem('Token')
+    return this.httpHeaders = new HttpHeaders({'Authorization': "Bearer "+ localStorage.getItem('Token')})
+  }
 
   getProdType() {
     return this.http.get<any[]>(this.baseUrl + 'product/getCat');

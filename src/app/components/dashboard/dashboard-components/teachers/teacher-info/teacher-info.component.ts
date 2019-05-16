@@ -6,6 +6,8 @@ import { Component, OnInit } from '@angular/core';
 import { TeachersService } from '../../../../../services/http/teachers.service';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { TeacherDeleteModalComponent } from '../teacher-delete-modal/teacher-delete-modal.component';
+import { stringify } from '@angular/core/src/render3/util';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-teacher-info',
@@ -14,7 +16,7 @@ import { TeacherDeleteModalComponent } from '../teacher-delete-modal/teacher-del
 })
 export class TeacherInfoComponent implements OnInit {
   //what columns showed in the info page, can get from back-end in the future. must as same as database
-  public columnsToShow: Array<string> = ['FirstName', 'LastName', 'Gender', 'MobilePhone', 'Email'];
+  public columnsToShow: Array<string> = ['FirstName', 'LastName', 'Email'];
   //teachers data from database
   public teachersList: Array<any>;
   //teachers list copy. Using in searching method, in order to initialize data to original
@@ -27,10 +29,11 @@ export class TeacherInfoComponent implements OnInit {
   public pageSize: number = 10;
 
   constructor(
-    private teachersService: TeachersService, 
+    private teachersService: TeachersService,
     private ngTable: NgbootstraptableService,
-     private modalService: NgbModal, 
-     private refreshService: RefreshService) { }
+    private modalService: NgbModal,
+    private refreshService: RefreshService,
+    private router: Router) { }
 
   ngOnInit() {
     this.getDataFromSever();
@@ -116,22 +119,35 @@ export class TeacherInfoComponent implements OnInit {
     sort method
   */
   onSort(orderBy) {
-    console.log(orderBy)
-    this.ngTable.sorting(this.teachersList, orderBy);
+    let orderControl = this.ngTable.sorting(this.teachersList, orderBy);
+
   }
 
   /*
     search method
   */
-  onSearch(event) {
-    if (this.columnsToSearch.length == 0) {
+  onSearch(event, initValue?) {
+    if (event !== null && !(event.type == 'keydown' && event.key == 'Enter')) {
       return;
     }
     else {
-      let searchString = event.target.value;
-      this.teachersList = this.ngTable.searching(this.teachersListCopy, this.columnsToSearch, searchString);
+      let searchString: string;
+      let searchBy: string;
+      let searchingInputObj = document.getElementById('searchingInput');
+      let optionsObj = document.getElementById('searchOption');
+
+      (initValue == undefined) ? { searchString, searchBy } = { searchString: searchingInputObj['value'], searchBy: optionsObj['value'] } :
+        { searchString, searchBy } = initValue;
+
+      this.teachersList = this.ngTable.searching(this.teachersListCopy, searchBy, searchString);
       this.teachersListLength = this.teachersList.length;
+      optionsObj['value'] = searchBy;
     }
+
+  }
+
+  setQueryParams(){
+    
   }
 
   ///////////////////////////////////////handler of angular-bootstrap modals/////////////////////////////////////
@@ -166,7 +182,7 @@ export class TeacherInfoComponent implements OnInit {
   updateModal(command, whichTeacher) {
     const modalRef = this.modalService.open(TeacherUpdateModalComponent, { size: 'lg' });
     let that = this;
-    modalRef.result.then(that.refreshPage(that,command));
+    modalRef.result.then(that.refreshPage(that, command));
     modalRef.componentInstance.command = command;
     modalRef.componentInstance.whichTeacher = whichTeacher;
   }
@@ -177,7 +193,7 @@ export class TeacherInfoComponent implements OnInit {
   deleteModal(command, whichTeacher) {
     const modalRef = this.modalService.open(TeacherDeleteModalComponent);
     let that = this;
-    modalRef.result.then(that.refreshPage(that,command));
+    modalRef.result.then(that.refreshPage(that, command));
     modalRef.componentInstance.command = command;
     modalRef.componentInstance.whichTeacher = whichTeacher;
   }
@@ -194,7 +210,7 @@ export class TeacherInfoComponent implements OnInit {
   /*
     After data modified(delete,add,update), refresh the page
   */
-  refreshPage(pointer,command) {
+  refreshPage(pointer, command) {
     return function () {
       let refreshFlag, teacherToDelete;
       [refreshFlag, teacherToDelete] = pointer.refreshService.getRefreshRequest();
@@ -207,11 +223,10 @@ export class TeacherInfoComponent implements OnInit {
           }
         })
       }
-      else{
+      else {
         pointer.getDataFromSever();
       }
     }
   }
-
 
 }

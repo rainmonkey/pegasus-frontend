@@ -22,13 +22,13 @@ export class AdminLearnerListComponent implements OnInit {
   public learnerListCopy: Array<any>;
 
    //how many datas in learnerList
-   public learnerListLength: number; 
+   public learnerListLength: number;
 
   //errorMessage
   errorMessage:string;
 
   //search by which columns, determine by users
-  public columnsToSearch: Array<string> = [];
+  public columnsToSearch:string;
   public currentPage: number = 1;
   public pageSize: number = 10;
 
@@ -54,7 +54,7 @@ export class AdminLearnerListComponent implements OnInit {
        this.learnerListCopy = this.learnerList;
        //@ts-ignore
        this.learnerListLength=res.Data.length;
-       
+
       },
     (err) => {
       console.log(err); this.errorMessage="Wrong"
@@ -66,34 +66,43 @@ export class AdminLearnerListComponent implements OnInit {
     sort method
   */
  onSort(orderBy) {
-  console.log(orderBy)
-  this.ngTable.sorting(this.learnerList, orderBy);
+  let orderControl = this.ngTable.sorting(this.learnerList, orderBy);
+
 }
 
-  /*
+ /*
     search method
   */
- onSearch(event) {
-  if (this.columnsToSearch.length == 0) {
+ onSearch(event, initValue?) {
+  if (event !== null && !(event.type == 'keydown' && event.key == 'Enter')) {
     return;
   }
   else {
-    let searchString = event.target.value;
-    this.learnerList = this.ngTable.searching(this.learnerListCopy, this.columnsToSearch, searchString);
+    let searchString: string;
+    let searchBy: string;
+    let searchingInputObj = document.getElementById('searchingInput');
+    let optionsObj = document.getElementById('searchOption');
+
+    (initValue == undefined) ? { searchString, searchBy } = { searchString: searchingInputObj['value'], searchBy: optionsObj['value'] } :
+      { searchString, searchBy } = initValue;
+
+    this.learnerList = this.ngTable.searching(this.learnerListCopy, searchBy, searchString);
     this.learnerListLength = this.learnerList.length;
+    optionsObj['value'] = searchBy;
   }
+
 }
 
  /*
     Insert space before capital letter.
-      eg: FirstName --> First Name 
+      eg: FirstName --> First Name
   */
  AddSpaceInString(strToAdd) {
   return strToAdd.replace(/(?=[A-Z])/g, ' ');
 }
 
  /*
-    let user decide in which column to search 
+    let user decide in which column to search
   */
  showSearchingSelection(event) {
   let dropDownObj = document.getElementById('t_info_search_by_btn');
@@ -121,14 +130,8 @@ export class AdminLearnerListComponent implements OnInit {
   */
  popUpModal(command, whichLearner) {
   switch (command) {
-    case 0:
-      this.updateModal(command, whichLearner);
-      break;
     case 1:
       this.detailModal(command, whichLearner)
-      break;
-    case 2:
-      this.updateModal(command, whichLearner);
       break;
     case 3:
       this.deleteModal(command, whichLearner);

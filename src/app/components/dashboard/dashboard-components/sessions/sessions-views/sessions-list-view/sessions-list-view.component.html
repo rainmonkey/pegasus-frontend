@@ -35,9 +35,9 @@
               <td>{{i.CourseName}}</td>
               <td>{{i.TrailCourse}}</td>
               <td>
-                <a (click)='openE()' style="cursor: pointer;"><u>Edit</u></a><br>
-                <a (click)='openCon(confirmModal,1)' style="cursor: pointer;"><u>Confirm</u></a><br>
-                <a (click)='openCon(confirmModal,2)' style="cursor: pointer;"><u>Cancel</u></a>
+                <a (click)='openE()' style="cursor: pointer;"><button class="btn btn-primary" style="width: 70px; height: 20px; font-size: 12px; line-height: 6px" >Edit</button></a><br>
+                <a (click)='openCon(confirmModal,1)' style="cursor: pointer;"><button class="btn btn-success" style="width: 70px; height: 20px; font-size: 12px; line-height: 6px">Confirm</button></a><br>
+                <a (click)='openCon(confirmModal,2)' style="cursor: pointer;"><button class="btn btn-danger" style="width: 70px; height: 20px; font-size: 12px; line-height: 6px">Cancel</button></a>
               </td>
             </tr>
           </tbody>
@@ -70,7 +70,7 @@
           <p *ngIf="confirmButton">Please confirm the course has been achieved</p>
           <p *ngIf="cancelButton">Please confirm the course has been canceled</p>
           <div *ngIf="cancelButton">
-            <div class="row">
+            <div class="row mb-2">
               <label class="mt-2">Canceled Reason</label>
               <input class="form-control" type="text"/>
 
