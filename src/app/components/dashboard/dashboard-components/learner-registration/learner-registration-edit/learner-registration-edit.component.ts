@@ -50,9 +50,9 @@ export class LearnerRegistrationEditComponent implements OnInit {
         this.learnerListLength=data.Data.length;
        },
         err => {
-          console.log('learner list err', err); 
+          console.log(err); 
           this.errorMessage = "Wrong"
-        }
+       }
      )
    }
  

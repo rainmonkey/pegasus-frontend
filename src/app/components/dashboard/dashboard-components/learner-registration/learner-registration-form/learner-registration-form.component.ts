@@ -27,6 +27,9 @@ export class LearnerRegistrationFormComponent implements OnInit {
   public locations: Array<any>;
   public levelType: Array<any>;
   public customCourseInstance: Array<any>;
+  public customCourseRoom: Array<any>;
+  public teacherLevel: Array<any>;
+  public teacherInfo: Array<any>;
   //public selectedCourse: string;
   public isSelectedLevel: boolean = false;
   public courses = ['guitar', 'piano', 'drum'];
@@ -108,9 +111,9 @@ export class LearnerRegistrationFormComponent implements OnInit {
     });
 
     // // initialize card display
-    document.getElementById('learnerForm').style.display = 'block';
+    document.getElementById('learnerForm').style.display = 'none';
     document.getElementById('parentForm').style.display = 'none';
-    document.getElementById('courseForm').style.display = 'none';
+    document.getElementById('courseForm').style.display = 'block';
   
     this.getGroupCourse();
     this.getTeacherInfo();
@@ -204,6 +207,18 @@ export class LearnerRegistrationFormComponent implements OnInit {
         data => {
           console.log('teacher filter', data);
           this.customCourseInstance = data.Data;
+          data.Data.map(element => {
+            this.teacherLevel = element.Level;
+          });
+          console.log('teacher level', this.teacherLevel);
+          data.Data.map(element => {
+            this.customCourseRoom = element.Room;
+          });
+          console.log('room', this.customCourseRoom);
+          this.teacherLevel.map(element => {
+            this.teacherInfo = element.teacher;
+          });
+          console.log('teacher info', this.teacherInfo);
         },
         err => {
           console.log('teacher filter err', err);
