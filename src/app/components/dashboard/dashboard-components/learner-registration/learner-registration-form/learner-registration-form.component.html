@@ -1,3 +1,4 @@
+
 <!-- <pre>{{ parentForm.value | json }}</pre> -->
 <form [formGroup]="registrationForm" class="container">
   <h1 class="font3">Student's Registration</h1>
@@ -280,9 +281,10 @@
               <button class="btn_delete" (click)="deleteCustomCourse()">Delete</button>
             </div>
             <div class="selectCourse-yourLever row">
-              <div class="col-sm-6 col-md-6">
+              <div class="col-12">
                 <label for="course">Course</label>
                 <select class="form-control" formControlName="course" id="course">
+                  <!-- more details about -->
                   <option *ngFor="let course of courses" [value]="course">{{course}}</option>
                 </select>
               </div>
@@ -338,32 +340,26 @@
               </div>
             </div>
             <div class="courseDay-courseHour row">
-              <div class="col-sm-6 col-md-6">
-                <label for="customHour">Course Hour</label>
-                <select class="form-control" formControlName="customHour" id="customHour">
-                  <option value="9">9:00 AM</option>
-                  <option value="10">10:00 AM</option>
-                  <option value="11">11:00 AM</option>
-                  <option value="12">12:00</option>
-                  <option value="13">1:00 PM</option>
-                  <option value="14">2:00 PM</option>
-                  <option value="15">3:00 PM</option>
-                  <option value="16">4:00 PM</option>
-                  <option value="17">5:00 PM</option>
-                  <option value="18">6:00 PM</option>
-                  <option value="19">7:00 PM</option>
-                  <option value="20">8:00 PM</option>
+              <div class="col-sm-4 col-md-4">
+                <label for="room">Room No.</label>
+                <select class="form-control" name="room" id="room">
+                  <option value=""></option>
                 </select>
-              </div>   
-              <div class="col-sm-6 col-md-6">
-                <label for="customMinute">Course Minute</label>
-                <select class="form-control" formControlName="customMinute" id="customMinute">
-                  <option value="0">:00 </option>
-                  <option value="1">:15 </option>
-                  <option value="2">:30 </option>
-                  <option value="3">:45 </option>
-                </select>
-              </div>                      
+              </div>
+              <div class="col-sm-4 col-md-4">
+                <label for="startDate">Start Date</label>
+                <input class="form-control" type="date" id="startDate">
+              </div>
+              <div class="col-sm-4 col-md-4">
+                <label for="endDate">End Date</label>
+                <input class="form-control" type="date" id="endDate">
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-12">
+                <label for="customTime">Course Time</label>
+                <input class="form-control" type="time" id="customTime">
+              </div>                   
             </div>
             <div class="d-flex my-3 justify-content-end">
               <button class="mx-3 btn_back" (click)="next('parentForm')">Back</button>

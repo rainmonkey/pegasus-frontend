@@ -6,9 +6,9 @@ import { environment } from '../../../environments/environment.prod';
 })
 export class LearnerListService {
   private baseUrl: any = environment.baseUrl;
-  constructor(private http:HttpClient) { }
+  constructor(private http: HttpClient) { }
 
-  getLearnerList(){
-    return this.http.get(this.baseUrl+'learner')
+  getLearnerList() {
+    return this.http.get(this.baseUrl + 'learner')
   }
 }

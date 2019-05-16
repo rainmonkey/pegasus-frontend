@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormArray, FormBuilder, Validators } from '@angular/forms';
 import { LearnerRegistrationService } from '../../../../../services/http/learner-registration.service';
-
+import { NgbTimeStruct } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-learner-registration-form',
@@ -9,6 +9,10 @@ import { LearnerRegistrationService } from '../../../../../services/http/learner
   styleUrls: ['./learner-registration-form.component.css']
 })
 export class LearnerRegistrationFormComponent implements OnInit {
+  time: NgbTimeStruct = {hour: 13, minute: 30, second: 0};
+  hourStep = 1;
+  minuteStep = 15;
+  secondStep = 30;
   public registrationForm: FormGroup; // define the type of registrationForm
   public selectedPhoto: File = null;
   public selectedGrade: File = null;
