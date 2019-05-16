@@ -84,8 +84,8 @@ export class CourseDetailModalComponent implements OnInit {
       );
     }
     //while update data
-    else if (this.command == 1) {
-      this.coursesService.update(this.whichCourse.value, this.whichCourse.CourseId).subscribe(
+    else if (this.command == 2) {
+      this.coursesService.update(this.modalUpdateFormComponentObj.updateForm.value, this.whichCourse.CourseId).subscribe(
         (res) => {
           this.successMessage = 'Submit success!'
         },

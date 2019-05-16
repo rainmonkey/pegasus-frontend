@@ -31,7 +31,7 @@
         </thead>
         <tbody>
           <!-- dataTable-->
-          <tr *ngFor = 'let i of coursesList | slice: (page-1)* pageSize : (page-1) * pageSize + pageSize; let j = index'>
+          <tr *ngFor = 'let i of coursesList | slice: (page-1)* pageSize : (page-1) * pageSize + pageSize;let j = index'>
             <th scope="row">{{j+1}}</th>
             <td>{{i.CourseName}}</td>
             <td *ngIf="i.CourseType == 1">1 to 1</td>
@@ -44,8 +44,8 @@
             <td>${{i.Price}}</td>
             <td>{{i.CourseCategory.CourseCategoryName}}</td>
             <td class='tl_body_table_btns'>
-                <span (click)='popUpModals(1,i)' class='tl_body_table_btn' style="margin-right: 2rem;"><i class='fas fa-pen'></i></span>
-                <span (click)='popUpModals(2,i)' class='tl_body_table_btn'><i class='fas fa-trash-alt'></i></span>
+                <span (click)='popUpModals(2,i)' class='tl_body_table_btn' style="margin-right: 2rem;"><i class='fas fa-pen'></i></span>
+                <span (click)='popUpModals(3,i)' class='tl_body_table_btn'><i class='fas fa-trash-alt'></i></span>
             </td>
           </tr>
         </tbody>

@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { CoursesService } from '../../../../../services/http/courses.service';
 import { NgbootstraptableService } from 'src/app/services/others/ngbootstraptable.service';
+import { Router, ActivatedRoute } from '@angular/router';
 
 import { CourseDetailModalComponent } from '../course-detail-modal/course-detail-modal.component';
 import { CourseDeleteModalComponent } from '../course-delete-modal/course-delete-modal.component';
@@ -18,8 +19,16 @@ export class CoursesListComponent implements OnInit {
   public temCoursesListLength: number; //save the original courseList length
   public page: number = 1;  //pagination current page
   public pageSize: number = 10;    //[can modify] pagination page size
+  public coursesListCopy: Array<any>;
+  //search by which columns, determine by users
+  public queryParams: object = {};
 
-  constructor(private coursesService: CoursesService, private modalService: NgbModal, private ngTable:NgbootstraptableService) { }
+  constructor(
+    private coursesService: CoursesService, 
+    private modalService: NgbModal, 
+    private ngTable:NgbootstraptableService,
+    private router: Router,
+    private activatedRoute: ActivatedRoute) { }
 
   ngOnInit() {
     this.getData();
@@ -32,11 +41,11 @@ export class CoursesListComponent implements OnInit {
     this.coursesService.getCourses().subscribe(
       (res) => {
         this.coursesList = res.Data;
+        this.coursesListCopy = this.coursesList;
         this.coursesListLength = res.Data.length; //length prop is under Data prop
-        this.temCoursesList = res.Data;
-        this.temCoursesListLength = res.Data.length;
         // console.log(this.coursesList);
         // console.log(res);
+        this.refreshPageControl();
       },
       (error) => {this.errorProcess(error) })
   }
@@ -44,7 +53,38 @@ export class CoursesListComponent implements OnInit {
   errorProcess(error) {
   }
 
+  refreshPageControl(){
+    this.activatedRoute.queryParams.subscribe(res => {
+      let {searchString,searchBy,orderBy,orderControl} = res;
+      if(searchString !== undefined && searchBy !== undefined){
+        this.onSearch(null, {'searchString':searchString,'searchBy':searchBy})
+      }
+      if(orderBy !==undefined && orderControl !== undefined){
+        this.onSort(orderBy,orderControl)
+      }
+    })
+  }
 
+
+  /*
+    items of queryParams:
+      1, searchString
+      2, searchBy
+      3, orderBy
+      4, orderControl
+  */
+  setQueryParams(paraName, paraValue) {
+    if (paraValue == '') {
+      delete this.queryParams[paraName];
+      delete this.queryParams['searchBy'];
+    }
+    else {
+      this.queryParams[paraName] = paraValue;
+    }
+    this.router.navigate(['tutors/list'], {
+      queryParams: this.queryParams
+    });
+  }
 
 
   /*
@@ -57,10 +97,10 @@ export class CoursesListComponent implements OnInit {
   popUpModals(command, whichCourse) {
     switch(command){
       case 0:
-      case 1:
+      case 2:
         this.detailModal(command,whichCourse);
         break;
-      case 2:
+      case 3:
         this.deleteModal(command,whichCourse);
         break;
     }
@@ -70,11 +110,11 @@ export class CoursesListComponent implements OnInit {
     update modal
   */
   detailModal(command,whichCourse){
-    //pop up modal
     const modalRef = this.modalService.open(CourseDetailModalComponent, { size: 'lg' });
-    //bind this pointer to that
     let that = this;
-    modalRef.result.then(that.refreshPage(that, command));
+    modalRef.result.then(function(){
+      that.ngOnInit()
+    })
     modalRef.componentInstance.command = command;
     modalRef.componentInstance.whichCourse = whichCourse;
   }
@@ -84,57 +124,46 @@ export class CoursesListComponent implements OnInit {
   */
  deleteModal(command, whichCourse) {
   const modalRef = this.modalService.open(CourseDeleteModalComponent);
-    let that = this;
-    modalRef.result.then(that.refreshPage(that, command));
-    modalRef.componentInstance.command = command;
-    modalRef.componentInstance.whichCourse = whichCourse;
+  let that = this;
+  modalRef.result.then(function(){
+    that.ngOnInit()
+  })
+  modalRef.componentInstance.command = command;
+  modalRef.componentInstance.whichCourse = whichCourse;
 }
-
-  /*
-    After data modified(delete,add,update), refresh the page
-  */
-refreshPage(pointer,command) {
-  return function () {
-    let refreshFlag, courseToDelete;
-    [refreshFlag, courseToDelete] = pointer.refreshService.getRefreshRequest();
-    if (refreshFlag == true && command == 2) {
-      //
-      pointer.coursesList.forEach(function (current) {
-        if (current.CourseId === courseToDelete) {
-          pointer.coursesList.splice(pointer.coursesList.findIndex(i => i.CourseId === courseToDelete), 1)
-          pointer.coursesListLength--;
-        }
-      })
-    }
-    else {
-      pointer.getDataFromSever();
-    }
-  }
-}
-
 
   /*
     search method
   */
- /////////////////////////////////////////////////这个method要精简   -----------by Richard
-  onSearch(event){
-    //should init original list and length
-    this.coursesList = this.temCoursesList;
-    this.coursesListLength = this.temCoursesListLength;
-    
-    let searchStr = event.target.value;
-    //
-    let titlesToSearch = 'CourseName';
-
-    this.coursesList = this.ngTable.searching(this.coursesList,titlesToSearch,searchStr);
-    this.coursesListLength = this.coursesList.length;
+ onSearch(event, initValue?) {
+  if (event !== null && !(event.type == 'keydown' && event.key == 'Enter')) {
+    return;
   }
+  else {
+    let searchString: string;
+    let searchBy: string;
+    let searchingInputObj = document.getElementById('searchingInput');
+    let optionsObj = document.getElementById('searchOption');
+
+    (initValue == undefined) ? { searchString, searchBy } = { searchString: searchingInputObj['value'], searchBy: optionsObj['value'] } :
+      { searchString, searchBy } = initValue;
+
+    this.coursesList = this.ngTable.searching(this.coursesListCopy, searchBy, searchString);
+    this.coursesListLength = this.coursesList.length;
+    optionsObj['value'] = searchBy;
+
+    this.setQueryParams('searchBy',searchBy);
+    this.setQueryParams('searchString',searchString);
+  }
+}
 
 
   /*
     sort method
   */
-  onSort(orderBy) {
-    this.ngTable.sorting(this.coursesList,orderBy);
-  }
+ onSort(orderBy,orderControls?) {
+  let orderControl = this.ngTable.sorting(this.coursesList, orderBy,orderControls);
+  this.setQueryParams('orderBy',orderBy);
+  this.setQueryParams('orderControl',orderControl);
+}
 }

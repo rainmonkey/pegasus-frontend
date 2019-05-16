@@ -32,7 +32,7 @@ export class CourseModalFormComponent implements OnInit {
         CourseCategoryId: [null, Validators.required]
       }
     }
-    else {
+    else if(this.command == 2) {
       groupObj = {
         //formControlName 决定了提交表单时的参数名
         CourseName: [{ value: this.whichCourse.CourseName }, Validators.required],
