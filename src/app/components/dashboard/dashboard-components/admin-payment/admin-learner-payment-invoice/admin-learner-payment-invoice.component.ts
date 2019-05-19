@@ -196,10 +196,9 @@ export class AdminLearnerPaymentInvoiceComponent implements OnInit {
       //   'width':'800',
       //   'elementHandlers': specialElementHandlers
       // })
+
       let invDetail = this.dataInvoice[j];
       let count = 1;
-
-
       // Landscape export, 2×4 inches
       let doc = new jsPDF({
         orientation: 'landscape',
@@ -232,6 +231,7 @@ export class AdminLearnerPaymentInvoiceComponent implements OnInit {
       doc.text(`Due Date: ${invDetail.DueDate}`,30, 130);
       doc.text(`Thank You!`,30,145);
       doc.save(`${this.learner.FirstName}  ${this.learner.LastName}'s invoice ${this.getCurrentDate()}`);
+
     }
 
 
@@ -245,14 +245,15 @@ export class AdminLearnerPaymentInvoiceComponent implements OnInit {
     // make sure the data allignment
     incaseDateIsNull(){
       this.dataInvoice.forEach(element => {
-        element.LessonQuantity === null? element.LessonQuantity = 'Quantity of lesson is not aviable' : element.LessonQuantity = element.LessonQuantity;
-        element.CourseName === null? element.CourseName = 'Course Name is not aviable' : element.CourseName = element.CourseName;
-        element.LessonFee === null? element.LessonFee = 'Lesson Fee is not aviable' : element.LessonFee = element.LessonFee;
-        element.BeginDate === null? element.BeginDate = 'Begin Date is not aviable' : element.BeginDate = element.BeginDate;
-        element.ConcertFeeName === null? element.ConcertFeeName = 'Concert is not aviable' : element.ConcertFeeName = element.ConcertFeeName;
-        element.LessonNoteFeeName === null? element.LessonNoteFeeName = 'Note is not aviable' : element.LessonNoteFeeName = element.LessonNoteFeeName;
-        element.NoteFee === null? element.NoteFee = 'Note fee is not aviable' : element.NoteFee = element.NoteFee;
-        element.ConcertFee === null? element.ConcertFee = 'Concert Fee is not aviable' : element.ConcertFee = element.ConcertFee;
+        element.DueDate === null? element.DueDate = 'none' : element.DueDate = element.DueDate;
+        element.LessonQuantity === null? element.LessonQuantity = 'Quantity of lesson is not available' : element.LessonQuantity = element.LessonQuantity;
+        element.CourseName === null? element.CourseName = 'Course Name is not available' : element.CourseName = element.CourseName;
+        element.LessonFee === null? element.LessonFee = 'Lesson Fee is not available' : element.LessonFee = element.LessonFee;
+        element.BeginDate === null? element.BeginDate = 'none' : element.BeginDate = element.BeginDate;
+        element.ConcertFeeName === null? element.ConcertFeeName = 'Concert is not available' : element.ConcertFeeName = element.ConcertFeeName;
+        element.LessonNoteFeeName === null? element.LessonNoteFeeName = 'Note is not available' : element.LessonNoteFeeName = element.LessonNoteFeeName;
+        element.NoteFee === null? element.NoteFee = 'Note fee is not available' : element.NoteFee = element.NoteFee;
+        element.ConcertFee === null? element.ConcertFee = 'Concert Fee is not available' : element.ConcertFee = element.ConcertFee;
         console.log(element.CourseName)
       });
     }
