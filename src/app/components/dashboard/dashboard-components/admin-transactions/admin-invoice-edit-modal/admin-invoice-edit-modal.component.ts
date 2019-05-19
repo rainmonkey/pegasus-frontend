@@ -20,6 +20,7 @@ export class AdminInvoiceEditModalComponent implements OnInit {
   closeResult: string;
   dueDateLocal;
   owingFeeLocal;
+  itemTempPublic;
 
   @Input() item;
 
@@ -98,8 +99,8 @@ export class AdminInvoiceEditModalComponent implements OnInit {
     }
   }
 
-// confirm Modal
-  open(confirmModal) {
+  // data combination
+  combiData (){
     let valueObj = this.invoiceEditForm.value;
     let {
       LessonFee,
@@ -112,36 +113,47 @@ export class AdminInvoiceEditModalComponent implements OnInit {
     let valueTemp = {
       LessonFee : null ? 0 : this.invoiceEditForm.controls.LessonFee.value,
       ConcertFee: null ? 0 : this.invoiceEditForm.controls.ConcertFee.value,
-      Other1Fee: null ? 0  : this.invoiceEditForm.controls.Other1Fee.value,
+      Other1Fee: null ? 0 : this.invoiceEditForm.controls.Other1Fee.value,
       Other2Fee: null ? 0 : this.invoiceEditForm.controls.Other2Fee.value,
       Other3Fee: null ? 0 : this.invoiceEditForm.controls.Other3Fee.value,
     };
     Object.assign(valueTemp, rest);
-    console.log(valueTemp);
     let {...itemTemp } = this.item;
     Object.assign(itemTemp, valueTemp);
+    this.itemTempPublic = itemTemp;
+  }
+
+  putInvoiceData(){
+    return this.transactionService.update(this.itemTempPublic)
+          .subscribe(
+            (res) => {
+              console.log(res);
+              this.activeModal.dismiss();
+              this.router.navigate(['/transaction/success']);
+            },
+            (error) => {
+              console.log(error)
+              this.errorMsg = error.error.ErrorMessage;
+              console.log(this.errorMsg);
+              this.errorAlert = true;
+            },
+          );
+  }
+
+// confirm Modal
+  open(confirmModal) {
+    this.combiData();
     this.modalService
     .open(confirmModal)
     .result.then(
       (result) => {
-        this.transactionService.update(itemTemp)
-        .subscribe(
-          (res) => {
-            console.log(res);
-            this.activeModal.dismiss();
-            this.router.navigate(['/transaction/success']);
-          },
-          (error) => {
-            this.errorMsg = JSON.parse(error.error);
-            this.errorAlert = true;
-            alert(this.errorMsg.ErrorCode);
-          },
-        );
+        this.putInvoiceData();
       }, (reason) => {
         this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
       });
   }
 
+  // dismiss reason of modal
   private getDismissReason(reason: any): string {
     if (reason === ModalDismissReasons.ESC) {
       return 'by pressing ESC';

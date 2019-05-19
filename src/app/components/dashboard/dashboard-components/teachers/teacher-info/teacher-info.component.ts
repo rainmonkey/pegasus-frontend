@@ -112,7 +112,7 @@ export class TeacherInfoComponent implements OnInit {
   ///////////////////////////////////////////called by template event/////////////////////////////////////////////
   /*
     Insert space before capital letter.
-      eg: FirstName --> First Name 
+      eg: FirstName --> First Name
   */
   AddSpaceInString(strToAdd) {
     return strToAdd.replace(/(?=[A-Z])/g, ' ');
