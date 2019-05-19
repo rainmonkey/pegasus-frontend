@@ -220,11 +220,11 @@ export class AdminLearnerPaymentInvoiceComponent implements OnInit {
       doc.text(`${invDetail.LessonNoteFeeName}`, 35, 70);
       doc.text(`$${invDetail.NoteFee}`,170,70);
       invDetail.Other1FeeName === null? count = 1 : doc.text(`Others: ${invDetail.Other1FeeName}`,35,80);
-      invDetail.Other1Fee === null? count = 1 : doc.text(`$${invDetail.Other1Fee}`,175,80);
+      invDetail.Other1Fee === null? count = 1 : doc.text(`$${invDetail.Other1Fee}`,170,80);
       invDetail.Other2FeeName === null? count = 1 : doc.text(`${invDetail.Other2FeeName}`,35,90);
-      invDetail.Other2Fee===null? count = 1: doc.text(`$${invDetail.Other2Fee}`,175,90);
+      invDetail.Other2Fee===null? count = 1: doc.text(`$${invDetail.Other2Fee}`,170,90);
       invDetail.Other3FeeName===null? count = 1: doc.text(`${invDetail.Other3FeeName}`,35,100);
-      invDetail.Other3Fee===null? count = 1 : doc.text(`$${invDetail.Other3Fee}`,175,100);
+      invDetail.Other3Fee===null? count = 1 : doc.text(`$${invDetail.Other3Fee}`,170,100);
       // //total
       doc.setFontSize(25);
       doc.text(`TOTAL:$ ${invDetail.TotalFee}`,30,120);
