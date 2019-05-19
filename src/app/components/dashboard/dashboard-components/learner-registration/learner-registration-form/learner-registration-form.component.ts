@@ -39,8 +39,6 @@ export class LearnerRegistrationFormComponent implements OnInit {
   public isGroupCourse: boolean = false;
   public isCustomCourse: boolean = true;
   public tempGroupCourseObj = {};
-  public isChecked: boolean;
-  public needToInput: boolean;
   public groupCourseInstanceId: number;
   public learnerGroupCourse: Array<any> = [];
   public selectedCheckbox: boolean;
@@ -87,7 +85,7 @@ export class LearnerRegistrationFormComponent implements OnInit {
         infoFrom: [''],
         learnerLevel: [''],
         location: [''],
-        hasExamed: [''],
+        levelType: [''],
       }),
       parentForm: this.fb.array([
         this.fb.group({
@@ -205,6 +203,9 @@ export class LearnerRegistrationFormComponent implements OnInit {
           console.log('level type err', err);
         }
       )
+  }
+  selectLlevel() {
+    this.isSelectedLevel = ! this.isSelectedLevel;
   }
   selectLearnerPurpose(i, event) {
     this.learnerPurpose[i].isChecked = event.target.checked;
@@ -345,6 +346,8 @@ export class LearnerRegistrationFormComponent implements OnInit {
     this.fdObj['ContactPhone']= this.learner.contactPhone;
     this.fdObj['Email']=this.learner.email;
     this.fdObj['Address']= this.learner.address;
+    this.fdObj['OrgId'] = this.learner.location;
+    this.fdObj['LearnerLevel'] = this.learner.learnerLevel;
     // encapsulate parent form data
     // console.log('submit', this.parentForm.value)
     for (let parent of this.parentForm.value) {
@@ -429,7 +432,6 @@ export class LearnerRegistrationFormComponent implements OnInit {
   }
 
   next(value: string) {
-    
     document.getElementById('learnerForm').style.display = 'none';
     document.getElementById('parentForm').style.display = 'none';
     document.getElementById('courseForm').style.display = 'none';

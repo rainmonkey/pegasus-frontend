@@ -69,7 +69,7 @@
           <div class="col-sm-6 col-md-6">
               <label for="location">Location</label>
               <select class="form-control" formControlName="location" id="location">
-                 <option *ngFor="let location of locations" [value]="location.OrgName">{{location.OrgName}}</option>
+                 <option *ngFor="let location of locations" [value]="location.OrgId">{{location.OrgName}}</option>
               </select>
           </div>
         </div>
@@ -94,18 +94,18 @@
           </div>
           <div class="col-sm-6 col-md-6">
               <label for="learnerLevel">Your Current Level</label>
-              <select class="form-control" formControlName="learnerLevel" (change)="selectLlevel()" id="learnerLevel">
-                <option *ngFor="let llevel of learnerLevel" [value]="llevel.PropName">{{llevel.PropName}}</option>
+              <select class="form-control" formControlName="learnerLevel" (change)="selectLlevel()">
+                <option  *ngFor="let llevel of learnerLevel" [value]="llevel.PropValue">{{llevel.PropName}}</option>
               </select>
               <div *ngIf="isSelectedLevel">
                 <span>Did you take exam before?</span><br>
                 <div class="d-inline-flex" *ngFor="let levelType of levelType; let i=index">
                   <div *ngIf="i == 0" class="form-check">
-                      <input class="form-check-input" name="levelType" id="ABRSM" type="radio" [value]="PropName" checked>
+                      <input class="form-check-input" name="levelType" id="ABRSM" type="radio" [value]="levelType.PropValue" checked>
                       <label class="form-check-label" for="ABRSM">ABRSM</label> 
                   </div>
                   <div *ngIf="i != 0" class="form-check">
-                    <input class="form-check-input" name="levelType" id="levelType" type="radio" [value]="levelType.PropName">
+                    <input class="form-check-input" name="levelType" id="levelType" type="radio" [value]="levelType.PropValue">
                     <label class="form-check-label" for="levelType">{{levelType.PropName}}</label> 
                   </div>
                 </div>
