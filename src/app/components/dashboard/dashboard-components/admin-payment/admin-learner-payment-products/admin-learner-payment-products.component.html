@@ -77,7 +77,7 @@
         </div>
         <!-- open method for product modal-->
         <button class="btn btn-primary" (click)="validMethod(contentProd)">Send this Payment</button><br>
-        <small class="text-danger m-2" *ngIf="(paymentMethod.invalid && paymentMethod.touched) || showErrMsg">Please select the payment method on this transacion</small> <br>
+        <small class="text-danger m-2" *ngIf="errMsgP">Please select the payment method on this transacion</small> <br>
         <small class='text-danger m-2' *ngIf='showErrMsg'>You have to select all required fields</small> <br>
         <small class="text-danger" *ngIf="showErrMsgSub">Do not give any discount more than the selling price!</small>
         <div class='row justify-content-md-center'>

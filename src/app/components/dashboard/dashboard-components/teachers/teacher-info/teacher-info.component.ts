@@ -84,14 +84,14 @@ export class TeacherInfoComponent implements OnInit {
   ///////////////////////////////////////////called by template event/////////////////////////////////////////////
   /*
     Insert space before capital letter.
-      eg: FirstName --> First Name 
+      eg: FirstName --> First Name
   */
   AddSpaceInString(strToAdd) {
     return strToAdd.replace(/(?=[A-Z])/g, ' ');
   }
 
   /*
-    let user decide in which column to search 
+    let user decide in which column to search
   */
   showSearchingSelection(event) {
     let dropDownObj = document.getElementById('t_info_search_by_btn');
@@ -108,7 +108,7 @@ export class TeacherInfoComponent implements OnInit {
   }
 
   /*
-   let user decide in which column to search 
+   let user decide in which column to search
    handler of user's selection
  */
   showSelectStyle(event?) {

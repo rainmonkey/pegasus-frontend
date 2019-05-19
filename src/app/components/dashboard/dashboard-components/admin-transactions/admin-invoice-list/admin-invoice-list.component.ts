@@ -11,7 +11,7 @@ import { AdminInvoiceEditModalComponent } from '../admin-invoice-edit-modal/admi
   styleUrls: ['./admin-invoice-list.component.css']
 })
 export class AdminInvoiceListComponent implements OnInit {
-
+  public queryParams: object = {};
   public learnerList: any;
   public learnerListLength: number;
   public temLearnerList: any; //save the original List
@@ -52,6 +52,9 @@ export class AdminInvoiceListComponent implements OnInit {
         this.learnerListLength = res.Data.length; //length prop is under Data prop
         this.temLearnerList = res.Data;
         this.temLearnerListLength = res.Data.length;
+        console.log(this.learnerList)
+        console.log(this.learnerList[0].Learner)
+        //this.learnerList[0].Learner.Parent.Email
       },
       error => {
         this.errorMsg = JSON.parse(error.error);
@@ -60,9 +63,24 @@ export class AdminInvoiceListComponent implements OnInit {
       });
   }
 
-  // sort name
-  onSort(orderBy) {
-    this.ngTable.sorting(this.learnerList, orderBy);
+  // sort item
+  onSort(orderBy, orderControls?) {
+    let orderControl = this.ngTable.sorting(this.learnerList, orderBy, orderControls);
+    this.setQueryParams('orderBy', orderBy);
+    this.setQueryParams('orderControl',orderControl);
+  }
+  setQueryParams(paraName,paraValue) {
+    if (paraValue == '') {
+      delete this.queryParams[paraName];
+      delete this.queryParams['searchBy'];
+    }
+    else {
+      this.queryParams[paraName] = paraValue;
+    }
+
+    // this.router.navigate(['tutors/list'], {
+    //   queryParams: this.queryParams
+    // });
   }
   // search name
   onSearch(event){

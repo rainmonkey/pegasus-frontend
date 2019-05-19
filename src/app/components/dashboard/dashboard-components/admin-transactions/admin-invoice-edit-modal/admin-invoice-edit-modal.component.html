@@ -146,7 +146,7 @@
 </div>
 <!-- ng bootstrap alert -->
 <ngb-alert *ngIf='successAlert' type="success" (close)="closeSucc()">Your Payment Has Been Made</ngb-alert>
-<ngb-alert *ngIf='errorAlert' type="danger" (close)="closeErro()">{{ errorMsg.ErrorCode }}</ngb-alert>
+<ngb-alert *ngIf='errorAlert' type="danger" (close)="closeErro()">{{ errorMsg }}</ngb-alert>
 
 <ng-template #confirmModal let-modal>
   <div class="modal-header m-2">

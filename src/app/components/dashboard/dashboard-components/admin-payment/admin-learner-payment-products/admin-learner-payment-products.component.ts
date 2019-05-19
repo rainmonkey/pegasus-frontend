@@ -234,7 +234,6 @@ export class AdminLearnerPaymentProductsComponent implements OnInit {
   // select payment method
   changePayment(){
     this.errMsgP = false;
-    console.log(this.errMsgP)
   }
   // user select type
   selectType(dis, j) {
@@ -356,6 +355,8 @@ export class AdminLearnerPaymentProductsComponent implements OnInit {
     .subscribe((obs: ParamMap) => {
       this.learnerId = parseInt(obs.get("id"));
       this.patchProd();
+      this.errMsgP = false;
+      console.log(this.errMsgP)
     });
     // init types instance of the user interface, waiting select (2)
     this.productsListService.getProdType().subscribe(types => {
