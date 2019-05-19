@@ -1,23 +1,28 @@
 <div class="container">
   <div class="row">
     <!-- page Header -->
+ 
     <div class='col-12 t_info_title'>
-      Learner Information
-      <div class='btn btn-info t_info_addnew_btn'  (click)='popUpModal(0,null)'>+ Add More</div>
+      Learner Information  
+      
+    
     </div>
     <!-- page search -->
-    <div class='col-12 t_info_search'>
-      <input id='searchingInput' type="text" placeholder="Search by..." (input)='onSearch($event)'>
-      <div class='t_info_search_by'>
-        <!--DO NOT TOUCH [flag] ATTRIBUTES-->
-        <span id='searchingSelection' (click)='showSearchingSelection($event)'><span
-            class='fas fa-search'></span></span>
-        <ul id='t_info_search_by_btn' style='display: none'>
-          <!--DO NOT TOUCH [class] ATTRIBUTES-->
-          <li *ngFor='let i of columnsToShow' class isSelect (click)='showSelectStyle($event)'>{{i}}</li>
-        </ul>
+    <div class='col-12' style="margin-top:-50px;margin-bottom: 10px">
+      <div class='col-12 t_info_search'>
+        <input id='searchingInput' type="text" placeholder="Search by..." (keydown)='onSearch($event)'>
       </div>
 
+      <div class='col-12 t_info_search_option'>
+        <select name="searchOption" id='searchOption'>
+          <option *ngFor='let i of columnsToShow' value={{i}}>{{i}}</option>
+        </select>
+      </div>
+
+      <div class='t_info_search_by'>
+        <span id='searchingSelection' (click)='onSearch(null)'><span
+            class='fas fa-search'></span></span>
+      </div>
     </div>
 
 
@@ -43,7 +48,8 @@
             <td *ngFor='let j of columnsToShow'>{{i[j]}}</td>
             <td>
               <span class='t_info_table_btn' (click)='popUpModal(1,i)'><span class='fas fa-info-circle'></span></span>
-              <span class='t_info_table_btn' (click)='popUpModal(2,i)'><span class='fas fa-pen'></span></span>
+             <!--编辑功能跳转 stella 的页面  -->
+              <span class='t_info_table_btn' ><span class='fas fa-pen'></span></span>
               <span class='t_info_table_btn' (click)='popUpModal(3,i)'><span class='fas fa-trash-alt'></span></span>
             </td>
           </tr>

@@ -37,4 +37,17 @@ export class LearnersService {
   getLearnerList(){
     return this.http.get(this.baseUrl+'learner')
   }
+
+
+  deleteLearner(learnerId):any{
+    return this.http.delete(this.baseUrl + 'learner/' + learnerId);
+  }
+
+  addNew(data):any{
+    return this.http.post(this.baseUrl +'learner',data)
+  }
+
+  update(data,learnerId):any{
+    return this.http.put(this.baseUrl + 'learner/' + learnerId, data)
+  }
 }

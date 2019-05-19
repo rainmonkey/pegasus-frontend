@@ -17,5 +17,5 @@
     <span class='m_um_error_msg errorfont'>{{errorMessage}}</span>
     <span class='m_um_error_msg errorfont text-success'>{{successMessage}}</span>
     <button *ngIf='!isSubmitionSuccess' type='button' class='btn btn-outline-dark' (click)='onSubmit()'>Save</button>
-    <button type="button" class="btn btn-outline-dark" (click)="requestRefreshPage()">Close</button>
+    <button type="button" class="btn btn-outline-dark"  (click)="activeModal.close('Cross click')">Close</button>
   </div>

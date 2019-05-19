@@ -1,8 +1,10 @@
+
 .t_mf_img_switch{
     text-align: center;
     border: 1px solid lightgrey;
     border-radius: 3px;
     margin-bottom: 5px;
+  
 }
 .t_mf_img_area{
     margin-right: 10px;
@@ -24,6 +26,7 @@
     height: 220px;
     text-align: center!important;
     display: block;
+  
 }
 .t_mf_img img{
     max-width: 100%;

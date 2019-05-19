@@ -145,7 +145,9 @@ export class AdminLearnerListComponent implements OnInit {
 updateModal(command, whichLearner) {
   const modalRef = this.modalService.open(LearnerUpdateModalComponent, { size: 'lg' });
   let that = this;
-  modalRef.result.then(that.refreshPage(that,command));
+  modalRef.result.then(function(){
+    that.ngOnInit()
+  })
   modalRef.componentInstance.command = command;
   modalRef.componentInstance.whichLearner = whichLearner;
 }
@@ -156,7 +158,9 @@ updateModal(command, whichLearner) {
 deleteModal(command, whichLearner) {
   const modalRef = this.modalService.open(LearnerDeleteModalComponent);
   let that = this;
-  modalRef.result.then(that.refreshPage(that,command));
+  modalRef.result.then(function(){
+    that.ngOnInit()
+  })
   modalRef.componentInstance.command = command;
   modalRef.componentInstance.whichLearner = whichLearner;
 }
@@ -170,25 +174,5 @@ detailModal(command, whichLearner) {
   modalRef.componentInstance.whichLearner = whichLearner;
 }
 
-/*
-  After data modified(delete,add,update), refresh the page
-*/
-refreshPage(pointer,command) {
-  return function () {
-    let refreshFlag, learnerToDelete;
-    [refreshFlag, learnerToDelete] = pointer.refreshService.getRefreshRequest();
-    if (refreshFlag == true && command == 3) {
-      //
-      pointer.learnerList.forEach(function (current) {
-        if (current.LearnerId === learnerToDelete) {
-          pointer.learnerList.splice(pointer.learnerList.findIndex(i => i.TeacherId === learnerToDelete), 1)
-          pointer.learnerListLength--;
-        }
-      })
-    }
-    else{
-      pointer.getDataFromSever();
-    }
-  }
-}
+
 }

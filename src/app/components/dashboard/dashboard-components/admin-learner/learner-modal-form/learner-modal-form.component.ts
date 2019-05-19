@@ -22,10 +22,21 @@ export class LearnerModalFormComponent implements OnInit {
     private LearnerListService: LearnersService,) { }
 
   ngOnInit() {
+    this.setReadOnly();
     this.updateForm = this.fb.group(this.formGroupAssemble());
+    
+
   }
 
-
+/*
+    when only date format is like YYYY-MM-DD, formControlName will show the correct things 
+  */
+ getDateFormat(date) {
+  if (date !== null) {
+    return (date.substring(0, 10))
+  }
+  return null;
+}
   
   /*
     in detail mode, data can only be read
@@ -42,22 +53,11 @@ export class LearnerModalFormComponent implements OnInit {
   */
  showPhotos(position) {
   let leftImgObj = document.getElementById('img_left');
-  let rightImgObj = document.getElementById('img_right');
-
-  if (position == 0) {
     this.showLeftImgFlag = true;
-    this.showRightImgFlag = false;
-
-    rightImgObj.style.display = 'none';
+    this.showRightImgFlag = false;   
     leftImgObj.style.display = 'block';
-  }
-  else {
-    this.showRightImgFlag = true;
-    this.showLeftImgFlag = false;
+  
 
-    leftImgObj.style.display = 'none';
-    rightImgObj.style.display = 'block';
-  }
 }
 
  /*
@@ -66,21 +66,14 @@ export class LearnerModalFormComponent implements OnInit {
       0 --> userPhoto
       1 --> userIdPhoto
   */
- preViewImg(event, whichPhoto) {
+ preViewImg(event) {
   let photoObj;
   let photoRender;
-  if (whichPhoto == 0) {
-    photoObj = document.getElementById('userPhoto');
+  photoObj = document.getElementById('userPhoto');
     //assign photo to photoToSubmit
     this.photoToSubmit = <File>event.target.files[0];
     photoRender = this.photoToSubmit;
-  }
-  else {
-    photoObj = document.getElementById('userIdPhoto');
-    //assign id photo to idPhotoToSubmit
-    this.idPhotoToSubmit = <File>event.target.files[0];
-    photoRender = this.idPhotoToSubmit;
-  }
+  
   //important! 
   //set src and read it 
   let reader = new FileReader();
@@ -110,17 +103,17 @@ export class LearnerModalFormComponent implements OnInit {
         G5Certification: ['',[Validators.required]],
         CreatedAt: ['',[Validators.required]],
         ReferrerLearnerId: ['',[Validators.required]],
-        Note: ['',[Validators.required]],
+        Note: ['',],
         LevelType: ['',[Validators.required]],
         Amendment: ['',[Validators.required]],
         InvoiceWaitingConfirm: ['',[Validators.required]],
-        Lesson: ['',[Validators.required]],
-        LessonRemain: ['',[Validators.required]],
+        Lesson: ['',],
+        LessonRemain: ['',],
         Parent: ['',[Validators.required]],
-        RemindLog: ['',[Validators.required]],
+        RemindLog: ['',],
         SoldTransaction: ['',[Validators.required]],
-        TodoList: ['',[Validators.required]],
-
+        TodoList: ['',],
+        OrgId:[''],
       }
     }
     else{
@@ -149,6 +142,7 @@ export class LearnerModalFormComponent implements OnInit {
         RemindLog: [{value: this.whichLearner.RemindLog,disabled: this.readOnlyFlag},[Validators.required]],
         SoldTransaction: [{value: this.whichLearner.SoldTransaction,disabled: this.readOnlyFlag},[Validators.required]],
         TodoList: [{value: this.whichLearner.TodoList,disabled: this.readOnlyFlag},[Validators.required]], 
+        OrgId: [{value: this.whichLearner.OrgId,disabled: this.readOnlyFlag},[Validators.required]],
       }
     }
     return groupObj;

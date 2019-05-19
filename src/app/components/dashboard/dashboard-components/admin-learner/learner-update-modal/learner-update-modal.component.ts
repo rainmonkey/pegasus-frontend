@@ -1,7 +1,7 @@
 import { Component, OnInit,Input,ViewChild } from '@angular/core';
 import { LearnersService } from 'src/app/services/http/learners.service';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { RefreshService } from 'src/app/services/others/refresh.service';
+
 
 @Component({
   selector: 'app-learner-update-modal',
@@ -20,15 +20,109 @@ export class LearnerUpdateModalComponent implements OnInit {
   constructor(
     public activeModal: NgbActiveModal,  
     private LearnerListService: LearnersService, 
-    private refreshService: RefreshService) { }
+) { }
 
 
   ngOnInit() {
   }
-  
-  requestRefreshPage() {
-    this.activeModal.close('Cross click');
-    this.refreshService.sendRefreshRequest();
+
+  onSubmit() {
+    
+    let vailadValue = this.checkInputVailad();
+    if (vailadValue !== null) {
+      this.stringifySubmitStr(vailadValue)
+    }
   }
+
+   ////////////////////////////////////////handler of submition/////////////////////////////////////////////////////
+  /*
+    check whether data vailad or not(ruled by Validators).
+  */
+ checkInputVailad() {
+  let valueToSubmit = this.modalUpdateFormComponentObj.updateForm.value;
+  //once click save btn, touch all inputs form with for-loop. In order to trigger Validator
+  for (let i in this.modalUpdateFormComponentObj.updateForm.controls) {
+    this.modalUpdateFormComponentObj.updateForm.controls[i].touched = true;
+  }
+  //when input value pass the check of Validators, there is a [status] attr equal to 'VALID'
+  if (this.modalUpdateFormComponentObj.updateForm.status == 'VALID') {
+    return this.prepareSubmitData(valueToSubmit);
+  }
+  else {
+    this.errorMessage = 'Please check your input.'
+    return null;
+  }
+}
+
+
+ /*
+    after stringify submition string, data is ready to submit
+  */
+ stringifySubmitStr(vailadValue) {
+  console.log(vailadValue)
+  this.errorMessage = '';
+  let submit = new FormData();
+  submit.append('details', JSON.stringify(vailadValue));
+  submit.append('Photo', this.modalUpdateFormComponentObj.photoToSubmit);
+  submit.append('IdPhoto', this.modalUpdateFormComponentObj.idPhotoToSubmit);
+  this.submitByMode(submit)
+}
+
+  /*
+   post the data by diffrent api
+ */
+submitByMode(submitData) {
+  //while push a stream of new data
+  if (this.command == 0) {
+
+    this.LearnerListService.addNew(submitData).subscribe(
+      (res) => {
+        this.successMessage = 'Submit success!'
+      },
+      (err) => {
+        if (err.error.ErrorMessage == 'learner has exist.') {
+          this.errorMessage = err.error.ErrorMessage;
+        }
+        else {
+          this.errorMessage = 'Error! Please check your input.'
+        }
+        console.log('Error', err);
+      }
+    );
+  }
+  //while update data
+  else if (this.command == 2) {
+    this.LearnerListService.update(submitData, this.whichLearner.learnerId).subscribe(
+      (res) => {
+        this.successMessage = 'Submit success!'
+      },
+      (err) => {
+        console.log(err)
+      }
+    )
+  }
+}
+
+ /*
+    back-end limited submition data's type.
+    this method is used to convert data to correct type.
+  */
+ prepareSubmitData(valueToSubmit) {
+  valueToSubmit.Gender = this.checkGender(valueToSubmit);
+  return valueToSubmit;
+}
+
+checkGender(valueToSubmit) {
+  switch (valueToSubmit.Gender) {
+    case 'Female':
+      return 0;
+    case 'Male':
+      return 1;
+    case 'Other':
+      return 2;
+  }
+}
+  
+
   
 }
