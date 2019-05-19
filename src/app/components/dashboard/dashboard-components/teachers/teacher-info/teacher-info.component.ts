@@ -117,48 +117,7 @@ export class TeacherInfoComponent implements OnInit {
   AddSpaceInString(strToAdd) {
     return strToAdd.replace(/(?=[A-Z])/g, ' ');
   }
-<<<<<<< HEAD
-
-  /*
-    let user decide in which column to search
-  */
-  showSearchingSelection(event) {
-    let dropDownObj = document.getElementById('t_info_search_by_btn');
-    event.target.attributes.flag = !event.target.attributes.flag;
-
-    if (event.target.attributes.flag == true) {
-      let searchingInputObj = document.getElementById('searchingInput');
-      searchingInputObj['value'] = null;
-      dropDownObj.style.display = 'inline-block';
-    }
-    else {
-      dropDownObj.style.display = 'none';
-    }
-  }
-
-  /*
-   let user decide in which column to search
-   handler of user's selection
- */
-  showSelectStyle(event?) {
-    event.target.attributes.flag = !event.target.attributes.flag;
-    let attributes = event.target.attributes;
-    if (attributes.flag == true) {
-      //选中状态
-      attributes.class.value = 't_selected'; //please keep class name as same as it in css file
-      this.columnsToSearch.push(event.target.innerText);
-    }
-    else {
-      //非选中状态
-      attributes.class.value = '';
-      this.columnsToSearch.splice(this.columnsToSearch.findIndex(i => i === event.target.innerText), 1)
-    }
-  }
-
-
-=======
  
->>>>>>> cef7663d3ccabc5fb5383f45103906393dba375d
   /*
     sort method
   */
