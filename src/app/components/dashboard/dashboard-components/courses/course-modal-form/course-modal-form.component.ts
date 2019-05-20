@@ -43,7 +43,6 @@ export class CourseModalFormComponent implements OnInit {
         CourseCategoryId: [this.whichCourse.CourseCategory.CourseCategoryName, Validators.required],
         CourseId: [this.whichCourse.CourseId, Validators.required]
       }
-      console.log(groupObj);
     }
     return groupObj;    
   }
