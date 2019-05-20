@@ -86,16 +86,12 @@ export class SessionsCalendarViewAdminComponent implements OnInit {
           resourceTimeGridDay: {
             buttonText: 'Day',
             slotDuration: '00:15'
-          },
-          resourceTimeGridWeek: {
-            buttonText: 'Week',
-            duration: {days: 7}
           }
         },
         header: {
           left: 'today prev,next DayPickerButton',
           center: 'title',
-          right: 'resourceTimeGridDay resourceTimeGridWeek'
+          right: 'resourceTimeGridDay'
         },
         plugins: [timeslot, interactionPlugin]
       };
