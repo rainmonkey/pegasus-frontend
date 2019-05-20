@@ -1,9 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input, Output } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { TeachersService } from '../../../../../services/http/teachers.service';
+import { NgbActiveModal, NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 import { FormBuilder, Validator, Validators, RequiredValidator } from '@angular/forms';
-import { PaymentService } from '../../../../../services/http/payment.service';
+import { TransactionService } from '../../../../../services/http/transaction.service';
+import { restoreView } from '@angular/core/src/render3';
 
 @Component({
   selector: 'app-admin-invoice-edit-modal',
@@ -11,112 +11,157 @@ import { PaymentService } from '../../../../../services/http/payment.service';
   styleUrls: ['./admin-invoice-edit-modal.component.css'],
 })
 export class AdminInvoiceEditModalComponent implements OnInit {
-  public learnerList;
   public errorMsg;
   public errorAlert = false;
   public errMsgO = false;
   public errMsgM = false;
   public successAlert = false;
+  public staffId = 3;
+  closeResult: string;
+  dueDateLocal;
+  owingFeeLocal;
+  itemTempPublic;
+
+  @Input() item;
 
   constructor(
     public activeModal: NgbActiveModal,
     private fb: FormBuilder,
     public modalService: NgbModal,
-    private teachersService: TeachersService,
-    private paymentService: PaymentService,
     private router: Router,
-    private activatedRoute: ActivatedRoute
+    private activatedRoute: ActivatedRoute,
+    private transactionService: TransactionService
     ) {
 
      }
 
   // invoice list fb
   invoiceEditForm = this.fb.group({
-    InvoiceNum: ['00000001'],
-    DueDate: ['5-4-2019'],
-    CourseName: ['Piano'],
-    LessonQuantity: ['13'],
-    BeginDate: ['10-4-2019'],
-    LessonFee: [390],
-    Concert: ['Concert for term 2, 2019'],
-    ConcertFee: ['15'],
-    Note: ['Lesson Note Term 2, 2019'],
-    NoteFee: [3],
-    Other1FeeName: ['Enroll Fee'],
-    Other2FeeName: [],
-    Other3FeeName: [],
-    Other1Fee: [20],
+    DueDate: [null],
+    CourseName: [null, Validators.required],
+    LessonQuantity: [null, Validators.required],
+    BeginDate: [null],
+    LessonFee: [null, Validators.required],
+    Concert: [null],
+    ConcertFee: [null],
+    Note: [null],
+    NoteFee: [null],
+    Other1FeeName: [' '],
+    Other2FeeName: [' '],
+    Other3FeeName: [' '],
+    Other1Fee: [],
     Other2Fee: [],
     Other3Fee: [],
-    PaidFee: [],
-    OwingFee: [428]
+    PaidFee: [null],
+    OwingFee: [null]
   });
 
   ngOnInit() {
-    this.getInvoiceData();
+    this.patchToInvoice();
+    this.dueDateLocal = this.item.DueDate;
+    this.owingFeeLocal = this.item.OwingFee;
   }
-// get invoice from server
-  getInvoiceData() {
-    this.teachersService.getTeachersInfo().subscribe(
-      (res) => {
-        this.learnerList = res.Data;
-        //this.patchToInvoice()
-      },
-      error => {
-        this.errorMsg = JSON.parse(error.error);
-        console.log('Error!', this.errorMsg.ErrorCode);
-        this.errorAlert = false;
-      });
-  }
+
 // patch data to invoiceEditForm
   patchToInvoice() {
-    this.invoiceEditForm.value.patch({
-
+    this.invoiceEditForm.patchValue({
+      CourseName: this.item.CourseName,
+      LessonQuantity: this.item.LessonQuantity,
+      BeginDate: this.item.BeginDate === null ? null : this.item.BeginDate.slice(0, 10),
+      LessonFee: this.item.LessonFee,
+      Concert: this.item.Concert,
+      ConcertFee: this.item.ConcertFee,
+      Note: this.item.Note,
+      NoteFee: this.item.NoteFee,
+      Other1FeeName: this.item.Other1FeeName,
+      Other2FeeName: this.item.Other2FeeName,
+      Other3FeeName: this.item.Other3FeeName,
+      Other1Fee: this.item.Other1Fee,
+      Other2Fee: this.item.Other2Fee,
+      Other3Fee: this.item.Other3Fee,
+      PaidFee: this.item.PaidFee
     });
   }
-  // close alert
-  closeSucc(){
+
+  closeSucc() {
     this.successAlert = false;
   }
-  closeErro(){
+  closeErro() {
     this.errorAlert = false;
   }
 
 // post data to server side
   sendMail(confirmModal) {
-    this.open(confirmModal);
-    this.paymentService.emailInvoice(this.invoiceEditForm.value)
-    .subscribe(
-      (res) => {
-        this.router.navigate(['../success'], {relativeTo: this.activatedRoute});
-      },
-      (error) => {
-        this.errorMsg = JSON.parse(error.error);
-        this.errorAlert = true;
-        alert(this.errorMsg.ErrorCode);
-      }
-    );
+    if (this.invoiceEditForm.invalid) {
+    this.errMsgM = true;
+    } else {
+      this.open(confirmModal);
+    }
+  }
+
+  // data combination
+  combiData (){
+    let valueObj = this.invoiceEditForm.value;
+    let {
+      LessonFee,
+      ConcertFee,
+      Other1Fee,
+      Other2Fee,
+      Other3Fee,
+      ...rest
+    } = valueObj;
+    let valueTemp = {
+      LessonFee : null ? 0 : this.invoiceEditForm.controls.LessonFee.value,
+      ConcertFee: null ? 0 : this.invoiceEditForm.controls.ConcertFee.value,
+      Other1Fee: null ? 0 : this.invoiceEditForm.controls.Other1Fee.value,
+      Other2Fee: null ? 0 : this.invoiceEditForm.controls.Other2Fee.value,
+      Other3Fee: null ? 0 : this.invoiceEditForm.controls.Other3Fee.value,
+    };
+    Object.assign(valueTemp, rest);
+    let {...itemTemp } = this.item;
+    Object.assign(itemTemp, valueTemp);
+    this.itemTempPublic = itemTemp;
+  }
+
+  putInvoiceData(){
+    return this.transactionService.update(this.itemTempPublic)
+          .subscribe(
+            (res) => {
+              console.log(res);
+              this.activeModal.dismiss();
+              this.router.navigate(['/transaction/success']);
+            },
+            (error) => {
+              console.log(error)
+              this.errorMsg = error.error.ErrorMessage;
+              console.log(this.errorMsg);
+              this.errorAlert = true;
+            },
+          );
   }
 
 // confirm Modal
   open(confirmModal) {
+    this.combiData();
     this.modalService
     .open(confirmModal)
     .result.then(
-      result => {
-        this.paymentService.emailInvoice(this.invoiceEditForm.controls.value).subscribe(
-          response => {
-            console.log('Success!', response);
-            this.successAlert = true;
-            alert('Your Payment Has Been Made');
-          },
-          (error) => {
-            this.errorMsg = JSON.parse(error.error);
-            this.errorAlert = true;
-            console.log('Error!', this.errorMsg.ErrorCode);
-            alert(this.errorMsg.ErrorCode);
-          }
-        );
+      (result) => {
+        this.putInvoiceData();
+      }, (reason) => {
+        this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
       });
   }
+
+  // dismiss reason of modal
+  private getDismissReason(reason: any): string {
+    if (reason === ModalDismissReasons.ESC) {
+      return 'by pressing ESC';
+    } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
+      return 'by clicking on a backdrop';
+    } else {
+      return  `with: ${reason}`;
+    }
+  }
+
 }

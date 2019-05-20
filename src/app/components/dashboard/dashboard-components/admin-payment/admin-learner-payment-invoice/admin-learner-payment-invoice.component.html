@@ -11,9 +11,11 @@
                               <ng-template ngbTabContent>
                                   <!-- invoice form in tabset -->
                                   <div class='row justify-content-between'>
-                                      <div class="col-md-10" [formGroup]='invoiceForm'>
+                                    <div class="col-md-10" [formGroup]='invoiceForm'>
+
                                           <h5>Invoice</h5>
-                                          <p>{{item.LessonQuantity}} Lessons of {{item.CourseName}} from the Date {{item.BeginDate}}</p>
+                                          <p *ngIf="item.BeginDate !== 'none'">{{item.LessonQuantity}} Lessons of {{item.CourseName}} from the Date {{item.BeginDate|date}}</p>
+                                          <p *ngIf="item.BeginDate === 'none'">{{item.LessonQuantity}} Lessons of {{item.CourseName}} from the Date: Not Available</p>
                                           <p>{{item.ConcertFeeName}}</p>
                                           <p>{{item.LessonNoteFeeName}}</p>
 
@@ -36,18 +38,21 @@
                                               <input type="number" formControlName="owing" min=0 onkeypress='return (/[\d]/.test(String.fromCharCode(event.keyCode)))' placeholder="Please enter the amount.." class="form-control col-md-3 ml-2" [class.is-invalid]="owing.invalid && owing.touched" value='item.OwingFee'>
                                               <div class="col-md-1"></div>
                                               <!-- open method for confirm payment modal-->
-                                              <button class="btn btn-primary col-md-3 ml-2" [disabled]="owing.invalid" (click)="validMethodI(contentP, item, 0)">Send This Payment</button>
-                                              <small *ngIf="errMsgM" class="text-danger">Pls select the payment method</small>
+                                              <button class="btn btn-primary col-md-3 ml-2" [disabled]="owing.invalid" (click)="validMethodI(contentP, item, 0)">Confirm</button>
+                                              <small *ngIf="errMsgM" class="text-danger">Please select the payment method &nbsp;</small>
                                               <br>
-                                              <small *ngIf="errMsgO" class="text-danger">Pls enter a validate number of the transaction</small>
+                                              <small *ngIf="errMsgO" class="text-danger">Please enter a validate number of the transaction</small>
                                           </div>
+                                          <button class='btn btn-primary' (click)='downloadPDF(j)'>Print Invoice</button>
                                       </div>
                                       <div class="col-2">
+                                          <p></p>
                                           <h6>Invoice No.{{item.InvoiceNum}}</h6>
                                           <p>${{item.LessonFee}}</p>
                                           <p>${{item.ConcertFee}}</p>
                                           <p>${{item.NoteFee}}</p>
-                                          <p>Due Date: {{item.DueDate}}</p>
+                                          <p *ngIf="item.DueDate === 'none'">Due Date: Not available</p>
+                                          <p *ngIf="item.DueDate !== 'none'">Due Date: {{item.DueDate|date:'medium'}}</p>
                                           <h6>All Subject in Total: ${{item.TotalFee}}</h6>
                                       </div>
                                       <!-- comfirm payment modal-->
@@ -80,10 +85,11 @@
                     </ngb-tabset>
                     <!-- invoice form out tabset-->
                     <div *ngIf="arrayInv.length == 1">
-                        <div class='row justify-content-between' *ngFor="let item of dataInvoice; let j = index" [formGroup]="invoiceForm">
-                            <div class="col-10">
+                        <div class='row justify-content-between' *ngFor="let item of dataInvoice; let j = index" [formGroup]="invoiceForm" #pdf>
+                          <div class="col-10" >
                                 <h5>Invoice</h5>
-                                <p>{{item.LessonQuantity}} Lessons of {{item.CourseName}} from the Date {{item.BeginDate}}</p>
+                                <p *ngIf="item.BeginDate !== 'none'">{{item.LessonQuantity}} Lessons of {{item.CourseName}} from the Date {{item.BeginDate|date}}</p>
+                                <p *ngIf="item.BeginDate === 'none'">{{item.LessonQuantity}} Lessons of {{item.CourseName}} from the Date: Not Available</p>
                                 <p>{{item.ConcertFeeName}}</p>
                                 <p>{{item.LessonNoteFeeName}}</p>
 
@@ -107,18 +113,20 @@
                                     <input type="number" formControlName="owing" min="0" onkeypress='return (/[\d]/.test(String.fromCharCode(event.keyCode)))' placeholder="Please enter the amount.." class="form-control col-md-3 ml-2" [class.is-invalid]="owing.invalid && owing.touched">
                                     <div class="col-md-1"></div>
                                     <!-- open method for confirm payment modal-->
-                                    <button class="btn btn-primary col-md-3 ml-2" [disabled]="owing.invalid" (click)="validMethodI(contentP, item, j)">Send This Payment</button>
-                                    <small *ngIf="errMsgM" class="text-danger">Pls select the payment method</small>
-                                    <br>
-                                    <small *ngIf="errMsgO" class="text-danger">Pls enter a validate number of the transaction</small>
+                                    <button class="btn btn-primary col-md-3 ml-2" [disabled]="owing.invalid" (click)="validMethodI(contentP, item, j)">Confirm</button>
+                                    <small *ngIf="errMsgM" class="text-danger">Please select the payment method &nbsp;</small>
+                                    <br/>
+                                    <small *ngIf="errMsgO" class="text-danger">Please enter a validate number of the transaction</small>
                                 </div>
+                                <button class='btn btn-primary' (click)='downloadPDF(j)'>Print Invoice</button>
                             </div>
                             <div class="col-2">
                                 <h6>Invoice No.{{item.InvoiceNum}}</h6>
                                 <p>${{item.LessonFee}}</p>
                                 <p>${{item.ConcertFee}}</p>
                                 <p>${{item.NoteFee}}</p>
-                                <p>Due Date: {{item.DueDate}}</p>
+                                <p *ngIf="item.DueDate === 'none'">Due Date: Not available</p>
+                                <p *ngIf="item.DueDate !== 'none'">Due Date: {{item.DueDate|date:'medium'}}</p>
                                 <h6>All Subject in Total: ${{item.TotalFee}}</h6>
                             </div>
                             <!-- comfirm payment modal-->

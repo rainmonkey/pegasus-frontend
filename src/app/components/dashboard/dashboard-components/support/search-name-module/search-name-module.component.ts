@@ -1,8 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChildren } from '@angular/core';
 import { LearnersService } from '../../../../../services/http/learners.service';
 import { FormBuilder, Validators } from '@angular/forms';
 import { NgbModal, ModalDismissReasons, } from '@ng-bootstrap/ng-bootstrap';
 import { Router, ActivatedRoute, ParamMap } from '@angular/router';
+import { GeneralRepoService } from '../../../../../services/repositories/general-repo.service';
 
 @Component({
   selector: 'app-search-name-module',
@@ -21,12 +22,15 @@ export class SearchNameModuleComponent implements OnInit {
   // ng-modal variable
   closeResult: string;
 
+  @ViewChildren('FirstNameValue') firstNameValue;
+
   constructor(
     private modalService: NgbModal,
     private learnersListService: LearnersService,
     private fb: FormBuilder,
     private router: Router,
-    private activatedRouter: ActivatedRoute
+    private activatedRouter: ActivatedRoute,
+    private generalRepoService: GeneralRepoService
   ) { }
 
   // form-builder
@@ -94,9 +98,12 @@ export class SearchNameModuleComponent implements OnInit {
         else {
           this.learners = data['Data'][0];
           this.data = data['Data'];
-          this.onChangePath(this.learners.LearnerId);
           this.patchRegiFormL();
           this.modalServiceMethod(content);
+          // put learners information to service waiting for other component subscribe
+          this.generalRepoService.fisrtName.next(this.learners);
+          // change url
+          this.onChangePath(this.learners.LearnerId);
         }
       },
         (error) =>
@@ -121,6 +128,7 @@ export class SearchNameModuleComponent implements OnInit {
         phone: this.data[i].ContactNum
       });
       this.learners.learnerId = this.data[i].LearnerId;
+      this.generalRepoService.fisrtName.next(this.data[i]);
       this.onChangePath(this.learners.learnerId);
     }
   }

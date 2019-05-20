@@ -1,12 +1,12 @@
 import { TestBed } from '@angular/core/testing';
 
-import { RefreshService } from './refresh.service';
+import { AppSettingsService } from './app-settings.service';
 
-describe('RefreshService', () => {
+describe('AppSettingsService', () => {
   beforeEach(() => TestBed.configureTestingModule({}));
 
   it('should be created', () => {
-    const service: RefreshService = TestBed.get(RefreshService);
+    const service: AppSettingsService = TestBed.get(AppSettingsService);
     expect(service).toBeTruthy();
   });
 });

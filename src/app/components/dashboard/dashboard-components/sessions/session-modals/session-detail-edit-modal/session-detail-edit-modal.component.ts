@@ -1,29 +1,30 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { TeachersService } from '../../../../../../services/http/teachers.service';
 import { FormBuilder, Validator, Validators, RequiredValidator } from '@angular/forms';
+import { TransactionService } from '../../../../../../services/http/transaction.service';
+import { TeachersService } from '../../../../../../services/http/teachers.service';
 import { PaymentService } from 'src/app/services/http/payment.service';
 
 @Component({
-  selector: 'app-session-edit-modal',
-  templateUrl: './session-edit-modal.component.html',
-  styleUrls: ['./session-edit-modal.component.css'],
+  selector: 'app-session-detail-edit-modal',
+  templateUrl: './session-detail-edit-modal.component.html',
+  styleUrls: ['./session-detail-edit-modal.component.css'],
 })
-export class SessionEditModalComponent implements OnInit {
+export class SessionDetailEditModalComponent implements OnInit {
   public learnerList;
   public errorMsg;
   public errorAlert = false;
   public errMsgO = false;
   public errMsgM = false;
   public successAlert = false;
+  public staffId = 3;
 
   constructor(
     public activeModal: NgbActiveModal,
     private fb: FormBuilder,
     public modalService: NgbModal,
-    private teachersService: TeachersService,
-    private paymentService: PaymentService,
+    private transactionService: TransactionService,
     private router: Router,
     private activatedRoute: ActivatedRoute
     ) {
@@ -49,7 +50,7 @@ export class SessionEditModalComponent implements OnInit {
   }
 // get invoice from server
   getInvoiceData() {
-    this.teachersService.getTeachersInfo().subscribe(
+    this.transactionService.getLearnerInvo(this.staffId).subscribe(
       (res) => {
         this.learnerList = res.Data;
         //this.patchToInvoice()
@@ -77,7 +78,7 @@ export class SessionEditModalComponent implements OnInit {
 // post data to server side
   sendMail(confirmModal) {
     this.open(confirmModal);
-    this.paymentService.emailInvoice(this.invoiceEditForm.value)
+    this.transactionService.update(this.invoiceEditForm.value)
     .subscribe(
       (res) => {
         this.router.navigate(['../success'], {relativeTo: this.activatedRoute});
@@ -96,7 +97,7 @@ export class SessionEditModalComponent implements OnInit {
     .open(confirmModal)
     .result.then(
       result => {
-        this.paymentService.emailInvoice(this.invoiceEditForm.controls.value).subscribe(
+        this.transactionService.update(this.invoiceEditForm.controls.value).subscribe(
           response => {
             console.log('Success!', response);
             this.successAlert = true;

@@ -40,7 +40,7 @@
 }
 .slot {
   border-bottom: 1px dotted #e0e0e0;
-  height: 50px;
+  height: 10px;
 }
 .slot:last-child {
   border-bottom: none;
@@ -52,7 +52,7 @@
   background-color: rgba(255, 0, 0, 0.5);
   border-radius: 3px;
   border: 0px;
-  opacity: 0.2;
+  opacity: 0.5;
   
 } 
 
