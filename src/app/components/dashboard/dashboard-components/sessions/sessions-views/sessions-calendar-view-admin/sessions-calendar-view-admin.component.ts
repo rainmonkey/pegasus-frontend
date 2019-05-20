@@ -76,6 +76,7 @@ export class SessionsCalendarViewAdminComponent implements OnInit {
         events: this.eventData,
         aspectRatio: 1.8,
         timeZone: 'UTC',
+        allDaySlot: false,
         defaultView: 'resourceTimeGridDay',
         schedulerLicenseKey: 'GPL-My-Project-Is-Open-Source',
         minTime: '08:00',
@@ -109,7 +110,7 @@ export class SessionsCalendarViewAdminComponent implements OnInit {
   }
   generateEventData = (data) => {
     data.forEach(s => {
-      s.title += '\nTutor: ' + s.teacher;
+      s.title += ' Tutor: ' + s.teacher;
       if (s.IsGroup === false) {
         s.title += '\nLearner: ' + s.student[0];
       }
