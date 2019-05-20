@@ -1,6 +1,7 @@
 import { TeachersService } from '../../../../../services/http/teachers.service';
-import { Component, OnInit, Input, ViewChildren } from '@angular/core';
+import { Component, OnInit, Input, ViewChildren, ViewChild } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
+import { environment } from 'src/environments/environment.prod';
 
 @Component({
   selector: 'app-teacher-modal-form',
@@ -26,11 +27,14 @@ export class TeacherModalFormComponent implements OnInit {
   public idTypeList = [{ 'idTypeId': 1, 'idTypeName': 'Driver Lisence' },
   { 'idTypeId': 2, 'idTypeName': '18+' },
   { 'idTypeId': 3, 'idTypeName': 'Passport' }];
+  public baseUrl: any = environment.baseUrl;
+  
 
   @Input() command;
   @Input() whichTeacher;
   @ViewChildren('lan') languagesCheckBox;
   @ViewChildren('branches') branchesCheckBox;
+  @ViewChild('genderToSubmit') genderToSubmit;
 
   constructor(private fb: FormBuilder, private teachersService: TeachersService) { }
 
@@ -218,6 +222,10 @@ export class TeacherModalFormComponent implements OnInit {
     }
   }
 
+  getPhoto(){
+    let src = 'http://45.76.123.59:5000/api/' + this.whichTeacher.Photo;
+    return src;
+  }
   /////////////////////////////////////////////form group/////////////////////////////////////////////////
 
   formGroupAssemble() {
@@ -263,4 +271,5 @@ export class TeacherModalFormComponent implements OnInit {
 
     return groupObj;
   }
+
 } 

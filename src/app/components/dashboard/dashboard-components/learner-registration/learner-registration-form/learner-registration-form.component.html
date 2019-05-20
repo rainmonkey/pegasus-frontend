@@ -69,7 +69,7 @@
           <div class="col-sm-6 col-md-6">
               <label for="location">Location</label>
               <select class="form-control" formControlName="location" id="location">
-                 <option *ngFor="let location of locations" [value]="location.OrgName">{{location.OrgName}}</option>
+                 <option *ngFor="let location of locations" [value]="location.OrgId">{{location.OrgName}}</option>
               </select>
           </div>
         </div>
@@ -94,18 +94,18 @@
           </div>
           <div class="col-sm-6 col-md-6">
               <label for="learnerLevel">Your Current Level</label>
-              <select class="form-control" formControlName="learnerLevel" (change)="selectLlevel()" id="learnerLevel">
-                <option *ngFor="let llevel of learnerLevel" [value]="llevel.PropName">{{llevel.PropName}}</option>
+              <select class="form-control" formControlName="learnerLevel" (change)="selectLlevel()">
+                <option  *ngFor="let llevel of learnerLevel" [value]="llevel.PropValue">{{llevel.PropName}}</option>
               </select>
               <div *ngIf="isSelectedLevel">
                 <span>Did you take exam before?</span><br>
                 <div class="d-inline-flex" *ngFor="let levelType of levelType; let i=index">
                   <div *ngIf="i == 0" class="form-check">
-                      <input class="form-check-input" name="levelType" id="ABRSM" type="radio" [value]="PropName" checked>
+                      <input class="form-check-input" (click)="selectLtype($event.target.value)" name="levelType" type="radio" [value]="levelType.PropValue" checked>
                       <label class="form-check-label" for="ABRSM">ABRSM</label> 
                   </div>
                   <div *ngIf="i != 0" class="form-check">
-                    <input class="form-check-input" name="levelType" id="levelType" type="radio" [value]="levelType.PropName">
+                    <input class="form-check-input" (click)="selectLtype($event.target.value)" name="levelType" type="radio" [value]="levelType.PropValue">
                     <label class="form-check-label" for="levelType">{{levelType.PropName}}</label> 
                   </div>
                 </div>
@@ -118,20 +118,19 @@
         </div>
         <div class="learn purpose">
           <span class="text-primary">Why do you learn the piano?</span><br>
-          <div class="d-inline-flex" *ngFor="let learnerPurpose of learnerPurpose">
-            <input type="checkbox" >&nbsp;&nbsp;
-            <label>{{learnerPurpose.PropName}}</label>
+          <div class="d-inline-block mx-3" *ngFor="let learnerPurpose of learnerPurpose; let i = index">
+              <input type="checkbox" (click)="selectLearnerPurpose(i, $event)" [value]="learnerPurpose.PropValue">&nbsp;&nbsp;
+              <label>{{learnerPurpose.PropName}}</label>
           </div>
         </div>
    
         <div class="how know us">
           <span class="text-primary">How do you know about us?</span><br>
-          <div class="d-inline-flex" *ngFor="let howKnown of howKnown">
-            <div *ngIf="howKnown.Description == 'How known'">
-              <input type="checkbox"><label>{{howKnown.PropName}}</label>
-            </div>
+          <div class="d-inline-block mx-3" *ngFor="let howKnown of howKnown; let i = index">
+              <input type="checkbox" (click)="selectHowKnown(i, $event)" [value]="howKnown.PropValue">&nbsp;&nbsp;
+              <label>{{howKnown.PropName}}</label>
           </div>
-        <br>
+        <!-- <br>
           <span  class="text-info">Newspapers or Magazines:</span>
           <div class="d-inline-flex" *ngFor="let howKnown of howKnown">
             <div *ngIf="howKnown.Description == 'How known: newspapers'">
@@ -144,9 +143,10 @@
             <div *ngIf="howKnown.Description == 'How known: websites'">
               <input type="checkbox"><label>{{howKnown.PropName}}</label>
             </div>
-          </div>
+          </div> -->
         </div>
         <div class="button text-right">
+          <button class="mx-3" (click)="confirmLearner()">Confirm</button>
           <button class="btn_next my-3" [disabled]="learnerForm.invalid"
             (click)="next('parentForm')">Next</button>
         </div>
@@ -238,7 +238,7 @@
     </div> 
     
     <div class="card" *ngIf="isGroupCourse" >
-      <div formGroupName="groupCourse" class="select-group-course card-body" >
+      <div class="select-group-course card-body" >
         <div class="guitar">
           <table class="table">
             <thead>
@@ -252,28 +252,30 @@
                 <th>How to know us</th>
               </tr>
             </thead>
-            <tbody>
-              <tr *ngFor="let groupCourseInstance of groupCourseInstance">
-                <td><input type="checkbox"></td>
-                <td>{{groupCourseInstance.Course.CourseName}}</td>             
+            <tbody >
+              <tr formArrayName="groupCourse" *ngFor="let groupCourse of groupCourse.controls; let i = index">
+                <td><input type="checkbox" [formControlName]="i" [value]="i" (click)="selectCheckboxes(i, $event)"></td>
+                <td>{{groupCourseInstance[i].Course.CourseName}}</td>             
                 <td>
-                  <p *ngFor="let schedule of groupCourseInstance.schedule">{{schedule.DayOfWeek | weekFormat}}: {{schedule.BeginTime}}-{{schedule.EndTime}}</p>
+                  <p *ngFor="let schedule of groupCourseInstance[i].schedule">{{schedule.DayOfWeek | weekFormat}}: {{schedule.BeginTime}}-{{schedule.EndTime}}</p>
                 </td>
-                <td>{{groupCourseInstance.Org.OrgName}}</td>
-                <td>{{groupCourseInstance.Room.RoomName}}</td>
-                <td>{{groupCourseInstance.Teacher.FirstName}}</td>
-                <td><input formControlName="comment" type="input"></td>
+                <td>{{groupCourseInstance[i].Org.OrgName}}</td>
+                <td>{{groupCourseInstance[i].Room.RoomName}}</td>
+                <td>{{groupCourseInstance[i].Teacher.FirstName}}</td>
+                <td><input type="text" [ngModelOptions]="{standalone: true}" [(ngModel)]="groupCourseInstance[i].comments" ></td>
               </tr>
             </tbody>
           </table>
           <div class="text-right">
             <button class="btn_back mx-3" (click)="next('parentForm')">Back</button>
-            <!-- <button class="btn_submit" [disabled]="registrationForm.invalid">Submit</button> -->
+            <button class="mx-3" (click)="confirmGroupCourse()">Confirm</button>
             <button class="btn_submit" (click)="onSubmit()">Submit</button>
           </div>
         </div>
       </div>
     </div>
+
+    
       <div *ngIf="isCustomCourse" formArrayName="customCourse">
         <div *ngFor="let course of customCourse.controls; let i=index;" class="card my-3">
           <div [formGroupName]="i" class="card-body">
@@ -282,70 +284,79 @@
               <button class="btn_delete" (click)="deleteCustomCourse()">Delete</button>
             </div>
             <div class="selectCourse-yourLever row">
-              <div class="col-12">
-                <label for="course">Course</label>
-                <select class="form-control" formControlName="course" id="course">
-                  <!-- more details about -->
-                  <option *ngFor="let course of courses" [value]="course">{{course}}</option>
+              <div class="col-sm-6 col-md-6">
+                <label for="course">Course Category</label>
+                <select class="form-control"  formControlName="courseCategory" (change)="selectCourse($event.target.value)">
+                  <option *ngFor="let course of courses" [value]="course.CourseCategory.CourseCategoryId">{{course.CourseCategory.CourseCategoryName}}</option>
                 </select>
+              </div>
+              <div class="col-sm-6 col-md-6">
+                  <label for="course">Course</label>
+                  <select class="form-control" (change)="selectDuration($event.target.value)" formControlName="course">
+                    <option *ngFor="let course of filterCourse" [value]="course.CourseId">{{course.CourseName}}</option>
+                  </select>
               </div>
             </div>
             <div class="location-teacherLevel row">
               <div class="col-sm-6 col-md-6">
                 <label for="location">Location</label>
-                <select class="form-control"  formControlName="location" id="location" (change)="onSelect($event.target.value)">
-                  <option *ngFor="let cInstance of customCourseInstance; let i = index" [value]="i">{{cInstance.OrgName}}</option>
+                <select class="form-control"  formControlName="location" id="location" (change)="selectLocation($event.target.value)">
+                  <option *ngFor="let cInstance of customCourseInstance; let i = index" [value]="cInstance.OrgId">{{cInstance.OrgName}}</option>
                 </select>
               </div>
               <div class="col-sm-6 col-md-6">
                 <label for="teacherLevel">Teacher Level</label>
-                <select class="form-control" formControlName="teacherLevel" id="teacherLevel" (change)="selectTl($event.target.value)">
+                <select class="form-control" id="teacherLevel" (change)="selectTl($event.target.value)">
                   <option *ngFor="let tlevel of teacherLevel; let i = index" [value]="i">{{tlevel.levelName}}</option>
                 </select>
               </div>    
-              <div class="col-sm-6 col-md-6">
-                <label for="teacherName">Teacher Name</label>
-                <select class="form-control" formControlName="teacherName" id="teacherName">
-                  <option *ngFor="let tName of teacherName; let i = index" [value]="i">{{tName.TeacherName}}</option>
-                </select>
-              </div>
-              <div class="col-sm-6 col-md-6">
-                <label for="customday">Course day</label>
-                <select class="form-control" formControlName="customday" id="customday">
-                  <option value="1">Monday</option>
-                  <option value="2">Tuesday</option>
-                  <option value="3">Wednesday</option>
-                  <option value="4">Thursday</option>
-                  <option value="5">Friday</option>
-                  <option value="6">Saturday</option>                
-                  <option value="7">Sunday</option>                
-                </select>
-              </div>
             </div>
             <div class="courseDay-courseHour row">
-              <div class="col-sm-4 col-md-4">
+                <div class="col-sm-6 col-md-6">
+                    <label for="teacherName">Teacher Name</label>
+                    <select class="form-control" formControlName="teacherName" id="teacherName">
+                      <option *ngFor="let tName of teacherName; let i = index" [value]="tName.TeacherId">{{tName.TeacherName}}</option>
+                    </select>
+                  </div>
+              <div class="col-sm-6 col-md-6">
                 <label for="room">Room No.</label>
-                <select class="form-control" name="room" id="room">
-                  <option *ngFor="let cRoom of customCourseRoom" [value]="cRoom.RoomName">{{cRoom.RoomName}}</option>
+                <select class="form-control" formControlName="room" name="room" id="room">
+                  <option *ngFor="let cRoom of customCourseRoom" [value]="cRoom.RoomId">{{cRoom.RoomName}}</option>
                 </select>
               </div>
-              <div class="col-sm-4 col-md-4">
-                <label for="startDate">Start Date</label>
-                <input class="form-control" type="date" id="startDate">
+            </div> 
+            <div class="beginDate row">
+              <div class="col-sm-6 col-md-6">
+                <label for="startDate" >Start Date</label>
+                <input class="form-control" formControlName="beginDate" type="date" id="startDate" >
               </div>
-              <div class="col-sm-4 col-md-4">
+              <div class="col-sm-6 col-md-6">
                 <label for="endDate">End Date</label>
-                <input class="form-control" type="date" id="endDate">
+                <input class="form-control" formControlName="endDate" type="date" id="endDate">
               </div>
             </div>
-            <div class="row">
-              <div class="col-12">
-                <label for="customTime">Course Time</label>
+          
+            <div class="row" formGroupName="schedule">
+              <div class="col-sm-6 col-md-6">
+                  <label for="customday">Course day</label>
+                  <select class="form-control" formControlName="dayOfWeek" id="customday">
+                    <option value="1">Monday</option>
+                    <option value="2">Tuesday</option>
+                    <option value="3">Wednesday</option>
+                    <option value="4">Thursday</option>
+                    <option value="5">Friday</option>
+                    <option value="6">Saturday</option>                
+                    <option value="7">Sunday</option>                
+                  </select>
+                </div>
+              <div class="col-sm-6 col-md-6">
+                <span><label for="customTime">Course Time</label></span>
                 <ngb-timepicker [ngModelOptions]="{standalone: true}" [(ngModel)]="time" [size]="'small'" [hourStep]="hourStep" [minuteStep]="minuteStep" ></ngb-timepicker>
               </div>                   
             </div>
             <div class="d-flex my-3 justify-content-end">
               <button class="mx-3 btn_back" (click)="next('parentForm')">Back</button>
+              <button class="mx-3" (click)="confirmCustomCourse()">Confirm</button>
               <button [disabled]="registrationForm.invalid" (click)="onSubmit()" class="btn_submit"
                 type="submit">Submit</button>
             </div>
