@@ -169,15 +169,15 @@ export class CoursesListComponent implements OnInit {
     else {
       let searchString: string;
       let searchBy: string;
+      // 要搜索的内容
       let searchingInputObj = document.getElementById('searchingInput');
 
       (initValue == undefined) ? { searchString, searchBy } = 
-      { searchString: searchingInputObj['value'], searchBy: this.coursesList.CourseName} :
+      { searchString: searchingInputObj['value'], searchBy: 'CourseName'} :
         { searchString, searchBy } = initValue;
 
       this.coursesList = this.ngTable.searching(this.coursesListCopy, searchBy, searchString);
       this.coursesListLength = this.coursesList.length;
-      this.coursesList.CourseName = searchBy;
 
       this.setQueryParams('searchBy',searchBy);
       this.setQueryParams('searchString', searchString);
