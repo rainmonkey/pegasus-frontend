@@ -52,13 +52,11 @@ export class AdminInvoiceListComponent implements OnInit {
         this.learnerListLength = res.Data.length; //length prop is under Data prop
         this.temLearnerList = res.Data;
         this.temLearnerListLength = res.Data.length;
-        console.log(this.learnerList)
-        console.log(this.learnerList[0].Learner)
         //this.learnerList[0].Learner.Parent.Email
       },
       error => {
         this.errorMsg = JSON.parse(error.error);
-        console.log("Error!", this.errorMsg.ErrorCode);
+        console.log("Error!", this.errorMsg.ErrorMsg);
         this.errorAlert = false;
       });
   }

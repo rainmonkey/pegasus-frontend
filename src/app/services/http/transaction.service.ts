@@ -15,4 +15,7 @@ constructor(private http: HttpClient) { }
   update(data): any {
     return this.http.put(this.baseUrl + 'InvoiceWaitingConfirms/', data);
   }
+  GroupOr121(id,type): any {
+    return this.http.get(this.baseUrl + `courseinstance/${id}/${type}`);
+  }
 }
