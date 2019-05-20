@@ -1,8 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { DecimalPipe } from '@angular/common';
+import { FormControl } from '@angular/forms';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { Router, ActivatedRoute } from '@angular/router';
+import { Observable } from 'rxjs';
 import { CoursesService } from '../../../../../services/http/courses.service';
 import { NgbootstraptableService } from 'src/app/services/others/ngbootstraptable.service';
-import { Router, ActivatedRoute } from '@angular/router';
 
 import { CourseDetailModalComponent } from '../course-detail-modal/course-detail-modal.component';
 import { CourseDeleteModalComponent } from '../course-delete-modal/course-delete-modal.component';
@@ -10,25 +13,34 @@ import { CourseDeleteModalComponent } from '../course-delete-modal/course-delete
 @Component({
   selector: 'app-courses-list',
   templateUrl: './courses-list.component.html',
-  styleUrls: ['./courses-list.component.css']
+  styleUrls: ['./courses-list.component.css'],
+  providers: [DecimalPipe]
 })
+
 export class CoursesListComponent implements OnInit {
-  public coursesList: any; 
+  public coursesList: any;
   public coursesListLength: number;
   public temCoursesList: any; //save the original courseList
   public temCoursesListLength: number; //save the original courseList length
   public page: number = 1;  //pagination current page
   public pageSize: number = 10;    //[can modify] pagination page size
+  public currentPage: number = 1;
   public coursesListCopy: Array<any>;
   //search by which columns, determine by users
   public queryParams: object = {};
+  public courses$: Observable<any>;
+  public filter = new FormControl('');
+
+  @ViewChild('pagination') pagination;
+
 
   constructor(
-    private coursesService: CoursesService, 
-    private modalService: NgbModal, 
-    private ngTable:NgbootstraptableService,
+    private coursesService: CoursesService,
+    private modalService: NgbModal,
+    private ngTable: NgbootstraptableService,
     private router: Router,
-    private activatedRoute: ActivatedRoute) { }
+    private activatedRoute: ActivatedRoute
+  ) { }
 
   ngOnInit() {
     this.getData();
@@ -44,24 +56,32 @@ export class CoursesListComponent implements OnInit {
         this.coursesListCopy = this.coursesList;
         this.coursesListLength = res.Data.length; //length prop is under Data prop
         this.refreshPageControl();
+        // console.log(this.coursesList);
       },
-      (error) => {this.errorProcess(error) })
+      (error) => { this.errorProcess(error) })
   }
 
   errorProcess(error) {
   }
 
-  refreshPageControl(){
-    this.activatedRoute.queryParams.subscribe(res => {
-      let {searchString,searchBy,orderBy,orderControl} = res;
-      if(searchString !== undefined && searchBy !== undefined){
-        this.onSearch(null, {'searchString':searchString,'searchBy':searchBy})
-      }
-      if(orderBy !==undefined && orderControl !== undefined){
-        this.onSort(orderBy,orderControl)
-      }
-    })
-  }
+  /*
+    set the default params when after page refresh
+  */
+ refreshPageControl(){
+  this.activatedRoute.queryParams.subscribe(res => {
+    let {searchString,searchBy,orderBy,orderControl,currentPage} = res;
+    if(searchString !==undefined && searchBy !==undefined){
+      this.onSearch(null, {'searchString':searchString,'searchBy':searchBy})
+    }
+    if(orderBy !==undefined && orderControl !== undefined){
+      this.onSort(orderBy,orderControl)
+    }
+    if(currentPage !== undefined){
+      this.currentPage = currentPage;
+    }
+  })
+  return;
+}
 
 
   /*
@@ -93,13 +113,13 @@ export class CoursesListComponent implements OnInit {
       2 --> delete
   */
   popUpModals(command, whichCourse) {
-    switch(command){
+    switch (command) {
       case 0:
       case 2:
-        this.detailModal(command,whichCourse);
+        this.detailModal(command, whichCourse);
         break;
       case 3:
-        this.deleteModal(command,whichCourse);
+        this.deleteModal(command, whichCourse);
         break;
     }
   }
@@ -107,10 +127,10 @@ export class CoursesListComponent implements OnInit {
   /*
     update modal
   */
-  detailModal(command,whichCourse){
+  detailModal(command, whichCourse) {
     const modalRef = this.modalService.open(CourseDetailModalComponent, { size: 'lg' });
     let that = this;
-    modalRef.result.then(function(){
+    modalRef.result.then(function () {
       that.ngOnInit()
     })
     modalRef.componentInstance.command = command;
@@ -120,48 +140,53 @@ export class CoursesListComponent implements OnInit {
   /*
     delete modal
   */
- deleteModal(command, whichCourse) {
-  const modalRef = this.modalService.open(CourseDeleteModalComponent);
-  let that = this;
-  modalRef.result.then(function(){
-    that.ngOnInit()
-  })
-  modalRef.componentInstance.command = command;
-  modalRef.componentInstance.whichCourse = whichCourse;
-}
-
-  /*
-    search method
-  */
- onSearch(event, initValue?) {
-  if (event !== null && !(event.type == 'keydown' && event.key == 'Enter')) {
-    return;
+  deleteModal(command, whichCourse) {
+    const modalRef = this.modalService.open(CourseDeleteModalComponent);
+    let that = this;
+    modalRef.result.then(function () {
+      that.ngOnInit()
+    })
+    modalRef.componentInstance.command = command;
+    modalRef.componentInstance.whichCourse = whichCourse;
   }
-  else {
-    let searchString: string;
-    let searchBy: string;
-    let searchingInputObj = document.getElementById('searchingInput');
-    let optionsObj = document.getElementById('searchOption');
-
-    (initValue == undefined) ? { searchString, searchBy } = { searchString: searchingInputObj['value'], searchBy: optionsObj['value'] } :
-      { searchString, searchBy } = initValue;
-
-    this.coursesList = this.ngTable.searching(this.coursesListCopy, searchBy, searchString);
-    this.coursesListLength = this.coursesList.length;
-    optionsObj['value'] = searchBy;
-
-    this.setQueryParams('searchBy',searchBy);
-    this.setQueryParams('searchString',searchString);
-  }
-}
-
 
   /*
     sort method
   */
- onSort(orderBy,orderControls?) {
-  let orderControl = this.ngTable.sorting(this.coursesList, orderBy,orderControls);
-  this.setQueryParams('orderBy',orderBy);
-  this.setQueryParams('orderControl',orderControl);
-}
+  onSort(orderBy, orderControls?) {
+    let orderControl = this.ngTable.sorting(this.coursesList, orderBy, orderControls);
+    this.setQueryParams('orderBy', orderBy);
+    this.setQueryParams('orderControl', orderControl);
+  }
+
+  /*
+    search method
+  */
+  onSearch(event, initValue?) {
+    if (event !== null && !(event.type == 'keydown' && event.key == 'Enter')) {
+      return;
+    }
+    else {
+      let searchString: string;
+      let searchBy: string;
+      let searchingInputObj = document.getElementById('searchingInput');
+
+      (initValue == undefined) ? { searchString, searchBy } = 
+      { searchString: searchingInputObj['value'], searchBy: this.coursesList.CourseName} :
+        { searchString, searchBy } = initValue;
+
+      this.coursesList = this.ngTable.searching(this.coursesListCopy, searchBy, searchString);
+      this.coursesListLength = this.coursesList.length;
+      this.coursesList.CourseName = searchBy;
+
+      this.setQueryParams('searchBy',searchBy);
+      this.setQueryParams('searchString', searchString);
+    }
+
+  }
+
+  getCurrentPage(){
+    let currentPage = this.pagination.page;
+    this.setQueryParams('currentPage',currentPage)
+  }
 }
