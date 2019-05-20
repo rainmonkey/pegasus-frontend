@@ -9,7 +9,11 @@ import {NgbModal, NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import Swal from 'node_modules/sweetalert2/dist/sweetalert2.all.min.js';
 import {FormBuilder, FormGroup} from '@angular/forms';
 import { SessionsService } from 'src/app/services/http/sessions.service';
+<<<<<<< HEAD
 // import {SessionEditModalComponent} from '../../session-modals/session-edit-modal/session-edit-modal.component';
+=======
+import {SessionDetailEditModalComponent} from '../../session-modals/session-detail-edit-modal/session-detail-edit-modal.component';
+>>>>>>> f45415a4e683477be6a4443711f47ad2867c8f2f
 
 @Component({
   selector: 'app-sessions-calendar-view-admin',
@@ -66,15 +70,23 @@ export class SessionsCalendarViewAdminComponent implements OnInit {
               html: info.event.extendedProps.description
             }
           ).then(result => {
+<<<<<<< HEAD
             // if (result.value) {
             //   this.modalService.open(SessionEditModalComponent, { size: 'lg' });
             // }
+=======
+            if (result.value) {
+              this.modalService.open(SessionDetailEditModalComponent, { size: 'lg' });
+            }
+>>>>>>> f45415a4e683477be6a4443711f47ad2867c8f2f
           });
         },
         resources: this.resourceData,
+        displayEventTime: false,
         events: this.eventData,
         aspectRatio: 1.8,
         timeZone: 'UTC',
+        allDaySlot: false,
         defaultView: 'resourceTimeGridDay',
         schedulerLicenseKey: 'GPL-My-Project-Is-Open-Source',
         minTime: '08:00',
@@ -85,16 +97,12 @@ export class SessionsCalendarViewAdminComponent implements OnInit {
           resourceTimeGridDay: {
             buttonText: 'Day',
             slotDuration: '00:15'
-          },
-          resourceTimeGridWeek: {
-            buttonText: 'Week',
-            duration: {days: 7}
           }
         },
         header: {
           left: 'today prev,next DayPickerButton',
           center: 'title',
-          right: 'resourceTimeGridDay resourceTimeGridWeek'
+          right: 'resourceTimeGridDay'
         },
         plugins: [timeslot, interactionPlugin]
       };
@@ -112,7 +120,8 @@ export class SessionsCalendarViewAdminComponent implements OnInit {
   }
   generateEventData = (data) => {
     data.forEach(s => {
-      s.title += '\nTutor: ' + s.teacher;
+      s.title = '(' + s.title + ')';
+      s.title += ' Tutor: ' + s.teacher;
       if (s.IsGroup === false) {
         s.title += '\nLearner: ' + s.student[0];
       }

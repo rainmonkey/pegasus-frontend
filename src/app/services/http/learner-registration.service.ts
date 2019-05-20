@@ -12,7 +12,9 @@ import { environment } from '../../../environments/environment.prod';
 export class LearnerRegistrationService {
   
   private baseUrl: any = environment.baseUrl;
-  public url = this.baseUrl + 'register/student/';
+  // post url
+  // public url = this.baseUrl + 'api/learner';
+  public url = 'http://192.168.178.76:5000/api/learner';
 
   constructor(private http: HttpClient) { }
 

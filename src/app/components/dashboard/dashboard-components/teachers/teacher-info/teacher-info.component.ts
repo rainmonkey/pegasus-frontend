@@ -53,7 +53,10 @@ export class TeacherInfoComponent implements OnInit {
         //console.log(this.teachersList)
         //this.toggleLoadingGif('show')  'show' 'hide'
         this.toggleLoadingGif('hide');
-        this.refreshPageControl();
+        this.refreshPageControl(); 
+        // for(let i of this.teachersList){
+        //   console.log(i.IdType)
+        // }
       },
       (err) => {
         //报错误信息
@@ -190,9 +193,10 @@ export class TeacherInfoComponent implements OnInit {
   updateModal(command, whichTeacher) {
     const modalRef = this.modalService.open(TeacherUpdateModalComponent, { size: 'lg' });
     let that = this;
-    modalRef.result.then(function(){
-      that.ngOnInit()
-    })
+    modalRef.result.then(
+      (res)=>{console.log(res),      that.ngOnInit()
+      }
+    )
     modalRef.componentInstance.command = command;
     modalRef.componentInstance.whichTeacher = whichTeacher;
   }

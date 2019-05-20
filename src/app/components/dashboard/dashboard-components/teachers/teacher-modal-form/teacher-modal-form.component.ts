@@ -1,6 +1,7 @@
 import { TeachersService } from '../../../../../services/http/teachers.service';
-import { Component, OnInit, Input, ViewChildren } from '@angular/core';
+import { Component, OnInit, Input, ViewChildren, ViewChild } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
+import { environment } from 'src/environments/environment.prod';
 
 @Component({
   selector: 'app-teacher-modal-form',
@@ -22,15 +23,21 @@ export class TeacherModalFormComponent implements OnInit {
   public showRightImgFlag: boolean = false;
   public photoToSubmit: any;
   public idPhotoToSubmit: any;
-  public week: Array<string> = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+  public week: Array<object> = [{"dayName":"Monday",'dayId':1},{"dayName":"Tuesday",'dayId':2},
+                                {"dayName":"Wednesday",'dayId':3},{"dayName":"Thursday",'dayId':4},
+                                {"dayName":"Friday",'dayId':5},{"dayName":"Saturday",'dayId':6},
+                                {"dayName":"Sunday",'dayId':7}];
   public idTypeList = [{ 'idTypeId': 1, 'idTypeName': 'Driver Lisence' },
   { 'idTypeId': 2, 'idTypeName': '18+' },
   { 'idTypeId': 3, 'idTypeName': 'Passport' }];
+  public baseUrl: any = environment.baseUrl;
+  
 
   @Input() command;
   @Input() whichTeacher;
   @ViewChildren('lan') languagesCheckBox;
   @ViewChildren('branches') branchesCheckBox;
+  @ViewChild('genderToSubmit') genderToSubmit;
 
   constructor(private fb: FormBuilder, private teachersService: TeachersService) { }
 
@@ -68,7 +75,7 @@ export class TeacherModalFormComponent implements OnInit {
         // console.log(this.orgOptions)
       },
       (err) => {
-
+        alert('Server error!')
       }
     )
   }
@@ -115,6 +122,25 @@ export class TeacherModalFormComponent implements OnInit {
     }
   }
 
+   /*
+    display default branches selection
+  */
+  setDefaultBranchSelection(OrgId,week){
+    if (this.command == 2){
+      for(let i of this.whichTeacher.AvailableDays){
+        if(week.dayId == i.DayOfWeek){
+          if(OrgId == i.OrgId){
+            return true;
+          }
+        }
+      }
+      return false;
+    }
+    else{
+      return false;
+    }
+  }
+
   /*
     switch photo and IdPhoto
     and change them styles
@@ -152,7 +178,8 @@ export class TeacherModalFormComponent implements OnInit {
         }
       }
     }
-    return availableDays;
+    //返回一个有序数组 （如果availableDays比较多 按照Monday--->Sunday顺序排列）
+    return availableDays.sort();
   }
 
   /*
@@ -205,8 +232,9 @@ export class TeacherModalFormComponent implements OnInit {
     in add and update mode
     Branch options hide in default, when user click week name, toggle branch options,
   */
-  toggleBranchOptions(event, i) {
-    let dropDownObj = document.getElementById(i);
+  toggleBranchOptions(event, dayName) {
+    let dropDownObj = document.getElementById(dayName);
+    console.log(dropDownObj)
     //set [flag] attr to element, to switch between show and hide
     event.target.attributes.flag = !event.target.attributes.flag;
 
@@ -218,6 +246,18 @@ export class TeacherModalFormComponent implements OnInit {
     }
   }
 
+  /*
+    get photo src
+  */
+  getPhoto(){
+    if(this.command == 0){
+      return;
+    }
+    else{
+      let src = '/api/' + this.whichTeacher.Photo;
+      return src;
+    }
+  }
   /////////////////////////////////////////////form group/////////////////////////////////////////////////
 
   formGroupAssemble() {
@@ -237,7 +277,8 @@ export class TeacherModalFormComponent implements OnInit {
         IDType: [null, Validators.required],
         IDNumber: [null, Validators.required],
         ExpiryDate: [null, Validators.required],
-        DayOfWeek: [null]
+        DayOfWeek: [null],
+        ability: [null]
       }
     }
     else {
@@ -258,9 +299,11 @@ export class TeacherModalFormComponent implements OnInit {
         IDNumber: [{ value: this.whichTeacher.IdNumber, disabled: this.readOnlyFlag }, Validators.required],
         ExpiryDate: [{ value: this.getDateFormat(this.whichTeacher.ExpiryDate), disabled: this.readOnlyFlag }, Validators.required], //用dateFormat
         DayOfWeek: [{ value: null, disabled: this.readOnlyFlag }],
+        ability: [{value:this.whichTeacher.Ability, disabled:this.readOnlyFlag}]
       }
     }
 
     return groupObj;
   }
+
 } 
