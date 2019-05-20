@@ -4,7 +4,6 @@ import { NgbootstraptableService } from 'src/app/services/others/ngbootstraptabl
 import { TransactionService } from '../../../../../services/http/transaction.service';
 import { AdminInvoiceEditModalComponent } from '../admin-invoice-edit-modal/admin-invoice-edit-modal.component';
 
-
 @Component({
   selector: 'app-admin-invoice-list',
   templateUrl: './admin-invoice-list.component.html',
@@ -24,11 +23,16 @@ export class AdminInvoiceListComponent implements OnInit {
   public errMsgM;
   public errMsgO;
   public staffId = 3;
+  // learner name and
+  learner;
+  myArray = [];
+
   constructor(
     private modalService: NgbModal,
     private ngTable: NgbootstraptableService,
     // private learnersservice: LearnersService,
-    private transactionService: TransactionService
+    private transactionService: TransactionService,
+
     ) { }
 
   ngOnInit() {
@@ -60,26 +64,33 @@ export class AdminInvoiceListComponent implements OnInit {
         this.errorAlert = false;
       });
   }
+  // push to array for sort
+  makeArray(){
+    this.learnerList.array.forEach(list => {
+      this.myArray.push(list.learner);
+    });
+    return this.myArray;
+  }
 
   // sort item
   onSort(orderBy, orderControls?) {
-    let orderControl = this.ngTable.sorting(this.learnerList, orderBy, orderControls);
-    this.setQueryParams('orderBy', orderBy);
-    this.setQueryParams('orderControl',orderControl);
+    let orderControl = this.ngTable.sorting(this.makeArray(), orderBy, orderControls);
+    // this.setQueryParams('orderBy', orderBy);
+    // this.setQueryParams('orderControl',orderControl);
   }
-  setQueryParams(paraName,paraValue) {
-    if (paraValue == '') {
-      delete this.queryParams[paraName];
-      delete this.queryParams['searchBy'];
-    }
-    else {
-      this.queryParams[paraName] = paraValue;
-    }
+  // setQueryParams(paraName,paraValue) {
+  //   if (paraValue == '') {
+  //     delete this.queryParams[paraName];
+  //     delete this.queryParams['searchBy'];
+  //   }
+  //   else {
+  //     this.queryParams[paraName] = paraValue;
+  //   }
 
     // this.router.navigate(['tutors/list'], {
     //   queryParams: this.queryParams
     // });
-  }
+  // }
   // search name
   onSearch(event){
     // should init original list and length

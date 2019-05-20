@@ -9,7 +9,7 @@ import {NgbModal, NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import Swal from 'node_modules/sweetalert2/dist/sweetalert2.all.min.js';
 import {FormBuilder, FormGroup} from '@angular/forms';
 import { SessionsService } from 'src/app/services/http/sessions.service';
-import {SessionEditModalComponent} from '../../session-modals/session-edit-modal/session-edit-modal.component';
+// import {SessionEditModalComponent} from '../../session-modals/session-edit-modal/session-edit-modal.component';
 
 @Component({
   selector: 'app-sessions-calendar-view-admin',
@@ -66,9 +66,9 @@ export class SessionsCalendarViewAdminComponent implements OnInit {
               html: info.event.extendedProps.description
             }
           ).then(result => {
-            if (result.value) {
-              this.modalService.open(SessionEditModalComponent, { size: 'lg' });
-            }
+            // if (result.value) {
+            //   this.modalService.open(SessionEditModalComponent, { size: 'lg' });
+            // }
           });
         },
         resources: this.resourceData,
