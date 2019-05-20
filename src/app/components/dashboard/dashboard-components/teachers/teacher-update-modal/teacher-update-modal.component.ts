@@ -61,6 +61,7 @@ export class TeacherUpdateModalComponent implements OnInit {
     valueToSubmit.Language = this.checkLanguages();
     valueToSubmit.DayOfWeek = this.checkOrgs();
     valueToSubmit.Qualificatiion = this.checkQualifications(valueToSubmit);
+    valueToSubmit.IDType = Number(valueToSubmit.IDType);
     return valueToSubmit;
   }
 
@@ -107,21 +108,11 @@ export class TeacherUpdateModalComponent implements OnInit {
           this.successMessage = 'Submit success!'
         },
         (err) => {
-
           console.log(err)
-
         }
-
-
-
       )
     }
   }
-
-  subscribtion(res, err) {
-
-  }
-
 
 
   checkGender(valueToSubmit) {

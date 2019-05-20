@@ -33,8 +33,8 @@
 
       <div class="col-5">
         <div>
-          <label class="mt-2">Lesson Quantity</label>
-          <input class="form-control" type="number" min="0" formControlName="LessonQuantity"/>
+          <label class="mt-2">Lesson Quantity (Price: {{coursePrice}})</label>
+          <input class="form-control" type="number" min="0" formControlName="LessonQuantity" (change)='changeQuantity()'/>
           <!-- <small *ngIf="invoiceEditForm.get('LessonQuantity').touched">(Lesson quantity)</small> -->
         </div>
         <div>
@@ -162,6 +162,9 @@
   </div>
   <!-- modal-body -->
   <div class="container">
+    <div class="d-flex justify-content-center">
+        <p class='text-danger' *ngIf="originPrice !== userChosenPrice">The original lesson fee is {{originPrice}}, you have changed to {{userChosenPrice}}, please confirm</p>
+    </div>
     <div class="d-flex justify-content-center">
       <p>Please click send button by update this invoice to database</p>
     </div>

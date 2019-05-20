@@ -132,18 +132,22 @@ export class AdminLearnerPaymentInvoiceComponent implements OnInit {
           }
         );
     }
+    // change payment clearing message
+    changePayment(){
+      this.errMsgM = false;
+    }
     // valid payment method
     validMethodI(contentP, item, j) {
-      switch (true) {
-        case this.invoiceForm.invalid === true :
-          this.errMsgM = true;
-        case this.invoiceForm.value.owing <= 0 || this.invoiceForm.value.owing > this.dataInvoice[j].OwingFee :
-          this.errMsgO = true;
-        break;
-        default:
-          this.openP(contentP, item);
-          break;
+      if(this.invoiceForm.controls.paymentMethodI.invalid === true){
+        this.errMsgM = true;
       }
+      if (this.invoiceForm.value.owing <= 0 || (this.invoiceForm.value.owing > this.dataInvoice[j].OwingFee)){
+        this.errMsgO = true;
+      }
+      if(this.errMsgM || this.errMsgO){
+        return;
+      }
+      this.openP(contentP, item);
     //   if(this.invoiceForm.invalid || this.invoiceForm.value.owing === 0) {
     //     this.errMsgM = true;
     //     for (let i in this.invoiceForm.controls){
@@ -196,10 +200,9 @@ export class AdminLearnerPaymentInvoiceComponent implements OnInit {
       //   'width':'800',
       //   'elementHandlers': specialElementHandlers
       // })
+
       let invDetail = this.dataInvoice[j];
       let count = 1;
-
-
       // Landscape export, 2×4 inches
       let doc = new jsPDF({
         orientation: 'landscape',
@@ -220,11 +223,11 @@ export class AdminLearnerPaymentInvoiceComponent implements OnInit {
       doc.text(`${invDetail.LessonNoteFeeName}`, 35, 70);
       doc.text(`$${invDetail.NoteFee}`,170,70);
       invDetail.Other1FeeName === null? count = 1 : doc.text(`Others: ${invDetail.Other1FeeName}`,35,80);
-      invDetail.Other1Fee === null? count = 1 : doc.text(`$${invDetail.Other1Fee}`,175,80);
+      invDetail.Other1Fee === null? count = 1 : doc.text(`$${invDetail.Other1Fee}`,170,80);
       invDetail.Other2FeeName === null? count = 1 : doc.text(`${invDetail.Other2FeeName}`,35,90);
-      invDetail.Other2Fee===null? count = 1: doc.text(`$${invDetail.Other2Fee}`,175,90);
+      invDetail.Other2Fee===null? count = 1: doc.text(`$${invDetail.Other2Fee}`,170,90);
       invDetail.Other3FeeName===null? count = 1: doc.text(`${invDetail.Other3FeeName}`,35,100);
-      invDetail.Other3Fee===null? count = 1 : doc.text(`$${invDetail.Other3Fee}`,175,100);
+      invDetail.Other3Fee===null? count = 1 : doc.text(`$${invDetail.Other3Fee}`,170,100);
       // //total
       doc.setFontSize(25);
       doc.text(`TOTAL:$ ${invDetail.TotalFee}`,30,120);
@@ -232,6 +235,7 @@ export class AdminLearnerPaymentInvoiceComponent implements OnInit {
       doc.text(`Due Date: ${invDetail.DueDate}`,30, 130);
       doc.text(`Thank You!`,30,145);
       doc.save(`${this.learner.FirstName}  ${this.learner.LastName}'s invoice ${this.getCurrentDate()}`);
+
     }
 
 
@@ -245,14 +249,15 @@ export class AdminLearnerPaymentInvoiceComponent implements OnInit {
     // make sure the data allignment
     incaseDateIsNull(){
       this.dataInvoice.forEach(element => {
-        element.LessonQuantity === null? element.LessonQuantity = 'Quantity of lesson is not aviable' : element.LessonQuantity = element.LessonQuantity;
-        element.CourseName === null? element.CourseName = 'Course Name is not aviable' : element.CourseName = element.CourseName;
-        element.LessonFee === null? element.LessonFee = 'Lesson Fee is not aviable' : element.LessonFee = element.LessonFee;
-        element.BeginDate === null? element.BeginDate = 'Begin Date is not aviable' : element.BeginDate = element.BeginDate;
-        element.ConcertFeeName === null? element.ConcertFeeName = 'Concert is not aviable' : element.ConcertFeeName = element.ConcertFeeName;
-        element.LessonNoteFeeName === null? element.LessonNoteFeeName = 'Note is not aviable' : element.LessonNoteFeeName = element.LessonNoteFeeName;
-        element.NoteFee === null? element.NoteFee = 'Note fee is not aviable' : element.NoteFee = element.NoteFee;
-        element.ConcertFee === null? element.ConcertFee = 'Concert Fee is not aviable' : element.ConcertFee = element.ConcertFee;
+        element.DueDate === null? element.DueDate = 'none' : element.DueDate = element.DueDate;
+        element.LessonQuantity === null? element.LessonQuantity = 'Quantity of lesson is not available' : element.LessonQuantity = element.LessonQuantity;
+        element.CourseName === null? element.CourseName = 'Course Name is not available' : element.CourseName = element.CourseName;
+        element.LessonFee === null? element.LessonFee = 'Lesson Fee is not available' : element.LessonFee = element.LessonFee;
+        element.BeginDate === null? element.BeginDate = 'none' : element.BeginDate = element.BeginDate;
+        element.ConcertFeeName === null? element.ConcertFeeName = 'Concert is not available' : element.ConcertFeeName = element.ConcertFeeName;
+        element.LessonNoteFeeName === null? element.LessonNoteFeeName = 'Note is not available' : element.LessonNoteFeeName = element.LessonNoteFeeName;
+        element.NoteFee === null? element.NoteFee = 'Note fee is not available' : element.NoteFee = element.NoteFee;
+        element.ConcertFee === null? element.ConcertFee = 'Concert Fee is not available' : element.ConcertFee = element.ConcertFee;
         console.log(element.CourseName)
       });
     }
