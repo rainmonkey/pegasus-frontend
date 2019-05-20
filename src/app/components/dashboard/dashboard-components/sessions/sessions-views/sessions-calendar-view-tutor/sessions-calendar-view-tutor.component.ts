@@ -5,7 +5,7 @@ import {CalendarComponent} from 'ng-fullcalendar';
 declare let $: any;
 import timeGridPlugin from '@fullcalendar/timegrid';
 import Swal from 'sweetalert2';
-import {SessionsService} from '../../../../../services/http/sessions.service';
+import {SessionsService} from '../../../../../../services/http/sessions.service';
 
 @Component({
   selector: 'app-sessions-calendar-view-tutor',
