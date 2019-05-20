@@ -126,7 +126,9 @@ import { CourseClassDetailModalComponent } from './components/dashboard/dashboar
     TestoneComponent,
     SessionCancelModalComponent,
     SessionTutorReportModalComponent,
-    SessionCompletedModalComponent
+    SessionCompletedModalComponent,
+    CourseClassListComponent,
+    CourseClassDetailModalComponent
   ],
   imports: [
     NgbModule,
