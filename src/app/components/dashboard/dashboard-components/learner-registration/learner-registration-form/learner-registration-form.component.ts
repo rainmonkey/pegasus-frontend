@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { FormGroup, FormArray, FormBuilder, Validators } from '@angular/forms';
 import { LearnerRegistrationService } from '../../../../../services/http/learner-registration.service';
 import { CoursesService } from '../../../../../services/http/courses.service';
@@ -10,6 +10,8 @@ import { NgbTimeStruct, NgbTimeAdapter } from '@ng-bootstrap/ng-bootstrap';
   styleUrls: ['./learner-registration-form.component.css']
 })
 export class LearnerRegistrationFormComponent implements OnInit {
+  // @Input() receivedParentMessage: any;
+  // receivedChildMessage: any;
   public time: NgbTimeStruct = {hour: 9, minute: 0, second: 0};
   public hourStep = 1;
   public minuteStep = 15;
@@ -37,20 +39,22 @@ export class LearnerRegistrationFormComponent implements OnInit {
   public learner: any;
   public parent = [];
   public fdObj = {};
-  public isGroupCourse: boolean = false;
-  public isCustomCourse: boolean = true;
+  public isGroupCourse: boolean = true;
+  public isCustomCourse: boolean = false;
   public tempGroupCourseObj = {};
   public groupCourseInstanceId: number;
   public learnerGroupCourse: Array<any> = [];
   public selectedCheckbox: boolean;
   public newGroupCourse: Array<any>;
+  public coursesCategory: any[];
   public courses: any[];
   public oneOnOneCourse: Array<any> = [];
   public courseTime: any;
   public learnerOthers: any[] = [];
   public learnerlevelType: any;
   public duration: Array<any>;
-  public filterCourse: Array<any>;
+  public selectlearnerLevel: number;
+  public pureCourses: any[];
 
   // getter method: simplify the way to capture form controls
   get firstName() { return this.registrationForm.get('learnerForm').get('firstName'); }
@@ -71,30 +75,30 @@ export class LearnerRegistrationFormComponent implements OnInit {
   ngOnInit() {
     this.registrationForm = this.fb.group({
       learnerForm: this.fb.group({
-        firstName: ['Tom', Validators.required],
-        middleName: ['x'],
-        lastName: ['Li', Validators.required],
-        gender: ['1', Validators.required],
+        firstName: ['www', Validators.required],
+        middleName: ['e'],
+        lastName: ['li', Validators.required],
+        gender: ['2', Validators.required],
         birthday: ['2018-01-01'],
         enrollmentDate: ['2018-12-21'],
         contactPhone: ['012345678'],
-        email: ['rrrrrr@gamil.com', [Validators.required, Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$')]],
-        address: ['110 Station'],
+        email: ['jijoir@gamil.com', [Validators.required, Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$')]],
+        address: ['1188 Station'],
         photo: [''],
         grade: [''],
         learnPurpose: [''],
         infoFrom: [''],
-        learnerLevel: [this.learnerLevel],
+        learnerLevel: [this.selectlearnerLevel],
         location: [''],
         levelType: [this.learnerlevelType],
       }),
       parentForm: this.fb.array([
         this.fb.group({
-          firstName: ['Ivy', Validators.required],
-          lastName: ['Chen', Validators.required],
-          relationship: ['1', Validators.required],
-          contactPhone: ['6789900', Validators.required],
-          email: ['ivychen@gmail.com', [Validators.required, Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$')]]
+          firstName: ['uiy', Validators.required],
+          lastName: ['ye', Validators.required],
+          relationship: ['2', Validators.required],
+          contactPhone: ['9989900', Validators.required],
+          email: ['ivfkhhkn@gmail.com', [Validators.required, Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$')]]
         })
       ]),
       groupCourse: this.fb.array([]),
@@ -117,9 +121,9 @@ export class LearnerRegistrationFormComponent implements OnInit {
     });
 
     // // initialize card display
-    document.getElementById('learnerForm').style.display = 'none';
+    document.getElementById('learnerForm').style.display = 'block';
     document.getElementById('parentForm').style.display = 'none';
-    document.getElementById('courseForm').style.display = 'block';
+    document.getElementById('courseForm').style.display = 'none';
   
     this.getGroupCourseFromServer();
     this.getLookups(1);
@@ -138,7 +142,9 @@ export class LearnerRegistrationFormComponent implements OnInit {
       this.courseTime = `${this.pad(time.hour)}:${this.pad(time.minute)}:${this.pad(time.second)}`;
     }
   }
-
+  // getMessage(message: any) {
+  //   this.receivedChildMessage = message;
+  // }
   // encapsulate files form data
   uploadPhoto(event: any) {
     this.selectedPhoto = <File>event.target.files[0];
@@ -153,42 +159,14 @@ export class LearnerRegistrationFormComponent implements OnInit {
   getCoursesFromServer() {
     this.coursesService.getCourses().subscribe(
       (data) => {
-        this.courses = data.Data;
-        console.log('alllllcourses', this.courses)
+        this.pureCourses = data.Data;
+        console.log('courses', this.pureCourses)
+        this.coursesCategory = data.Data.map(item => item.CourseCategoryId)
+          .map((e, i, final) => final.indexOf(e) === i && i)
+          .filter(e => data.Data [e]).map(e => data.Data[e]);
+        console.log('courses category', this.coursesCategory)
+        // const unique = [... new Set(this.courses.map(item => item.CourseCategoryId))]
       })
-    //     this.courses = data.Data.filter((obj, pos, arr) => {
-    //       arr.map((mapObj,i) => 
-    //         mapObj['CourseCategoryId'].indexOf(obj['CourseCategoryId']) === pos) 
-    //       }
-    //       )
-    //   },
-    //   console.log('unique course', this.courses)
-    //   )
-        // let tempArray = data.Data;
-      //   let set = new Set();
-      //   this.courses = data.Data.map((v, index) => {
-      //     if(set.has(v.CourseCategoryId)) {
-      //       return false
-      //   } else {
-      //       set.add(v.CourseCategoryId);
-      //       return index;
-      //   } 
-      //  }).filter(e => e).map(e => data.Data[e]);
-     
-      // })
-        // for(let courseCategory of data.Data) {
-        //   let tempObj = {}
-        //   tempObj = courseCategory.CourseCategory;
-        //   tempArray.push(tempObj);
-        // };
-        // console.log('bbbb', tempArray)
-        // console.log('all course from server', tempArray)
-        // let uniqueCourse = tempArray.filter((item, index) => tempArray.indexOf(item.CourseCategoryId) === index);
-        // let uniqueCourse = tempArray.reduce((unique, item) => unique.includes(item)?unique:[...unique, item]);
-        // this.courses = uniqueCourse;
-        // console.log('unique course', uniqueCourse)
-    //   }
-    // )
   }
   getLookups(id: number) {
     // this.registrationService.getLookups(1)
@@ -246,19 +224,15 @@ export class LearnerRegistrationFormComponent implements OnInit {
           console.log('level type err', err);
         }
       );
-    this.registrationService.getLookups(8)
-      .subscribe(
-        data => {
-          console.log('duration', data);
-          this.duration = data.Data;
-        },
-        err => {
-          console.log('duration err', err);
-        }
-      )
   }
-  selectLlevel() {
+  selectLearnerLevel(value) {
     this.isSelectedLevel = ! this.isSelectedLevel;
+    this.selectlearnerLevel = value;
+    console.log('select learner level', value);
+    // let a = this.courses.filter((e) =>  this.selectlearnerLevel == e.Level);
+    this.courses = this.pureCourses.filter((e) =>  e.Level == this.selectlearnerLevel && e.CourseType == 1);
+    console.log('courses filter', this.courses)
+      
   }
   selectLearnerPurpose(i, event) {
     this.learnerPurpose[i].isChecked = event.target.checked;
@@ -355,22 +329,12 @@ export class LearnerRegistrationFormComponent implements OnInit {
     this.teacherName = tempArray[0].teacher;
     console.log('teacherName', this.teacherName)
   }
-  selectLtype(value) {
+  selectLevelType(value) {
     this.learnerlevelType = value;
     console.log('learner type', this.learnerlevelType)
   }
   selectCourse(value) {
-    console.log('courseId', value); 
-    this.coursesService.getCourses().subscribe(
-      (data) => {
-        let tempArray = data.Data.filter((item) => (item.CourseCategory.CourseCategoryId) == value);
-        this.filterCourse = tempArray;
-        console.log('filter course', this.filterCourse);
-      }
-    )
-  }
-  selectDuration(value) {
-    console.log('duration', value);
+    
   }
   confirmCustomCourse() {
     let cs = this.customCourse.value;
@@ -417,7 +381,7 @@ export class LearnerRegistrationFormComponent implements OnInit {
     this.fdObj['Email']=this.learner.email;
     this.fdObj['Address']= this.learner.address;
     this.fdObj['OrgId'] = this.learner.location;
-    this.fdObj['LearnerLevel'] = this.learner.learnerLevel;
+    this.fdObj['LearnerLevel'] = this.selectlearnerLevel;
     this.fdObj['LevelType'] = this.learnerlevelType;
     // encapsulate parent form data
     // console.log('submit', this.parentForm.value)
