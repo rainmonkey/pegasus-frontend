@@ -22,8 +22,10 @@ export class TeacherUpdateModalComponent implements OnInit {
   }
 
   onSubmit() {
+    let valueToSubmit = this.modalUpdateFormComponentObj.updateForm.value;
+    console.log(valueToSubmit)
     this.showLoadingGif();
-    let vailadValue = this.checkInputVailad();
+    let vailadValue = this.checkInputVailad(valueToSubmit);
     if (vailadValue !== null) {
       this.stringifySubmitStr(vailadValue)
     }
@@ -36,8 +38,8 @@ export class TeacherUpdateModalComponent implements OnInit {
   /*
     check whether data vailad or not(ruled by Validators).
   */
-  checkInputVailad() {
-    let valueToSubmit = this.modalUpdateFormComponentObj.updateForm.value;
+  checkInputVailad(valueToSubmit) {
+    console.log(this.modalUpdateFormComponentObj.updateForm.value.Gender)
     //once click save btn, touch all inputs form with for-loop. In order to trigger Validator
     for (let i in this.modalUpdateFormComponentObj.updateForm.controls) {
       this.modalUpdateFormComponentObj.updateForm.controls[i].touched = true;
@@ -47,6 +49,7 @@ export class TeacherUpdateModalComponent implements OnInit {
       return this.prepareSubmitData(valueToSubmit);
     }
     else {
+      this.successMessage = '';
       this.errorMessage = 'Please check your input.'
       return null;
     }
@@ -57,11 +60,13 @@ export class TeacherUpdateModalComponent implements OnInit {
     this method is used to convert data to correct type.
   */
   prepareSubmitData(valueToSubmit) {
-    valueToSubmit.Gender = this.checkGender(valueToSubmit);
+    valueToSubmit.Gender = this.checkGender();
     valueToSubmit.Language = this.checkLanguages();
+    console.log('a')
     valueToSubmit.DayOfWeek = this.checkOrgs();
     valueToSubmit.Qualificatiion = this.checkQualifications(valueToSubmit);
     valueToSubmit.IDType = Number(valueToSubmit.IDType);
+    //console.log(valueToSubmit)
     return valueToSubmit;
   }
 
@@ -69,7 +74,7 @@ export class TeacherUpdateModalComponent implements OnInit {
     after stringify submition string, data is ready to submit
   */
   stringifySubmitStr(vailadValue) {
-    console.log(vailadValue)
+    //console.log(vailadValue)
     this.errorMessage = '';
     let submit = new FormData();
     submit.append('details', JSON.stringify(vailadValue));
@@ -115,14 +120,13 @@ export class TeacherUpdateModalComponent implements OnInit {
   }
 
 
-  checkGender(valueToSubmit) {
-    switch (valueToSubmit.Gender) {
-      case 'Female':
+  checkGender() {
+    let gender = this.modalUpdateFormComponentObj.genderToSubmit.nativeElement.value;
+    switch (gender){
+      case "Female":
         return 0;
-      case 'Male':
+      case "Male":
         return 1;
-      case 'Other':
-        return 2;
     }
   }
 
@@ -148,7 +152,6 @@ export class TeacherUpdateModalComponent implements OnInit {
     let temBranchesList = [[], [], [], [], [], [], []];
 
     for (let i of temBranches) {
-      console.log(i.nativeElement.name)
       if (i.nativeElement.checked == true) {
         if (i.nativeElement.name == 'Monday') {
           temBranchesList[0].push(Number(i.nativeElement.defaultValue))
@@ -156,7 +159,7 @@ export class TeacherUpdateModalComponent implements OnInit {
         if (i.nativeElement.name == 'Tuesday') {
           temBranchesList[1].push(Number(i.nativeElement.defaultValue))
         }
-        if (i.nativeElement.name == 'Wednsday') {
+        if (i.nativeElement.name == 'Wednesday') {
           temBranchesList[2].push(Number(i.nativeElement.defaultValue))
         }
         if (i.nativeElement.name == 'Thursday') {
@@ -165,7 +168,7 @@ export class TeacherUpdateModalComponent implements OnInit {
         if (i.nativeElement.name == 'Friday') {
           temBranchesList[4].push(Number(i.nativeElement.defaultValue))
         }
-        if (i.nativeElement.name == 'Satday') {
+        if (i.nativeElement.name == 'Saturday') {
           temBranchesList[5].push(Number(i.nativeElement.defaultValue))
         }
         if (i.nativeElement.name == 'Sunday') {
@@ -173,6 +176,7 @@ export class TeacherUpdateModalComponent implements OnInit {
         }
       }
     }
+    console.log(temBranchesList)
     return temBranchesList;
   }
 

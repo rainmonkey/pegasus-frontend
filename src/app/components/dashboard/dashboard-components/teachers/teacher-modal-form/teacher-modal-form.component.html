@@ -81,7 +81,7 @@
                         *ngIf='updateForm.get("Dob").invalid && updateForm.get("Dob").touched && updateForm.get("Dob").errors?.required'>required</small>
                     </div>
                     <div class='col-6'>
-                      <label for='Gender' style='margin-left: 10px;margin-right:10px' class='t_mf_label'>Gender:</label>
+                      <label for='Gender' style='margin-left: 10px;margin-right:10px' class='t_mf_label' (click)='a()'>Gender:</label>
                       <small class='text-danger col-12 errorfontsmall' style='text-align: center'
                         *ngIf='updateForm.get("Gender").invalid && updateForm.get("Gender").touched && updateForm.get("Gender").errors?.required'>required</small>
                     </div>
@@ -94,11 +94,11 @@
                         [class.t_mf_error_border]='updateForm.get("Dob").invalid && updateForm.get("Dob").touched'>
                     </div>
                     <div class='col-6'>
-                      <select name='Gender' type="text" style='margin-left: 10px' class='col-12 t_mf_input'
+                      <select #genderToSubmit name='Gender' type="text" style='margin-left: 10px' class='col-12 t_mf_input'
                         formControlName='Gender'
                         [class.t_mf_error_border]='updateForm.get("Gender").invalid && updateForm.get("Gender").touched'>
-                        <option value="Female">Female</option>
                         <option value="Male">Male</option>
+                        <option value="Female">Female</option>
                       </select>
                     </div>
                   </div>

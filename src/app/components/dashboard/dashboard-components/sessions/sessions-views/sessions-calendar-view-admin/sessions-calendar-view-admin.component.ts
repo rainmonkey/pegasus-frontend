@@ -9,7 +9,7 @@ import {NgbModal, NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import Swal from 'node_modules/sweetalert2/dist/sweetalert2.all.min.js';
 import {FormBuilder, FormGroup} from '@angular/forms';
 import { SessionsService } from 'src/app/services/http/sessions.service';
-// import {SessionEditModalComponent} from '../../session-modals/session-edit-modal/session-edit-modal.component';
+import {SessionDetailEditModalComponent} from '../../session-modals/session-detail-edit-modal/session-detail-edit-modal.component';
 
 @Component({
   selector: 'app-sessions-calendar-view-admin',
@@ -67,14 +67,16 @@ export class SessionsCalendarViewAdminComponent implements OnInit {
             }
           ).then(result => {
             if (result.value) {
-              // this.modalService.open(SessionEditModalComponent, { size: 'lg' });
+              this.modalService.open(SessionDetailEditModalComponent, { size: 'lg' });
             }
           });
         },
         resources: this.resourceData,
+        displayEventTime: false,
         events: this.eventData,
         aspectRatio: 1.8,
         timeZone: 'UTC',
+        allDaySlot: false,
         defaultView: 'resourceTimeGridDay',
         schedulerLicenseKey: 'GPL-My-Project-Is-Open-Source',
         minTime: '08:00',
@@ -85,16 +87,12 @@ export class SessionsCalendarViewAdminComponent implements OnInit {
           resourceTimeGridDay: {
             buttonText: 'Day',
             slotDuration: '00:15'
-          },
-          resourceTimeGridWeek: {
-            buttonText: 'Week',
-            duration: {days: 7}
           }
         },
         header: {
           left: 'today prev,next DayPickerButton',
           center: 'title',
-          right: 'resourceTimeGridDay resourceTimeGridWeek'
+          right: 'resourceTimeGridDay'
         },
         plugins: [timeslot, interactionPlugin]
       };
@@ -112,7 +110,8 @@ export class SessionsCalendarViewAdminComponent implements OnInit {
   }
   generateEventData = (data) => {
     data.forEach(s => {
-      s.title += '\nTutor: ' + s.teacher;
+      s.title = '(' + s.title + ')';
+      s.title += ' Tutor: ' + s.teacher;
       if (s.IsGroup === false) {
         s.title += '\nLearner: ' + s.student[0];
       }
