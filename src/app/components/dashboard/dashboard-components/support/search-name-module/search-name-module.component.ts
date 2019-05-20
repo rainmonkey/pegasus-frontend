@@ -22,7 +22,7 @@ export class SearchNameModuleComponent implements OnInit {
   // ng-modal variable
   closeResult: string;
 
-  @ViewChildren('FirstNameValue') firstNameValue;
+  // @ViewChildren('FirstNameValue') firstNameValue;
 
   constructor(
     private modalService: NgbModal,

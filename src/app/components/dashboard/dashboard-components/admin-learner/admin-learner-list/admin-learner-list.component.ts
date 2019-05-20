@@ -42,13 +42,13 @@ export class AdminLearnerListComponent implements OnInit {
     this.LearnerListService.getLearnerList().subscribe(
       (res) =>  {
         console.log(res)
-        //@ts-ignore
-       this.learnerList = res.Data;
-       //@ts-ignore
-       this.learnerListCopy = this.learnerList;
-       //@ts-ignore
-       this.learnerListLength=res.Data.length;
-
+       // @ts-ignore
+        this.learnerList = res.Data;
+        // @ts-ignore
+        this.learnerListCopy = this.learnerList;
+        // @ts-ignore
+        this.learnerListLength =res.Data.length;
+       
       },
     (err) => {
       console.log(err); this.errorMessage="Wrong"
