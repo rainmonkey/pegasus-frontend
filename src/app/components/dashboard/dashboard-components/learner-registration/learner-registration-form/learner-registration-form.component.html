@@ -101,11 +101,11 @@
                 <span>Did you take exam before?</span><br>
                 <div class="d-inline-flex" *ngFor="let levelType of levelType; let i=index">
                   <div *ngIf="i == 0" class="form-check">
-                      <input class="form-check-input" name="levelType" id="ABRSM" type="radio" [value]="levelType.PropValue" checked>
+                      <input class="form-check-input" (click)="selectLtype($event.target.value)" name="levelType" type="radio" [value]="levelType.PropValue" checked>
                       <label class="form-check-label" for="ABRSM">ABRSM</label> 
                   </div>
                   <div *ngIf="i != 0" class="form-check">
-                    <input class="form-check-input" name="levelType" id="levelType" type="radio" [value]="levelType.PropValue">
+                    <input class="form-check-input" (click)="selectLtype($event.target.value)" name="levelType" type="radio" [value]="levelType.PropValue">
                     <label class="form-check-label" for="levelType">{{levelType.PropName}}</label> 
                   </div>
                 </div>
@@ -118,16 +118,17 @@
         </div>
         <div class="learn purpose">
           <span class="text-primary">Why do you learn the piano?</span><br>
-          <div class="d-inline-flex" *ngFor="let learnerPurpose of learnerPurpose; let i = index">
-            <input type="checkbox" (click)="selectLearnerPurpose(i, $event)" [value]="learnerPurpose.PropValue">&nbsp;&nbsp;
-            <label>{{learnerPurpose.PropName}}</label>
+          <div class="d-inline-block mx-3" *ngFor="let learnerPurpose of learnerPurpose; let i = index">
+              <input type="checkbox" (click)="selectLearnerPurpose(i, $event)" [value]="learnerPurpose.PropValue">&nbsp;&nbsp;
+              <label>{{learnerPurpose.PropName}}</label>
           </div>
         </div>
    
         <div class="how know us">
           <span class="text-primary">How do you know about us?</span><br>
-          <div class="d-inline-flex" *ngFor="let howKnown of howKnown; let i = index">
-              <input type="checkbox" (click)="selectHowKnown(i, $event)" [value]="howKnown.PropValue"><label>{{howKnown.PropName}}</label>
+          <div class="d-inline-block mx-3" *ngFor="let howKnown of howKnown; let i = index">
+              <input type="checkbox" (click)="selectHowKnown(i, $event)" [value]="howKnown.PropValue">&nbsp;&nbsp;
+              <label>{{howKnown.PropName}}</label>
           </div>
         <!-- <br>
           <span  class="text-info">Newspapers or Magazines:</span>
@@ -283,12 +284,17 @@
               <button class="btn_delete" (click)="deleteCustomCourse()">Delete</button>
             </div>
             <div class="selectCourse-yourLever row">
-              <div class="col-12">
-                <label for="course">Course</label>
-                <select class="form-control" formControlName="course" id="course">
-                  <!-- more details about -->
-                  <option *ngFor="let course of courses" [value]="course.courseId">{{course.courseName}}</option>
+              <div class="col-sm-6 col-md-6">
+                <label for="course">Course Category</label>
+                <select class="form-control"  formControlName="courseCategory" (change)="selectCourse($event.target.value)">
+                  <option *ngFor="let course of courses" [value]="course.CourseCategory.CourseCategoryId">{{course.CourseCategory.CourseCategoryName}}</option>
                 </select>
+              </div>
+              <div class="col-sm-6 col-md-6">
+                  <label for="course">Course</label>
+                  <select class="form-control" (change)="selectDuration($event.target.value)" formControlName="course">
+                    <option *ngFor="let course of filterCourse" [value]="course.CourseId">{{course.CourseName}}</option>
+                  </select>
               </div>
             </div>
             <div class="location-teacherLevel row">
@@ -304,29 +310,32 @@
                   <option *ngFor="let tlevel of teacherLevel; let i = index" [value]="i">{{tlevel.levelName}}</option>
                 </select>
               </div>    
-              <div class="col-sm-6 col-md-6">
-                <label for="teacherName">Teacher Name</label>
-                <select class="form-control" formControlName="teacherName" id="teacherName">
-                  <option *ngFor="let tName of teacherName; let i = index" [value]="tName.TeacherId">{{tName.TeacherName}}</option>
-                </select>
-              </div>
             </div>
             <div class="courseDay-courseHour row">
-              <div class="col-sm-4 col-md-4">
+                <div class="col-sm-6 col-md-6">
+                    <label for="teacherName">Teacher Name</label>
+                    <select class="form-control" formControlName="teacherName" id="teacherName">
+                      <option *ngFor="let tName of teacherName; let i = index" [value]="tName.TeacherId">{{tName.TeacherName}}</option>
+                    </select>
+                  </div>
+              <div class="col-sm-6 col-md-6">
                 <label for="room">Room No.</label>
                 <select class="form-control" formControlName="room" name="room" id="room">
                   <option *ngFor="let cRoom of customCourseRoom" [value]="cRoom.RoomId">{{cRoom.RoomName}}</option>
                 </select>
               </div>
-              <div class="col-sm-4 col-md-4">
+            </div> 
+            <div class="beginDate row">
+              <div class="col-sm-6 col-md-6">
                 <label for="startDate" >Start Date</label>
                 <input class="form-control" formControlName="beginDate" type="date" id="startDate" >
               </div>
-              <div class="col-sm-4 col-md-4">
+              <div class="col-sm-6 col-md-6">
                 <label for="endDate">End Date</label>
                 <input class="form-control" formControlName="endDate" type="date" id="endDate">
               </div>
             </div>
+          
             <div class="row" formGroupName="schedule">
               <div class="col-sm-6 col-md-6">
                   <label for="customday">Course day</label>
@@ -341,7 +350,7 @@
                   </select>
                 </div>
               <div class="col-sm-6 col-md-6">
-                <label for="customTime">Course Time</label>
+                <span><label for="customTime">Course Time</label></span>
                 <ngb-timepicker [ngModelOptions]="{standalone: true}" [(ngModel)]="time" [size]="'small'" [hourStep]="hourStep" [minuteStep]="minuteStep" ></ngb-timepicker>
               </div>                   
             </div>

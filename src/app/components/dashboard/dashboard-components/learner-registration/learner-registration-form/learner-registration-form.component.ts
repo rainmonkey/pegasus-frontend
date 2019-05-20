@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormArray, FormBuilder, Validators } from '@angular/forms';
 import { LearnerRegistrationService } from '../../../../../services/http/learner-registration.service';
+import { CoursesService } from '../../../../../services/http/courses.service';
 import { NgbTimeStruct, NgbTimeAdapter } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
@@ -43,14 +44,13 @@ export class LearnerRegistrationFormComponent implements OnInit {
   public learnerGroupCourse: Array<any> = [];
   public selectedCheckbox: boolean;
   public newGroupCourse: Array<any>;
-  public courses: any[] = [
-    {courseId: 1, courseName: 'piano'},
-    {courseId: 2, courseName: 'drum'},
-    {courseId: 3, courseName: 'guitar'},
-  ];
+  public courses: any[];
   public oneOnOneCourse: Array<any> = [];
   public courseTime: any;
   public learnerOthers: any[] = [];
+  public learnerlevelType: any;
+  public duration: Array<any>;
+  public filterCourse: Array<any>;
 
   // getter method: simplify the way to capture form controls
   get firstName() { return this.registrationForm.get('learnerForm').get('firstName'); }
@@ -64,7 +64,8 @@ export class LearnerRegistrationFormComponent implements OnInit {
 
   constructor(
     private fb: FormBuilder,
-    private registrationService: LearnerRegistrationService
+    private registrationService: LearnerRegistrationService,
+    private coursesService: CoursesService,
   ) { }
 
   ngOnInit() {
@@ -83,9 +84,9 @@ export class LearnerRegistrationFormComponent implements OnInit {
         grade: [''],
         learnPurpose: [''],
         infoFrom: [''],
-        learnerLevel: [''],
+        learnerLevel: [this.learnerLevel],
         location: [''],
-        levelType: [''],
+        levelType: [this.learnerlevelType],
       }),
       parentForm: this.fb.array([
         this.fb.group({
@@ -99,6 +100,7 @@ export class LearnerRegistrationFormComponent implements OnInit {
       groupCourse: this.fb.array([]),
       customCourse: this.fb.array([
         this.fb.group({
+          courseCategory: [''],
           course: [''],
           teacherName: [''],                          
           location: [''],
@@ -115,15 +117,16 @@ export class LearnerRegistrationFormComponent implements OnInit {
     });
 
     // // initialize card display
-    document.getElementById('learnerForm').style.display = 'block';
+    document.getElementById('learnerForm').style.display = 'none';
     document.getElementById('parentForm').style.display = 'none';
-    document.getElementById('courseForm').style.display = 'none';
+    document.getElementById('courseForm').style.display = 'block';
   
     this.getGroupCourseFromServer();
     this.getLookups(1);
     this.getOrgs(); 
     this.getCustomCourseFromServer();
     this.toModel(this.time);
+    this.getCoursesFromServer();
   }
   private pad(i: number): string {
     return i < 10 ? `0${i}` : `${i}`;
@@ -139,14 +142,54 @@ export class LearnerRegistrationFormComponent implements OnInit {
   // encapsulate files form data
   uploadPhoto(event: any) {
     this.selectedPhoto = <File>event.target.files[0];
-    // console.log('photo', this.selectedPhoto);
+    console.log('photo', this.selectedPhoto);
     this.fd.append('photo', this.selectedPhoto);
   }
   uploadGrade(event: any) {
     this.selectedGrade = <File>event.target.files[0];
-    // console.log('ABRSM', this.selectedGrade);
+    console.log('ABRSM', this.selectedGrade);
     this.fd.append('ABRSM', this.selectedGrade);
   } 
+  getCoursesFromServer() {
+    this.coursesService.getCourses().subscribe(
+      (data) => {
+        this.courses = data.Data;
+        console.log('alllllcourses', this.courses)
+      })
+    //     this.courses = data.Data.filter((obj, pos, arr) => {
+    //       arr.map((mapObj,i) => 
+    //         mapObj['CourseCategoryId'].indexOf(obj['CourseCategoryId']) === pos) 
+    //       }
+    //       )
+    //   },
+    //   console.log('unique course', this.courses)
+    //   )
+        // let tempArray = data.Data;
+      //   let set = new Set();
+      //   this.courses = data.Data.map((v, index) => {
+      //     if(set.has(v.CourseCategoryId)) {
+      //       return false
+      //   } else {
+      //       set.add(v.CourseCategoryId);
+      //       return index;
+      //   } 
+      //  }).filter(e => e).map(e => data.Data[e]);
+     
+      // })
+        // for(let courseCategory of data.Data) {
+        //   let tempObj = {}
+        //   tempObj = courseCategory.CourseCategory;
+        //   tempArray.push(tempObj);
+        // };
+        // console.log('bbbb', tempArray)
+        // console.log('all course from server', tempArray)
+        // let uniqueCourse = tempArray.filter((item, index) => tempArray.indexOf(item.CourseCategoryId) === index);
+        // let uniqueCourse = tempArray.reduce((unique, item) => unique.includes(item)?unique:[...unique, item]);
+        // this.courses = uniqueCourse;
+        // console.log('unique course', uniqueCourse)
+    //   }
+    // )
+  }
   getLookups(id: number) {
     // this.registrationService.getLookups(1)
     //   .subscribe(
@@ -201,6 +244,16 @@ export class LearnerRegistrationFormComponent implements OnInit {
         },
         err => {
           console.log('level type err', err);
+        }
+      );
+    this.registrationService.getLookups(8)
+      .subscribe(
+        data => {
+          console.log('duration', data);
+          this.duration = data.Data;
+        },
+        err => {
+          console.log('duration err', err);
         }
       )
   }
@@ -276,10 +329,10 @@ export class LearnerRegistrationFormComponent implements OnInit {
     this.registrationService.getTeacherFilter().subscribe(
       (data) => {
         this.customCourseInstance = data.Data;
-        console.log('custom course', this.customCourseInstance);
+        console.log('teacher filter', this.customCourseInstance);
       },
       (err) => {
-        console.log('custom course err', err);
+        console.log('teacher filer err', err);
       }
     )
   }
@@ -302,6 +355,23 @@ export class LearnerRegistrationFormComponent implements OnInit {
     this.teacherName = tempArray[0].teacher;
     console.log('teacherName', this.teacherName)
   }
+  selectLtype(value) {
+    this.learnerlevelType = value;
+    console.log('learner type', this.learnerlevelType)
+  }
+  selectCourse(value) {
+    console.log('courseId', value); 
+    this.coursesService.getCourses().subscribe(
+      (data) => {
+        let tempArray = data.Data.filter((item) => (item.CourseCategory.CourseCategoryId) == value);
+        this.filterCourse = tempArray;
+        console.log('filter course', this.filterCourse);
+      }
+    )
+  }
+  selectDuration(value) {
+    console.log('duration', value);
+  }
   confirmCustomCourse() {
     let cs = this.customCourse.value;
     console.log('custom Course Form value', cs);
@@ -309,7 +379,7 @@ export class LearnerRegistrationFormComponent implements OnInit {
     for(let cc of this.customCourse.value) {
       let tempObj = {};
       tempObj['CourseId'] = parseInt(cc.course);
-      tempObj['OrgId'] = parseInt(cc.location);
+      tempObj['OrgId'] = cc.location;
       tempObj['TeacherId'] = parseInt(cc.teacherName);
       tempObj['RoomId'] = parseInt(cc.room);
       tempObj['BeginDate'] = cc.beginDate;
@@ -348,6 +418,7 @@ export class LearnerRegistrationFormComponent implements OnInit {
     this.fdObj['Address']= this.learner.address;
     this.fdObj['OrgId'] = this.learner.location;
     this.fdObj['LearnerLevel'] = this.learner.learnerLevel;
+    this.fdObj['LevelType'] = this.learnerlevelType;
     // encapsulate parent form data
     // console.log('submit', this.parentForm.value)
     for (let parent of this.parentForm.value) {
@@ -408,6 +479,7 @@ export class LearnerRegistrationFormComponent implements OnInit {
   addCustomCourse(): void {
     this.customCourse.push(
       this.fb.group({
+        courseCategory: [''],
         course: [''],
         teacherName: [''],                          
         location: [''],
