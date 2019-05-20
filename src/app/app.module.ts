@@ -70,6 +70,8 @@ import { TestoneComponent } from './components/testcomponent/testone/testone.com
 import { SessionCancelModalComponent } from './components/dashboard/dashboard-components/sessions/session-modals/session-cancel-modal/session-cancel-modal.component';
 import { SessionTutorReportModalComponent } from './components/dashboard/dashboard-components/sessions/session-modals/session-tutor-report-modal/session-tutor-report-modal.component';
 import { SessionCompletedModalComponent } from './components/dashboard/dashboard-components/sessions/session-modals/session-completed-modal/session-completed-modal.component';
+import { CourseClassListComponent } from './components/dashboard/dashboard-components/courses/course-class-list/course-class-list.component';
+import { CourseClassDetailModalComponent } from './components/dashboard/dashboard-components/courses/course-class-detail-modal/course-class-detail-modal.component';
 
 @NgModule({
   declarations: [
@@ -125,6 +127,8 @@ import { SessionCompletedModalComponent } from './components/dashboard/dashboard
     SessionCancelModalComponent,
     SessionTutorReportModalComponent,
     SessionCompletedModalComponent,
+    CourseClassListComponent,
+    CourseClassDetailModalComponent,
   ],
   imports: [
     NgbModule,

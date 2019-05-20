@@ -193,9 +193,10 @@ export class TeacherInfoComponent implements OnInit {
   updateModal(command, whichTeacher) {
     const modalRef = this.modalService.open(TeacherUpdateModalComponent, { size: 'lg' });
     let that = this;
-    modalRef.result.then(function(){
-      that.ngOnInit()
-    })
+    modalRef.result.then(
+      (res)=>{console.log(res),      that.ngOnInit()
+      }
+    )
     modalRef.componentInstance.command = command;
     modalRef.componentInstance.whichTeacher = whichTeacher;
   }
