@@ -19,7 +19,7 @@ export class CoursesService {
   }
 
   update(data,courseId):any{
-    return this.http.put(this.baseUrl + 'teacher/' + courseId, data)
+    return this.http.put(this.baseUrl + 'courses/'+ courseId, data)
   }
 
   deleteCourse(courseId):any{
@@ -29,4 +29,5 @@ export class CoursesService {
   getCourseClasses(){
     return this.http.get(this.baseUrl +'') ;
   }
+
 }

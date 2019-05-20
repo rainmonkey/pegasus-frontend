@@ -8,7 +8,7 @@ import { NgModule } from '@angular/core';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { routing } from '../app/app-routing.module';
 import { FullCalendarModule } from 'ng-fullcalendar';
-import { DatePipe } from '@angular/common';
+import { DatePipe,CommonModule } from '@angular/common';
 
 // Guards
 
@@ -128,7 +128,7 @@ import { CourseClassDetailModalComponent } from './components/dashboard/dashboar
     SessionTutorReportModalComponent,
     SessionCompletedModalComponent,
     CourseClassListComponent,
-    CourseClassDetailModalComponent,
+    CourseClassDetailModalComponent
   ],
   imports: [
     NgbModule,
@@ -141,7 +141,8 @@ import { CourseClassDetailModalComponent } from './components/dashboard/dashboar
     MatFormFieldModule,
     MatInputModule,
     routing,
-    FullCalendarModule
+    FullCalendarModule,
+    CommonModule
   ],
   providers: [
     DatePipe
@@ -155,6 +156,7 @@ import { CourseClassDetailModalComponent } from './components/dashboard/dashboar
     CourseDetailModalComponent,
     SessionDetailEditModalComponent
   ],
+  exports: [AppComponent],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

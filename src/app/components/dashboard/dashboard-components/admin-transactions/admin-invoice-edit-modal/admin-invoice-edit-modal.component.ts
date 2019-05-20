@@ -26,6 +26,7 @@ export class AdminInvoiceEditModalComponent implements OnInit {
   originPrice = 0;
   userChosenPrice = 0;
 
+  // activated modal tranfer data
   @Input() item;
 
   constructor(
