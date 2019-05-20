@@ -132,18 +132,22 @@ export class AdminLearnerPaymentInvoiceComponent implements OnInit {
           }
         );
     }
+    // change payment clearing message
+    changePayment(){
+      this.errMsgM = false;
+    }
     // valid payment method
     validMethodI(contentP, item, j) {
-      switch (true) {
-        case this.invoiceForm.invalid === true :
-          this.errMsgM = true;
-        case this.invoiceForm.value.owing <= 0 || this.invoiceForm.value.owing > this.dataInvoice[j].OwingFee :
-          this.errMsgO = true;
-        break;
-        default:
-          this.openP(contentP, item);
-          break;
+      if(this.invoiceForm.controls.paymentMethodI.invalid === true){
+        this.errMsgM = true;
       }
+      if (this.invoiceForm.value.owing <= 0 || (this.invoiceForm.value.owing > this.dataInvoice[j].OwingFee)){
+        this.errMsgO = true;
+      }
+      if(this.errMsgM || this.errMsgO){
+        return;
+      }
+      this.openP(contentP, item);
     //   if(this.invoiceForm.invalid || this.invoiceForm.value.owing === 0) {
     //     this.errMsgM = true;
     //     for (let i in this.invoiceForm.controls){

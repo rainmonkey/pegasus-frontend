@@ -21,6 +21,10 @@ export class AdminInvoiceEditModalComponent implements OnInit {
   dueDateLocal;
   owingFeeLocal;
   itemTempPublic;
+  courseData;
+  coursePrice;
+  originPrice = 0;
+  userChosenPrice = 0;
 
   @Input() item;
 
@@ -56,11 +60,41 @@ export class AdminInvoiceEditModalComponent implements OnInit {
     OwingFee: [null]
   });
 
+  // get quantity
+  get LessonQuantity(){
+    return this.invoiceEditForm.get('LessonQuantity');
+  }
+
   ngOnInit() {
     this.patchToInvoice();
     this.dueDateLocal = this.item.DueDate;
     this.owingFeeLocal = this.item.OwingFee;
+    this.getCourse();
   }
+// get group or 121 course id
+getCourse(){
+  let type;
+  let courseId = this.item.CourseInstanceId
+  switch (courseId) {
+    case null:
+      type = 1;
+      break;
+    default:
+      type = 0;
+  }
+  this.transactionService.GroupOr121(courseId, type)
+  .subscribe(
+    res => {
+      this.courseData = res
+      this.coursePrice = res.Data.Course.Price
+      console.log(this.courseData)
+    },
+    error => {
+      this.errorMsg = JSON.parse(error.error);
+      console.log("Error!", this.errorMsg.ErrorMsg);
+      this.errorAlert = false;
+    });
+}
 
 // patch data to invoiceEditForm
   patchToInvoice() {
@@ -83,6 +117,13 @@ export class AdminInvoiceEditModalComponent implements OnInit {
     });
   }
 
+  // moniting user change course quantity
+  changeQuantity(){
+    this.invoiceEditForm.patchValue({
+      LessonFee: Number(this.invoiceEditForm.value.LessonQuantity) * Number(this.coursePrice)
+    });
+  }
+
   closeSucc() {
     this.successAlert = false;
   }
@@ -102,9 +143,11 @@ export class AdminInvoiceEditModalComponent implements OnInit {
   // data combination
   combiData (){
     let valueObj = this.invoiceEditForm.value;
+    // get rest then redifine all others
     let {
       LessonFee,
       ConcertFee,
+      NoteFee,
       Other1Fee,
       Other2Fee,
       Other3Fee,
@@ -113,10 +156,13 @@ export class AdminInvoiceEditModalComponent implements OnInit {
     let valueTemp = {
       LessonFee : null ? 0 : this.invoiceEditForm.controls.LessonFee.value,
       ConcertFee: null ? 0 : this.invoiceEditForm.controls.ConcertFee.value,
+      NoteFee: null ? 0 : this.invoiceEditForm.controls.NoteFee.value,
       Other1Fee: null ? 0 : this.invoiceEditForm.controls.Other1Fee.value,
       Other2Fee: null ? 0 : this.invoiceEditForm.controls.Other2Fee.value,
-      Other3Fee: null ? 0 : this.invoiceEditForm.controls.Other3Fee.value,
+      Other3Fee: null ? 0 : this.invoiceEditForm.controls.Other3Fee.value
     };
+    rest.OwingFee = valueTemp.LessonFee + valueTemp.ConcertFee + valueTemp.NoteFee + valueTemp.Other1Fee + valueTemp.Other2Fee + valueTemp.Other3Fee;
+    rest.TotalFee = rest.OwingFee;
     Object.assign(valueTemp, rest);
     let {...itemTemp } = this.item;
     Object.assign(itemTemp, valueTemp);
@@ -143,6 +189,7 @@ export class AdminInvoiceEditModalComponent implements OnInit {
 // confirm Modal
   open(confirmModal) {
     this.combiData();
+    this.validatePrice();
     this.modalService
     .open(confirmModal)
     .result.then(
@@ -152,6 +199,11 @@ export class AdminInvoiceEditModalComponent implements OnInit {
         this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
       });
   }
+// validate lesson price
+validatePrice(){
+  this.originPrice = Number(this.invoiceEditForm.value.LessonQuantity) * Number(this.coursePrice);
+  this.userChosenPrice = this.invoiceEditForm.value.LessonFee;
+}
 
   // dismiss reason of modal
   private getDismissReason(reason: any): string {
