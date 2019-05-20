@@ -1,21 +1,16 @@
 <div class='container tl_body'>
   <div class='row'>
     <!--body head-->
-    <div class='col-12 tl_body_title'>
-      Courses List
-      <!--add more btn-->
-      <span class='tl_body_add btn btn-info' (click)='popUpModals(0,null)'>+ Add More</span>
-    </div>
-
-    <!--body search-->
-    <div class='tl_body_search'>
-      <div class='t_info_search'>
+    <div class='col-12'>
+      <span class="font2">Courses List</span>
+      <div class="col-12">
+        <!--body search-->
         <input id='searchingInput' type="text" placeholder=" Search by Course" (keydown)='onSearch($event)'>
-      </div>
-      <div class='t_info_search_by'>
         <span (click)='onSearch(null)'>
           <span class='fas fa-search'></span>
         </span>
+        <!--add more btn-->
+        <span class='tl_body_add btn btn-info' (click)='popUpModals(0,null)'>+ Add More</span>
       </div>
     </div>
 
