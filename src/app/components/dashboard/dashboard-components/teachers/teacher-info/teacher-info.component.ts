@@ -53,7 +53,10 @@ export class TeacherInfoComponent implements OnInit {
         //console.log(this.teachersList)
         //this.toggleLoadingGif('show')  'show' 'hide'
         this.toggleLoadingGif('hide');
-        this.refreshPageControl();
+        this.refreshPageControl(); 
+        // for(let i of this.teachersList){
+        //   console.log(i.IdType)
+        // }
       },
       (err) => {
         //报错误信息

@@ -12,3 +12,29 @@
     border: 1px solid #343a40;
     color:white;
 }
+.stamp {
+    transform: rotate(12deg);
+    color: #555;
+    border: 0.25rem solid #555;
+    display: inline-block;
+    padding: 0.25rem 1rem;
+    text-transform: uppercase;
+    border-radius: 1rem;
+    font-family: 'Courier';
+    -webkit-mask-image: url('https://s3-us-west-2.amazonaws.com/s.cdpn.io/8399/grunge.png');
+    -webkit-mask-size: 700px 600px;
+    mix-blend-mode: multiply;
+    position: absolute;
+    right: 70px;
+    z-index: 1;
+    width: 150px;
+    font-size:1.5rem;
+    font-weight: bold;
+  }
+.is-approved {
+	color: #0A9928;
+	border: 0.5rem solid #0A9928;
+	-webkit-mask-position: 10rem 4rem;
+	transform: rotate(8deg);
+    border-radius: 0;
+}   
