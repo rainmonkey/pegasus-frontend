@@ -1,3 +1,4 @@
+import { ColumnTitleFormatPipe } from './shared/pipes/column-title-format.pipe';
 // Dependencies
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -71,6 +72,7 @@ import { SessionCancelModalComponent } from './components/dashboard/dashboard-co
 import { SessionTutorReportModalComponent } from './components/dashboard/dashboard-components/sessions/session-modals/session-tutor-report-modal/session-tutor-report-modal.component';
 import { SessionCompletedModalComponent } from './components/dashboard/dashboard-components/sessions/session-modals/session-completed-modal/session-completed-modal.component';
 
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -125,6 +127,7 @@ import { SessionCompletedModalComponent } from './components/dashboard/dashboard
     SessionCancelModalComponent,
     SessionTutorReportModalComponent,
     SessionCompletedModalComponent,
+    ColumnTitleFormatPipe
   ],
   imports: [
     NgbModule,

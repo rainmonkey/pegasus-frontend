@@ -23,14 +23,14 @@ export class TeacherModalFormComponent implements OnInit {
   public showRightImgFlag: boolean = false;
   public photoToSubmit: any;
   public idPhotoToSubmit: any;
-  public week: Array<object> = [{"dayName":"Monday",'dayId':1},{"dayName":"Tuesday",'dayId':2},
-                                {"dayName":"Wednesday",'dayId':3},{"dayName":"Thursday",'dayId':4},
-                                {"dayName":"Friday",'dayId':5},{"dayName":"Saturday",'dayId':6},
-                                {"dayName":"Sunday",'dayId':7}];
+  public week: Array<object> = [{ "dayName": "Monday", 'dayId': 1 }, { "dayName": "Tuesday", 'dayId': 2 },
+  { "dayName": "Wednesday", 'dayId': 3 }, { "dayName": "Thursday", 'dayId': 4 },
+  { "dayName": "Friday", 'dayId': 5 }, { "dayName": "Saturday", 'dayId': 6 },
+  { "dayName": "Sunday", 'dayId': 7 }];
   public idTypeList = [{ 'idTypeId': 1, 'idTypeName': 'Driver Lisence' },
   { 'idTypeId': 2, 'idTypeName': '18+' },
   { 'idTypeId': 3, 'idTypeName': 'Passport' }];
-  public baseUrl: any = environment.baseUrl;
+  public photoUrl: any = environment.photoUrl;
   
 
   @Input() command;
@@ -95,7 +95,7 @@ export class TeacherModalFormComponent implements OnInit {
   getQualiId() {
     if (this.whichTeacher.TeacherQualificatiion.length !== 0) {
       console.log(this.whichTeacher)
-      console.log( this.whichTeacher.TeacherQualificatiion[0].QualiId)
+      console.log(this.whichTeacher.TeacherQualificatiion[0].QualiId)
       return this.whichTeacher.TeacherQualificatiion[0].QualiId;
     }
     else {
@@ -122,21 +122,21 @@ export class TeacherModalFormComponent implements OnInit {
     }
   }
 
-   /*
-    display default branches selection
-  */
-  setDefaultBranchSelection(OrgId,week){
-    if (this.command == 2){
-      for(let i of this.whichTeacher.AvailableDays){
-        if(week.dayId == i.DayOfWeek){
-          if(OrgId == i.OrgId){
+  /*
+   display default branches selection
+ */
+  setDefaultBranchSelection(OrgId, week) {
+    if (this.command == 2) {
+      for (let i of this.whichTeacher.AvailableDays) {
+        if (week.dayId == i.DayOfWeek) {
+          if (OrgId == i.OrgId) {
             return true;
           }
         }
       }
       return false;
     }
-    else{
+    else {
       return false;
     }
   }
@@ -249,14 +249,26 @@ export class TeacherModalFormComponent implements OnInit {
   /*
     get photo src
   */
-  getPhoto(){
-    if(this.command == 0){
-      return;
+  getPhoto(photoObj) {
+    if (this.command !== 0) {
+      let src = this.whichTeacher[photoObj];
+      if(src == null){
+        return  '../../../../../../assets/images/shared/default-employer-profile.png';
+      }
+      else{
+        console.log(this.photoUrl + src)
+        return this.photoUrl + src;
+      }
     }
-    else{
-      let src = '/api/' + this.whichTeacher.Photo;
-      return src;
-    }
+    return;
+  }
+  
+  /*
+    if photo not found, set default photo 
+  */
+  setDefaultPhoto(event){
+    event.target.src = '../../../../../../assets/images/shared/default-employer-profile.png';
+    return;
   }
   /////////////////////////////////////////////form group/////////////////////////////////////////////////
 
@@ -299,7 +311,7 @@ export class TeacherModalFormComponent implements OnInit {
         IDNumber: [{ value: this.whichTeacher.IdNumber, disabled: this.readOnlyFlag }, Validators.required],
         ExpiryDate: [{ value: this.getDateFormat(this.whichTeacher.ExpiryDate), disabled: this.readOnlyFlag }, Validators.required], //用dateFormat
         DayOfWeek: [{ value: null, disabled: this.readOnlyFlag }],
-        ability: [{value:this.whichTeacher.Ability, disabled:this.readOnlyFlag}]
+        ability: [{ value: this.whichTeacher.Ability, disabled: this.readOnlyFlag }]
       }
     }
 
