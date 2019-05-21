@@ -31,7 +31,7 @@ import { SidebarComponent } from './components/dashboard/general/sidebar/sidebar
 import { TimePickerComponent } from './components/dashboard/dashboard-components/time-picker/time-picker.component';
 import { LoginComponent } from './components/basic/login/login.component';
 import { HeaderbarComponent } from './components/dashboard/general/headerbar/headerbar.component';
-import { HomepageComponent } from './components/dashboard/general/homepage/homepage.component';
+import { DashboardPanelComponent } from './components/dashboard/dashboard-components/dashboard-panel/dashboard-panel.component';
 import { SearchNameModuleComponent } from './components/dashboard/dashboard-components/support/search-name-module/search-name-module.component';
 import { AdminLearnerPaymentPanelComponent } from './components/dashboard/dashboard-components/admin-payment/admin-learner-payment-panel/admin-learner-payment-panel.component';
 import { AdminLearnerPaymentInvoiceComponent } from './components/dashboard/dashboard-components/admin-payment/admin-learner-payment-invoice/admin-learner-payment-invoice.component';
@@ -81,6 +81,7 @@ import { SessionTutorReportModalComponent } from './components/dashboard/dashboa
 import { SessionCompletedModalComponent } from './components/dashboard/dashboard-components/sessions/session-modals/session-completed-modal/session-completed-modal.component';
 import { CourseClassListComponent } from './components/dashboard/dashboard-components/courses/course-class-list/course-class-list.component';
 import { CourseClassDetailModalComponent } from './components/dashboard/dashboard-components/courses/course-class-detail-modal/course-class-detail-modal.component';
+import { DashboardHomeComponent } from './components/dashboard/dashboard-components/dashboard-home/dashboard-home.component';
 
 
 
@@ -89,7 +90,7 @@ import { CourseClassDetailModalComponent } from './components/dashboard/dashboar
   declarations: [
     AppComponent,
     LoginComponent,
-    HomepageComponent,
+    DashboardPanelComponent,
     HeaderbarComponent,
     SidebarComponent,
     AdminLearnerPaymentPanelComponent,
@@ -150,7 +151,8 @@ import { CourseClassDetailModalComponent } from './components/dashboard/dashboar
     HowToKnowPipe,
     ColumnTitleFormatPipe,
     CourseClassListComponent,
-    CourseClassDetailModalComponent
+    CourseClassDetailModalComponent,
+    DashboardHomeComponent
   ],
   imports: [
     NgbModule,

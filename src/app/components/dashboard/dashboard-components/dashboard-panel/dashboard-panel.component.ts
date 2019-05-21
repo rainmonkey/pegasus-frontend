@@ -2,11 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 
 @Component({
-  selector: 'app-homepage',
-  templateUrl: './homepage.component.html',
-  styleUrls: ['./homepage.component.css']
+  selector: 'app-dashboard-panel',
+  templateUrl: './dashboard-panel.component.html',
+  styleUrls: ['./dashboard-panel.component.css']
 })
-export class HomepageComponent implements OnInit {
+export class DashboardPanelComponent implements OnInit {
 
   constructor(
     public titleService: Title,
