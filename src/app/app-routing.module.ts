@@ -36,7 +36,7 @@ import { DashboardHomeComponent } from './components/dashboard/dashboard-compone
 
 
 const routes: Routes = [
-  { path: '', component: DashboardPanelComponent, canActivate: [DashboardRestrictGuard],
+  { path: '', component: DashboardPanelComponent, canActivate: [DashboardRestrictGuard],  
     children: [
       {path:'home', component: DashboardHomeComponent},
       // Testing path
