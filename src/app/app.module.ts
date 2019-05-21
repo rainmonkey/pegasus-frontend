@@ -20,7 +20,10 @@ import { CommandFormatPipe } from './shared/pipes/command-format.pipe';
 import { OrgFormatPipe } from './shared/pipes/org-format.pipe';
 import { WeekFormatPipe } from './shared/pipes/week-format.pipe';
 import { MyTypePipe } from './shared/pipes/myType-format.pipe';
-
+import { GenderPipe } from './shared/pipes/gender.pipe';
+import {RelationshipPipe} from './shared/pipes/relationship.pipe';
+import {ReasonLearnPianoPipe} from './shared/pipes/Reason-learn-piano.pipe';
+import { HowToKnowPipe } from './shared/pipes/How-To-Know.pipe';
 // Components
 import { AppComponent } from './app.component';
 import { SidebarComponent } from './components/dashboard/general/sidebar/sidebar.component';
@@ -70,12 +73,12 @@ import { TestoneComponent } from './components/testcomponent/testone/testone.com
 
 import { LearnerDeleteModalComponent } from './components/dashboard/dashboard-components/admin-learner/learner-delete-modal/learner-delete-modal.component';
 import { LearnerDetailModalComponent } from './components/dashboard/dashboard-components/admin-learner/learner-detail-modal/learner-detail-modal.component';
-import { LearnerUpdateModalComponent } from './components/dashboard/dashboard-components/admin-learner/learner-update-modal/learner-update-modal.component';
-import { LearnerModalFormComponent } from './components/dashboard/dashboard-components/admin-learner/learner-modal-form/learner-modal-form.component';
+
 
 import { SessionCancelModalComponent } from './components/dashboard/dashboard-components/sessions/session-modals/session-cancel-modal/session-cancel-modal.component';
 import { SessionTutorReportModalComponent } from './components/dashboard/dashboard-components/sessions/session-modals/session-tutor-report-modal/session-tutor-report-modal.component';
 import { SessionCompletedModalComponent } from './components/dashboard/dashboard-components/sessions/session-modals/session-completed-modal/session-completed-modal.component';
+
 
 
 @NgModule({
@@ -132,13 +135,15 @@ import { SessionCompletedModalComponent } from './components/dashboard/dashboard
 
     LearnerDeleteModalComponent,
     LearnerDetailModalComponent,
-    LearnerUpdateModalComponent,
-    LearnerModalFormComponent,
+  
 
     SessionCancelModalComponent,
     SessionTutorReportModalComponent,
     SessionCompletedModalComponent,
-
+    GenderPipe,
+    RelationshipPipe,
+    ReasonLearnPianoPipe,
+    HowToKnowPipe,
   ],
   imports: [
     NgbModule,
@@ -166,7 +171,7 @@ import { SessionCompletedModalComponent } from './components/dashboard/dashboard
 
     LearnerDeleteModalComponent,
     LearnerDetailModalComponent,
-    LearnerUpdateModalComponent,
+  
 
     SessionDetailEditModalComponent
 

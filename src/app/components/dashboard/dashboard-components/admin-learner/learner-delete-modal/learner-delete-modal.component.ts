@@ -22,14 +22,15 @@ export class LearnerDeleteModalComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    console.log(this.whichLearner)
   }
 
    /*
     delete data
   */
  delete(){
-  let learnerId = this.whichLearner.learnerId;
-  this.LearnerListService.deleteLearner(learnerId).subscribe(
+
+  this.LearnerListService.deleteLearner(this.whichLearner.LearnerId).subscribe(
     (res) => {
       this.isDeleteSuccess = true;
      

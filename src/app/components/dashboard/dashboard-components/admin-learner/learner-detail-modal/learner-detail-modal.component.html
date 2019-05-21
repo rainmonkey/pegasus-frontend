@@ -1,6 +1,7 @@
 <!--modal header-->
 <div class='modal-header'>
-  <h4 class='modal-title'>{{command | commandFormat}} of <span class='t_dm_title'>{{whichLearner.FirstName}} {{whichLearner.LastName}}</span></h4>
+  <h4 class='modal-title'>{{command | commandFormat}} of <span class='t_dm_title'>{{whichLearner.FirstName}}
+      {{whichLearner.LastName}}</span></h4>
   <button type="button" class='btn btn-sm btn-info t_dm_close_btn' aria-label="Close"
     (click)="activeModal.close('Cross click')">
     <span aria-hidden="true">&times;</span>
@@ -8,8 +9,201 @@
 </div>
 
 <!--modal body-->
-<div class='modal-body'>
+<!-- <div>
   <app-learner-modal-form [command]='command' [whichLearner]='whichLearner'></app-learner-modal-form>
+</div> -->
+<div class='modal-body'>
+  <div>
+    <h3>Student Information</h3>
+    <!--缺 人物照片 -->
+    <div class="row lable-pos">
+      <div class="col-6">
+        <p style="font-weight: bold">Student Photo</p>
+        <div class='learnerImage'>
+          <img class="imageSize" src="http://gradspace.org:5000/{{whichLearner.Photo}}">
+        </div>
+      </div>
+
+      <div class="col-6">
+        <p style="font-weight: bold">ABRSM Certific</p>
+        <div class='G5learnerImage'>
+          <img class="G5imageSize" src="http://gradspace.org:5000/{{whichLearner.G5Certification}}">
+        </div>
+      </div>
+
+      <div class="col-4">
+        <span class="label">First Name: </span>{{whichLearner.FirstName}}
+      </div>
+
+      <div class="col-4">
+        <span class="label">Middle Name: </span>{{whichLearner.MiddleName}}
+      </div>
+
+      <div class="col-4">
+        <span class="label">Last Name: </span>{{whichLearner.LastName}}
+      </div>
+
+      <div class="col-4">
+        <span class="label">Gender: </span>{{whichLearner.Gender|gender}}
+      </div>
+
+      <div class="col-8">
+        <span class="label">Date of Birth: </span>{{whichLearner.Dob}}
+      </div>
+
+      <div class="col-6">
+        <span class="label">Date of Enrollment: </span>{{whichLearner.EnrollDate}}
+      </div>
+
+      <div class="col-6">
+        <span class="label">Location: </span>{{whichLearner.OrgId | orgFormat}}
+      </div>
+
+      <div class="col-6">
+        <span class="label">Contact Phone: </span>{{whichLearner.ContactNum}}
+      </div>
+
+      <div class="col-6">
+        <span class="label">Email: </span>{{whichLearner.Email}}
+      </div>
+
+      <div class="col-6">
+        <span class="label">Physical Address: </span>{{whichLearner.Address}}
+      </div>
+
+      <div class="col-6">
+        <span class="label">Current Level: </span>{{whichLearner.LearnerLevel}}
+      </div>
+
+      <!-- 缺各种原因 -->
+
+    </div>
+  </div>
+
+  <hr>
+  <div>
+    <h3>Parent Information</h3>
+    <div class="row lable-pos" *ngFor="let learnerParent of whichLearner.Parent">
+
+      <div class="col-4">
+        <span class="label">First Name: </span> {{learnerParent.FirstName}}
+      </div>
+
+      <div class="col-4">
+        <span class="label">Last Name: </span> {{learnerParent.LastName}}
+      </div>
+
+      <div class="col-4">
+        <span class="label">Relationship: </span> {{learnerParent.Relationship | relationship}}
+      </div>
+
+      <div class="col-6">
+        <span class="label">Guardian's Phone: </span> {{learnerParent.ContactNum}}
+      </div>
+
+      <div class="col-6">
+        <span class="label">Email: </span> {{learnerParent.Email}}
+      </div>
+    </div>
+
+
+  </div>
+
+  <hr>
+  <div>
+    <h3>Course</h3>
+    <div>
+      <div class="row lable-pos">
+        <button class="button-margin" (click)="chooseGroupCourse()">Group Course</button>
+        <button (click)="chooseCustomCourse()">One-on-One Course</button>
+      </div>
+
+      <div *ngIf='isGroupCourse'>
+
+
+      </div>
+
+      <!-- one2one Course -->
+      <div *ngIf='isCustomCourse'>
+        <div *ngFor="let ele of whichLearner.One2oneCourseInstance">
+          <div class="row">
+            <div class="col-6">
+              <span class="label">Course: </span>
+            </div>
+
+            <div class="col-6">
+              <span class="label">Location </span>
+            </div>
+
+            <div class="col-6">
+              <span class="label">Teacher Level: </span>
+            </div>
+
+            <div class="col-6">
+              <span class="label">Teacher Name: </span>
+            </div>
+
+            <div class="col-6">
+              <span class="label">Course Start Day: </span>
+            </div>
+
+            <div class="col-6">
+                <span class="label">Course End Day: </span>
+              </div>
+
+            <div class="col-6">
+              <span class="label">Course Hour: </span>
+            </div>
+
+            <div class="col-6">
+                <span class="label">Course Minute: </span>
+              </div>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <hr>
+  <!-- Others -->
+  <div>
+    <h3>Others</h3>
+
+    <div class="row">
+      <div class="col-6">
+        <div class="label">
+          Why do you learn the piano:
+        </div>
+        <div *ngFor='let ele of whichLearner.LearnerOthers'>
+          <div>
+            <div *ngIf="ele.OthersType == '2'">
+              {{ele.OthersValue |Reason }}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-6">
+        <div class="label">
+          How do you know about us:
+        </div>
+        <div>
+          <div *ngFor='let ele of whichLearner.LearnerOthers'>
+            <div *ngIf="ele.OthersType == '3'">
+              {{ele.OthersValue | knowMethods}}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+
+
+
 </div>
 
 <!--modal footer-->

@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { NgbootstraptableService } from 'src/app/services/others/ngbootstraptable.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { LearnersService } from 'src/app/services/http/learners.service';
-import {  LearnerUpdateModalComponent } from '../learner-update-modal/learner-update-modal.component';
 import {LearnerDeleteModalComponent } from '../learner-delete-modal/learner-delete-modal.component';
 import {LearnerDetailModalComponent } from '../learner-detail-modal/learner-detail-modal.component';
 
@@ -139,18 +138,7 @@ export class AdminLearnerListComponent implements OnInit {
   }
 }
 
-/*
-  update modal
-*/
-updateModal(command, whichLearner) {
-  const modalRef = this.modalService.open(LearnerUpdateModalComponent, { size: 'lg' });
-  let that = this;
-  modalRef.result.then(function(){
-    that.ngOnInit()
-  })
-  modalRef.componentInstance.command = command;
-  modalRef.componentInstance.whichLearner = whichLearner;
-}
+
 
 /*
   delete modal
