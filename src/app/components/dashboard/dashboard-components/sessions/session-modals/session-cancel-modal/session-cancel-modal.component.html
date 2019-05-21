@@ -1,3 +1,39 @@
-<p>
-  session-cancel-modal works!
-</p>
+<div>
+  <div class="modal-header m-2">
+    <h4>Please Confirm</h4>
+    <button
+      type="button"
+      class="close"
+      aria-label="Close"
+      (click)="activeModal.dismiss('Cross click')"
+    >
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <!-- modal-body -->
+  <div class="container">
+    <div class="d-flex justify-content-center row">
+      <p>Please confirm the course has been canceled</p>
+      <div>
+        <div class="row mb-2">
+          <label class="mt-2">Canceled Reason</label>
+          <input class="form-control" type="text" [(ngModel)]="CancelReason"/>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <span *ngIf='isCancelSuccess' class='text-success'>Cancel Success </span>
+    <span *ngIf='isCancelFailed' class='text-danger'>Cancel Fail </span>
+    <button *ngIf="!isCancelSuccess" type="button" class="btn btn-dark" (click)="CancelConfirm()">
+      Confirm
+    </button>
+    <button
+      type="button"
+      class="btn btn-outline-dark"
+      (click)="activeModal.dismiss('Cross click')">
+      Cancel
+    </button>
+  </div>
+</div>
+

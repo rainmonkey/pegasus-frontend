@@ -138,3 +138,9 @@
     text-transform: capitalize;
     text-align: center;
 }
+.t_mf_commits_label{
+    font-weight: bold;
+    font-size:14px;
+    text-align: center;
+    margin-top:5px!important;
+}

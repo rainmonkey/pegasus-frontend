@@ -9,7 +9,8 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 })
 export class TeacherUpdateModalComponent implements OnInit {
   public infoMessage: string = '';
-  public messageColor:string;
+  public messageColor: string;
+  public isSubmitionSuccess:boolean = false;
 
 
   @Input() command;
@@ -23,16 +24,13 @@ export class TeacherUpdateModalComponent implements OnInit {
   }
 
   onSubmit() {
+    this.isSubmitionSuccess = true;
+    this.infoMessage = 'loading.....'
     let valueToSubmit = this.modalUpdateFormComponentObj.updateForm.value;
-    this.showLoadingGif();
     let vailadValue = this.checkInputVailad(valueToSubmit);
     if (vailadValue !== null) {
       this.stringifySubmitStr(vailadValue)
     }
-  }
-
-  showLoadingGif() {
-
   }
   ////////////////////////////////////////handler of submition/////////////////////////////////////////////////////
   /*
@@ -49,7 +47,8 @@ export class TeacherUpdateModalComponent implements OnInit {
     }
     else {
       this.infoMessage = 'Please check your input.'
-      this.messageColor = '#dc3545'
+      this.messageColor = '#dc3545';
+      this.isSubmitionSuccess = false;
       return null;
     }
   }
@@ -86,43 +85,36 @@ export class TeacherUpdateModalComponent implements OnInit {
   submitByMode(submitData) {
     //while push a stream of new data
     if (this.command == 0) {
-      this.teachersService.addNew(submitData).subscribe(
-        (res) => {
-          this.infoMessage = 'Submit success!'
-          this.messageColor = '#28a745'
-        },
-        (err) => {
-          if (err.error.ErrorMessage == 'Teacher has exist.') {
-            this.infoMessage = err.error.ErrorMessage;
-            this.messageColor = '#dc3545'
-          }
-          else {
-            this.infoMessage = 'Error! Please check your input.'
-            this.messageColor = '#dc3545'
-          }
-          console.log('Error', err);
-        }
-      );
+      let obj = this.teachersService.addNew(submitData);
+      this.subscribeHandler(obj);
     }
     //while update data
     else if (this.command == 2) {
-      this.teachersService.update(submitData, this.whichTeacher.TeacherId).subscribe(
-        (res) => {
-          this.infoMessage = 'Submit success!'
-          this.messageColor = '#28a745'
-        },
-        (err) => {
-          console.log(err)
-          if (err.error.ErrorMessage == 'Teacher has exist.') {
-            this.infoMessage = err.error.ErrorMessage;
-            this.messageColor = '#dc3545'
-          }
-          else {
-            this.infoMessage = 'Error! Please check your input.'
-            this.messageColor = '#dc3545'
-          }
-        })
+      let obj = this.teachersService.update(submitData, this.whichTeacher.TeacherId);
+      this.subscribeHandler(obj);
     }
+  }
+
+  subscribeHandler(obj) {
+    this.isSubmitionSuccess = false;
+    obj.subscribe(
+      (res) => {
+        this.infoMessage = 'Submit success!'
+        this.messageColor = '#28a745'
+      },
+      (err) => {
+        if (err.error.ErrorMessage == 'Teacher has exist.') {
+          this.infoMessage = err.error.ErrorMessage + ' Please check ID Number.';
+          this.messageColor = '#dc3545'          
+        }
+        else {
+          console.log(err)
+          this.infoMessage = 'Error! Please check your input.???'
+          this.messageColor = '#dc3545'       
+        }
+        console.log('Error', err);
+      }
+    );
   }
 
 
@@ -159,7 +151,6 @@ export class TeacherUpdateModalComponent implements OnInit {
 
     for (let i of temBranches) {
       if (i.nativeElement.checked == true) {
-        console.log(i.nativeElement)
         if (i.nativeElement.name == 'Monday') {
           temBranchesList[0].push(Number(i.nativeElement.defaultValue))
         }
@@ -183,7 +174,6 @@ export class TeacherUpdateModalComponent implements OnInit {
         }
       }
     }
-    console.log(temBranchesList)
     return temBranchesList;
   }
 

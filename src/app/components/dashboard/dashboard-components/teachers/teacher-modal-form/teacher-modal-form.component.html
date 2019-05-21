@@ -9,28 +9,28 @@
             <div class='row'>
               <div class='col-6'>
                 <div class='t_mf_img_switch' [class.t_mf_img_switch_left]='showLeftImgFlag' id='img_left_control'
-                  (click)='showPhotos(0)' style="margin-right:5px">
+                  (click)='switchImg(0)' style="margin-right:5px">
                   <span class='fas fa-image'></span><span> Teacher</span>
                 </div>
               </div>
               <div class='col-6'>
                 <div class='t_mf_img_switch' [class.t_mf_img_switch_right]='showRightImgFlag' id='img_right_control'
-                  (click)='showPhotos(1)' style="margin-left: 5px;">
+                  (click)='switchImg(1)' style="margin-left: 5px;">
                   <span class='fas fa-address-card'></span><span> Id</span>
                 </div>
               </div>
             </div>
             <div class='row t_mf_img' id='img_left'>
-              <img src={{getPhoto()}} id='userPhoto' />
+              <img [src]="getPhotoSrc('Photo')" id='Photo' (error)='setDefaultPhoto($event)' />
               <input *ngIf='!readOnlyFlag' type="file" name="file1" id="file1" class="tl_muf_upload_img"
-                accept="image/*" (change)='preViewImg($event,0)' />
+                accept="image/*" (change)='preViewImg($event,"Photo")' />
               <label *ngIf='!readOnlyFlag' for="file1" class='btn btn-sm tl_mf_upload_btn'><span
                   class='fas fa-plus tl_mf_upload_title'></span></label>
             </div>
             <div class='row t_mf_img' id='img_right' style="display:none">
-              <img src="" id='userIdPhoto'>
+              <img [src]="getPhotoSrc('IdPhoto')" id='IdPhoto' (error)='setDefaultPhoto($event)'>
               <input *ngIf='!readOnlyFlag' type="file" name="file2" id="file2" class="tl_muf_upload_img"
-                accept="image/*" (change)='preViewImg($event,1)' />
+                accept="image/*" (change)='preViewImg($event,"IdPhoto")' />
               <label *ngIf='!readOnlyFlag' for="file2" class='btn btn-sm tl_mf_upload_btn'><span
                   class='fas fa-plus tl_mf_upload_title'></span></label>
             </div>
@@ -239,10 +239,57 @@
               </div>
             </div>
           </div>
+
+          <!--line7-->
+          <div>
+            <!--line7 label-->
+            <div class='row'>
+              <div class='col-4'>
+                <label for='IsLeft' class='t_mf_label'>Work Status:</label>
+                <small class='text-danger errorfontsmall' style='text-align: center'
+                  *ngIf='updateForm.get("IsLeft").invalid && updateForm.get("IsLeft").touched && updateForm.get("IsLeft").errors?.required'>required</small>
+              </div>
+              <div class='col-4'>
+                <label for='IsContract' style='margin:0 5px' class='t_mf_label'>Work Type:</label>
+                <small class='text-danger errorfontsmall' style='text-align: center'
+                  *ngIf='updateForm.get("IsContract").invalid && updateForm.get("IsContract").touched && updateForm.get("IsContract").errors?.required'>required</small>
+              </div>
+              <div class='col-4'>
+                <label for='Level' style='margin-left: 10px' class='t_mf_label'>Teacher's Level:</label>
+                <small class='text-danger errorfontsmall' style='text-align: center'
+                  *ngIf='updateForm.get("Level").invalid && updateForm.get("Level").touched && updateForm.get("Level").errors?.required'>required</small>
+              </div>
+            </div>
+
+            <!--line7 input-->
+            <div class='row'>
+              <div class='col-4'>
+                <select name='IsLeft' type="text" class='col-12 t_mf_input' formControlName='IsLeft'
+                  [class.t_mf_error_border]='updateForm.get("IsLeft").invalid && updateForm.get("IsLeft").touched'>
+                  <!--0，1? true false?-->
+                 <option value="0">in-working</option>
+                 <option value="1">left</option>
+                </select>
+              </div>
+              <div class='col-4'>
+                <select name='IsContract' type="text" style='margin:0 5px' class='col-12 t_mf_input'
+                  formControlName='IsContract'
+                  [class.t_mf_error_border]='updateForm.get("IsContract").invalid && updateForm.get("IsContract").touched'>
+                  <option value="0">Full Time</option>
+                  <option value="1">Contract</option>
+                </select>
+              </div>
+              <div class='col-4'>
+                <input name='Level' style='margin-left:10px' class='col-12 t_mf_input'
+                  formControlName='Level'
+                  [class.t_mf_error_border]='updateForm.get("Level").invalid && updateForm.get("Level").touched'>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
 
-      <!--line7-->
+      <!--line8-->
       <div class='col-12' style="margin-top:10px">
         <div class='row'>
           <div class='col-12 t_mf_label' style='text-align: center'>
@@ -272,8 +319,8 @@
         <input class='col-12 t_mf_input' type="text" id='ability' formControlName='ability'>
       </div>
 
-      <!--line8 detail-->
-      <div class='col-12' style="margin-top:10px">
+      <!--line10 detail-->
+      <div *ngIf='!isAvailableDaysNull' class='col-12' style="margin-top:10px">
         <div *ngIf='command == 1' class='row'>
           <div class='col-12 t_mf_label' style='text-align: center'>Available Days:</div>
           <div *ngFor='let i of getAvailableDays()' class='col-4'>
@@ -285,7 +332,7 @@
         </div>
       </div>
 
-      <!--line8 add/update-->
+      <!--line10 add/update-->
       <div class='col-12'>
         <div *ngIf='command !== 1' class='row'>
           <div class='col-12 t_mf_branch_label'>Please Select Branches:</div>
@@ -303,6 +350,12 @@
             </div>
           </div>
         </div>
+      </div>
+
+      <!--line11-->
+      <div class='col-12'>
+        <div class='col-12 t_mf_commits_label'>Comments:</div>
+        <textarea style='height:70px;' name="Comment" id="Comment" class='col-12 t_mf_input' formControlName='Comment'></textarea>
       </div>
     </div>
   </form>

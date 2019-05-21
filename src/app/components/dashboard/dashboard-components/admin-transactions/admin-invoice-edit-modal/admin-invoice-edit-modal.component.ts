@@ -99,6 +99,7 @@ getCourse(){
 
 // patch data to invoiceEditForm
   patchToInvoice() {
+    console.log(this.item)
     this.invoiceEditForm.patchValue({
       CourseName: this.item.CourseName,
       LessonQuantity: this.item.LessonQuantity,
@@ -144,7 +145,7 @@ getCourse(){
   // data combination
   combiData (){
     let valueObj = this.invoiceEditForm.value;
-    // get rest then redifine all others
+    // get rest then re-define all others
     let {
       LessonFee,
       ConcertFee,
