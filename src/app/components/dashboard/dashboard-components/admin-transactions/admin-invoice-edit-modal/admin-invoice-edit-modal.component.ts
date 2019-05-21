@@ -99,6 +99,7 @@ getCourse(){
 
 // patch data to invoiceEditForm
   patchToInvoice() {
+    console.log(this.item)
     this.invoiceEditForm.patchValue({
       CourseName: this.item.CourseName,
       LessonQuantity: this.item.LessonQuantity,
