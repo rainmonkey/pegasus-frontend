@@ -1,6 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { LearnerListService } from '../../../../../services/http/learner-list.service';
 import { NgbootstraptableService } from 'src/app/services/others/ngbootstraptable.service';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { LearnersService } from 'src/app/services/http/learners.service';
+import {LearnerDeleteModalComponent } from '../learner-delete-modal/learner-delete-modal.component';
+import {LearnerDetailModalComponent } from '../learner-detail-modal/learner-detail-modal.component';
+
 @Component({
   selector: 'app-admin-learner-list',
   templateUrl: './admin-learner-list.component.html',
@@ -28,8 +32,9 @@ export class AdminLearnerListComponent implements OnInit {
   public pageSize: number = 10;
 
   constructor(
-    private LearnerListService: LearnerListService,
+    private LearnerListService: LearnersService,
     private ngTable: NgbootstraptableService,
+    private modalService: NgbModal,
   ) { }
 
   ngOnInit() {
@@ -42,13 +47,13 @@ export class AdminLearnerListComponent implements OnInit {
     this.LearnerListService.getLearnerList().subscribe(
       (res) =>  {
         console.log(res)
-       // @ts-ignore
-        this.learnerList = res.Data;
-        // @ts-ignore
-        this.learnerListCopy = this.learnerList;
-        // @ts-ignore
-        this.learnerListLength =res.Data.length;
-       
+      //@ts-ignore
+       this.learnerList = res.Data;
+       //@ts-ignore
+       this.learnerListCopy = this.learnerList;
+       //@ts-ignore
+       this.learnerListLength=res.Data.length;
+
       },
     (err) => {
       console.log(err); this.errorMessage="Wrong"
@@ -60,22 +65,31 @@ export class AdminLearnerListComponent implements OnInit {
     sort method
   */
  onSort(orderBy) {
-  console.log(orderBy)
-  this.ngTable.sorting(this.learnerList, orderBy);
+  let orderControl = this.ngTable.sorting(this.learnerList, orderBy);
+
 }
 
-  /*
+ /*
     search method
   */
- onSearch(event) {
-  if (this.columnsToSearch.length == 0) {
+ onSearch(event, initValue?) {
+  if (event !== null && !(event.type == 'keydown' && event.key == 'Enter')) {
     return;
   }
   else {
-    let searchString = event.target.value;
-    this.learnerList = this.ngTable.searching(this.learnerListCopy, this.columnsToSearch, searchString);
+    let searchString: string;
+    let searchBy: string;
+    let searchingInputObj = document.getElementById('searchingInput');
+    let optionsObj = document.getElementById('searchOption');
+
+    (initValue == undefined) ? { searchString, searchBy } = { searchString: searchingInputObj['value'], searchBy: optionsObj['value'] } :
+      { searchString, searchBy } = initValue;
+
+    this.learnerList = this.ngTable.searching(this.learnerListCopy, searchBy, searchString);
     this.learnerListLength = this.learnerList.length;
+    optionsObj['value'] = searchBy;
   }
+
 }
 
  /*
@@ -102,5 +116,51 @@ export class AdminLearnerListComponent implements OnInit {
     dropDownObj.style.display = 'none';
   }
 }
+
+
+ ///////////////////////////////////////handler of angular-bootstrap modals/////////////////////////////////////
+  /*
+    pop up modals, when need to pop up a modal, call this method
+    commands:
+      0 --> Add new
+      1 --> show details/show more
+      2 --> Edit/update
+      3 --> delete
+  */
+ popUpModal(command, whichLearner) {
+  switch (command) {
+    case 1:
+      this.detailModal(command, whichLearner)
+      break;
+    case 3:
+      this.deleteModal(command, whichLearner);
+      break;
+  }
+}
+
+
+
+/*
+  delete modal
+*/
+deleteModal(command, whichLearner) {
+  const modalRef = this.modalService.open(LearnerDeleteModalComponent);
+  let that = this;
+  modalRef.result.then(function(){
+    that.ngOnInit()
+  })
+  modalRef.componentInstance.command = command;
+  modalRef.componentInstance.whichLearner = whichLearner;
+}
+
+/*
+  detail modal
+*/
+detailModal(command, whichLearner) {
+  const modalRef = this.modalService.open(LearnerDetailModalComponent, { size: 'lg' });
+  modalRef.componentInstance.command = command;
+  modalRef.componentInstance.whichLearner = whichLearner;
+}
+
 
 }

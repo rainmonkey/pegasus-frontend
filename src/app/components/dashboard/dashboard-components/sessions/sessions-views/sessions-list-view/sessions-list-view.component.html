@@ -24,16 +24,17 @@
             <!-- dataTable-->
             <tr *ngFor = 'let i of learnerList | slice: (page-1)* pageSize : (page-1) * pageSize + pageSize; let j = index'>
               <th scope="row">{{j+1}}</th>
-              <td>{{i.FirstName}}</td>
-              <td>{{i.Room}}</td>
-              <td>{{i.LastName}}</td>
-              <td>{{i.Branch}}</td>
+              <td>{{i.TeacherFirstName}}</td>
+              <td>{{i.Learner?i.Learner:''}}</td>
+              <td>{{i.CourseName}}</td>
+              <td>{{i.IsTrial?'Yes':'No'}}</td>
               <td>{{i.BeginTime}}</td>
               <td>{{i.EndTime}}</td>
-              <td>{{i.Cancel}}</td>
-              <td>{{i.CancelReason}}</td>
-              <td>{{i.CourseName}}</td>
-              <td>{{i.TrailCourse}}</td>
+              <td>{{i.Room}}</td>
+              <td>{{i.Branch}}</td>
+<!--              <td>{{i.LastName}}</td>-->
+              <td>{{i.IsCanceled?'Yes':'No'}}</td>
+              <td>{{i.CancelReson}}</td>
               <td>
                 <a (click)='openE()' style="cursor: pointer;"><button class="btn btn-primary" style="width: 70px; height: 20px; font-size: 12px; line-height: 6px" >Edit</button></a><br>
                 <a (click)='openCon(confirmModal,1)' style="cursor: pointer;"><button class="btn btn-success" style="width: 70px; height: 20px; font-size: 12px; line-height: 6px">Confirm</button></a><br>

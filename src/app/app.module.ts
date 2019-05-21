@@ -1,3 +1,4 @@
+import { ColumnTitleFormatPipe } from './shared/pipes/column-title-format.pipe';
 // Dependencies
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -20,7 +21,10 @@ import { CommandFormatPipe } from './shared/pipes/command-format.pipe';
 import { OrgFormatPipe } from './shared/pipes/org-format.pipe';
 import { WeekFormatPipe } from './shared/pipes/week-format.pipe';
 import { MyTypePipe } from './shared/pipes/myType-format.pipe';
-
+import { GenderPipe } from './shared/pipes/gender.pipe';
+import {RelationshipPipe} from './shared/pipes/relationship.pipe';
+import {ReasonLearnPianoPipe} from './shared/pipes/Reason-learn-piano.pipe';
+import { HowToKnowPipe } from './shared/pipes/How-To-Know.pipe';
 // Components
 import { AppComponent } from './app.component';
 import { SidebarComponent } from './components/dashboard/general/sidebar/sidebar.component';
@@ -67,11 +71,19 @@ import { CourseDetailModalComponent } from './components/dashboard/dashboard-com
 import { CourseDeleteModalComponent } from './components/dashboard/dashboard-components/courses/course-delete-modal/course-delete-modal.component';
 import { CourseModalFormComponent } from './components/dashboard/dashboard-components/courses/course-modal-form/course-modal-form.component';
 import { TestoneComponent } from './components/testcomponent/testone/testone.component';
+
+import { LearnerDeleteModalComponent } from './components/dashboard/dashboard-components/admin-learner/learner-delete-modal/learner-delete-modal.component';
+import { LearnerDetailModalComponent } from './components/dashboard/dashboard-components/admin-learner/learner-detail-modal/learner-detail-modal.component';
+
+
 import { SessionCancelModalComponent } from './components/dashboard/dashboard-components/sessions/session-modals/session-cancel-modal/session-cancel-modal.component';
 import { SessionTutorReportModalComponent } from './components/dashboard/dashboard-components/sessions/session-modals/session-tutor-report-modal/session-tutor-report-modal.component';
 import { SessionCompletedModalComponent } from './components/dashboard/dashboard-components/sessions/session-modals/session-completed-modal/session-completed-modal.component';
 import { CourseClassListComponent } from './components/dashboard/dashboard-components/courses/course-class-list/course-class-list.component';
 import { CourseClassDetailModalComponent } from './components/dashboard/dashboard-components/courses/course-class-detail-modal/course-class-detail-modal.component';
+
+
+
 
 @NgModule({
   declarations: [
@@ -124,9 +136,19 @@ import { CourseClassDetailModalComponent } from './components/dashboard/dashboar
     CourseDeleteModalComponent,
     CourseModalFormComponent,
     TestoneComponent,
+
+    LearnerDeleteModalComponent,
+    LearnerDetailModalComponent,
+  
+
     SessionCancelModalComponent,
     SessionTutorReportModalComponent,
     SessionCompletedModalComponent,
+    GenderPipe,
+    RelationshipPipe,
+    ReasonLearnPianoPipe,
+    HowToKnowPipe,
+    ColumnTitleFormatPipe,
     CourseClassListComponent,
     CourseClassDetailModalComponent
   ],
@@ -145,7 +167,8 @@ import { CourseClassDetailModalComponent } from './components/dashboard/dashboar
     CommonModule
   ],
   providers: [
-    DatePipe
+    DatePipe,
+    ColumnTitleFormatPipe
   ],
   entryComponents:[
     TeacherDeleteModalComponent,
@@ -155,7 +178,9 @@ import { CourseClassDetailModalComponent } from './components/dashboard/dashboar
     CourseDeleteModalComponent,
     CourseDetailModalComponent,
     SessionDetailEditModalComponent,
-    CourseClassDetailModalComponent
+    CourseClassDetailModalComponent,
+    LearnerDeleteModalComponent,
+    LearnerDetailModalComponent
   ],
   exports: [AppComponent],
   bootstrap: [AppComponent]

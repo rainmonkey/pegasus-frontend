@@ -27,13 +27,20 @@ export class SessionsService {
 
   getReceptionistLesson(date) {
     console.log(this.httpHeaders)
-    return this.http.get<any>(this.baseUrl + 'lesson/' + date , {headers: this.httpHeaders});
+    return this.http.get<any>(this.baseUrl + 'lesson/GetLessonsForReceptionist/' + localStorage.getItem('userID') + '/'
+      + date , {headers: this.httpHeaders});
 
   }
 
   getTeacherLesson() {
     console.log(this.httpHeaders);
-    return this.http.get<any>('http://localhost:5000/api/lesson/user/1');
+    return this.http.get<any>(this.baseUrl + 'lesson/GetLessonsForTeacher/1');
+  }
+
+  getReceptionistLessonBetweenDate(beginDate, endDate) {
+    console.log(this.httpHeaders);
+    return this.http.get<any>(this.baseUrl + 'lesson/GetLessonsBetweenDate/' + localStorage.getItem('userID') + '/' + beginDate + '/' + endDate);
+
   }
 
 }
