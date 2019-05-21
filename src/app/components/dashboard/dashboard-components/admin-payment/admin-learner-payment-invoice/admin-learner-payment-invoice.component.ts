@@ -241,9 +241,11 @@ export class AdminLearnerPaymentInvoiceComponent implements OnInit {
 
     // get FirstName
     nameSubejct(){
+      console.log('a')
       this.generalRepoService.fisrtName.subscribe(res=>
         {
         this.learner = res;
+        console.log(this.learner)
         })
     }
     // make sure the data allignment

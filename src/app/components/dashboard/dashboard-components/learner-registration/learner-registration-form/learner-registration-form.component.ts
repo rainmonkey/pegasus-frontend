@@ -106,7 +106,7 @@ export class LearnerRegistrationFormComponent implements OnInit {
         this.fb.group({
           courseCategory: [''],
           course: [''],
-          teacherName: [''],                          
+          teacherName: [''],
           location: [''],
           room: [''],
           beginDate: [''],
@@ -124,10 +124,10 @@ export class LearnerRegistrationFormComponent implements OnInit {
     document.getElementById('learnerForm').style.display = 'block';
     document.getElementById('parentForm').style.display = 'none';
     document.getElementById('courseForm').style.display = 'none';
-  
+
     this.getGroupCourseFromServer();
     this.getLookups(1);
-    this.getOrgs(); 
+    this.getOrgs();
     this.getCustomCourseFromServer();
     this.toModel(this.time);
     this.getCoursesFromServer();
@@ -155,7 +155,7 @@ export class LearnerRegistrationFormComponent implements OnInit {
     this.selectedGrade = <File>event.target.files[0];
     console.log('ABRSM', this.selectedGrade);
     this.fd.append('ABRSM', this.selectedGrade);
-  } 
+  }
   getCoursesFromServer() {
     this.coursesService.getCourses().subscribe(
       (data) => {
@@ -232,7 +232,7 @@ export class LearnerRegistrationFormComponent implements OnInit {
     // let a = this.courses.filter((e) =>  this.selectlearnerLevel == e.Level);
     this.courses = this.pureCourses.filter((e) =>  e.Level == this.selectlearnerLevel && e.CourseType == 1);
     console.log('courses filter', this.courses)
-      
+
   }
   selectLearnerPurpose(i, event) {
     this.learnerPurpose[i].isChecked = event.target.checked;
@@ -246,7 +246,7 @@ export class LearnerRegistrationFormComponent implements OnInit {
     for(let learnPurpose of this.learnerPurpose) {
       if(learnPurpose.isChecked) {
         let tempObj = {};
-        tempObj['OthersType'] = learnPurpose.LookupType; 
+        tempObj['OthersType'] = learnPurpose.LookupType;
         tempObj['OthersValue'] = learnPurpose.PropValue;
         this.learnerOthers.push(tempObj);
       }
@@ -254,14 +254,14 @@ export class LearnerRegistrationFormComponent implements OnInit {
     for(let how of this.howKnown) {
       if(how.isChecked) {
         let tempObj = {};
-        tempObj['OthersType'] = how.LookupType; 
+        tempObj['OthersType'] = how.LookupType;
         tempObj['OthersValue'] = how.PropValue;
         this.learnerOthers.push(tempObj);
       }
     };
     console.log('learnerOthers', this.learnerOthers)
   }
-  
+
   getGroupCourseFromServer() {
     this.registrationService.getGroupCourse().subscribe(
       data => {
@@ -275,9 +275,9 @@ export class LearnerRegistrationFormComponent implements OnInit {
         this.addCheckboxes();
       },
       err => {
-        console.log('group course err', err);          
+        console.log('group course err', err);
       }
-    )       
+    )
   }
   addCheckboxes() {
     this.groupCourseInstance.map((o, i) => {
@@ -293,7 +293,7 @@ export class LearnerRegistrationFormComponent implements OnInit {
     for(let groupCourse of this.groupCourseInstance) {
       if(groupCourse.isChecked) {
         this.tempGroupCourseObj = {};
-        this.tempGroupCourseObj['GroupCourseInstanceId'] = groupCourse.GroupCourseInstanceId; 
+        this.tempGroupCourseObj['GroupCourseInstanceId'] = groupCourse.GroupCourseInstanceId;
         this.tempGroupCourseObj['Comment'] = groupCourse.comments;
         this.learnerGroupCourse.push(this.tempGroupCourseObj);
       }
@@ -334,7 +334,7 @@ export class LearnerRegistrationFormComponent implements OnInit {
     console.log('learner type', this.learnerlevelType)
   }
   selectCourse(value) {
-    
+
   }
   confirmCustomCourse() {
     let cs = this.customCourse.value;
@@ -354,7 +354,7 @@ export class LearnerRegistrationFormComponent implements OnInit {
       tempObj['Schedule'] = tempScheduleObj;
       this.oneOnOneCourse.push(tempObj);
     };
-    console.log('oneOnOne', this.oneOnOneCourse); 
+    console.log('oneOnOne', this.oneOnOneCourse);
   }
   getOrgs() {
     this.registrationService.getOrgs()
@@ -393,13 +393,13 @@ export class LearnerRegistrationFormComponent implements OnInit {
       parentTempObj['ContactNum'] = parent.contactPhone;
       parentTempObj['Email'] = parent.email;
       this.parent.push(parentTempObj);
-      // console.log('parent',this.parent);  
+      // console.log('parent',this.parent);
     }
     this.fdObj['Parent']= this.parent;
     this.fdObj['LearnerGroupCourse'] = this.learnerGroupCourse;
     this.fdObj['One2oneCourseInstance'] = this.oneOnOneCourse;
     this.fdObj['LearnerOthers'] = this.learnerOthers;
-    this.fd.append('details', JSON.stringify(this.fdObj)); 
+    this.fd.append('details', JSON.stringify(this.fdObj));
     console.log('form data', this.fdObj)
     this.registrationService.postStudent(this.fd)
       .subscribe(
@@ -445,7 +445,7 @@ export class LearnerRegistrationFormComponent implements OnInit {
       this.fb.group({
         courseCategory: [''],
         course: [''],
-        teacherName: [''],                          
+        teacherName: [''],
         location: [''],
         room: [''],
         beginDate: [''],

@@ -9,7 +9,7 @@ import { NgModule } from '@angular/core';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { routing } from '../app/app-routing.module';
 import { FullCalendarModule } from 'ng-fullcalendar';
-import { DatePipe } from '@angular/common';
+import { DatePipe,CommonModule } from '@angular/common';
 
 // Guards
 
@@ -71,6 +71,8 @@ import { TestoneComponent } from './components/testcomponent/testone/testone.com
 import { SessionCancelModalComponent } from './components/dashboard/dashboard-components/sessions/session-modals/session-cancel-modal/session-cancel-modal.component';
 import { SessionTutorReportModalComponent } from './components/dashboard/dashboard-components/sessions/session-modals/session-tutor-report-modal/session-tutor-report-modal.component';
 import { SessionCompletedModalComponent } from './components/dashboard/dashboard-components/sessions/session-modals/session-completed-modal/session-completed-modal.component';
+import { CourseClassListComponent } from './components/dashboard/dashboard-components/courses/course-class-list/course-class-list.component';
+import { CourseClassDetailModalComponent } from './components/dashboard/dashboard-components/courses/course-class-detail-modal/course-class-detail-modal.component';
 
 
 @NgModule({
@@ -127,7 +129,9 @@ import { SessionCompletedModalComponent } from './components/dashboard/dashboard
     SessionCancelModalComponent,
     SessionTutorReportModalComponent,
     SessionCompletedModalComponent,
-    ColumnTitleFormatPipe
+    
+    CourseClassListComponent,
+    CourseClassDetailModalComponent
   ],
   imports: [
     NgbModule,
@@ -140,10 +144,12 @@ import { SessionCompletedModalComponent } from './components/dashboard/dashboard
     MatFormFieldModule,
     MatInputModule,
     routing,
-    FullCalendarModule
+    FullCalendarModule,
+    CommonModule
   ],
   providers: [
-    DatePipe
+    DatePipe,
+    ColumnTitleFormatPipe
   ],
   entryComponents:[
     TeacherDeleteModalComponent,
@@ -152,8 +158,10 @@ import { SessionCompletedModalComponent } from './components/dashboard/dashboard
     AdminInvoiceEditModalComponent,
     CourseDeleteModalComponent,
     CourseDetailModalComponent,
-    SessionDetailEditModalComponent
+    SessionDetailEditModalComponent,
+    CourseClassDetailModalComponent
   ],
+  exports: [AppComponent],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

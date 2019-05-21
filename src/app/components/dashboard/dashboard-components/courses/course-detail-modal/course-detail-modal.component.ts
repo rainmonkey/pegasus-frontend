@@ -10,22 +10,22 @@ import { CoursesService } from '../../../../../services/http/courses.service';
 export class CourseDetailModalComponent implements OnInit {
   public errorMessage: string;
   public successMessage: string;
-  
+
 
   @Input() command;
   @Input() whichCourse;
   @ViewChild('modalUpdateFormComponent') modalUpdateFormComponentObj;
 
   constructor(
-    public activeModal: NgbActiveModal, 
+    public activeModal: NgbActiveModal,
     private coursesService: CoursesService
   ) { }
 
   ngOnInit() {
-    
+
   }
 
-  onSubmit() {  
+  onSubmit() {
     let vailadValue = this.checkInputVailad();
     if (vailadValue != null) {
       this.stringifySubmitStr(vailadValue)
@@ -45,13 +45,14 @@ export class CourseDetailModalComponent implements OnInit {
     else {
       this.errorMessage = 'Please check your input.'
       return null;
-    }
+    } 
   }
 
   prepareSubmitData(valueToSubmit) {
     valueToSubmit.CourseType = this.checkCourseType(valueToSubmit);
     valueToSubmit.Level = this.checkLevel(valueToSubmit);
     valueToSubmit.CourseCategoryId = this.checkCourseCategoryId(valueToSubmit);
+    valueToSubmit.Duration = this.checkDuration(valueToSubmit);
     valueToSubmit.TeacherLevel = this.checkTeacherLevel(valueToSubmit);
     return valueToSubmit;
   }
@@ -69,17 +70,17 @@ export class CourseDetailModalComponent implements OnInit {
     if (this.command == 0) {
       this.coursesService.addNew(this.modalUpdateFormComponentObj.updateForm.value).subscribe(
         (res) => {
-          this.successMessage = 'Submit success!';
+          alert('Submit success!');
           this.activeModal.close();
         },
         (err) => {
-          if (err.error.Message != null) {
-            this.errorMessage = JSON.parse(err.error.Message);
-            console.log(this.errorMessage);
+          if (err.error.ErrorMessage != null) {
+            this.errorMessage = err.error.ErrorMessage;
           }
           else {
             this.errorMessage = 'Error! Please check your input.'
           }
+          console.log('Error', err);
         }
       );
     }
@@ -87,10 +88,12 @@ export class CourseDetailModalComponent implements OnInit {
     else if (this.command == 2) {
       this.coursesService.update(this.modalUpdateFormComponentObj.updateForm.value, this.whichCourse.CourseId).subscribe(
         (res) => {
-          this.successMessage = 'Submit success!'
+          alert('Submit success!');
+          this.activeModal.close();          
         },
         (err) => {
-          console.log(err)
+          console.log(err);
+          
         }
       )
     }
@@ -98,15 +101,82 @@ export class CourseDetailModalComponent implements OnInit {
 
   checkCourseType(valueToSubmit) {
     switch (valueToSubmit.CourseType) {
-      case '1 to 1':
+      case 'One to One':
         return 1;
       case 'Group':
         return 2;
     }
   }
 
+  checkDuration(valueToSubmit) {
+    switch (valueToSubmit.Duration) {
+      case "30 minutes":
+        return 1;
+      case "45 minutes":
+        return 2;
+      case "1 Hour":
+        return 3;
+      case "75 minutes":
+        return 4;
+    }
+  }
+
   checkLevel(valueToSubmit) {
     switch (valueToSubmit.Level) {
+      case "L0":
+        return 0;
+      case "L1":
+        return 1;
+      case "L2":
+        return 2;
+      case "L3":
+        return 3;
+      case "L4":
+        return 4;
+      case "L5":
+        return 5;
+      case "L6":
+        return 6;
+      case "L7":
+        return 7;
+      case "L8":
+        return 8;
+      case "L9":
+        return 9;
+      case "L10":
+        return 10;
+      case "L11":
+        return 11;
+      case "L12":
+        return 12;
+    }
+  }
+
+  checkCourseCategoryId(valueToSubmit) {
+    switch (valueToSubmit.CourseCategoryId) {
+      case 'piano':
+        return 1;
+      case 'drum':
+        return 2;
+      case 'guita':
+        return 3;
+      case 'violin':
+        return 4;
+      case 'cello':
+        return 5;
+      case 'vioce':
+        return 6;
+      case 'theory':
+        return 7;
+      case 'aural':
+        return 8;
+      case 'other-specify':
+        return 9;
+    }
+  }
+
+  checkTeacherLevel(valueToSubmit) {
+    switch (valueToSubmit.TeacherLevel) {
       case 'Junior':
         return 1;
       case 'Intermediate':
@@ -115,26 +185,4 @@ export class CourseDetailModalComponent implements OnInit {
         return 3;
     }
   }
-
-  checkCourseCategoryId(valueToSubmit) {
-    switch (valueToSubmit.CourseCategoryId) {
-      case 'Piano':
-        return 1;
-      case 'Guita':
-        return 2;
-      case 'Drum':
-        return 3;
-    }
-  }
-
-    checkTeacherLevel(valueToSubmit) {
-      switch (valueToSubmit.TeacherLevel) {
-        case 'Junior':
-          return 1;
-        case 'Intermediate':
-          return 2;
-        case 'Senior':
-          return 3;
-      }
-    }
-  }
+}

@@ -30,6 +30,7 @@ import { SessionsCalendarViewTutorComponent } from './components/dashboard/dashb
 import { TeacherPanelComponent } from './components/dashboard/dashboard-components/teachers/teacher-panel/teacher-panel.component';
 import { TeacherInfoComponent } from './components/dashboard/dashboard-components/teachers/teacher-info/teacher-info.component';
 import { TestoneComponent } from './components/testcomponent/testone/testone.component';
+import { CourseClassListComponent } from './components/dashboard/dashboard-components/courses/course-class-list/course-class-list.component';
 
 
 const routes: Routes = [
@@ -85,7 +86,8 @@ const routes: Routes = [
       // Courses Area
       { path: 'courses', component: CoursesPanelComponent,
         children:[
-        { path: 'list', component: CoursesListComponent}
+        { path: 'list', component: CoursesListComponent},
+        { path: 'class/list', component: CourseClassListComponent}
       ]},
       // Learner Area
       { path: 'learner', component:AdminLearnerPanelComponent,
