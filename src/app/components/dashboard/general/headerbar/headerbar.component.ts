@@ -9,10 +9,12 @@ import { UserDetail } from '../../../../models/UserDetail';
   styleUrls: ['./headerbar.component.css']
 })
 export class HeaderbarComponent implements OnInit {
-
+  
   userDetail =
     {
-      img : '../../../../assets/images/usersimg/testimg.jpg'
+      img : '../../../../assets/images/usersimg/testimg.jpg',
+      firstName:'',
+      lastName:''
     }
 
   constructor(
