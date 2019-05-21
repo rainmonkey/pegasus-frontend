@@ -12,7 +12,7 @@ import { NgbTimeStruct, NgbTimeAdapter } from '@ng-bootstrap/ng-bootstrap';
 export class LearnerRegistrationFormComponent implements OnInit {
   // @Input() receivedParentMessage: any;
   // receivedChildMessage: any;
-  public time: NgbTimeStruct = {hour: 9, minute: 0, second: 0};
+  public time: NgbTimeStruct = { hour: 9, minute: 0, second: 0 };
   public hourStep = 1;
   public minuteStep = 15;
   public registrationForm: FormGroup; // define the type of registrationForm
@@ -55,6 +55,12 @@ export class LearnerRegistrationFormComponent implements OnInit {
   public duration: Array<any>;
   public selectlearnerLevel: number;
   public pureCourses: any[];
+  // validate errors
+  getErrorW = false;
+  getErrorH = false;
+  showErrorW = false;
+  showErrorH = false;
+  touchNext = false;
 
   // getter method: simplify the way to capture form controls
   get firstName() { return this.registrationForm.get('learnerForm').get('firstName'); }
@@ -89,8 +95,11 @@ export class LearnerRegistrationFormComponent implements OnInit {
         learnPurpose: [''],
         infoFrom: [''],
         learnerLevel: [this.selectlearnerLevel],
-        location: [''],
+        location: ['', Validators.required],
         levelType: [this.learnerlevelType],
+        paymentPeriod: [''],
+        referrer: ['']
+
       }),
       parentForm: this.fb.array([
         this.fb.group({
@@ -150,7 +159,15 @@ export class LearnerRegistrationFormComponent implements OnInit {
     this.selectedPhoto = <File>event.target.files[0];
     console.log('photo', this.selectedPhoto);
     this.fd.append('photo', this.selectedPhoto);
+    let photoRender = this.selectedPhoto;
+    let photoObj = document.querySelector('#photoID');
+    let reader = new FileReader();
+    reader.onloadend = function () {
+      photoObj.setAttribute("src", this.result.toString());
+    }
+    reader.readAsDataURL(photoRender);
   }
+
   uploadGrade(event: any) {
     this.selectedGrade = <File>event.target.files[0];
     console.log('ABRSM', this.selectedGrade);
@@ -163,7 +180,7 @@ export class LearnerRegistrationFormComponent implements OnInit {
         console.log('courses', this.pureCourses)
         this.coursesCategory = data.Data.map(item => item.CourseCategoryId)
           .map((e, i, final) => final.indexOf(e) === i && i)
-          .filter(e => data.Data [e]).map(e => data.Data[e]);
+          .filter(e => data.Data[e]).map(e => data.Data[e]);
         console.log('courses category', this.coursesCategory)
         // const unique = [... new Set(this.courses.map(item => item.CourseCategoryId))]
       })
@@ -184,8 +201,8 @@ export class LearnerRegistrationFormComponent implements OnInit {
         data => {
           console.log('learner purpose', data);
           this.learnerPurpose = data.Data;
-          for(let lP of this.learnerPurpose) {
-             lP.isChecked = false;
+          for (let lP of this.learnerPurpose) {
+            lP.isChecked = false;
           }
         },
         err => {
@@ -197,7 +214,7 @@ export class LearnerRegistrationFormComponent implements OnInit {
         data => {
           console.log('how know', data);
           this.howKnown = data.Data;
-          this.howKnown.map((o,i) =>
+          this.howKnown.map((o, i) =>
             o.isChecked = false)
         },
         err => {
@@ -226,40 +243,53 @@ export class LearnerRegistrationFormComponent implements OnInit {
       );
   }
   selectLearnerLevel(value) {
-    this.isSelectedLevel = ! this.isSelectedLevel;
+    this.isSelectedLevel = !this.isSelectedLevel;
     this.selectlearnerLevel = value;
     console.log('select learner level', value);
     // let a = this.courses.filter((e) =>  this.selectlearnerLevel == e.Level);
-    this.courses = this.pureCourses.filter((e) =>  e.Level == this.selectlearnerLevel && e.CourseType == 1);
+    this.courses = this.pureCourses.filter((e) => e.Level == this.selectlearnerLevel && e.CourseType == 1);
     console.log('courses filter', this.courses)
 
   }
   selectLearnerPurpose(i, event) {
     this.learnerPurpose[i].isChecked = event.target.checked;
-    console.log('ooooo',this.learnerPurpose[i].isChecked)
+    this.confirmLearner();
   }
   selectHowKnown(i, event) {
     this.howKnown[i].isChecked = event.target.checked;
+    this.confirmLearner();
   }
   confirmLearner() {
     this.learnerOthers = []
-    for(let learnPurpose of this.learnerPurpose) {
-      if(learnPurpose.isChecked) {
+    let whyP = [];
+    let howP = [];
+    for (let learnPurpose of this.learnerPurpose) {
+      if (learnPurpose.isChecked) {
         let tempObj = {};
         tempObj['OthersType'] = learnPurpose.LookupType;
         tempObj['OthersValue'] = learnPurpose.PropValue;
-        this.learnerOthers.push(tempObj);
+        whyP.push(tempObj);
+
+        console.log('whyP',whyP)
+        // this.learnerOthers.push(tempObj);
       }
     }
-    for(let how of this.howKnown) {
-      if(how.isChecked) {
+    for (let how of this.howKnown) {
+      if (how.isChecked) {
         let tempObj = {};
         tempObj['OthersType'] = how.LookupType;
         tempObj['OthersValue'] = how.PropValue;
-        this.learnerOthers.push(tempObj);
+        howP.push(tempObj);
+
+        console.log('howP',howP)
+        // this.learnerOthers.push(tempObj);
       }
     };
-    console.log('learnerOthers', this.learnerOthers)
+    whyP.length === 0 ? this.getErrorW = false : this.getErrorW = true;
+    howP.length === 0 ? this.getErrorH = false : this.getErrorH = true;
+    this.getErrorW === false?this.showErrorW = true:this.showErrorW=false;
+    this.getErrorH === false?this.showErrorH = true:this.showErrorH=false;
+    this.learnerOthers = whyP.concat(howP)
   }
 
   getGroupCourseFromServer() {
@@ -267,7 +297,7 @@ export class LearnerRegistrationFormComponent implements OnInit {
       data => {
         console.log('group course data', data.Data);
         this.groupCourseInstance = data.Data;
-        for(let groupCourse of this.groupCourseInstance) {
+        for (let groupCourse of this.groupCourseInstance) {
           groupCourse.comments = null;
           groupCourse.isChecked = false;
         };
@@ -290,8 +320,8 @@ export class LearnerRegistrationFormComponent implements OnInit {
   }
   confirmGroupCourse() {
     this.learnerGroupCourse = []
-    for(let groupCourse of this.groupCourseInstance) {
-      if(groupCourse.isChecked) {
+    for (let groupCourse of this.groupCourseInstance) {
+      if (groupCourse.isChecked) {
         this.tempGroupCourseObj = {};
         this.tempGroupCourseObj['GroupCourseInstanceId'] = groupCourse.GroupCourseInstanceId;
         this.tempGroupCourseObj['Comment'] = groupCourse.comments;
@@ -314,7 +344,7 @@ export class LearnerRegistrationFormComponent implements OnInit {
     // console.log('location i', i);
     this.registrationService.getTeacherFilter().subscribe(
       (data) => {
-        let tempArray = data.Data.filter((item) => (item.OrgId-1) == i);
+        let tempArray = data.Data.filter((item) => (item.OrgId - 1) == i);
         this.customCourseRoom = tempArray[0].Room;
         console.log('filterArray', tempArray);
         console.log('Room', this.customCourseRoom);
@@ -325,7 +355,7 @@ export class LearnerRegistrationFormComponent implements OnInit {
   }
   selectTl(i: number) {
     // console.log('teacherlevel i', i);
-    let tempArray = this.teacherLevel.filter((item) => (item.levelId-1) == i);
+    let tempArray = this.teacherLevel.filter((item) => (item.levelId - 1) == i);
     this.teacherName = tempArray[0].teacher;
     console.log('teacherName', this.teacherName)
   }
@@ -340,7 +370,7 @@ export class LearnerRegistrationFormComponent implements OnInit {
     let cs = this.customCourse.value;
     console.log('custom Course Form value', cs);
     // let tempObj = {};
-    for(let cc of this.customCourse.value) {
+    for (let cc of this.customCourse.value) {
       let tempObj = {};
       tempObj['CourseId'] = parseInt(cc.course);
       tempObj['OrgId'] = cc.location;
@@ -373,13 +403,13 @@ export class LearnerRegistrationFormComponent implements OnInit {
     this.learner = this.learnerForm.value;
     this.fdObj['FirstName'] = this.learner.firstName;
     // this.fdObj['MiddleName']=this.learner.middleName;
-    this.fdObj['LastName']= this.learner.firstName;
-    this.fdObj['Gender']= this.learner.gender;
-    this.fdObj['dob']= this.learner.birthday;
+    this.fdObj['LastName'] = this.learner.firstName;
+    this.fdObj['Gender'] = this.learner.gender;
+    this.fdObj['dob'] = this.learner.birthday;
     // this.fdObj['DateOfEnrollment']= this.learner.enrollmentDate;
-    this.fdObj['ContactPhone']= this.learner.contactPhone;
-    this.fdObj['Email']=this.learner.email;
-    this.fdObj['Address']= this.learner.address;
+    this.fdObj['ContactPhone'] = this.learner.contactPhone;
+    this.fdObj['Email'] = this.learner.email;
+    this.fdObj['Address'] = this.learner.address;
     this.fdObj['OrgId'] = this.learner.location;
     this.fdObj['LearnerLevel'] = this.selectlearnerLevel;
     this.fdObj['LevelType'] = this.learnerlevelType;
@@ -395,7 +425,7 @@ export class LearnerRegistrationFormComponent implements OnInit {
       this.parent.push(parentTempObj);
       // console.log('parent',this.parent);
     }
-    this.fdObj['Parent']= this.parent;
+    this.fdObj['Parent'] = this.parent;
     this.fdObj['LearnerGroupCourse'] = this.learnerGroupCourse;
     this.fdObj['One2oneCourseInstance'] = this.oneOnOneCourse;
     this.fdObj['LearnerOthers'] = this.learnerOthers;
@@ -468,10 +498,18 @@ export class LearnerRegistrationFormComponent implements OnInit {
   }
 
   next(value: string) {
-    document.getElementById('learnerForm').style.display = 'none';
-    document.getElementById('parentForm').style.display = 'none';
-    document.getElementById('courseForm').style.display = 'none';
-    document.getElementById(value).style.display = 'block';
+    this.getErrorW === false?this.showErrorW = true:this.showErrorW=false;
+    this.getErrorH === false?this.showErrorH = true:this.showErrorH=false;
+    this.touchNext = true;
+    if (value === 'parentForm') { this.confirmLearner(); }
+    if ((this.getErrorH === true) && (this.getErrorW === true)){
+      this.showErrorW = false;
+      this.showErrorH = false;
+      this.touchNext = false;
+      document.getElementById('learnerForm').style.display = 'none';
+      document.getElementById('parentForm').style.display = 'none';
+      document.getElementById('courseForm').style.display = 'none';
+      document.getElementById(value).style.display = 'block';}
   }
 }
 

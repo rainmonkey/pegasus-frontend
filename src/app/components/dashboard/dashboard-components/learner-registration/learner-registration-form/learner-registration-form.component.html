@@ -8,6 +8,8 @@
     <li><a class="nav-link" data-toggle="tab" href="#parentForm">Guardian</a></li>
     <li><a class="nav-link" data-toggle="tab" href="#courseForm">Course</a></li>
   </ul> -->
+
+  <!-- ----LearnerForm HTML---- -->
 <div class="tab-content">
   <div id="learnerForm">
     <ul class="learnerForm__nav nav nav-tabs my-3">
@@ -22,6 +24,7 @@
         </div>
         <div class="learnerPhoto">
           <label for="photo"></label>
+          <img src="" id='photoID' style='height: 64px'>
           <input formControlName="photo" type="file" (change)="uploadPhoto($event)" id="photo" accept="image/*">
         </div>
         <div class="learnerName row">
@@ -98,7 +101,7 @@
                 <option  *ngFor="let llevel of learnerLevel" [value]="llevel.PropValue">{{llevel.PropName}}</option>
               </select>
               <div *ngIf="isSelectedLevel">
-                <span>Did you take exam before?</span><br>
+                <span>Did you take an exam before?</span><br>
                 <div class="d-inline-flex" *ngFor="let levelType of levelType; let i=index">
                   <div *ngIf="i == 0" class="form-check">
                       <input class="form-check-input" (click)="selectLevelType($event.target.value)" name="levelType" type="radio" [value]="levelType.PropValue" checked>
@@ -112,6 +115,19 @@
               </div>
             </div>
         </div>
+        <div class="paymentPeriod referer row" >
+            <div class="col-sm-6 col-md-6">
+              <label>Payment Period</label>
+              <select  class="form-control" formControlName="paymentPeriod">
+                <option value="0">Month</option>
+                <option value="1">Week</option>
+              </select>
+            </div>
+            <div class="col-sm-6 col-md-6">
+              <label>Do you have any referer?</label>
+              <input class="form-control" type="text"  formControlName="referrer">
+            </div>
+      </div>
         <div class="grade my-3">
           <label for="grade">If you have ABRSM Theory Grade 5, please upload.</label>
           <input formControlName="grade" type="file" (change)="uploadGrade($event)" id="grade" accept="image/*">
@@ -123,6 +139,7 @@
               <label>{{learnerPurpose.PropName}}</label>
           </div>
         </div>
+        <small *ngIf="showErrorW && touchNext" class='text-danger'>Please Select At Least One Reason</small>
 
         <div class="how know us">
           <span class="text-primary">How do you know about us?</span><br>
@@ -145,6 +162,7 @@
             </div>
           </div> -->
         </div>
+        <small *ngIf="showErrorH && touchNext" class='text-danger'>Please Select At Least One Option</small>
         <div class="button text-right">
           <button class="btn_next my-3" [disabled]="learnerForm.invalid"
             (click)="next('parentForm')">Next</button>
@@ -152,6 +170,8 @@
       </div>
     </div>
   </div>
+
+<!-- ----parent Form---- -->
   <div id="parentForm">
     <ul class="parentForm__nav nav nav-tabs my-3">
       <li><a class="nav-link disabled">Learner</a></li>
@@ -225,6 +245,7 @@
       <button class="btn_add" (click)="addParent()"><b>Add more parent or guardian</b></button>
     </div>
   </div>
+  <!-- -----courseForm html----- -->
   <div id="courseForm">
     <ul class="courseForm__nav nav nav-tabs my-3">
       <li><a class="nav-link disabled">Learner</a></li>
