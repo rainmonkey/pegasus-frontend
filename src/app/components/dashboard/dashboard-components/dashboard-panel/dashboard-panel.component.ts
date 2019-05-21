@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Title } from '@angular/platform-browser';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 
 
 @Component({
@@ -8,17 +8,16 @@ import { Router } from '@angular/router';
   templateUrl: './dashboard-panel.component.html',
   styleUrls: ['./dashboard-panel.component.css']
 })
-export class DashboardPanelComponent implements OnInit {
+export class DashboardPanelComponent  {
 
   constructor(
-    public titleService: Title,
-    private router: Router
+    private router: Router,
+    private activatedRoute: ActivatedRoute
   ) {
-    this.titleService.setTitle('Dashboard | Home');
-    this.router.navigate(['/home'])
-  }
 
-  ngOnInit() {
+    if(!this.activatedRoute.snapshot.firstChild){
+      this.router.navigate(['/home'])
+    }
   }
 
 }
