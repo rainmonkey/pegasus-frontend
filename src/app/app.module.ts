@@ -129,7 +129,7 @@ import { CourseClassDetailModalComponent } from './components/dashboard/dashboar
     SessionCancelModalComponent,
     SessionTutorReportModalComponent,
     SessionCompletedModalComponent,
-    
+    ColumnTitleFormatPipe,
     CourseClassListComponent,
     CourseClassDetailModalComponent
   ],

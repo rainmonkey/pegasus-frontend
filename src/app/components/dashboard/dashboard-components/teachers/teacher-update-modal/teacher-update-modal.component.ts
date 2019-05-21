@@ -23,16 +23,11 @@ export class TeacherUpdateModalComponent implements OnInit {
   }
 
   onSubmit() {
-    let valueToSubmit = this.modalUpdateFormComponentObj.updateForm.value;
-    this.showLoadingGif();
+    let valueToSubmit = this.modalUpdateFormComponentObj.updateForm.value;0
     let vailadValue = this.checkInputVailad(valueToSubmit);
     if (vailadValue !== null) {
       this.stringifySubmitStr(vailadValue)
     }
-  }
-
-  showLoadingGif() {
-
   }
   ////////////////////////////////////////handler of submition/////////////////////////////////////////////////////
   /*
