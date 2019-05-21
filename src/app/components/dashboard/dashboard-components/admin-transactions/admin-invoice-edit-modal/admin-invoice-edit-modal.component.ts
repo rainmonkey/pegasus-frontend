@@ -144,7 +144,7 @@ getCourse(){
   // data combination
   combiData (){
     let valueObj = this.invoiceEditForm.value;
-    // get rest then redifine all others
+    // get rest then re-define all others
     let {
       LessonFee,
       ConcertFee,
