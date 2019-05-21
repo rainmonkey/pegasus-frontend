@@ -256,7 +256,7 @@ export class TeacherModalFormComponent implements OnInit {
         return  '../../../../../../assets/images/shared/default-employer-profile.png';
       }
       else{
-        console.log(this.photoUrl + src)
+        console.log('--------------------',this.photoUrl + src)
         return this.photoUrl + src;
       }
     }
