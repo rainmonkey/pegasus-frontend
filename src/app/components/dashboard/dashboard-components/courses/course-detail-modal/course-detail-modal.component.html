@@ -8,11 +8,78 @@
 </div>
 
 <!--modal body-->
+<div style="text-align:center"  *ngIf="errorMessage" class="text-danger">{{errorMessage}} <br> </div>
 <div class='modal-body'>
-  <app-course-modal-form #modalUpdateFormComponent [command]='command' [whichCourse]='whichCourse'></app-course-modal-form>
+  <div class='t_mf_form'>
+    <form [formGroup]='updateForm'>
+      <div class="row">
+        <div class="col-6">
+          <label class='t_mf_label'>Course Name:</label>
+          <input type="text" class='col-12 t_mf_input' formControlName='CourseName'
+            [class.t_mf_error_border]='updateForm.get("CourseName").invalid && updateForm.get("CourseName").touched'>
+          <label class='t_mf_label'>Type:</label>
+          <select type="text" class='col-12 t_mf_input' formControlName='CourseType'
+            [class.t_mf_error_border]='updateForm.get("CourseType").invalid && updateForm.get("CourseType").touched'>
+            <option value='One to One'>1 to 1</option>
+            <option value='Group'>Group</option>
+          </select>
+          <label class='t_mf_label'>Teacher Level:</label>
+          <select type="text" class='col-12 t_mf_input' formControlName='TeacherLevel'
+            [class.t_mf_error_border]='updateForm.get("TeacherLevel").invalid && updateForm.get("TeacherLevel").touched'>
+            <option value='Junior'>Junior</option>
+            <option value='Intermediate'>Intermediate</option>
+            <option value='Senior'>Senior</option>
+          </select>
+          <label class='t_mf_label'>Learner Level:</label>
+          <select type="text" class='col-12 t_mf_input' formControlName='Level'
+            [class.t_mf_error_border]='updateForm.get("Level").invalid && updateForm.get("Level").touched'>
+            <option value = "L0">L0</option>
+            <option value = "L1">L1</option>
+            <option value = "L2">L2</option>
+            <option value = "L3">L3</option>
+            <option value = "L4">L4</option>
+            <option value = "L5">L5</option>
+            <option value = "L6">L6</option>
+            <option value = "L7">L7</option>
+            <option value = "L8">L8</option>
+            <option value = "L9">L9</option>
+            <option value = "L10">L10</option>
+            <option value = "L11">L11</option>
+            <option value = "L12">L12</option>
+          </select>
+        </div>
+        <div class="col-6">
+          <label class='t_mf_label'>Category:</label>
+          <select type="text" class='col-12 t_mf_input' formControlName='CourseCategoryId'
+            [class.t_mf_error_border]='updateForm.get("CourseCategoryId").invalid && updateForm.get("CourseCategoryId").touched'>
+            <option value="piano">Piano</option>          
+            <option value="drum">Drum</option>
+            <option value="guita">Guita</option>
+            <option value="violin">Violin</option>
+            <option value="cello">Cello</option>
+            <option value="voice">Voice</option>
+            <option value="theory">Theory</option>
+            <option value="aural">Aural</option>
+            <option value="other-specify">Other-specify</option>
+          </select>
+          <label class='t_mf_label'>Duration(mins):</label>
+          <select type="text" class='col-12 t_mf_input' formControlName='Duration'
+            [class.t_mf_error_border]='updateForm.get("Duration").invalid && updateForm.get("Duration").touched'>
+            <option value = "30 minutes">30 mins</option>
+            <option value = "45 minutes">45 mins</option>
+            <option value = "1 Hour">60 mins</option>
+            <option value = "75 minutes">75 mins</option>
+          </select>
+          <label class='t_mf_label'>Price(Total):</label>
+          <input type="number" class='col-12 t_mf_input' formControlName='Price'
+            [class.t_mf_error_border]='updateForm.get("Price").invalid && updateForm.get("Price").touched'>
+        </div>
+      </div>
+    </form>
+  </div>
 </div>
 
 <!--modal footer-->
-<div class='modal-footer'>
-  <button type='button' class='btn btn-outline-dark' (click)='onSubmit()'>Save</button>
+<div class='modal-footer'>  
+    <button type='button' class='btn btn-outline-dark' (click)='onSubmit(this.updateForm)'>Save</button>
 </div>
