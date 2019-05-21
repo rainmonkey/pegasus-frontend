@@ -2,8 +2,8 @@
   <div class='row'>
     <!--info page header-->
     <div class='col-12 t_info_title'>
-      Teachers Info
-      <div class='btn btn-info t_info_addnew_btn' (click)='popUpModal(0,null)'>+ Add More</div>
+      Classes Info
+      <div class='btn btn-info t_info_addnew_btn' (click)='updateModal(0,null)'>+ Add More</div>
     </div>
     <!--info page search-->
     <div class='col-12' style="margin-top:-50px;margin-bottom: 10px">
@@ -44,9 +44,9 @@
             <th scope="row">{{index + 1}}</th>
             <td *ngFor='let j of columnsToShow'>{{i[j]}}</td>
             <td>
-              <span class='t_info_table_btn' (click)='detailModal(i)'><span class='fas fa-info-circle'></span></span>
-              <span class='t_info_table_btn' (click)='updateModal(i)'><span class='fas fa-pen'></span></span>
-              <span class='t_info_table_btn' (click)='deleteModal(i)'><span class='fas fa-trash-alt'></span></span>
+              <span class='t_info_table_btn' (click)='detailModal(1,i)'><span class='fas fa-info-circle'></span></span>
+              <span class='t_info_table_btn' (click)='updateModal(2,i)'><span class='fas fa-pen'></span></span>
+              <span class='t_info_table_btn' (click)='deleteModal(3,i)'><span class='fas fa-trash-alt'></span></span>
             </td>
           </tr>
         </tbody>

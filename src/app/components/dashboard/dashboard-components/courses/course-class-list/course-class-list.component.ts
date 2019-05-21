@@ -14,7 +14,7 @@ import { CourseDeleteModalComponent } from '../course-delete-modal/course-delete
 })
 export class CourseClassListComponent implements OnInit {
   //what columns showed in the info page, can get from back-end in the future. must as same as database
-  public columnsToShow: Array<string> = ['Course Name', 'Tutor', 'Location', ''];
+  public columnsToShow: Array<string> = ['Course Name', 'Tutor', 'Start & End Dates', 'Location', 'Room', 'Time', ];
 
 
   public queryParams: object = {};
@@ -97,7 +97,7 @@ export class CourseClassListComponent implements OnInit {
     /*
       update modal
     */
-  updateModal(whichTeacher) {
+  updateModal(command, whichTeacher) {
     const modalRef = this.modalService.open(CourseClassDetailModalComponent, { size: 'lg' });
     let that = this;
     modalRef.result.then(
@@ -111,7 +111,7 @@ export class CourseClassListComponent implements OnInit {
   /*
     delete modal
   */
-  deleteModal(whichTeacher) {
+  deleteModal(command, whichTeacher) {
     const modalRef = this.modalService.open(CourseDeleteModalComponent);
     let that = this;
     modalRef.result.then(function(){
@@ -124,7 +124,7 @@ export class CourseClassListComponent implements OnInit {
   /*
     detail modal
   */
-  detailModal(whichTeacher) {
+  detailModal(command, whichTeacher) {
     const modalRef = this.modalService.open(CourseClassDetailModalComponent, { size: 'lg' });
     modalRef.componentInstance.command = command;
     modalRef.componentInstance.whichTeacher = whichTeacher;

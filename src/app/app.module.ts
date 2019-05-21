@@ -154,7 +154,8 @@ import { CourseClassDetailModalComponent } from './components/dashboard/dashboar
     AdminInvoiceEditModalComponent,
     CourseDeleteModalComponent,
     CourseDetailModalComponent,
-    SessionDetailEditModalComponent
+    SessionDetailEditModalComponent,
+    CourseClassDetailModalComponent
   ],
   exports: [AppComponent],
   bootstrap: [AppComponent]
