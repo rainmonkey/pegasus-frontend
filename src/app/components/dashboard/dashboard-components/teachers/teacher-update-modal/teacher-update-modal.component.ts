@@ -26,7 +26,7 @@ export class TeacherUpdateModalComponent implements OnInit {
   onSubmit() {
     this.isSubmitionSuccess = true;
     this.infoMessage = 'loading.....'
-    let valueToSubmit = this.modalUpdateFormComponentObj.updateForm.value; 0
+    let valueToSubmit = this.modalUpdateFormComponentObj.updateForm.value;
     let vailadValue = this.checkInputVailad(valueToSubmit);
     if (vailadValue !== null) {
       this.stringifySubmitStr(vailadValue)
@@ -96,25 +96,21 @@ export class TeacherUpdateModalComponent implements OnInit {
   }
 
   subscribeHandler(obj) {
+    this.isSubmitionSuccess = false;
     obj.subscribe(
       (res) => {
         this.infoMessage = 'Submit success!'
         this.messageColor = '#28a745'
-        this.isSubmitionSuccess = true;
       },
       (err) => {
         if (err.error.ErrorMessage == 'Teacher has exist.') {
-          this.infoMessage = err.error.ErrorMessage;
-          this.messageColor = '#dc3545'
-          this.isSubmitionSuccess = false;
-          
+          this.infoMessage = err.error.ErrorMessage + ' Please check ID Number.';
+          this.messageColor = '#dc3545'          
         }
         else {
           console.log(err)
           this.infoMessage = 'Error! Please check your input.???'
-          this.messageColor = '#dc3545'
-          this.isSubmitionSuccess = false;
-          
+          this.messageColor = '#dc3545'       
         }
         console.log('Error', err);
       }
