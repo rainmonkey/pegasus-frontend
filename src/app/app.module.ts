@@ -1,3 +1,4 @@
+import { ColumnTitleFormatPipe } from './shared/pipes/column-title-format.pipe';
 // Dependencies
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -73,6 +74,7 @@ import { SessionCompletedModalComponent } from './components/dashboard/dashboard
 import { CourseClassListComponent } from './components/dashboard/dashboard-components/courses/course-class-list/course-class-list.component';
 import { CourseClassDetailModalComponent } from './components/dashboard/dashboard-components/courses/course-class-detail-modal/course-class-detail-modal.component';
 
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -127,6 +129,7 @@ import { CourseClassDetailModalComponent } from './components/dashboard/dashboar
     SessionCancelModalComponent,
     SessionTutorReportModalComponent,
     SessionCompletedModalComponent,
+    
     CourseClassListComponent,
     CourseClassDetailModalComponent
   ],
@@ -145,7 +148,8 @@ import { CourseClassDetailModalComponent } from './components/dashboard/dashboar
     CommonModule
   ],
   providers: [
-    DatePipe
+    DatePipe,
+    ColumnTitleFormatPipe
   ],
   entryComponents:[
     TeacherDeleteModalComponent,
