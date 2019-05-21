@@ -20,3 +20,10 @@ select[disabled],select:disabled,select.disabled{
     -webkit-opacity:1;  
     opacity: 1;  
 } 
+textarea[disabled],textarea:disabled,textarea.disabled{  
+    background: rgb(243, 241, 241);
+    color: #333;  
+    -webkit-text-fill-color:#333;  
+    -webkit-opacity:1;  
+    opacity: 1;  
+} 
