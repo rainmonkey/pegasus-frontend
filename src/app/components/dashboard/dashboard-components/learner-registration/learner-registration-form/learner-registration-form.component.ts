@@ -46,7 +46,7 @@ export class LearnerRegistrationFormComponent implements OnInit {
   public learnerGroupCourse: Array<any> = [];
   public selectedCheckbox: boolean;
   public newGroupCourse: Array<any>;
-  public coursesCategory: any[];
+  public coursesCategory = [];
   public courses: any[];
   public oneOnOneCourse: Array<any> = [];
   public courseTime: any;
@@ -55,12 +55,15 @@ export class LearnerRegistrationFormComponent implements OnInit {
   public duration: Array<any>;
   public selectlearnerLevel: number;
   public pureCourses: any[];
+  courses121;
   // validate errors
   getErrorW = false;
   getErrorH = false;
   showErrorW = false;
   showErrorH = false;
   touchNext = false;
+  // photo thumbnail
+  photoObj;
 
   // getter method: simplify the way to capture form controls
   get firstName() { return this.registrationForm.get('learnerForm').get('firstName'); }
@@ -140,7 +143,17 @@ export class LearnerRegistrationFormComponent implements OnInit {
     this.getCustomCourseFromServer();
     this.toModel(this.time);
     this.getCoursesFromServer();
+
+
+    // for testing~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    document.getElementById('learnerForm').style.display = 'none';
+    document.getElementById('parentForm').style.display = 'none';
+    document.getElementById('courseForm').style.display = 'block';
+
   }
+
+
+
   private pad(i: number): string {
     return i < 10 ? `0${i}` : `${i}`;
   }
@@ -157,13 +170,13 @@ export class LearnerRegistrationFormComponent implements OnInit {
   // encapsulate files form data
   uploadPhoto(event: any) {
     this.selectedPhoto = <File>event.target.files[0];
-    console.log('photo', this.selectedPhoto);
     this.fd.append('photo', this.selectedPhoto);
     let photoRender = this.selectedPhoto;
-    let photoObj = document.querySelector('#photoID');
+    this.photoObj = document.querySelector('#photoID');
+    let that = this;
     let reader = new FileReader();
     reader.onloadend = function () {
-      photoObj.setAttribute("src", this.result.toString());
+      that.photoObj.setAttribute("src", this.result.toString());
     }
     reader.readAsDataURL(photoRender);
   }
@@ -177,12 +190,15 @@ export class LearnerRegistrationFormComponent implements OnInit {
     this.coursesService.getCourses().subscribe(
       (data) => {
         this.pureCourses = data.Data;
-        console.log('courses', this.pureCourses)
-        this.coursesCategory = data.Data.map(item => item.CourseCategoryId)
-          .map((e, i, final) => final.indexOf(e) === i && i)
-          .filter(e => data.Data[e]).map(e => data.Data[e]);
-        console.log('courses category', this.coursesCategory)
+        // console.log('courses', this.pureCourses)
+        // this.coursesCategory = data.Data.map(item => item.CourseCategoryId)
+        //   .map((e, i, final) => final.indexOf(e) === i && i)
+        //   .filter(e => data.Data[e]).map(e => data.Data[e]);
+        // console.log('courses category', this.coursesCategory)
         // const unique = [... new Set(this.courses.map(item => item.CourseCategoryId))]
+        this.courses121 = data.Data.filter(item => {
+          return item.CourseTypeName === 'One to One'});
+       // this.coursesCategory = this.courses121.map(item=>item.CourseCategory.CourseCategoryName);
       })
   }
   getLookups(id: number) {
@@ -445,11 +461,12 @@ export class LearnerRegistrationFormComponent implements OnInit {
   }
   resetLearner() {
     this.learnerForm.reset();
+    this.photoObj.setAttribute('src',null);
   }
   resetParent() {
     this.parentForm.reset();
   }
-  deleteParent(i: number) {
+  deleteParent(i) {
     this.parentForm.removeAt(i);
   }
   addParent() {
@@ -464,10 +481,10 @@ export class LearnerRegistrationFormComponent implements OnInit {
     );
     // console.log('addParent', this.parentForm.value)
   }
-  resetCustomCourse() {
-    this.customCourse.reset();
+  resetCustomCourse(i) {
+    this.customCourse.controls[i].reset();
   }
-  deleteCustomCourse(i: number): void {
+  deleteCustomCourse(i) {
     this.customCourse.removeAt(i);
   }
   addCustomCourse(): void {
