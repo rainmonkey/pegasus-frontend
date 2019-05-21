@@ -1,6 +1,5 @@
 import { NgbootstraptableService } from '../../../../../services/others/ngbootstraptable.service';
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { TeachersService } from '../../../../../services/http/teachers.service';
 import { NgbModal, NgbModalRef, NgbPagination } from '@ng-bootstrap/ng-bootstrap';
 import { Router, ActivatedRoute } from '@angular/router';
 import { CoursesService } from 'src/app/services/http/courses.service';
