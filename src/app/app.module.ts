@@ -65,13 +65,13 @@ import { TeacherInfoComponent } from './components/dashboard/dashboard-component
 import { TeacherPanelComponent } from './components/dashboard/dashboard-components/teachers/teacher-panel/teacher-panel.component';
 import { CourseDetailModalComponent } from './components/dashboard/dashboard-components/courses/course-detail-modal/course-detail-modal.component';
 import { CourseDeleteModalComponent } from './components/dashboard/dashboard-components/courses/course-delete-modal/course-delete-modal.component';
-import { CourseModalFormComponent } from './components/dashboard/dashboard-components/courses/course-modal-form/course-modal-form.component';
 import { TestoneComponent } from './components/testcomponent/testone/testone.component';
 import { SessionCancelModalComponent } from './components/dashboard/dashboard-components/sessions/session-modals/session-cancel-modal/session-cancel-modal.component';
 import { SessionTutorReportModalComponent } from './components/dashboard/dashboard-components/sessions/session-modals/session-tutor-report-modal/session-tutor-report-modal.component';
 import { SessionCompletedModalComponent } from './components/dashboard/dashboard-components/sessions/session-modals/session-completed-modal/session-completed-modal.component';
 import { CourseClassListComponent } from './components/dashboard/dashboard-components/courses/course-class-list/course-class-list.component';
 import { CourseClassDetailModalComponent } from './components/dashboard/dashboard-components/courses/course-class-detail-modal/course-class-detail-modal.component';
+import { CoursespipesPipe } from './shared/pipes/coursespipes.pipe';
 
 @NgModule({
   declarations: [
@@ -122,13 +122,13 @@ import { CourseClassDetailModalComponent } from './components/dashboard/dashboar
     TeacherPanelComponent,
     CourseDetailModalComponent,
     CourseDeleteModalComponent,
-    CourseModalFormComponent,
     TestoneComponent,
     SessionCancelModalComponent,
     SessionTutorReportModalComponent,
     SessionCompletedModalComponent,
     CourseClassListComponent,
-    CourseClassDetailModalComponent
+    CourseClassDetailModalComponent,
+    CoursespipesPipe
   ],
   imports: [
     NgbModule,
@@ -145,7 +145,8 @@ import { CourseClassDetailModalComponent } from './components/dashboard/dashboar
     CommonModule
   ],
   providers: [
-    DatePipe
+    DatePipe,
+    CoursespipesPipe
   ],
   entryComponents:[
     TeacherDeleteModalComponent,

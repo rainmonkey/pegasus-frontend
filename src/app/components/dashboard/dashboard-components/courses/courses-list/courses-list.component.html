@@ -1,16 +1,23 @@
 <div class='container tl_body'>
-  <div class='row'>
+  <div class="row">
     <!--body head-->
-    <div class='col-12'>
-      <span class="font2">Courses List</span>
+    <div class="col-12 row">
+      <!--body tittle-->
+      <div class='col-12 t_info_title'>
+        Courses List
+      </div>
+      <!--body search-->
       <div class="col-12">
-        <!--body search-->
-        <input id='searchingInput' type="text" placeholder=" Search by Course" (keydown)='onSearch($event)'>
-        <span (click)='onSearch(null)'>
-          <span class='fas fa-search'></span>
-        </span>
+        <div class='t_info_search'>
+          <input id='searchingInput' type="text" placeholder="Search by Course" (keydown)='onSearch($event)'>
+        </div>
+        <div class='t_info_search_by'>
+          <span (click)="onSearch(null)">
+            <span class='fas fa-search'></span>
+          </span>
+        </div>
         <!--add more btn-->
-        <span class='tl_body_add btn btn-info' (click)='popUpModals(0,null)'>+ Add More</span>
+        <span class='btn btn-info t_info_addnew_btn' (click)="popUpModals(0,null)">+ Add More</span>
       </div>
     </div>
 
@@ -24,8 +31,8 @@
               Course Name</th>
             <th scope='col' class='tl_body_table_head sorting_item' style="width:5rem;" (click)='onSort("CourseType")'>
               Type</th>
-              <th scope='col' class='tl_body_table_head sorting_item' style="width:9rem;"
-              (click)='onSort("Level")'>Learner Level</th>
+            <th scope='col' class='tl_body_table_head sorting_item' style="width:9rem;" (click)='onSort("Level")'>
+              Learner Level</th>
             <th scope='col' class='tl_body_table_head sorting_item' style="width:9rem;"
               (click)='onSort("TeacherLevel")'>Teacher Level</th>
             <th scope='col' class='tl_body_table_head sorting_item' style="width:6rem;" (click)='onSort("Duration")'>
@@ -33,7 +40,7 @@
             <th scope='col' class='tl_body_table_head sorting_item' style="width:6rem;" (click)='onSort("Price")'>Price
             </th>
             <th scope='col' class='tl_body_table_head sorting_item' style="width:7rem;"
-              (click)='onSort("CourseCategory.CourseCategoryName")'>Category</th>
+              (click)='onSort("CourseCategoryId")'>Category</th>
             <th scope='col' class='tl_body_table_head' style="width:8rem;">Edit & Delete</th>
           </tr>
         </thead>
@@ -59,9 +66,11 @@
         </tbody>
       </table>
     </div>
+
     <!--body pagination-->
     <div class='col-12'>
       <ngb-pagination [collectionSize]='coursesListLength' [(page)]='page' [pageSize]='pageSize'></ngb-pagination>
     </div>
+
   </div>
 </div>
