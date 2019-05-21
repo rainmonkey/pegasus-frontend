@@ -84,7 +84,7 @@ export class AdminInvoiceListComponent implements OnInit {
         OwingFee: list.OwingFee,
         IsEmailSent: list.IsEmailSent
       };
-      Object.assign(list.Learner, tempObj);
+      Object.assign(list.Learner, tempObj, list);
       this.myArray.push(list.Learner);
     });
   }
