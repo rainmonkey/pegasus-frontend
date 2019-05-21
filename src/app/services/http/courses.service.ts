@@ -26,7 +26,8 @@ export class CoursesService {
     return this.http.delete(this.baseUrl + 'courses/' + courseId);
   }
 
-  searching(searchString,columnToSearch):any{
-    return this.http.get(this.baseUrl + 'courses/' + searchString, columnToSearch) 
+  getCourseClasses(){
+    return this.http.get(this.baseUrl +'') ;
   }
+
 }
