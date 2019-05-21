@@ -3,7 +3,7 @@
     <!--info page header-->
     <div class='col-12 t_info_title'>
       Teachers Info
-      <div class='btn btn-info t_info_addnew_btn' (click)='popUpModal(0,null)'>+ Add More</div>
+      <div class='btn btn-info t_info_addnew_btn' (click)='updateModal(0,null)'>+ Add More</div>
     </div>
     <!--info page search-->
     <div class='col-12' style="margin-top:-50px;margin-bottom: 10px">
@@ -32,7 +32,7 @@
             <th scope='col' style='width: 50px'>#</th>
             <th *ngFor='let i of columnsToShow' scope='col' (click)='onSort(i)' counter='0' style='width: 110px'
               class='t_sort_title'>
-              {{AddSpaceInString(i)}}</th>
+              {{i | columnTitleFormat}}</th>
             <th scope='col' style='width: 150px'></th>
           </tr>
         </thead>
@@ -44,9 +44,9 @@
             <th scope="row">{{index + 1}}</th>
             <td *ngFor='let j of columnsToShow'>{{i[j]}}</td>
             <td>
-              <span class='t_info_table_btn' (click)='popUpModal(1,i)'><span class='fas fa-info-circle'></span></span>
-              <span class='t_info_table_btn' (click)='popUpModal(2,i)'><span class='fas fa-pen'></span></span>
-              <span class='t_info_table_btn' (click)='popUpModal(3,i)'><span class='fas fa-trash-alt'></span></span>
+              <span class='t_info_table_btn' (click)='detailModal(1, i)'><span class='fas fa-info-circle'></span></span>
+              <span class='t_info_table_btn' (click)='updateModal(2, i)'><span class='fas fa-pen'></span></span>
+              <span class='t_info_table_btn' (click)='deleteModal(3, i)'><span class='fas fa-trash-alt'></span></span>
             </td>
           </tr>
         </tbody>

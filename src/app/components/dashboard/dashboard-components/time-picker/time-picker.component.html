@@ -13,11 +13,12 @@
           <div class="slot" *ngFor="let y of yIndex; let i = index" 
           [ngClass]="{'event': displayArray[x][y], 'slot-bottom': i%4==3}" 
           (mousedown)="mousedown(x,y,$event)"  (mouseup)="mouseup(x,y,$event)">
-            <small *ngIf="textArray[x][y] && displayArray[x][y]">{{startTime}}-{{endTime}}</small>
+            <small *ngIf="textArray[x][y] && displayArray[x][y]" >{{realTimeArray[x][y]}}</small>
           </div>
         </div>
       </div>
     </div>
   </div> 
-  <div><button (click)="checkASum()">Confirm</button></div>
+  <div><button (click)="sendMessageToParent(messageToSendC)" routerLink="/learner/registration" routerLinkActive="active">Confirm</button></div>
 </div>
+<!-- <app-learner-registration-form [receivedParentMessage]="messageToSendP"></app-learner-registration-form> -->

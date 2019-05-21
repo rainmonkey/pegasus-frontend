@@ -8,8 +8,9 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
   styleUrls: ['./teacher-update-modal.component.css']
 })
 export class TeacherUpdateModalComponent implements OnInit {
-  public errorMessage: string = '';
-  public successMessage: string = '';
+  public infoMessage: string = '';
+  public messageColor:string;
+
 
   @Input() command;
   @Input() whichTeacher;
@@ -22,24 +23,17 @@ export class TeacherUpdateModalComponent implements OnInit {
   }
 
   onSubmit() {
-    let valueToSubmit = this.modalUpdateFormComponentObj.updateForm.value;
-    console.log(valueToSubmit)
-    this.showLoadingGif();
+    let valueToSubmit = this.modalUpdateFormComponentObj.updateForm.value;0
     let vailadValue = this.checkInputVailad(valueToSubmit);
     if (vailadValue !== null) {
       this.stringifySubmitStr(vailadValue)
     }
-  }
-
-  showLoadingGif() {
-
   }
   ////////////////////////////////////////handler of submition/////////////////////////////////////////////////////
   /*
     check whether data vailad or not(ruled by Validators).
   */
   checkInputVailad(valueToSubmit) {
-    console.log(this.modalUpdateFormComponentObj.updateForm.value.Gender)
     //once click save btn, touch all inputs form with for-loop. In order to trigger Validator
     for (let i in this.modalUpdateFormComponentObj.updateForm.controls) {
       this.modalUpdateFormComponentObj.updateForm.controls[i].touched = true;
@@ -49,8 +43,8 @@ export class TeacherUpdateModalComponent implements OnInit {
       return this.prepareSubmitData(valueToSubmit);
     }
     else {
-      this.successMessage = '';
-      this.errorMessage = 'Please check your input.'
+      this.infoMessage = 'Please check your input.'
+      this.messageColor = '#dc3545'
       return null;
     }
   }
@@ -62,7 +56,6 @@ export class TeacherUpdateModalComponent implements OnInit {
   prepareSubmitData(valueToSubmit) {
     valueToSubmit.Gender = this.checkGender();
     valueToSubmit.Language = this.checkLanguages();
-    console.log('a')
     valueToSubmit.DayOfWeek = this.checkOrgs();
     valueToSubmit.Qualificatiion = this.checkQualifications(valueToSubmit);
     valueToSubmit.IDType = Number(valueToSubmit.IDType);
@@ -75,7 +68,6 @@ export class TeacherUpdateModalComponent implements OnInit {
   */
   stringifySubmitStr(vailadValue) {
     //console.log(vailadValue)
-    this.errorMessage = '';
     let submit = new FormData();
     submit.append('details', JSON.stringify(vailadValue));
     submit.append('Photo', this.modalUpdateFormComponentObj.photoToSubmit);
@@ -89,18 +81,19 @@ export class TeacherUpdateModalComponent implements OnInit {
   submitByMode(submitData) {
     //while push a stream of new data
     if (this.command == 0) {
-
       this.teachersService.addNew(submitData).subscribe(
         (res) => {
-          this.successMessage = 'Submit success!'
+          this.infoMessage = 'Submit success!'
+          this.messageColor = '#28a745'
         },
         (err) => {
           if (err.error.ErrorMessage == 'Teacher has exist.') {
-            this.errorMessage = err.error.ErrorMessage;
+            this.infoMessage = err.error.ErrorMessage;
+            this.messageColor = '#dc3545'
           }
           else {
-            this.errorMessage = 'Error! Please check your input.'
-
+            this.infoMessage = 'Error! Please check your input.'
+            this.messageColor = '#dc3545'
           }
           console.log('Error', err);
         }
@@ -110,19 +103,27 @@ export class TeacherUpdateModalComponent implements OnInit {
     else if (this.command == 2) {
       this.teachersService.update(submitData, this.whichTeacher.TeacherId).subscribe(
         (res) => {
-          this.successMessage = 'Submit success!'
+          this.infoMessage = 'Submit success!'
+          this.messageColor = '#28a745'
         },
         (err) => {
           console.log(err)
-        }
-      )
+          if (err.error.ErrorMessage == 'Teacher has exist.') {
+            this.infoMessage = err.error.ErrorMessage;
+            this.messageColor = '#dc3545'
+          }
+          else {
+            this.infoMessage = 'Error! Please check your input.'
+            this.messageColor = '#dc3545'
+          }
+        })
     }
   }
 
 
   checkGender() {
     let gender = this.modalUpdateFormComponentObj.genderToSubmit.nativeElement.value;
-    switch (gender){
+    switch (gender) {
       case "Female":
         return 0;
       case "Male":
@@ -153,6 +154,7 @@ export class TeacherUpdateModalComponent implements OnInit {
 
     for (let i of temBranches) {
       if (i.nativeElement.checked == true) {
+        console.log(i.nativeElement)
         if (i.nativeElement.name == 'Monday') {
           temBranchesList[0].push(Number(i.nativeElement.defaultValue))
         }

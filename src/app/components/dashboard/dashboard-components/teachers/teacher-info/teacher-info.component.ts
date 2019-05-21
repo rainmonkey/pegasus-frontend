@@ -43,20 +43,18 @@ export class TeacherInfoComponent implements OnInit {
     get data from service
   */
   getDataFromSever() {
-    //this.toggleLoadingGif('show')  'show' 'hide'
-    this.toggleLoadingGif('show');
     this.teachersService.getTeachersInfo().subscribe(
       (res) => {
         this.teachersList = res.Data;
         this.teachersListCopy = this.teachersList;
         this.teachersListLength = res.Data.length;
         //console.log(this.teachersList)
-        //this.toggleLoadingGif('show')  'show' 'hide'
-        this.toggleLoadingGif('hide');
-        this.refreshPageControl();
+      
+        this.refreshPageControl(); 
+       
       },
       (err) => {
-        //报错误信息
+        alert("Thers's something wrong in server, please try later.")
       }
     )
   }
@@ -107,17 +105,7 @@ export class TeacherInfoComponent implements OnInit {
   });
 }
 
-
-
   ///////////////////////////////////////////called by template event/////////////////////////////////////////////
-  /*
-    Insert space before capital letter.
-      eg: FirstName --> First Name
-  */
-  AddSpaceInString(strToAdd) {
-    return strToAdd.replace(/(?=[A-Z])/g, ' ');
-  }
-
   /*
     sort method
   */
@@ -159,39 +147,19 @@ export class TeacherInfoComponent implements OnInit {
   }
 
   ///////////////////////////////////////handler of angular-bootstrap modals/////////////////////////////////////
-  /*
-    pop up modals, when need to pop up a modal, call this method
-    commands:
-      0 --> Add new
-      1 --> show details/show more
-      2 --> Edit/update
-      3 --> delete
-  */
-  popUpModal(command, whichTeacher) {
-    switch (command) {
-      case 0:
-        this.updateModal(command, whichTeacher);
-        break;
-      case 1:
-        this.detailModal(command, whichTeacher)
-        break;
-      case 2:
-        this.updateModal(command, whichTeacher);
-        break;
-      case 3:
-        this.deleteModal(command, whichTeacher);
-        break;
-    }
-  }
-
+  
   /*
     update modal
   */
   updateModal(command, whichTeacher) {
     const modalRef = this.modalService.open(TeacherUpdateModalComponent, { size: 'lg' });
     let that = this;
-    modalRef.result.then(function(){
-      that.ngOnInit()
+    modalRef.result.then(
+      function(){
+        that.ngOnInit();
+      },
+      function(){
+        that.ngOnInit();
     })
     modalRef.componentInstance.command = command;
     modalRef.componentInstance.whichTeacher = whichTeacher;
@@ -203,9 +171,13 @@ export class TeacherInfoComponent implements OnInit {
   deleteModal(command, whichTeacher) {
     const modalRef = this.modalService.open(TeacherDeleteModalComponent);
     let that = this;
-    modalRef.result.then(function(){
-      that.ngOnInit()
-    })
+    modalRef.result.then(
+      function(){
+        that.ngOnInit();
+      },
+      function(){
+        that.ngOnInit();
+      })
     modalRef.componentInstance.command = command;
     modalRef.componentInstance.whichTeacher = whichTeacher;
   }
