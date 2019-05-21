@@ -9,6 +9,7 @@ import {NgbModal, NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import Swal from 'node_modules/sweetalert2/dist/sweetalert2.all.min.js';
 import {FormBuilder, FormGroup} from '@angular/forms';
 import { SessionsService } from 'src/app/services/http/sessions.service';
+import {SessionDetailEditModalComponent} from '../../session-modals/session-detail-edit-modal/session-detail-edit-modal.component';
 
 @Component({
   selector: 'app-sessions-calendar-view-admin',
@@ -58,28 +59,40 @@ export class SessionsCalendarViewAdminComponent implements OnInit {
           Swal.fire({
               type: 'info',
               title: 'Student',
+              showCancelButton: true,
+              confirmButtonColor: '#3085d6',
+              cancelButtonColor: '#d33',
+              confirmButtonText: 'Edit',
               html: info.event.extendedProps.description
             }
-          );
+          ).then(result => {
+            if (result.value) {
+              this.modalService.open(SessionDetailEditModalComponent, { size: 'lg' });
+            }
+          });
         },
         resources: this.resourceData,
+        displayEventTime: false,
         events: this.eventData,
         aspectRatio: 1.8,
         timeZone: 'UTC',
+        allDaySlot: false,
         defaultView: 'resourceTimeGridDay',
         schedulerLicenseKey: 'GPL-My-Project-Is-Open-Source',
-        scrollTime: '09:00',
-        height: 700,
+        minTime: '08:00',
+        maxTime: '21:00',
+        scrollTime: '08:00',
+        height: 660,
         views: {
           resourceTimeGridDay: {
-            buttonText: 'Lesson',
+            buttonText: 'Day',
             slotDuration: '00:15'
           }
         },
         header: {
           left: 'today prev,next DayPickerButton',
           center: 'title',
-          right: ''
+          right: 'resourceTimeGridDay'
         },
         plugins: [timeslot, interactionPlugin]
       };
@@ -97,13 +110,20 @@ export class SessionsCalendarViewAdminComponent implements OnInit {
   }
   generateEventData = (data) => {
     data.forEach(s => {
-      s.title += '\nTeacher: ' + s.teacher;
+      s.title = '(' + s.title + ')';
+      s.title += ' Tutor: ' + s.teacher;
       if (s.IsGroup === false) {
-        s.title += '\nStudent: ' + s.student[0];
+        s.title += '\nLearner: ' + s.student[0];
       }
+      if (s.student.length === 1) {
+        s.description = s.student[0];
+        return data;
+      }
+      s.description += '<div class="row">';
       s.student.forEach(w => {
-        s.description += '<p>' + w + '</p> ';
+       s.description += '<div class="col-4 col-centered">' + w + '</div>';
       });
+      s.description += '</div>';
     });
     return data;
   }

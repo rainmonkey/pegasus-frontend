@@ -8,9 +8,15 @@
     </div>
 
     <!--body search-->
-    <div class='col-12 tl_body_search'>
-      <span class='fas fa-search'></span>&nbsp;
-      <input type="text" (input)='onSearch($event)' placeholder=" Search by Course">
+    <div class='tl_body_search'>
+      <div class='t_info_search'>
+        <input id='searchingInput' type="text" placeholder=" Search by Course" (keydown)='onSearch($event)'>
+      </div>
+      <div class='t_info_search_by'>
+        <span (click)='onSearch(null)'>
+          <span class='fas fa-search'></span>
+        </span>
+      </div>
     </div>
 
     <!--body main-->
@@ -19,33 +25,37 @@
         <thead>
           <tr>
             <th scope='col' class='tl_body_table_head' style="width:1rem;">#</th>
-            <th scope='col' class='tl_body_table_head sorting_item' style="width:16rem;" (click)='onSort("CourseName")'>Course Name</th>
-            <th scope='col' class='tl_body_table_head sorting_item' style="width:5rem;" (click)='onSort("CourseType")'>Type</th>
-            <th scope='col' class='tl_body_table_head sorting_item' style="width:9rem;" (click)='onSort("Level")'>Learner Level</th>
-            <th scope='col' class='tl_body_table_head sorting_item' style="width:9rem;" (click)='onSort("TeacherLevel")'>Teacher Level</th>
-            <th scope='col' class='tl_body_table_head sorting_item' style="width:6rem;" (click)='onSort("Duration")'>Duration</th>
-            <th scope='col' class='tl_body_table_head sorting_item' style="width:6rem;" (click)='onSort("Price")'>Price</th>
-            <th scope='col' class='tl_body_table_head sorting_item' style="width:7rem;" (click)='onSort("CourseCategory.CourseCategoryName")'>Category</th>
+            <th scope='col' class='tl_body_table_head sorting_item' style="width:16rem;" (click)='onSort("CourseName")'>
+              Course Name</th>
+            <th scope='col' class='tl_body_table_head sorting_item' style="width:5rem;" (click)='onSort("CourseType")'>
+              Type</th>
+            <th scope='col' class='tl_body_table_head sorting_item' style="width:9rem;"
+              (click)='onSort("TeacherLevel")'>Teacher Level</th>
+            <th scope='col' class='tl_body_table_head sorting_item' style="width:6rem;" (click)='onSort("Duration")'>
+              Duration</th>
+            <th scope='col' class='tl_body_table_head sorting_item' style="width:6rem;" (click)='onSort("Price")'>Price
+            </th>
+            <th scope='col' class='tl_body_table_head sorting_item' style="width:7rem;"
+              (click)='onSort("CourseCategory.CourseCategoryName")'>Category</th>
             <th scope='col' class='tl_body_table_head' style="width:8rem;">Edit & Delete</th>
           </tr>
         </thead>
         <tbody>
           <!-- dataTable-->
-          <tr *ngFor = 'let i of coursesList | slice: (page-1)* pageSize : (page-1) * pageSize + pageSize; let j = index'>
+          <tr *ngFor='let i of coursesList | slice: (page-1)* pageSize : (page-1) * pageSize + pageSize;let j = index'>
             <th scope="row">{{j+1}}</th>
-            <td>{{i.CourseName}}</td>
-            <td *ngIf="i.CourseType == 1">1 to 1</td>
-            <td *ngIf="i.CourseType == 2">Group</td>
-            <td *ngIf="i.Level == 1">Junior</td>
-            <td *ngIf="i.Level == 2">Intermediate</td>
-            <td *ngIf="i.Level == 3">Senior</td>
-            <td>{{i.TeacherLevel}}</td>
-            <td>{{i.Duration}} hrs</td>
+            <td>
+              <ngb-highlight [result]="i.CourseName" [term]="filter.value"></ngb-highlight>
+            </td>
+            <td>{{i.CourseTypeName}}</td>
+            <td>{{i.TeacherLevelName}}</td>
+            <td>{{i.DurationName}}</td>
             <td>${{i.Price}}</td>
             <td>{{i.CourseCategory.CourseCategoryName}}</td>
             <td class='tl_body_table_btns'>
-                <span (click)='popUpModals(2,i)' class='tl_body_table_btn' style="margin-right: 2rem;"><i class='fas fa-pen'></i></span>
-                <span (click)='popUpModals(3,i)' class='tl_body_table_btn'><i class='fas fa-trash-alt'></i></span>
+              <span (click)='popUpModals(2,i)' class='tl_body_table_btn' style="margin-right: 2rem;"><i
+                  class='fas fa-pen'></i></span>
+              <span (click)='popUpModals(3,i)' class='tl_body_table_btn'><i class='fas fa-trash-alt'></i></span>
             </td>
           </tr>
         </tbody>
@@ -53,9 +63,7 @@
     </div>
     <!--body pagination-->
     <div class='col-12'>
-      <ngb-pagination [collectionSize] = 'coursesListLength' [(page)] ='page' [pageSize]='pageSize'></ngb-pagination>
+      <ngb-pagination [collectionSize]='coursesListLength' [(page)]='page' [pageSize]='pageSize'></ngb-pagination>
     </div>
-
-
   </div>
 </div>

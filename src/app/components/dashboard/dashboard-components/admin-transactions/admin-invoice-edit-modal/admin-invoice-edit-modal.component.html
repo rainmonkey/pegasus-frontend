@@ -33,8 +33,8 @@
 
       <div class="col-5">
         <div>
-          <label class="mt-2">Lesson Quantity</label>
-          <input class="form-control" type="number" min="0" formControlName="LessonQuantity"/>
+          <label class="mt-2">Lesson Quantity (Price: ${{coursePrice}})</label>
+          <input class="form-control" type="number" min="0" formControlName="LessonQuantity" (change)='changeQuantity()'/>
           <!-- <small *ngIf="invoiceEditForm.get('LessonQuantity').touched">(Lesson quantity)</small> -->
         </div>
         <div>
@@ -114,10 +114,10 @@
      <div class="form-group row justify-content-center">
       <div class="col-5">
         <label class="mt-2"> All Subject in Total:</label>
-        <input class="form-control" type="number" min="0" formControlName="OwingFee" disabled/>
+        <p>{{owingFeeLocal}}</p>
       </div>
       <div class="col-5">
-        <label class="mt-2"> Due Date:</label> <input class="form-control" type="text" formControlName="DueDate"/>
+        <label class="mt-2"> Due Date:</label> <p>{{dueDateLocal|date:'medium'}}</p>
       </div>
     </div>
   </form>
@@ -131,7 +131,7 @@
     (click)="sendMail(confirmModal)"
     id="save"
   >
-    Sent Email
+    Save
   </button>
   <small *ngIf="errMsgM" class="text-danger"
     >Please make sure all field are correct</small
@@ -146,7 +146,7 @@
 </div>
 <!-- ng bootstrap alert -->
 <ngb-alert *ngIf='successAlert' type="success" (close)="closeSucc()">Your Payment Has Been Made</ngb-alert>
-<ngb-alert *ngIf='errorAlert' type="danger" (close)="closeErro()">{{ errorMsg.ErrorCode }}</ngb-alert>
+<ngb-alert *ngIf='errorAlert' type="danger" (close)="closeErro()">{{ errorMsg }}</ngb-alert>
 
 <ng-template #confirmModal let-modal>
   <div class="modal-header m-2">
@@ -163,7 +163,10 @@
   <!-- modal-body -->
   <div class="container">
     <div class="d-flex justify-content-center">
-      <p>Please click send button by sending this email to the customer</p>
+        <p class='text-danger' *ngIf="originPrice !== userChosenPrice">The original lesson fee is {{originPrice}}, you have changed to {{userChosenPrice}}, please confirm</p>
+    </div>
+    <div class="d-flex justify-content-center">
+      <p>Please click send button by update this invoice to database</p>
     </div>
   </div>
   <div class="modal-footer">

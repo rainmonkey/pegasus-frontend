@@ -15,10 +15,19 @@ export class CoursesService {
   }
 
   addNew(data):any{
-    return this.http.post(this.baseUrl+'courses',data)
+    return this.http.post(this.baseUrl + 'courses',data)
+  }
+
+  update(data,courseId):any{
+    return this.http.put(this.baseUrl + 'courses/'+ courseId, data)
   }
 
   deleteCourse(courseId):any{
     return this.http.delete(this.baseUrl + 'courses/' + courseId);
   }
+
+  getCourseClasses(){
+    return this.http.get(this.baseUrl +'') ;
+  }
+
 }

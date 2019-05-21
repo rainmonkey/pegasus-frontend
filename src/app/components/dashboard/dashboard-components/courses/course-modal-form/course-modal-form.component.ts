@@ -1,5 +1,4 @@
 import { Component, OnInit, Input, ViewChildren } from '@angular/core';
-import { CoursesService } from '../../../../../services/http/courses.service';
 import { FormBuilder, Validators } from '@angular/forms';
 
 @Component({
@@ -13,7 +12,7 @@ export class CourseModalFormComponent implements OnInit {
   @Input() command;
   @Input() whichCourse;
 
-  constructor(private fb: FormBuilder, private coursesService: CoursesService) { }
+  constructor(private fb: FormBuilder) { }
 
   ngOnInit() {
     this.updateForm = this.fb.group(this.formGroupAssemble());
@@ -29,22 +28,22 @@ export class CourseModalFormComponent implements OnInit {
         TeacherLevel: [null, Validators.required],
         Duration: [null, Validators.required],
         Price: [null, Validators.required],
-        CourseCategoryName: [null, Validators.required]
+        CourseCategoryId: [null, Validators.required]
       }
     }
     else {
       groupObj = {
         //formControlName 决定了提交表单时的参数名
-        CourseName: [{ value: this.whichCourse.CourseName }, Validators.required],
-        CourseType: [{ value: this.whichCourse.CourseType }, Validators.required],
-        Level: [{ value: this.whichCourse.Level }, Validators.required],
-        TeacherLevel: [{ value: this.whichCourse.TeacherLevel }, Validators.required],
-        Duration: [{ value: this.whichCourse.Duration }, Validators.required],
-        Price: [{ value: this.whichCourse.Price }, Validators.required],
-        CourseCategoryName: [{ value: this.whichCourse.CourseCategoryName }, Validators.required]
+        CourseName: [this.whichCourse.CourseName, Validators.required],
+        CourseType: [this.whichCourse.CourseTypeName, Validators.required],
+        Level: [this.whichCourse.LevelName, Validators.required],
+        TeacherLevel: [this.whichCourse.TeacherLevelName, Validators.required],
+        Duration: [this.whichCourse.DurationName, Validators.required],
+        Price: [this.whichCourse.Price, Validators.required],
+        CourseCategoryId: [this.whichCourse.CourseCategory.CourseCategoryName, Validators.required],
+        CourseId: [this.whichCourse.CourseId, Validators.required]
       }
     }
-    return groupObj;
+    return groupObj;    
   }
-
 }
