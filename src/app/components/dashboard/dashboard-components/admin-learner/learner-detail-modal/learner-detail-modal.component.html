@@ -114,51 +114,79 @@
     <h3>Course</h3>
     <div>
       <div class="row lable-pos">
+
         <button class="button-margin" (click)="chooseGroupCourse()">Group Course</button>
         <button (click)="chooseCustomCourse()">One-on-One Course</button>
       </div>
 
       <div *ngIf='isGroupCourse'>
+        <h5>Group Course</h5>
+        <div class="row">
 
+          <div class="col-6">
+            <span class="label">Course: </span>
+          </div>
+
+          <div class="col-6">
+            <span class="label">Schedule: </span>
+          </div>
+
+          <div class="col-6">
+            <span class="label">Location: </span>
+          </div>
+
+          <div class="col-6">
+            <span class="label">Room: </span> {{ele.OrgId}}
+          </div>
+
+          <div class="col-6">
+            <span class="label">Teacher: </span>
+          </div>
+        </div>
 
       </div>
 
       <!-- one2one Course -->
       <div *ngIf='isCustomCourse'>
+        <h5>One-on-One Course</h5>
         <div *ngFor="let ele of whichLearner.One2oneCourseInstance">
           <div class="row">
+
             <div class="col-6">
-              <span class="label">Course: </span>
+              <span class="label">Course: </span> {{ele.CourseId}}
             </div>
 
             <div class="col-6">
-              <span class="label">Location </span>
+              <span class="label">Teacher Name: </span> {{ele.Teacher.FirstName}} {{ele.Teacher.LastName}}
             </div>
 
             <div class="col-6">
-              <span class="label">Teacher Level: </span>
+              <span class="label">Location: </span> {{ele.OrgId | orgFormat}}
             </div>
 
             <div class="col-6">
-              <span class="label">Teacher Name: </span>
+              <span class="label">Room No.: </span> {{ele.RoomId}}
             </div>
 
             <div class="col-6">
-              <span class="label">Course Start Day: </span>
+              <span class="label">Course Start Day: </span> {{ele.BeginDate}}
             </div>
 
             <div class="col-6">
-                <span class="label">Course End Day: </span>
-              </div>
-
-            <div class="col-6">
-              <span class="label">Course Hour: </span>
+              <span class="label">Course End Day: </span> {{ele.EndDate}}
             </div>
 
             <div class="col-6">
-                <span class="label">Course Minute: </span>
-              </div>
+              <span class="label">Course Day: </span> 
+            </div>
+
+            <div class="col-6">
+              <span class="label">Course Time: </span> {{ele.CourseSchedule}}
+            </div>
+
+
           </div>
+          <br>
 
         </div>
       </div>
