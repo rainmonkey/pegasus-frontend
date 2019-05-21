@@ -180,7 +180,8 @@ import { CourseClassDetailModalComponent } from './components/dashboard/dashboar
     SessionDetailEditModalComponent,
     CourseClassDetailModalComponent,
     LearnerDeleteModalComponent,
-    LearnerDetailModalComponent
+    LearnerDetailModalComponent,
+    SessionCancelModalComponent
   ],
   exports: [AppComponent],
   bootstrap: [AppComponent]
