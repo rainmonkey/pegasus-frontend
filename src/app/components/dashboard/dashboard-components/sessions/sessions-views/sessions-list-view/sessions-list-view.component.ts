@@ -37,8 +37,7 @@ export class SessionsListViewComponent implements OnInit {
     'Room',
     'Branch',
     'Canceled',
-    'Canceled Reason',
-
+    'Canceled Reason'
   ];
   constructor(
     private modalService: NgbModal,
@@ -55,7 +54,7 @@ export class SessionsListViewComponent implements OnInit {
   openE(){
     const modalRef = this.modalService.open(SessionDetailEditModalComponent, { size: 'lg' });
   }
-  openC(c){
+  openC(c) {
     this.modalService
     .open(c)
     .result.then(
@@ -90,11 +89,11 @@ export class SessionsListViewComponent implements OnInit {
 
   // get data from server side
   getData() {
-    this.sessionsService.getReceptionistLesson(this.date).subscribe(
+    this.sessionsService.getReceptionistLessonBetweenDate('2019-04-29', '2019-05-10').subscribe(
       (res) => {
         console.log(res)
         this.learnerList = res.Data;
-        this.learnerListLength = res.Data.length; //length prop is under Data prop
+        this.learnerListLength = res.Data.length; // length prop is under Data prop
         this.temLearnerList = res.Data;
         this.temLearnerListLength = res.Data.length;
       },

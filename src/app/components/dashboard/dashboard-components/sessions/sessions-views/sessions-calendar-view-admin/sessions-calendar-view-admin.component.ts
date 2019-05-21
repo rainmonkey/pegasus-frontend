@@ -110,8 +110,9 @@ export class SessionsCalendarViewAdminComponent implements OnInit {
   }
   generateEventData = (data) => {
     data.forEach(s => {
-      s.title = '(' + s.title + ')';
-      s.title += ' Tutor: ' + s.teacher;
+      const type = '(' + s.title + ')';
+      s.title = '';
+      s.title += 'Tutor: ' + s.teacher + ' ' + type;
       if (s.IsGroup === false) {
         s.title += '\nLearner: ' + s.student[0];
       }

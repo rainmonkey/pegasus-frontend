@@ -92,7 +92,9 @@ const routes: Routes = [
       // Learner Area
       { path: 'learner', component:AdminLearnerPanelComponent,
         children:[
-          {path: 'list', component: LearnerRegistrationEditComponent},
+          
+          {path: 'list', component: AdminLearnerListComponent},
+          {path: 'registration/edit', component: LearnerRegistrationEditComponent},
           {path: 'registration', component: LearnerRegistrationFormComponent}
       ]},
       // Inventory Area
