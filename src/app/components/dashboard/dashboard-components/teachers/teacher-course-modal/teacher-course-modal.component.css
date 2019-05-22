@@ -1,13 +1,13 @@
-.t_dm_title{
+.t_cm_title{
     font-weight: bold;
     font-style: italic;
 }
-.t_dm_close_btn{
+.t_cm_close_btn{
     background: white;
     border: 1px solid black;
     color:black;
 }
-.t_dm_close_btn:hover{
+.t_cm_close_btn:hover{
     background: #343A40;
     border: 1px solid #343a40;
     color:white;
@@ -16,3 +16,20 @@
     font-weight: bold;
     font-style: italic;
 }   
+.t_cm_label_title{
+    font-weight: bold; 
+    margin-bottom: 0px;
+}
+.t_cm_input{
+    border: none;
+    border: 1px solid lightgrey;
+    border-radius: 3px;
+    text-align: center;
+    text-align-last: center;
+    background: rgb(173, 216, 230, 0.1);
+    height: 26px;
+}
+.t_cm_course{
+    border:1px solid lightgrey;
+    border-radius: 3px;
+}
