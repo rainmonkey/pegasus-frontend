@@ -46,4 +46,9 @@ export class TeachersService {
   update(data,teacherId):any{
     return this.http.put(this.baseUrl + 'teacher/' + teacherId, data)
   }
+  
+  getTeacherCourse():any{
+    return this.http.get(this.baseUrl + 'teachercourse'); 
+
+  }
 }

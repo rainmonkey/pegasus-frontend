@@ -114,7 +114,7 @@ const routes: Routes = [
     ]
   },
   { path: 'login', component: LoginComponent },
-  { path: '**', redirectTo: '' }
+  { path: '**', redirectTo: 'home' }
 ];
 
 export const routing = RouterModule.forRoot(routes);

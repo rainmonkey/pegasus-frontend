@@ -21,7 +21,7 @@
         <div class="col-lg-6 bg-white">
           <div class="form d-flex align-items-center">
             <div class="content">
-              <div *ngIf="errorMessage" class="">{{errorMessage}}</div>
+              <div *ngIf="errorMessage" class="text-danger">{{errorMessage}}</div>
 
               <form class="form-validate" [formGroup]="loginForm" (ngSubmit)="onSubmit()">
                 <div class="form-group">

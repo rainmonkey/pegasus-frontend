@@ -4,7 +4,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { AuthenticationService } from '../../../services/auth/authentication.service';
 import { Title } from '@angular/platform-browser';
-
+import { MessagesService } from 'src/app/services/others/messages.service';
 
 @Component({
   selector: 'app-login',
@@ -25,7 +25,8 @@ export class LoginComponent implements OnInit {
     private fb: FormBuilder,
     private route: ActivatedRoute,
     private router: Router,
-    private authenticationService: AuthenticationService
+    private authenticationService: AuthenticationService,
+    private messageService: MessagesService
   ) {
     
   }
@@ -58,21 +59,9 @@ export class LoginComponent implements OnInit {
       },
       (err) => {
         this.loading = false,
-        this.processError(err);
+        this.errorMessage = this.messageService.apiErrorMessageProcessing(err)
       }
     );
   }
 
-  processError(err) {
-    console.warn(err)
-    if (err.error) {
-      if(err.error.ErrorMessage){
-        this.errorMessage = err.error.ErrorMessage;
-      } else {
-        this.errorMessage = 'Sorry, something went wrong';
-      }
-    } else {
-      this.errorMessage = 'Sorry, something went wrong';
-    }
-  }
 }

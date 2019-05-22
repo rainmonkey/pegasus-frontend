@@ -24,14 +24,12 @@ export class CoursespipesPipe implements PipeTransform {
 
   checkDuration(valueToSubmit) {
     switch (valueToSubmit.Duration) {
-      case "30 minutes":
+      case "30 mins":
         return 1;
-      case "45 minutes":
+      case "45 mins":
         return 2;
-      case "1 Hour":
+      case "60 mins":
         return 3;
-      case "75 minutes":
-        return 4;
     }
   }
 
@@ -68,23 +66,23 @@ export class CoursespipesPipe implements PipeTransform {
 
   checkCourseCategoryId(valueToSubmit) {
     switch (valueToSubmit.CourseCategoryId) {
-      case 'piano':
+      case 'Piano':
         return 1;
-      case 'drum':
+      case 'Drum':
         return 2;
-      case 'guita':
+      case 'Guitar':
         return 3;
-      case 'violin':
+      case 'Violin':
         return 4;
-      case 'cello':
+      case 'Cello':
         return 5;
-      case 'vioce':
+      case 'Vioce':
         return 6;
-      case 'theory':
+      case 'Theory':
         return 7;
-      case 'aural':
+      case 'Aural':
         return 8;
-      case 'other-specify':
+      case 'Other-specify':
         return 9;
     }
   }
