@@ -12,63 +12,106 @@ import { NgbPopover } from '@ng-bootstrap/ng-bootstrap';
 })
 
 export class DashboardHomeComponent implements OnInit, AfterViewInit {
-  toDoList: { task: string; origin: string; }[];
+  notices: { notice: string; origin: string; }[];
+
   toDoForm: FormGroup;
+  noticeForm: FormGroup;
   userName:string;
   formError:string;
-
+  pageloading:boolean=true 
+  task:any;
   @ViewChild('popOver') public popover: NgbPopover;
+  toDoList: { id: number; task: string; origin: string; priority: string; link: string; created_date: string; }[];
 
   constructor(
     public title: Title,
     private formBuilder: FormBuilder
   ) {
+    
     this.title.setTitle('Home');
+    this.notices=[
+      {
+        notice:'Work Harder',
+        origin:'Edwin'
+      },
+      {
+        notice:'党中央是大脑和中枢 党中央必须有定于一尊、一锤定音的权威',
+        origin:'党'
+      },
+      {
+        notice:'紧密团结在习近平同志为核心的党中央周围奋力夺取新时代中国特色 ',
+        origin:'党'
+      }
+    ]
     this.toDoList=[
       {
-        task:'为人民服务.',
-        origin: 'Mao'
+        id:1,
+        task:"Update our Tutors information.",
+        origin: 'Mao',
+        priority: '',
+        link: 'tutors/list',
+        created_date: ''
       },
       {
-        task:'Pay all the teachers on Thursday',
-        origin: 'Auther'
+        id:2,
+        task:"Update our courses information .",
+        origin: 'Mao',
+        priority: '',
+        link: 'courses/list',
+        created_date: ''
       },
       {
-        task:'Take out the rubblish on Tuesday.',
-        origin: 'Edwin'
+        id:3,
+        task:"Talk to our learners for feedback.",
+        origin: 'Mao',
+        priority: '',
+        link: "learner/list",
+        created_date: ''
       },
       {
-        task:'Finish the project.',
-        origin: 'Barric'
+        id:4,
+        task:"Check on Sarah's session with Mark.",
+        origin: 'Mao',
+        priority: '',
+        link: "sessions/list",
+        created_date: ''
       }
     ]
   }
 
+  // Fires when the component is ready for use when all queries and inputs have been resolved
   ngOnInit(): void {
     // Subscribe for all the to dos
 
     this.userName = localStorage.getItem('userFirstName')
+    this.pageloading=false
 
   }
 
+  // Called after component’s views are initialized
   ngAfterViewInit(): void {
 
   }
 
-  newTaskFormBuilder(){
-    this.toDoForm = this.formBuilder.group({
-      task:['', [Validators.required, Validators.minLength(3), Validators.maxLength(200)]]
+  // newTaskFormBuilder(){
+  //   this.toDoForm = this.formBuilder.group({
+  //     task:['', [Validators.required, Validators.minLength(3), Validators.maxLength(200)]]
+  //   })
+  // }
+  newNoticeFormBuilder(): void {
+    this.noticeForm = this.formBuilder.group({
+      notice:['', [Validators.required, Validators.minLength(3), Validators.maxLength(200)]]
     })
   }
 
-  toDoSubmit(): void {
-    console.log(this.toDoForm)
-    if(this.toDoForm.dirty && this.toDoForm.valid){
-      this.toDoForm.value['origin'] = this.userName
+  newNoticeSubmit(): void {
+    console.log(this.noticeForm)
+    if(this.noticeForm.dirty && this.noticeForm.valid){
+      this.noticeForm.value['origin'] = this.userName
 
       this.sendToBackend()
 
-      this.toDoList.push(this.toDoForm.value)
+      this.notices.push(this.noticeForm.value)
       this.popover.close()
     }
     else{
@@ -76,12 +119,29 @@ export class DashboardHomeComponent implements OnInit, AfterViewInit {
     }
   }
 
-  openOrClosePopOver(): void {
-    if (!this.popover.isOpen()){ this.popover.open(), this.popover.placement ="right"};
+  // Popover manupulation
+  openOrClosePopOver(position): void {
+    if (!this.popover.isOpen()){ this.popover.open(), this.popover.placement = position};
   }
 
   sendToBackend(){
 
   }
-  
-}
+
+  ignoreTask(taskID){
+    // First prepare to delete this on the Backend
+
+    // Then takeout the object from the observable here for quick view
+    this.toDoList.forEach((item, key)=>{
+      if(item['id'] == taskID){
+        this.toDoList.splice(key, 1)
+      }
+    })
+  }
+
+  // This is called just before the component is destoryed
+  ngOnDestory(){
+
+  }
+
+} 
