@@ -109,7 +109,7 @@ export class TeacherUpdateModalComponent implements OnInit {
           this.showInfoMessage(err.error.ErrorMessage + ' Please check ID Number.','#dc3545',false);
         }
         else {
-          this.showInfoMessage('Error! Please check your input.','#dc3545',false);
+          this.showInfoMessage('Sorry, there are something wrong in server.','#dc3545',false);
         }
         console.log('Error', err);
       }
@@ -121,6 +121,7 @@ export class TeacherUpdateModalComponent implements OnInit {
     this.loadingGifFlag = gifFlag;
     this.messageColor = fontColor;
   }
+  
   checkGender() {
     let gender = this.modalUpdateFormComponentObj.genderToSubmit.nativeElement.value;
     switch (gender) {
