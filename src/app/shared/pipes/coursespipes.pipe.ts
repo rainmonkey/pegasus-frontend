@@ -24,14 +24,12 @@ export class CoursespipesPipe implements PipeTransform {
 
   checkDuration(valueToSubmit) {
     switch (valueToSubmit.Duration) {
-      case "30 minutes":
+      case "30 mins":
         return 1;
-      case "45 minutes":
+      case "45 mins":
         return 2;
-      case "1 Hour":
+      case "60 mins":
         return 3;
-      case "75 minutes":
-        return 4;
     }
   }
 

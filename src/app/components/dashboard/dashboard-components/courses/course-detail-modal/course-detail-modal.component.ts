@@ -3,6 +3,7 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { CoursesService } from '../../../../../services/http/courses.service';
 import { FormBuilder, Validators, FormGroup } from '@angular/forms';
 import { CoursespipesPipe } from '../../../../../shared/pipes/coursespipes.pipe'
+import { min } from 'rxjs/operators';
 
 @Component({
   selector: 'app-course-detail-modal',
@@ -122,7 +123,7 @@ export class CourseDetailModalComponent implements OnInit {
         Level: [this.whichCourse.LevelName, Validators.required],
         TeacherLevel: [this.whichCourse.TeacherLevelName, Validators.required],
         Duration: [this.whichCourse.DurationName, Validators.required],
-        Price: [this.whichCourse.Price, Validators.required],
+        Price: [this.whichCourse.Price, Validators.compose([Validators.required, Validators.min(1)])],
         CourseCategoryId: [this.whichCourse.CourseCategory.CourseCategoryName, Validators.required],
         CourseId: [this.whichCourse.CourseId, Validators.required]
       }

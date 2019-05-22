@@ -40,8 +40,8 @@
             <option *ngFor='let i of courseCategories' value={{i.CourseCategoryName}}>{{i.CourseCategoryName}}</option>
           </select>
           <label class='t_mf_label'>Duration(mins):</label>
-          <select type="text" class='col-12 t_mf_input' formControlName='Duration'
-            [class.t_mf_error_border]='updateForm.get("Duration").invalid && updateForm.get("Duration").touched'>
+          <select type="text" class='col-12 t_mf_input' formControlName='Duration' 
+          [class.t_mf_error_border]='updateForm.get("Duration").invalid && updateForm.get("Duration").touched'>
             <option *ngFor='let i of durations' value={{i.PropName}}>{{i.PropName}}</option>
           </select>
           <label class='t_mf_label'>Price(Total):</label>
