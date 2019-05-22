@@ -24,11 +24,7 @@ export class CoursesService {
 
   deleteCourse(courseId):any{
     return this.http.delete(this.baseUrl + 'courses/' + courseId);
-  }
-  getCourseClasses(){
-    return this.http.get(this.baseUrl +'');
-  }
-  
+  }  
   /* For dropdown options*/
   getCourseCategories():any{
     return this.http.get(this.baseUrl + 'coursecategories');
@@ -45,4 +41,19 @@ export class CoursesService {
   getDuration():any{
     return this.http.get(this.baseUrl + 'Lookups/8');
   }
+  /*-----------------------Course Class-----------------------------------*/
+  getCourseClasses(){
+    return this.http.get(this.baseUrl +'GroupCourseInstance');
+  }
+  addNewCourseClass(data):any{
+    return this.http.post(this.baseUrl + 'GroupCourseInstance',data)
+  }
+
+  updateCourseClass(data,courseId):any{
+    return this.http.put(this.baseUrl + 'GroupCourseInstance/'+ courseId, data)
+  }
+
+  deleteCourseClass(courseId):any{
+    return this.http.delete(this.baseUrl + 'GroupCourseInstance/' + courseId);
+  }  
 }

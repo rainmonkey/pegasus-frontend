@@ -15,7 +15,6 @@ export class CourseClassListComponent implements OnInit {
   //what columns showed in the info page, can get from back-end in the future. must as same as database
   public columnsToShow: Array<string> = ['Course Name', 'Tutor', 'Start & End Dates', 'Location', 'Room', 'Time', ];
 
-
   public queryParams: object = {};
   public currentPage: number = 1;
   public pageSize: number = 10;
@@ -34,13 +33,18 @@ export class CourseClassListComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.getDataService()
+    this.getDataService();
   }
 
   getDataService(){
     this.courseService.getCourseClasses().subscribe(
-      (res)=>{console.log(res), this.routerControl()},
-      (err)=>{this.processError(err)}
+      (res)=>{
+        console.log(res.Data);
+        this.routerControl();
+      },
+      (err)=>{
+        this.processError(err);
+      }
     )
   }
 
