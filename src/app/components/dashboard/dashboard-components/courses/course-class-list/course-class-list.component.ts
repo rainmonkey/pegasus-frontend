@@ -39,7 +39,7 @@ export class CourseClassListComponent implements OnInit {
   getDataService(){
     this.courseService.getCourseClasses().subscribe(
       (res)=>{
-        console.log(res.Data);
+        //console.log(res.Data);
         this.routerControl();
       },
       (err)=>{
