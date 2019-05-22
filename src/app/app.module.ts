@@ -80,6 +80,7 @@ import { SessionCompletedModalComponent } from './components/dashboard/dashboard
 import { CourseClassListComponent } from './components/dashboard/dashboard-components/courses/course-class-list/course-class-list.component';
 import { CourseClassDetailModalComponent } from './components/dashboard/dashboard-components/courses/course-class-detail-modal/course-class-detail-modal.component';
 import { DashboardHomeComponent } from './components/dashboard/dashboard-components/dashboard-home/dashboard-home.component';
+import { TeacherCourseModalComponent } from './components/dashboard/dashboard-components/teachers/teacher-course-modal/teacher-course-modal.component';
 
 
 
@@ -150,7 +151,8 @@ import { DashboardHomeComponent } from './components/dashboard/dashboard-compone
     CourseClassListComponent,
     CourseClassDetailModalComponent,
     DashboardHomeComponent,
-    CoursespipesPipe
+    CoursespipesPipe,
+    TeacherCourseModalComponent
   ],
   imports: [
     NgbModule,
@@ -174,6 +176,7 @@ import { DashboardHomeComponent } from './components/dashboard/dashboard-compone
     TeacherDeleteModalComponent,
     TeacherDetailModalComponent,
     TeacherUpdateModalComponent,
+    TeacherCourseModalComponent,
     AdminInvoiceEditModalComponent,
     CourseDeleteModalComponent,
     CourseDetailModalComponent,
