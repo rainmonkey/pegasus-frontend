@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { environment } from '../../../environments/environment.prod';
 
 @Injectable({
@@ -26,6 +26,23 @@ export class CoursesService {
     return this.http.delete(this.baseUrl + 'courses/' + courseId);
   }
   getCourseClasses(){
-    return this.http.get(this.baseUrl +'') ;
+    return this.http.get(this.baseUrl +'');
+  }
+  
+  /* For dropdown options*/
+  getCourseCategories():any{
+    return this.http.get(this.baseUrl + 'coursecategories');
+  }
+  getTeacherLevel():any{
+    return this.http.get(this.baseUrl + 'Lookups/1');
+  }
+  getLevel():any{
+    return this.http.get(this.baseUrl + 'Lookups/4');
+  }
+  getCourseType():any{
+    return this.http.get(this.baseUrl + 'Lookups/6');
+  }
+  getDuration():any{
+    return this.http.get(this.baseUrl + 'Lookups/8');
   }
 }
