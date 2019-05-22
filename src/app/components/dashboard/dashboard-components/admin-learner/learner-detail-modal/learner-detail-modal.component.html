@@ -18,9 +18,9 @@
     <!--缺 人物照片 -->
     <div class="row lable-pos">
       <div class="col-6">
-        <p style="font-weight: bold">Student Photo</p>
+        <p style="font-weight: bold">Student Photo</p>  
         <div class='learnerImage'>
-          <img class="imageSize" src="http://gradspace.org:5000/{{whichLearner.Photo}}">
+          <img class="imageSize" src="http://gradspace.org:5000/{{whichLearner.Photo}}" (error)="filename='src/assets/images/shared/default-employer-profile.png'">
         </div>
       </div>
 
