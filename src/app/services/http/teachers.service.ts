@@ -31,6 +31,10 @@ export class TeachersService {
     return this.http.get(this.baseUrl + 'qualificationslanguagesorgs');
   }
 
+  getTeacherLevel():any{
+    return this.http.get(this.baseUrl + 'Lookups/1')
+  }
+
   searching(searchString,columnToSearch):any{
     return this.http.get(this.baseUrl + 'teacher/' + searchString, columnToSearch) 
   }
