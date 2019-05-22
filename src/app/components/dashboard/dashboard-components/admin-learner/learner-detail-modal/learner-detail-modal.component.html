@@ -18,16 +18,18 @@
     <!--缺 人物照片 -->
     <div class="row lable-pos">
       <div class="col-6">
-        <p style="font-weight: bold">Student Photo</p>  
+        <p style="font-weight: bold">Student Photo</p>
         <div class='learnerImage'>
-          <img class="imageSize" src="http://gradspace.org:5000/{{whichLearner.Photo}}" (error)="filename='src/assets/images/shared/default-employer-profile.png'">
+            <!-- <img src="src/assets/images/shared/default-employer-profile.png" > -->
+          <img class="imageSize" src="http://gradspace.org:5000/{{whichLearner.Photo}}" (error)='setDefaultPhoto($event)'>
+            
         </div>
       </div>
-
+     
       <div class="col-6">
         <p style="font-weight: bold">ABRSM Certific</p>
         <div class='G5learnerImage'>
-          <img class="G5imageSize" src="http://gradspace.org:5000/{{whichLearner.G5Certification}}">
+          <img class="G5imageSize" src="http://gradspace.org:5000/{{whichLearner.G5Certification}}" (error)='setDefaultPhoto($event)'>
         </div>
       </div>
 
@@ -55,8 +57,8 @@
         <span class="label">Date of Enrollment: </span>{{whichLearner.EnrollDate}}
       </div>
 
-      <div class="col-6">
-        <span class="label">Location: </span>{{whichLearner.OrgId | orgFormat}}
+      <div *ngIf='whichLearner.Org' class="col-6">
+        <span class="label" >Location: </span>{{whichLearner.Org.OrgName}}
       </div>
 
       <div class="col-6">
@@ -121,29 +123,29 @@
 
       <div *ngIf='isGroupCourse'>
         <h5>Group Course</h5>
-        <div class="row">
+        <div *ngFor='let groupCourse of whichLearner.LearnerGroupCourse '>
+          <div class="row">
+            <div class="col-6">
+              <span class="label">Course: </span> {{groupCourse.GroupCourseInstance.Course.CourseName}}
+            </div>
 
-          <div class="col-6">
-            <span class="label">Course: </span>
-          </div>
+            <div class="col-6">
+              <span class="label">Schedule: </span> 
+            </div>
 
-          <div class="col-6">
-            <span class="label">Schedule: </span>
-          </div>
+            <div *ngIf='groupCourse.GroupCourseInstance.Org' class="col-6">
+              <span  class="label">Location: </span> {{groupCourse.GroupCourseInstance.Org.OrgName}}
+            </div>
 
-          <div class="col-6">
-            <span class="label">Location: </span>
-          </div>
+            <div class="col-6">
+              <span class="label">Room: </span>{{groupCourse.GroupCourseInstance.Org.Room.RommName}}
+            </div>
 
-          <div class="col-6">
-            <span class="label">Room: </span> {{ele.OrgId}}
-          </div>
-
-          <div class="col-6">
-            <span class="label">Teacher: </span>
+            <div class="col-6" *ngIf='whichLearner.Teacher' >
+              <span class="label">Teacher: </span>{{whichLearner.Teacher.FirstName}} {{whichLearner.Teacher.LastName}}
+            </div>
           </div>
         </div>
-
       </div>
 
       <!-- one2one Course -->
@@ -153,19 +155,19 @@
           <div class="row">
 
             <div class="col-6">
-              <span class="label">Course: </span> {{ele.CourseId}}
+              <span class="label">Course: </span> {{ele.Course.CourseName}}
             </div>
 
             <div class="col-6">
               <span class="label">Teacher Name: </span> {{ele.Teacher.FirstName}} {{ele.Teacher.LastName}}
             </div>
 
-            <div class="col-6">
-              <span class="label">Location: </span> {{ele.OrgId | orgFormat}}
+            <div *ngIf='ele.Org' class="col-6">
+              <span  class="label">Location: </span> {{ele.Org.OrgName}}
             </div>
 
             <div class="col-6">
-              <span class="label">Room No.: </span> {{ele.RoomId}}
+              <span class="label">Room No.: </span> {{ele.Org.Room.RoomName}}
             </div>
 
             <div class="col-6">
@@ -177,7 +179,7 @@
             </div>
 
             <div class="col-6">
-              <span class="label">Course Day: </span> 
+              <span class="label">Course Day: </span>
             </div>
 
             <div class="col-6">
@@ -207,8 +209,9 @@
         <div *ngFor='let ele of whichLearner.LearnerOthers'>
           <div>
             <div *ngIf="ele.OthersType == '2'">
-              {{ele.OthersValue |Reason }}
+              {{ele.OthersValue }}
             </div>
+
           </div>
         </div>
       </div>

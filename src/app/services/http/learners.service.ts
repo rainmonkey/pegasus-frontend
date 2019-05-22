@@ -42,5 +42,10 @@ export class LearnersService {
   deleteLearner(LearnerId):any{
     return this.http.delete(this.baseUrl + 'learner/' + LearnerId);
   }
+
+    //get learn form data
+    getLookups(typeId: number): Observable<any> {
+      return this.http.get(this.baseUrl + 'lookups/'+ typeId);
+    }
  
 }
