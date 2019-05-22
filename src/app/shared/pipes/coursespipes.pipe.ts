@@ -68,23 +68,23 @@ export class CoursespipesPipe implements PipeTransform {
 
   checkCourseCategoryId(valueToSubmit) {
     switch (valueToSubmit.CourseCategoryId) {
-      case 'piano':
+      case 'Piano':
         return 1;
-      case 'drum':
+      case 'Drum':
         return 2;
-      case 'guita':
+      case 'Guitar':
         return 3;
-      case 'violin':
+      case 'Violin':
         return 4;
-      case 'cello':
+      case 'Cello':
         return 5;
-      case 'vioce':
+      case 'Vioce':
         return 6;
-      case 'theory':
+      case 'Theory':
         return 7;
-      case 'aural':
+      case 'Aural':
         return 8;
-      case 'other-specify':
+      case 'Other-specify':
         return 9;
     }
   }
