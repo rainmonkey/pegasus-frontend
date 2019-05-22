@@ -7,6 +7,7 @@ import { environment } from '../../../environments/environment.prod';
 })
 export class TeachersService {
   baseUrl: any = environment.baseUrl;
+  baseUrl :any = "http://localhost:5000/api/"
   httpHeaders: HttpHeaders;
   token:string
 
