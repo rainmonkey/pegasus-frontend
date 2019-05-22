@@ -25,13 +25,15 @@ import { GenderPipe } from './shared/pipes/gender.pipe';
 import {RelationshipPipe} from './shared/pipes/relationship.pipe';
 import {ReasonLearnPianoPipe} from './shared/pipes/Reason-learn-piano.pipe';
 import { HowToKnowPipe } from './shared/pipes/How-To-Know.pipe';
+import { CoursespipesPipe } from './shared/pipes/coursespipes.pipe';
+
 // Components
 import { AppComponent } from './app.component';
 import { SidebarComponent } from './components/dashboard/general/sidebar/sidebar.component';
 import { TimePickerComponent } from './components/dashboard/dashboard-components/time-picker/time-picker.component';
 import { LoginComponent } from './components/basic/login/login.component';
 import { HeaderbarComponent } from './components/dashboard/general/headerbar/headerbar.component';
-import { HomepageComponent } from './components/dashboard/general/homepage/homepage.component';
+import { DashboardPanelComponent } from './components/dashboard/dashboard-components/dashboard-panel/dashboard-panel.component';
 import { SearchNameModuleComponent } from './components/dashboard/dashboard-components/support/search-name-module/search-name-module.component';
 import { AdminLearnerPaymentPanelComponent } from './components/dashboard/dashboard-components/admin-payment/admin-learner-payment-panel/admin-learner-payment-panel.component';
 import { AdminLearnerPaymentInvoiceComponent } from './components/dashboard/dashboard-components/admin-payment/admin-learner-payment-invoice/admin-learner-payment-invoice.component';
@@ -69,18 +71,15 @@ import { TeacherInfoComponent } from './components/dashboard/dashboard-component
 import { TeacherPanelComponent } from './components/dashboard/dashboard-components/teachers/teacher-panel/teacher-panel.component';
 import { CourseDetailModalComponent } from './components/dashboard/dashboard-components/courses/course-detail-modal/course-detail-modal.component';
 import { CourseDeleteModalComponent } from './components/dashboard/dashboard-components/courses/course-delete-modal/course-delete-modal.component';
-import { CourseModalFormComponent } from './components/dashboard/dashboard-components/courses/course-modal-form/course-modal-form.component';
 import { TestoneComponent } from './components/testcomponent/testone/testone.component';
-
 import { LearnerDeleteModalComponent } from './components/dashboard/dashboard-components/admin-learner/learner-delete-modal/learner-delete-modal.component';
 import { LearnerDetailModalComponent } from './components/dashboard/dashboard-components/admin-learner/learner-detail-modal/learner-detail-modal.component';
-
-
 import { SessionCancelModalComponent } from './components/dashboard/dashboard-components/sessions/session-modals/session-cancel-modal/session-cancel-modal.component';
 import { SessionTutorReportModalComponent } from './components/dashboard/dashboard-components/sessions/session-modals/session-tutor-report-modal/session-tutor-report-modal.component';
 import { SessionCompletedModalComponent } from './components/dashboard/dashboard-components/sessions/session-modals/session-completed-modal/session-completed-modal.component';
 import { CourseClassListComponent } from './components/dashboard/dashboard-components/courses/course-class-list/course-class-list.component';
 import { CourseClassDetailModalComponent } from './components/dashboard/dashboard-components/courses/course-class-detail-modal/course-class-detail-modal.component';
+import { DashboardHomeComponent } from './components/dashboard/dashboard-components/dashboard-home/dashboard-home.component';
 
 
 
@@ -89,7 +88,7 @@ import { CourseClassDetailModalComponent } from './components/dashboard/dashboar
   declarations: [
     AppComponent,
     LoginComponent,
-    HomepageComponent,
+    DashboardPanelComponent,
     HeaderbarComponent,
     SidebarComponent,
     AdminLearnerPaymentPanelComponent,
@@ -134,7 +133,6 @@ import { CourseClassDetailModalComponent } from './components/dashboard/dashboar
     TeacherPanelComponent,
     CourseDetailModalComponent,
     CourseDeleteModalComponent,
-    CourseModalFormComponent,
     TestoneComponent,
 
     LearnerDeleteModalComponent,
@@ -150,7 +148,9 @@ import { CourseClassDetailModalComponent } from './components/dashboard/dashboar
     HowToKnowPipe,
     ColumnTitleFormatPipe,
     CourseClassListComponent,
-    CourseClassDetailModalComponent
+    CourseClassDetailModalComponent,
+    DashboardHomeComponent,
+    CoursespipesPipe
   ],
   imports: [
     NgbModule,
@@ -168,7 +168,7 @@ import { CourseClassDetailModalComponent } from './components/dashboard/dashboar
   ],
   providers: [
     DatePipe,
-    ColumnTitleFormatPipe
+    CoursespipesPipe
   ],
   entryComponents:[
     TeacherDeleteModalComponent,
@@ -180,7 +180,8 @@ import { CourseClassDetailModalComponent } from './components/dashboard/dashboar
     SessionDetailEditModalComponent,
     CourseClassDetailModalComponent,
     LearnerDeleteModalComponent,
-    LearnerDetailModalComponent
+    LearnerDetailModalComponent,
+    SessionCancelModalComponent
   ],
   exports: [AppComponent],
   bootstrap: [AppComponent]

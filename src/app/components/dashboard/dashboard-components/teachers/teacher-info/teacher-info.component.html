@@ -1,28 +1,30 @@
 <div class='container' style="margin-top:20px">
   <div class='row'>
     <!--info page header-->
-    <div class='col-12 t_info_title'>
-      Tutors Info
-      <div class='btn btn-info t_info_addnew_btn' (click)='updateModal(0,null)'>+ Add More</div>
+    <div class="col-12 row">
+      <div class='col-12 t_info_title'>
+        Teachers Info
+        <div class='btn btn-info t_info_addnew_btn' (click)='popUpModal(0,null)'>+ Add More</div>
+      </div>
+      <!--info page search-->
+      <div class='col-12' style="margin-top:-50px;margin-bottom: 10px">
+        <div class='col-12 t_info_search'>
+          <input id='searchingInput' type="text" placeholder="Search by..." (keydown)='onSearch($event)'>
+        </div>
+
+        <div class='col-12 t_info_search_option'>
+          <select name="searchOption" id='searchOption'>
+            <option *ngFor='let i of columnsToShow' value={{i}}>{{i}}</option>
+          </select>
+        </div>
+
+        <div class='t_info_search_by'>
+          <span id='searchingSelection' (click)='onSearch(null)'>
+            <span class='fas fa-search'></span>
+          </span>
+        </div>
+      </div>
     </div>
-    <!--info page search-->
-    <div class='col-12' style="margin-top:-50px;margin-bottom: 10px">
-      <div class='col-12 t_info_search'>
-        <input id='searchingInput' type="text" placeholder="Search by..." (keydown)='onSearch($event)'>
-      </div>
-
-      <div class='col-12 t_info_search_option'>
-        <select name="searchOption" id='searchOption'>
-          <option *ngFor='let i of columnsToShow' value={{i}}>{{i}}</option>
-        </select>
-      </div>
-
-      <div class='t_info_search_by'>
-        <span id='searchingSelection' (click)='onSearch(null)'><span
-            class='fas fa-search'></span></span>
-      </div>
-    </div>
-
     <!--info page table-->
     <div class='col-12'>
       <table class='table table-striped'>
@@ -56,7 +58,8 @@
     <!--info page pagination-->
     <div class='col-12'>
       <!--pagination is here-->
-      <ngb-pagination #pagination [collectionSize]='teachersListLength' [(page)]='currentPage' [pageSize]='pageSize' (click)='getCurrentPage()'>
+      <ngb-pagination #pagination [collectionSize]='teachersListLength' [(page)]='currentPage' [pageSize]='pageSize'
+        (click)='getCurrentPage()'>
       </ngb-pagination>
     </div>
 
