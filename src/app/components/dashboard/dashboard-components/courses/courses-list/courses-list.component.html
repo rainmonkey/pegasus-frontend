@@ -1,24 +1,31 @@
 <div class='container tl_body'>
-  <div class='row'>
+  <div class="row">
     <!--body head-->
-    <div class='col-12 tl_body_title'>
-      Courses List
-      <!--add more btn-->
-      <span class='tl_body_add btn btn-info' (click)='popUpModals(0,null)'>+ Add More</span>
-    </div>
-
-    <!--body search-->
-    <div class='tl_body_search'>
-      <div class='t_info_search'>
-        <input id='searchingInput' type="text" placeholder=" Search by Course" (keydown)='onSearch($event)'>
+    <div class="col-12 row">
+      <!--body tittle-->
+      <div class='col-12 t_info_title'>
+        Courses List
       </div>
-      <div class='t_info_search_by'>
-        <span (click)='onSearch(null)'>
-          <span class='fas fa-search'></span>
-        </span>
+      <!--body search-->
+      <div class="col-12">
+        <div class='t_info_search'>
+          <input id='searchingInput' type="text" placeholder="Search by Course" (keydown)='onSearch($event)'>
+        </div>
+        <div class='t_info_search_by'>
+          <span (click)="onSearch(null)">
+            <span class='fas fa-search'></span>
+          </span>
+        </div>
+        
+        
+        <!--add more btn-->
+        <span class='btn btn-info t_info_addnew_btn' (click)="popUpModals(0,null)">+ Add More</span>
       </div>
+      
     </div>
-
+    <br>
+    <!--Error Message-->
+    <div style="margin-left: auto;margin-right: auto;" *ngIf="errorMessage" class="text-danger">{{errorMessage}} <br> </div>
     <!--body main-->
     <div class='col-12'>
       <table class='table table-striped' style="text-align: center;">
@@ -29,6 +36,8 @@
               Course Name</th>
             <th scope='col' class='tl_body_table_head sorting_item' style="width:5rem;" (click)='onSort("CourseType")'>
               Type</th>
+            <th scope='col' class='tl_body_table_head sorting_item' style="width:9rem;" (click)='onSort("Level")'>
+              Learner Level</th>
             <th scope='col' class='tl_body_table_head sorting_item' style="width:9rem;"
               (click)='onSort("TeacherLevel")'>Teacher Level</th>
             <th scope='col' class='tl_body_table_head sorting_item' style="width:6rem;" (click)='onSort("Duration")'>
@@ -36,18 +45,19 @@
             <th scope='col' class='tl_body_table_head sorting_item' style="width:6rem;" (click)='onSort("Price")'>Price
             </th>
             <th scope='col' class='tl_body_table_head sorting_item' style="width:7rem;"
-              (click)='onSort("CourseCategory.CourseCategoryName")'>Category</th>
+              (click)='onSort("CourseCategoryId")'>Category</th>
             <th scope='col' class='tl_body_table_head' style="width:8rem;">Edit & Delete</th>
           </tr>
         </thead>
         <tbody>
-          <!-- dataTable-->
+            <!-- dataTable-->
           <tr *ngFor='let i of coursesList | slice: (page-1)* pageSize : (page-1) * pageSize + pageSize;let j = index'>
             <th scope="row">{{j+1}}</th>
             <td>
               <ngb-highlight [result]="i.CourseName" [term]="filter.value"></ngb-highlight>
             </td>
             <td>{{i.CourseTypeName}}</td>
+            <td>{{i.LevelName}}</td>
             <td>{{i.TeacherLevelName}}</td>
             <td>{{i.DurationName}}</td>
             <td>${{i.Price}}</td>
@@ -61,9 +71,11 @@
         </tbody>
       </table>
     </div>
+
     <!--body pagination-->
     <div class='col-12'>
       <ngb-pagination [collectionSize]='coursesListLength' [(page)]='page' [pageSize]='pageSize'></ngb-pagination>
     </div>
+
   </div>
 </div>

@@ -4,6 +4,9 @@ import { BehaviorSubject } from 'rxjs';
   providedIn: 'root'
 })
 export class GeneralRepoService {
+  public errorMessage: string;
   fisrtName = new BehaviorSubject('Lyric');
   constructor() { }
+
+  
 }
