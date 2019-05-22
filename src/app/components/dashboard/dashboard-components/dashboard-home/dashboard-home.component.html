@@ -1,16 +1,32 @@
-Welcome to your home
+<br>
+<div style="text-align:center" class="text-info">Welcome &nbsp; Bienvenido &nbsp;  Willkommen  &nbsp; добро  &nbsp; пожаловать &nbsp;  欢迎  &nbsp; Manaakitia &nbsp;  Bienvenue</div> 
 <br><br>
 
 <div class="container">
     <div class="row">
         <div class="col-12 col-md-6">
-            <div class="card">
+            <div *ngIf="toDoList" class="card">
                 <div class="card-header">
-                    To Dos
+                    Tasks to do
+                    <a style="float:right; cursor: pointer; font-size:15px;" (click)="newTaskFormBuilder(); openOrClosePopOver()" class="text-primary">New Task</a>
                 </div>
-                <div class="card-body">
-                </div>
+                <div [ngbPopover]="toDoPopOver" #popOver="ngbPopover" placement="top" [autoClose]="'outside'" popoverTitle="New Task" popoverClass="toDoPopoverClass"></div>
+                    
+                <ul *ngFor="let task of toDoList" class="list-group list-group-flush">
+                    <li class="list-group-item">{{task.task}} &nbsp; &nbsp; {{task.origin}} </li>
+                </ul>
             </div>
         </div>
     </div>
 </div>
+
+
+<ng-template #toDoPopOver>
+    <form novalidate [formGroup]="toDoForm">
+        <textarea class="form-control" type="text" placeholder="New task" formControlName="task" rows="2"></textarea>
+
+        <input type="submit" style="margin-top:5px; padding:3px 6px 3px 6px; font-size:14px;"  class="btn btn-info" value="Add" (click)="toDoSubmit()">
+        <div *ngIf="formError" class="text-danger">{{formError}}</div>
+    </form>
+</ng-template>
+

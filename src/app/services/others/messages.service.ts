@@ -12,7 +12,7 @@ export class MessagesService {
     console.warn(err)
     if (err.error) {
       if(err.error.ErrorMessage){
-        return err.error.ErrorMessage;
+        return (err.error.ErrorMessage).slice(0, 60);
       } else {
         return "Sorry, something's wrong with ther server.";
       }
@@ -21,5 +21,5 @@ export class MessagesService {
     }
   }
 
-  
+
 }
