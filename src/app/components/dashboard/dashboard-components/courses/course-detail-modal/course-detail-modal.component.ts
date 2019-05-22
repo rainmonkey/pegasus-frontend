@@ -28,6 +28,7 @@ export class CourseDetailModalComponent implements OnInit {
 
   ngOnInit() {
     this.updateForm = this.fb.group(this.formGroupAssemble());
+    // console.log(this.updateForm);
   }
 
   formGroupAssemble() {
@@ -118,7 +119,7 @@ export class CourseDetailModalComponent implements OnInit {
           this.activeModal.close();
         },
         (err) => {
-          this.backendErrorHandler(err)
+          this.backendErrorHandler(err);
         }
       );
     }

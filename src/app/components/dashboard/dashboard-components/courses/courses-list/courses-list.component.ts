@@ -27,6 +27,7 @@ export class CoursesListComponent implements OnInit {
   public pageSize: number = 10;    //[can modify] pagination page size
   public currentPage: number = 1;
   public coursesListCopy: Array<any>;
+  public errorMessage: string;
   //search by which columns, determine by users
   public queryParams: object = {};
   public courses$: Observable<any>;
@@ -59,10 +60,19 @@ export class CoursesListComponent implements OnInit {
         this.refreshPageControl();
         // console.log(this.coursesList);
       },
-      (error) => { this.errorProcess(error) })
+      (err) => { 
+        this.backendErrorHandler(err);
+      })
   }
 
-  errorProcess(error) {
+  backendErrorHandler(err) {
+    console.warn(err)
+    if (err.error.ErrorMessage != null) {
+      this.errorMessage = err.error.ErrorMessage;
+    }
+    else {
+      this.errorMessage = "Error! Can't catch Data."
+    }
   }
 
   /*
