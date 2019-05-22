@@ -5,8 +5,11 @@ import { BehaviorSubject } from 'rxjs';
 })
 export class GeneralRepoService {
   public errorMessage: string;
-  fisrtName = new BehaviorSubject('Lyric');
-  constructor() { }
 
-  
+  fisrtName = new BehaviorSubject('Customer Name');
+
+
+
+
+  constructor() { }
 }
