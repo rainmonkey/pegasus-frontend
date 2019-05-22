@@ -10,7 +10,7 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 export class TeacherUpdateModalComponent implements OnInit {
   public infoMessage: string = '';
   public messageColor: string;
-  public isSubmitionSuccess: boolean = false;
+  public submitionFlag: boolean = true;
   public loadingGifFlag: boolean = false;
 
 
@@ -25,7 +25,7 @@ export class TeacherUpdateModalComponent implements OnInit {
   }
 
   onSubmit() {
-    this.isSubmitionSuccess = true;
+    this.submitionFlag = true;
     this.infoMessage = 'loading.....'
     this.loadingGifFlag = true;
     let valueToSubmit = this.modalUpdateFormComponentObj.updateForm.value;
@@ -51,7 +51,7 @@ export class TeacherUpdateModalComponent implements OnInit {
       this.infoMessage = 'Please check your input.'
       this.loadingGifFlag = false;
       this.messageColor = '#dc3545';
-      this.isSubmitionSuccess = false;
+      this.submitionFlag = true;
       return null;
     }
   }
@@ -77,8 +77,10 @@ export class TeacherUpdateModalComponent implements OnInit {
     //console.log(vailadValue)
     let submit = new FormData();
     submit.append('details', JSON.stringify(vailadValue));
-    submit.append('Photo', this.modalUpdateFormComponentObj.photoToSubmit);
-    submit.append('IdPhoto', this.modalUpdateFormComponentObj.idPhotoToSubmit);
+    submit.append('Photo', this.modalUpdateFormComponentObj.PhotoToSubmit);
+    submit.append('IdPhoto', this.modalUpdateFormComponentObj.IdPhotoToSubmit);
+    console.log(this.modalUpdateFormComponentObj.photoToSubmit)
+    console.log(this.modalUpdateFormComponentObj.idPhotoToSubmit)
     this.submitByMode(submit)
   }
 
@@ -99,17 +101,19 @@ export class TeacherUpdateModalComponent implements OnInit {
   }
 
   subscribeHandler(obj) {
-    this.isSubmitionSuccess = false;
     obj.subscribe(
       (res) => {
         this.showInfoMessage('Submit success!','#28a745',false)
+        this.submitionFlag = false;
       },
       (err) => {
         if (err.error.ErrorMessage == 'Teacher has exist.') {
           this.showInfoMessage(err.error.ErrorMessage + ' Please check ID Number.','#dc3545',false);
+          this.submitionFlag = true;
         }
         else {
           this.showInfoMessage('Sorry, there are something wrong in server.','#dc3545',false);
+          this.submitionFlag = true;
         }
         console.log('Error', err);
       }
@@ -121,7 +125,7 @@ export class TeacherUpdateModalComponent implements OnInit {
     this.loadingGifFlag = gifFlag;
     this.messageColor = fontColor;
   }
-  
+
   checkGender() {
     let gender = this.modalUpdateFormComponentObj.genderToSubmit.nativeElement.value;
     switch (gender) {
