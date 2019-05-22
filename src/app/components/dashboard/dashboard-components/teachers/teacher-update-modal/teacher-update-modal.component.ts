@@ -10,7 +10,8 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 export class TeacherUpdateModalComponent implements OnInit {
   public infoMessage: string = '';
   public messageColor: string;
-  public isSubmitionSuccess:boolean = false;
+  public isSubmitionSuccess: boolean = false;
+  public loadingGifFlag: boolean = false;
 
 
   @Input() command;
@@ -26,6 +27,7 @@ export class TeacherUpdateModalComponent implements OnInit {
   onSubmit() {
     this.isSubmitionSuccess = true;
     this.infoMessage = 'loading.....'
+    this.loadingGifFlag = true;
     let valueToSubmit = this.modalUpdateFormComponentObj.updateForm.value;
     let vailadValue = this.checkInputVailad(valueToSubmit);
     if (vailadValue !== null) {
@@ -47,6 +49,7 @@ export class TeacherUpdateModalComponent implements OnInit {
     }
     else {
       this.infoMessage = 'Please check your input.'
+      this.loadingGifFlag = false;
       this.messageColor = '#dc3545';
       this.isSubmitionSuccess = false;
       return null;
@@ -63,7 +66,7 @@ export class TeacherUpdateModalComponent implements OnInit {
     valueToSubmit.DayOfWeek = this.checkOrgs();
     valueToSubmit.Qualificatiion = this.checkQualifications(valueToSubmit);
     valueToSubmit.IDType = Number(valueToSubmit.IDType);
-    //console.log(valueToSubmit)
+    console.log(valueToSubmit)
     return valueToSubmit;
   }
 
@@ -99,25 +102,25 @@ export class TeacherUpdateModalComponent implements OnInit {
     this.isSubmitionSuccess = false;
     obj.subscribe(
       (res) => {
-        this.infoMessage = 'Submit success!'
-        this.messageColor = '#28a745'
+        this.showInfoMessage('Submit success!','#28a745',false)
       },
       (err) => {
         if (err.error.ErrorMessage == 'Teacher has exist.') {
-          this.infoMessage = err.error.ErrorMessage + ' Please check ID Number.';
-          this.messageColor = '#dc3545'          
+          this.showInfoMessage(err.error.ErrorMessage + ' Please check ID Number.','#dc3545',false);
         }
         else {
-          console.log(err)
-          this.infoMessage = 'Error! Please check your input.???'
-          this.messageColor = '#dc3545'       
+          this.showInfoMessage('Error! Please check your input.','#dc3545',false);
         }
         console.log('Error', err);
       }
     );
   }
 
-
+  showInfoMessage(msg, fontColor, gifFlag){
+    this.infoMessage = msg;
+    this.loadingGifFlag = gifFlag;
+    this.messageColor = fontColor;
+  }
   checkGender() {
     let gender = this.modalUpdateFormComponentObj.genderToSubmit.nativeElement.value;
     switch (gender) {

@@ -280,9 +280,11 @@
                 </select>
               </div>
               <div class='col-4'>
-                <input name='Level' style='margin-left:10px' class='col-12 t_mf_input'
+                <select name='Level' style='margin-left:10px' class='col-12 t_mf_input'
                   formControlName='Level'
                   [class.t_mf_error_border]='updateForm.get("Level").invalid && updateForm.get("Level").touched'>
+                  <option *ngFor='let i of teachersLevels' value={{i.PropValue}}>{{i.PropName}}</option>
+                </select>
               </div>
             </div>
           </div>

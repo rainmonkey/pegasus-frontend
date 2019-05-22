@@ -17,6 +17,10 @@ export class TeacherModalFormComponent implements OnInit {
   public languageOptions: Object;
   //orgs dropdown options
   public orgOptions: Object;
+  //Level dropdown options
+  public teachersLevels: Object;
+  //img max size, can modify
+  public maxSize: number = 1024;
   //readonly or not
   public readOnlyFlag: boolean = false;
   public showLeftImgFlag: boolean = true;
@@ -44,11 +48,12 @@ export class TeacherModalFormComponent implements OnInit {
     private teachersService: TeachersService) { }
 
   ngOnInit() {
-    
+
     //console.log(this.whichTeacher)
     this.setReadOnly();
     this.updateForm = this.fb.group(this.formGroupAssemble());
     this.getDropdownOptions();
+    this.getTeacherLevel();
   }
 
   /////////////////////////////////////////////methods call by other methods/////////////////////////////////////////////////
@@ -72,6 +77,18 @@ export class TeacherModalFormComponent implements OnInit {
         this.qualificationOptions = res.Data.qualifications;
         this.languageOptions = res.Data.Languages;
         this.orgOptions = res.Data.Orgs;
+      },
+      (err) => {
+        alert('Server error!')
+      }
+    )
+  }
+
+  getTeacherLevel() {
+    this.teachersService.getTeacherLevel().subscribe(
+      (res) => {
+        this.teachersLevels = res.Data;
+        console.log(this.teachersLevels)
       },
       (err) => {
         alert('Server error!')
@@ -204,16 +221,37 @@ export class TeacherModalFormComponent implements OnInit {
     pre view the img that user upload
   */
   preViewImg(event, whichPhoto) {
-  
+
     //assign photo to photoToSubmit
     this.photoToSubmit = <File>event.target.files[0];
-    //important! 
-    //set src and read it 
-    console.log('a-----', document.getElementById(whichPhoto).getAttribute('src'))
-    let reader = new FileReader();
-    reader.readAsDataURL(this.photoToSubmit);
-    reader.onloadend = function () {
-      document.getElementById(whichPhoto).setAttribute("src", this.result.toString());
+    //photo size
+    let fileSize = (Number(<File>event.target.files[0].size)) / 1024;
+    //if size valid, continue; else return
+    if (this.checkPhotoSize(fileSize)) {
+      //important! 
+      //set src and read it 
+      let reader = new FileReader();
+      reader.readAsDataURL(this.photoToSubmit);
+      reader.onloadend = function (event) {
+        let imgObj = document.getElementById(whichPhoto);
+        imgObj['src'] = event.target['result'];
+      }
+    }
+    else {
+      return;
+    }
+  }
+
+  /*
+    check photo size, photo size can not lager than limit
+  */
+  checkPhotoSize(size) {
+    if (size > this.maxSize) {
+      alert("Photo size can not large than 1M");
+      return false;
+    }
+    else {
+      return true;
     }
   }
 
@@ -280,9 +318,9 @@ export class TeacherModalFormComponent implements OnInit {
         ExpiryDate: [null, Validators.required],
         DayOfWeek: [null],
         ability: [null],
-        isLeft: [null],
-        IsContract: [null],
-        Level: [null],
+        IsLeft: [null, Validators.required],
+        IsContract: [null, Validators.required],
+        Level: [null, Validators.required],
         Comment: [null]
       }
     }
@@ -306,9 +344,9 @@ export class TeacherModalFormComponent implements OnInit {
         DayOfWeek: [{ value: null, disabled: this.readOnlyFlag }],
         ability: [{ value: this.whichTeacher.Ability, disabled: this.readOnlyFlag }],
         //后台没数据
-        IsLeft: [{ value: this.whichTeacher.IsLeft, disabled: this.readOnlyFlag }],
-        IsContract: [{ value: this.whichTeacher.IsContract, disabled: this.readOnlyFlag }],
-        Level: [{ value: this.whichTeacher.Level, disabled: this.readOnlyFlag }],
+        IsLeft: [{ value: this.whichTeacher.IsLeft, disabled: this.readOnlyFlag }, Validators.required],
+        IsContract: [{ value: this.whichTeacher.IsContract, disabled: this.readOnlyFlag }, Validators.required],
+        Level: [{ value: this.whichTeacher.Level, disabled: this.readOnlyFlag }, Validators.required],
         Comment: [{ value: this.whichTeacher.Comment, disabled: this.readOnlyFlag }]
       }
     }
