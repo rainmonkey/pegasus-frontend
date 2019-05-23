@@ -3,7 +3,6 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { CoursesService } from '../../../../../services/http/courses.service';
 import { FormBuilder, Validators, FormGroup } from '@angular/forms';
 import { CoursespipesPipe } from '../../../../../shared/pipes/coursespipes.pipe'
-import { min } from 'rxjs/operators';
 
 @Component({
   selector: 'app-course-detail-modal',
@@ -41,8 +40,8 @@ export class CourseDetailModalComponent implements OnInit {
     this.getTeacherLevel();
     this.getLevel();
     this.getCourseType();
-    this.getDuration();
-    // console.log(this.updateForm)
+    this.getDuration();    
+    // console.log(typeof(this.getTeacherLevel()))
   }
 
   /* For Dropdown Options*/
@@ -61,7 +60,6 @@ export class CourseDetailModalComponent implements OnInit {
     this.coursesService.getTeacherLevel().subscribe(
       (res) => {
         this.teachersLevels = res.Data;
-        // console.log(this.teachersLevels);
       },
       (err) => {
         alert('Server error!')
@@ -174,6 +172,8 @@ export class CourseDetailModalComponent implements OnInit {
     valueToSubmit.TeacherLevel = this.coursesPipe.checkTeacherLevel(valueToSubmit);
     return valueToSubmit;
   }
+
+  
 
   /*
     after stringify submition string, data is ready to submit

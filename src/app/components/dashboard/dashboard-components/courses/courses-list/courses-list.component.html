@@ -15,17 +15,15 @@
           <span (click)="onSearch(null)">
             <span class='fas fa-search'></span>
           </span>
-        </div>
-        
-        
+        </div>            
         <!--add more btn-->
-        <span class='btn btn-info t_info_addnew_btn' (click)="popUpModals(0,null)">+ Add More</span>
-      </div>
-      
+        <span class='btn btn-info t_info_addnew_btn' (click)="detailModal(0, null)">+ Add More</span>
+      </div>      
     </div>
     <br>
     <!--Error Message-->
     <div style="margin-left: auto;margin-right: auto;" *ngIf="errorMessage" class="text-danger">{{errorMessage}} <br> </div>
+   
     <!--body main-->
     <div class='col-12'>
       <table class='table table-striped' style="text-align: center;">
@@ -63,9 +61,10 @@
             <td>${{i.Price}}</td>
             <td>{{i.CourseCategory.CourseCategoryName}}</td>
             <td class='tl_body_table_btns'>
-              <span (click)='popUpModals(2,i)' class='tl_body_table_btn' style="margin-right: 2rem;"><i
-                  class='fas fa-pen'></i></span>
-              <span (click)='popUpModals(3,i)' class='tl_body_table_btn'><i class='fas fa-trash-alt'></i></span>
+              <span (click)='detailModal(2, i)' class='tl_body_table_btn' style="margin-right: 2rem;">
+                <i class='fas fa-pen'></i>
+              </span>
+              <span (click)='deleteModal(3, i)' class='tl_body_table_btn'><i class='fas fa-trash-alt'></i></span>
             </td>
           </tr>
         </tbody>

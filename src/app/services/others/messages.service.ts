@@ -5,6 +5,11 @@ import { Injectable } from '@angular/core';
 })
 export class MessagesService {
 
+  formNoEmailPassword = "Please enter your email and password"
+  formIsClean = "There are no inputs"
+  formInputRequired = " Required"
+  
+  
   constructor() { }
 
   // API error response handler

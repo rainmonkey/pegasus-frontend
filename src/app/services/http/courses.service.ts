@@ -49,11 +49,11 @@ export class CoursesService {
     return this.http.post(this.baseUrl + 'GroupCourseInstance',data)
   }
 
-  updateCourseClass(data,courseId):any{
-    return this.http.put(this.baseUrl + 'GroupCourseInstance/'+ courseId, data)
+  updateCourseClass(data,GroupCourseInstanceId):any{
+    return this.http.put(this.baseUrl + 'GroupCourseInstance/'+ GroupCourseInstanceId, data)
   }
 
-  deleteCourseClass(courseId):any{
-    return this.http.delete(this.baseUrl + 'GroupCourseInstance/' + courseId);
+  deleteCourseClass(GroupCourseInstanceId):any{
+    return this.http.delete(this.baseUrl + 'GroupCourseInstance/' + GroupCourseInstanceId);
   }  
 }
