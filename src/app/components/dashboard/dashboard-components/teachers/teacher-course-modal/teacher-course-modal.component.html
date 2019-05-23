@@ -48,7 +48,7 @@
     <div *ngIf='isDetailModeFlag && !disableCourseDivFlag' class="col-12">
       <div class="col-12 t_cm_label_title">Courses Plan:</div>
       <div class='row'>
-        <div *ngFor='let i of teacherCourses' class='col-4'>
+        <div *ngFor='let i of a()' class='col-6'>
           <div class='t_cm_course' style="margin:5px">
             <div class='row'>
               <div class='col-12 t_cm_label_title'
@@ -57,11 +57,14 @@
               </div>
             </div>
             <div class='row'>
-              <div class='col-6' style="text-align: center">
-                {{i.Course.Level}}
+              <div class='col-4' style="text-align: center">
+                {{lookupLevel(i.Course.Level)}}
               </div>
-              <div class='col-6' style="text-align: center">
-                {{i.Course.Duration}}
+              <div class='col-4' style="text-align: center">
+                {{lookupDuration(i.Course.Duration)}}
+              </div>
+              <div class='col-4' style="text-align: center">
+                {{lookupGroup(i.Course.isGroup)}}
               </div>
             </div>
           </div>
@@ -73,23 +76,40 @@
 
 
     <!--line 3 add/edit-->
-    <div *ngIf='isDetailModeFlag' class='col-12'>
+    <div *ngIf='!isDetailModeFlag' class='col-12'>
       <div class='col-12 t_cm_label_title'>Courses Plan:</div>
       <div class='row'>
-        <div *ngFor='let i of courses' class='col-4'>
-          <div class='t_cm_course' style="margin:5px">
+        <div *ngFor='let i of courseAfterFormat' class='col-12' style="margin-bottom: 10px">
+          <div class='t_cm_course'>
             <div class='row'>
-              <div class='col-12 t_cm_label_title'
-                style="text-align: center;border-bottom: 1px solid lightgrey;background:#f3f1f1">
-                {{i.CourseName}}
+              <div class='col-12 t_cm_label_title t_cm_course_dropdown' (click)='toggleCourseOptions($event,i)'
+                style="text-align: center;border-bottom: 1px solid lightgrey;background:rgb(173, 216, 230, 0.1)">
+                {{i}}
               </div>
-              <div id={{i.CourseId}} style="display:none" class='col-12'>
-                <div *ngFor='let j of orgOptions' class='col-12'>
-                  <label class='col-11 t_mf_branch_orgs'>{{j.OrgName.replace('BRANCH','').toLowerCase()}}</label>
-                  <!--attribute NAME is important, do not touch-->
-                  <input #branches class='col-1 tl_muf_orgName' type='checkbox' name={{i.dayName}} value={{j.OrgId}}
-                    [checked]='setDefaultCourseSelection(j.OrgId,i)'>
+              <div style="display: none" id={{i}} class='col-12'>
+                <div class='col-12'>
+                  <div class='row' style="text-align: center; font-weight:bold ">
+                    <div class='col-3'>Course:</div>
+                    <div class='col-3'>Level:</div>
+                    <div class='col-3'>Type:</div>
+                    <div class='col-2'>Duration:</div>
+                    <div class='col-1'>tick:</div>
+
+                  </div>
+                  <div *ngFor='let j of displayCourse(i)' class='col-12'>
+                    <div class='row' style="text-align: center">
+                      <div class='col-3'>{{j.CourseName}}</div>
+                      <div class='col-3'>{{j.LevelName}}</div>
+                      <div class='col-3'>{{j.CourseTypeName}}</div>
+                      <div class='col-2'>{{j.DurationName}}</div>
+                      <div class='col-1'>
+                        <input #courseCheck type="checkbox" name={{i}} id={{j.CourseType}} value={{j.CourseId}}
+                          [checked]='setDefaultCourseSelection(j.CourseId)'>
+                      </div>
+                    </div>
+                  </div>
                 </div>
+
               </div>
             </div>
 
@@ -99,12 +119,30 @@
 
     </div>
 
+    <!--line 4-->
+    <div class='col-12' style="margin-top:-5px">
+      <div class='row'>
+        <div class='col-12 t_cm_label_title'>Payment:</div>
+      </div>
+      <div class='row'>
+        <div class='col-2' style="text-align: center">One to One:</div>
+        <div class='col-4'><input type="text" name="" id="one" class='col-12 t_cm_input' placeholder="$"
+            [disabled]='isDetailModeFlag'></div>
+        <div class='col-2' style="text-align: center">Group:</div>
+        <div class='col-4'><input type="text" name="" id="group" class='col-12 t_cm_input' placeholder="$"
+            [disabled]='isDetailModeFlag'></div>
+      </div>
+    </div>
+
   </form>
 </div>
 
 <!--modal footer-->
 <div class='modal-footer'>
-  <button *ngIf='!isDetailModeFlag' type="button" class="btn btn-outline-dark"
-    (click)="activeModal.close('Close click')">Save</button>
+  <span *ngIf='!isDetailModeFlag' class='t_info_table_btn' title="Details" (click)='switchMode(0)'><span
+      class='fas fa-info-circle'></span></span>
+  <span *ngIf='isDetailModeFlag' class='t_info_table_btn' title="Edit" (click)='switchMode(1)'><span
+      class='fas fa-pen'></span></span>
+  <button *ngIf='!isDetailModeFlag' type="button" class="btn btn-outline-dark" (click)="onSubmit()">Save</button>
   <button type="button" class="btn btn-outline-dark" (click)="activeModal.close('Close click')">Close</button>
 </div>

@@ -140,6 +140,7 @@ export class TeacherUpdateModalComponent implements OnInit {
    to check which language checked
  */
   checkLanguages() {
+    console.log(this.modalUpdateFormComponentObj.languagesCheckBox)
     let languageBoxObj = this.modalUpdateFormComponentObj.languagesCheckBox._results;
     let checkedLanguagesList = [];
     for (let i in languageBoxObj) {

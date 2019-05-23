@@ -49,6 +49,8 @@ export class TeachersService {
   
   getTeacherCourse():any{
     return this.http.get(this.baseUrl + 'teachercourse'); 
-
+  }
+  updateTeacherCourse(data):any{
+    return this.http.put(this.baseUrl + 'teachercourse',data)
   }
 }
