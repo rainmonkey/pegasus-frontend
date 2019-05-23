@@ -1,7 +1,9 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { FormBuilder } from '@angular/forms';
+import { Component, OnInit, Input, ViewChild, ViewChildren } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { CoursesService } from 'src/app/services/http/courses.service';
 import { TeachersService } from 'src/app/services/http/teachers.service';
+import { LookUpsService } from 'src/app/services/http/look-ups.service';
 
 @Component({
   selector: 'app-teacher-course-modal',
@@ -17,18 +19,31 @@ export class TeacherCourseModalComponent implements OnInit {
   public courses;
   public isDetailModeFlag: boolean = true;
   public disableCourseDivFlag: boolean = false;
+  public courseAfterFormat: any;
+  public level:any;
+  public duration:any;
+  public group:any;
 
   @Input() command;
   @Input() whichTeacher;
 
+  @ViewChildren('courseCheck') courseCheckBox;
+
   constructor(public activeModal: NgbActiveModal,
     public coursesService: CoursesService,
-    public teacherService: TeachersService) { }
+    public teacherService: TeachersService,
+    public fb: FormBuilder,
+    public lookUps: LookUpsService) { }
 
   ngOnInit() {
+    //this.CourseForm = this.fb.group(this.formGroupAssemble());
     this.getCoursesCategory();
-    this.getTeacherCourse();
     this.getCourses();
+    this.getTeacherCourse();
+    this.lookUp4();
+    this.lookUp8();
+
+
   }
 
 
@@ -56,6 +71,7 @@ export class TeacherCourseModalComponent implements OnInit {
         this.courses = res.Data;
         this.courses.sort(this.compare('CourseId'));
         this.formatCourses();
+        console.log(this.courses)
       },
       (err) => {
         alert('Sorry, there\'s something wrong with server.');
@@ -74,6 +90,7 @@ export class TeacherCourseModalComponent implements OnInit {
         this.teacherCourses = res.Data;
         this.teacherCourses.sort(this.compare('CourseId'));
         this.formatTeacherCourses();
+
       },
       (err) => {
         alert('Sorry, there\'s something wrong with server.');
@@ -90,7 +107,9 @@ export class TeacherCourseModalComponent implements OnInit {
     }
   }
 
+  //挑出指定老师上的课程
   formatTeacherCourses() {
+    //console.log(this.teacherCourses)
     let array = [];
     for (let i of this.teacherCourses) {
       if (i.TeacherId == this.whichTeacher.TeacherId) {
@@ -104,17 +123,180 @@ export class TeacherCourseModalComponent implements OnInit {
       this.disableCourseDivFlag = false;
     }
     this.teacherCourses = array;
+    //console.log(this.teacherCourses)
+  }
+
+  //名字相同的课程整合到一起 比如pinao大类
+  a(){
+    let array = [];
+    for(let i of this.teacherCourses){
+      console.log(i)
+    }
+    return array;
   }
 
   formatCourses() {
     //console.log(this.courses)
     let array = [];
+    //获得目前学校提供的所有的课程的categories
     for (let i of this.courses) {
-      if(array.indexOf(i.CourseId) == -1){
-        array.push({CourseId: i.CourseId,CourseName: i.CourseName})
+      if (array.indexOf(i.CourseCategory.CourseCategoryName) == -1) {
+        array.push(i.CourseCategory.CourseCategoryName)
       }
     }
-    this.courses = array;
-    console.log(array)
+    this.courseAfterFormat = array;
+    //console.log(array)
   }
+
+  displayCourse(cate) {
+    let array = []
+    for (let i of this.courses) {
+      if (i.CourseCategory.CourseCategoryName == cate) {
+        array.push(i)
+      }
+    }
+    //console.log(array)
+    return array;
+  }
+
+  toggleCourseOptions(event, i) {
+    let dropDownObj = document.getElementById(i);
+    //console.log(dropDownObj)
+    //set [flag] attr to element, to switch between show and hide
+    event.target.attributes.flag = !event.target.attributes.flag;
+
+    if (event.target.attributes.flag == true) {
+      dropDownObj.style.display = 'block';
+    }
+    else {
+      dropDownObj.style.display = 'none';
+    }
+  }
+
+  /*
+    0: currentMode is detail
+    1: curentMOde is edit
+  */
+  switchMode(currentMode) {
+    switch (currentMode) {
+      case 0:
+        this.isDetailModeFlag = true;
+        return;
+      case 1:
+        this.isDetailModeFlag = false;
+        return;
+    }
+  }
+
+  onSubmit() {
+    let dataToSubmit = this.prepareData();
+    //dataToSubmit = JSON.stringify(dataToSubmit);
+    //console.log(dataToSubmit)
+    this.teacherService.updateTeacherCourse(dataToSubmit).subscribe(
+      (res) => {
+        console.log(res)
+      },
+      (err) => {
+        console.log(err)
+      }
+    )
+  }
+
+  prepareData() {
+    //console.log(this.courseCheckBox._results)
+    let objToSubmit = {
+      "TeacherId": this.whichTeacher.TeacherId,
+      "TeacherCourses": []
+    }
+
+    for (let i of this.courseCheckBox._results) {
+      //添加course Id
+      if (i.nativeElement.checked == true) {
+        let teacherCourse = { "CourseId": null, "HourlyWage": null };
+        teacherCourse.CourseId = (Number(i.nativeElement.value));
+
+        //添加工资
+        // 1: one to one 
+        if (i.nativeElement.id == 1) {
+          let wage = document.getElementById('one');
+          teacherCourse.HourlyWage = (Number(wage['value']))
+        }
+        //2: group
+        else if (i.nativeElement.id == 2) {
+          let wage = document.getElementById('group');
+          teacherCourse.HourlyWage = (Number(wage['value']))
+        }
+        //console.log(teacherCourse)
+        objToSubmit.TeacherCourses.push(teacherCourse)
+      }
+    }
+    return objToSubmit;
+    //console.log(objToSubmit)
+  }
+
+  setDefaultCourseSelection(id) {
+    for (let i of this.teacherCourses) {
+      if (i.CourseId == id) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  lookUp4() {
+    this.lookUps.getLookUps(4).subscribe(
+      (res) => {
+       
+          this.level = res.Data;
+      
+      },
+      (err) => {
+        alert('Sorry, there\'s something wrong with server.');
+      }
+    )
+  }
+
+
+  lookUp8() {
+    this.lookUps.getLookUps(8).subscribe(
+      (res) => {
+       
+          this.duration = res.Data;
+      
+      },
+      (err) => {
+        alert('Sorry, there\'s something wrong with server.');
+      }
+    )
+  }
+
+  lookupLevel(id){
+    //console.log(this.level)
+    for(let i of this.level){
+     if(i.PropValue == id){
+       return i.PropName;
+     }
+    }
+  }
+
+  lookupDuration(id){
+    //console.log(this.duration)
+    for(let i of this.duration){
+      if(i.PropValue == id){
+        return i.PropName;
+      }
+    }
+  }
+
+  lookupGroup(isGroup){
+    if(isGroup == 0){
+      return 'One To One'
+    }
+    if(isGroup == 1){
+      return 'Group'
+    }
+  }
+
+
+
 }

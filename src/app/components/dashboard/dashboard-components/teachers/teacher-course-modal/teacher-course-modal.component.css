@@ -33,3 +33,14 @@
     border:1px solid lightgrey;
     border-radius: 3px;
 }
+.t_cm_course_dropdown:hover{
+    cursor: pointer;
+}
+.t_info_table_btn{
+    position: absolute;
+    left: 30px;
+}
+.t_info_table_btn:hover{
+    cursor: pointer;
+    color: rgb(91, 194, 228);
+}
