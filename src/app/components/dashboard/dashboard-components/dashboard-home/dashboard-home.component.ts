@@ -2,6 +2,7 @@ import { Component, OnInit, AfterViewInit, ViewEncapsulation, ViewChild } from '
 import { FormBuilder, FormGroup, FormControl, FormArray, Validators, FormControlName } from '@angular/forms';
 import { Title } from '@angular/platform-browser';
 import { NgbPopover } from '@ng-bootstrap/ng-bootstrap';
+import { NgbootstraptableService } from 'src/app/services/others/ngbootstraptable.service';
 
 
 @Component({
@@ -14,18 +15,19 @@ import { NgbPopover } from '@ng-bootstrap/ng-bootstrap';
 export class DashboardHomeComponent implements OnInit, AfterViewInit {
   notices: { notice: string; origin: string; }[];
 
-  toDoForm: FormGroup;
+  // toDoForm: FormGroup;
   noticeForm: FormGroup;
   userName:string;
   formError:string;
-  pageloading:boolean=true 
-  task:any;
+  pageloading:boolean=true;
+
   @ViewChild('popOver') public popover: NgbPopover;
-  toDoList: { id: number; task: string; origin: string; priority: string; link: string; created_date: string; }[];
+  toDoList: { id: number; task: string; origin: string; priority: number; link: string; created_date: string; }[];
 
   constructor(
     public title: Title,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    public tableService: NgbootstraptableService
   ) {
     
     this.title.setTitle('Home');
@@ -41,6 +43,14 @@ export class DashboardHomeComponent implements OnInit, AfterViewInit {
       {
         notice:'紧密团结在习近平同志为核心的党中央周围奋力夺取新时代中国特色 ',
         origin:'党'
+      },
+      {
+        notice:'最近中共中央会议的主要议题是“党内民主”。中国高层领导人将党内民主称为党的“生命线”和中国共产党（CCP）是否能够在未来保持其至高无上的地位的主要 ',
+        origin:'党'
+      },
+      {
+        notice:'中共中央印发了《中国共产党党员教育管理工作条例》（以下简称《条例》），并发出通知，要求各地区各部门认真遵照执行 ',
+        origin:'党'
       }
     ]
     this.toDoList=[
@@ -48,7 +58,7 @@ export class DashboardHomeComponent implements OnInit, AfterViewInit {
         id:1,
         task:"Update our Tutors information.",
         origin: 'Mao',
-        priority: '',
+        priority: 1,
         link: 'tutors/list',
         created_date: ''
       },
@@ -56,7 +66,7 @@ export class DashboardHomeComponent implements OnInit, AfterViewInit {
         id:2,
         task:"Update our courses information .",
         origin: 'Mao',
-        priority: '',
+        priority: 2,
         link: 'courses/list',
         created_date: ''
       },
@@ -64,7 +74,7 @@ export class DashboardHomeComponent implements OnInit, AfterViewInit {
         id:3,
         task:"Talk to our learners for feedback.",
         origin: 'Mao',
-        priority: '',
+        priority: 4,
         link: "learner/list",
         created_date: ''
       },
@@ -72,7 +82,7 @@ export class DashboardHomeComponent implements OnInit, AfterViewInit {
         id:4,
         task:"Check on Sarah's session with Mark.",
         origin: 'Mao',
-        priority: '',
+        priority: 1,
         link: "sessions/list",
         created_date: ''
       }
@@ -85,7 +95,8 @@ export class DashboardHomeComponent implements OnInit, AfterViewInit {
 
     this.userName = localStorage.getItem('userFirstName')
     this.pageloading=false
-
+    
+    this.tableService.sorting(this.toDoList, 'priority')
   }
 
   // Called after component’s views are initialized
@@ -144,4 +155,4 @@ export class DashboardHomeComponent implements OnInit, AfterViewInit {
 
   }
 
-} 
+}

@@ -50,7 +50,7 @@ export class LoginComponent implements OnInit {
     this.submitted = true;
     // stop here if form is invalid
     if (this.loginForm.invalid || !this.loginForm.dirty) {
-        return;
+        return this.errorMessage = this.messageService.formNoEmailPassword;
     }
     this.loading = true;
     this.authenticationService.login(this.f.username.value, this.f.password.value).subscribe(
