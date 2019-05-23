@@ -33,18 +33,17 @@ export class SidebarComponent implements OnInit {
     // Get data
     this.userService.getSidebar().subscribe(
       (res)=>{
-        // console.log(res), 
         this.processData(res)
       },
       (err)=>{
-        // console.warn(err)
+        console.warn(err)
       }
     )
   }
 
   // Method to assign sidebar data
   processData(res){
-    // console.log(res.Data);
+    console.log(res.Data);
     this.navitem = res.Data;
   }
 }

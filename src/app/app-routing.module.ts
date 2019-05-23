@@ -1,10 +1,11 @@
 import { Routes, RouterModule } from '@angular/router';
+import { DashboardRestrictGuard } from './guards/dashboard-restrict.guard';
+
 import { LoginComponent } from './components/basic/login/login.component';
-import { HomepageComponent } from './components/dashboard/general/homepage/homepage.component';
+import { DashboardPanelComponent } from './components/dashboard/dashboard-components/dashboard-panel/dashboard-panel.component';
 import { TimePickerComponent } from './components/dashboard/dashboard-components/time-picker/time-picker.component';
 import { LearnerRegistrationEditComponent } from './components/dashboard/dashboard-components/learner-registration/learner-registration-edit/learner-registration-edit.component';
 import { LearnerRegistrationFormComponent } from './components/dashboard/dashboard-components/learner-registration/learner-registration-form/learner-registration-form.component';
-import { DashboardRestrictGuard } from './guards/dashboard-restrict.guard';
 import { AdminLearnerPaymentPanelComponent } from './components/dashboard/dashboard-components/admin-payment/admin-learner-payment-panel/admin-learner-payment-panel.component';
 import { AdminLearnerPaymentInvoiceComponent } from './components/dashboard/dashboard-components/admin-payment/admin-learner-payment-invoice/admin-learner-payment-invoice.component';
 import { AdminLearnerPaymentProductsComponent } from './components/dashboard/dashboard-components/admin-payment/admin-learner-payment-products/admin-learner-payment-products.component';
@@ -31,15 +32,15 @@ import { TeacherPanelComponent } from './components/dashboard/dashboard-componen
 import { TeacherInfoComponent } from './components/dashboard/dashboard-components/teachers/teacher-info/teacher-info.component';
 import { TestoneComponent } from './components/testcomponent/testone/testone.component';
 import { CourseClassListComponent } from './components/dashboard/dashboard-components/courses/course-class-list/course-class-list.component';
+import { DashboardHomeComponent } from './components/dashboard/dashboard-components/dashboard-home/dashboard-home.component';
 
 
 const routes: Routes = [
-  { path: '', component: HomepageComponent, canActivate: [DashboardRestrictGuard],
+  { path: '', component: DashboardPanelComponent, canActivate: [DashboardRestrictGuard],  
     children: [
+      {path:'home', component: DashboardHomeComponent},
       // Testing path
-      {
-        path:'testone', component: TestoneComponent,
-      },
+      {path:'testone', component: TestoneComponent},
       // Payment Area
       { path: 'payment/invoice', pathMatch: 'prefix', component: AdminLearnerPaymentPanelComponent,
         children:[
@@ -113,7 +114,7 @@ const routes: Routes = [
     ]
   },
   { path: 'login', component: LoginComponent },
-  { path: '**', redirectTo: '' }
+  { path: '**', redirectTo: 'home' }
 ];
 
 export const routing = RouterModule.forRoot(routes);

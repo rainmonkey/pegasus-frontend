@@ -53,7 +53,6 @@ export class SessionDetailEditModalComponent implements OnInit {
     this.transactionService.getLearnerInvo(this.staffId).subscribe(
       (res) => {
         this.learnerList = res.Data;
-        //this.patchToInvoice()
       },
       error => {
         this.errorMsg = JSON.parse(error.error);
