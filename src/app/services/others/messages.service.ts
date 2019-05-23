@@ -5,6 +5,11 @@ import { Injectable } from '@angular/core';
 })
 export class MessagesService {
 
+  formNoEmailPassword = "Please enter your email and password"
+  formIsClean = "There are no inputs"
+  formInputRequired = " Required"
+  
+  
   constructor() { }
 
   // API error response handler
@@ -12,7 +17,7 @@ export class MessagesService {
     console.warn(err)
     if (err.error) {
       if(err.error.ErrorMessage){
-        return err.error.ErrorMessage;
+        return (err.error.ErrorMessage).slice(0, 60);
       } else {
         return "Sorry, something's wrong with ther server.";
       }
@@ -21,5 +26,5 @@ export class MessagesService {
     }
   }
 
-  
+
 }

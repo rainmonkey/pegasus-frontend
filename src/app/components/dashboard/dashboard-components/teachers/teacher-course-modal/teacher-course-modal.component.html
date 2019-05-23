@@ -2,7 +2,7 @@
 <div class='modal-header'>
   <h4 class='modal-title'>Courses & Salary Infomation of tutor&nbsp;<span class='t_cm_title'>{{whichTeacher.FirstName}}
       {{whichTeacher.LastName}}</span></h4>
-  <button type="button" class='btn btn-sm btn-info t_dm_close_btn' aria-label="Close"
+  <button type="button" class='btn btn-sm btn-info t_cm_close_btn' aria-label="Close"
     (click)="activeModal.close('Cross click')">
     <span aria-hidden="true">&times;</span>
   </button>
@@ -14,17 +14,97 @@
 <!--modal body-->
 <div *ngIf='!loadingFlag' class='modal-body'>
   <form action="">
+    <!--line 1-->
     <div class='row'>
-      <!--line 1-->
-      <div class='col-12' style="margin-top:5px">
-        <label class='col-12 t_mf_label' for="ability" style="text-align:center">Abilities:</label>
-        <!-- <input class='col-12 t_mf_input' type="text" id='ability' formControlName='ability'> -->
+      <div class='col-4'>
+        <div style="margin-right: 5px">
+          <label class='t_cm_label_title'>Full Name:</label>
+        </div>
+      </div>
+      <div class='col-8'>
+        <div style="margin-left: 5px">
+          <label class='col-12 t_cm_label_title' for="ability">Ability Reference:</label>
+          <!-- <input class='col-12 t_mf_input' type="text" id='ability' formControlName='ability'> -->
+        </div>
       </div>
     </div>
+
+    <!--line 2-->
+    <div class='row'>
+      <div class='col-4'>
+        <div style="margin-right: 5px">
+          <input type="text" value={{getFullName()}} class='col-12 t_cm_input' disabled>
+        </div>
+
+      </div>
+      <div class='col-8'>
+        <div style="margin-left: 5px">
+          <input type="text" value={{whichTeacher.Ability}} class='col-12 t_cm_input' disabled>
+        </div>
+      </div>
+    </div>
+
+    <!--line 3 detail-->
+    <div *ngIf='isDetailModeFlag && !disableCourseDivFlag' class="col-12">
+      <div class="col-12 t_cm_label_title">Courses Plan:</div>
+      <div class='row'>
+        <div *ngFor='let i of teacherCourses' class='col-4'>
+          <div class='t_cm_course' style="margin:5px">
+            <div class='row'>
+              <div class='col-12 t_cm_label_title'
+                style="text-align: center;border-bottom: 1px solid lightgrey;background:#f3f1f1">
+                {{i.Course.CourseName}}
+              </div>
+            </div>
+            <div class='row'>
+              <div class='col-6' style="text-align: center">
+                {{i.Course.Level}}
+              </div>
+              <div class='col-6' style="text-align: center">
+                {{i.Course.Duration}}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+    </div>
+
+
+    <!--line 3 add/edit-->
+    <div *ngIf='isDetailModeFlag' class='col-12'>
+      <div class='col-12 t_cm_label_title'>Courses Plan:</div>
+      <div class='row'>
+        <div *ngFor='let i of courses' class='col-4'>
+          <div class='t_cm_course' style="margin:5px">
+            <div class='row'>
+              <div class='col-12 t_cm_label_title'
+                style="text-align: center;border-bottom: 1px solid lightgrey;background:#f3f1f1">
+                {{i.CourseName}}
+              </div>
+              <div id={{i.CourseId}} style="display:none" class='col-12'>
+                <div *ngFor='let j of orgOptions' class='col-12'>
+                  <label class='col-11 t_mf_branch_orgs'>{{j.OrgName.replace('BRANCH','').toLowerCase()}}</label>
+                  <!--attribute NAME is important, do not touch-->
+                  <input #branches class='col-1 tl_muf_orgName' type='checkbox' name={{i.dayName}} value={{j.OrgId}}
+                    [checked]='setDefaultCourseSelection(j.OrgId,i)'>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+    </div>
+
   </form>
 </div>
 
 <!--modal footer-->
 <div class='modal-footer'>
+  <button *ngIf='!isDetailModeFlag' type="button" class="btn btn-outline-dark"
+    (click)="activeModal.close('Close click')">Save</button>
   <button type="button" class="btn btn-outline-dark" (click)="activeModal.close('Close click')">Close</button>
 </div>

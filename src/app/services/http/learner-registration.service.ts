@@ -40,7 +40,6 @@ export class LearnerRegistrationService {
                  catchError(this.errorHandler)
                );
   }
-
   // throw error to component
   errorHandler(error: HttpErrorResponse) {
     return throwError(error);
