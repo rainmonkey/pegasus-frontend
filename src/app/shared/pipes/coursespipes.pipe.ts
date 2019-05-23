@@ -1,9 +1,10 @@
 import { Pipe, PipeTransform } from '@angular/core';
-
+import { CourseDetailModalComponent } from '../../components/dashboard/dashboard-components/courses/course-detail-modal/course-detail-modal.component';
 @Pipe({
   name: 'coursespipes'
 })
 export class CoursespipesPipe implements PipeTransform {
+  public coursedetailmodal: CourseDetailModalComponent;
 
   transform(valueToSubmit) {
     this.checkCourseType(valueToSubmit);
@@ -35,32 +36,22 @@ export class CoursespipesPipe implements PipeTransform {
 
   checkLevel(valueToSubmit) {
     switch (valueToSubmit.Level) {
-      case "L0":
+      case "G3&Under":
         return 0;
-      case "L1":
+      case "G4&G5":
         return 1;
-      case "L2":
+      case "G6&G7":
         return 2;
-      case "L3":
+      case "G8":
         return 3;
-      case "L4":
+      case "G9":
         return 4;
-      case "L5":
+      case "G10":
         return 5;
-      case "L6":
+      case "G11":
         return 6;
-      case "L7":
+      case "G12":
         return 7;
-      case "L8":
-        return 8;
-      case "L9":
-        return 9;
-      case "L10":
-        return 10;
-      case "L11":
-        return 11;
-      case "L12":
-        return 12;
     }
   }
 
@@ -89,14 +80,18 @@ export class CoursespipesPipe implements PipeTransform {
 
   checkTeacherLevel(valueToSubmit) {
     switch (valueToSubmit.TeacherLevel) {
-      case 'Junior':
+      case 'Internship':
         return 1;
-      case 'Intermediate':
+      case 'Normal':
         return 2;
       case 'Senior':
         return 3;
+      case 'Specialist':
+        return 4;
+      case 'Professor':
+        return 5;
     }
   }
-  
+
 
 }
