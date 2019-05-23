@@ -1,8 +1,9 @@
 
 <div class="time-picker"> 
   <!-- location -->
-  <button class="btn btn-info">Org1</button>
-  <button class="btn btn-info">Org2</button>
+  <!-- <button class="btn btn-info">Org1</button>
+  <button class="btn btn-info">Org2</button> -->
+  <!-- time table -->
   <div class="weekly-schedule">
     <div class="hour-labels">
       <div class="hour-label" *ngFor="let hour of hours">{{hour}}:00</div>
@@ -13,22 +14,17 @@
         <div class="slots">
           <div class="slot" *ngFor="let y of yIndex; let i = index" 
           [ngClass]="{'slot-bottom': i%4==3,
-                      'availableIsGreen': slot[x][y] == 'isAvailable' && !(slot[x][y] == 'isAvailable' && slot[x][y] == 'isArranged'),
+                      'availableDayIsBlue': slot[x][y] == 'isAvailableDay',
                       'arrangedIsRed': slot[x][y] == 'isArranged',
-                      'dayOffIsGray': slot[x][y] == 'isDayOff', 'tempChangeIsYellow': slot[x][y] == 'isTempChange'
+                      'dayOffIsGray': slot[x][y] == 'isDayOff', 
+                      'tempChangeIsYellow': slot[x][y] == 'isTempChange',
+                      'availableDurationIsGreen': slotAvailable[x][y] == 'isAvailable'
                     }" 
-          (click)="clickSlot(x,y)">
-            <small *ngIf="slot[x][y] == 'isArranged'">{{slotArrangedLearnerName[x][y]}}</small>
-            <small *ngIf="slot[x][y] == 'isDayOff'">{{slotDayOffLearnerName[x][y]}}</small>
-            <small *ngIf="slot[x][y] == 'isTempChange'">{{slotTempChangeLearnerName[x][y]}}</small>
+          (mouseover)="mouseoverSlot(x,y)" (mouseout)="mouseoutSlot()">
+          <small *ngIf="slot[x][y]">{{learnerName[x][y]}}</small>
           </div> 
         </div>
       </div>
     </div>
   </div> 
-  <div class="button d-flex justify-content-end">
-    <button class="mx-3" (click)="clearSlot()">Clear</button>
-    <button (click)="confirmSlot()">Confirm</button>
-    <p *ngIf="pselect">{{confirmTime}}</p>
-  </div>
 </div>

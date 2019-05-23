@@ -14,6 +14,7 @@ export class LookUpsService {
     4: Level
     8: durations
   */
+ 
   getLookUps(id):any{
     return this.http.get(this.baseUrl + 'Lookups/' + id);
   }
