@@ -1,10 +1,6 @@
-<<<<<<< HEAD
 import { Component, OnInit, Renderer2, ElementRef, Output, EventEmitter, Input } from '@angular/core';
-=======
-import { Component, OnInit, Renderer2, ElementRef, Output, EventEmitter } from '@angular/core';
 import { TimePickerService } from 'src/app/services/http/time-picker.service';
 
->>>>>>> 26b55774662ec256d4d196c5ff8c5cc20ca58d23
 
 @Component({
   selector: 'app-time-picker',
@@ -12,37 +8,9 @@ import { TimePickerService } from 'src/app/services/http/time-picker.service';
   styleUrls: ['./time-picker.component.css']
 })
 export class TimePickerComponent implements OnInit {
-<<<<<<< HEAD
-  // component interact from learner rigistration form
+  // data get form registration component
   @Input() customCourse;
 
-
-  // @Output() messageToEmit = new EventEmitter<any>();
-  // messageToSendP: any;
-  public weekdays = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
-  public hours = [8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20];
-  public xIndex = [0, 1, 2, 3, 4, 5, 6];
-  public yIndex = [];
-  public displayArray = [];
-  public timeArray = [];
-  public textArray = [];
-  public selectedY: number;
-  public eventTrigger : boolean = false;
-  public styleObject = {};
-  public tempXY = {};
-  public slotBottom = [3,7,11,15,19,23,27,31,35,39,43,47];
-  public startTotalMinutes: any;
-  public endTotalMinutes: any;
-  public startHour: any;
-  public endHour: any;
-  public startMinutes: any;
-  public endMinutes: any;
-  public startTime: any;
-  public endTime: any;
-  public showTime: boolean = false;
-  public realTimeArray: any[] = [];
-  public selectTime: any;
-=======
   // data will from server, now just hard core
   public teacherAvailableData: any = {
     "IsSuccess": true,
@@ -177,7 +145,7 @@ export class TimePickerComponent implements OnInit {
   public hours = [8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20];
   public xIndex: number[]= [0, 1, 2, 3, 4, 5, 6];
   public yIndex: number[] = [];
-  // define slot 
+  // define slot
   public slot: any[] = [];
   public slotAvailable: any[] = [];
   public slotTime: any[] = [];
@@ -190,7 +158,6 @@ export class TimePickerComponent implements OnInit {
   // redefine temp change
   public tempChangeArr: any[] = [];
   public slotTempChangeLearnerName: any[] = [];
->>>>>>> 26b55774662ec256d4d196c5ff8c5cc20ca58d23
 
   public learnerName: any[] = [];
   constructor(private timePickerService: TimePickerService) {
@@ -203,7 +170,7 @@ export class TimePickerComponent implements OnInit {
     for(let i = 0; i < 49; i++) {
       this.yIndex.push(i);
     }
-    // define five type of slots 
+    // define five type of slots
     for (let i = 0; i < 7; i++) {
       this.slot[i] = [];
       this.slotAvailable[i] = [];
@@ -251,35 +218,10 @@ export class TimePickerComponent implements OnInit {
       obj['BeginY'] = beginMinutesToY;
       obj['EndY'] = endMinutesToY;
       obj['LearnerName'] = data.LearnerName;
-      arr.push(obj);  
+      arr.push(obj);
     };
     return arr;
   }
-<<<<<<< HEAD
-
-  mouseup(x: number, y: number, event: any) {
-    // this.displayArray[x][y] = !this.displayArray[x][y];
-    // let tempRange = y - this.tempXY['y'];
-    // console.log('tempRange', tempRange)
-    // this.selectedY = y;
-    this.tempXY['x'] = x;
-    this.tempXY['y'] = y;
-    for(let i = this.tempXY['y']; i < y+1; i++) {
-      this.displayArray[x][i] = !this.displayArray[x][i];
-      // console.log('displayArray1', this.displayArray)
-    }
-    // console.log('mouseup', this.displayArray);
-    // update time label
-    // this.startTotalMinutes = 480 + this.tempXY['y']*15;
-    // this.endTotalMinutes = 480 + (y+1)*15;
-    // this.startHour = Math.floor(this.startTotalMinutes/60);
-    // this.startMinutes = this.startTotalMinutes%60 == 0 ? '00' : this.startTotalMinutes%60;
-    // this.startTime = this.startHour + ":" + this.startMinutes;
-    // this.endHour = Math.floor(this.endTotalMinutes/60 );
-    // this.endMinutes = this.endTotalMinutes%60 == 0 ? '00' : this.endTotalMinutes%60;
-    // this.endTime = this.endHour + ":" + this.endMinutes;
-    // console.log('time:', this.startTime, this.endTime);
-=======
   defineSlotProp(arr: any[], prop: string) {
     for(let o of arr) {
       let xIndex = o['DayOfWeek']-1;
@@ -287,9 +229,8 @@ export class TimePickerComponent implements OnInit {
       for(let i = o['BeginY']; i < o['EndY']+1; i++) {
         this.slot[xIndex][i] = prop;
       }
-    }; 
+    };
     return this.learnerName, this.slot;
->>>>>>> 26b55774662ec256d4d196c5ff8c5cc20ca58d23
   }
 ///////////////////////////////////////////////////////////////////////////////////////////
   setSpecificTime() {
@@ -331,7 +272,7 @@ export class TimePickerComponent implements OnInit {
             // else if(y = )
       };
     });
-    // console.log('eeee', this.slotAvailable); 
+    // console.log('eeee', this.slotAvailable);
   }
   mouseoutSlot() {
     this.teacherAvailableData.Data.AvailableDay.map((o) => {
@@ -343,7 +284,7 @@ export class TimePickerComponent implements OnInit {
     });
   }
 
-  
+
 }
 
 
