@@ -1,0 +1,10 @@
+.toDoPopoverClass{
+    width:400px !important;
+    /* background: black; */
+}
+
+.sticky{
+    position:sticky;
+    position: -webkit-sticky;  
+    top: 0; 
+}

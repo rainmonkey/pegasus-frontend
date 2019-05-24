@@ -1,12 +1,11 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { DecimalPipe } from '@angular/common';
 import { FormControl } from '@angular/forms';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 import { Router, ActivatedRoute } from '@angular/router';
-import { Observable } from 'rxjs';
-import { CoursesService } from '../../../../../services/http/courses.service';
 import { NgbootstraptableService } from 'src/app/services/others/ngbootstraptable.service';
 
+import { CoursesService } from '../../../../../services/http/courses.service';
 import { CourseDetailModalComponent } from '../course-detail-modal/course-detail-modal.component';
 import { CourseDeleteModalComponent } from '../course-delete-modal/course-delete-modal.component';
 
@@ -16,19 +15,17 @@ import { CourseDeleteModalComponent } from '../course-delete-modal/course-delete
   styleUrls: ['./courses-list.component.css'],
   providers: [DecimalPipe]
 })
-
 export class CoursesListComponent implements OnInit {
   public coursesList: any;
   public coursesListLength: number;
-  public temCoursesList: any; //save the original courseList
-  public temCoursesListLength: number; //save the original courseList length
+  public closeResult: string;
   public page: number = 1;  //pagination current page
   public pageSize: number = 10;    //[can modify] pagination page size
   public currentPage: number = 1;
   public coursesListCopy: Array<any>;
+  public errorMessage: string;
   //search by which columns, determine by users
   public queryParams: object = {};
-  public courses$: Observable<any>;
   public filter = new FormControl('');
 
   @ViewChild('pagination') pagination;
@@ -56,12 +53,22 @@ export class CoursesListComponent implements OnInit {
         this.coursesListCopy = this.coursesList;
         this.coursesListLength = res.Data.length; //length prop is under Data prop
         this.refreshPageControl();
+        console.log(this.coursesList);
         // console.log(this.coursesList);
       },
-      (error) => { this.errorProcess(error) })
+      (err) => { 
+        this.backendErrorHandler(err);
+      })
   }
 
-  errorProcess(error) {
+  backendErrorHandler(err) {
+    console.warn(err)
+    if (err.error.ErrorMessage != null) {
+      this.errorMessage = err.error.ErrorMessage;
+    }
+    else {
+      this.errorMessage = "Error! Can't catch Data."
+    }
   }
 
   /*
@@ -104,23 +111,13 @@ export class CoursesListComponent implements OnInit {
     });
   }
 
-
-  /*
-    pop up modals, when need to pop up a modal, call this method
-    commands:
-      0 --> Add new
-      1 --> Edit/update
-      2 --> delete
-  */
-  popUpModals(command, whichCourse) {
-    switch (command) {
-      case 0:
-      case 2:
-        this.detailModal(command, whichCourse);
-        break;
-      case 3:
-        this.deleteModal(command, whichCourse);
-        break;
+  private getDismissReason(reason: any): string {
+    if (reason === ModalDismissReasons.ESC) {
+      return 'by pressing ESC';
+    } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
+      return 'by clicking on a backdrop';
+    } else {
+      return  `with: ${reason}`;
     }
   }
 
@@ -130,9 +127,12 @@ export class CoursesListComponent implements OnInit {
   detailModal(command, whichCourse) {
     const modalRef = this.modalService.open(CourseDetailModalComponent, { size: 'lg' });
     let that = this;
-    modalRef.result.then(function () {
-      that.ngOnInit()
-    })
+    modalRef.result.then((result) => {
+      this.closeResult = `Closed with: ${result}`;
+      that.ngOnInit();
+    }, (reason) => {
+      this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+    });
     modalRef.componentInstance.command = command;
     modalRef.componentInstance.whichCourse = whichCourse;
   }
@@ -143,9 +143,12 @@ export class CoursesListComponent implements OnInit {
   deleteModal(command, whichCourse) {
     const modalRef = this.modalService.open(CourseDeleteModalComponent);
     let that = this;
-    modalRef.result.then(function () {
+    modalRef.result.then((result) => {
+      this.closeResult = `Closed with: ${result}`;
       that.ngOnInit()
-    })
+    }, (reason) => {
+      this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+    });
     modalRef.componentInstance.command = command;
     modalRef.componentInstance.whichCourse = whichCourse;
   }
@@ -169,7 +172,7 @@ export class CoursesListComponent implements OnInit {
     else {
       let searchString: string;
       let searchBy: string;
-      // 要搜索的内容
+      
       let searchingInputObj = document.getElementById('searchingInput');
 
       (initValue == undefined) ? { searchString, searchBy } = 

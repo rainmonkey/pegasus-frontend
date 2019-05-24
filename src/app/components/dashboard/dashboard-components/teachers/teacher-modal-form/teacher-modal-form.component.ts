@@ -2,6 +2,7 @@ import { TeachersService } from '../../../../../services/http/teachers.service';
 import { Component, OnInit, Input, ViewChildren, ViewChild } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { environment } from 'src/environments/environment.prod';
+import { pureFunction3 } from '@angular/core/src/render3';
 
 @Component({
   selector: 'app-teacher-modal-form',
@@ -17,21 +18,30 @@ export class TeacherModalFormComponent implements OnInit {
   public languageOptions: Object;
   //orgs dropdown options
   public orgOptions: Object;
+  //Level dropdown options
+  public teachersLevels: Object;
+  //img max size, can modify
+  public maxSize: number = 1024;
   //readonly or not
   public readOnlyFlag: boolean = false;
+  //loading flag
+  public loadingFlag: boolean = false;
+  //loading counter
+  public loadingCounter: number = 0;
   public showLeftImgFlag: boolean = true;
   public showRightImgFlag: boolean = false;
-  public photoToSubmit: any;
-  public idPhotoToSubmit: any;
+  public isAvailableDaysNull: boolean = false;
+  public PhotoToSubmit: any;
+  public IdPhotoToSubmit:any;
   public week: Array<object> = [{ "dayName": "Monday", 'dayId': 1 }, { "dayName": "Tuesday", 'dayId': 2 },
   { "dayName": "Wednesday", 'dayId': 3 }, { "dayName": "Thursday", 'dayId': 4 },
   { "dayName": "Friday", 'dayId': 5 }, { "dayName": "Saturday", 'dayId': 6 },
   { "dayName": "Sunday", 'dayId': 7 }];
   public idTypeList = [{ 'idTypeId': 1, 'idTypeName': 'Driver Lisence' },
-  { 'idTypeId': 2, 'idTypeName': '18+' },
+  { 'idTypeId': 2, 'idTypeName': 'Student ID' },
   { 'idTypeId': 3, 'idTypeName': 'Passport' }];
   public photoUrl: any = environment.photoUrl;
-  
+
 
   @Input() command;
   @Input() whichTeacher;
@@ -39,16 +49,25 @@ export class TeacherModalFormComponent implements OnInit {
   @ViewChildren('branches') branchesCheckBox;
   @ViewChild('genderToSubmit') genderToSubmit;
 
-  constructor(private fb: FormBuilder, private teachersService: TeachersService) { }
+  constructor(private fb: FormBuilder,
+    private teachersService: TeachersService) { }
 
   ngOnInit() {
+    this.loadingFlag = true;
     //console.log(this.whichTeacher)
     this.setReadOnly();
     this.updateForm = this.fb.group(this.formGroupAssemble());
-    this.getDropdownOptions();
+   
+      this.getDropdownOptions();
+      this.getTeacherLevel();
+  
+  }
+  ngAfterViewInit(){
+    this.loadingFlag = false;
   }
 
   /////////////////////////////////////////////methods call by other methods/////////////////////////////////////////////////
+
 
   /*
     in detail mode, data can only be read
@@ -69,10 +88,18 @@ export class TeacherModalFormComponent implements OnInit {
         this.qualificationOptions = res.Data.qualifications;
         this.languageOptions = res.Data.Languages;
         this.orgOptions = res.Data.Orgs;
-        // console.log(res)
-        // console.log(this.qualificationOptions)
-        // console.log(this.languageOptions)
-        // console.log(this.orgOptions)
+      },
+      (err) => {
+        alert('Server error!')
+      }
+    )
+  }
+
+  getTeacherLevel() {
+    this.teachersService.getTeacherLevel().subscribe(
+      (res) => {
+        this.teachersLevels = res.Data;
+        console.log(this.teachersLevels)
       },
       (err) => {
         alert('Server error!')
@@ -89,9 +116,7 @@ export class TeacherModalFormComponent implements OnInit {
     }
     return null;
   }
-  /*
-    需要修改 暂时别动了 目前还不知道显示最高学历还是显示所有学历
-  */
+
   getQualiId() {
     if (this.whichTeacher.TeacherQualificatiion.length !== 0) {
       console.log(this.whichTeacher)
@@ -145,7 +170,7 @@ export class TeacherModalFormComponent implements OnInit {
     switch photo and IdPhoto
     and change them styles
   */
-  showPhotos(position) {
+  switchImg(position) {
     let leftImgObj = document.getElementById('img_left');
     let rightImgObj = document.getElementById('img_right');
 
@@ -170,16 +195,22 @@ export class TeacherModalFormComponent implements OnInit {
     get days that teacher available of one week
   */
   getAvailableDays() {
-    let availableDays: Array<number> = []
-    if (this.command == 1 && this.whichTeacher.AvailableDays.length !== 0) {
-      for (let i of this.whichTeacher.AvailableDays) {
-        if (availableDays.indexOf(i.DayOfWeek) == -1) {
-          availableDays.push(i.DayOfWeek)
+    if (this.whichTeacher.AvailableDays.length !== 0) {
+      this.isAvailableDaysNull = false;
+      let availableDays: Array<number> = []
+      if (this.command == 1) {
+        for (let i of this.whichTeacher.AvailableDays) {
+          if (availableDays.indexOf(i.DayOfWeek) == -1) {
+            availableDays.push(i.DayOfWeek)
+          }
         }
       }
+      //返回一个有序数组 （如果availableDays比较多 按照Monday--->Sunday顺序排列）
+      return availableDays.sort();
     }
-    //返回一个有序数组 （如果availableDays比较多 按照Monday--->Sunday顺序排列）
-    return availableDays.sort();
+    else {
+      this.isAvailableDaysNull = true;
+    }
   }
 
   /*
@@ -199,34 +230,59 @@ export class TeacherModalFormComponent implements OnInit {
 
   /*
     pre view the img that user upload
-    whichPhoto value:
-      0 --> userPhoto
-      1 --> userIdPhoto
   */
   preViewImg(event, whichPhoto) {
-    let photoObj;
-    let photoRender;
-    if (whichPhoto == 0) {
-      photoObj = document.getElementById('userPhoto');
-      //assign photo to photoToSubmit
-      this.photoToSubmit = <File>event.target.files[0];
-      photoRender = this.photoToSubmit;
+
+    //assign photo to photoToSubmit
+    this[whichPhoto + 'ToSubmit'] = <File>event.target.files[0];
+    //photo size
+    let fileSize = (Number(<File>event.target.files[0].size)) / 1024;
+    //if size valid, continue; else return
+    if (this.checkPhotoSize(fileSize)) {
+      //important! 
+      //set src and read it 
+      let reader = new FileReader();
+      reader.readAsDataURL(this[whichPhoto + 'ToSubmit']);
+      reader.onloadend = function (event) {
+        let imgObj = document.getElementById(whichPhoto);
+        imgObj['src'] = event.target['result'];
+      }
     }
     else {
-      photoObj = document.getElementById('userIdPhoto');
-      //assign id photo to idPhotoToSubmit
-      this.idPhotoToSubmit = <File>event.target.files[0];
-      photoRender = this.idPhotoToSubmit;
+      return;
     }
-    //important! 
-    //set src and read it 
-    let reader = new FileReader();
-    reader.onloadend = function () {
-      photoObj.setAttribute("src", this.result.toString());
-    }
-    reader.readAsDataURL(photoRender);
   }
 
+  /*
+    check photo size, photo size can not lager than limit
+  */
+  checkPhotoSize(size) {
+    if (size > this.maxSize) {
+      alert("Photo size can not large than 1M");
+      return false;
+    }
+    else {
+      return true;
+    }
+  }
+
+  /*
+    get photo src
+  */
+  getPhotoSrc(photoObj) {
+    if (this.command !== 0) {
+      let src = this.whichTeacher[photoObj];
+      if (src == null) {
+        return '../../../../../../assets/images/shared/default-employer-profile.png';
+      }
+      else {
+        console.log('--------------------', this.photoUrl + src)
+        console.log(photoObj)
+        return this.photoUrl + src;
+      }
+    }
+    return;
+  }
 
   /*
     in add and update mode
@@ -247,26 +303,9 @@ export class TeacherModalFormComponent implements OnInit {
   }
 
   /*
-    get photo src
-  */
-  getPhoto(photoObj) {
-    if (this.command !== 0) {
-      let src = this.whichTeacher[photoObj];
-      if(src == null){
-        return  '../../../../../../assets/images/shared/default-employer-profile.png';
-      }
-      else{
-        console.log('--------------------',this.photoUrl + src)
-        return this.photoUrl + src;
-      }
-    }
-    return;
-  }
-  
-  /*
     if photo not found, set default photo 
   */
-  setDefaultPhoto(event){
+  setDefaultPhoto(event) {
     event.target.src = '../../../../../../assets/images/shared/default-employer-profile.png';
     return;
   }
@@ -290,7 +329,11 @@ export class TeacherModalFormComponent implements OnInit {
         IDNumber: [null, Validators.required],
         ExpiryDate: [null, Validators.required],
         DayOfWeek: [null],
-        ability: [null]
+        ability: [null],
+        IsLeft: [null, Validators.required],
+        IsContract: [null, Validators.required],
+        Level: [null, Validators.required],
+        Comment: [null]
       }
     }
     else {
@@ -311,7 +354,12 @@ export class TeacherModalFormComponent implements OnInit {
         IDNumber: [{ value: this.whichTeacher.IdNumber, disabled: this.readOnlyFlag }, Validators.required],
         ExpiryDate: [{ value: this.getDateFormat(this.whichTeacher.ExpiryDate), disabled: this.readOnlyFlag }, Validators.required], //用dateFormat
         DayOfWeek: [{ value: null, disabled: this.readOnlyFlag }],
-        ability: [{ value: this.whichTeacher.Ability, disabled: this.readOnlyFlag }]
+        ability: [{ value: this.whichTeacher.Ability, disabled: this.readOnlyFlag }],
+        //后台没数据
+        IsLeft: [{ value: this.whichTeacher.IsLeft, disabled: this.readOnlyFlag }, Validators.required],
+        IsContract: [{ value: this.whichTeacher.IsContract, disabled: this.readOnlyFlag }, Validators.required],
+        Level: [{ value: this.whichTeacher.Level, disabled: this.readOnlyFlag }, Validators.required],
+        Comment: [{ value: this.whichTeacher.Comment, disabled: this.readOnlyFlag }]
       }
     }
 

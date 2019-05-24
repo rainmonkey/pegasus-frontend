@@ -1,0 +1,96 @@
+<div style="margin-top:10px;" class="container">
+    <div class="font4">Dashboard</div>
+    <div style="" class="text-info">Welcome &nbsp; Bienvenido &nbsp;  Willkommen  &nbsp; добро  &nbsp; пожаловать &nbsp;  欢迎  &nbsp; Manaakitia &nbsp;  Bienvenue</div> 
+    <br>
+    <div *ngIf="pageloading" class="loaderLarge"></div>
+    <div class="row">
+        <div class="col-12 col-md-6 col-lg-3">
+            <div class="card">
+                <div class="card-body">
+                    120 Sessions this week
+                </div>
+            </div>
+        </div>
+        <div class="col-12 col-md-6 col-lg-3">
+            <div class="card">
+                <div class="card-body">
+                    109 Learners enrolled
+                </div>
+            </div>
+        </div>
+        <div class="col-12 col-md-6 col-lg-3">
+            <div class="card">
+                <div class="card-body">
+                    59 New Invoices
+                </div>
+            </div>
+        </div>
+        <div class="col-12 col-md-6 col-lg-3">
+            <div class="card">
+                <div class="card-body">
+                    40 Classes
+                </div>
+            </div>
+        </div>
+    </div><br>
+    <div class="row">
+        <div style="margin-bottom: 20px;" class="col-12 col-md-6 col-lg-8">
+            <app-charting></app-charting>
+        </div>
+
+        <div class="col-12 col-md-6 col-lg-4  "  >
+            <div *ngIf="toDoList" class="card  ">
+                <div class="card-header">
+                    Tasks to do
+                    <!-- <a style="float:right; cursor: pointer; font-size:15px;" (click)="newTaskFormBuilder(); openOrClosePopOver()" class="text-primary">New Task</a> -->
+                </div>
+                <!-- <div [ngbPopover]="toDoPopOver" #popOver="ngbPopover" placement="top" [autoClose]="'outside'" popoverTitle="New Task" popoverClass="toDoPopoverClass"></div> -->
+                <div style="max-height:300px; overflow-y:auto">
+                    <ul  *ngFor="let task of toDoList" class="list-group list-group-flush">
+                        <li class="list-group-item">
+                            <a href="" [routerLink]="['/' + task.link]">{{task.task}} &nbsp; &nbsp; {{task.origin}} </a> 
+                            <a style="float: right; cursor: pointer; font-size:15px;" class="text-danger" (click)="ignoreTask(task.id)"> Ignore </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="col-12 col-md-6 col-lg-8">
+            <div  *ngIf="notices" class="card">
+                <div class="card-header">
+                    Notices
+                    <a style="float:right; cursor: pointer; font-size:15px;" (click)="newNoticeFormBuilder(); openOrClosePopOver('right')" class="text-primary">New notice</a>
+                    <div [ngbPopover]="noticePopOver" #popOver="ngbPopover" [autoClose]="'outside'" popoverTitle="New Notice" popoverClass="toDoPopoverClass"></div>
+                </div>
+                <div style="max-height:300px; overflow-y:auto" >
+                    <ul  *ngFor="let notice of notices" class="list-group list-group-flush">
+                        <li class="list-group-item">{{notice.notice}} &nbsp; &nbsp; &nbsp; &nbsp; {{notice.origin}} </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+<!-- <ng-template #toDoPopOver>
+    <form novalidate [formGroup]="toDoForm">
+        <textarea class="form-control" type="text" placeholder="New task" formControlName="task" rows="2"></textarea>
+
+        <input type="submit" style="margin-top:5px; padding:3px 6px 3px 6px; font-size:14px;"  class="btn btn-info" value="Add" (click)="toDoSubmit()">
+        <div *ngIf="formError" class="text-danger">{{formError}}</div>
+    </form>
+</ng-template> -->
+
+<ng-template #noticePopOver>
+    <form novalidate [formGroup]="noticeForm">
+        <textarea class="form-control" type="text" placeholder="New notice" formControlName="notice" rows="4"></textarea>
+
+        <input type="submit" style="margin-top:5px; padding:4px 8px 4px 8px; font-size:14px;"  class="btn btn-info" value="Add" (click)="newNoticeSubmit()">
+        <div *ngIf="formError" class="text-danger">{{formError}}</div>
+    </form>
+</ng-template>
+

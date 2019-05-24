@@ -4,6 +4,12 @@ import { BehaviorSubject } from 'rxjs';
   providedIn: 'root'
 })
 export class GeneralRepoService {
-  fisrtName = new BehaviorSubject('Lyric');
+  public errorMessage: string;
+
+  fisrtName = new BehaviorSubject('Customer Name');
+
+
+
+
   constructor() { }
 }

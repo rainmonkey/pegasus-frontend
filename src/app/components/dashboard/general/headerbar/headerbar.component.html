@@ -14,20 +14,17 @@
         <!-- Navbar Header-->
         <div class="navbar-header">
           <!-- Navbar Brand -->
-          <a href="/" class="navbar-brand d-none d-sm-inline-block">
-            <div class="brand-text">              
+          <a href="/home" class="navbar-brand d-none d-sm-inline-block">
+            <div class="brand-text">
               <strong>Able Music Studio</strong>
             </div>
           </a>
         </div>
         <!-- Navbar Menu -->
+        <div class="navbar-nav mr-auto" (click)="hideSideBar()"> <i style=" cursor: pointer;" class="fas fa-bars fa-lg"></i> </div>
+
         <ul class="nav-menu list-unstyled d-flex flex-md-row align-items-md-center">
           <!-- Search-->
-          <!-- <li class="nav-item d-flex align-items-center">
-            <a id="search" href="#">
-              <i class="fas fa-search"></i>
-            </a>
-          </li> -->
           <!-- Notifications-->
           <!-- <li class="nav-item dropdown"> 
             <a id="notifications" rel="nofollow" data-target="#" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="nav-link">

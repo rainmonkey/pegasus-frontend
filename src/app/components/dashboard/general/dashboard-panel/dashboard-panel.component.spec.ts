@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { CourseModalFormComponent } from './course-modal-form.component';
+import { DashboardPanelComponent } from './dashboard-panel.component';
 
-describe('CourseModalFormComponent', () => {
-  let component: CourseModalFormComponent;
-  let fixture: ComponentFixture<CourseModalFormComponent>;
+describe('DashboardPanelComponent', () => {
+  let component: DashboardPanelComponent;
+  let fixture: ComponentFixture<DashboardPanelComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ CourseModalFormComponent ]
+      declarations: [ DashboardPanelComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(CourseModalFormComponent);
+    fixture = TestBed.createComponent(DashboardPanelComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
