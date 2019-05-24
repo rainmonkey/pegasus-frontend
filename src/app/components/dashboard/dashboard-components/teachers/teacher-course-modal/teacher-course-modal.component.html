@@ -13,7 +13,7 @@
 
 <!--modal body-->
 <div *ngIf='!loadingFlag' class='modal-body'>
-  <form action="">
+  <form action="" [formGroup]='CourseForm'>
     <!--line 1-->
     <div class='row'>
       <div class='col-4'>
@@ -48,7 +48,7 @@
     <div *ngIf='isDetailModeFlag && !disableCourseDivFlag' class="col-12">
       <div class="col-12 t_cm_label_title">Courses Plan:</div>
       <div class='row'>
-        <div *ngFor='let i of a()' class='col-6'>
+        <div *ngFor='let i of coursesByTeacher' class='col-6'>
           <div class='t_cm_course' style="margin:5px">
             <div class='row'>
               <div class='col-12 t_cm_label_title'
@@ -79,14 +79,15 @@
     <div *ngIf='!isDetailModeFlag' class='col-12'>
       <div class='col-12 t_cm_label_title'>Courses Plan:</div>
       <div class='row'>
-        <div *ngFor='let i of courseAfterFormat' class='col-12' style="margin-bottom: 10px">
+        <div *ngFor='let i of coursesCate' class='col-12' style="margin-bottom: 10px">
           <div class='t_cm_course'>
             <div class='row'>
-              <div class='col-12 t_cm_label_title t_cm_course_dropdown' (click)='toggleCourseOptions($event,i)'
+              <div class='col-12 t_cm_label_title t_cm_course_dropdown'
+                (click)='toggleCourseOptions($event,i.CourseCategoryName)'
                 style="text-align: center;border-bottom: 1px solid lightgrey;background:rgb(173, 216, 230, 0.1)">
-                {{i}}
+                {{i.CourseCategoryName}}
               </div>
-              <div style="display: none" id={{i}} class='col-12'>
+              <div style="display: none" id={{i.CourseCategoryName}} class='col-12'>
                 <div class='col-12'>
                   <div class='row' style="text-align: center; font-weight:bold ">
                     <div class='col-3'>Course:</div>
@@ -96,15 +97,15 @@
                     <div class='col-1'>tick:</div>
 
                   </div>
-                  <div *ngFor='let j of displayCourse(i)' class='col-12'>
+                  <div *ngFor='let j of displayCourse(i.CourseCategoryName)' class='col-12'>
                     <div class='row' style="text-align: center">
                       <div class='col-3'>{{j.CourseName}}</div>
                       <div class='col-3'>{{j.LevelName}}</div>
                       <div class='col-3'>{{j.CourseTypeName}}</div>
                       <div class='col-2'>{{j.DurationName}}</div>
                       <div class='col-1'>
-                        <input #courseCheck type="checkbox" name={{i}} id={{j.CourseType}} value={{j.CourseId}}
-                          [checked]='setDefaultCourseSelection(j.CourseId)'>
+                        <input #courseCheck type="checkbox" name={{i.CourseCategoryName}} id={{j.CourseType}}
+                          value={{j.CourseId}} [checked]='setDefaultCourseSelection(j.CourseId)'>
                       </div>
                     </div>
                   </div>
@@ -122,15 +123,52 @@
     <!--line 4-->
     <div class='col-12' style="margin-top:-5px">
       <div class='row'>
-        <div class='col-12 t_cm_label_title'>Payment:</div>
+        <div class='col-12 t_cm_label_title'>Hourly Wage:</div>
       </div>
-      <div class='row'>
-        <div class='col-2' style="text-align: center">One to One:</div>
-        <div class='col-4'><input type="text" name="" id="one" class='col-12 t_cm_input' placeholder="$"
-            [disabled]='isDetailModeFlag'></div>
-        <div class='col-2' style="text-align: center">Group:</div>
-        <div class='col-4'><input type="text" name="" id="group" class='col-12 t_cm_input' placeholder="$"
-            [disabled]='isDetailModeFlag'></div>
+      <div *ngIf='!isDetailModeFlag'>
+        <div class='row'>
+          <div class='col-6'>
+            <div style="margin-right: 5px">
+              <div class='row'>
+                  <div class='col-4'>One to One:</div>
+                  <small class='text-danger errorfontsmall col-8'
+                      *ngIf='CourseForm.get("oneOnoneWage").invalid && CourseForm.get("oneOnoneWage").touched && CourseForm.get("oneOnoneWage").errors?.required'>required</small>
+              </div>
+              <div class='col-12'><input type="text" name="" id="one" class='col-12 t_cm_input' 
+                  [class.t_cm_error_border]='CourseForm.get("oneOnoneWage").invalid && CourseForm.get("oneOnoneWage").touched'
+                  formControlName='oneOnoneWage'></div>
+            </div>
+          </div>
+          <div class='col-6'>
+            <div style="margin-left: 5px">
+              <div class='row'>
+                  <div class='col-3'>Group:</div>
+                  <small class='text-danger errorfontsmall col-9'
+                  *ngIf='CourseForm.get("groupWage").invalid && CourseForm.get("groupWage").touched && CourseForm.get("groupWage").errors?.required'>required</small>
+              </div>
+              <div class='col-12'><input type="text" name="" id="group" class='col-12 t_cm_input'
+                  [class.t_cm_error_border]='CourseForm.get("groupWage").invalid && CourseForm.get("groupWage").touched'
+                  formControlName='groupWage'></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div *ngIf='isDetailModeFlag'>
+          <div class='row'>
+            <div class='col-6'>
+              <div style="margin-right: 5px">
+                <div class='col-12'>One to One:</div>
+                <div class='col-12'><input type="text" name="" id="one" class='col-12 t_cm_input' [disabled]='true' value={{oneOnoneWage}}></div>
+              </div>
+            </div>
+            <div class='col-6'>
+              <div style="margin-left: 5px">
+                <div class='col-12'>Group:</div>
+                <div class='col-12'><input type="text" name="" id="group" class='col-12 t_cm_input' [disabled]='true' value={{groupWage}}></div>
+              </div>
+            </div>
+          </div>
       </div>
     </div>
 
@@ -143,6 +181,9 @@
       class='fas fa-info-circle'></span></span>
   <span *ngIf='isDetailModeFlag' class='t_info_table_btn' title="Edit" (click)='switchMode(1)'><span
       class='fas fa-pen'></span></span>
-  <button *ngIf='!isDetailModeFlag' type="button" class="btn btn-outline-dark" (click)="onSubmit()">Save</button>
+  <div *ngIf='loadingGifFlag' class="loaderSmall"></div>
+  <span *ngIf='isSuccess' class='text-success' style="font-size:20px">Update Success!</span>
+  <span *ngIf='isError' class='text-danger' style="font-size:20px">Please check your inputs!</span>
+  <button *ngIf='!isDetailModeFlag&&!isSuccess' type="button" class="btn btn-outline-dark" (click)="onSubmit()">Save</button>
   <button type="button" class="btn btn-outline-dark" (click)="activeModal.close('Close click')">Close</button>
 </div>
