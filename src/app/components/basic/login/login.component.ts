@@ -4,7 +4,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { AuthenticationService } from '../../../services/auth/authentication.service';
 import { Title } from '@angular/platform-browser';
-import { MessagesService } from 'src/app/services/others/messages.service';
+import { MessagesLibrary } from 'src/app/shared/libraries/messages-library';
 
 @Component({
   selector: 'app-login',
@@ -26,7 +26,7 @@ export class LoginComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private authenticationService: AuthenticationService,
-    private messageService: MessagesService,
+    private messageService: MessagesLibrary,
   ) {
     
   }

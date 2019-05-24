@@ -8,8 +8,7 @@ import { LookUpsService } from 'src/app/services/http/look-ups.service';
 @Component({
   selector: 'app-teacher-course-modal',
   templateUrl: './teacher-course-modal.component.html',
-  styleUrls: ['./teacher-course-modal.component.css',
-    '../../../../../shared/css/teacher-global.css']
+  styleUrls: ['./teacher-course-modal.component.css']
 })
 export class TeacherCourseModalComponent implements OnInit {
   public CourseForm;

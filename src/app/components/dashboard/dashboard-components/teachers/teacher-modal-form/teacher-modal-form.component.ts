@@ -7,8 +7,7 @@ import { pureFunction3 } from '@angular/core/src/render3';
 @Component({
   selector: 'app-teacher-modal-form',
   templateUrl: './teacher-modal-form.component.html',
-  styleUrls: ['./teacher-modal-form.component.css',
-    '../../../../../shared/css/teacher-global.css']
+  styleUrls: ['./teacher-modal-form.component.css']
 })
 export class TeacherModalFormComponent implements OnInit {
   public updateForm;
