@@ -6,7 +6,7 @@ import { AuthenticationService } from '../../../services/auth/authentication.ser
 import { Title } from '@angular/platform-browser';
 import { MessagesService } from 'src/app/services/others/messages.service';
 import { UsersService } from 'src/app/services/http/users.service';
-import { AppSettingsService } from 'src/app/shared/app-settings.service';
+import { AppSettingsService } from 'src/app/settings/app-settings.service';
 
 @Component({
   selector: 'app-login',

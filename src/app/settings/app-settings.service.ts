@@ -9,10 +9,11 @@ import { BehaviorSubject, Observable, Subject } from 'rxjs';
 export class AppSettingsService implements OnDestroy {
   public lookUpData = new BehaviorSubject(null)
   public sidebarData = new BehaviorSubject(null)
+  public sidebarShowStatus = new BehaviorSubject<boolean>(true)
   public currentLookUpSettings: Observable<any>;
   public currentSidebarSettings: Observable<any>;
 
-
+  public currentSidebarHiddenStatus: Observable<boolean>
 
   constructor(
     private userService : UsersService
@@ -21,9 +22,8 @@ export class AppSettingsService implements OnDestroy {
       this.currentSidebarSettings = this.sidebarData.asObservable()
       this.prepareUserLookUpData()
       this.prepareUserSidebarData()
-      console.log('execute-settings')
+      console.log('Settings repository running')
     }
-
 
   // Get Lookup list from API
   prepareUserLookUpData(): void {

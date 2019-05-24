@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 
 import { UserDetail } from '../../../../models/UserDetail';
 import { AuthenticationService } from '../../../../services/auth/authentication.service';
-import { AppSettingsService } from 'src/app/shared/app-settings.service';
+import { AppSettingsService } from 'src/app/settings/app-settings.service';
 
 @Component({
   selector: 'app-sidebar',
@@ -22,6 +22,7 @@ export class SidebarComponent implements OnInit {
   ) {}
 
   ngOnInit() {
+    console.log('Sidebar')
     this.settingService.currentSidebarSettings.subscribe(
       (res)=>{this.navitem = res;}
     )

@@ -3,7 +3,7 @@ import { FormBuilder, FormGroup, FormControl, FormArray, Validators, FormControl
 import { Title } from '@angular/platform-browser';
 import { NgbPopover } from '@ng-bootstrap/ng-bootstrap';
 import { NgbootstraptableService } from 'src/app/services/others/ngbootstraptable.service';
-import { AppSettingsService } from 'src/app/shared/app-settings.service';
+import { AppSettingsService } from 'src/app/settings/app-settings.service';
 import { Subscription } from 'rxjs';
 
 
@@ -121,7 +121,7 @@ export class DashboardHomeComponent implements OnInit, AfterViewInit {
 
     // Get Lookup list
     this.lookUpList = this.settingService.currentLookUpSettings.subscribe(
-      (res)=>console.log(res))
+      (res)=>{})
 
 
   }
