@@ -1,4 +1,4 @@
-import { Component, OnInit, Renderer2, ElementRef, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Renderer2, ElementRef, Output, EventEmitter, Input } from '@angular/core';
 
 @Component({
   selector: 'app-time-picker',
@@ -6,13 +6,17 @@ import { Component, OnInit, Renderer2, ElementRef, Output, EventEmitter } from '
   styleUrls: ['./time-picker.component.css']
 })
 export class TimePickerComponent implements OnInit {
+  // component interact from learner rigistration form
+  @Input() customCourse;
+
+
   // @Output() messageToEmit = new EventEmitter<any>();
   // messageToSendP: any;
   public weekdays = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
   public hours = [8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20];
   public xIndex = [0, 1, 2, 3, 4, 5, 6];
   public yIndex = [];
-  public displayArray = []; 
+  public displayArray = [];
   public timeArray = [];
   public textArray = [];
   public selectedY: number;
@@ -36,6 +40,8 @@ export class TimePickerComponent implements OnInit {
   }
 
   ngOnInit() {
+    console.log(this.customCourse)
+
     // define yIndex
     for(let i = 0; i < 48; i++) {
       this.yIndex.push(i);
@@ -75,7 +81,7 @@ export class TimePickerComponent implements OnInit {
     // this.startTotalMinutes = 480 + y*15;
     this.textArray[x][y] = !this.textArray[x][y];
   }
-   
+
   mouseup(x: number, y: number, event: any) {
     // this.displayArray[x][y] = !this.displayArray[x][y];
     // let tempRange = y - this.tempXY['y'];

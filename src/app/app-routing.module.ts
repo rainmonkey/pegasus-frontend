@@ -2,7 +2,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { LoginComponent } from './components/basic/login/login.component';
 import { HomepageComponent } from './components/dashboard/general/homepage/homepage.component';
 import { TimePickerComponent } from './components/dashboard/dashboard-components/time-picker/time-picker.component';
-import { LearnerRegistrationEditComponent } from './components/dashboard/dashboard-components/learner-registration/learner-registration-edit/learner-registration-edit.component';
+import { LearnerRegistrationModalComponent } from './components/dashboard/dashboard-components/learner-registration/learner-registration-modal/learner-registration-modal.component';
 import { LearnerRegistrationFormComponent } from './components/dashboard/dashboard-components/learner-registration/learner-registration-form/learner-registration-form.component';
 import { DashboardRestrictGuard } from './guards/dashboard-restrict.guard';
 import { AdminLearnerPaymentPanelComponent } from './components/dashboard/dashboard-components/admin-payment/admin-learner-payment-panel/admin-learner-payment-panel.component';
@@ -94,7 +94,7 @@ const routes: Routes = [
         children:[
 
           {path: 'list', component: AdminLearnerListComponent},
-          {path: 'registration/edit', component: LearnerRegistrationEditComponent},
+          {path: 'registration/edit', component: LearnerRegistrationModalComponent},
           {path: 'registration', component: LearnerRegistrationFormComponent}
       ]},
       // Inventory Area

@@ -43,7 +43,7 @@ import { FooterComponent } from './components/basic/footer/footer.component';
 import { CoursesPanelComponent } from './components/dashboard/dashboard-components/courses/courses-panel/courses-panel.component';
 import { CoursesListComponent } from './components/dashboard/dashboard-components/courses/courses-list/courses-list.component';
 import { LearnerRegistrationFormComponent } from './components/dashboard/dashboard-components/learner-registration/learner-registration-form/learner-registration-form.component';
-import { LearnerRegistrationEditComponent } from './components/dashboard/dashboard-components/learner-registration/learner-registration-edit/learner-registration-edit.component';
+import { LearnerRegistrationModalComponent } from './components/dashboard/dashboard-components/learner-registration/learner-registration-modal/learner-registration-modal.component';
 import { SessionsPanelComponent } from './components/dashboard/dashboard-components/sessions/sessions-panel/sessions-panel.component';
 import { SessionsListViewComponent } from './components/dashboard/dashboard-components/sessions/sessions-views/sessions-list-view/sessions-list-view.component';
 import { SessionDetailEditModalComponent } from './components/dashboard/dashboard-components/sessions/session-modals/session-detail-edit-modal/session-detail-edit-modal.component';
@@ -106,7 +106,7 @@ import { CourseClassDetailModalComponent } from './components/dashboard/dashboar
     OrgFormatPipe,
     WeekFormatPipe,
     LearnerRegistrationFormComponent,
-    LearnerRegistrationEditComponent,
+    LearnerRegistrationModalComponent,
     CommandFormatPipe,
     SessionsPanelComponent,
     SessionsListViewComponent,
@@ -139,7 +139,7 @@ import { CourseClassDetailModalComponent } from './components/dashboard/dashboar
 
     LearnerDeleteModalComponent,
     LearnerDetailModalComponent,
-  
+
 
     SessionCancelModalComponent,
     SessionTutorReportModalComponent,
