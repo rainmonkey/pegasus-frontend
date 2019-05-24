@@ -44,3 +44,8 @@
     cursor: pointer;
     color: rgb(91, 194, 228);
 }
+.t_cm_error_border{
+    border: 1px solid #dc3545;
+    border-radius:5px;
+    outline: none;
+}

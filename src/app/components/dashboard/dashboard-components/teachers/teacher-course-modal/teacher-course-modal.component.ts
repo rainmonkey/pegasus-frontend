@@ -1,4 +1,4 @@
-import { FormBuilder } from '@angular/forms';
+import { FormBuilder, Validators } from '@angular/forms';
 import { Component, OnInit, Input, ViewChild, ViewChildren } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { CoursesService } from 'src/app/services/http/courses.service';
@@ -14,18 +14,25 @@ import { LookUpsService } from 'src/app/services/http/look-ups.service';
 export class TeacherCourseModalComponent implements OnInit {
   public CourseForm;
   //list of all courses categories provided
-  public coursesCate;
-  public teacherCourses;
-  public courses;
+  public coursesCate: object;
   public isDetailModeFlag: boolean = true;
   public disableCourseDivFlag: boolean = false;
-  public courseAfterFormat: any;
-  public level:any;
-  public duration:any;
-  public group:any;
+  public oneOnoneWage: number = null;
+  public groupWage: number = null;
+  public coursesByTeacher;
+  public isSuccess: boolean = false;
+  public loadingGifFlag: boolean = false;
+  public isError: boolean = false;
 
   @Input() command;
   @Input() whichTeacher;
+  //all courses that provided by this school
+  @Input() courses;
+  //all courses that all teachers current teaching.
+  @Input() teachingCourses;
+  @Input() level;
+  @Input() duration;
+
 
   @ViewChildren('courseCheck') courseCheckBox;
 
@@ -36,14 +43,8 @@ export class TeacherCourseModalComponent implements OnInit {
     public lookUps: LookUpsService) { }
 
   ngOnInit() {
-    //this.CourseForm = this.fb.group(this.formGroupAssemble());
-    this.getCoursesCategory();
-    this.getCourses();
-    this.getTeacherCourse();
-    this.lookUp4();
-    this.lookUp8();
-
-
+    this.getCourseCategory();
+    this.getCoursesByTeacher();
   }
 
 
@@ -52,102 +53,8 @@ export class TeacherCourseModalComponent implements OnInit {
     return this.whichTeacher.FirstName + ' ' + this.whichTeacher.LastName;
   }
 
-  ////////////////////////////////////////////methods called by other methods////////////////////////////////////////////////////
-  getCoursesCategory() {
-    this.coursesService.getCourseCategories().subscribe(
-      (res) => {
-        this.coursesCate = res.Data;
-      },
-      (err) => {
-        alert('Sorry, there\'s something wrong with server.');
-        console.log(err)
-      }
-    )
-  }
-
-  getCourses() {
-    this.coursesService.getCourses().subscribe(
-      (res) => {
-        this.courses = res.Data;
-        this.courses.sort(this.compare('CourseId'));
-        this.formatCourses();
-        console.log(this.courses)
-      },
-      (err) => {
-        alert('Sorry, there\'s something wrong with server.');
-        console.log(err)
-      }
-    )
-  }
-
-  /*
-  
-  */
-  getTeacherCourse() {
-    this.teacherCourses;
-    this.teacherService.getTeacherCourse().subscribe(
-      (res) => {
-        this.teacherCourses = res.Data;
-        this.teacherCourses.sort(this.compare('CourseId'));
-        this.formatTeacherCourses();
-
-      },
-      (err) => {
-        alert('Sorry, there\'s something wrong with server.');
-        console.log(err)
-      }
-    )
-  }
-
-  compare(id) {
-    return function (obj1, obj2) {
-      let value1 = obj1[id];
-      let value2 = obj2[id];
-      return value1 - value2;
-    }
-  }
-
-  //挑出指定老师上的课程
-  formatTeacherCourses() {
-    //console.log(this.teacherCourses)
-    let array = [];
-    for (let i of this.teacherCourses) {
-      if (i.TeacherId == this.whichTeacher.TeacherId) {
-        array.push(i)
-      }
-    }
-    if (array.length == 0) {
-      this.disableCourseDivFlag = true;
-    }
-    else {
-      this.disableCourseDivFlag = false;
-    }
-    this.teacherCourses = array;
-    //console.log(this.teacherCourses)
-  }
-
-  //名字相同的课程整合到一起 比如pinao大类
-  a(){
-    let array = [];
-    for(let i of this.teacherCourses){
-      console.log(i)
-    }
-    return array;
-  }
-
-  formatCourses() {
-    //console.log(this.courses)
-    let array = [];
-    //获得目前学校提供的所有的课程的categories
-    for (let i of this.courses) {
-      if (array.indexOf(i.CourseCategory.CourseCategoryName) == -1) {
-        array.push(i.CourseCategory.CourseCategoryName)
-      }
-    }
-    this.courseAfterFormat = array;
-    //console.log(array)
-  }
-
+  // 把这个学校所有的课程按cate分类  html
+  //eg：把所有跟钢琴有关的课程放在钢琴下面
   displayCourse(cate) {
     let array = []
     for (let i of this.courses) {
@@ -155,13 +62,13 @@ export class TeacherCourseModalComponent implements OnInit {
         array.push(i)
       }
     }
-    //console.log(array)
+    // //console.log(array)
     return array;
   }
 
+  //click course cate, show the drop down selections
   toggleCourseOptions(event, i) {
     let dropDownObj = document.getElementById(i);
-    //console.log(dropDownObj)
     //set [flag] attr to element, to switch between show and hide
     event.target.attributes.flag = !event.target.attributes.flag;
 
@@ -174,41 +81,142 @@ export class TeacherCourseModalComponent implements OnInit {
   }
 
   /*
-    0: currentMode is detail
-    1: curentMOde is edit
-  */
+  switch mode to detail or edit
+   0: currentMode is detail
+   1: curentMOde is edit
+ */
   switchMode(currentMode) {
     switch (currentMode) {
       case 0:
         this.isDetailModeFlag = true;
-        return;
+        break;
       case 1:
         this.isDetailModeFlag = false;
-        return;
+        break;
     }
   }
 
-  onSubmit() {
-    let dataToSubmit = this.prepareData();
-    //dataToSubmit = JSON.stringify(dataToSubmit);
-    //console.log(dataToSubmit)
-    this.teacherService.updateTeacherCourse(dataToSubmit).subscribe(
+  /*
+    setDefaultCourseSelection 
+  */
+  setDefaultCourseSelection(id) {
+    for (let i of this.coursesByTeacher) {
+      if (i.CourseId == id) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  lookupLevel(id) {
+    //console.log(this.level)
+    for (let i of this.level) {
+      if (i.PropValue == id) {
+        return i.PropName;
+      }
+    }
+  }
+
+  lookupDuration(id) {
+    //console.log(this.duration)
+    for (let i of this.duration) {
+      if (i.PropValue == id) {
+        return i.PropName;
+      }
+    }
+  }
+
+  lookupGroup(isGroup) {
+    if (isGroup == 0) {
+      return 'One To One'
+    }
+    if (isGroup == 1) {
+      return 'Group'
+    }
+  }
+  
+  ////////////////////////////////////////////methods called by other methods/////////////////////////////////////////////////////////////
+  /*
+    get course categories of this school form server.
+    eg: Pinao Guitar...
+  */
+  getCourseCategory() {
+    this.coursesService.getCourseCategories().subscribe(
       (res) => {
-        console.log(res)
+        this.coursesCate = res.Data;
       },
       (err) => {
+        alert('Sorry, there\'s something wrong with server.');
         console.log(err)
       }
     )
   }
 
+  /*
+   get courses that taught by specific teacher
+  */
+  getCoursesByTeacher() {
+    //console.log(this.teacherCourses)
+    let array = [];
+    for (let i of this.teachingCourses) {
+      if (i.TeacherId == this.whichTeacher.TeacherId) {
+        array.push(i)
+      }
+    }
+    //如果该老师没有任何课程 这一模块就不显示
+    if (array.length == 0) {
+      this.disableCourseDivFlag = true;
+    }
+    else {
+      this.disableCourseDivFlag = false;
+    }
+    this.getTeacherSalary(array);
+    this.coursesByTeacher = array;
+  }
+
+  /*
+    get this teacher's salary
+  */
+  getTeacherSalary(coursesByTeacher) {
+    console.log(coursesByTeacher)
+    for (let i of coursesByTeacher) {
+      //one on one salary
+      if (i.Course.isGroup == 1) {
+        console.log(i)
+        this.oneOnoneWage = i.HourlyWage;
+        console.log('a', this.oneOnoneWage)
+      }
+      else if (i.Course.isGroup == 0) {
+        console.log(i)
+        this.groupWage = i.HourlyWage;
+        console.log('b', this.groupWage)
+      }
+    }
+    this.formGroupAssemble();
+  }
+
+  onSubmit() {
+    console.log(this.oneOnoneWage)
+    for (let i in this.CourseForm.controls) {
+      this.CourseForm.controls[i].touched = true;
+    }
+    if (this.CourseForm.status == 'VALID') {
+      this.loadingGifFlag = true;
+      this.isError = false;
+      let dataToSubmit = this.prepareData();
+      this.submitToServer(dataToSubmit);
+    }
+    else {
+      this.isError = true;
+      return
+    }
+  }
+
   prepareData() {
-    //console.log(this.courseCheckBox._results)
     let objToSubmit = {
       "TeacherId": this.whichTeacher.TeacherId,
       "TeacherCourses": []
     }
-
     for (let i of this.courseCheckBox._results) {
       //添加course Id
       if (i.nativeElement.checked == true) {
@@ -226,77 +234,36 @@ export class TeacherCourseModalComponent implements OnInit {
           let wage = document.getElementById('group');
           teacherCourse.HourlyWage = (Number(wage['value']))
         }
-        //console.log(teacherCourse)
+
         objToSubmit.TeacherCourses.push(teacherCourse)
       }
     }
     return objToSubmit;
-    //console.log(objToSubmit)
+
   }
 
-  setDefaultCourseSelection(id) {
-    for (let i of this.teacherCourses) {
-      if (i.CourseId == id) {
-        return true;
-      }
-    }
-    return false;
-  }
-
-  lookUp4() {
-    this.lookUps.getLookUps(4).subscribe(
+  submitToServer(dataToSubmit) {
+    this.teacherService.updateTeacherCourse(dataToSubmit).subscribe(
       (res) => {
-       
-          this.level = res.Data;
-      
+        this.loadingGifFlag = false;
+        this.isSuccess = true;
+        //console.log(res)
       },
       (err) => {
-        alert('Sorry, there\'s something wrong with server.');
+        this.loadingGifFlag = false;
+        alert(err)
       }
     )
   }
 
+  formGroupAssemble() {
+    let groupObj;
 
-  lookUp8() {
-    this.lookUps.getLookUps(8).subscribe(
-      (res) => {
-       
-          this.duration = res.Data;
-      
-      },
-      (err) => {
-        alert('Sorry, there\'s something wrong with server.');
-      }
-    )
-  }
-
-  lookupLevel(id){
-    //console.log(this.level)
-    for(let i of this.level){
-     if(i.PropValue == id){
-       return i.PropName;
-     }
+    groupObj = {
+      oneOnoneWage: [{ value: this.oneOnoneWage, disabled: false }, Validators.required],
+      groupWage: [{ value: this.groupWage, disabled: false }, Validators.required]
     }
+
+    this.CourseForm = this.fb.group(groupObj);
   }
-
-  lookupDuration(id){
-    //console.log(this.duration)
-    for(let i of this.duration){
-      if(i.PropValue == id){
-        return i.PropName;
-      }
-    }
-  }
-
-  lookupGroup(isGroup){
-    if(isGroup == 0){
-      return 'One To One'
-    }
-    if(isGroup == 1){
-      return 'Group'
-    }
-  }
-
-
-
 }
