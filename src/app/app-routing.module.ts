@@ -110,7 +110,7 @@ const routes: Routes = [
         ]
       },
       // Below to be rearranged
-      { path: 'timePicker', component: TimePickerComponent },
+      { path: 'time/picker', component: TimePickerComponent },
     ]
   },
   { path: 'login', component: LoginComponent },
