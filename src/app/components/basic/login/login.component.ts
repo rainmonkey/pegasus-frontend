@@ -5,8 +5,6 @@ import { HttpClient } from '@angular/common/http';
 import { AuthenticationService } from '../../../services/auth/authentication.service';
 import { Title } from '@angular/platform-browser';
 import { MessagesService } from 'src/app/services/others/messages.service';
-import { UsersService } from 'src/app/services/http/users.service';
-import { AppSettingsService } from 'src/app/settings/app-settings.service';
 
 @Component({
   selector: 'app-login',
@@ -29,8 +27,6 @@ export class LoginComponent implements OnInit {
     private router: Router,
     private authenticationService: AuthenticationService,
     private messageService: MessagesService,
-    private userService: UsersService,
-    private settingService: AppSettingsService
   ) {
     
   }
@@ -67,7 +63,6 @@ export class LoginComponent implements OnInit {
   }
 
   onLoginSuccess() : void{
-    this.settingService.prepareUserLookUpData()
     this.router.navigate([this.returnUrl]);
   }
 

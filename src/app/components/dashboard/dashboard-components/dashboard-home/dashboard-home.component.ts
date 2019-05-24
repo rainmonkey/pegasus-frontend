@@ -120,14 +120,14 @@ export class DashboardHomeComponent implements OnInit, AfterViewInit {
     this.tableService.sorting(this.toDoList, 'priority')
 
     // Get Lookup list
-    this.lookUpList = this.settingService.currentLookUpSettings.subscribe(
-      (res)=>{})
 
 
   }
 
   // Called after component’s views are initialized
   ngAfterViewInit(): void {
+    this.lookUpList = this.settingService.currentLookUpSettings.subscribe(
+      (res)=>{})
   }
 
   // newTaskFormBuilder(){
