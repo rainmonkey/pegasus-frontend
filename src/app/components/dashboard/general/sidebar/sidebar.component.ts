@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 
 import { UserDetail } from '../../../../models/UserDetail';
 import { AuthenticationService } from '../../../../services/auth/authentication.service';
-import { UsersService } from 'src/app/services/http/users.service';
+import { AppSettingsService } from 'src/app/settings/app-settings.service';
 
 @Component({
   selector: 'app-sidebar',
@@ -15,35 +15,16 @@ export class SidebarComponent implements OnInit {
   users: UserDetail[] = [];
   navitem: any;
 
-  public userDetail =
-    {
-      firstname : 'Chris',
-      lastname : 'He',
-      position : 'President of US',
-      img : '../../../../assets/images/usersimg/testimg.jpg'
-    }
-
-
   constructor(
     private authenticationService: AuthenticationService,
-    private userService: UsersService
+    private settingService: AppSettingsService
+
   ) {}
 
   ngOnInit() {
-    // Get data
-    this.userService.getSidebar().subscribe(
-      (res)=>{
-        this.processData(res)
-      },
-      (err)=>{
-        console.warn(err)
-      }
+    console.log('Sidebar')
+    this.settingService.currentSidebarSettings.subscribe(
+      (res)=>{this.navitem = res;}
     )
-  }
-
-  // Method to assign sidebar data
-  processData(res){
-    console.log(res.Data);
-    this.navitem = res.Data;
   }
 }

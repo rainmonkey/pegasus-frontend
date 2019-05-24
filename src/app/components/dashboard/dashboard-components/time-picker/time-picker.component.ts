@@ -135,36 +135,28 @@ export class TimePickerComponent implements OnInit {
         ]
     }
   };
+  public duration: number = 1;
+
   // define day(x) and slot(y)
   public weekdays = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
   public hours = [8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20];
   public xIndex: number[]= [0, 1, 2, 3, 4, 5, 6];
   public yIndex: number[] = [];
-  // define type of slot 
-  public slotArranged: any[] = [];
+  // define slot 
+  public slot: any[] = [];
   public slotAvailable: any[] = [];
-  public slotDayOff: any[] = [];
-  public slotTempChange: any[] = [];
   public slotTime: any[] = [];
   // redefine arranged
-  public arrangedXYobj = {};
-  public arrangedXYarr: any[] = [];
+  public arrangedArr: any[] = [];
   public slotArrangedLearnerName: any[] = [];
-  // redefine dayoff
-  public dayOffXYobj = {};
-  public dayOffXYarr: any[] = [];
+  // redefine day off
+  public dayOffArr: any[] = [];
   public slotDayOffLearnerName: any[] = [];
   // redefine temp change
-  public tempChangeXYobj = {};
-  public tempChangeXYarr: any[] = [];
+  public tempChangeArr: any[] = [];
   public slotTempChangeLearnerName: any[] = [];
 
-  public clickXY: any[] = [];
-  public confirmTime: any[] = [];
- 
- 
-  // for test
-  public test : any;
+  public learnerName: any[] = [];
   constructor(private timePickerService: TimePickerService) {
   }
 
@@ -175,19 +167,17 @@ export class TimePickerComponent implements OnInit {
     }
     // define five type of slots 
     for (let i = 0; i < 7; i++) {
-      this.slotArranged[i] = [];
+      this.slot[i] = [];
       this.slotAvailable[i] = [];
-      this.slotDayOff[i] = [];
-      this.slotTempChange[i] = [];
+      this.learnerName[i] = [];
       this.slotArrangedLearnerName[i] = [];
       this.slotDayOffLearnerName[i] = [];
       this.slotTempChangeLearnerName[i] = [];
       this.slotTime[i] = [];
       for (let j = 0; j < 49; j++) {
-        this.slotArranged[i][j] = null;
+        this.slot[i][j] = null;
         this.slotAvailable[i][j] = null;
-        this.slotDayOff[i][j] = null;
-        this.slotTempChange[i][j] = null;
+        this.learnerName[i][j] = null;
         this.slotArrangedLearnerName[i][j] = null;
         this.slotDayOffLearnerName[i][j] = null;
         this.slotTempChangeLearnerName[i][j] = null;
@@ -195,166 +185,101 @@ export class TimePickerComponent implements OnInit {
       }
     }
     console.log('slot time', this.slotTime);
-    console.log('slot arranged', this.slotArranged);
-    console.log('slot available', this.slotAvailable);
-    // this.getDataFromServer(1, '2019-5-01');
-    this.refactorArranged();
-    this.renderArranged();
+    // manipulate by order, super important
+    this.setSpecificTime();
     this.renderAvailableDay();
-    this.refactorDayOff();
-    this.renderDayOff();
-    this.refactorTempChange();
-    this.renderTempChange();
+    this.renderSlotProp();
+    // this.defineSlotProp();
+    // this.renderArranged();
+    // this.renderDayOff();
+    // this.renderTempChange();
   }
-  
-  // get teacherAvailableData from server
-  // getDataFromServer(teacherId: number, startDate: any) {
-  //   this.timePickerService.getTeacherAvailableCheck(1, '2019-5-01').subscribe(
-  //     data => {
-  //       this.teacherAvailableData = data.Data;
-  //       console.log('teacherAvailableData', this.teacherAvailableData);
-  //     },
-  //     err => {
-  //       console.log('teacherAvailableData err', err);
-  //     }
-  //   )
-  // }
 
-
-
-  // arranged part
-  refactorArranged() {
-    for(let arranged of this.teacherAvailableData.Data.Arranged) {
+/////////////////////////////// reusable function ////////////////////////////////////////
+  transferTime(originTime: any[]) {
+    let arr = [];
+    for(let data of originTime) {
       // convert begin time to y
-      let TimeBeginToArr = arranged.TimeBegin.split(':');
+      let TimeBeginToArr = data.TimeBegin.split(':');
       let TimeBeginToMinutes = (+TimeBeginToArr[0]) * 60 + (+TimeBeginToArr[1]);
       let beginMinutesToY = (+TimeBeginToMinutes-480)/15;
       // convert end time to y
-      let TimeEndToArr = arranged.TimeEnd.split(':');
+      let TimeEndToArr = data.TimeEnd.split(':');
       let TimeEndToMinutes = (+TimeEndToArr[0]) * 60 + (+TimeEndToArr[1]);
       let endMinutesToY = (TimeEndToMinutes-480)/15;
       // redefine arranged data from server
-      this.arrangedXYobj = {};
-      this.arrangedXYobj['dayOfWeek'] = arranged.DayOfWeek;
-      this.arrangedXYobj['beginY'] = beginMinutesToY;
-      this.arrangedXYobj['endY'] = endMinutesToY;
-      this.arrangedXYobj['learnerName'] = arranged.LearnerName;
-      this.arrangedXYarr.push(this.arrangedXYobj);
-    }
-    console.log('arrangedXYarr', this.arrangedXYarr);
+      let obj = {};
+      obj['DayOfWeek'] = data.DayOfWeek;
+      obj['BeginY'] = beginMinutesToY;
+      obj['EndY'] = endMinutesToY;
+      obj['LearnerName'] = data.LearnerName;
+      arr.push(obj);  
+    };
+    return arr;
   }
-  renderArranged() {
-    this.arrangedXYarr.map((o, i) => {
-      this.slotArrangedLearnerName[o['dayOfWeek']-1][o['beginY']] = [o['learnerName']];
-      for(let i = o['beginY']; i < o['endY']+1; i++) {
-        this.slotArranged[o['dayOfWeek']-1][i] = 'isArranged';}
-    });
-    console.log('slotArranged', this.slotArranged);
+  defineSlotProp(arr: any[], prop: string) {
+    for(let o of arr) {
+      let xIndex = o['DayOfWeek']-1;
+      this.learnerName[xIndex][o['BeginY']] = o['LearnerName'];
+      for(let i = o['BeginY']; i < o['EndY']+1; i++) {
+        this.slot[xIndex][i] = prop;
+      }
+    }; 
+    return this.learnerName, this.slot;
   }
-  // available part
+///////////////////////////////////////////////////////////////////////////////////////////
+  setSpecificTime() {
+    this.arrangedArr = this.transferTime(this.teacherAvailableData.Data.Arranged);
+    this.dayOffArr = this.transferTime(this.teacherAvailableData.Data.Dayoff);
+    this.tempChangeArr = this.transferTime(this.teacherAvailableData.Data.TempChange);
+    console.log('arrangedArr', this.arrangedArr);
+    console.log('dayOffArr', this.dayOffArr);
+    console.log('tempChangeArr', this.tempChangeArr);
+  }
+/////////////////////////////////////// render part /////////////////////////////////////////////
   renderAvailableDay() {
     this.teacherAvailableData.Data.AvailableDay.map((o, i) => {
       for(let i = 0; i < 49; i++) {
-        this.slotAvailable[o['DayOfWeek']-1][i] = 'isAvailable';
-      //   if(this.slotArranged[o['DayOfWeek']-1][i] = 'isArranged') {
-      //     // this.slotArrangedLearnerName
-      //     this.test = i;
-      //     this.slotAvailable[o['DayOfWeek']-1][i] = 'isAvailable';
-      //   }
+        this.slot[o['DayOfWeek']-1][i] = 'isAvailableDay';
+      };
+    });
+  }
+  renderSlotProp() {
+    this.defineSlotProp(this.arrangedArr, 'isArranged');
+    this.defineSlotProp(this.dayOffArr, 'isDayOff');
+    this.defineSlotProp(this.tempChangeArr, 'isTempChange');
+  }
+////////////////////////////////////// hover slot function ///////////////////////////
+  mouseoverSlot(x: number, y: number) {
+    let xIndex: number;
+    this.teacherAvailableData.Data.AvailableDay.map((o) => {
+      xIndex = o.DayOfWeek-1;
+      if(x == xIndex) {
+        // console.log('mouseover[x,y]', [x,y]);
+        // if 0 <= y < 48
+        if(y >= 0 && y < 48) {
+          this.slotAvailable[xIndex][y] = 'isAvailable';
+          this.slotAvailable[xIndex][y+this.duration] = "isAvailable";}
+        // else y = 48
+          else if(y = 48){
+            this.slotAvailable[xIndex][y] = 'isAvailable';
+            this.slotAvailable[xIndex][y-this.duration] = "isAvailable";}
+            // else if(y = )
+      };
+    });
+    // console.log('eeee', this.slotAvailable); 
+  }
+  mouseoutSlot() {
+    this.teacherAvailableData.Data.AvailableDay.map((o) => {
+      let xIndex: number;
+      xIndex = o.DayOfWeek-1;
+      for(let i = 0; i < 49; i++) {
+        this.slotAvailable[xIndex][i] = null;
       }
     });
-    console.log('slotAvailable', this.test, this.slotAvailable);
   }
-  refactorDayOff() {
-    for(let dayoff of this.teacherAvailableData.Data.Dayoff) {
-      // convert begin time to y
-      let TimeBeginToArr = dayoff.TimeBegin.split(':');
-      let TimeBeginToMinutes = (+TimeBeginToArr[0]) * 60 + (+TimeBeginToArr[1]);
-      let beginMinutesToY = (+TimeBeginToMinutes-480)/15;
-      // convert end time to y
-      let TimeEndToArr = dayoff.TimeEnd.split(':');
-      let TimeEndToMinutes = (+TimeEndToArr[0]) * 60 + (+TimeEndToArr[1]);
-      let endMinutesToY = (TimeEndToMinutes-480)/15;
-      // redefine arranged data from server
-      this.dayOffXYobj = {};
-      this.dayOffXYobj['dayOfWeek'] = dayoff.DayOfWeek;
-      this.dayOffXYobj['beginY'] = beginMinutesToY;
-      this.dayOffXYobj['endY'] = endMinutesToY;
-      this.dayOffXYobj['learnerName'] = dayoff.LearnerName;
-      this.dayOffXYarr.push(this.dayOffXYobj);
-    }
-    console.log('dayOffXYarr', this.dayOffXYarr);
-  }
-  // day off part
-  renderDayOff() {
-    this.dayOffXYarr.map((o, i) => {
-      this.slotDayOffLearnerName[o['dayOfWeek']-1][o['beginY']] = [o['learnerName']];
-      for(let i = o['beginY']; i < o['endY']+1; i++) {
-        this.slotDayOff[o['dayOfWeek']-1][i] = 'isDayOff';}
-    });
-    console.log('slotDayOff', this.slotDayOff);
-  }
-  // temp change part
-  refactorTempChange() {
-    for(let tempChange of this.teacherAvailableData.Data.TempChange) {
-      // convert begin time to y
-      let TimeBeginToArr = tempChange.TimeBegin.split(':');
-      let TimeBeginToMinutes = (+TimeBeginToArr[0]) * 60 + (+TimeBeginToArr[1]);
-      let beginMinutesToY = (+TimeBeginToMinutes-480)/15;
-      // convert end time to y
-      let TimeEndToArr = tempChange.TimeEnd.split(':');
-      let TimeEndToMinutes = (+TimeEndToArr[0]) * 60 + (+TimeEndToArr[1]);
-      let endMinutesToY = (TimeEndToMinutes-480)/15;
-      // redefine arranged data from server
-      this.tempChangeXYobj = {};
-      this.tempChangeXYobj['dayOfWeek'] = tempChange.DayOfWeek;
-      this.tempChangeXYobj['beginY'] = beginMinutesToY;
-      this.tempChangeXYobj['endY'] = endMinutesToY;
-      this.tempChangeXYobj['learnerName'] = tempChange.LearnerName;
-      this.tempChangeXYarr.push(this.tempChangeXYobj);
-    }
-    console.log('tempChangeXYarr', this.tempChangeXYarr);
-  }
-  renderTempChange() {
-    this.tempChangeXYarr.map((o, i) => {
-      this.slotTempChangeLearnerName[o['dayOfWeek']-1][o['beginY']] = [o['learnerName']];
-      for(let i = o['beginY']; i < o['endY']+1; i++) {
-        this.slotTempChange[o['dayOfWeek']-1][i] = 'isTempChange';}
-    });
-    console.log('slotTempChange', this.slotTempChange);
-  }
-    // console.log('BeginY endY', this.beginMinutesToY, this.endMinutesToY);
-  //   for(let arrangedXYobj of this.arrangedXYarr) {
-  //     this.slotArrangedLearnerName[arrangedXYobj['dayOfWeek']-1][arrangedXYobj.beginY] = arrangedXYobj['learnerName'];
-  //     for(let i = arrangedXYobj['beginY']; i < arrangedXYobj['endY']+1; i++) {
-  //       this.slotArranged[arrangedXYobj['dayOfWeek']-1][i] = true;
-  //       // this.slotArranged[arrangedXYobj['dayOfWeek']-1][arrangedXYobj.beginY] = true;
-  //     }
-  //   }
-  //   console.log('arranded learner name', this.slotArrangedLearnerName);
-  //   console.log('slot arranged', this.slotArranged)
-  //   console.log('arrangedXYarr', this.arrangedXYarr);
-  // }
 
-  clickSlot(x: number, y: number) {
-    // console.log('slot y', [x,y]);
-    // this.clickXY.push([x,y]);
-    // console.log('click xy', this.clickXY)
-    // this.slotEvent[x][y] = !this.slotEvent[x][y];
-  }
-//   clearSlot() {
-//     // this.clickXY.map((arr, i) => this.slotEvent[arr[0]][arr[1]] = false);
-//   }
-//   confirmSlot() {
-//     // delete after test
-//     this.clickXY.map((arr, i) => {
-//       let tempArr = [];
-//       // this.confirmTime = this.slotTime[arr[0]][arr[1]];
-//       tempArr.push(this.slotTime[arr[0]][arr[1]]);
-//       this.confirmTime = tempArr;
-//       // console.log('sss', tempArr)
-//       // console.log('aaa', this.confirmTime);
-//     });
-//     // console.log('aaa', this.confirmTime);
-//   }
+  
 }
+
+

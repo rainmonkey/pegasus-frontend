@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthenticationService } from '../../../../services/auth/authentication.service';
 import { UserDetail } from '../../../../models/UserDetail';
+import { AppSettingsService } from 'src/app/settings/app-settings.service';
 
 @Component({
   selector: 'app-headerbar',
@@ -19,7 +20,8 @@ export class HeaderbarComponent implements OnInit {
 
   constructor(
     private router: Router,
-    private authenticationService: AuthenticationService
+    private authenticationService: AuthenticationService,
+    public settingService: AppSettingsService
     ) {
   }
 
@@ -36,5 +38,8 @@ export class HeaderbarComponent implements OnInit {
     this.authenticationService.logout();
     this.router.navigate(['/login']);
   }
-
+  hideSideBar(){
+    console.log('asd')
+    this.settingService.sidebarShowStatus.next(!this.settingService.sidebarShowStatus.value)
+  }
 }
