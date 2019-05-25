@@ -2,6 +2,9 @@ import { Component, OnInit, AfterViewInit, ViewEncapsulation, ViewChild } from '
 import { FormBuilder, FormGroup, FormControl, FormArray, Validators, FormControlName } from '@angular/forms';
 import { Title } from '@angular/platform-browser';
 import { NgbPopover } from '@ng-bootstrap/ng-bootstrap';
+import { NgbootstraptableService } from 'src/app/services/others/ngbootstraptable.service';
+import { AppSettingsService } from 'src/app/settings/app-settings.service';
+import { Subscription } from 'rxjs';
 
 
 @Component({
@@ -14,18 +17,21 @@ import { NgbPopover } from '@ng-bootstrap/ng-bootstrap';
 export class DashboardHomeComponent implements OnInit, AfterViewInit {
   notices: { notice: string; origin: string; }[];
 
-  toDoForm: FormGroup;
+  // toDoForm: FormGroup;
   noticeForm: FormGroup;
   userName:string;
   formError:string;
-  pageloading:boolean=true 
-  task:any;
+  pageloading:boolean=true;
+  lookUpList:Subscription;
+
   @ViewChild('popOver') public popover: NgbPopover;
-  toDoList: { id: number; task: string; origin: string; priority: string; link: string; created_date: string; }[];
+  toDoList: { id: number; task: string; origin: string; priority: number; link: string; created_date: string; }[];
 
   constructor(
     public title: Title,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    public tableService: NgbootstraptableService,
+    private settingService: AppSettingsService
   ) {
     
     this.title.setTitle('Home');
@@ -41,6 +47,14 @@ export class DashboardHomeComponent implements OnInit, AfterViewInit {
       {
         notice:'紧密团结在习近平同志为核心的党中央周围奋力夺取新时代中国特色 ',
         origin:'党'
+      },
+      {
+        notice:'最近中共中央会议的主要议题是“党内民主”。中国高层领导人将党内民主称为党的“生命线”和中国共产党（CCP）是否能够在未来保持其至高无上的地位的主要 ',
+        origin:'党'
+      },
+      {
+        notice:'中共中央印发了《中国共产党党员教育管理工作条例》（以下简称《条例》），并发出通知，要求各地区各部门认真遵照执行 ',
+        origin:'党'
       }
     ]
     this.toDoList=[
@@ -48,7 +62,7 @@ export class DashboardHomeComponent implements OnInit, AfterViewInit {
         id:1,
         task:"Update our Tutors information.",
         origin: 'Mao',
-        priority: '',
+        priority: 1,
         link: 'tutors/list',
         created_date: ''
       },
@@ -56,7 +70,7 @@ export class DashboardHomeComponent implements OnInit, AfterViewInit {
         id:2,
         task:"Update our courses information .",
         origin: 'Mao',
-        priority: '',
+        priority: 2,
         link: 'courses/list',
         created_date: ''
       },
@@ -64,7 +78,7 @@ export class DashboardHomeComponent implements OnInit, AfterViewInit {
         id:3,
         task:"Talk to our learners for feedback.",
         origin: 'Mao',
-        priority: '',
+        priority: 4,
         link: "learner/list",
         created_date: ''
       },
@@ -72,11 +86,28 @@ export class DashboardHomeComponent implements OnInit, AfterViewInit {
         id:4,
         task:"Check on Sarah's session with Mark.",
         origin: 'Mao',
-        priority: '',
+        priority: 1,
         link: "sessions/list",
+        created_date: ''
+      },
+      {
+        id:5,
+        task:"Clean the toliet.",
+        origin: 'Boss',
+        priority: 1,
+        link: "payroll/list",
+        created_date: ''
+      },
+      {
+        id:6,
+        task:"Go to space.",
+        origin: 'Mike',
+        priority: 1,
+        link: "home",
         created_date: ''
       }
     ]
+
   }
 
   // Fires when the component is ready for use when all queries and inputs have been resolved
@@ -85,12 +116,18 @@ export class DashboardHomeComponent implements OnInit, AfterViewInit {
 
     this.userName = localStorage.getItem('userFirstName')
     this.pageloading=false
+    
+    this.tableService.sorting(this.toDoList, 'priority')
+
+    // Get Lookup list
+
 
   }
 
   // Called after component’s views are initialized
   ngAfterViewInit(): void {
-
+    this.lookUpList = this.settingService.currentLookUpSettings.subscribe(
+      (res)=>{})
   }
 
   // newTaskFormBuilder(){
@@ -144,4 +181,4 @@ export class DashboardHomeComponent implements OnInit, AfterViewInit {
 
   }
 
-} 
+}

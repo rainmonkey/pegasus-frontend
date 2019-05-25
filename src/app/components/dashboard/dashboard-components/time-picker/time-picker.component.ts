@@ -1,4 +1,6 @@
-import { Component, OnInit, Renderer2, ElementRef, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Renderer2, ElementRef, Output, EventEmitter, Input } from '@angular/core';
+import { TimePickerService } from 'src/app/services/http/time-picker.service';
+
 
 @Component({
   selector: 'app-time-picker',
@@ -6,105 +8,338 @@ import { Component, OnInit, Renderer2, ElementRef, Output, EventEmitter } from '
   styleUrls: ['./time-picker.component.css']
 })
 export class TimePickerComponent implements OnInit {
-  // @Output() messageToEmit = new EventEmitter<any>();
-  // messageToSendP: any;
+  // data get form registration component
+  @Input() customCourse;
+
+  // data will from server, now just hard core
+  public teacherAvailableData: any = {
+    "IsSuccess": true,
+    "ErrorCode": null,
+    "IsFound": true,
+    "ErrorMessage": null,
+    "Data": {
+        "AvailableDay": [
+            {
+                "DayOfWeek": 3,
+                "Orgs": [
+                    {
+                        "OrgId": 1,
+                        "OrgName": "CENTRAL AUCKLAND BRANCH"
+                    },
+                    {
+                        "OrgId": 1,
+                        "OrgName": "MOUNT ROSKILL BRANCH"
+                    },
+                    {
+                        "OrgId": 1,
+                        "OrgName": "MOUNT ALBERT BRANCH"
+                    }
+                ]
+            },
+            {
+                "DayOfWeek": 7,
+                "Orgs": [
+                    {
+                        "OrgId": 2,
+                        "OrgName": "EPSOM BRANCH"
+                    }
+                ]
+            }
+        ],
+        "Arranged": [
+            {
+                "DayOfWeek": 6,
+                "TimeBegin": "13:00:00",
+                "TimeEnd": "14:00:00",
+                "LearnerName": "Oliver Deng",
+                "CourseScheduleId": 2
+            },
+            {
+                "DayOfWeek": 3,
+                "TimeBegin": "14:00:00",
+                "TimeEnd": "14:30:00",
+                "LearnerName": "Oliver Deng",
+                "CourseScheduleId": 17
+            },
+            {
+                "DayOfWeek": 5,
+                "TimeBegin": "14:00:00",
+                "TimeEnd": "14:30:00",
+                "LearnerName": "Oliver Deng",
+                "CourseScheduleId": 18
+            },
+            {
+                "DayOfWeek": 5,
+                "TimeBegin": "14:00:00",
+                "TimeEnd": "14:30:00",
+                "LearnerName": "John123456 Key",
+                "CourseScheduleId": 19
+            },
+            {
+                "DayOfWeek": 5,
+                "TimeBegin": "14:00:00",
+                "TimeEnd": "14:30:00",
+                "LearnerName": "Mama Key",
+                "CourseScheduleId": 34
+            },
+            {
+                "DayOfWeek": 5,
+                "TimeBegin": "14:00:00",
+                "TimeEnd": "14:30:00",
+                "LearnerName": "Mama Key",
+                "CourseScheduleId": 35
+            },
+            {
+                "DayOfWeek": 5,
+                "TimeBegin": "14:00:00",
+                "TimeEnd": "14:30:00",
+                "LearnerName": "Mama Key",
+                "CourseScheduleId": 36
+            },
+            {
+                "DayOfWeek": 5,
+                "TimeBegin": "14:00:00",
+                "TimeEnd": "14:30:00",
+                "LearnerName": "Mama Key",
+                "CourseScheduleId": 38
+            },
+            {
+                "DayOfWeek": 1,
+                "TimeBegin": "13:00:00",
+                "TimeEnd": "14:00:00",
+                "LearnerName": "Group",
+                "CourseScheduleId": 3
+            },
+            {
+                "DayOfWeek": 2,
+                "TimeBegin": "14:00:00",
+                "TimeEnd": "15:00:00",
+                "LearnerName": "Group",
+                "CourseScheduleId": 4
+            }
+        ],
+        "Dayoff": [
+            {
+                "DayOfWeek": 1,
+                "TimeBegin": "08:00:00",
+                "TimeEnd": "09:00:00",
+                "LearnerName": "Daisy Liu Deng",
+                "CourseScheduleId": 1
+            }
+        ],
+        "TempChange": [
+            {
+              "DayOfWeek": 1,
+              "TimeBegin": "10:00:00",
+              "TimeEnd": "11:00:00",
+              "LearnerName": "Daisy Liu",
+              "CourseScheduleId": null
+            }
+        ]
+    }
+  };
+  public duration: number = 2;
+
+  // define day(x) and slot(y)
   public weekdays = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
   public hours = [8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20];
-  public xIndex = [0, 1, 2, 3, 4, 5, 6];
-  public yIndex = [];
-  public displayArray = []; 
-  public timeArray = [];
-  public textArray = [];
-  public selectedY: number;
-  public eventTrigger : boolean = false;
-  public styleObject = {};
-  public tempXY = {};
-  public slotBottom = [3,7,11,15,19,23,27,31,35,39,43,47];
-  public startTotalMinutes: any;
-  public endTotalMinutes: any;
-  public startHour: any;
-  public endHour: any;
-  public startMinutes: any;
-  public endMinutes: any;
-  public startTime: any;
-  public endTime: any;
-  public showTime: boolean = false;
-  public realTimeArray: any[] = [];
-  public selectTime: any;
+  public xIndex: number[]= [0, 1, 2, 3, 4, 5, 6];
+  public yIndex: number[] = [];
+  // define slot
+  public slot: any[] = [];
+  public slotAvailable: any[] = [];
+  public slotOrg: any[] = [];
+  public slotTime: any[] = [];
+  // redefine arranged
+  public arrangedArr: any[] = [];
+  // redefine day off
+  public dayOffArr: any[] = [];
+  // redefine temp change
+  public tempChangeArr: any[] = [];
+  // define learner name for rendering in HTML
+  public learnerName: any[] = [];
 
-  constructor(private el: ElementRef, private renderer: Renderer2) {
+  // undefine
+  public orgName: string;
+
+  constructor(private timePickerService: TimePickerService) {
   }
 
   ngOnInit() {
+    console.log(this.customCourse)
+
     // define yIndex
-    for(let i = 0; i < 48; i++) {
+    for(let i = 0; i < 49; i++) {
       this.yIndex.push(i);
     }
-    // define displayArray
+    // define five type of slots
     for (let i = 0; i < 7; i++) {
-      this.displayArray[i] = [];
-      this.textArray[i] = [];
-      this.timeArray[i] = [];
-      this.realTimeArray[i] = [];
-      for (let j = 0; j < 48; j++) {
-        this.timeArray[i][j] = j;
-        this.displayArray[i][j] = false;
-        this.textArray[i][j] = false;
-        this.realTimeArray[i][j] = `${Math.floor((480 + j*15)/60)} : ${(480 + j*15)%60 == 0? '00' : (480 + j*15)%60}`;
+      this.slot[i] = [];
+      this.slotAvailable[i] = [];
+      this.learnerName[i] = [];
+      this.slotOrg[i] = [];
+      this.slotTime[i] = [];
+      for (let j = 0; j < 49; j++) {
+        this.slot[i][j] = null;
+        this.slotAvailable[i][j] = null;
+        this.learnerName[i][j] = null;
+        this.slotOrg[i][j] = null;
+        this.slotTime[i][j] = `${Math.floor((480 + j*15)/60)} : ${(480 + j*15)%60 == 0? '00' : (480 + j*15)%60}`;
       }
     }
-    console.log('ss', this.realTimeArray)
-    // this.startTotalMinutes = 480 + this.timeArray[0][0]*15;
-    // console.log('sssss', this.startTotalMinutes)
-    // this.endTotalMinutes = 480 + (y+1)*15;
-    // this.startHour = Math.floor(this.startTotalMinutes/60);
-    // this.startMinutes = this.startTotalMinutes%60 == 0 ? '00' : this.startTotalMinutes%60;
-    // this.startTime = this.startHour + ":" + this.startMinutes;
-    // this.endHour = Math.floor(this.endTotalMinutes/60 );
-    // this.endMinutes = this.endTotalMinutes%60 == 0 ? '00' : this.endTotalMinutes%60;
-    // this.endTime = this.endHour + ":" + this.endMinutes;
-    // console.log('time:', this.startTime, this.endTime);
+    console.log('slot time', this.slotTime);
+    // manipulate by order
+    this.setSpecificTime();
+    this.renderAvailableDay();
+    this.renderSlotProp();
+    // this.callOneHourUnableToPick();
   }
 
-  mousedown(x: number, y: number, event: any) {
-    // event.stopPropagation();
-    // this.tempXY['x'] = x;
-    // this.tempXY['y'] = y;
-    console.log('y', y);
-    // this.displayArray[x][y] = false;
-    // this.startTotalMinutes = 480 + y*15;
-    this.textArray[x][y] = !this.textArray[x][y];
+///////////////////////////////////// Here are reusable functions////////////////////////////////////////
+  /* 
+    convert begin time and end time to yIndex
+    and then refactor a new arr
+  */
+  transferTime(originalArr: any[]) {
+    let arr = [];
+    for(let data of originalArr) {
+      // convert begin time to yIndex
+      let TimeBeginToArr = data.TimeBegin.split(':');
+      let TimeBeginToMinutes = (+TimeBeginToArr[0]) * 60 + (+TimeBeginToArr[1]);
+      let beginMinutesToY = (+TimeBeginToMinutes-480)/15;
+      // convert end time to yIndex
+      let TimeEndToArr = data.TimeEnd.split(':');
+      let TimeEndToMinutes = (+TimeEndToArr[0]) * 60 + (+TimeEndToArr[1]);
+      let endMinutesToY = (TimeEndToMinutes-480)/15;
+      // refactor a new arr
+      let obj = {};
+      obj['DayOfWeek'] = data.DayOfWeek;
+      obj['BeginY'] = beginMinutesToY;
+      obj['EndY'] = endMinutesToY;
+      obj['LearnerName'] = data.LearnerName;
+      arr.push(obj);
+    };
+    return arr;
   }
-   
-  mouseup(x: number, y: number, event: any) {
-    // this.displayArray[x][y] = !this.displayArray[x][y];
-    // let tempRange = y - this.tempXY['y'];
-    // console.log('tempRange', tempRange)
-    // this.selectedY = y;
-    this.tempXY['x'] = x;
-    this.tempXY['y'] = y;
-    for(let i = this.tempXY['y']; i < y+1; i++) {
-      this.displayArray[x][i] = !this.displayArray[x][i];
-      // console.log('displayArray1', this.displayArray)
-    }
-    // console.log('mouseup', this.displayArray);
-    // update time label
-    // this.startTotalMinutes = 480 + this.tempXY['y']*15;
-    // this.endTotalMinutes = 480 + (y+1)*15;
-    // this.startHour = Math.floor(this.startTotalMinutes/60);
-    // this.startMinutes = this.startTotalMinutes%60 == 0 ? '00' : this.startTotalMinutes%60;
-    // this.startTime = this.startHour + ":" + this.startMinutes;
-    // this.endHour = Math.floor(this.endTotalMinutes/60 );
-    // this.endMinutes = this.endTotalMinutes%60 == 0 ? '00' : this.endTotalMinutes%60;
-    // this.endTime = this.endHour + ":" + this.endMinutes;
-    // console.log('time:', this.startTime, this.endTime);
+  /*
+    define every slot's property value for rendering in HTML
+  */
+  defineSlotProp(originalArr: any[], prop: string) {
+    for(let o of originalArr) {
+      let xIndex = o['DayOfWeek']-1;
+      this.learnerName[xIndex][o['BeginY']] = o['LearnerName'];
+      for(let i = o['BeginY']; i < o['EndY']+1; i++) {
+        this.slot[xIndex][i] = prop;
+      }
+    };
+    return this.learnerName, this.slot;
+  }
+  /*
+    if teacher's available day is in different orgs
+    when u pick up the available duration
+    there should be one hour for teacher driving to another org 
+  */
+  oneHourUnableToPick(originalArr: any[], prop: string) {
+    let xIndex: number;
+    for(let o of originalArr) {
+      xIndex = o['DayOfWeek']-1;
+      for(let i = o['BeginY']-4; i < o['EndY']+5; i++) {
+        this.slotAvailable[xIndex][i] = prop;
+      }
+    };
+    return this.slotAvailable;
+  }
+//////////////////////////////////////////////////////////////////////////////////////////////////////
+
+  /*
+    call back transferTime function
+    convert original array to new array handy to manipulate
+  */
+  setSpecificTime() {
+    this.arrangedArr = this.transferTime(this.teacherAvailableData.Data.Arranged);
+    this.dayOffArr = this.transferTime(this.teacherAvailableData.Data.Dayoff);
+    this.tempChangeArr = this.transferTime(this.teacherAvailableData.Data.TempChange);
+    // will delete 
+    console.log('arrangedArr', this.arrangedArr);
+    console.log('dayOffArr', this.dayOffArr);
+    console.log('tempChangeArr', this.tempChangeArr);
+  }
+  /*
+    define slot property value for ngClass in HTML
+  */
+  renderAvailableDay() {
+    this.teacherAvailableData.Data.AvailableDay.map((o) => {
+      // this.orgName = o.Orgs;
+      // o.Orgs.map((o) => {
+      //   this.orgName = o.OrgName;
+      // })
+      let xIndex = o['DayOfWeek']-1;
+      for(let i = 0; i < 49; i++) {
+        this.slot[xIndex][i] = 'isAvailableDay';
+        this.slotOrg[xIndex][i] = o.Orgs;
+      };
+    });
+    console.log('org', this.slotOrg);
+  }
+  /*
+    call back defineSlotProp function for ngClass in HTML
+  */
+  renderSlotProp() {
+    this.defineSlotProp(this.arrangedArr, 'isArranged');
+    this.defineSlotProp(this.dayOffArr, 'isDayOff');
+    this.defineSlotProp(this.tempChangeArr, 'isTempChange');
   }
 
-  sendMessageToParent() {
-    // this.selectedY
-    this.selectedY = this.realTimeArray[this.tempXY['x']][this.tempXY['y']];
-    // this.messageToEmit.emit(this.selectedY)
-    // this.messageToSendP = this.selectedY;
-    console.log('fff',this.selectedY);
+  // callOneHourUnableToPick () {
+  //   this.oneHourUnableToPick(this.arrangedArr, 'unableToPick');
+  // }
+  mouseoverSlot(x: number, y: number) {
+    let xIndex: number;
+    this.teacherAvailableData.Data.AvailableDay.map((o) => {
+      xIndex = o.DayOfWeek-1;
+      if(x == xIndex) {
+        // console.log('y', y);
+        if(this.slotOrg[xIndex][y].length > 0) {
+          console.log('hhh')
+        }
+        this.oneHourUnableToPick(this.arrangedArr, 'unableToPick');
+        // if 0 <= y < 48 
+        if(y >= 0 && y < 48) {
+          if(this.slotAvailable[xIndex][y] == 'unableToPick') {
+            this.slotAvailable[xIndex][y] = 'unableToPick';
+            // this.slotAvailable[xIndex][y-this.duration] = "isAvailable";
+          } else if(
+            this.slotAvailable[xIndex][y+1] == 'unableToPick' || this.slotAvailable[xIndex][y+2] == 'unableToPick'
+            ) {
+            this.slotAvailable[xIndex][y+1] == 'unableToPick';
+            this.slotAvailable[xIndex][y+2] == 'unableToPick';
+            }
+          else {
+            this.slotAvailable[xIndex][y] = 'isAvailable';
+            this.slotAvailable[xIndex][y+1] = 'isAvailable';
+            this.slotAvailable[xIndex][y+this.duration] = 'isAvailable';
+          }
+        }
+        // else y = 48
+        else if(y = 48) {
+          this.slotAvailable[xIndex][y] = 'isAvailable';
+          this.slotAvailable[xIndex][y-1] = 'isAvailable';
+          this.slotAvailable[xIndex][y-this.duration] = "isAvailable";
+        }
+      }
+    });
+    // console.log('eeee', this.slotAvailable);
   }
+  mouseoutSlot() {
+    this.teacherAvailableData.Data.AvailableDay.map((o) => {
+      let xIndex: number;
+      xIndex = o.DayOfWeek-1;
+      for(let i = 0; i < 49; i++) {
+        this.slotAvailable[xIndex][i] = null;
+      }
+    });
+  }
+
 }
+
+

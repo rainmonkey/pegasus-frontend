@@ -3,10 +3,9 @@ import { DecimalPipe } from '@angular/common';
 import { FormControl } from '@angular/forms';
 import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 import { Router, ActivatedRoute } from '@angular/router';
-import { Observable } from 'rxjs';
-import { CoursesService } from '../../../../../services/http/courses.service';
 import { NgbootstraptableService } from 'src/app/services/others/ngbootstraptable.service';
 
+import { CoursesService } from '../../../../../services/http/courses.service';
 import { CourseDetailModalComponent } from '../course-detail-modal/course-detail-modal.component';
 import { CourseDeleteModalComponent } from '../course-delete-modal/course-delete-modal.component';
 
@@ -16,13 +15,10 @@ import { CourseDeleteModalComponent } from '../course-delete-modal/course-delete
   styleUrls: ['./courses-list.component.css'],
   providers: [DecimalPipe]
 })
-
 export class CoursesListComponent implements OnInit {
   public coursesList: any;
   public coursesListLength: number;
   public closeResult: string;
-  public temCoursesList: any; //save the original courseList
-  public temCoursesListLength: number; //save the original courseList length
   public page: number = 1;  //pagination current page
   public pageSize: number = 10;    //[can modify] pagination page size
   public currentPage: number = 1;
@@ -30,7 +26,6 @@ export class CoursesListComponent implements OnInit {
   public errorMessage: string;
   //search by which columns, determine by users
   public queryParams: object = {};
-  public courses$: Observable<any>;
   public filter = new FormControl('');
 
   @ViewChild('pagination') pagination;
@@ -58,6 +53,7 @@ export class CoursesListComponent implements OnInit {
         this.coursesListCopy = this.coursesList;
         this.coursesListLength = res.Data.length; //length prop is under Data prop
         this.refreshPageControl();
+        console.log(this.coursesList);
         // console.log(this.coursesList);
       },
       (err) => { 
@@ -113,26 +109,6 @@ export class CoursesListComponent implements OnInit {
     this.router.navigate(['courses/list'], {
       queryParams: this.queryParams
     });
-  }
-
-
-  /*
-    pop up modals, when need to pop up a modal, call this method
-    commands:
-      0 --> Add new
-      1 --> Edit/update
-      2 --> delete
-  */
-  popUpModals(command, whichCourse) {
-    switch (command) {
-      case 0:
-      case 2:
-        this.detailModal(command, whichCourse);
-        break;
-      case 3:
-        this.deleteModal(command, whichCourse);
-        break;
-    }
   }
 
   private getDismissReason(reason: any): string {
@@ -196,7 +172,7 @@ export class CoursesListComponent implements OnInit {
     else {
       let searchString: string;
       let searchBy: string;
-      // 要搜索的内容
+      
       let searchingInputObj = document.getElementById('searchingInput');
 
       (initValue == undefined) ? { searchString, searchBy } = 

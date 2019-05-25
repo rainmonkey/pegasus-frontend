@@ -24,4 +24,8 @@ export class UsersService {
   getSidebar(){
     return this.http.get(this.baseUrl + 'navitems', {headers: this.httpHeaders})
   }
+
+  getLookUpData(){
+    return this.http.get(this.baseUrl + 'lookups', {headers:this.httpHeaders})
+  }
 }

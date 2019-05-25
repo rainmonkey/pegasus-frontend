@@ -10,6 +10,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { routing } from '../app/app-routing.module';
 import { FullCalendarModule } from 'ng-fullcalendar';
 import { DatePipe,CommonModule } from '@angular/common';
+import { ChartsModule } from 'ng2-charts';
 
 // Guards
 
@@ -33,7 +34,7 @@ import { SidebarComponent } from './components/dashboard/general/sidebar/sidebar
 import { TimePickerComponent } from './components/dashboard/dashboard-components/time-picker/time-picker.component';
 import { LoginComponent } from './components/basic/login/login.component';
 import { HeaderbarComponent } from './components/dashboard/general/headerbar/headerbar.component';
-import { DashboardPanelComponent } from './components/dashboard/dashboard-components/dashboard-panel/dashboard-panel.component';
+import { DashboardPanelComponent } from './components/dashboard/general/dashboard-panel/dashboard-panel.component';
 import { SearchNameModuleComponent } from './components/dashboard/dashboard-components/support/search-name-module/search-name-module.component';
 import { AdminLearnerPaymentPanelComponent } from './components/dashboard/dashboard-components/admin-payment/admin-learner-payment-panel/admin-learner-payment-panel.component';
 import { AdminLearnerPaymentInvoiceComponent } from './components/dashboard/dashboard-components/admin-payment/admin-learner-payment-invoice/admin-learner-payment-invoice.component';
@@ -45,7 +46,7 @@ import { FooterComponent } from './components/basic/footer/footer.component';
 import { CoursesPanelComponent } from './components/dashboard/dashboard-components/courses/courses-panel/courses-panel.component';
 import { CoursesListComponent } from './components/dashboard/dashboard-components/courses/courses-list/courses-list.component';
 import { LearnerRegistrationFormComponent } from './components/dashboard/dashboard-components/learner-registration/learner-registration-form/learner-registration-form.component';
-import { LearnerRegistrationEditComponent } from './components/dashboard/dashboard-components/learner-registration/learner-registration-edit/learner-registration-edit.component';
+import { LearnerRegistrationModalComponent } from './components/dashboard/dashboard-components/learner-registration/learner-registration-modal/learner-registration-modal.component';
 import { SessionsPanelComponent } from './components/dashboard/dashboard-components/sessions/sessions-panel/sessions-panel.component';
 import { SessionsListViewComponent } from './components/dashboard/dashboard-components/sessions/sessions-views/sessions-list-view/sessions-list-view.component';
 import { SessionDetailEditModalComponent } from './components/dashboard/dashboard-components/sessions/session-modals/session-detail-edit-modal/session-detail-edit-modal.component';
@@ -81,6 +82,7 @@ import { CourseClassListComponent } from './components/dashboard/dashboard-compo
 import { CourseClassDetailModalComponent } from './components/dashboard/dashboard-components/courses/course-class-detail-modal/course-class-detail-modal.component';
 import { DashboardHomeComponent } from './components/dashboard/dashboard-components/dashboard-home/dashboard-home.component';
 import { TeacherCourseModalComponent } from './components/dashboard/dashboard-components/teachers/teacher-course-modal/teacher-course-modal.component';
+import { ChartingComponent } from './components/dashboard/dashboard-components/support/charting/charting.component';
 
 
 
@@ -106,7 +108,7 @@ import { TeacherCourseModalComponent } from './components/dashboard/dashboard-co
     OrgFormatPipe,
     WeekFormatPipe,
     LearnerRegistrationFormComponent,
-    LearnerRegistrationEditComponent,
+    LearnerRegistrationModalComponent,
     CommandFormatPipe,
     SessionsPanelComponent,
     SessionsListViewComponent,
@@ -138,7 +140,7 @@ import { TeacherCourseModalComponent } from './components/dashboard/dashboard-co
 
     LearnerDeleteModalComponent,
     LearnerDetailModalComponent,
-  
+
 
     SessionCancelModalComponent,
     SessionTutorReportModalComponent,
@@ -152,7 +154,8 @@ import { TeacherCourseModalComponent } from './components/dashboard/dashboard-co
     CourseClassDetailModalComponent,
     DashboardHomeComponent,
     CoursespipesPipe,
-    TeacherCourseModalComponent
+    TeacherCourseModalComponent,
+    ChartingComponent
   ],
   imports: [
     NgbModule,
@@ -166,7 +169,8 @@ import { TeacherCourseModalComponent } from './components/dashboard/dashboard-co
     MatInputModule,
     routing,
     FullCalendarModule,
-    CommonModule
+    CommonModule,
+    ChartsModule
   ],
   providers: [
     DatePipe,

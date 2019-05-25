@@ -3,8 +3,13 @@ import { Injectable } from '@angular/core';
 @Injectable({
   providedIn: 'root'
 })
-export class MessagesService {
+export class MessagesLibrary {
 
+  formNoEmailPassword = "Please enter your email and password"
+  formIsClean = "There are no inputs"
+  formInputRequired = " Required"
+  
+  
   constructor() { }
 
   // API error response handler
