@@ -1,4 +1,4 @@
-import { Component, OnInit, Renderer2, ElementRef, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Renderer2, ElementRef, Output, EventEmitter, Input } from '@angular/core';
 import { TimePickerService } from 'src/app/services/http/time-picker.service';
 
 
@@ -8,7 +8,10 @@ import { TimePickerService } from 'src/app/services/http/time-picker.service';
   styleUrls: ['./time-picker.component.css']
 })
 export class TimePickerComponent implements OnInit {
-  // will delete data will from server, now just hard core
+  // data get form registration component
+  @Input() customCourse;
+
+  // data will from server, now just hard core
   public teacherAvailableData: any = {
     "IsSuccess": true,
     "ErrorCode": null,
@@ -142,7 +145,7 @@ export class TimePickerComponent implements OnInit {
   public hours = [8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20];
   public xIndex: number[]= [0, 1, 2, 3, 4, 5, 6];
   public yIndex: number[] = [];
-  // define slot 
+  // define slot
   public slot: any[] = [];
   public slotAvailable: any[] = [];
   public slotOrg: any[] = [];
@@ -163,11 +166,13 @@ export class TimePickerComponent implements OnInit {
   }
 
   ngOnInit() {
+    console.log(this.customCourse)
+
     // define yIndex
     for(let i = 0; i < 49; i++) {
       this.yIndex.push(i);
     }
-    // define five type of slots 
+    // define five type of slots
     for (let i = 0; i < 7; i++) {
       this.slot[i] = [];
       this.slotAvailable[i] = [];
@@ -212,7 +217,7 @@ export class TimePickerComponent implements OnInit {
       obj['BeginY'] = beginMinutesToY;
       obj['EndY'] = endMinutesToY;
       obj['LearnerName'] = data.LearnerName;
-      arr.push(obj);  
+      arr.push(obj);
     };
     return arr;
   }
@@ -226,7 +231,7 @@ export class TimePickerComponent implements OnInit {
       for(let i = o['BeginY']; i < o['EndY']+1; i++) {
         this.slot[xIndex][i] = prop;
       }
-    }; 
+    };
     return this.learnerName, this.slot;
   }
   /*
@@ -323,7 +328,7 @@ export class TimePickerComponent implements OnInit {
         }
       }
     });
-    // console.log('org', this.orgName); 
+    // console.log('eeee', this.slotAvailable);
   }
   mouseoutSlot() {
     this.teacherAvailableData.Data.AvailableDay.map((o) => {

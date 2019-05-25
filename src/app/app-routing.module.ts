@@ -2,9 +2,9 @@ import { Routes, RouterModule } from '@angular/router';
 import { DashboardRestrictGuard } from './guards/dashboard-restrict.guard';
 
 import { LoginComponent } from './components/basic/login/login.component';
-import { DashboardPanelComponent } from './components/dashboard/dashboard-components/dashboard-panel/dashboard-panel.component';
+import { DashboardPanelComponent } from './components/dashboard/general/dashboard-panel/dashboard-panel.component';
 import { TimePickerComponent } from './components/dashboard/dashboard-components/time-picker/time-picker.component';
-import { LearnerRegistrationEditComponent } from './components/dashboard/dashboard-components/learner-registration/learner-registration-edit/learner-registration-edit.component';
+import { LearnerRegistrationModalComponent } from './components/dashboard/dashboard-components/learner-registration/learner-registration-modal/learner-registration-modal.component';
 import { LearnerRegistrationFormComponent } from './components/dashboard/dashboard-components/learner-registration/learner-registration-form/learner-registration-form.component';
 import { AdminLearnerPaymentPanelComponent } from './components/dashboard/dashboard-components/admin-payment/admin-learner-payment-panel/admin-learner-payment-panel.component';
 import { AdminLearnerPaymentInvoiceComponent } from './components/dashboard/dashboard-components/admin-payment/admin-learner-payment-invoice/admin-learner-payment-invoice.component';
@@ -95,7 +95,7 @@ const routes: Routes = [
         children:[
 
           {path: 'list', component: AdminLearnerListComponent},
-          {path: 'registration/edit', component: LearnerRegistrationEditComponent},
+          {path: 'registration/edit', component: LearnerRegistrationModalComponent},
           {path: 'registration', component: LearnerRegistrationFormComponent}
       ]},
       // Inventory Area

@@ -7,6 +7,8 @@ import { NgbModal, NgbModalRef, NgbPagination } from '@ng-bootstrap/ng-bootstrap
 import { TeacherDeleteModalComponent } from '../teacher-delete-modal/teacher-delete-modal.component';
 import { Router, ActivatedRoute } from '@angular/router';
 import { TeacherCourseModalComponent } from '../teacher-course-modal/teacher-course-modal.component';
+import { CoursesService } from 'src/app/services/http/courses.service';
+import { LookUpsService } from 'src/app/services/http/look-ups.service';
 
 @Component({
   selector: 'app-teacher-info',
@@ -26,20 +28,30 @@ export class TeacherInfoComponent implements OnInit {
   public currentPage: number = 1;
   public pageSize: number = 10;
   //loading
-  public loadingFlag:boolean = false;
+  public loadingFlag: boolean = false;
+  public courses;
+  public teachingCourses;
+  public level;
+  public duration;
 
   @ViewChild('pagination') pagination;
 
   constructor(
     private teachersService: TeachersService,
+    private coursesService: CoursesService,
     private ngTable: NgbootstraptableService,
+    private lookUps: LookUpsService,
     private modalService: NgbModal,
     private router: Router,
     private activatedRoute: ActivatedRoute) { }
 
-  ngOnInit():any {
+  ngOnInit(): any {
     this.loadingFlag = true;
     this.getDataFromSever();
+    this.getCourses();
+    this.getTeachingCourse();
+    this.lookUp4();
+    this.lookUp8();
   }
 
   /////////////////////////////////////////////////data handlers////////////////////////////////////////////////////
@@ -53,10 +65,10 @@ export class TeacherInfoComponent implements OnInit {
         this.teachersListCopy = this.teachersList;
         this.teachersListLength = res.Data.length;
         //console.log(this.teachersList)
-      
-        this.refreshPageControl(); 
+
+        this.refreshPageControl();
         this.loadingFlag = false;
-       
+
       },
       (err) => {
         alert("Thers's something wrong in server, please try later.")
@@ -65,18 +77,75 @@ export class TeacherInfoComponent implements OnInit {
   }
 
   /*
+    get all courses that provided by this school
+  */
+  getCourses() {
+    this.coursesService.getCourses().subscribe(
+      (res) => {
+        this.courses = res.Data;
+      },
+      (err) => {
+        alert('Sorry, there\'s something wrong with server.');
+        console.log(err)
+      }
+    )
+  }
+
+  /*
+    get all of the courses that all of teachers current teaching.
+  */
+  getTeachingCourse() {
+    this.teachersService.getTeachingCourse().subscribe(
+      (res) => {
+        this.teachingCourses = res.Data;
+      },
+      (err) => {
+        alert('Sorry, there\'s something wrong with server.');
+        console.log(err)
+      }
+    )
+  }
+
+  /*
+    不要问我这堆lookUp是干什么的 问就说不知道
+  */
+  lookUp4() {
+    this.lookUps.getLookUps(4).subscribe(
+      (res) => {
+        this.level = res.Data;
+      },
+      (err) => {
+        alert('Sorry, there\'s something wrong with server.');
+      }
+    )
+  }
+
+  lookUp8() {
+    this.lookUps.getLookUps(8).subscribe(
+      (res) => {
+        this.duration = res.Data;
+      },
+      (err) => {
+        alert('Sorry, there\'s something wrong with server.');
+      }
+    )
+  }
+
+
+
+  /*
     set the default params when after page refresh
   */
-  refreshPageControl(){
+  refreshPageControl() {
     this.activatedRoute.queryParams.subscribe(res => {
-      let {searchString,searchBy,orderBy,orderControl,currentPage} = res;
-      if(searchString !==undefined && searchBy !==undefined){
-        this.onSearch(null, {'searchString':searchString,'searchBy':searchBy})
+      let { searchString, searchBy, orderBy, orderControl, currentPage } = res;
+      if (searchString !== undefined && searchBy !== undefined) {
+        this.onSearch(null, { 'searchString': searchString, 'searchBy': searchBy })
       }
-      if(orderBy !==undefined && orderControl !== undefined){
-        this.onSort(orderBy,orderControl)
+      if (orderBy !== undefined && orderControl !== undefined) {
+        this.onSort(orderBy, orderControl)
       }
-      if(currentPage !== undefined){
+      if (currentPage !== undefined) {
         this.currentPage = currentPage;
       }
     })
@@ -91,29 +160,29 @@ export class TeacherInfoComponent implements OnInit {
       3, orderBy
       4, orderControl
   */
- setQueryParams(paraName, paraValue) {
+  setQueryParams(paraName, paraValue) {
 
-  if (paraValue == '') {
-    delete this.queryParams[paraName];
-    delete this.queryParams['searchBy'];
-  }
-  else {
-    this.queryParams[paraName] = paraValue;
-  }
+    if (paraValue == '') {
+      delete this.queryParams[paraName];
+      delete this.queryParams['searchBy'];
+    }
+    else {
+      this.queryParams[paraName] = paraValue;
+    }
 
-  this.router.navigate(['tutors/list'], {
-    queryParams: this.queryParams
-  });
-}
+    this.router.navigate(['tutors/list'], {
+      queryParams: this.queryParams
+    });
+  }
 
   ///////////////////////////////////////////called by template event/////////////////////////////////////////////
   /*
     sort method
   */
-  onSort(orderBy,orderControls?) {
-    let orderControl = this.ngTable.sorting(this.teachersList, orderBy,orderControls);
-    this.setQueryParams('orderBy',orderBy);
-    this.setQueryParams('orderControl',orderControl);
+  onSort(orderBy, orderControls?) {
+    let orderControl = this.ngTable.sorting(this.teachersList, orderBy, orderControls);
+    this.setQueryParams('orderBy', orderBy);
+    this.setQueryParams('orderControl', orderControl);
   }
 
   /*
@@ -136,19 +205,19 @@ export class TeacherInfoComponent implements OnInit {
       this.teachersListLength = this.teachersList.length;
       optionsObj['value'] = searchBy;
 
-      this.setQueryParams('searchBy',searchBy);
-      this.setQueryParams('searchString',searchString);
+      this.setQueryParams('searchBy', searchBy);
+      this.setQueryParams('searchString', searchString);
     }
 
   }
 
-  getCurrentPage(){
+  getCurrentPage() {
     let currentPage = this.pagination.page;
-    this.setQueryParams('currentPage',currentPage)
+    this.setQueryParams('currentPage', currentPage)
   }
 
   ///////////////////////////////////////handler of angular-bootstrap modals/////////////////////////////////////
-  
+
   /*
     update modal
   */
@@ -156,45 +225,47 @@ export class TeacherInfoComponent implements OnInit {
     const modalRef = this.modalService.open(TeacherUpdateModalComponent, { size: 'lg' });
     let that = this;
     modalRef.result.then(
-      function(event)
-      {
+      function (event) {
         console.log(event)
         that.ngOnInit();
       },
-      function(){
+      function () {
         return;
-    })
+      })
     modalRef.componentInstance.command = command;
     modalRef.componentInstance.whichTeacher = whichTeacher;
   }
 
-  courseModal(command,whichTeacher){
+  courseModal(command, whichTeacher) {
     const modalRef = this.modalService.open(TeacherCourseModalComponent, { size: 'lg' });
     let that = this;
     modalRef.result.then(
-      function(event)
-      {
+      function (event) {
         console.log(event)
         that.ngOnInit();
       },
-      function(){
+      function () {
         return;
-    })
+      })
     modalRef.componentInstance.command = command;
     modalRef.componentInstance.whichTeacher = whichTeacher;
+    modalRef.componentInstance.courses = this.courses;
+    modalRef.componentInstance.teachingCourses = this.teachingCourses;
+    modalRef.componentInstance.level = this.level;
+    modalRef.componentInstance.duration = this.duration;
   }
 
   /*
     delete modal
   */
   deleteModal(command, whichTeacher) {
-    const modalRef = this.modalService.open(TeacherDeleteModalComponent,  { size: 'lg' });
+    const modalRef = this.modalService.open(TeacherDeleteModalComponent, { size: 'lg' });
     let that = this;
     modalRef.result.then(
-      function(){
+      function () {
         that.ngOnInit();
       },
-      function(){
+      function () {
         that.ngOnInit();
       })
     modalRef.componentInstance.command = command;

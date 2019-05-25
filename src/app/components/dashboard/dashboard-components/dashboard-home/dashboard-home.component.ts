@@ -3,6 +3,8 @@ import { FormBuilder, FormGroup, FormControl, FormArray, Validators, FormControl
 import { Title } from '@angular/platform-browser';
 import { NgbPopover } from '@ng-bootstrap/ng-bootstrap';
 import { NgbootstraptableService } from 'src/app/services/others/ngbootstraptable.service';
+import { AppSettingsService } from 'src/app/settings/app-settings.service';
+import { Subscription } from 'rxjs';
 
 
 @Component({
@@ -20,6 +22,7 @@ export class DashboardHomeComponent implements OnInit, AfterViewInit {
   userName:string;
   formError:string;
   pageloading:boolean=true;
+  lookUpList:Subscription;
 
   @ViewChild('popOver') public popover: NgbPopover;
   toDoList: { id: number; task: string; origin: string; priority: number; link: string; created_date: string; }[];
@@ -27,7 +30,8 @@ export class DashboardHomeComponent implements OnInit, AfterViewInit {
   constructor(
     public title: Title,
     private formBuilder: FormBuilder,
-    public tableService: NgbootstraptableService
+    public tableService: NgbootstraptableService,
+    private settingService: AppSettingsService
   ) {
     
     this.title.setTitle('Home');
@@ -85,8 +89,25 @@ export class DashboardHomeComponent implements OnInit, AfterViewInit {
         priority: 1,
         link: "sessions/list",
         created_date: ''
+      },
+      {
+        id:5,
+        task:"Clean the toliet.",
+        origin: 'Boss',
+        priority: 1,
+        link: "payroll/list",
+        created_date: ''
+      },
+      {
+        id:6,
+        task:"Go to space.",
+        origin: 'Mike',
+        priority: 1,
+        link: "home",
+        created_date: ''
       }
     ]
+
   }
 
   // Fires when the component is ready for use when all queries and inputs have been resolved
@@ -97,11 +118,16 @@ export class DashboardHomeComponent implements OnInit, AfterViewInit {
     this.pageloading=false
     
     this.tableService.sorting(this.toDoList, 'priority')
+
+    // Get Lookup list
+
+
   }
 
   // Called after component’s views are initialized
   ngAfterViewInit(): void {
-
+    this.lookUpList = this.settingService.currentLookUpSettings.subscribe(
+      (res)=>{})
   }
 
   // newTaskFormBuilder(){
