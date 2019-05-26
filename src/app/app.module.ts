@@ -181,7 +181,8 @@ import { DashboardHomeComponent } from './components/dashboard/dashboard-compone
     CourseClassDetailModalComponent,
     LearnerDeleteModalComponent,
     LearnerDetailModalComponent,
-    SessionCancelModalComponent
+    SessionCancelModalComponent,
+    SessionCompletedModalComponent
   ],
   exports: [AppComponent],
   bootstrap: [AppComponent]

@@ -20,7 +20,7 @@ export class SessionsService {
     return this.httpHeaders = new HttpHeaders({'Authorization': "Bearer "+ localStorage.getItem('Token')})
   }
 
-  //Session View Admin & Session View Tutor
+  // Session View Admin & Session View Tutor
   getReceptionistRoom() {
     console.log(this.httpHeaders)
     return this.http.get<any>(this.baseUrl + 'room/forCalendar', {headers: this.httpHeaders});
@@ -40,7 +40,8 @@ export class SessionsService {
 
   getReceptionistLessonBetweenDate(beginDate, endDate) {
     console.log(this.httpHeaders);
-    return this.http.get<any>(this.baseUrl + 'lesson/GetLessonsBetweenDate/' + localStorage.getItem('userID') + '/' + beginDate + '/' + endDate);
+    return this.http.get<any>(this.baseUrl +
+      'lesson/GetLessonsBetweenDate/' + localStorage.getItem('userID') + '/' + beginDate + '/' + endDate);
   }
 
   // Session List
@@ -48,5 +49,21 @@ export class SessionsService {
     console.log(this.httpHeaders);
     // @ts-ignore
     return this.http.put<any>(this.baseUrl + 'session/' + lessonId + '/' + reason + '/' + localStorage.getItem('userID'));
+  }
+
+  GetTeachherFilter(courseId) {
+    console.log(this.httpHeaders);
+    return this.http.get<any>(this.baseUrl + 'teacherfilter/sessionEditFilter/' + courseId);
+  }
+
+  SessionEdit(SessionModel) {
+    console.log(this.httpHeaders);
+    return this.http.put<any>(this.baseUrl + 'LessonRearrange/' + localStorage.getItem('userID'), SessionModel);
+  }
+
+  SessionCompleted(lessonId, reason) {
+    console.log(this.httpHeaders);
+    // @ts-ignore
+    return this.http.put<any>();
   }
 }

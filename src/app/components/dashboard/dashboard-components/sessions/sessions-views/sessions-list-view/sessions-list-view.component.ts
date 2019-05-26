@@ -5,6 +5,7 @@ import { SessionsService } from '../../../../../../services/http/sessions.servic
 import { PaymentService } from 'src/app/services/http/payment.service';
 import { SessionDetailEditModalComponent } from '../../session-modals/session-detail-edit-modal/session-detail-edit-modal.component';
 import {SessionCancelModalComponent} from '../../session-modals/session-cancel-modal/session-cancel-modal.component';
+import {SessionCompletedModalComponent} from '../../session-modals/session-completed-modal/session-completed-modal.component';
 
 @Component({
   selector: 'app-sessions-list-view',
@@ -32,7 +33,8 @@ export class SessionsListViewComponent implements OnInit {
     'Room',
     'Branch',
     'Canceled',
-    'Canceled Reason'
+    'Confirmed',
+    'Reason'
   ];
   constructor(
     private modalService: NgbModal,
@@ -45,9 +47,30 @@ export class SessionsListViewComponent implements OnInit {
     this.getData();
   }
 
+  // open confirm modal
+  openSessionConfirmModal(lessonId){
+    const modalRef = this.modalService.open(SessionCompletedModalComponent);
+    (modalRef.componentInstance as SessionCompletedModalComponent).lessonId = lessonId;
+    modalRef.result.then(
+      () => {
+        this.ngOnInit();
+      },
+      () => {
+        this.ngOnInit();
+      });
+  }
+
   // modal method
-  openSessionEditModal() {
+  openSessionEditModal(LessonModel) {
     const modalRef = this.modalService.open(SessionDetailEditModalComponent, { size: 'lg' });
+    (modalRef.componentInstance as SessionDetailEditModalComponent).LessonModel = LessonModel;
+    modalRef.result.then(
+      () => {
+        this.ngOnInit();
+      },
+      () => {
+        this.ngOnInit();
+      });
   }
 
   openSessionCancelModal(lessonId){
@@ -66,7 +89,6 @@ export class SessionsListViewComponent implements OnInit {
   getData() {
     this.sessionsService.getReceptionistLessonBetweenDate('2019-04-29', '2019-05-10').subscribe(
       (res) => {
-        console.log(res)
         this.learnerList = res.Data;
         this.learnerListLength = res.Data.length; // length prop is under Data prop
         this.temLearnerList = res.Data;
