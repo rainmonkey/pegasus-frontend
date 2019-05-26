@@ -11,7 +11,7 @@ import {ActivatedRoute, Router} from '@angular/router';
 export class SessionCancelModalComponent implements OnInit {
   public CancelReason;
   public isCancelSuccess = false;
-  public isCancelFailed = false;;
+  public isCancelFailed = false;
   @Input() lessionId: any;
   constructor(public activeModal: NgbActiveModal, private sessionsService: SessionsService,
               private router: Router) { }
