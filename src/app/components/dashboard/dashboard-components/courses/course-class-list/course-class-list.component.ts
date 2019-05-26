@@ -1,7 +1,10 @@
-import { NgbootstraptableService } from '../../../../../services/others/ngbootstraptable.service';
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { NgbModal, NgbModalRef, NgbPagination } from '@ng-bootstrap/ng-bootstrap';
+import { DecimalPipe } from '@angular/common';
+import { FormControl } from '@angular/forms';
+import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 import { Router, ActivatedRoute } from '@angular/router';
+import { NgbootstraptableService } from '../../../../../services/others/ngbootstraptable.service';
+
 import { CoursesService } from 'src/app/services/http/courses.service';
 import { CourseClassDetailModalComponent } from '../course-class-detail-modal/course-class-detail-modal.component';
 import { CourseDeleteModalComponent } from '../course-delete-modal/course-delete-modal.component';
@@ -9,19 +12,22 @@ import { CourseDeleteModalComponent } from '../course-delete-modal/course-delete
 @Component({
   selector: 'app-course-class-list',
   templateUrl: './course-class-list.component.html',
-  styleUrls: ['./course-class-list.component.css']
+  styleUrls: ['./course-class-list.component.css'],
+  providers: [DecimalPipe]
 })
 export class CourseClassListComponent implements OnInit {
-  //what columns showed in the info page, can get from back-end in the future. must as same as database
-  public columnsToShow: Array<string> = ['Course Name', 'Tutor', 'Start & End Dates', 'Location', 'Room', 'Time', ];
-
-
-  public queryParams: object = {};
-  public currentPage: number = 1;
+  public courseClassLists: any;
+  public coursesClassListLength: number;
+  public closeResult: string;  
+  public page: number = 1;  //pagination current page
   public pageSize: number = 10;
-
-
-  errorMessage:string;
+  public currentPage: number = 1;
+  public coursesListCopy: Array<any>;
+  public errorMessage: string;
+    //search by which columns, determine by users
+  public queryParams: object = {};
+  public filter = new FormControl('');
+  
   @ViewChild('pagination') pagination;
 
 
@@ -34,40 +40,70 @@ export class CourseClassListComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.getDataService()
+    this.getDataService();
+    
   }
 
-  getDataService(){
+  getDataService() {
     this.courseService.getCourseClasses().subscribe(
-      (res)=>{console.log(res), this.routerControl()},
-      (err)=>{this.processError(err)}
+      (res) => {
+        this.courseClassLists = res['Data'];
+        this.courseClassLists.forEach(element => {
+          element.CourseName = element.Course.CourseName;
+          element.OrgName = element.Org.OrgName;
+          element.RoomName = element.Room.RoomName;
+          element.TeacherFirstName = element.Teacher.FirstName;   
+          element.TeacherLastName = element.Teacher.LastName;
+        });
+        this.coursesListCopy = this.courseClassLists;
+        this.coursesClassListLength = res['Data'].length; //length prop is under Data prop
+        this.refreshPageControl();
+        console.log(this.courseClassLists);
+      },
+      (err) => {
+        this.backendErrorHandler(err);
+      }
     )
   }
 
-  processError(err) {
+  backendErrorHandler(err) {
     console.warn(err)
-    if (err.error) {
-      if(err.error.ErrorMessage){
-        this.errorMessage = err.error.ErrorMessage;
-      } else {
-        this.errorMessage = 'Sorry, something went wrong';
-      }
-    } else {
-      this.errorMessage = 'Sorry, something went wrong';
+    if (err.error.ErrorMessage != null) {
+      this.errorMessage = err.error.ErrorMessage;
+    }
+    else {
+      this.errorMessage = "Error! Can't catch Data."
     }
   }
 
-  routerControl(){
 
+  /*
+    set the default params when after page refresh
+  */
+  refreshPageControl() {
+    this.activatedRoute.queryParams.subscribe(res => {
+      let { searchString, searchBy, orderBy, orderControl, currentPage } = res;
+      if (searchString !== undefined && searchBy !== undefined) {
+        this.onSearch(null, { 'searchString': searchString, 'searchBy': searchBy })
+      }
+      if (orderBy !== undefined && orderControl !== undefined) {
+        this.onSort(orderBy, orderControl)
+      }
+      if (currentPage !== undefined) {
+        this.currentPage = currentPage;
+      }
+    })
+    return;
   }
 
-  getCurrentPage(){
-    let currentPage = this.pagination.page;
-    this.setQueryParams('currentPage',currentPage)
-  }
-
+  /*
+      items of queryParams:
+        1, searchString
+        2, searchBy
+        3, orderBy
+        4, orderControl
+    */
   setQueryParams(paraName, paraValue) {
-
     if (paraValue == '') {
       delete this.queryParams[paraName];
       delete this.queryParams['searchBy'];
@@ -75,58 +111,92 @@ export class CourseClassListComponent implements OnInit {
     else {
       this.queryParams[paraName] = paraValue;
     }
-  
     this.router.navigate(['courses/class/list'], {
       queryParams: this.queryParams
     });
   }
-  
 
+  private getDismissReason(reason: any): string {
+    if (reason === ModalDismissReasons.ESC) {
+      return 'by pressing ESC';
+    } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
+      return 'by clicking on a backdrop';
+    } else {
+      return `with: ${reason}`;
+    }
+  }
 
+  getCurrentPage() {
+    let currentPage = this.pagination.page;
+    this.setQueryParams('currentPage', currentPage)
+  }
 
-
-
-
-
-
-
-
-
-    
-    /*
-      update modal
-    */
-  updateModal(command, whichTeacher) {
+  /*
+  update modal
+*/
+  detailModal(command, whichCourse) {
     const modalRef = this.modalService.open(CourseClassDetailModalComponent, { size: 'lg' });
     let that = this;
-    modalRef.result.then(
-      (res)=>{console.log(res), that.ngOnInit()
-      }
-    )
+    modalRef.result.then((result) => {
+      this.closeResult = `Closed with: ${result}`;
+      that.ngOnInit();
+    }, (reason) => {
+      this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+    });
     modalRef.componentInstance.command = command;
-    modalRef.componentInstance.whichTeacher = whichTeacher;
+    modalRef.componentInstance.whichCourse = whichCourse;
   }
+
 
   /*
     delete modal
   */
-  deleteModal(command, whichTeacher) {
+  deleteModal(command, whichCourse) {
     const modalRef = this.modalService.open(CourseDeleteModalComponent);
     let that = this;
-    modalRef.result.then(function(){
+    modalRef.result.then((result) => {
+      this.closeResult = `Closed with: ${result}`;
       that.ngOnInit()
-    })
+    }, (reason) => {
+      this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+    });
     modalRef.componentInstance.command = command;
-    modalRef.componentInstance.whichTeacher = whichTeacher;
+    modalRef.componentInstance.whichCourse = whichCourse;
   }
 
   /*
-    detail modal
+    sort method
   */
-  detailModal(command, whichTeacher) {
-    const modalRef = this.modalService.open(CourseClassDetailModalComponent, { size: 'lg' });
-    modalRef.componentInstance.command = command;
-    modalRef.componentInstance.whichTeacher = whichTeacher;
+  onSort(orderBy, orderControls?) {
+    let orderControl = this.ngTable.sorting(this.courseClassLists, orderBy, orderControls);
+    this.setQueryParams('orderBy', orderBy);
+    this.setQueryParams('orderControl', orderControl);
+  }
+
+  /*
+    search method
+  */
+  onSearch(event, initValue?) {
+    if (event !== null && !(event.type == 'keydown' && event.key == 'Enter')) {
+      return;
+    }
+    else {
+      let searchString: string;
+      let searchBy: string;
+
+      let searchingInputObj = document.getElementById('searchingInput');
+
+      (initValue == undefined) ? { searchString, searchBy } =
+        { searchString: searchingInputObj['value'], searchBy: 'CourseName' } :
+        { searchString, searchBy } = initValue;
+
+      this.courseClassLists = this.ngTable.searching(this.coursesListCopy, searchBy, searchString);
+      this.coursesClassListLength = this.courseClassLists.length;
+
+      this.setQueryParams('searchBy', searchBy);
+      this.setQueryParams('searchString', searchString);
+    } 
+
   }
 
 }

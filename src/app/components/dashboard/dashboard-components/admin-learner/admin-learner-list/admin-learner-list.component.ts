@@ -146,9 +146,14 @@ export class AdminLearnerListComponent implements OnInit {
 deleteModal(command, whichLearner) {
   const modalRef = this.modalService.open(LearnerDeleteModalComponent);
   let that = this;
-  modalRef.result.then(function(){
-    that.ngOnInit()
-  })
+  modalRef.result.then(
+    (res) => {
+        that.ngOnInit()
+    },
+    (err) =>{
+      return
+    }
+  )
   modalRef.componentInstance.command = command;
   modalRef.componentInstance.whichLearner = whichLearner;
 }

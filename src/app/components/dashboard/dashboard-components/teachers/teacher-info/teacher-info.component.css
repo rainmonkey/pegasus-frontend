@@ -96,11 +96,19 @@
 .t_info_table_btn:nth-child(2):hover{
     color:#ffc107;
 }
-.t_info_table_btn:nth-child(3):hover{
+.t_info_table_btn:nth-child(4):hover{
     color:#dc3545;
+}
+.t_info_table_btn:nth-child(3):hover{
+    color:rgb(52, 168, 52);
 }
 
 .t_selected{
     background: #17a2b8;
     color:white!important;
+}
+.loaderLarge{
+    position: fixed;
+    top:40%;
+    left: 50%;
 }

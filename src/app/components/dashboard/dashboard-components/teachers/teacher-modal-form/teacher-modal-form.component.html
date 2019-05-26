@@ -1,4 +1,7 @@
-<div class='t_mf_form'>
+<!--loading-->
+<div *ngIf='loadingFlag' class="loaderLarge"></div>
+
+<div *ngIf='!loadingFlag' class='t_mf_form'>
   <form action='' [formGroup]='updateForm'>
     <div class='row'>
       <!--上半部分-->

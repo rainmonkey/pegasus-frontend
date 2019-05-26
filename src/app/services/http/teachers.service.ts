@@ -10,6 +10,7 @@ export class TeachersService {
   httpHeaders: HttpHeaders;
   token:string
 
+
   constructor(
     private http:HttpClient
     ) {  }
@@ -45,5 +46,13 @@ export class TeachersService {
 
   update(data,teacherId):any{
     return this.http.put(this.baseUrl + 'teacher/' + teacherId, data)
+  }
+  
+  getTeachingCourse():any{
+    return this.http.get(this.baseUrl + 'teachercourse'); 
+  }
+  
+  updateTeacherCourse(data):any{
+    return this.http.put(this.baseUrl + 'teachercourse',data)
   }
 }

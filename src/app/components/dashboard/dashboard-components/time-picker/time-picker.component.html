@@ -1,24 +1,31 @@
-<!-- <div class="rmws-hour-labels">
-  <div class="rmws-hour-label" *ngFor="let hour of hours">{{hour}}:00</div>
-</div> -->
+
 <div class="time-picker"> 
+  <!-- location -->
+  <!-- <button class="btn btn-info">Org1</button>
+  <button class="btn btn-info">Org2</button> -->
+  <!-- time table -->
   <div class="weekly-schedule">
     <div class="hour-labels">
       <div class="hour-label" *ngFor="let hour of hours">{{hour}}:00</div>
     </div>
     <div class="days">
-      <div class="day" *ngFor="let x of xIndex">
+      <div class="day" *ngFor="let x of xIndex; let i = index">
         <div class="day-label">{{weekdays[x]}}</div>
         <div class="slots">
           <div class="slot" *ngFor="let y of yIndex; let i = index" 
-          [ngClass]="{'event': displayArray[x][y], 'slot-bottom': i%4==3}" 
-          (mousedown)="mousedown(x,y,$event)"  (mouseup)="mouseup(x,y,$event)">
-            <small *ngIf="textArray[x][y] && displayArray[x][y]" >{{realTimeArray[x][y]}}</small>
-          </div>
+          [ngClass]="{'slot-bottom': i%4==3,
+                      'availableDayIsBlue': slot[x][y] == 'isAvailableDay',
+                      'arrangedIsRed': slot[x][y] == 'isArranged',
+                      'dayOffIsGray': slot[x][y] == 'isDayOff', 
+                      'tempChangeIsYellow': slot[x][y] == 'isTempChange',
+                      'availableDurationIsGreen': slotAvailable[x][y] == 'isAvailable'
+                    }" 
+          (mouseover)="mouseoverSlot(x,y)" (mouseout)="mouseoutSlot()">
+          <small *ngIf="slot[x][y]">{{learnerName[x][y]}}</small>
+          </div> 
         </div>
       </div>
     </div>
   </div> 
-  <div><button (click)="sendMessageToParent(messageToSendC)" routerLink="/learner/registration" routerLinkActive="active">Confirm</button></div>
+  <!-- color meanings -->
 </div>
-<!-- <app-learner-registration-form [receivedParentMessage]="messageToSendP"></app-learner-registration-form> -->

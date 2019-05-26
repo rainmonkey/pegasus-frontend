@@ -1,0 +1,51 @@
+.t_cm_title{
+    font-weight: bold;
+    font-style: italic;
+}
+.t_cm_close_btn{
+    background: white;
+    border: 1px solid black;
+    color:black;
+}
+.t_cm_close_btn:hover{
+    background: #343A40;
+    border: 1px solid #343a40;
+    color:white;
+}
+.t_cm_title{
+    font-weight: bold;
+    font-style: italic;
+}   
+.t_cm_label_title{
+    font-weight: bold; 
+    margin-bottom: 0px;
+}
+.t_cm_input{
+    border: none;
+    border: 1px solid lightgrey;
+    border-radius: 3px;
+    text-align: center;
+    text-align-last: center;
+    background: rgb(173, 216, 230, 0.1);
+    height: 26px;
+}
+.t_cm_course{
+    border:1px solid lightgrey;
+    border-radius: 3px;
+}
+.t_cm_course_dropdown:hover{
+    cursor: pointer;
+}
+.t_info_table_btn{
+    position: absolute;
+    left: 30px;
+}
+.t_info_table_btn:hover{
+    cursor: pointer;
+    color: rgb(91, 194, 228);
+}
+.t_cm_error_border{
+    border: 1px solid #dc3545;
+    border-radius:5px;
+    outline: none;
+}

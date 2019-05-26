@@ -13,8 +13,14 @@ export class CourseDetailModalComponent implements OnInit {
   public errorMessage: string;
   public successMessage: string;
   public infoMessage: string = '';
-  public messageColor:string;
+  public messageColor: string;
   public updateForm: FormGroup;
+  //Level dropdown options
+  public courseCategories: Object;
+  public teachersLevels: Object;
+  public levels: Object;
+  public courseTypes: Object;
+  public durations: Object;
 
   @Input() command;
   @Input() whichCourse;
@@ -28,7 +34,70 @@ export class CourseDetailModalComponent implements OnInit {
 
   ngOnInit() {
     this.updateForm = this.fb.group(this.formGroupAssemble());
-    // console.log(this.updateForm);
+    // console.log(this.updateForm);    
+    /* For Dropdown Options */
+    this.getCourseCategories();
+    this.getTeacherLevel();
+    this.getLevel();
+    this.getCourseType();
+    this.getDuration();    
+    // console.log(typeof(this.getTeacherLevel()))
+  }
+
+  /* For Dropdown Options*/
+  getCourseCategories() {
+    this.coursesService.getCourseCategories().subscribe(
+      (res) => {
+        this.courseCategories = res.Data;
+        // console.log(this.courseCategories);
+      },
+      (err) => {
+        alert('Server error!')
+      }
+    )
+  }
+  getTeacherLevel() {
+    this.coursesService.getTeacherLevel().subscribe(
+      (res) => {
+        this.teachersLevels = res.Data;
+      },
+      (err) => {
+        alert('Server error!')
+      }
+    )
+  }
+  getLevel() {
+    this.coursesService.getLevel().subscribe(
+      (res) => {
+        this.levels = res.Data;
+        // console.log(this.levels);
+      },
+      (err) => {
+        alert('Server error!')
+      }
+    )
+  }
+  getCourseType() {
+    this.coursesService.getCourseType().subscribe(
+      (res) => {
+        this.courseTypes = res.Data;
+        // console.log(this.courseTypes);
+      },
+      (err) => {
+        alert('Server error!')
+      }
+    )
+  }
+  getDuration() {
+    this.coursesService.getDuration().subscribe(
+      (res) => {
+        this.durations = res.Data;
+        // console.log(this.durations);
+      },
+      (err) => {
+        alert('Server error!')
+      }
+    )
   }
 
   formGroupAssemble() {
@@ -52,7 +121,7 @@ export class CourseDetailModalComponent implements OnInit {
         Level: [this.whichCourse.LevelName, Validators.required],
         TeacherLevel: [this.whichCourse.TeacherLevelName, Validators.required],
         Duration: [this.whichCourse.DurationName, Validators.required],
-        Price: [this.whichCourse.Price, Validators.required],
+        Price: [this.whichCourse.Price, Validators.compose([Validators.required, Validators.min(1)])],
         CourseCategoryId: [this.whichCourse.CourseCategory.CourseCategoryName, Validators.required],
         CourseId: [this.whichCourse.CourseId, Validators.required]
       }
@@ -64,34 +133,36 @@ export class CourseDetailModalComponent implements OnInit {
     let valueToSubmit = this.updateForm.value;
     let vailadValue = this.checkInputVailad(valueToSubmit);
     // fix this
-    if (vailadValue !== null) {
+    if (vailadValue !== null && this.updateForm.dirty) {
       // console.log('Correct')
       this.stringifySubmitStr(vailadValue);
       // console.log(this.updateForm.value);
+    } else if (!this.updateForm.dirty) {
+      this.errorMessage = 'Data did no changing!';
     } else {
       // console.log('errors')
       this.errorMessage = 'Input incorrect.'
     }
   }
 
-   /*
-    check whether data vailad or not(ruled by Validators).
+  /*
+   check whether data vailad or not(ruled by Validators).
   */
- checkInputVailad(valueToSubmit) {
-  //once click save btn, touch all inputs form with for-loop. In order to trigger Validator
-  // for (let i in this.updateForm.controls) {
-  //   this.updateForm.controls[i].touched = true;
-  // }
-  //when input value pass the check of Validators, there is a [status] attr equal to 'VALID'
-  if (this.updateForm.status == 'VALID') {
-    return this.prepareSubmitData(valueToSubmit);
+  checkInputVailad(valueToSubmit) {
+    //once click save btn, touch all inputs form with for-loop. In order to trigger Validator
+    // for (let i in this.updateForm.controls) {
+    //   this.updateForm.controls[i].touched = true;
+    // }
+    //when input value pass the check of Validators, there is a [status] attr equal to 'VALID'
+    if (this.updateForm.status == 'VALID') {
+      return this.prepareSubmitData(valueToSubmit);
+    }
+    else {
+      this.infoMessage = 'Please check your input.'
+      this.messageColor = '#dc3545'
+      return null;
+    }
   }
-  else {
-    this.infoMessage = 'Please check your input.'
-    this.messageColor = '#dc3545'
-    return null;
-  }
-}
 
   prepareSubmitData(valueToSubmit) {
     valueToSubmit.CourseType = this.coursesPipe.checkCourseType(valueToSubmit);
@@ -102,24 +173,27 @@ export class CourseDetailModalComponent implements OnInit {
     return valueToSubmit;
   }
 
+  
+
   /*
     after stringify submition string, data is ready to submit
   */
   stringifySubmitStr(formValue) {
     this.errorMessage = '';
-    this.submitByMode(formValue)
+    this.submitByMode(formValue);
   }
 
   submitByMode(formValue) {
     //while push a stream of new data
     if (this.command == 0) {
       this.coursesService.addNew(formValue).subscribe(
-        (res) => {
+        (res) => {          
           alert('Submit success!');
           this.activeModal.close();
         },
         (err) => {
           this.backendErrorHandler(err);
+          // console.log(err);
         }
       );
     }
@@ -131,8 +205,10 @@ export class CourseDetailModalComponent implements OnInit {
           this.activeModal.close();
         },
         (err) => {
-          this.backendErrorHandler(err)
+          this.backendErrorHandler(err);
+          // console.log(err);
         }
+
       )
     }
   }

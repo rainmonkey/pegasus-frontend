@@ -4,7 +4,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { AuthenticationService } from '../../../services/auth/authentication.service';
 import { Title } from '@angular/platform-browser';
-
+import { MessagesLibrary } from 'src/app/shared/libraries/messages-library';
 
 @Component({
   selector: 'app-login',
@@ -25,7 +25,8 @@ export class LoginComponent implements OnInit {
     private fb: FormBuilder,
     private route: ActivatedRoute,
     private router: Router,
-    private authenticationService: AuthenticationService
+    private authenticationService: AuthenticationService,
+    private messageService: MessagesLibrary,
   ) {
     
   }
@@ -49,30 +50,20 @@ export class LoginComponent implements OnInit {
     this.submitted = true;
     // stop here if form is invalid
     if (this.loginForm.invalid || !this.loginForm.dirty) {
-        return;
+        return this.errorMessage = this.messageService.formNoEmailPassword;
     }
     this.loading = true;
     this.authenticationService.login(this.f.username.value, this.f.password.value).subscribe(
-      (data) => {
-        this.router.navigate([this.returnUrl]);
-      },
+      (data) => {this.onLoginSuccess()},
       (err) => {
         this.loading = false,
-        this.processError(err);
+        this.errorMessage = this.messageService.apiErrorMessageProcessing(err)
       }
     );
   }
 
-  processError(err) {
-    console.warn(err)
-    if (err.error) {
-      if(err.error.ErrorMessage){
-        this.errorMessage = err.error.ErrorMessage;
-      } else {
-        this.errorMessage = 'Sorry, something went wrong';
-      }
-    } else {
-      this.errorMessage = 'Sorry, something went wrong';
-    }
+  onLoginSuccess() : void{
+    this.router.navigate([this.returnUrl]);
   }
+
 }

@@ -10,7 +10,7 @@ import { environment } from '../../../environments/environment.prod';
   providedIn: 'root'
 })
 export class LearnerRegistrationService {
-  
+
   private baseUrl: any = environment.baseUrl;
   // post url
   // public url = this.baseUrl + 'api/learner';
@@ -30,8 +30,8 @@ export class LearnerRegistrationService {
   getOrgs(): Observable<any> {
     return this.http.get(this.baseUrl + 'orgs');
   }
-  getTeacherFilter(): Observable<any> {
-    return this.http.get(this.baseUrl + 'TeacherFilter');
+  getTeacherFilter(id): Observable<any> {
+    return this.http.get(this.baseUrl + 'TeacherFilter/' + id);
   }
   // post student's data to server and catch error from server
   postStudent(student: any): Observable<any> {
@@ -40,7 +40,6 @@ export class LearnerRegistrationService {
                  catchError(this.errorHandler)
                );
   }
-
   // throw error to component
   errorHandler(error: HttpErrorResponse) {
     return throwError(error);

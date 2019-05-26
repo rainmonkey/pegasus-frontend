@@ -1,8 +1,9 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { FormGroup, FormArray, FormBuilder, Validators } from '@angular/forms';
+import { FormGroup, FormArray, FormBuilder, Validators, FormControl } from '@angular/forms';
 import { LearnerRegistrationService } from '../../../../../services/http/learner-registration.service';
 import { CoursesService } from '../../../../../services/http/courses.service';
-import { NgbTimeStruct, NgbTimeAdapter } from '@ng-bootstrap/ng-bootstrap';
+import { NgbTimeStruct, NgbTimeAdapter, NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { LearnerRegistrationModalComponent } from '../learner-registration-modal/learner-registration-modal.component'
 
 @Component({
   selector: 'app-learner-registration-form',
@@ -12,6 +13,7 @@ import { NgbTimeStruct, NgbTimeAdapter } from '@ng-bootstrap/ng-bootstrap';
 export class LearnerRegistrationFormComponent implements OnInit {
   // @Input() receivedParentMessage: any;
   // receivedChildMessage: any;
+  // courseIntanceGroup: FormGroup;
   public time: NgbTimeStruct = { hour: 9, minute: 0, second: 0 };
   public hourStep = 1;
   public minuteStep = 15;
@@ -29,7 +31,7 @@ export class LearnerRegistrationFormComponent implements OnInit {
   public locations: Array<any>;
   public levelType: Array<any>;
   public customCourseInstance: Array<any>;
-  public customCourseRoom: Array<any>;
+
   public teacherLevel: Array<any>;
   public teacherName: Array<any>;
   //public selectedCourse: string;
@@ -46,8 +48,8 @@ export class LearnerRegistrationFormComponent implements OnInit {
   public learnerGroupCourse: Array<any> = [];
   public selectedCheckbox: boolean;
   public newGroupCourse: Array<any>;
-  public coursesCategory: any[];
-  public courses: any[];
+  public coursesCategory = [];
+  public courses = [];
   public oneOnOneCourse: Array<any> = [];
   public courseTime: any;
   public learnerOthers: any[] = [];
@@ -55,12 +57,40 @@ export class LearnerRegistrationFormComponent implements OnInit {
   public duration: Array<any>;
   public selectlearnerLevel: number;
   public pureCourses: any[];
+  public
+  courses121;
+  courseTemp;
+  courseLocation;
+  // subscribe errors
+  errorMsgSub;
+  errorAlert = false;
   // validate errors
   getErrorW = false;
   getErrorH = false;
   showErrorW = false;
   showErrorH = false;
   touchNext = false;
+  // photo thumbnail
+  photoObj;
+  // for add more selection
+  catListArray = [];
+  catItemArray = [];
+  locListArray = [];
+  locItemArray = [];
+  prepareTeaLevListArray = [];
+  prepareTeaLevItemArray = [];
+  selectedprepareTeaLevInOrgObjItemArray = [];
+  selectedprepareTeaLevInOrgObjListArray = [];
+  prepareTeaNameInLevObjItemArray = [];
+  prepareTeaNameInLevObjListArray = [];
+  courseItemArray = [];
+  courseListArray = [];
+  selectedLocItemArray = [];
+  selectedLocListArray = [];
+  prepareRoomItemArray = [];
+  prepareRoomListArray = [];
+  prepareTeaNameListArray = [];
+  prepareTeaNameItemArray = [];
 
   // getter method: simplify the way to capture form controls
   get firstName() { return this.registrationForm.get('learnerForm').get('firstName'); }
@@ -71,13 +101,33 @@ export class LearnerRegistrationFormComponent implements OnInit {
   get parentForm() { return this.registrationForm.get('parentForm') as FormArray; }
   get groupCourse() { return this.registrationForm.get('groupCourse') as FormArray; }
   get customCourse() { return this.registrationForm.get('customCourse') as FormArray; }
-
   constructor(
     private fb: FormBuilder,
     private registrationService: LearnerRegistrationService,
     private coursesService: CoursesService,
+    private modalService: NgbModal
   ) { }
-
+  get courseGroup(): FormGroup {
+    return this.fb.group({
+      courseId: [''],
+      courseCategory: ['']
+    });
+  }
+  get courseIntanceGroup(): FormGroup {
+    return this.fb.group({
+    courseCategory: [''],
+    course: [''],
+    teacherName: [''],
+    location: [''],
+    room: [''],
+    beginDate: [''],
+    endDate: [''],
+    schedule: this.fb.group({
+      dayOfWeek: [''],
+      beginTime: [this.time],
+      durationType: ['']
+    }),
+  }); }
   ngOnInit() {
     this.registrationForm = this.fb.group({
       learnerForm: this.fb.group({
@@ -111,36 +161,27 @@ export class LearnerRegistrationFormComponent implements OnInit {
         })
       ]),
       groupCourse: this.fb.array([]),
-      customCourse: this.fb.array([
-        this.fb.group({
-          courseCategory: [''],
-          course: [''],
-          teacherName: [''],
-          location: [''],
-          room: [''],
-          beginDate: [''],
-          endDate: [''],
-          schedule: this.fb.group({
-            dayOfWeek: [''],
-            beginTime: [this.time],
-            durationType: ['']
-          })
-        })
-      ]),
+      customCourse: this.fb.array([this.courseIntanceGroup]),
     });
 
-    // // initialize card display
-    document.getElementById('learnerForm').style.display = 'block';
+   //@ts-ignore
+    // let abc = this.customCourse.controls[0].controls.roomArray;
+
+    // initialize card display
+    document.getElementById('learnerForm').style.display = 'none';
     document.getElementById('parentForm').style.display = 'none';
-    document.getElementById('courseForm').style.display = 'none';
+    document.getElementById('courseForm').style.display = 'block';
 
     this.getGroupCourseFromServer();
     this.getLookups(1);
-    this.getOrgs();
-    this.getCustomCourseFromServer();
     this.toModel(this.time);
     this.getCoursesFromServer();
+    // init array
+    this.initArrays()
   }
+
+
+
   private pad(i: number): string {
     return i < 10 ? `0${i}` : `${i}`;
   }
@@ -157,13 +198,13 @@ export class LearnerRegistrationFormComponent implements OnInit {
   // encapsulate files form data
   uploadPhoto(event: any) {
     this.selectedPhoto = <File>event.target.files[0];
-    console.log('photo', this.selectedPhoto);
     this.fd.append('photo', this.selectedPhoto);
     let photoRender = this.selectedPhoto;
-    let photoObj = document.querySelector('#photoID');
+    this.photoObj = document.querySelector('#photoID');
+    let that = this;
     let reader = new FileReader();
     reader.onloadend = function () {
-      photoObj.setAttribute("src", this.result.toString());
+      that.photoObj.setAttribute("src", this.result.toString());
     }
     reader.readAsDataURL(photoRender);
   }
@@ -175,15 +216,16 @@ export class LearnerRegistrationFormComponent implements OnInit {
   }
   getCoursesFromServer() {
     this.coursesService.getCourses().subscribe(
-      (data) => {
-        this.pureCourses = data.Data;
-        console.log('courses', this.pureCourses)
-        this.coursesCategory = data.Data.map(item => item.CourseCategoryId)
-          .map((e, i, final) => final.indexOf(e) === i && i)
-          .filter(e => data.Data[e]).map(e => data.Data[e]);
-        console.log('courses category', this.coursesCategory)
-        // const unique = [... new Set(this.courses.map(item => item.CourseCategoryId))]
-      })
+      (res) => {
+        this.pureCourses = res.Data;
+        // get one to one courses
+        this.courses121 = res.Data.filter(item => item.CourseType === 1);
+        // apply learner level filter
+        this.catItemArray = this.courses121.filter((item) => item.Level === this.selectlearnerLevel);
+        // this.catItemArray = this.courses121.filter((item) => item.Level === 0);
+        // push item to list
+        this.catListArray.push(this.catItemArray);
+      });
   }
   getLookups(id: number) {
     // this.registrationService.getLookups(1)
@@ -243,12 +285,13 @@ export class LearnerRegistrationFormComponent implements OnInit {
       );
   }
   selectLearnerLevel(value) {
-    this.isSelectedLevel = !this.isSelectedLevel;
+    this.customCourse.reset();
+    this.parentForm.controls.forEach((item, index)=>{
+       this.parentForm.removeAt(index);
+    })
+    this.isSelectedLevel = true;
     this.selectlearnerLevel = value;
-    console.log('select learner level', value);
     // let a = this.courses.filter((e) =>  this.selectlearnerLevel == e.Level);
-    this.courses = this.pureCourses.filter((e) => e.Level == this.selectlearnerLevel && e.CourseType == 1);
-    console.log('courses filter', this.courses)
 
   }
   selectLearnerPurpose(i, event) {
@@ -329,42 +372,74 @@ export class LearnerRegistrationFormComponent implements OnInit {
       }
     }
   }
-  getCustomCourseFromServer() {
-    this.registrationService.getTeacherFilter().subscribe(
-      (data) => {
-        this.customCourseInstance = data.Data;
-        console.log('teacher filter', this.customCourseInstance);
-      },
-      (err) => {
-        console.log('teacher filer err', err);
-      }
-    )
-  }
-  selectLocation(i: number) {
-    // console.log('location i', i);
-    this.registrationService.getTeacherFilter().subscribe(
-      (data) => {
-        let tempArray = data.Data.filter((item) => (item.OrgId - 1) == i);
-        this.customCourseRoom = tempArray[0].Room;
-        console.log('filterArray', tempArray);
-        console.log('Room', this.customCourseRoom);
-        this.teacherLevel = tempArray[0].Level;
-        console.log('teacherLevel', this.teacherLevel);
-      }
-    )
-  }
-  selectTl(i: number) {
-    // console.log('teacherlevel i', i);
-    let tempArray = this.teacherLevel.filter((item) => (item.levelId - 1) == i);
-    this.teacherName = tempArray[0].teacher;
-    console.log('teacherName', this.teacherName)
-  }
+
   selectLevelType(value) {
     this.learnerlevelType = value;
     console.log('learner type', this.learnerlevelType)
   }
-  selectCourse(value) {
+  emptySelection(i){
+    console.log(this.courseListArray)
+    this.courseListArray[i].courseItemArray = [];
+  }
 
+ // select course category
+  selectCategory(id, i){
+    // let courseTemp = [];
+    this.emptySelection(i);
+    this.courseListArray[i].courseItemArray = this.catListArray[i].filter(item => item.CourseCategoryId === Number(id));
+    console.log("this.courseListArray", this.courseListArray);
+  }
+
+  selectCourse(value,i) {
+    this.locListArray[i].locItemArray = [];
+    this.registrationService.getTeacherFilter(value).subscribe(
+      res=>{
+        this.locListArray[i].locItemArray = res.Data;
+        console.log(this.locItemArray);
+      }, error => {
+        this.locListArray[i].locItemArray = [];
+
+        this.errorMsgSub = JSON.parse(error.error);
+        console.log("Error!", this.errorMsgSub.ErrorCode);
+        this.errorAlert = true;
+      }
+    );
+    console.log(this.locListArray[i].locItemArray);
+  }
+  selectLocation(id,i ) {
+    console.log(this.locListArray[i].locItemArray);
+    this.selectedLocListArray[i].selectedLocItemArray = this.locListArray[i].locItemArray.filter(item=>item.OrgId == id);
+    this.prepareTeaLevListArray[i].prepareTeaLevItemArray = this.selectedLocListArray[i].selectedLocItemArray[0].Level;
+    this.prepareRoomListArray[i].prepareRoomItemArray = this.selectedLocListArray[i].selectedLocItemArray[0].Room;
+    console.log('prepareTeaLevItemArray',i,this.prepareTeaLevListArray[i].prepareTeaLevItemArray);
+  }
+  selectTl(id, i) {
+    console.log(i,this.selectedprepareTeaLevInOrgObjListArray)
+    console.log('prepareTeaLevItemArray',i,this.prepareTeaLevListArray[i].prepareTeaLevItemArray);
+    let teaList = this.prepareTeaLevListArray[i].prepareTeaLevItemArray.filter((item) => item.levelId == id);
+    this.selectedprepareTeaLevInOrgObjListArray[i].selectedprepareTeaLevInOrgObjItemArray = teaList;
+    this.prepareTeaNameListArray[i].prepareTeaNameItemArray = teaList[0].teacher;
+    console.log(this.selectedprepareTeaLevInOrgObjListArray[i].selectedprepareTeaLevInOrgObjItemArray)
+  }
+  // init Array
+  initArrays(){
+    this.courseItemArray = [];
+    this.locItemArray = [];
+    this.selectedLocItemArray = [];
+    this.prepareRoomItemArray = [];
+    this.prepareTeaLevItemArray = [];
+    this.selectedprepareTeaLevInOrgObjItemArray = [];
+    this.prepareTeaNameInLevObjItemArray = [];
+    this.prepareTeaNameItemArray = [];
+
+    this.courseListArray.push(this.courseItemArray)
+    this.locListArray.push(this.locItemArray);
+    this.selectedLocListArray.push(this.selectedLocItemArray);
+    this.prepareRoomListArray.push(this.prepareRoomItemArray);
+    this.prepareTeaLevListArray.push(this.prepareTeaLevItemArray);
+    this.selectedprepareTeaLevInOrgObjListArray.push(this.selectedprepareTeaLevInOrgObjItemArray);
+    this.prepareTeaNameInLevObjListArray.push(this.prepareTeaNameInLevObjItemArray);
+    this.prepareTeaNameListArray.push(this.prepareTeaNameItemArray);
   }
   confirmCustomCourse() {
     let cs = this.customCourse.value;
@@ -386,18 +461,7 @@ export class LearnerRegistrationFormComponent implements OnInit {
     };
     console.log('oneOnOne', this.oneOnOneCourse);
   }
-  getOrgs() {
-    this.registrationService.getOrgs()
-      .subscribe(
-        data => {
-          console.log('orgs', data);
-          this.locations = data.Data;
-        },
-        err => {
-          console.log('orgs', err);
-        }
-      )
-  }
+
   onSubmit() {
     // encapsulate learner form data
     this.learner = this.learnerForm.value;
@@ -445,11 +509,12 @@ export class LearnerRegistrationFormComponent implements OnInit {
   }
   resetLearner() {
     this.learnerForm.reset();
+    this.photoObj.setAttribute('src',null);
   }
   resetParent() {
     this.parentForm.reset();
   }
-  deleteParent(i: number) {
+  deleteParent(i) {
     this.parentForm.removeAt(i);
   }
   addParent() {
@@ -464,29 +529,56 @@ export class LearnerRegistrationFormComponent implements OnInit {
     );
     // console.log('addParent', this.parentForm.value)
   }
-  resetCustomCourse() {
-    this.customCourse.reset();
+  resetCustomCourse(i) {
+    this.customCourse.controls[i].reset();
+
+    this.courseListArray[i].courseItemArray = [];
+    this.locListArray[i].locItemArray = [];
+    this.selectedLocListArray[i].selectedLocItemArray = [];
+    this.prepareRoomListArray[i].prepareRoomItemArray = [];
+    this.prepareTeaLevListArray[i].prepareTeaLevItemArray = [];
+    this.selectedprepareTeaLevInOrgObjListArray[i].selectedprepareTeaLevInOrgObjItemArray = [];
+    this.prepareTeaNameInLevObjListArray[i].prepareTeaNameInLevObjItemArray = [];
+    this.prepareTeaNameListArray[i].prepareTeaNameItemArray = [];
+
   }
-  deleteCustomCourse(i: number): void {
+  deleteCustomCourse(i) {
     this.customCourse.removeAt(i);
+    this.courseListArray.splice(i, 1);
+    this.locListArray.splice(i, 1);
+    this.prepareTeaLevListArray.splice(i, 1);
+    this.selectedLocListArray.splice(i, 1);
+    this.prepareRoomListArray.splice(i, 1);
+    this.selectedprepareTeaLevInOrgObjListArray.splice(i, 1);
+    this.prepareTeaNameInLevObjListArray.splice(i, 1);
+    this.prepareTeaNameListArray.splice(i, 1);
+
+    this.catListArray.splice(i, 1);
   }
   addCustomCourse(): void {
-    this.customCourse.push(
-      this.fb.group({
-        courseCategory: [''],
-        course: [''],
-        teacherName: [''],
-        location: [''],
-        room: [''],
-        beginDate: [''],
-        endDate: [''],
-        schedule: this.fb.group({
-          dayOfWeek: [''],
-          beginTime: [this.time],
-          durationType: ['']
-        })
-      })
-    );
+    this.emptyForAddButton();
+    // add arrays
+    this.customCourse.push(this.courseIntanceGroup);
+    this.catListArray.push(this.catItemArray);
+    // add arrays for select options
+    this.initArrays();
+    console.log(this.customCourse.value)
+  }
+  // empty array for add more selection button
+  emptyForAddButton(){
+    this.courseItemArray = [];
+    this.locItemArray = [];
+    this.selectedLocItemArray = [];
+    this.prepareRoomItemArray = [];
+    this.prepareTeaLevItemArray = [];
+    this.selectedprepareTeaLevInOrgObjItemArray = [];
+    this.prepareTeaNameInLevObjItemArray = [];
+    this.prepareTeaNameItemArray = [];
+  }
+  //ng-activeModal
+  open(i) {
+    const modalRef = this.modalService.open(LearnerRegistrationModalComponent,{ size: 'lg' });
+    modalRef.componentInstance.customCourse = this.customCourse.value[i];
   }
   chooseGroupCourse() {
     this.isGroupCourse = true;
