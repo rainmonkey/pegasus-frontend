@@ -131,8 +131,15 @@ export class LearnerDetailModalComponent implements OnInit, AfterViewInit {
    if photo not found, set default photo 
  */
   setDefaultPhoto(event) {
-    event.target.src = '../../../../../../assets/images/shared/default-employer-profile.png';
+    event.target.src = '../../../../../../assets/images/shared/learner-people.jpg';
     return;
   }
+
+  setDefaultPhoto1(event){
+  event.target.src = '../../../../../../assets/images/shared/certificate-icon.png';
+  return
 }
+}
+
+
 

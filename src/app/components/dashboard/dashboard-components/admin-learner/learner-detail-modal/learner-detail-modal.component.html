@@ -31,7 +31,7 @@
         <p style="font-weight: bold">ABRSM Certific</p>
         <div>
           <img class="G5imageSize" src="http://gradspace.org:5000/{{whichLearner.G5Certification}}"
-            (error)='setDefaultPhoto($event)'>
+            (error)='setDefaultPhoto1($event)'>
         </div>
       </div>
 
@@ -54,12 +54,12 @@
         <span class="label">Gender: </span>
         <span class='text'>{{whichLearner.Gender|gender}}</span>
       </div>
-
+   
       <div class="col-8">
         <span class="label">Date of Birth: </span>
         <span class='text'>{{whichLearner.Dob}}</span>
       </div>
-
+   <br>
       <div class="col-6">
         <span class="label">Date of Enrollment: </span>
         <span class='text'>{{whichLearner.EnrollDate}}</span>
@@ -98,17 +98,14 @@
   <div>
     <h4>Parent Information</h4>
     <div class="row lable-pos" *ngFor="let learnerParent of whichLearner.Parent">
-      <div class="col-4">
-        <span class="label">First Name: </span>
-        <span class='text'>{{learnerParent.FirstName}}</span>
+      <div class="col-6">
+        <span class="label">Name: </span>
+        <span class='text'>{{learnerParent.FirstName}} {{learnerParent.LastName}}</span>
       </div>
 
-      <div class="col-4">
-        <span class="label">Last Name: </span>
-        <span class='text'>{{learnerParent.LastName}}</span>
-      </div>
+  
 
-      <div class="col-4">
+      <div class="col-6">
         <span class="label">Relationship: </span>
         <span class='text'>{{learnerParent.Relationship | relationship}}</span>
       </div>
@@ -134,12 +131,12 @@
     <div>
       <div class="row lable-pos">
 
-        <button class="button-margin" (click)="chooseGroupCourse()">Group Course</button>
-        <button (click)="chooseCustomCourse()">One-on-One Course</button>
+        <button class="button-margin btn btn-outline-primary" (click)="chooseGroupCourse()">Group Course</button>
+        <button class=' btn btn-outline-primary' (click)="chooseCustomCourse()">One-on-One Course</button>
       </div>
 
       <div *ngIf='isGroupCourse'>
-        <div class='label1'>Group Course</div>
+      
         <div *ngFor='let groupCourse of whichLearner.LearnerGroupCourse '>
           <div class="row">
 
@@ -179,7 +176,7 @@
 
       <!-- one2one Course -->
       <div *ngIf='isCustomCourse'>
-        <div class="label1">One-on-One Course</div>
+       
         <div *ngFor="let ele of whichLearner.One2oneCourseInstance">
           <div class="row">
 
