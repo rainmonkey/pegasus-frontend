@@ -188,7 +188,8 @@ import { ChartingComponent } from './components/dashboard/dashboard-components/s
     CourseClassDetailModalComponent,
     LearnerDeleteModalComponent,
     LearnerDetailModalComponent,
-    SessionCancelModalComponent
+    SessionCancelModalComponent,
+    SessionCompletedModalComponent
   ],
   exports: [AppComponent],
   bootstrap: [AppComponent]

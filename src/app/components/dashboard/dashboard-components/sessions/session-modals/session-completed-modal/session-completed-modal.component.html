@@ -1,3 +1,39 @@
-<p>
-  session-completed-modal works!
-</p>
+<div>
+  <div class="modal-header m-2">
+    <h4>Please Confirm</h4>
+    <button
+      type="button"
+      class="close"
+      aria-label="Close"
+      (click)="activeModal.dismiss('Cross click')"
+    >
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <!-- modal-body -->
+  <div class="container">
+    <div class="d-flex justify-content-center row">
+      <p>Please confirm the course has been completed</p>
+      <div>
+        <div class="row mb-2">
+          <label class="mt-2">completed information</label>
+          <input class="form-control" type="text" [(ngModel)]="info"/>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <span *ngIf='isComfirmSuccess' class='text-success'>Cancel Success </span>
+    <span *ngIf='isConfirmFailed' class='text-danger'>Cancel Fail </span>
+    <button *ngIf="!isComfirmSuccess" type="button" class="btn btn-dark" (click)="CompletedConfirm()">
+      Confirm
+    </button>
+    <button
+      type="button"
+      class="btn btn-outline-dark"
+      (click)="activeModal.dismiss('Cross click')">
+      Cancel
+    </button>
+  </div>
+</div>
+
