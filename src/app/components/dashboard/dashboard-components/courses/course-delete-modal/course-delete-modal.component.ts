@@ -18,6 +18,7 @@ export class CourseDeleteModalComponent implements OnInit {
 
   @Input() command;
   @Input() whichCourse;
+  @Input() whichCourseClass;
 
   constructor(
     public activeModal: NgbActiveModal,
@@ -28,9 +29,26 @@ export class CourseDeleteModalComponent implements OnInit {
   ngOnInit() {
   }
 
-  delete(){
+  deleteCour(){
     let courseId = this.whichCourse.CourseId;
     this.coursesService.deleteCourse(courseId).subscribe(
+      (res) => {
+        this.isDeleteSuccess = true;
+        //successful info
+        alert('Delete success!');
+        this.activeModal.close();
+      },
+      (err) => {
+        //fail info
+        this.isDeleteFail = true;
+        this.backendErrorHandler(err);
+      }
+    );
+  }
+
+  deleteCla(){
+    let groupcourseinstanceId = this.whichCourseClass.GroupCourseInstanceId;
+    this.coursesService.deleteCourseClass(groupcourseinstanceId).subscribe(
       (res) => {
         this.isDeleteSuccess = true;
         //successful info
