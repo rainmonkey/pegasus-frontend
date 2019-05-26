@@ -8,22 +8,15 @@
   </button>
 </div>
 
-<!--modal body-->
-<!-- <div>
-  <app-learner-modal-form [command]='command' [whichLearner]='whichLearner'></app-learner-modal-form>
-</div> -->
 <div class='modal-body'>
   <div>
     <h4>Student Information</h4>
-    <!--缺 人物照片 -->
     <div class="row lable-pos">
       <div class="col-5">
         <p style="font-weight: bold">Student Photo</p>
         <div>
-          <!-- <img src="src/assets/images/shared/default-employer-profile.png" > -->
           <img class="imageSize" src="http://gradspace.org:5000/{{whichLearner.Photo}}"
             (error)='setDefaultPhoto($event)'>
-
         </div>
       </div>
 
@@ -89,8 +82,6 @@
         <span class="label">Current Level: </span>
         <span class='text'>{{whichLearner.LearnerLevel}}</span>
       </div>
-
-
     </div>
   </div>
 
@@ -102,8 +93,6 @@
         <span class="label">Name: </span>
         <span class='text'>{{learnerParent.FirstName}} {{learnerParent.LastName}}</span>
       </div>
-
-
 
       <div class="col-6">
         <span class="label">Relationship: </span>
@@ -119,10 +108,7 @@
         <span class="label">Email: </span>
         <span class='text'>{{learnerParent.Email}}</span>
       </div>
-
     </div>
-
-
   </div>
 
   <hr>
@@ -130,13 +116,11 @@
     <h4>Course</h4>
     <div>
       <div class="row lable-pos">
-
         <button class="button-margin btn btn-outline-primary" (click)="chooseGroupCourse()">Group Course</button>
         <button class=' btn btn-outline-primary' (click)="chooseCustomCourse()">One-on-One Course</button>
       </div>
 
       <div *ngIf='isGroupCourse'>
-
         <div *ngFor='let groupCourse of whichLearner.LearnerGroupCourse '>
           <br>
           <div class="card">
@@ -154,12 +138,12 @@
 
                 <div class="col-6">
                   <div *ngFor='let room of groupCourse.GroupCourseInstance.Org.Room'>
-                  <span class="label">Room: </span>
-                  <span class='text'>
-                    {{room.RoomName}} 
-                  </span>
+                    <span class="label">Room: </span>
+                    <span class='text'>
+                      {{room.RoomName}}
+                    </span>
+                  </div>
                 </div>
-              </div>
 
                 <div class="col-6">
                   <span class="label">Teacher: </span>
@@ -226,18 +210,13 @@
                   <div *ngFor='let sechdule of ele.CourseSchedule'>
                     <span class='text'> {{sechdule.DayOfWeek|weekFormat}}
                       {{sechdule.BeginTime}} -- {{sechdule.EndTime}} </span>
-
                   </div>
                 </div>
               </div>
             </div>
-
           </div>
-
-
         </div>
       </div>
-
     </div>
   </div>
 
@@ -271,12 +250,7 @@
         </div>
       </div>
     </div>
-
   </div>
-
-
-
-
 </div>
 
 <!--modal footer-->
