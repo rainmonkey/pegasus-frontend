@@ -53,7 +53,7 @@ export class LearnerRegistrationFormComponent implements OnInit {
   public oneOnOneCourse: Array<any> = [];
   public courseTime: any;
   public learnerOthers: any[] = [];
-  public learnerlevelType: any;
+  public learnerlevelType = 1;
   public duration: Array<any>;
   public selectlearnerLevel: number;
   public pureCourses: any[];
@@ -121,7 +121,7 @@ export class LearnerRegistrationFormComponent implements OnInit {
     teacherName: [''],
     location: [''],
     room: [''],
-    beginDate: [''],
+    beginDate: [this.myDate()],
     endDate: [''],
     schedule: this.fb.group({
       dayOfWeek: [''],
@@ -406,7 +406,6 @@ export class LearnerRegistrationFormComponent implements OnInit {
 
   selectLevelType(value) {
     this.learnerlevelType = Number(value);
-    console.log('learner type', this.learnerlevelType)
   }
   emptySelection(i){
     console.log(this.courseListArray)
@@ -494,6 +493,8 @@ export class LearnerRegistrationFormComponent implements OnInit {
   }
 
   onSubmit() {
+    this.confirmGroupCourse();
+    this.confirmCustomCourse();
     console.log(this.learnerlevelType)
     // encapsulate learner form data
     this.learner = this.learnerForm.value;
