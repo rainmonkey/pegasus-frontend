@@ -17,8 +17,8 @@ export class SessionsListViewComponent implements OnInit {
   public learnerListLength: number;
   public temLearnerList: any; // save the original teacherList
   public temLearnerListLength: number; // save the original teacherList length
-  public page: number = 1;  // pagination current page
-  public pageSize: number = 10;    // [can modify] pagination page size
+  public page = 1;  // pagination current page
+  public pageSize = 10;    // [can modify] pagination page size
   // error alert
   public errorMsg;
   public errorAlert = false;
