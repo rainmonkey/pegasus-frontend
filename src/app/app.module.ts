@@ -83,6 +83,8 @@ import { CourseClassDetailModalComponent } from './components/dashboard/dashboar
 import { DashboardHomeComponent } from './components/dashboard/dashboard-components/dashboard-home/dashboard-home.component';
 import { TeacherCourseModalComponent } from './components/dashboard/dashboard-components/teachers/teacher-course-modal/teacher-course-modal.component';
 import { ChartingComponent } from './components/dashboard/dashboard-components/support/charting/charting.component';
+import { RatingModalComponent } from './components/dashboard/dashboard-components/support/rating-modal/rating-modal.component';
+import { ForgotPasswordModalComponent } from './components/basic/forgot-password-modal/forgot-password-modal.component';
 
 
 
@@ -155,7 +157,9 @@ import { ChartingComponent } from './components/dashboard/dashboard-components/s
     DashboardHomeComponent,
     CoursespipesPipe,
     TeacherCourseModalComponent,
-    ChartingComponent
+    ChartingComponent,
+    RatingModalComponent,
+    ForgotPasswordModalComponent
   ],
   imports: [
     NgbModule,
@@ -189,7 +193,9 @@ import { ChartingComponent } from './components/dashboard/dashboard-components/s
     LearnerDeleteModalComponent,
     LearnerDetailModalComponent,
     SessionCancelModalComponent,
-    SessionCompletedModalComponent
+    SessionCompletedModalComponent,
+    RatingModalComponent,
+    ForgotPasswordModalComponent
   ],
   exports: [AppComponent],
   bootstrap: [AppComponent]

@@ -9,6 +9,9 @@ export class CoursesService {
   private baseUrl: any = environment.baseUrl;
 
   constructor(private http:HttpClient) { }
+  getOrgs() {
+    return this.http.get(this.baseUrl + 'orgs');
+  }
 
   getCourses():any{
     return this.http.get(this.baseUrl +'courses');
@@ -24,7 +27,7 @@ export class CoursesService {
 
   deleteCourse(courseId):any{
     return this.http.delete(this.baseUrl + 'courses/' + courseId);
-  }  
+  }
   /* For dropdown options*/
   getCourseCategories():any{
     return this.http.get(this.baseUrl + 'coursecategories');
@@ -55,5 +58,5 @@ export class CoursesService {
 
   deleteCourseClass(GroupCourseInstanceId):any{
     return this.http.delete(this.baseUrl + 'GroupCourseInstance/' + GroupCourseInstanceId);
-  }  
+  }
 }
