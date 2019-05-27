@@ -34,7 +34,7 @@ onSubmit(){
     
     if (this.myForm.invalid ) {
       console.log(this.myForm)
-      this.errorMessage='Please fill all input.'
+      this.errorMessage='Please rate.'
       this.success=false; 
       return
         }
