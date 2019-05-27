@@ -27,11 +27,11 @@ export class TimePickerComponent implements OnInit {
                         "OrgName": "CENTRAL AUCKLAND BRANCH"
                     },
                     {
-                        "OrgId": 1,
+                        "OrgId": 2,
                         "OrgName": "MOUNT ROSKILL BRANCH"
                     },
                     {
-                        "OrgId": 1,
+                        "OrgId": 3,
                         "OrgName": "MOUNT ALBERT BRANCH"
                     }
                 ]
@@ -69,23 +69,23 @@ export class TimePickerComponent implements OnInit {
                 "CourseScheduleId": 18
             },
             {
-                "DayOfWeek": 5,
+                "DayOfWeek": 7,
                 "TimeBegin": "14:00:00",
                 "TimeEnd": "14:30:00",
-                "LearnerName": "John123456 Key",
+                "LearnerName": "John Key",
                 "CourseScheduleId": 19
             },
             {
-                "DayOfWeek": 5,
-                "TimeBegin": "14:00:00",
-                "TimeEnd": "14:30:00",
+                "DayOfWeek": 7,
+                "TimeBegin": "15:00:00",
+                "TimeEnd": "16:30:00",
                 "LearnerName": "Mama Key",
                 "CourseScheduleId": 34
             },
             {
-                "DayOfWeek": 5,
-                "TimeBegin": "14:00:00",
-                "TimeEnd": "14:30:00",
+                "DayOfWeek": 7,
+                "TimeBegin": "17:00:00",
+                "TimeEnd": "18:30:00",
                 "LearnerName": "Mama Key",
                 "CourseScheduleId": 35
             },
@@ -138,7 +138,7 @@ export class TimePickerComponent implements OnInit {
         ]
     }
   };
-  public duration: number = 2;
+  public duration: number = 3;
 
   // define day(x) and slot(y)
   public weekdays = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
@@ -147,8 +147,6 @@ export class TimePickerComponent implements OnInit {
   public yIndex: number[] = [];
   // define slot
   public slot: any[] = [];
-  public slotAvailable: any[] = [];
-  public slotOrg: any[] = [];
   public slotTime: any[] = [];
   // redefine arranged
   public arrangedArr: any[] = [];
@@ -162,11 +160,15 @@ export class TimePickerComponent implements OnInit {
   // undefine
   public orgName: string;
 
+  moveoverY: any;
+  moveoutY: any;
+
+
   constructor(private timePickerService: TimePickerService) {
   }
 
   ngOnInit() {
-    console.log(this.customCourse)
+    console.log('customCourse', this.customCourse);
 
     // define yIndex
     for(let i = 0; i < 49; i++) {
@@ -175,24 +177,20 @@ export class TimePickerComponent implements OnInit {
     // define five type of slots
     for (let i = 0; i < 7; i++) {
       this.slot[i] = [];
-      this.slotAvailable[i] = [];
       this.learnerName[i] = [];
-      this.slotOrg[i] = [];
       this.slotTime[i] = [];
       for (let j = 0; j < 49; j++) {
         this.slot[i][j] = null;
-        this.slotAvailable[i][j] = null;
         this.learnerName[i][j] = null;
-        this.slotOrg[i][j] = null;
         this.slotTime[i][j] = `${Math.floor((480 + j*15)/60)} : ${(480 + j*15)%60 == 0? '00' : (480 + j*15)%60}`;
       }
     }
     console.log('slot time', this.slotTime);
+    
     // manipulate by order
     this.setSpecificTime();
     this.renderAvailableDay();
     this.renderSlotProp();
-    // this.callOneHourUnableToPick();
   }
 
 ///////////////////////////////////// Here are reusable functions////////////////////////////////////////
@@ -244,10 +242,10 @@ export class TimePickerComponent implements OnInit {
     for(let o of originalArr) {
       xIndex = o['DayOfWeek']-1;
       for(let i = o['BeginY']-4; i < o['EndY']+5; i++) {
-        this.slotAvailable[xIndex][i] = prop;
+        this.slot[xIndex][i] = prop;
       }
     };
-    return this.slotAvailable;
+    return this.slot;
   }
 //////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -269,17 +267,11 @@ export class TimePickerComponent implements OnInit {
   */
   renderAvailableDay() {
     this.teacherAvailableData.Data.AvailableDay.map((o) => {
-      // this.orgName = o.Orgs;
-      // o.Orgs.map((o) => {
-      //   this.orgName = o.OrgName;
-      // })
       let xIndex = o['DayOfWeek']-1;
       for(let i = 0; i < 49; i++) {
-        this.slot[xIndex][i] = 'isAvailableDay';
-        this.slotOrg[xIndex][i] = o.Orgs;
+        this.slot[xIndex][i] = 'isAvailable';
       };
     });
-    console.log('org', this.slotOrg);
   }
   /*
     call back defineSlotProp function for ngClass in HTML
@@ -288,54 +280,83 @@ export class TimePickerComponent implements OnInit {
     this.defineSlotProp(this.arrangedArr, 'isArranged');
     this.defineSlotProp(this.dayOffArr, 'isDayOff');
     this.defineSlotProp(this.tempChangeArr, 'isTempChange');
+    console.log('slot', this.slot);
   }
-
-  // callOneHourUnableToPick () {
-  //   this.oneHourUnableToPick(this.arrangedArr, 'unableToPick');
-  // }
+  /*
+    estimate whether next slots equal to isAvailable
+  */
+  hasNextDuration(x: number, y: number) {
+    // console.log('slot', this.slot);
+    for(let i = y; i < this.duration+y+1; i++) {
+      if(this.slot[x][i] != "isAvailable") {
+        return false;
+      }
+    };
+    return true;
+  }
+  /*
+    estimate whether former slots equal to isAvailable
+  */
+  hasFormerDuration(x: number, y: number) {
+    for(let i = y; i > y-this.duration-1; i--) {
+      if(this.slot[x][i] != "isAvailable") {
+        return false;
+      }
+    };
+    return true;
+  }
+  /*
+    set duration range for rendering in HTML
+  */
+  setDuration(x: number, y: number){
+    if(this.hasNextDuration(x,y) && (this.moveoverY > this.moveoutY || this.moveoutY == this.moveoverY)) {
+      for(let i = y; i < this.duration+y+1; i++) {
+        this.slot[x][i] = "ableToPick";
+      };
+    } else if(this.hasFormerDuration(x,y) && this.moveoverY < this.moveoutY) {
+      for(let i = y; i > y-this.duration-1; i--) {
+        this.slot[x][i] = "ableToPick"
+      };
+    } else if(this.hasNextDuration(x,y) ) {
+      for(let i = y; i < this.duration+y+1; i++) {
+        this.slot[x][i] = "ableToPick";
+      };
+    }
+    else if (this.hasFormerDuration(x,y)) {
+      for(let i = y; i > y-this.duration-1; i--) {
+        this.slot[x][i] = "ableToPick";
+      };
+    } else {
+      console.log('the third case');
+    }
+  }
   mouseoverSlot(x: number, y: number) {
+    this.moveoverY = y;
     let xIndex: number;
     this.teacherAvailableData.Data.AvailableDay.map((o) => {
       xIndex = o.DayOfWeek-1;
-      if(x == xIndex) {
-        // console.log('y', y);
-        if(this.slotOrg[xIndex][y].length > 0) {
-          console.log('hhh')
-        }
-        this.oneHourUnableToPick(this.arrangedArr, 'unableToPick');
-        // if 0 <= y < 48 
-        if(y >= 0 && y < 48) {
-          if(this.slotAvailable[xIndex][y] == 'unableToPick') {
-            this.slotAvailable[xIndex][y] = 'unableToPick';
-            // this.slotAvailable[xIndex][y-this.duration] = "isAvailable";
-          } else if(
-            this.slotAvailable[xIndex][y+1] == 'unableToPick' || this.slotAvailable[xIndex][y+2] == 'unableToPick'
-            ) {
-            this.slotAvailable[xIndex][y+1] == 'unableToPick';
-            this.slotAvailable[xIndex][y+2] == 'unableToPick';
-            }
-          else {
-            this.slotAvailable[xIndex][y] = 'isAvailable';
-            this.slotAvailable[xIndex][y+1] = 'isAvailable';
-            this.slotAvailable[xIndex][y+this.duration] = 'isAvailable';
-          }
-        }
-        // else y = 48
-        else if(y = 48) {
-          this.slotAvailable[xIndex][y] = 'isAvailable';
-          this.slotAvailable[xIndex][y-1] = 'isAvailable';
-          this.slotAvailable[xIndex][y-this.duration] = "isAvailable";
-        }
+      let org = o.Orgs.map((o) => o.OrgId);
+      if(x == xIndex && org.length == 1) {
+        if(this.slot[x][y] != "isArranged") {
+          this.setDuration(x,y);
+        } 
+      } else if(x == xIndex && org.length != 1) {
+        
       }
     });
-    // console.log('eeee', this.slotAvailable);
   }
-  mouseoutSlot() {
+  mouseoutSlot(x: number, y: number) {
+    this.moveoutY = y;
+    let xIndex: number;
     this.teacherAvailableData.Data.AvailableDay.map((o) => {
-      let xIndex: number;
       xIndex = o.DayOfWeek-1;
-      for(let i = 0; i < 49; i++) {
-        this.slotAvailable[xIndex][i] = null;
+      let org = o.Orgs.map((o) => o.OrgId);
+      if(x == xIndex && org.length == 1) {
+        for(let i = 0; i < 49; i++) {
+          if(this.slot[x][i] == "ableToPick") {
+            this.slot[x][i] = "isAvailable";
+          }
+        }
       }
     });
   }
