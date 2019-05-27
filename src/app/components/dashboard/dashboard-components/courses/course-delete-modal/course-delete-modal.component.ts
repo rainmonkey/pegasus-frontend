@@ -29,8 +29,9 @@ export class CourseDeleteModalComponent implements OnInit {
   ngOnInit() {
   }
 
-  deleteCour(){
-    let courseId = this.whichCourse.CourseId;
+  delete(){  
+    if(this.command == 3){
+      let courseId = this.whichCourse.CourseId;
     this.coursesService.deleteCourse(courseId).subscribe(
       (res) => {
         this.isDeleteSuccess = true;
@@ -43,25 +44,40 @@ export class CourseDeleteModalComponent implements OnInit {
         this.isDeleteFail = true;
         this.backendErrorHandler(err);
       }
-    );
+    )}else if(this.command == 4){
+      let groupcourseinstanceId = this.whichCourseClass.GroupCourseInstanceId;
+      this.coursesService.deleteCourseClass(groupcourseinstanceId).subscribe(
+        (res) => {
+          this.isDeleteSuccess = true;
+          //successful info
+          alert('Delete success!');
+          this.activeModal.close();
+        },
+        (err) => {
+          //fail info
+          this.isDeleteFail = true;
+          this.backendErrorHandler(err);
+        }
+      );
+    }
   }
 
-  deleteCla(){
-    let groupcourseinstanceId = this.whichCourseClass.GroupCourseInstanceId;
-    this.coursesService.deleteCourseClass(groupcourseinstanceId).subscribe(
-      (res) => {
-        this.isDeleteSuccess = true;
-        //successful info
-        alert('Delete success!');
-        this.activeModal.close();
-      },
-      (err) => {
-        //fail info
-        this.isDeleteFail = true;
-        this.backendErrorHandler(err);
-      }
-    );
-  }
+  // deleteCla(){
+  //   let groupcourseinstanceId = this.whichCourseClass.GroupCourseInstanceId;
+  //   this.coursesService.deleteCourseClass(groupcourseinstanceId).subscribe(
+  //     (res) => {
+  //       this.isDeleteSuccess = true;
+  //       //successful info
+  //       alert('Delete success!');
+  //       this.activeModal.close();
+  //     },
+  //     (err) => {
+  //       //fail info
+  //       this.isDeleteFail = true;
+  //       this.backendErrorHandler(err);
+  //     }
+  //   );
+  // }
 
   backendErrorHandler(err) {
     console.warn(err)

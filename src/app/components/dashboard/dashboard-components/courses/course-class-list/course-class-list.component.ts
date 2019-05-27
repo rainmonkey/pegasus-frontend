@@ -50,10 +50,12 @@ export class CourseClassListComponent implements OnInit {
         this.courseClassLists = res['Data'];
         this.courseClassLists.forEach(element => {
           element.CourseName = element.Course.CourseName;
+          element.OrgId = element.Org.OrgId;
           element.OrgName = element.Org.OrgName;
+          element.RoomId = element.Room.RoomId;
           element.RoomName = element.Room.RoomName;
-          element.TeacherFirstName = element.Teacher.FirstName;   
-          element.TeacherLastName = element.Teacher.LastName;
+          element.TeacherId = element.Teacher.TeacherId;
+          element.TeacherName = element.Teacher.FirstName + ' ' + element.Teacher.LastName;
         });
         this.coursesListCopy = this.courseClassLists;
         this.coursesClassListLength = res['Data'].length; //length prop is under Data prop

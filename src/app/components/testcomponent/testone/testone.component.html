@@ -1,3 +1,6 @@
-<div class="loaderLarge"></div>
-<br><br><br>
-<div class="loaderSmall"></div>
+<form [formGroup]="poi" (click)="onSubmit()">
+<select formControlName="TermId">
+    <option *ngFor="let i of qweqwe" value="{{i.TermId}}">{{i.TermId}}</option>
+</select>
+<button type="submit">飞一样的感觉</button>
+</form>

@@ -56,4 +56,22 @@ export class CoursesService {
   deleteCourseClass(GroupCourseInstanceId):any{
     return this.http.delete(this.baseUrl + 'GroupCourseInstance/' + GroupCourseInstanceId);
   }  
+  /* For dropdown options*/
+  getCourseNames():any{
+    return this.http.get(this.baseUrl + 'courses');
+  }
+  getTeachers():any{
+    return this.http.get(this.baseUrl + 'teacher');
+  }
+  getLocationsRooms():any{
+    return this.http.get(this.baseUrl + 'room');
+  }
+
+
+  getoioi():any{
+    return this.http.get('http://192.168.178.96:5000/api/payment');
+  }
+  postoioi(data, TermId):any{
+    return this.http.put('http://192.168.178.96:5000/api/payment/'+ TermId, data)
+  }
 }
