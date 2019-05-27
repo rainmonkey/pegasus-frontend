@@ -85,6 +85,7 @@ import { TeacherCourseModalComponent } from './components/dashboard/dashboard-co
 import { ChartingComponent } from './components/dashboard/dashboard-components/support/charting/charting.component';
 import { RatingModalComponent } from './components/dashboard/dashboard-components/support/rating-modal/rating-modal.component';
 import { ForgotPasswordModalComponent } from './components/basic/forgot-password-modal/forgot-password-modal.component';
+import { ChangePasswordModalComponent } from './components/dashboard/dashboard-components/support/change-password-modal/change-password-modal.component';
 
 
 
@@ -159,7 +160,8 @@ import { ForgotPasswordModalComponent } from './components/basic/forgot-password
     TeacherCourseModalComponent,
     ChartingComponent,
     RatingModalComponent,
-    ForgotPasswordModalComponent
+    ForgotPasswordModalComponent,
+    ChangePasswordModalComponent
   ],
   imports: [
     NgbModule,
@@ -195,7 +197,8 @@ import { ForgotPasswordModalComponent } from './components/basic/forgot-password
     SessionCancelModalComponent,
     SessionCompletedModalComponent,
     RatingModalComponent,
-    ForgotPasswordModalComponent
+    ForgotPasswordModalComponent,
+    ChangePasswordModalComponent
   ],
   exports: [AppComponent],
   bootstrap: [AppComponent]
