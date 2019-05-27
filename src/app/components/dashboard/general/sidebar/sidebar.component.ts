@@ -27,4 +27,10 @@ export class SidebarComponent implements OnInit {
       (res)=>{this.navitem = res;}
     )
   }
+
+  // Method to assign sidebar data
+  processData(res){
+    // console.log(res.Data);
+    this.navitem = res.Data;
+  }
 }
