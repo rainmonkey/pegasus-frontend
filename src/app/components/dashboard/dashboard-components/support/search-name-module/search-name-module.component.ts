@@ -19,6 +19,7 @@ export class SearchNameModuleComponent implements OnInit {
   public errorMsg;
   public show: boolean;
   public payPath;
+  errorAlert = false;
   // ng-modal variable
   closeResult: string;
 
@@ -106,10 +107,16 @@ export class SearchNameModuleComponent implements OnInit {
           this.onChangePath(this.learners.LearnerId);
         }
       },
-        (error) =>
-          // alert(error);
+        (error) =>{
           console.log(error)
+          this.errorAlert = true;
+          this.errorMsg = error.error;
+        }
       );
+  }
+  // close alert
+  closeErro(){
+    this.errorAlert = false;
   }
 
   onChangePath(id) {
