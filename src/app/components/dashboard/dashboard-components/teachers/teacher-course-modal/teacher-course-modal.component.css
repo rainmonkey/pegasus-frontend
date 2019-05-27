@@ -49,3 +49,14 @@
     border-radius:5px;
     outline: none;
 }
+.t_cm_name{
+    font-weight: bold; 
+    margin-bottom: 0px;
+    text-align: center;
+    border-bottom: 1px solid lightgrey;
+    background:#f3f1f1;
+    font-size: 14px;
+}
+.t_cm_table_striped:nth-child(2n){
+    background: rgb(173, 216, 230, 0.25);
+}

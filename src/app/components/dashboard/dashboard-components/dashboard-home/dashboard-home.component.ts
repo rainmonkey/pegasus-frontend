@@ -178,7 +178,7 @@ export class DashboardHomeComponent implements OnInit, AfterViewInit {
 
   // This is called just before the component is destoryed
   ngOnDestory(){
-
+    this.lookUpList.unsubscribe()
   }
 
 }

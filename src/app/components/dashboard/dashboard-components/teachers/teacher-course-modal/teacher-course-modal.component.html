@@ -51,8 +51,7 @@
         <div *ngFor='let i of coursesByTeacher' class='col-6'>
           <div class='t_cm_course' style="margin:5px">
             <div class='row'>
-              <div class='col-12 t_cm_label_title'
-                style="text-align: center;border-bottom: 1px solid lightgrey;background:#f3f1f1">
+              <div class='col-12 t_cm_name'>
                 {{i.Course.CourseName}}
               </div>
             </div>
@@ -97,7 +96,7 @@
                     <div class='col-1'>tick:</div>
 
                   </div>
-                  <div *ngFor='let j of displayCourse(i.CourseCategoryName)' class='col-12'>
+                  <div *ngFor='let j of displayCourse(i.CourseCategoryName)' class='col-12 t_cm_table_striped'>
                     <div class='row' style="text-align: center">
                       <div class='col-3'>{{j.CourseName}}</div>
                       <div class='col-3'>{{j.LevelName}}</div>

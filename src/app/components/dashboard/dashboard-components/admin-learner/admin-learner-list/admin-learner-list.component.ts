@@ -132,12 +132,12 @@ export class AdminLearnerListComponent implements OnInit {
     case 1:
       this.detailModal(command, whichLearner)
       break;
+   
     case 3:
       this.deleteModal(command, whichLearner);
       break;
   }
 }
-
 
 
 /*
@@ -146,9 +146,14 @@ export class AdminLearnerListComponent implements OnInit {
 deleteModal(command, whichLearner) {
   const modalRef = this.modalService.open(LearnerDeleteModalComponent);
   let that = this;
-  modalRef.result.then(function(){
-    that.ngOnInit()
-  })
+  modalRef.result.then(
+    (res) => {
+        that.ngOnInit()
+    },
+    (err) =>{
+      return
+    }
+  )
   modalRef.componentInstance.command = command;
   modalRef.componentInstance.whichLearner = whichLearner;
 }

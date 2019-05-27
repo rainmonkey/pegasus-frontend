@@ -35,7 +35,7 @@ export class LearnerRegistrationService {
   }
   // post student's data to server and catch error from server
   postStudent(student: any): Observable<any> {
-    return this.http.post<any>(this.url, student)
+    return this.http.post<any>(this.baseUrl + 'learner', student)
                .pipe(
                  catchError(this.errorHandler)
                );

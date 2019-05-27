@@ -13,57 +13,74 @@
 
   <!--modal body-->
   <div class="modal-body">
-    <form [formGroup]="invoiceEditForm" class="justify-content-between">
+    <form [formGroup]="SessionForm" class="justify-content-between">
       <div class="form-group row justify-content-center">
         <div class="col-5">
           <div>
             <label class="mt-2">Course Name</label>
-            <input class="form-control" type="text" formControlName="CourseName"/>
-            <!-- <small *ngIf="invoiceEditForm.get('CourseName').touched && invoiceEditForm.get('CourseName').invalid">(Course Name)</small> -->
+            <input readonly class="form-control" type="text" formControlName="CourseName"/>
           </div>
           <div>
-            <label class="mt-2">Begining at</label>
-            <input class="form-control" type="text" formControlName='BeginTime'/>
-            <!-- <small *ngIf="invoiceEditForm.get('BeginTime').touched">(Begining Date)</small> -->
+            <label class="mt-2">Room</label>
+            <select [class.is-invalid]="Room.invalid && Room.touched" class="form-control" type="text" formControlName='Room'>
+<!--              <option selected disabled [value]="LessonModel.Room">{{LessonModel.Room}}</option>-->
+              <option *ngFor="let room of RoomSelects" [value]="room.RoomId">{{room.RoomName}}</option>
+            </select>
+            <small class="text-danger" *ngIf="Room.invalid && Room.touched">Please select the Room</small>
           </div>
         </div>
 
         <div class="col-5">
           <div>
-            <label class="mt-2">Room</label>
-            <input class="form-control" type="number" formControlName="Room"/>
-            <!-- <small *ngIf="invoiceEditForm.get('Room').touched">(Lesson quantity)</small> -->
+            <label class="mt-2">Branch</label>
+            <select [class.is-invalid]="Branch.invalid && Branch.touched" class="form-control" type="text" (change)="getRooms($event.target.value)" (change)="getTeachers($event.target.value)" formControlName="Branch" >
+<!--              <option selected disabled [value]="LessonModel.Branch">{{LessonModel.Branch}}</option>-->
+              <option *ngFor="let branch of BranchSelects" [value]="branch.OrgId">
+                {{branch.OrgName}}
+              </option>
+            </select>
+            <small class="text-danger" *ngIf="Branch.invalid && Branch.touched">Please select the branch</small>
           </div>
           <div>
             <label class="mt-2">Teacher</label>
-            <input class="form-control" type="text" formControlName="Teacher"/>
-            <!-- <small *ngIf="invoiceEditForm.get('Teacher').touched">(Lesson Fee)</small> -->
+            <select [class.is-invalid]="Teacher.invalid && Teacher.touched" class="form-control" type="text" formControlName="Teacher">
+<!--              <option selected disabled [value]="LessonModel.TeacherFirstName">{{LessonModel.TeacherFirstName}}</option>-->
+              <option *ngFor="let teacher of TeacherSelects" [value]="teacher.TeacherId">{{teacher.TeacherName}}</option>
+            </select>
+            <small class="text-danger" *ngIf="Teacher.invalid && Teacher.touched">Please select the teacher</small>
           </div>
         </div>
         <div class="col-5">
-            <label class="mt-2">Branch</label>
-            <input class="form-control" type="text" formControlName="Branch"/>
-            <!-- <small *ngIf="invoiceEditForm.get('Branch').touched">(Other1 Fee)</small> -->
+            <label class="mt-2">Begining at</label>
+            <input class="form-control" [value]="LessonModel.BeginTime" type="datetime-local" formControlName="BeginTime"/>
           </div>
-        <div class='col-5'></div>
+        <div class='col-5'>
+          <label class="mt-2">Ending at</label>
+          <input class="form-control" [value]="LessonModel.EndTime" type="datetime-local" formControlName="EndTime"/>
+        </div>
+        <div class="col-10">
+          <label class="mt-2">Reason</label>
+          <input [class.is-invalid]="Reason.invalid && Reason.touched"class="form-control" type="text" formControlName="Reason"/>
+          <small class="text-danger" *ngIf="Reason.invalid&&Reason.touched">Reason is required</small>
+        </div>
       </div>
     </form>
   </div>
 
   <!--modal footer-->
   <div class="modal-footer">
+    <span *ngIf='isEditSuccess' class='text-success'>Edit Success </span>
+    <span *ngIf='isEditFail' class='text-danger'>Edit Fail </span>
+    <span *ngIf="hasError" class='text-danger'>{{errorMsg}}</span>
     <button
+      *ngIf="!isEditSuccess"
+      (click)="open(confirmModal)"
       type="button"
       class="btn btn-outline-dark"
-      (click)="sendMail(confirmModal)"
       id="save"
     >
       Confirm
     </button>
-    <br />
-    <small *ngIf="errMsgO" class="text-danger"
-      >Please enter a validate number of the transaction</small
-    >
     <button
       type="button"
       class="btn btn-outline-dark"
@@ -72,9 +89,6 @@
       Close
     </button>
   </div>
-  <!-- ng bootstrap alert -->
-  <ngb-alert *ngIf='successAlert' type="success" (close)="closeSucc()">Your Edit has succeed</ngb-alert>
-  <ngb-alert *ngIf='errorAlert' type="danger" (close)="closeErro()">{{ errorMsg.ErrorCode }}</ngb-alert>
 
   <ng-template #confirmModal let-modal>
     <div class="modal-header m-2">
@@ -95,7 +109,7 @@
       </div>
     </div>
     <div class="modal-footer">
-      <button type="button" class="btn btn-dark" (click)="modal.close('Save')">
+      <button type="button" class="btn btn-dark" (click)="ConfrimEdit()" (click)="modal.close('Save')">
         Confirm
       </button>
       <button

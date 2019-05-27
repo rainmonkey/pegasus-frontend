@@ -8,7 +8,8 @@ import { LookUpsService } from 'src/app/services/http/look-ups.service';
 @Component({
   selector: 'app-teacher-course-modal',
   templateUrl: './teacher-course-modal.component.html',
-  styleUrls: ['./teacher-course-modal.component.css']
+  styleUrls: ['./teacher-course-modal.component.css',
+              '../teacher-panel/teacher-panel.component.css']
 })
 export class TeacherCourseModalComponent implements OnInit {
   public CourseForm;
@@ -195,7 +196,6 @@ export class TeacherCourseModalComponent implements OnInit {
   }
 
   onSubmit() {
-    console.log(this.oneOnoneWage)
     for (let i in this.CourseForm.controls) {
       this.CourseForm.controls[i].touched = true;
     }
@@ -246,7 +246,6 @@ export class TeacherCourseModalComponent implements OnInit {
       (res) => {
         this.loadingGifFlag = false;
         this.isSuccess = true;
-        //console.log(res)
       },
       (err) => {
         this.loadingGifFlag = false;
