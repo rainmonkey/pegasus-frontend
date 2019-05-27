@@ -53,10 +53,11 @@ export class LearnerRegistrationFormComponent implements OnInit {
   public oneOnOneCourse: Array<any> = [];
   public courseTime: any;
   public learnerOthers: any[] = [];
-  public learnerlevelType: any;
+  public learnerlevelType: any = 'type 1';
   public duration: Array<any>;
   public selectlearnerLevel: number;
   public pureCourses: any[];
+  myDate;
   public
   courses121;
   courseTemp;
@@ -129,6 +130,8 @@ export class LearnerRegistrationFormComponent implements OnInit {
     }),
   }); }
   ngOnInit() {
+    // init date
+    this.getDate();
     this.registrationForm = this.fb.group({
       learnerForm: this.fb.group({
         firstName: ['www', Validators.required],
@@ -136,7 +139,7 @@ export class LearnerRegistrationFormComponent implements OnInit {
         lastName: ['li', Validators.required],
         gender: ['2', Validators.required],
         birthday: ['2018-01-01'],
-        enrollmentDate: ['2018-12-21'],
+        enrollmentDate: [this.myDate()],
         contactPhone: ['012345678'],
         email: ['jijoir@gamil.com', [Validators.required, Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$')]],
         address: ['1188 Station'],
@@ -146,7 +149,7 @@ export class LearnerRegistrationFormComponent implements OnInit {
         infoFrom: [''],
         learnerLevel: [this.selectlearnerLevel],
         location: ['', Validators.required],
-        levelType: [this.learnerlevelType],
+        levelType: [''],
         paymentPeriod: [''],
         referrer: ['']
 
@@ -168,19 +171,29 @@ export class LearnerRegistrationFormComponent implements OnInit {
     // let abc = this.customCourse.controls[0].controls.roomArray;
 
     // initialize card display
-    document.getElementById('learnerForm').style.display = 'none';
+    document.getElementById('learnerForm').style.display = 'block';
     document.getElementById('parentForm').style.display = 'none';
-    document.getElementById('courseForm').style.display = 'block';
+    document.getElementById('courseForm').style.display = 'none';
 
     this.getGroupCourseFromServer();
     this.getLookups(1);
     this.toModel(this.time);
-    this.getCoursesFromServer();
+    this.getLocationFromServer();
     // init array
     this.initArrays()
   }
 
-
+  getDate(){
+    this.myDate = () => {
+      const Dates = new Date();
+      const year: number = Dates.getFullYear();
+      const month: any = ( Dates.getMonth() + 1 ) < 10 ? '0' + ( Dates.getMonth() + 1 ) : ( Dates.getMonth() + 1 );
+      const day: any = Dates.getDate() < 10 ? '0' + Dates.getDate() : Dates.getDate();
+      console.log( Dates, year, month,)
+      return year + '-' + month + '-' + day;
+    };
+    console.log(this.myDate())
+  }
 
   private pad(i: number): string {
     return i < 10 ? `0${i}` : `${i}`;
@@ -211,8 +224,16 @@ export class LearnerRegistrationFormComponent implements OnInit {
 
   uploadGrade(event: any) {
     this.selectedGrade = <File>event.target.files[0];
-    console.log('ABRSM', this.selectedGrade);
-    this.fd.append('ABRSM', this.selectedGrade);
+    this.fd.append('grade', this.selectedGrade);
+    let photoRender = this.selectedGrade;
+    this.photoObj = document.querySelector('#certificate');
+    let that = this;
+    let reader = new FileReader();
+    reader.onloadend = function () {
+      console.log(this.result)
+      that.photoObj.setAttribute("src", this.result.toString());
+    }
+    reader.readAsDataURL(photoRender);
   }
   getCoursesFromServer() {
     this.coursesService.getCourses().subscribe(
@@ -221,23 +242,31 @@ export class LearnerRegistrationFormComponent implements OnInit {
         // get one to one courses
         this.courses121 = res.Data.filter(item => item.CourseType === 1);
         // apply learner level filter
-        this.catItemArray = this.courses121.filter((item) => item.Level === this.selectlearnerLevel);
+        this.catItemArray = this.courses121.filter((item) => item.Level == this.selectlearnerLevel);
         // this.catItemArray = this.courses121.filter((item) => item.Level === 0);
         // push item to list
         this.catListArray.push(this.catItemArray);
+        console.log(this.catListArray)
       });
   }
+  getLocationFromServer(){
+    this.coursesService.getOrgs().subscribe(
+      (res) => {
+        this.locations = res['Data'];
+      }
+    )
+  }
   getLookups(id: number) {
-    // this.registrationService.getLookups(1)
-    //   .subscribe(
-    //     data => {
-    //       console.log('teacher info', data);
-    //       this.learnerPurpose = data.Data;
-    //     },
-    //     err => {
-    //       console.log('teacher info err', err);
-    //     }
-    //   );
+    this.registrationService.getLookups(1)
+      .subscribe(
+        data => {
+          console.log('teacher info', data);
+          this.learnerPurpose = data.Data;
+        },
+        err => {
+          console.log('teacher info err', err);
+        }
+      );
     this.registrationService.getLookups(2)
       .subscribe(
         data => {
@@ -286,11 +315,13 @@ export class LearnerRegistrationFormComponent implements OnInit {
   }
   selectLearnerLevel(value) {
     this.customCourse.reset();
-    this.parentForm.controls.forEach((item, index)=>{
-       this.parentForm.removeAt(index);
-    })
+    this.customCourse.controls.forEach((item, index)=>{
+       this.customCourse.removeAt(index);
+    });
+    this.customCourse.push(this.courseIntanceGroup)
     this.isSelectedLevel = true;
     this.selectlearnerLevel = value;
+    this.getCoursesFromServer();
     // let a = this.courses.filter((e) =>  this.selectlearnerLevel == e.Level);
 
   }
@@ -374,7 +405,7 @@ export class LearnerRegistrationFormComponent implements OnInit {
   }
 
   selectLevelType(value) {
-    this.learnerlevelType = value;
+    this.learnerlevelType = Number(value);
     console.log('learner type', this.learnerlevelType)
   }
   emptySelection(i){
@@ -463,6 +494,7 @@ export class LearnerRegistrationFormComponent implements OnInit {
   }
 
   onSubmit() {
+    console.log(this.learnerlevelType)
     // encapsulate learner form data
     this.learner = this.learnerForm.value;
     this.fdObj['FirstName'] = this.learner.firstName;
