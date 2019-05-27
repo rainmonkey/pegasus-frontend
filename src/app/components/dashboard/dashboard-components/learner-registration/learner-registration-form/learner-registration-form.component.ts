@@ -53,7 +53,7 @@ export class LearnerRegistrationFormComponent implements OnInit {
   public oneOnOneCourse: Array<any> = [];
   public courseTime: any;
   public learnerOthers: any[] = [];
-  public learnerlevelType: any = 'type 1';
+  public learnerlevelType: any;
   public duration: Array<any>;
   public selectlearnerLevel: number;
   public pureCourses: any[];
