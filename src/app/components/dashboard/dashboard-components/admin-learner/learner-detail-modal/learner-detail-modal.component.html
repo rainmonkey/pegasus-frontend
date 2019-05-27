@@ -8,22 +8,15 @@
   </button>
 </div>
 
-<!--modal body-->
-<!-- <div>
-  <app-learner-modal-form [command]='command' [whichLearner]='whichLearner'></app-learner-modal-form>
-</div> -->
 <div class='modal-body'>
   <div>
     <h4>Student Information</h4>
-    <!--缺 人物照片 -->
     <div class="row lable-pos">
       <div class="col-5">
         <p style="font-weight: bold">Student Photo</p>
         <div>
-          <!-- <img src="src/assets/images/shared/default-employer-profile.png" > -->
           <img class="imageSize" src="http://gradspace.org:5000/{{whichLearner.Photo}}"
             (error)='setDefaultPhoto($event)'>
-
         </div>
       </div>
 
@@ -31,7 +24,7 @@
         <p style="font-weight: bold">ABRSM Certific</p>
         <div>
           <img class="G5imageSize" src="http://gradspace.org:5000/{{whichLearner.G5Certification}}"
-            (error)='setDefaultPhoto($event)'>
+            (error)='setDefaultPhoto1($event)'>
         </div>
       </div>
 
@@ -59,7 +52,7 @@
         <span class="label">Date of Birth: </span>
         <span class='text'>{{whichLearner.Dob}}</span>
       </div>
-
+      <br>
       <div class="col-6">
         <span class="label">Date of Enrollment: </span>
         <span class='text'>{{whichLearner.EnrollDate}}</span>
@@ -89,8 +82,6 @@
         <span class="label">Current Level: </span>
         <span class='text'>{{whichLearner.LearnerLevel}}</span>
       </div>
-
-
     </div>
   </div>
 
@@ -98,17 +89,12 @@
   <div>
     <h4>Parent Information</h4>
     <div class="row lable-pos" *ngFor="let learnerParent of whichLearner.Parent">
-      <div class="col-4">
-        <span class="label">First Name: </span>
-        <span class='text'>{{learnerParent.FirstName}}</span>
+      <div class="col-6">
+        <span class="label">Name: </span>
+        <span class='text'>{{learnerParent.FirstName}} {{learnerParent.LastName}}</span>
       </div>
 
-      <div class="col-4">
-        <span class="label">Last Name: </span>
-        <span class='text'>{{learnerParent.LastName}}</span>
-      </div>
-
-      <div class="col-4">
+      <div class="col-6">
         <span class="label">Relationship: </span>
         <span class='text'>{{learnerParent.Relationship | relationship}}</span>
       </div>
@@ -122,10 +108,7 @@
         <span class="label">Email: </span>
         <span class='text'>{{learnerParent.Email}}</span>
       </div>
-
     </div>
-
-
   </div>
 
   <hr>
@@ -133,105 +116,107 @@
     <h4>Course</h4>
     <div>
       <div class="row lable-pos">
-
-        <button class="button-margin" (click)="chooseGroupCourse()">Group Course</button>
-        <button (click)="chooseCustomCourse()">One-on-One Course</button>
+        <button class="button-margin btn btn-outline-primary" (click)="chooseGroupCourse()">Group Course</button>
+        <button class=' btn btn-outline-primary' (click)="chooseCustomCourse()">One-on-One Course</button>
       </div>
 
       <div *ngIf='isGroupCourse'>
-        <div class='label1'>Group Course</div>
         <div *ngFor='let groupCourse of whichLearner.LearnerGroupCourse '>
-          <div class="row">
+          <br>
+          <div class="card">
+            <div class="card-body">
+              <div class="row">
+                <div class="col-6">
+                  <span class="label">Course: </span>
+                  <span class='text'>{{groupCourse.GroupCourseInstance.Course.CourseName}}</span>
+                </div>
 
-            <div class="col-6">
-              <span class="label">Course: </span>
-              <span class='text'>{{groupCourse.GroupCourseInstance.Course.CourseName}}</span>
+                <div *ngIf='groupCourse.GroupCourseInstance.Org' class="col-6">
+                  <span class="label">Location: </span>
+                  <span class='text'>{{groupCourse.GroupCourseInstance.Org.OrgName}}</span>
+                </div>
+
+                <div class="col-6">
+                  <div *ngFor='let room of groupCourse.GroupCourseInstance.Org.Room'>
+                    <span class="label">Room: </span>
+                    <span class='text'>
+                      {{room.RoomName}}
+                    </span>
+                  </div>
+                </div>
+
+                <div class="col-6">
+                  <span class="label">Teacher: </span>
+                  <span class='text'>{{groupCourse.GroupCourseInstance.Teacher.FirstName}}
+                    {{groupCourse.GroupCourseInstance.Teacher.LastName}}
+                  </span>
+                </div>
+
+                <div class="col-6">
+                  <span class="label">Schedule: </span>
+                  <div *ngFor='let time of groupCourse.GroupCourseInstance.CourseSchedule'>
+                    <span class='text'>{{time.DayOfWeek|weekFormat}}
+                      {{time.BeginTime}} -- {{time.EndTime}}</span>
+                  </div>
+                </div>
+              </div>
             </div>
-
-            <div *ngIf='groupCourse.GroupCourseInstance.Org' class="col-6">
-              <span class="label">Location: </span>
-              <span class='text'>{{groupCourse.GroupCourseInstance.Org.OrgName}}</span>
-            </div>
-
-            <div class="col-6">
-              <span class="label">Room: </span>
-              <span class='text'>{{groupCourse.GroupCourseInstance.Org.Room.RommName}}</span>
-            </div>
-
-            <div class="col-6">
-              <span class="label">Teacher: </span>
-              <span class='text'>{{groupCourse.GroupCourseInstance.Teacher.FirstName}}
-                {{groupCourse.GroupCourseInstance.Teacher.LastName}}
-              </span>
-            </div>
-
-            <div class="col-6">
-              <span class="label">Schedule: </span>
-              <div *ngFor='let time of groupCourse.GroupCourseInstance.CourseSchedule'>
-                <span class='text'>{{time.DayOfWeek|weekFormat}}
-                  {{time.BeginTime}} -- {{time.EndTime}}</span>
-              </div><br>
-            </div>
-
           </div>
         </div>
       </div>
 
       <!-- one2one Course -->
       <div *ngIf='isCustomCourse'>
-        <div class="label1">One-on-One Course</div>
+
         <div *ngFor="let ele of whichLearner.One2oneCourseInstance">
-          <div class="row">
+          <br>
+          <div class="card">
+            <div class="card-body">
+              <div class="row">
+                <div class="col-6">
+                  <span class="label">Course: </span>
+                  <span class='text'>{{ele.Course.CourseName}}</span>
+                </div>
 
-            <div class="col-6">
-              <span class="label">Course: </span> 
-              <span class ='text'>{{ele.Course.CourseName}}</span>
-            </div>
+                <div class="col-6">
+                  <span class="label">Teacher Name: </span>
+                  <span class='text'>{{ele.Teacher.FirstName}} {{ele.Teacher.LastName}}</span>
+                </div>
 
-            <div class="col-6">
-              <span class="label">Teacher Name: </span> 
-              <span class ='text'>{{ele.Teacher.FirstName}} {{ele.Teacher.LastName}}</span>
-            </div>
+                <div *ngIf='ele.Org' class="col-6">
+                  <span class="label">Location: </span>
+                  <span class='text'>{{ele.Org.OrgName}}</span>
+                </div>
 
-            <div *ngIf='ele.Org' class="col-6">
-              <span class="label">Location: </span> 
-              <span class ='text'>{{ele.Org.OrgName}}</span>
-            </div>
+                <div class="col-6">
+                  <div *ngFor='let room of ele.Org.Room'>
+                    <span class="label">Room: </span>
+                    <span class='text'> {{room.RoomName}}</span>
+                  </div>
+                </div>
 
-            <div class="col-6">
-              <div *ngFor='let room of ele.Org.Room'>
-                <span class="label">Room: </span>
-                <span class ='text'> {{room.RoomName}}</span>
+                <div class="col-6">
+                  <span class="label">Course Start Day: </span>
+                  <span class='text'>{{ele.BeginDate}}</span>
+                </div>
+
+                <div class="col-6">
+                  <span class="label">Course End Day: </span>
+                  <span class='text'>{{ele.EndDate}}</span>
+                </div>
+
+                <div class="col-6">
+                  <span class="label">Course Sechdule: </span>
+                  <div *ngFor='let sechdule of ele.CourseSchedule'>
+                    <span class='text'> {{sechdule.DayOfWeek|weekFormat}}
+                      {{sechdule.BeginTime}} -- {{sechdule.EndTime}} </span>
+                  </div>
+                </div>
               </div>
             </div>
-
-            <div class="col-6">
-              <span class="label">Course Start Day: </span> 
-              <span class ='text'>{{ele.BeginDate}}</span>
-            </div>
-
-            <div class="col-6">
-              <span class="label">Course End Day: </span> 
-              <span class ='text'>{{ele.EndDate}}</span>
-            </div>
-
-            <div class="col-6">
-              <span class="label">Course Sechdule: </span>
-              <div *ngFor='let sechdule of ele.CourseSchedule'>
-                  <span class ='text'> {{sechdule.DayOfWeek|weekFormat}}
-                {{sechdule.BeginTime}} -- {{sechdule.EndTime}} </span>
-              </div><br>
-            </div>
-
-
-
-
           </div>
-          
-
         </div>
       </div>
-
     </div>
   </div>
 
@@ -247,7 +232,7 @@
         </div>
         <div *ngFor='let ele of otherValueList'>
           <div>
-              <span class ='text'> {{ele}}</span>
+            <span class='text'> {{ele}}</span>
           </div>
         </div>
       </div>
@@ -259,18 +244,13 @@
         <div>
           <div *ngFor='let ele of howKnowList'>
             <div>
-                <span class ='text'> {{ele}}</span>
+              <span class='text'> {{ele}}</span>
             </div>
           </div>
         </div>
       </div>
     </div>
-
   </div>
-
-
-
-
 </div>
 
 <!--modal footer-->

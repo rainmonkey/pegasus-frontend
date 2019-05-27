@@ -1,21 +1,26 @@
-<!--modal header-->
-<div class='modal-header'>
-  <h4 *ngIf='command == 0' class='modal-title'>{{command | commandFormat}}</h4>
-  <h4 *ngIf='command == 2' class="modal-title">{{command | commandFormat}} of <span class='t_um_title'>{{whichTeacher.FirstName}} {{whichTeacher.LastName}}</span></h4>
-  <button type="button" class='btn btn-sm btn-info tl_um_close_btn' aria-label="Close"  (click)="activeModal.close('Cross click')">
-    <span aria-hidden="true">&times;</span>
-  </button>
-</div>
+<div data-keybord='false' data-backdrop='static'>
+  <!--modal header-->
+  <div class='modal-header'>
+    <h4 *ngIf='command == 0' class='modal-title'>{{command | commandFormat}}</h4>
+    <h4 *ngIf='command == 2' class="modal-title">{{command | commandFormat}} of <span
+        class='t_um_title'>{{whichTeacher.FirstName}} {{whichTeacher.LastName}}</span></h4>
+    <button type="button" class='btn btn-sm btn-info tl_um_close_btn' aria-label="Close"
+      (click)="onClose()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
 
-<!--modal body-->
-<div class='modal-body'>
-  <app-teacher-modal-form #modalUpdateFormComponent [command]='command' [whichTeacher]='whichTeacher'></app-teacher-modal-form>
-</div>
+  <!--modal body-->
+  <div class='modal-body'>
+    <app-teacher-modal-form #modalUpdateFormComponent [command]='command' [whichTeacher]='whichTeacher'>
+    </app-teacher-modal-form>
+  </div>
 
-<!--modal footer-->
-<div class='modal-footer'>
-  <div *ngIf='loadingGifFlag' class="loaderSmall"></div>
-  <span class='m_um_error_msg errorfont' [style.color]="messageColor">{{infoMessage}}</span>
-  <button *ngIf='submitionFlag' type='button' class='btn btn-outline-dark' (click)='onSubmit()'>Save</button>
-  <button type="button" class="btn btn-outline-dark"  (click)="activeModal.close('Cross click')">Close</button>
+  <!--modal footer-->
+  <div class='modal-footer'>
+    <div *ngIf='loadingGifFlag' class="loaderSmall"></div>
+    <span class='m_um_error_msg errorfont' [style.color]="messageColor">{{infoMessage}}</span>
+    <button *ngIf='submitionFlag' type='button' class='btn btn-outline-dark' (click)='onSubmit()'>Save</button>
+    <button type="button" class="btn btn-outline-dark" (click)="onClose()">Close</button>
+  </div>
 </div>

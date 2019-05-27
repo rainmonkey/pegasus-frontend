@@ -1,7 +1,7 @@
 import { TeacherDetailModalComponent } from './../teacher-detail-modal/teacher-detail-modal.component';
 import { TeacherUpdateModalComponent } from './../teacher-update-modal/teacher-update-modal.component';
 import { NgbootstraptableService } from '../../../../../services/others/ngbootstraptable.service';
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, Input } from '@angular/core';
 import { TeachersService } from '../../../../../services/http/teachers.service';
 import { NgbModal, NgbModalRef, NgbPagination } from '@ng-bootstrap/ng-bootstrap';
 import { TeacherDeleteModalComponent } from '../teacher-delete-modal/teacher-delete-modal.component';
@@ -222,29 +222,34 @@ export class TeacherInfoComponent implements OnInit {
     update modal
   */
   updateModal(command, whichTeacher) {
-    const modalRef = this.modalService.open(TeacherUpdateModalComponent, { size: 'lg' });
+    const modalRef = this.modalService.open(TeacherUpdateModalComponent, { size: 'lg', backdrop: 'static', keyboard: false });
     let that = this;
-    modalRef.result.then(
-      function (event) {
-        console.log(event)
-        that.ngOnInit();
-      },
-      function () {
-        return;
-      })
     modalRef.componentInstance.command = command;
     modalRef.componentInstance.whichTeacher = whichTeacher;
+    modalRef.componentInstance.refreshFlag.subscribe(
+      (res) => {
+        modalRef.result.then(
+          function () {
+            if(res == true){
+              that.ngOnInit();
+            }
+          },
+          function () {
+            return;
+          })
+      }
+    )
   }
 
   courseModal(command, whichTeacher) {
-    const modalRef = this.modalService.open(TeacherCourseModalComponent, { size: 'lg' });
+    //                                                                               禁止点击外部或使用esc关闭modal
+    const modalRef = this.modalService.open(TeacherCourseModalComponent, { size: 'lg', backdrop: 'static', keyboard: false });
     let that = this;
     modalRef.result.then(
       function (event) {
-        console.log(event)
         that.ngOnInit();
       },
-      function () {
+      function (event) {
         return;
       })
     modalRef.componentInstance.command = command;
@@ -259,15 +264,21 @@ export class TeacherInfoComponent implements OnInit {
     delete modal
   */
   deleteModal(command, whichTeacher) {
-    const modalRef = this.modalService.open(TeacherDeleteModalComponent, { size: 'lg' });
+    const modalRef = this.modalService.open(TeacherDeleteModalComponent, { size: 'lg', backdrop: 'static', keyboard: false });
     let that = this;
-    modalRef.result.then(
-      function () {
-        that.ngOnInit();
-      },
-      function () {
-        that.ngOnInit();
-      })
+    modalRef.componentInstance.refreshFlag.subscribe(
+      (res) => {
+        modalRef.result.then(
+          function () {
+            if(res == true){
+              that.ngOnInit();
+            }
+          },
+          function () {
+            return;
+          })
+      }
+    )
     modalRef.componentInstance.command = command;
     modalRef.componentInstance.whichTeacher = whichTeacher;
   }
