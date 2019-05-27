@@ -33,3 +33,30 @@
     border:1px solid lightgrey;
     border-radius: 3px;
 }
+.t_cm_course_dropdown:hover{
+    cursor: pointer;
+}
+.t_info_table_btn{
+    position: absolute;
+    left: 30px;
+}
+.t_info_table_btn:hover{
+    cursor: pointer;
+    color: rgb(91, 194, 228);
+}
+.t_cm_error_border{
+    border: 1px solid #dc3545;
+    border-radius:5px;
+    outline: none;
+}
+.t_cm_name{
+    font-weight: bold; 
+    margin-bottom: 0px;
+    text-align: center;
+    border-bottom: 1px solid lightgrey;
+    background:#f3f1f1;
+    font-size: 14px;
+}
+.t_cm_table_striped:nth-child(2n){
+    background: rgb(173, 216, 230, 0.25);
+}

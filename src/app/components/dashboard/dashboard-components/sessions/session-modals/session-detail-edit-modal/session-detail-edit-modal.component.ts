@@ -1,10 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { FormBuilder, Validator, Validators, RequiredValidator } from '@angular/forms';
 import { TransactionService } from '../../../../../../services/http/transaction.service';
-import { TeachersService } from '../../../../../../services/http/teachers.service';
-import { PaymentService } from 'src/app/services/http/payment.service';
+import {SessionsService} from '../../../../../../services/http/sessions.service';
+import {SessionEdit} from '../../../../../../models/SessionEdit';
 
 @Component({
   selector: 'app-session-detail-edit-modal',
@@ -12,103 +12,100 @@ import { PaymentService } from 'src/app/services/http/payment.service';
   styleUrls: ['./session-detail-edit-modal.component.css'],
 })
 export class SessionDetailEditModalComponent implements OnInit {
-  public learnerList;
+  @Input() LessonModel;
+  isEditSuccess = false;
+  isEditFail = false;
   public errorMsg;
-  public errorAlert = false;
-  public errMsgO = false;
-  public errMsgM = false;
-  public successAlert = false;
-  public staffId = 3;
-
+  public hasError = false;
+  private SessionForm;
+  BranchSelects: any;
+  RoomSelects: any;
+  TeacherSelects: any;
   constructor(
     public activeModal: NgbActiveModal,
     private fb: FormBuilder,
     public modalService: NgbModal,
     private transactionService: TransactionService,
     private router: Router,
-    private activatedRoute: ActivatedRoute
-    ) {
+    private sessionsService: SessionsService,
+    private activatedRoute: ActivatedRoute,
+  ) {
 
-     }
+  }
 
-  // invoice list fb
-  invoiceEditForm = this.fb.group({
-    EndTime: ['18:00, 5-4-2019'],
-    CourseName: ['Piano'],
-    Room: ['13'],
-    BeginTime: ['15:00, 10-4-2019'],
-    Teacher: ['Zhu'],
-    Canceled: ['No'],
-    CanceledReason: [''],
-    NoteFee: [3],
-    TrialCourse: ['No'],
-    Branch: ['AMA Pakuranga Branch']
-  });
+  // set access porperty of SessionForm
+  get Branch() {
+    return this.SessionForm.get('Branch');
+  }
+
+  get Reason() {
+    return this.SessionForm.get('Reason');
+  }
+
+  get Room() {
+    return this.SessionForm.get('Room');
+  }
+
+  get Teacher() {
+    return this.SessionForm.get('Teacher');
+  }
 
   ngOnInit() {
-    this.getInvoiceData();
-  }
-// get invoice from server
-  getInvoiceData() {
-    this.transactionService.getLearnerInvo(this.staffId).subscribe(
-      (res) => {
-        this.learnerList = res.Data;
-      },
-      error => {
-        this.errorMsg = JSON.parse(error.error);
-        console.log('Error!', this.errorMsg.ErrorCode);
-        this.errorAlert = false;
-      });
-  }
-// patch data to invoiceEditForm
-  patchToInvoice() {
-    this.invoiceEditForm.value.patch({
+    this.SessionForm = this.fb.group({
+      CourseName: [this.LessonModel.CourseName],
+      Room: ['', [Validators.required]],
+      BeginTime: [this.LessonModel.BeginTime],
+      Teacher: ['', [Validators.required]],
+      Branch: ['', [Validators.required]],
+      EndTime: [this.LessonModel.EndTime],
+      Reason: ['', [Validators.required]]
+    });
+    this.getBranchs();
 
+  }
+
+
+  getBranchs = () => {
+    this.sessionsService.GetTeachherFilter(this.LessonModel.courseId).subscribe(res=>{
+      this.BranchSelects = res.Data;
+    },err=>{
+      alert('Something ERR');
     });
   }
-  // close alert
-  closeSucc(){
-    this.successAlert = false;
-  }
-  closeErro(){
-    this.errorAlert = false;
+
+  getRooms = (branchId) => {
+    this.RoomSelects = this.BranchSelects.filter(s => s.OrgId == branchId)[0].Room;
   }
 
-// post data to server side
-  sendMail(confirmModal) {
-    this.open(confirmModal);
-    this.transactionService.update(this.invoiceEditForm.value)
-    .subscribe(
-      (res) => {
-        this.router.navigate(['../success'], {relativeTo: this.activatedRoute});
-      },
-      (error) => {
-        this.errorMsg = JSON.parse(error.error);
-        this.errorAlert = true;
-        alert(this.errorMsg.ErrorCode);
-      }
-    );
+  getTeachers = (branchId) =>{
+    this.TeacherSelects = this.BranchSelects.filter(s => s.OrgId == branchId)[0].Teacher;
   }
 
 // confirm Modal
   open(confirmModal) {
-    this.modalService
-    .open(confirmModal)
-    .result.then(
-      result => {
-        this.transactionService.update(this.invoiceEditForm.controls.value).subscribe(
-          response => {
-            console.log('Success!', response);
-            this.successAlert = true;
-            alert('Your Payment Has Been Made');
-          },
-          (error) => {
-            this.errorMsg = JSON.parse(error.error);
-            this.errorAlert = true;
-            console.log('Error!', this.errorMsg.ErrorCode);
-            alert(this.errorMsg.ErrorCode);
-          }
-        );
-      });
+    if (this.SessionForm.invalid) {
+      this.errorMsg = 'The form is invalid.';
+      this.hasError = true;
+    } else {
+      this.hasError = false;
+      this.modalService.open(confirmModal);
+    }
+  }
+
+  ConfrimEdit = () => {
+    const sessionEdit = new SessionEdit(this.LessonModel.LessonId,
+      this.LessonModel.LearnerId, parseInt(this.SessionForm.value.Room),
+      parseInt(this.SessionForm.value.Teacher), parseInt(this.SessionForm.value.Branch), this.SessionForm.value.Reason,
+      this.SessionForm.value.BeginTime,this.SessionForm.value.EndTime);
+
+    this.sessionsService.SessionEdit(sessionEdit).subscribe(res =>{
+      this.isEditSuccess = true;
+    }, err => {
+      this.isEditFail = true;
+      setTimeout(() =>{
+        this.isEditFail = false;
+      }, 3000);
+      alert(err.error.ErrorMessage);
+    });
   }
 }

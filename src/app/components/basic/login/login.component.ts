@@ -4,7 +4,9 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { AuthenticationService } from '../../../services/auth/authentication.service';
 import { Title } from '@angular/platform-browser';
-import { MessagesService } from 'src/app/services/others/messages.service';
+import { MessagesLibrary } from 'src/app/shared/libraries/messages-library';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { ForgotPasswordModalComponent } from '../forgot-password-modal/forgot-password-modal.component';
 
 @Component({
   selector: 'app-login',
@@ -26,7 +28,8 @@ export class LoginComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private authenticationService: AuthenticationService,
-    private messageService: MessagesService
+    private messageService: MessagesLibrary,
+    private modalService: NgbModal,
   ) {
     
   }
@@ -54,14 +57,20 @@ export class LoginComponent implements OnInit {
     }
     this.loading = true;
     this.authenticationService.login(this.f.username.value, this.f.password.value).subscribe(
-      (data) => {
-        this.router.navigate([this.returnUrl]);
-      },
+      (data) => {this.onLoginSuccess()},
       (err) => {
         this.loading = false,
         this.errorMessage = this.messageService.apiErrorMessageProcessing(err)
       }
     );
+  }
+
+  onLoginSuccess() : void{
+    this.router.navigate([this.returnUrl]);
+  }
+
+  forgotPassword(){
+    const modalRef = this.modalService.open(ForgotPasswordModalComponent,{size:'lg'})
   }
 
 }

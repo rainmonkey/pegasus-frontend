@@ -24,4 +24,17 @@ export class UsersService {
   getSidebar(){
     return this.http.get(this.baseUrl + 'navitems', {headers: this.httpHeaders})
   }
+
+  // Get users to do list
+  getToDoList(){
+    return this.http.get(this.baseUrl + 'todolist/' + localStorage.getItem('userID'), {headers:this.httpHeaders})
+  }
+
+  updateToDoList(taskID){
+    return this.http.put(this.baseUrl + 'todolist/achieve/' + taskID, {headers:this.httpHeaders})
+  }
+
+  getLookUpData(){
+    return this.http.get(this.baseUrl + 'lookups', {headers:this.httpHeaders})
+  }
 }

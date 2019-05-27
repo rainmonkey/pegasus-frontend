@@ -1,0 +1,74 @@
+.promptmessage{
+    color:red;
+}
+.rating-picker__container {
+    display: table;
+    position: relative;
+    color: #d6dbe0;
+    font-family: FontAwesome;
+    font-weight: normal;
+    font-style: normal;
+  }
+  .rating-picker__container:hover,
+  .rating-picker__container:focus {
+    color: yellow;
+  }
+  .rating-picker__input--none:not(:checked) + .rating-picker__container {
+    color:  yellow;
+  }
+  .rating-picker__input--none:not(:checked) + .rating-picker__container:hover,
+  .rating-picker__input--none:not(:checked) + .rating-picker__container:focus {
+    color: yellow;
+  }
+  .rating-picker__input--none:not(:checked) + .rating-picker__container:hover > .rating-picker__label:after,
+  .rating-picker__input--none:not(:checked) + .rating-picker__container:focus > .rating-picker__label:after {
+    color: yellow;
+  }
+  .rating-picker__input--none:not(:checked) + .rating-picker__container:hover > .rating-picker__label:hover:after,
+  .rating-picker__input--none:not(:checked) + .rating-picker__container:focus > .rating-picker__label:hover:after,
+  .rating-picker__input--none:not(:checked) + .rating-picker__container:hover > .rating-picker__label:focus:after,
+  .rating-picker__input--none:not(:checked) + .rating-picker__container:focus > .rating-picker__label:focus:after {
+    color: yellow;
+  }
+  .rating-picker__label {
+    display: table-cell;
+    margin: 0;
+    padding: 0;
+    font-size: 0;
+  }
+  .rating-picker__label:after {
+    box-sizing: content-box;
+    font-size: 80px;
+    content: "\f089";
+    display: table-caption;
+    width: 37px;
+  }
+  .rating-picker__label.rating-picker__label--even:after {
+    padding-left: 10px;
+    -webkit-transform: scaleX(-1);
+    transform: scaleX(-1);
+  }
+  .rating-picker__label:hover:after,
+  .rating-picker__label:focus:after {
+    color: yellow;
+  }
+  .rating-picker__input--none {
+    display: none;
+  }
+  .rating-picker__input {
+    position: absolute;
+    z-index: -1;
+    top: 33.33333333px;
+    left: 33.33333333px;
+  }
+  .rating-picker__input.rating-picker__input--item + .rating-picker__label:hover ~ label.rating-picker__label:after,
+  .rating-picker__input.rating-picker__input--item + .rating-picker__label:focus ~ label.rating-picker__label:after {
+    color: #d6dbe0;
+  }
+  .rating-picker__input.rating-picker__input--item:checked + label.rating-picker__label:after {
+    color: yellow;
+  }
+  .rating-picker__input.rating-picker__input--item:checked ~ .rating-picker__label:after {
+    color: #d6dbe0;
+  }
+  

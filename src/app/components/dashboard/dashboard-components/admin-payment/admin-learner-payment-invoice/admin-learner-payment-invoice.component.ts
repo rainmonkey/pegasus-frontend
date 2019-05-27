@@ -96,7 +96,7 @@ export class AdminLearnerPaymentInvoiceComponent implements OnInit {
     // create post obj
     postPaymentMethod(item) {
       this.postPayment = {
-        StaffId: 1,
+        UserId: Number(localStorage.getItem('userID')),
         LearnerId: item.LearnerId,
         InvoiceId: item.InvoiceId,
         PaymentMethod: this.paymentMethodI.value,

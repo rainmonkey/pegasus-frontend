@@ -3,6 +3,9 @@ import { FormBuilder, FormGroup, FormControl, FormArray, Validators, FormControl
 import { Title } from '@angular/platform-browser';
 import { NgbPopover } from '@ng-bootstrap/ng-bootstrap';
 import { NgbootstraptableService } from 'src/app/services/others/ngbootstraptable.service';
+import { AppSettingsService } from 'src/app/settings/app-settings.service';
+import { Subscription } from 'rxjs';
+import { UsersService } from 'src/app/services/http/users.service';
 
 
 @Component({
@@ -20,6 +23,7 @@ export class DashboardHomeComponent implements OnInit, AfterViewInit {
   userName:string;
   formError:string;
   pageloading:boolean=true;
+  lookUpList:Subscription;
 
   @ViewChild('popOver') public popover: NgbPopover;
   toDoList: { id: number; task: string; origin: string; priority: number; link: string; created_date: string; }[];
@@ -27,7 +31,9 @@ export class DashboardHomeComponent implements OnInit, AfterViewInit {
   constructor(
     public title: Title,
     private formBuilder: FormBuilder,
-    public tableService: NgbootstraptableService
+    public tableService: NgbootstraptableService,
+    private settingService: AppSettingsService,
+    private userService: UsersService
   ) {
     
     this.title.setTitle('Home');
@@ -53,55 +59,46 @@ export class DashboardHomeComponent implements OnInit, AfterViewInit {
         origin:'党'
       }
     ]
-    this.toDoList=[
-      {
-        id:1,
-        task:"Update our Tutors information.",
-        origin: 'Mao',
-        priority: 1,
-        link: 'tutors/list',
-        created_date: ''
-      },
-      {
-        id:2,
-        task:"Update our courses information .",
-        origin: 'Mao',
-        priority: 2,
-        link: 'courses/list',
-        created_date: ''
-      },
-      {
-        id:3,
-        task:"Talk to our learners for feedback.",
-        origin: 'Mao',
-        priority: 4,
-        link: "learner/list",
-        created_date: ''
-      },
-      {
-        id:4,
-        task:"Check on Sarah's session with Mark.",
-        origin: 'Mao',
-        priority: 1,
-        link: "sessions/list",
-        created_date: ''
-      }
-    ]
   }
 
   // Fires when the component is ready for use when all queries and inputs have been resolved
   ngOnInit(): void {
     // Subscribe for all the to dos
+    this.getToDoList();
+
+
 
     this.userName = localStorage.getItem('userFirstName')
     this.pageloading=false
     
-    this.tableService.sorting(this.toDoList, 'priority')
+    // this.tableService.sorting(this.toDoList, 'priority')
+
+    // Get Lookup list
+
+  
+  }
+
+  getToDoList(){
+    this.userService.getToDoList().subscribe(
+      (res)=>{
+        console.log(res)
+        this.toDoList = res['Data']
+      },
+      (err)=>console.warn(err)
+    )
+  }
+
+  markToDoAsCompletedAPI(taskID){
+    this.userService.updateToDoList(taskID).subscribe(
+      (res)=>console.log(res),
+      (err)=>console.warn(err)
+    )
   }
 
   // Called after component’s views are initialized
   ngAfterViewInit(): void {
-
+    this.lookUpList = this.settingService.currentLookUpSettings.subscribe(
+      (res)=>{})
   }
 
   // newTaskFormBuilder(){
@@ -139,12 +136,12 @@ export class DashboardHomeComponent implements OnInit, AfterViewInit {
 
   }
 
-  ignoreTask(taskID){
+  completedTask(taskID){
     // First prepare to delete this on the Backend
-
+    this.markToDoAsCompletedAPI(taskID)
     // Then takeout the object from the observable here for quick view
     this.toDoList.forEach((item, key)=>{
-      if(item['id'] == taskID){
+      if(item['ListId'] == taskID){
         this.toDoList.splice(key, 1)
       }
     })
@@ -152,7 +149,7 @@ export class DashboardHomeComponent implements OnInit, AfterViewInit {
 
   // This is called just before the component is destoryed
   ngOnDestory(){
-
+    this.lookUpList.unsubscribe()
   }
 
 }

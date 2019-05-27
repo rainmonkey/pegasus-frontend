@@ -2,13 +2,12 @@ import { TeachersService } from '../../../../../services/http/teachers.service';
 import { Component, OnInit, Input, ViewChildren, ViewChild } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { environment } from 'src/environments/environment.prod';
-import { pureFunction3 } from '@angular/core/src/render3';
 
 @Component({
   selector: 'app-teacher-modal-form',
   templateUrl: './teacher-modal-form.component.html',
   styleUrls: ['./teacher-modal-form.component.css',
-    '../../../../../shared/css/teacher-global.css']
+              '../teacher-panel/teacher-panel.component.css']
 })
 export class TeacherModalFormComponent implements OnInit {
   public updateForm;
@@ -54,7 +53,6 @@ export class TeacherModalFormComponent implements OnInit {
 
   ngOnInit() {
     this.loadingFlag = true;
-    //console.log(this.whichTeacher)
     this.setReadOnly();
     this.updateForm = this.fb.group(this.formGroupAssemble());
    
@@ -99,7 +97,6 @@ export class TeacherModalFormComponent implements OnInit {
     this.teachersService.getTeacherLevel().subscribe(
       (res) => {
         this.teachersLevels = res.Data;
-        console.log(this.teachersLevels)
       },
       (err) => {
         alert('Server error!')
@@ -119,8 +116,6 @@ export class TeacherModalFormComponent implements OnInit {
 
   getQualiId() {
     if (this.whichTeacher.TeacherQualificatiion.length !== 0) {
-      console.log(this.whichTeacher)
-      console.log(this.whichTeacher.TeacherQualificatiion[0].QualiId)
       return this.whichTeacher.TeacherQualificatiion[0].QualiId;
     }
     else {
@@ -276,8 +271,6 @@ export class TeacherModalFormComponent implements OnInit {
         return '../../../../../../assets/images/shared/default-employer-profile.png';
       }
       else {
-        console.log('--------------------', this.photoUrl + src)
-        console.log(photoObj)
         return this.photoUrl + src;
       }
     }
@@ -290,7 +283,6 @@ export class TeacherModalFormComponent implements OnInit {
   */
   toggleBranchOptions(event, dayName) {
     let dropDownObj = document.getElementById(dayName);
-    console.log(dropDownObj)
     //set [flag] attr to element, to switch between show and hide
     event.target.attributes.flag = !event.target.attributes.flag;
 
@@ -315,6 +307,8 @@ export class TeacherModalFormComponent implements OnInit {
     let groupObj: any;
     if (this.command == 0) {
       groupObj = {
+        Photo:[null],
+        IdPhoto:[null],
         FirstName: [null, Validators.required],
         LastName: [null, Validators.required],
         Gender: [null, Validators.required],
@@ -338,6 +332,8 @@ export class TeacherModalFormComponent implements OnInit {
     }
     else {
       groupObj = {
+        Photo:[null],
+        IdPhoto:[null],
         //formControlName 决定了提交表单时的参数名
         FirstName: [{ value: this.whichTeacher.FirstName, disabled: this.readOnlyFlag }, Validators.required],
         LastName: [{ value: this.whichTeacher.LastName, disabled: this.readOnlyFlag }, Validators.required],

@@ -56,7 +56,7 @@
   opacity: 0.5;
   border-bottom: 1px dotted #e0e0e0;
 }
-.availableIsGreen {
+.availableDayIsBlue {
   background-color: rgba(15, 191, 235, 0.5);
   border-radius: 3px;
   border: 0px;
@@ -64,7 +64,7 @@
   border-bottom: 1px dotted #e0e0e0;
 }
 .dayOffIsGray {
-  background-color: rgba(198, 104, 235, 0.5);
+  background-color: rgba(218, 161, 233, 0.5);
   border-radius: 3px;
   border: 0px;
   opacity: 0.5;
@@ -75,6 +75,20 @@
   border-radius: 3px;
   border: 0px;
   opacity: 0.5;
+  border-bottom: 1px dotted #e0e0e0;
+}
+.availableDurationIsGreen {
+  background-color: rgba(6, 104, 19, 0.5);
+  border-radius: 3px;
+  border: 0px;
+  opacity: 0.5;
+  border-bottom: 1px dotted #e0e0e0;
+}
+.unableToPickIsGray {
+  background-color: rgb(59, 55, 55);
+  border-radius: 3px;
+  border: 0px;
+  opacity: 0.1;
   border-bottom: 1px dotted #e0e0e0;
 }
   /* display: none; 

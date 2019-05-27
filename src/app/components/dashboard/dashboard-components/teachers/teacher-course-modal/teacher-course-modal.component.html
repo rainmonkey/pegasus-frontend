@@ -9,21 +9,27 @@
 </div>
 
 <!--loading-->
-<div *ngIf='loadingFlag' class="loaderLarge"></div>
+<div *ngIf='loadingGifFlag' class="loaderLarge"></div>
 
 <!--modal body-->
-<div *ngIf='!loadingFlag' class='modal-body'>
-  <form action="">
+<div *ngIf='!loadingGifFlag' class='modal-body'>
+  <form action="" [formGroup]='CourseForm'>
     <!--line 1-->
     <div class='row'>
       <div class='col-4'>
-        <div style="margin-right: 5px">
+        <div style="margin-right: 0">
           <label class='t_cm_label_title'>Full Name:</label>
         </div>
       </div>
-      <div class='col-8'>
+      <div class='col-5'>
         <div style="margin-left: 5px">
           <label class='col-12 t_cm_label_title' for="ability">Ability Reference:</label>
+          <!-- <input class='col-12 t_mf_input' type="text" id='ability' formControlName='ability'> -->
+        </div>
+      </div>
+      <div class='col-3'>
+        <div style="margin-left: 5px">
+          <label class='col-12 t_cm_label_title' for="level">Teacher's Level:</label>
           <!-- <input class='col-12 t_mf_input' type="text" id='ability' formControlName='ability'> -->
         </div>
       </div>
@@ -32,14 +38,20 @@
     <!--line 2-->
     <div class='row'>
       <div class='col-4'>
-        <div style="margin-right: 5px">
+        <div style="margin-right: 0">
           <input type="text" value={{getFullName()}} class='col-12 t_cm_input' disabled>
         </div>
 
       </div>
-      <div class='col-8'>
+      <div class='col-5'>
         <div style="margin-left: 5px">
           <input type="text" value={{whichTeacher.Ability}} class='col-12 t_cm_input' disabled>
+        </div>
+      </div>
+
+      <div class='col-3'>
+        <div style="margin-left: 5px">
+          <input type="text" value={{whichTeacher.Level}} class='col-12 t_cm_input' disabled>
         </div>
       </div>
     </div>
@@ -48,20 +60,22 @@
     <div *ngIf='isDetailModeFlag && !disableCourseDivFlag' class="col-12">
       <div class="col-12 t_cm_label_title">Courses Plan:</div>
       <div class='row'>
-        <div *ngFor='let i of teacherCourses' class='col-4'>
+        <div *ngFor='let i of coursesByTeacher' class='col-6'>
           <div class='t_cm_course' style="margin:5px">
             <div class='row'>
-              <div class='col-12 t_cm_label_title'
-                style="text-align: center;border-bottom: 1px solid lightgrey;background:#f3f1f1">
+              <div class='col-12 t_cm_name'>
                 {{i.Course.CourseName}}
               </div>
             </div>
             <div class='row'>
-              <div class='col-6' style="text-align: center">
-                {{i.Course.Level}}
+              <div class='col-4' style="text-align: center">
+                {{lookupLevel(i.Course.Level)}}
               </div>
-              <div class='col-6' style="text-align: center">
-                {{i.Course.Duration}}
+              <div class='col-4' style="text-align: center">
+                {{lookupDuration(i.Course.Duration)}}
+              </div>
+              <div class='col-4' style="text-align: center">
+                {{lookupGroup(i.Course.CourseType)}}
               </div>
             </div>
           </div>
@@ -73,23 +87,41 @@
 
 
     <!--line 3 add/edit-->
-    <div *ngIf='isDetailModeFlag' class='col-12'>
+    <div *ngIf='!isDetailModeFlag' class='col-12'>
       <div class='col-12 t_cm_label_title'>Courses Plan:</div>
       <div class='row'>
-        <div *ngFor='let i of courses' class='col-4'>
-          <div class='t_cm_course' style="margin:5px">
+        <div *ngFor='let i of coursesCate' class='col-12' style="margin-bottom: 10px">
+          <div class='t_cm_course'>
             <div class='row'>
-              <div class='col-12 t_cm_label_title'
-                style="text-align: center;border-bottom: 1px solid lightgrey;background:#f3f1f1">
-                {{i.CourseName}}
+              <div class='col-12 t_cm_label_title t_cm_course_dropdown'
+                (click)='toggleCourseOptions($event,i.CourseCategoryName)'
+                style="text-align: center;border-bottom: 1px solid lightgrey;background:rgb(173, 216, 230, 0.1)">
+                {{i.CourseCategoryName}}
               </div>
-              <div id={{i.CourseId}} style="display:none" class='col-12'>
-                <div *ngFor='let j of orgOptions' class='col-12'>
-                  <label class='col-11 t_mf_branch_orgs'>{{j.OrgName.replace('BRANCH','').toLowerCase()}}</label>
-                  <!--attribute NAME is important, do not touch-->
-                  <input #branches class='col-1 tl_muf_orgName' type='checkbox' name={{i.dayName}} value={{j.OrgId}}
-                    [checked]='setDefaultCourseSelection(j.OrgId,i)'>
+              <div style="display: none" id={{i.CourseCategoryName}} class='col-12'>
+                <div class='col-12'>
+                  <div class='row' style="text-align: center; font-weight:bold ">
+                    <div class='col-3'>Course Name:</div>
+                    <div class='col-3'>Course Level:</div>
+                    <div class='col-3'>Course Type:</div>
+                    <div class='col-2'>Duration:</div>
+                    <div class='col-1'>tick:</div>
+
+                  </div>
+                  <div *ngFor='let j of displayCourse(i.CourseCategoryName)' class='col-12 t_cm_table_striped'>
+                    <div class='row' style="text-align: center">
+                      <div class='col-3'>{{j.CourseName}}</div>
+                      <div class='col-3'>{{j.LevelName}}</div>
+                      <div class='col-3'>{{j.CourseTypeName}}</div>
+                      <div class='col-2'>{{j.DurationName}}</div>
+                      <div class='col-1'>
+                        <input #courseCheck type="checkbox" name={{i.CourseCategoryName}} id={{j.CourseType}}
+                          value={{j.CourseId}} [checked]='setDefaultCourseSelection(j.CourseId)'>
+                      </div>
+                    </div>
+                  </div>
                 </div>
+
               </div>
             </div>
 
@@ -99,12 +131,70 @@
 
     </div>
 
+    <!--line 4-->
+    <div class='col-12' style="margin-top:-5px">
+      <div class='row'>
+        <div class='col-12 t_cm_label_title'>Hourly Wage:</div>
+      </div>
+      <div *ngIf='!isDetailModeFlag'>
+        <div class='row'>
+          <div class='col-6'>
+            <div style="margin-right: 5px">
+              <div class='row'>
+                  <div class='col-4'>One to One:</div>
+                  <small class='text-danger errorfontsmall col-8'
+                      *ngIf='CourseForm.get("oneOnoneWage").invalid && CourseForm.get("oneOnoneWage").touched && CourseForm.get("oneOnoneWage").errors?.required'>required</small>
+              </div>
+              <div class='col-12'><input type="text" name="" id="one" class='col-12 t_cm_input' 
+                  [class.t_cm_error_border]='CourseForm.get("oneOnoneWage").invalid && CourseForm.get("oneOnoneWage").touched'
+                  formControlName='oneOnoneWage'></div>
+            </div>
+          </div>
+          <div class='col-6'>
+            <div style="margin-left: 5px">
+              <div class='row'>
+                  <div class='col-3'>Group:</div>
+                  <small class='text-danger errorfontsmall col-9'
+                  *ngIf='CourseForm.get("groupWage").invalid && CourseForm.get("groupWage").touched && CourseForm.get("groupWage").errors?.required'>required</small>
+              </div>
+              <div class='col-12'><input type="text" name="" id="group" class='col-12 t_cm_input'
+                  [class.t_cm_error_border]='CourseForm.get("groupWage").invalid && CourseForm.get("groupWage").touched'
+                  formControlName='groupWage'></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div *ngIf='isDetailModeFlag'>
+          <div class='row'>
+            <div class='col-6'>
+              <div style="margin-right: 5px">
+                <div class='col-12'>One to One:</div>
+                <div class='col-12'><input type="text" name="" id="one" class='col-12 t_cm_input' [disabled]='true' value={{oneOnoneWage}}></div>
+              </div>
+            </div>
+            <div class='col-6'>
+              <div style="margin-left: 5px">
+                <div class='col-12'>Group:</div>
+                <div class='col-12'><input type="text" name="" id="group" class='col-12 t_cm_input' [disabled]='true' value={{groupWage}}></div>
+              </div>
+            </div>
+          </div>
+      </div>
+    </div>
+
   </form>
 </div>
 
 <!--modal footer-->
 <div class='modal-footer'>
-  <button *ngIf='!isDetailModeFlag' type="button" class="btn btn-outline-dark"
-    (click)="activeModal.close('Close click')">Save</button>
+  <!-- <span *ngIf='!isDetailModeFlag' class='t_info_table_btn' title="Details" (click)='switchMode(0)'><span
+      class='fas fa-info-circle'></span></span> -->
+  <span *ngIf='isDetailModeFlag' class='t_info_table_btn' title="Edit" (click)='switchMode(1)'><span
+      class='fas fa-pen'></span></span>
+  <div *ngIf='onsubmit' class="loaderSmall"></div>
+  <span *ngIf='isSuccess' class='text-success' style="font-size:20px">Update Success!</span>
+  <span *ngIf='isError' class='text-danger' style="font-size:20px">Please check your inputs!</span>
+  <button *ngIf='!isDetailModeFlag&&!isSuccess' type="button" class="btn btn-outline-dark" (click)="onSubmit()">Save</button>
   <button type="button" class="btn btn-outline-dark" (click)="activeModal.close('Close click')">Close</button>
 </div>
