@@ -1,6 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ChartDataSets, ChartOptions } from 'chart.js';
 import { Color, BaseChartDirective, Label } from 'ng2-charts';
+import { SessionsService } from 'src/app/services/http/sessions.service';
 
 @Component({
   selector: 'app-charting',
@@ -66,8 +67,20 @@ export class ChartingComponent implements OnInit {
   public lineChartType = 'line';
   public lineChartPlugins = [];
 
-  constructor() { }
+  constructor(
+    public sessionService: SessionsService
+  ) { }
+
 
   ngOnInit() {
+  //   let beginDate = '2019-04-29'
+  //   let endDate = '2019-05-10'
+  //   this.sessionService.getReceptionistLessonBetweenDate('2019-04-29', '2019-05-10').subscribe(
+  //     (res) => {
+  //       console.log(res)
+  //     },
+  //     (error) => {
+  //       console.log('Error!', error);
+  //     });
   }
 }
