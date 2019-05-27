@@ -1,6 +1,7 @@
-<form [formGroup]="poi" (click)="onSubmit()">
-<select formControlName="TermId">
-    <option *ngFor="let i of qweqwe" value="{{i.TermId}}">{{i.TermId}}</option>
-</select>
-<button type="submit">飞一样的感觉</button>
+<form [formGroup]="poi">
+  <label>Date:</label>&nbsp;
+  <select formControlName="TermId" style="width: 360px;">
+    <option *ngFor="let i of qweqwe" value="{{i.TermId}}">{{i.BeginDate}} - {{i.EndDate}}</option>
+  </select><br>
+  <button type="submit" (click)="onSubmit()">飞一样的感觉</button>
 </form>
