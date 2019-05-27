@@ -22,7 +22,7 @@ success=false;
   createForm(){
     this.myForm = this.fb.group({
       comments: ['',[Validators.minLength(2), Validators.maxLength(500)]],
-      rating:[null,[Validators.required]]
+      rating:['',[Validators.required]]
   })
 }
 

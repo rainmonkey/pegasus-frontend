@@ -58,5 +58,23 @@ export class CoursesService {
 
   deleteCourseClass(GroupCourseInstanceId):any{
     return this.http.delete(this.baseUrl + 'GroupCourseInstance/' + GroupCourseInstanceId);
+  }  
+  /* For dropdown options*/
+  getCourseNames():any{
+    return this.http.get(this.baseUrl + 'courses');
+  }
+  getTeachers():any{
+    return this.http.get(this.baseUrl + 'teacher');
+  }
+  getLocationsRooms():any{
+    return this.http.get(this.baseUrl + 'room');
+  }
+
+
+  getoioi():any{
+    return this.http.get(this.baseUrl+'payment');
+  }
+  postoioi(TermId):any{
+    return this.http.post(this.baseUrl + 'payment/'+ TermId, '')
   }
 }

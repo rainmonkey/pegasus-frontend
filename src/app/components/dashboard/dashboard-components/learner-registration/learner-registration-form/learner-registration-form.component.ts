@@ -53,7 +53,7 @@ export class LearnerRegistrationFormComponent implements OnInit {
   public oneOnOneCourse: Array<any> = [];
   public courseTime: any;
   public learnerOthers: any[] = [];
-  public learnerlevelType: any = 'type 1';
+  public learnerlevelType = 1;
   public duration: Array<any>;
   public selectlearnerLevel: number;
   public pureCourses: any[];
@@ -121,7 +121,7 @@ export class LearnerRegistrationFormComponent implements OnInit {
     teacherName: [''],
     location: [''],
     room: [''],
-    beginDate: [''],
+    beginDate: [this.myDate()],
     endDate: [''],
     schedule: this.fb.group({
       dayOfWeek: [''],
@@ -365,7 +365,7 @@ export class LearnerRegistrationFormComponent implements OnInit {
     this.getErrorH === false?this.showErrorH = true:this.showErrorH=false;
     this.learnerOthers = whyP.concat(howP)
   }
-
+ // group course section
   getGroupCourseFromServer() {
     this.registrationService.getGroupCourse().subscribe(
       data => {
@@ -376,37 +376,38 @@ export class LearnerRegistrationFormComponent implements OnInit {
           groupCourse.isChecked = false;
         };
         console.log('new group course', this.groupCourseInstance)
-        this.addCheckboxes();
+        // this.addCheckboxes();
       },
       err => {
         console.log('group course err', err);
       }
     )
   }
-  addCheckboxes() {
-    this.groupCourseInstance.map((o, i) => {
-      const control = this.fb.control(false); // if first item set to true, else false
-      this.groupCourse.push(control); // this.groupCourse as FormArray
-    });
-  }
+  // addCheckboxes() {
+  //   this.groupCourseInstance.map((o, i) => {
+  //     // const control = this.fb.control(false); // if first item set to true, else false
+  //     this.groupCourse.push(control); // this.groupCourse as FormArray
+  //   });
+  // }
   selectCheckboxes(i, event) {
     this.groupCourseInstance[i].isChecked = event.target.checked;
   }
   confirmGroupCourse() {
-    this.learnerGroupCourse = []
+    console.log('wo yao jia ji tui',this.groupCourseInstance)
     for (let groupCourse of this.groupCourseInstance) {
       if (groupCourse.isChecked) {
         this.tempGroupCourseObj = {};
         this.tempGroupCourseObj['GroupCourseInstanceId'] = groupCourse.GroupCourseInstanceId;
         this.tempGroupCourseObj['Comment'] = groupCourse.comments;
+        // this.tempGroupCourseObj['BeginDate'] = groupCourse.beginDate;
         this.learnerGroupCourse.push(this.tempGroupCourseObj);
       }
     }
   }
 
+  // 121 course section
   selectLevelType(value) {
     this.learnerlevelType = Number(value);
-    console.log('learner type', this.learnerlevelType)
   }
   emptySelection(i){
     console.log(this.courseListArray)
@@ -494,6 +495,8 @@ export class LearnerRegistrationFormComponent implements OnInit {
   }
 
   onSubmit() {
+    this.confirmGroupCourse();
+    this.confirmCustomCourse();
     console.log(this.learnerlevelType)
     // encapsulate learner form data
     this.learner = this.learnerForm.value;
@@ -609,7 +612,7 @@ export class LearnerRegistrationFormComponent implements OnInit {
   }
   //ng-activeModal
   open(i) {
-    const modalRef = this.modalService.open(LearnerRegistrationModalComponent,{ size: 'lg' });
+    const modalRef = this.modalService.open(LearnerRegistrationModalComponent,{ windowClass: 'my-class' });
     modalRef.componentInstance.customCourse = this.customCourse.value[i];
   }
   chooseGroupCourse() {
@@ -625,7 +628,7 @@ export class LearnerRegistrationFormComponent implements OnInit {
     this.getErrorW === false?this.showErrorW = true:this.showErrorW=false;
     this.getErrorH === false?this.showErrorH = true:this.showErrorH=false;
     this.touchNext = true;
-    if (value === 'parentForm') { this.confirmLearner(); }
+    // if (value === 'parentForm') { this.confirmLearner(); }
     if ((this.getErrorH === true) && (this.getErrorW === true)){
       this.showErrorW = false;
       this.showErrorH = false;

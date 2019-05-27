@@ -12,59 +12,60 @@
 <div style="text-align:center" *ngIf="errorMessage" class="text-danger">{{errorMessage}} <br> </div>
 <div class='modal-body'>
   <div class='t_mf_form'>
-    <form>
+    <form [formGroup]="updateForm">
       <div class="row">
         <div class="col-6">
           <label class='t_mf_label'>Course Name:</label>
-          <select type="text" class='col-12 t_mf_input'>
-            <option>trying1</option>
+          <select type="text" class='col-12 t_mf_input' formControlName="CourseId">
+            <option *ngFor='let i of courseName' value="{{i.CourseId}}">{{i.CourseName}}</option>
           </select>
           <label class='t_mf_label'>Tutor Name:</label>
-          <select type="text" class='col-12 t_mf_input'>
-            <option>trying1</option>
+          <select type="text" class='col-12 t_mf_input' formControlName="TeacherId">
+            <option *ngFor='let i of tutorName' value="{{i.TeacherId}}">{{i.FirstName}} {{i.LastName}}</option>
           </select>
           <label class='t_mf_label'>Start Date:</label>
-          <select type="text" class='col-12 t_mf_input'>
-            <option>triny1</option>
-          </select>
+          <div class="input-group">
+            <input class="form-control" placeholder="yyyy-mm-dd" name="startDate" formControlName="BeginDate"
+              ngbDatepicker #startDate="ngbDatepicker">
+            <div class="input-group-append">
+              <button class="btn btn-outline-secondary calendar" (click)="startDate.toggle()" type="button"></button>
+            </div>
+          </div>
           <label class='t_mf_label'>End Date:</label>
-          <select type="text" class='col-12 t_mf_input'>
-            <option>triny1</option>
-          </select>
+          <div class="input-group">
+            <input class="form-control" placeholder="yyyy-mm-dd" name="endDate" formControlName="EndDate"
+              ngbDatepicker #endDate="ngbDatepicker">
+            <div class="input-group-append">
+              <button class="btn btn-outline-secondary calendar" (click)="endDate.toggle()" type="button"></button>
+            </div>
+          </div>
           <label class='t_mf_label'>Location:</label>
-          <select type="text" class='col-12 t_mf_input'>
-            <option>trying1</option>
+          <select type="text" class='col-12 t_mf_input' formControlName="OrgId">
+            <option *ngFor='let i of locationRoomName' value="{{i.OrgId}}">{{i.OrgName}}</option>
           </select>
           <label class='t_mf_label'>Room:</label>
-          <select type="text" class='col-12 t_mf_input'>
-            <option>trying1</option>
+          <select type="text" class='col-12 t_mf_input' formControlName="RoomId">
+            <option *ngFor='let i of locationRoomName' value="{{i.RoomId}}">{{i.RoomName}}</option>
           </select>
         </div>
         <div class="col-6">
           <div class="t_mf_form">
-            <form>
-              <div class="row">
-                <div class="col-6" style="margin-right: -1rem;">
-                  <label class='t_mf_label'>Begin Time 1 :</label>
-                  <select type="text" class='t_mf_input col-12'>
-                    <option>trying1</option>
-                  </select>
-                </div>
-                <div class="col-6">
-                  <label class='t_mf_label'>End Time 1 :</label>
-                  <select type="text" class='t_mf_input col-12'>
-                    <option>trying1</option>
-                  </select>
-                </div>
+            <div class="row" formGroupName="updateArray">
+              <div class="col-6" style="margin-right: -1rem;">
+                <label class='t_mf_label'>Begin Time 1 :</label>
+                <input class="form-control" type="time" step="60" formControlName="BeginTime" />
               </div>
-            </form>
+              <div class="col-6">
+                <label class='t_mf_label'>End Time 1 :</label>
+                <input class="form-control" type="time" formControlName="EndTime" />
+              </div>
+            </div>
           </div>
         </div>
       </div>
     </form>
   </div>
 </div>
-
 <!--modal footer-->
 <div class='modal-footer'>
   <button type='button' class='btn btn-outline-dark' style="margin-right: 9rem;" *ngIf="command == 0">+ Add New
