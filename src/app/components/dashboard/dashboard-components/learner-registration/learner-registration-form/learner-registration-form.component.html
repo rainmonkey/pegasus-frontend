@@ -269,27 +269,28 @@
                 <th>Location</th>
                 <th>Room</th>
                 <th>Teacher</th>
+                <th>Begin Time</th>
                 <th>How to know us</th>
               </tr>
             </thead>
             <tbody >
-              <tr formArrayName="groupCourse" *ngFor="let groupCourse of groupCourse.controls; let i = index">
-                <td><input type="checkbox" [formControlName]="i" [value]="i" (click)="selectCheckboxes(i, $event)"></td>
-                <td>{{groupCourseInstance[i].Course.CourseName}}</td>
+              <tr formArrayName="groupCourse" *ngFor="let groupCourse of groupCourseInstance; let i = index">
+                <td><input type="checkbox" (click)="selectCheckboxes(i, $event)"></td>
+                <td>{{groupCourse.Course.CourseName}}</td>
                 <td>
-                  <p *ngFor="let schedule of groupCourseInstance[i].schedule">{{schedule.DayOfWeek | weekFormat}}: {{schedule.BeginTime}}-{{schedule.EndTime}}</p>
+                  <p *ngFor="let schedule of groupCourse.schedule">{{schedule.DayOfWeek | weekFormat}}: {{schedule.BeginTime}}-{{schedule.EndTime}}</p>
                 </td>
-                <td>{{groupCourseInstance[i].Org.OrgName}}</td>
-                <td>{{groupCourseInstance[i].Room.RoomName}}</td>
-                <td>{{groupCourseInstance[i].Teacher.FirstName}}</td>
+                <td>{{groupCourse.Org.OrgName}}</td>
+                <td>{{groupCourse.Room.RoomName}}</td>
+                <td>{{groupCourse.Teacher.FirstName}}</td>
+                <!-- <td><input type="date" [ngModelOptions]="{standalone: true}" [(ngModel)]="groupCourseInstance[i].beginDate"></td> -->
                 <td><input type="text" [ngModelOptions]="{standalone: true}" [(ngModel)]="groupCourseInstance[i].comments" ></td>
               </tr>
             </tbody>
           </table>
           <div class="text-right">
             <button class="btn_back mx-3" (click)="next('parentForm')">Back</button>
-            <button class="mx-3" (click)="confirmGroupCourse()">Confirm</button>
-            <button class="btn_submit" (click)="onSubmit()">Submit</button>
+            <button class='btn_back mx-3' (click)="chooseCustomCourse()">Next</button>
           </div>
         </div>
       </div>
@@ -354,7 +355,7 @@
             <div class="beginDate row">
               <div class="col-sm-6 col-md-6">
                 <label for="startDate" >Start Date</label>
-                <input class="form-control" formControlName="beginDate" type="date" id="startDate" >
+                <input class="form-control" formControlName="beginDate" type="date" id="startDate">
               </div>
               <div class="col-sm-6 col-md-6">
                 <label for="endDate">End Date</label>
@@ -385,8 +386,7 @@
               </div>
             </div>
             <div class="d-flex my-3 justify-content-end">
-              <button class="mx-3 btn_back" (click)="next('parentForm')">Back</button>
-              <button class="mx-3" (click)="confirmCustomCourse()">Confirm</button>
+              <button class="mx-3 btn_back" (click)=chooseGroupCourse()>Back</button>
               <button [disabled]="registrationForm.invalid" (click)="onSubmit()" class="btn_submit"
                 type="submit">Submit</button>
             </div>

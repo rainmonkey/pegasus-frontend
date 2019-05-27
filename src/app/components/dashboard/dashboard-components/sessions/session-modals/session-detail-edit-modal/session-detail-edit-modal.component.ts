@@ -17,7 +17,7 @@ export class SessionDetailEditModalComponent implements OnInit {
   isEditFail = false;
   public errorMsg;
   public hasError = false;
-  private SessionForm;
+  public SessionForm;
   BranchSelects: any;
   RoomSelects: any;
   TeacherSelects: any;
