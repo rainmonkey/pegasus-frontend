@@ -1,5 +1,5 @@
 export interface ILearnerPay {
-  StaffId: number;
+  UserId: number;
   LearnerId: number;
   InvoiceId: number;
   PaymentMethod: number;

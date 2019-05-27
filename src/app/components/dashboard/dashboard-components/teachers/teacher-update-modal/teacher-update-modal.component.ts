@@ -1,5 +1,5 @@
 import { TeachersService } from './../../../../../services/http/teachers.service';
-import { Component, OnInit, Input, ViewChild } from '@angular/core';
+import { Component, OnInit, Input, ViewChild, Output, EventEmitter } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
@@ -16,6 +16,7 @@ export class TeacherUpdateModalComponent implements OnInit {
 
   @Input() command;
   @Input() whichTeacher;
+  @Output() refreshFlag: EventEmitter<any> = new EventEmitter(); 
   //in order to get the form from child component(TeacherModalFormDComponent)
   @ViewChild('modalUpdateFormComponent') modalUpdateFormComponentObj;
 
@@ -24,14 +25,30 @@ export class TeacherUpdateModalComponent implements OnInit {
   ngOnInit() {
   }
 
+  onClose(){
+    if(this.modalUpdateFormComponentObj.updateForm.dirty == true){
+      this.refreshFlag.emit(true);
+    }
+    else{
+      this.refreshFlag.emit(false);
+    }
+    this.activeModal.close('Cross click');
+  }
+
   onSubmit() {
-    this.submitionFlag = true;
-    this.infoMessage = 'loading.....'
-    this.loadingGifFlag = true;
-    let valueToSubmit = this.modalUpdateFormComponentObj.updateForm.value;
-    let vailadValue = this.checkInputVailad(valueToSubmit);
-    if (vailadValue !== null) {
-      this.stringifySubmitStr(vailadValue)
+    if (this.modalUpdateFormComponentObj.updateForm.dirty == true) {
+      this.submitionFlag = false;
+      this.infoMessage = 'loading.....'
+      this.loadingGifFlag = true;
+      let valueToSubmit = this.modalUpdateFormComponentObj.updateForm.value;
+      let vailadValue = this.checkInputVailad(valueToSubmit);
+      if (vailadValue !== null) {
+        this.stringifySubmitStr(vailadValue)
+      }
+    }
+    else{
+      this.infoMessage = 'Value has not changed.'
+      return;
     }
   }
   ////////////////////////////////////////handler of submition/////////////////////////////////////////////////////
@@ -66,7 +83,6 @@ export class TeacherUpdateModalComponent implements OnInit {
     valueToSubmit.DayOfWeek = this.checkOrgs();
     valueToSubmit.Qualificatiion = this.checkQualifications(valueToSubmit);
     valueToSubmit.IDType = Number(valueToSubmit.IDType);
-    console.log(valueToSubmit)
     return valueToSubmit;
   }
 
@@ -74,13 +90,10 @@ export class TeacherUpdateModalComponent implements OnInit {
     after stringify submition string, data is ready to submit
   */
   stringifySubmitStr(vailadValue) {
-    //console.log(vailadValue)
     let submit = new FormData();
     submit.append('details', JSON.stringify(vailadValue));
     submit.append('Photo', this.modalUpdateFormComponentObj.PhotoToSubmit);
     submit.append('IdPhoto', this.modalUpdateFormComponentObj.IdPhotoToSubmit);
-    console.log(this.modalUpdateFormComponentObj.photoToSubmit)
-    console.log(this.modalUpdateFormComponentObj.idPhotoToSubmit)
     this.submitByMode(submit)
   }
 
@@ -103,16 +116,16 @@ export class TeacherUpdateModalComponent implements OnInit {
   subscribeHandler(obj) {
     obj.subscribe(
       (res) => {
-        this.showInfoMessage('Submit success!','#28a745',false)
+        this.showInfoMessage('Submit success!', '#28a745', false)
         this.submitionFlag = false;
       },
       (err) => {
         if (err.error.ErrorMessage == 'Teacher has exist.') {
-          this.showInfoMessage(err.error.ErrorMessage + ' Please check ID Number.','#dc3545',false);
+          this.showInfoMessage(err.error.ErrorMessage + ' Please check ID Number.', '#dc3545', false);
           this.submitionFlag = true;
         }
         else {
-          this.showInfoMessage('Sorry, there are something wrong in server.','#dc3545',false);
+          this.showInfoMessage('Sorry, there are something wrong in server.', '#dc3545', false);
           this.submitionFlag = true;
         }
         console.log('Error', err);
@@ -120,7 +133,7 @@ export class TeacherUpdateModalComponent implements OnInit {
     );
   }
 
-  showInfoMessage(msg, fontColor, gifFlag){
+  showInfoMessage(msg, fontColor, gifFlag) {
     this.infoMessage = msg;
     this.loadingGifFlag = gifFlag;
     this.messageColor = fontColor;
@@ -140,7 +153,6 @@ export class TeacherUpdateModalComponent implements OnInit {
    to check which language checked
  */
   checkLanguages() {
-    console.log(this.modalUpdateFormComponentObj.languagesCheckBox)
     let languageBoxObj = this.modalUpdateFormComponentObj.languagesCheckBox._results;
     let checkedLanguagesList = [];
     for (let i in languageBoxObj) {
@@ -154,7 +166,6 @@ export class TeacherUpdateModalComponent implements OnInit {
 
 
   checkOrgs() {
-    //console.log(this.modalUpdateFormComponentObj)
     let temBranches = this.modalUpdateFormComponentObj.branchesCheckBox._results;
     let temBranchesList = [[], [], [], [], [], [], []];
 

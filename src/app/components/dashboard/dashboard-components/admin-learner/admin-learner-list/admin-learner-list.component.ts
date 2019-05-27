@@ -132,12 +132,12 @@ export class AdminLearnerListComponent implements OnInit {
     case 1:
       this.detailModal(command, whichLearner)
       break;
+   
     case 3:
       this.deleteModal(command, whichLearner);
       break;
   }
 }
-
 
 
 /*

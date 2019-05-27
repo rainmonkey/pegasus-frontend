@@ -26,14 +26,14 @@
             <div class='row t_mf_img' id='img_left'>
               <img [src]="getPhotoSrc('Photo')" id='Photo' (error)='setDefaultPhoto($event)' />
               <input *ngIf='!readOnlyFlag' type="file" name="file1" id="file1" class="tl_muf_upload_img"
-                accept="image/*" (change)='preViewImg($event,"Photo")' />
+                accept="image/*" (change)='preViewImg($event,"Photo")' formControlName='Photo'/>
               <label *ngIf='!readOnlyFlag' for="file1" class='btn btn-sm tl_mf_upload_btn'><span
                   class='fas fa-plus tl_mf_upload_title'></span></label>
             </div>
             <div class='row t_mf_img' id='img_right' style="display:none">
               <img [src]="getPhotoSrc('IdPhoto')" id='IdPhoto' (error)='setDefaultPhoto($event)'>
               <input *ngIf='!readOnlyFlag' type="file" name="file2" id="file2" class="tl_muf_upload_img"
-                accept="image/*" (change)='preViewImg($event,"IdPhoto")' />
+                accept="image/*" (change)='preViewImg($event,"IdPhoto")' formControlName='IdPhoto'/>
               <label *ngIf='!readOnlyFlag' for="file2" class='btn btn-sm tl_mf_upload_btn'><span
                   class='fas fa-plus tl_mf_upload_title'></span></label>
             </div>
@@ -349,7 +349,7 @@
                   <label class='col-11 t_mf_branch_orgs'>{{j.OrgName.replace('BRANCH','').toLowerCase()}}</label>
                   <!--attribute NAME is important, do not touch-->
                   <input #branches class='col-1 tl_muf_orgName' type='checkbox' name={{i.dayName}} value={{j.OrgId}}
-                    [checked]='setDefaultBranchSelection(j.OrgId,i)'>
+                    [checked]='setDefaultBranchSelection(j.OrgId,i)' formControlName='DayOfWeek'>
                 </div>
               </div>
             </div>

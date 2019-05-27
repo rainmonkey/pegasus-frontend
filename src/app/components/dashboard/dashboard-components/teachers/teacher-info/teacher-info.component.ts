@@ -1,7 +1,8 @@
+import { AppSettingsService } from './../../../../../settings/app-settings.service';
 import { TeacherDetailModalComponent } from './../teacher-detail-modal/teacher-detail-modal.component';
 import { TeacherUpdateModalComponent } from './../teacher-update-modal/teacher-update-modal.component';
 import { NgbootstraptableService } from '../../../../../services/others/ngbootstraptable.service';
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, Input } from '@angular/core';
 import { TeachersService } from '../../../../../services/http/teachers.service';
 import { NgbModal, NgbModalRef, NgbPagination } from '@ng-bootstrap/ng-bootstrap';
 import { TeacherDeleteModalComponent } from '../teacher-delete-modal/teacher-delete-modal.component';
@@ -31,13 +32,15 @@ export class TeacherInfoComponent implements OnInit {
   public loadingFlag: boolean = false;
   public courses;
   public teachingCourses;
-  public level;
-  public duration;
+  public level: Array<any> = [];
+  public duration: Array<any> = [];
+
 
   @ViewChild('pagination') pagination;
 
   constructor(
     private teachersService: TeachersService,
+    private appSettingsService: AppSettingsService,
     private coursesService: CoursesService,
     private ngTable: NgbootstraptableService,
     private lookUps: LookUpsService,
@@ -50,8 +53,7 @@ export class TeacherInfoComponent implements OnInit {
     this.getDataFromSever();
     this.getCourses();
     this.getTeachingCourse();
-    this.lookUp4();
-    this.lookUp8();
+    this.getLookups();
   }
 
   /////////////////////////////////////////////////data handlers////////////////////////////////////////////////////
@@ -106,32 +108,27 @@ export class TeacherInfoComponent implements OnInit {
     )
   }
 
-  /*
-    不要问我这堆lookUp是干什么的 问就说不知道
-  */
-  lookUp4() {
-    this.lookUps.getLookUps(4).subscribe(
+  getLookups() {
+    this.appSettingsService.currentLookUpSettings.subscribe(
       (res) => {
-        this.level = res.Data;
+        if (res !== null) {
+          for (let i of res) {
+            if (i.LookupType == 4) {
+              this.level.push(i)
+            }
+            else if (i.LookupType == 8) {
+              this.duration.push(i)
+            }
+          }
+        }
       },
       (err) => {
         alert('Sorry, there\'s something wrong with server.');
+        console.log(err)
       }
     )
+
   }
-
-  lookUp8() {
-    this.lookUps.getLookUps(8).subscribe(
-      (res) => {
-        this.duration = res.Data;
-      },
-      (err) => {
-        alert('Sorry, there\'s something wrong with server.');
-      }
-    )
-  }
-
-
 
   /*
     set the default params when after page refresh
@@ -222,29 +219,34 @@ export class TeacherInfoComponent implements OnInit {
     update modal
   */
   updateModal(command, whichTeacher) {
-    const modalRef = this.modalService.open(TeacherUpdateModalComponent, { size: 'lg' });
+    const modalRef = this.modalService.open(TeacherUpdateModalComponent, { size: 'lg', backdrop: 'static', keyboard: false });
     let that = this;
-    modalRef.result.then(
-      function (event) {
-        console.log(event)
-        that.ngOnInit();
-      },
-      function () {
-        return;
-      })
     modalRef.componentInstance.command = command;
     modalRef.componentInstance.whichTeacher = whichTeacher;
+    modalRef.componentInstance.refreshFlag.subscribe(
+      (res) => {
+        modalRef.result.then(
+          function () {
+            if (res == true) {
+              that.ngOnInit();
+            }
+          },
+          function () {
+            return;
+          })
+      }
+    )
   }
 
   courseModal(command, whichTeacher) {
-    const modalRef = this.modalService.open(TeacherCourseModalComponent, { size: 'lg' });
+    //                                                                               禁止点击外部或使用esc关闭modal
+    const modalRef = this.modalService.open(TeacherCourseModalComponent, { size: 'lg', backdrop: 'static', keyboard: false });
     let that = this;
     modalRef.result.then(
       function (event) {
-        console.log(event)
         that.ngOnInit();
       },
-      function () {
+      function (event) {
         return;
       })
     modalRef.componentInstance.command = command;
@@ -253,21 +255,34 @@ export class TeacherInfoComponent implements OnInit {
     modalRef.componentInstance.teachingCourses = this.teachingCourses;
     modalRef.componentInstance.level = this.level;
     modalRef.componentInstance.duration = this.duration;
+    modalRef.componentInstance.switch.subscribe(
+      (res) => {
+        if(res == true){
+          this.getTeachingCourse();
+        }
+      }
+    )
   }
 
   /*
     delete modal
   */
   deleteModal(command, whichTeacher) {
-    const modalRef = this.modalService.open(TeacherDeleteModalComponent, { size: 'lg' });
+    const modalRef = this.modalService.open(TeacherDeleteModalComponent, { size: 'lg', backdrop: 'static', keyboard: false });
     let that = this;
-    modalRef.result.then(
-      function () {
-        that.ngOnInit();
-      },
-      function () {
-        that.ngOnInit();
-      })
+    modalRef.componentInstance.refreshFlag.subscribe(
+      (res) => {
+        modalRef.result.then(
+          function () {
+            if (res == true) {
+              that.ngOnInit();
+            }
+          },
+          function () {
+            return;
+          })
+      }
+    )
     modalRef.componentInstance.command = command;
     modalRef.componentInstance.whichTeacher = whichTeacher;
   }

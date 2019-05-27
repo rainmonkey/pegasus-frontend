@@ -11,6 +11,5 @@ export class LearnerRegistrationModalComponent implements OnInit {
    constructor(public activeModal: NgbActiveModal) {}
 
    ngOnInit() {
-     console.log(this.customCourse)
    }
 }
