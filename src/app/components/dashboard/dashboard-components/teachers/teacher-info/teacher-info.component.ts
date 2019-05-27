@@ -1,3 +1,4 @@
+import { AppSettingsService } from './../../../../../settings/app-settings.service';
 import { TeacherDetailModalComponent } from './../teacher-detail-modal/teacher-detail-modal.component';
 import { TeacherUpdateModalComponent } from './../teacher-update-modal/teacher-update-modal.component';
 import { NgbootstraptableService } from '../../../../../services/others/ngbootstraptable.service';
@@ -31,13 +32,15 @@ export class TeacherInfoComponent implements OnInit {
   public loadingFlag: boolean = false;
   public courses;
   public teachingCourses;
-  public level;
-  public duration;
+  public level: Array<any> = [];
+  public duration: Array<any> = [];
+
 
   @ViewChild('pagination') pagination;
 
   constructor(
     private teachersService: TeachersService,
+    private appSettingsService: AppSettingsService,
     private coursesService: CoursesService,
     private ngTable: NgbootstraptableService,
     private lookUps: LookUpsService,
@@ -50,8 +53,7 @@ export class TeacherInfoComponent implements OnInit {
     this.getDataFromSever();
     this.getCourses();
     this.getTeachingCourse();
-    this.lookUp4();
-    this.lookUp8();
+    this.getLookups();
   }
 
   /////////////////////////////////////////////////data handlers////////////////////////////////////////////////////
@@ -106,32 +108,27 @@ export class TeacherInfoComponent implements OnInit {
     )
   }
 
-  /*
-    不要问我这堆lookUp是干什么的 问就说不知道
-  */
-  lookUp4() {
-    this.lookUps.getLookUps(4).subscribe(
+  getLookups() {
+    this.appSettingsService.currentLookUpSettings.subscribe(
       (res) => {
-        this.level = res.Data;
+        if (res !== null) {
+          for (let i of res) {
+            if (i.LookupType == 4) {
+              this.level.push(i)
+            }
+            else if (i.LookupType == 8) {
+              this.duration.push(i)
+            }
+          }
+        }
       },
       (err) => {
         alert('Sorry, there\'s something wrong with server.');
+        console.log(err)
       }
     )
+
   }
-
-  lookUp8() {
-    this.lookUps.getLookUps(8).subscribe(
-      (res) => {
-        this.duration = res.Data;
-      },
-      (err) => {
-        alert('Sorry, there\'s something wrong with server.');
-      }
-    )
-  }
-
-
 
   /*
     set the default params when after page refresh
@@ -230,7 +227,7 @@ export class TeacherInfoComponent implements OnInit {
       (res) => {
         modalRef.result.then(
           function () {
-            if(res == true){
+            if (res == true) {
               that.ngOnInit();
             }
           },
@@ -258,6 +255,13 @@ export class TeacherInfoComponent implements OnInit {
     modalRef.componentInstance.teachingCourses = this.teachingCourses;
     modalRef.componentInstance.level = this.level;
     modalRef.componentInstance.duration = this.duration;
+    modalRef.componentInstance.switch.subscribe(
+      (res) => {
+        if(res == true){
+          this.getTeachingCourse();
+        }
+      }
+    )
   }
 
   /*
@@ -270,7 +274,7 @@ export class TeacherInfoComponent implements OnInit {
       (res) => {
         modalRef.result.then(
           function () {
-            if(res == true){
+            if (res == true) {
               that.ngOnInit();
             }
           },

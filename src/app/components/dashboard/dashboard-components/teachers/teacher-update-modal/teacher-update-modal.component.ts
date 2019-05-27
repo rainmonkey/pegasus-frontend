@@ -37,7 +37,7 @@ export class TeacherUpdateModalComponent implements OnInit {
 
   onSubmit() {
     if (this.modalUpdateFormComponentObj.updateForm.dirty == true) {
-      this.submitionFlag = true;
+      this.submitionFlag = false;
       this.infoMessage = 'loading.....'
       this.loadingGifFlag = true;
       let valueToSubmit = this.modalUpdateFormComponentObj.updateForm.value;
