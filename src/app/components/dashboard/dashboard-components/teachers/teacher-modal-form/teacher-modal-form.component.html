@@ -349,7 +349,7 @@
                   <label class='col-11 t_mf_branch_orgs'>{{j.OrgName.replace('BRANCH','').toLowerCase()}}</label>
                   <!--attribute NAME is important, do not touch-->
                   <input #branches class='col-1 tl_muf_orgName' type='checkbox' name={{i.dayName}} value={{j.OrgId}}
-                    [checked]='setDefaultBranchSelection(j.OrgId,i)'>
+                    [checked]='setDefaultBranchSelection(j.OrgId,i)' formControlName='DayOfWeek'>
                 </div>
               </div>
             </div>

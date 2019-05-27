@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { RatingModalComponent } from '../../dashboard/dashboard-components/support/rating-modal/rating-modal.component';
 
 
 @Component({
@@ -12,12 +13,14 @@ import { Component, OnInit } from '@angular/core';
 })
 export class TestoneComponent implements OnInit {
 
-  constructor() { }
+  constructor(private modalService: NgbModal,) { }
 
   ngOnInit() {
 
   }
-
+  popUpModal(){
+    const modalRef = this.modalService.open(RatingModalComponent,{ size: 'lg' });
+  }
 
 
 }

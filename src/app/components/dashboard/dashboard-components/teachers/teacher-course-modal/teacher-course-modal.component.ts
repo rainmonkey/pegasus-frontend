@@ -1,5 +1,5 @@
 import { FormBuilder, Validators } from '@angular/forms';
-import { Component, OnInit, Input, ViewChild, ViewChildren } from '@angular/core';
+import { Component, OnInit, Input, Output, ViewChildren, EventEmitter } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { CoursesService } from 'src/app/services/http/courses.service';
 import { TeachersService } from 'src/app/services/http/teachers.service';
@@ -22,6 +22,7 @@ export class TeacherCourseModalComponent implements OnInit {
   public coursesByTeacher;
   public isSuccess: boolean = false;
   public loadingGifFlag: boolean = false;
+  public onsubmit:boolean = false;
   public isError: boolean = false;
 
   @Input() command;
@@ -32,7 +33,7 @@ export class TeacherCourseModalComponent implements OnInit {
   @Input() teachingCourses;
   @Input() level;
   @Input() duration;
-
+  @Output() switch: EventEmitter<any> = new EventEmitter(); 
 
   @ViewChildren('courseCheck') courseCheckBox;
 
@@ -50,7 +51,7 @@ export class TeacherCourseModalComponent implements OnInit {
 
   ////////////////////////////////////////////methods called by Html/////////////////////////////////////////////////////////////
   getFullName() {
-    return this.whichTeacher.FirstName + ' ' + this.whichTeacher.LastName;
+    return this.whichTeacher.FirstName + '   ' + this.whichTeacher.LastName;
   }
 
   // 把这个学校所有的课程按cate分类  html
@@ -59,10 +60,12 @@ export class TeacherCourseModalComponent implements OnInit {
     let array = []
     for (let i of this.courses) {
       if (i.CourseCategory.CourseCategoryName == cate) {
-        array.push(i)
+        if(i.TeacherLevel == this.whichTeacher.Level){
+          array.push(i)
+        }
       }
     }
-    // //console.log(array)
+    console.log(array)
     return array;
   }
 
@@ -92,6 +95,7 @@ export class TeacherCourseModalComponent implements OnInit {
         break;
       case 1:
         this.isDetailModeFlag = false;
+
         break;
     }
   }
@@ -127,10 +131,10 @@ export class TeacherCourseModalComponent implements OnInit {
   }
 
   lookupGroup(isGroup) {
-    if (isGroup == 0) {
+    if (isGroup == 1) {
       return 'One To One'
     }
-    if (isGroup == 1) {
+    if (isGroup == 2) {
       return 'Group'
     }
   }
@@ -178,18 +182,13 @@ export class TeacherCourseModalComponent implements OnInit {
     get this teacher's salary
   */
   getTeacherSalary(coursesByTeacher) {
-    console.log(coursesByTeacher)
     for (let i of coursesByTeacher) {
       //one on one salary
-      if (i.Course.isGroup == 1) {
-        console.log(i)
+      if (i.Course.CourseType == 1) {
         this.oneOnoneWage = i.HourlyWage;
-        console.log('a', this.oneOnoneWage)
       }
-      else if (i.Course.isGroup == 0) {
-        console.log(i)
+      else if (i.Course.CourseType == 2) {
         this.groupWage = i.HourlyWage;
-        console.log('b', this.groupWage)
       }
     }
     this.formGroupAssemble();
@@ -200,7 +199,7 @@ export class TeacherCourseModalComponent implements OnInit {
       this.CourseForm.controls[i].touched = true;
     }
     if (this.CourseForm.status == 'VALID') {
-      this.loadingGifFlag = true;
+      this.onsubmit = true;
       this.isError = false;
       let dataToSubmit = this.prepareData();
       this.submitToServer(dataToSubmit);
@@ -244,11 +243,11 @@ export class TeacherCourseModalComponent implements OnInit {
   submitToServer(dataToSubmit) {
     this.teacherService.updateTeacherCourse(dataToSubmit).subscribe(
       (res) => {
-        this.loadingGifFlag = false;
+        this.onsubmit = false;
         this.isSuccess = true;
       },
       (err) => {
-        this.loadingGifFlag = false;
+        this.onsubmit = false;
         alert(err)
       }
     )
