@@ -41,16 +41,16 @@
           </div>
           <label class='t_mf_label'>Location:</label>
           <select type="text" class='col-12 t_mf_input' formControlName="OrgId">
-            <option *ngFor='let i of locationName' value="{{i.OrgId}}">{{i.OrgName}}</option>
+            <option *ngFor='let i of locationRoomName' value="{{i.OrgId}}">{{i.OrgName}}</option>
           </select>
           <label class='t_mf_label'>Room:</label>
           <select type="text" class='col-12 t_mf_input' formControlName="RoomId">
-            <option *ngFor='let i of roomName' value="{{i.RoomId}}">{{i.RoomName}}</option>
+            <option *ngFor='let i of locationRoomName' value="{{i.RoomId}}">{{i.RoomName}}</option>
           </select>
         </div>
         <div class="col-6">
           <div class="t_mf_form">
-            <div class="row">
+            <div class="row" formGroupName="updateArray">
               <div class="col-6" style="margin-right: -1rem;">
                 <label class='t_mf_label'>Begin Time 1 :</label>
                 <input class="form-control" type="time" step="60" formControlName="BeginTime" />
