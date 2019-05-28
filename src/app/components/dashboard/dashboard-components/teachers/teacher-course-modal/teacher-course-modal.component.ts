@@ -33,6 +33,7 @@ export class TeacherCourseModalComponent implements OnInit {
   @Input() teachingCourses;
   @Input() level;
   @Input() duration;
+  @Input() teacherLevel;
   @Output() switch: EventEmitter<any> = new EventEmitter(); 
 
   @ViewChildren('courseCheck') courseCheckBox;
@@ -150,6 +151,14 @@ export class TeacherCourseModalComponent implements OnInit {
     }
     if (isGroup == 2) {
       return 'Group'
+    }
+  }
+
+  lookupTeacherLevel(level){
+    for (let i of this.teacherLevel){
+      if(i.PropValue == level){
+        return i.PropName;
+      }
     }
   }
   
