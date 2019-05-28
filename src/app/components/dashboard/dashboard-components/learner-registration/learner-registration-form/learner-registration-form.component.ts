@@ -532,7 +532,7 @@ export class LearnerRegistrationFormComponent implements OnInit {
   onSubmit() {
     this.confirmGroupCourse();
     this.confirmCustomCourse();
-    console.log(this.learnerlevelType)
+    console.log(this.courseGroup);
     // encapsulate learner form data
     this.learner = this.learnerForm.value;
     this.fdObj['FirstName'] = this.learner.firstName;
@@ -566,7 +566,7 @@ export class LearnerRegistrationFormComponent implements OnInit {
     this.fdObj['One2oneCourseInstance'] = this.oneOnOneCourse;
     this.fdObj['LearnerOthers'] = this.learnerOthers;
     this.fd.append('details', JSON.stringify(this.fdObj));
-    console.log('form data', this.fdObj)
+    console.log('form data', this.fd);
     this.registrationService.postStudent(this.fd)
       .subscribe(
         data => {
