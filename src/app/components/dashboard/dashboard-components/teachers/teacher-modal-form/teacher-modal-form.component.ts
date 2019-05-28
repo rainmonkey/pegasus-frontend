@@ -282,15 +282,19 @@ export class TeacherModalFormComponent implements OnInit {
     Branch options hide in default, when user click week name, toggle branch options,
   */
   toggleBranchOptions(event, dayName) {
-    let dropDownObj = document.getElementById(dayName);
+    let dropDownsObj:any = document.getElementsByClassName('dayName');
     //set [flag] attr to element, to switch between show and hide
     event.target.attributes.flag = !event.target.attributes.flag;
 
     if (event.target.attributes.flag == true) {
-      dropDownObj.style.display = 'block';
+      for (let i of dropDownsObj){
+       i.style.display = 'block';
+      }
     }
     else {
-      dropDownObj.style.display = 'none';
+      for (let i of dropDownsObj){
+        i.style.display = 'none';
+       }
     }
   }
 

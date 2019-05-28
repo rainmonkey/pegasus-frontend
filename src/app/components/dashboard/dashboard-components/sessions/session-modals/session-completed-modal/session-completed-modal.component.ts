@@ -10,9 +10,9 @@ import {ActivatedRoute, Router} from '@angular/router';
 })
 export class SessionCompletedModalComponent implements OnInit {
   lessonId;
-  private info;
-  private isComfirmSuccess
-  private isConfirmFailed
+  public info;
+  public isComfirmSuccess
+  public isConfirmFailed
   constructor(public activeModal: NgbActiveModal, private sessionsService: SessionsService,
               private router: Router) { }
 

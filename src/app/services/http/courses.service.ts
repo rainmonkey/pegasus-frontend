@@ -72,9 +72,9 @@ export class CoursesService {
 
 
   getoioi():any{
-    return this.http.get('http://192.168.178.96:5000/api/payment');
+    return this.http.get(this.baseUrl+'payment');
   }
-  postoioi(data, TermId):any{
-    return this.http.put('http://192.168.178.96:5000/api/payment/'+ TermId, data)
+  postoioi(TermId):any{
+    return this.http.post(this.baseUrl + 'payment/'+ TermId, '')
   }
 }
