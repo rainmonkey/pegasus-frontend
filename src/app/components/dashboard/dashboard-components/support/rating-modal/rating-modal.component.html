@@ -64,7 +64,7 @@
 
 
         </div>
-        <div class="promptmessage" *ngIf="myForm.controls.rating.invalid && myForm.controls.rating.touched || dirty">
+        <div class="promptmessage" *ngIf="myForm.controls.rating.invalid && myForm.controls.rating.touched || myForm.controls.rating.dirty">
           <div *ngIf="myForm.controls.rating.errors.required">
             Please rate.
           </div>

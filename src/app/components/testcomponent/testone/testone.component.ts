@@ -2,6 +2,8 @@ import { Component, OnInit, ViewChildren } from '@angular/core';
 import { CoursesService } from '../../../services/http/courses.service';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { variable } from '@angular/compiler/src/output/output_ast';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { ChangePasswordModalComponent } from '../../dashboard/dashboard-components/support/change-password-modal/change-password-modal.component';
 
 
 
@@ -18,7 +20,8 @@ export class TestoneComponent implements OnInit {
   public poi: FormGroup;
   constructor(
     private courseService: CoursesService,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private modalService: NgbModal,
     ) { }
 
   ngOnInit() {
@@ -55,6 +58,9 @@ export class TestoneComponent implements OnInit {
     )
   }
 
+  changePassword(){
+    const modalRef=this.modalService.open(ChangePasswordModalComponent,{size:'lg'})
+  }
 
 
 }
