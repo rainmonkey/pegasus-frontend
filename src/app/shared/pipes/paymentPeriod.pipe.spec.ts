@@ -1,11 +1,11 @@
 /* tslint:disable:no-unused-variable */
 
 import { TestBed, async } from '@angular/core/testing';
-import { HowToKnowPipe } from './How-To-Know.pipe';
+import { PaymentPeriodPipe } from './paymentPeriod.pipe';
 
-describe('Pipe: HowToKnowe', () => {
+describe('Pipe: PaymentPeriode', () => {
   it('create an instance', () => {
-    let pipe = new HowToKnowPipe();
+    let pipe = new PaymentPeriodPipe();
     expect(pipe).toBeTruthy();
   });
 });
