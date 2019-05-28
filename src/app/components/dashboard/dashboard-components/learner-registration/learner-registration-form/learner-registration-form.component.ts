@@ -250,7 +250,7 @@ export class LearnerRegistrationFormComponent implements OnInit {
         // this.catItemArray = this.courses121.filter((item) => item.Level === 0);
         // push item to list
         this.catListArray.push(this.catItemArray);
-        console.log(this.catListArray);
+
 
         let catArray = [];
         let catNameArray = [];
@@ -379,7 +379,6 @@ export class LearnerRegistrationFormComponent implements OnInit {
         tempObj['OthersValue'] = learnPurpose.PropValue;
         whyP.push(tempObj);
 
-        console.log('whyP',whyP)
         // this.learnerOthers.push(tempObj);
       }
     }
@@ -389,8 +388,6 @@ export class LearnerRegistrationFormComponent implements OnInit {
         tempObj['OthersType'] = how.LookupType;
         tempObj['OthersValue'] = how.PropValue;
         howP.push(tempObj);
-
-        console.log('howP',howP)
         // this.learnerOthers.push(tempObj);
       }
     };
@@ -532,7 +529,7 @@ export class LearnerRegistrationFormComponent implements OnInit {
   onSubmit() {
     this.confirmGroupCourse();
     this.confirmCustomCourse();
-    console.log(this.learnerlevelType)
+    console.log(this.courseGroup);
     // encapsulate learner form data
     this.learner = this.learnerForm.value;
     this.fdObj['FirstName'] = this.learner.firstName;
@@ -566,7 +563,7 @@ export class LearnerRegistrationFormComponent implements OnInit {
     this.fdObj['One2oneCourseInstance'] = this.oneOnOneCourse;
     this.fdObj['LearnerOthers'] = this.learnerOthers;
     this.fd.append('details', JSON.stringify(this.fdObj));
-    console.log('form data', this.fdObj)
+    console.log('form data', this.fd);
     this.registrationService.postStudent(this.fd)
       .subscribe(
         data => {
