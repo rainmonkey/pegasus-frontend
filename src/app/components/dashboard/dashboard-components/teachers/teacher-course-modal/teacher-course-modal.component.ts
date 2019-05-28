@@ -33,6 +33,7 @@ export class TeacherCourseModalComponent implements OnInit {
   @Input() teachingCourses;
   @Input() level;
   @Input() duration;
+  @Input() teacherLevel;
   @Output() switch: EventEmitter<any> = new EventEmitter(); 
 
   @ViewChildren('courseCheck') courseCheckBox;
@@ -65,7 +66,6 @@ export class TeacherCourseModalComponent implements OnInit {
         }
       }
     }
-    console.log(array)
     return array;
   }
 
@@ -100,6 +100,21 @@ export class TeacherCourseModalComponent implements OnInit {
     }
   }
 
+  selectAll(cate){
+      for(let i of this.courseCheckBox._results){
+        if(cate == i.nativeElement.name){
+          i.nativeElement.checked = true;
+        }
+      }
+  }
+
+  selectNone(cate){
+      for(let i of this.courseCheckBox._results){
+        if(cate == i.nativeElement.name){
+          i.nativeElement.checked = false;
+        }
+      }
+  }
   /*
     setDefaultCourseSelection 
   */
@@ -138,6 +153,14 @@ export class TeacherCourseModalComponent implements OnInit {
       return 'Group'
     }
   }
+
+  lookupTeacherLevel(level){
+    for (let i of this.teacherLevel){
+      if(i.PropValue == level){
+        return i.PropName;
+      }
+    }
+  }
   
   ////////////////////////////////////////////methods called by other methods/////////////////////////////////////////////////////////////
   /*
@@ -160,7 +183,6 @@ export class TeacherCourseModalComponent implements OnInit {
    get courses that taught by specific teacher
   */
   getCoursesByTeacher() {
-    //console.log(this.teacherCourses)
     let array = [];
     for (let i of this.teachingCourses) {
       if (i.TeacherId == this.whichTeacher.TeacherId) {

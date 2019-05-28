@@ -132,6 +132,13 @@
           <img src="" id='certificate' style='height: 64px' alt="Certificate preview...">
           <input formControlName="grade" type="file" (change)="uploadGrade($event)" id="grade" accept="image/*">
         </div>
+        <div class="under 18">
+          <span class="text-primary">Above 18 years old?</span><br>
+          <div class="d-inline-block mx-3">
+              <input type="checkbox" (click)="select18($event)" value=1>&nbsp;&nbsp;
+              <label>I'm Above 18 years old</label>
+          </div>
+        </div>
         <div class="learn purpose">
           <span class="text-primary">Why do you learn the piano?</span><br>
           <div class="d-inline-block mx-3" *ngFor="let learnerPurpose of learnerPurpose; let i = index">
@@ -283,7 +290,7 @@
                 <td>{{groupCourse.Org.OrgName}}</td>
                 <td>{{groupCourse.Room.RoomName}}</td>
                 <td>{{groupCourse.Teacher.FirstName}}</td>
-                <!-- <td><input type="date" [ngModelOptions]="{standalone: true}" [(ngModel)]="groupCourseInstance[i].beginDate"></td> -->
+                <td><input type="date" [ngModelOptions]="{standalone: true}" [(ngModel)]="groupCourseInstance[i].beginDate"></td>
                 <td><input type="text" [ngModelOptions]="{standalone: true}" [(ngModel)]="groupCourseInstance[i].comments" ></td>
               </tr>
             </tbody>
@@ -309,7 +316,7 @@
                 <label for="course">Course Category</label>
                 <select class="form-control" formControlName="courseCategory" (change)="selectCategory($event.target.value, i)">
                   <option selected>Choose..</option>
-                  <option *ngFor="let courseCategory of catListArray[i]" [value]="courseCategory.CourseCategory.CourseCategoryId">{{courseCategory.CourseCategory.CourseCategoryName}}</option>
+                  <option *ngFor="let courseCategory of setUniCatListArray[i]" [value]="courseCategory.CourseCategoryId">{{courseCategory.CourseCategoryName}}</option>
                 </select>
               </div>
               <div class="col-sm-6 col-md-6">

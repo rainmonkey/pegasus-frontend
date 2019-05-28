@@ -1,7 +1,7 @@
 import { Component, OnInit, Injectable, Input } from '@angular/core';
 import { NgbActiveModal, NgbDateAdapter, NgbDateStruct, NgbDateNativeAdapter } from '@ng-bootstrap/ng-bootstrap';
 import { CoursesService } from '../../../../../services/http/courses.service';
-import { FormBuilder, Validators, FormGroup } from '@angular/forms';
+import { FormBuilder, Validators, FormGroup, FormArray, FormControl } from '@angular/forms';
 
 @Injectable()
 @Component({
@@ -19,11 +19,11 @@ export class CourseClassDetailModalComponent implements OnInit {
   public infoMessage: string = '';
   public messageColor: string;
   public updateForm: FormGroup;
+  public updateArray: FormArray;
   //Level dropdown options
   public courseName: Object;
   public tutorName: Object;
-  public locationName: Object;
-  public roomName: Object;
+  public locationRoomName: Object;
 
   @Input() command;
   @Input() whichCourseClass;
@@ -66,8 +66,17 @@ export class CourseClassDetailModalComponent implements OnInit {
   getLocationRoom() {
     this.coursesService.getLocationsRooms().subscribe(
       (res) => {
-        this.locationName = res.Data;
-        this.roomName = res.Data;
+        this.locationRoomName = res.Data;
+        // var room: any;
+        console.log(this.locationRoomName);
+        // for (var i = 0; this.locationRoomName['length'] > i; i++) {
+        //   if (this.locationRoomName[i].OrgId == 1) {
+        //     room = this.locationRoomName[i].RoomName;
+        //   }
+        //   return room;
+        // }
+
+
       },
       (err) => {
         alert('Serve error!')
@@ -85,9 +94,8 @@ export class CourseClassDetailModalComponent implements OnInit {
         EndDate: [null, Validators.required],
         OrgId: [null, Validators.required],
         RoomId: [null, Validators.required],
-        BeginTime: [null, Validators.required],
-        EndTime: [null, Validators.required]
-      }      
+        updateArray: this.fb.array([this.formArrayAssemble()])
+      }
     } else {
       groupObj = {
         //formControlName 决定了提交表单时的参数名
@@ -97,11 +105,32 @@ export class CourseClassDetailModalComponent implements OnInit {
         EndDate: [this.whichCourseClass.EndDate, Validators.required],
         OrgId: [this.whichCourseClass.OrgId, Validators.required],
         RoomId: [this.whichCourseClass.RoomId, Validators.required],
-        BeginTime: [this.whichCourseClass.schedule.BeginTime, Validators.required],
-        EndTime: [this.whichCourseClass.schedule.EndTime, Validators.required]
+        updateArray: this.fb.array([this.formArrayAssemble()])
       }
     }
     return groupObj;
+  }
+
+  formArrayAssemble() {
+    let arrayObj: any;
+    if (this.command == 0) {
+      arrayObj = {
+        BeginTime: [null, Validators.required],
+        EndTime: [null, Validators.required]
+      } 
+    }else{
+      arrayObj = {
+        BeginTime: [this.whichCourseClass.schedule.BeginTime, Validators.required],
+        EndTime: [this.whichCourseClass.schedule.EndTime, Validators.required]
+      } 
+    }
+    return arrayObj;
+  }
+
+  // add time
+  newTime(){
+    const arr = this.updateForm.get('updateArray') as FormArray;
+    this.updateArray.push
   }
 
   onSubmit() {
@@ -126,7 +155,7 @@ export class CourseClassDetailModalComponent implements OnInit {
   checkInputVailad(valueToSubmit) {
     if (this.updateForm.status == 'VALID') {
       console.log(valueToSubmit)
-      return valueToSubmit;     
+      return valueToSubmit;
     }
     else {
       this.infoMessage = 'Please check your input.'
@@ -147,7 +176,7 @@ export class CourseClassDetailModalComponent implements OnInit {
     //while push a stream of new data
     if (this.command == 0) {
       this.coursesService.addNewCourseClass(formValue).subscribe(
-        (res) => {          
+        (res) => {
           alert('Submit success!');
           this.activeModal.close();
         },
