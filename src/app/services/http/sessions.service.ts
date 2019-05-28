@@ -64,6 +64,6 @@ export class SessionsService {
   SessionCompleted(lessonId, reason) {
     console.log(this.httpHeaders);
     // @ts-ignore
-    return this.http.put<any>();
+    return this.http.put<any>(this.baseUrl + 'session/Confirm/' + lessonId + '/' + reason);
   }
 }

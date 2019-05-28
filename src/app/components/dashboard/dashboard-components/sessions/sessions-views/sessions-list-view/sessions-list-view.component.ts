@@ -87,7 +87,7 @@ export class SessionsListViewComponent implements OnInit {
 
   // get data from server side
   getData() {
-    this.sessionsService.getReceptionistLessonBetweenDate('2019-04-29', '2019-05-10').subscribe(
+    this.sessionsService.getReceptionistLessonBetweenDate('2019-04-29', '2020-10-10').subscribe(
       (res) => {
         this.learnerList = res.Data;
         this.learnerListLength = res.Data.length; // length prop is under Data prop
