@@ -86,6 +86,7 @@ import { ChartingComponent } from './components/dashboard/dashboard-components/s
 import { RatingModalComponent } from './components/dashboard/dashboard-components/support/rating-modal/rating-modal.component';
 import { ForgotPasswordModalComponent } from './components/basic/forgot-password-modal/forgot-password-modal.component';
 import { ChangePasswordModalComponent } from './components/dashboard/dashboard-components/support/change-password-modal/change-password-modal.component';
+import { confirmEqualValidatorDirectie } from './shared/confirm-equal-validator.directive';
 
 
 
@@ -161,7 +162,8 @@ import { ChangePasswordModalComponent } from './components/dashboard/dashboard-c
     ChartingComponent,
     RatingModalComponent,
     ForgotPasswordModalComponent,
-    ChangePasswordModalComponent
+    ChangePasswordModalComponent,
+    confirmEqualValidatorDirectie
   ],
   imports: [
     NgbModule,
