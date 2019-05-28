@@ -86,6 +86,8 @@ import { ChartingComponent } from './components/dashboard/dashboard-components/s
 import { RatingModalComponent } from './components/dashboard/dashboard-components/support/rating-modal/rating-modal.component';
 import { ForgotPasswordModalComponent } from './components/basic/forgot-password-modal/forgot-password-modal.component';
 import { ChangePasswordModalComponent } from './components/dashboard/dashboard-components/support/change-password-modal/change-password-modal.component';
+import { TrialPanelComponent } from './components/dashboard/dashboard-components/trial-session/trial-panel/trial-panel.component';
+import { TrialInfoComponent } from './components/dashboard/dashboard-components/trial-session/trial-info/trial-info.component';
 
 
 
@@ -161,7 +163,9 @@ import { ChangePasswordModalComponent } from './components/dashboard/dashboard-c
     ChartingComponent,
     RatingModalComponent,
     ForgotPasswordModalComponent,
-    ChangePasswordModalComponent
+    ChangePasswordModalComponent,
+    TrialPanelComponent,
+    TrialInfoComponent
   ],
   imports: [
     NgbModule,
