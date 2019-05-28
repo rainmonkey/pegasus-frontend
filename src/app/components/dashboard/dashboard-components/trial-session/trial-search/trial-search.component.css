@@ -1,0 +1,21 @@
+.t_s_toggle_title{
+    float: left;
+}
+.t_s_toggle_button{
+    float: right!important;
+    border:1px solid lightgrey;
+    border-radius:3px;
+    background: rgb(243, 241, 241);
+    padding:2px;
+}  
+.t_s_toggle_button:hover{
+    cursor: pointer;
+    color:rgb(206, 83, 83);
+}
+.t_s_options{
+    min-height: 40px;
+    border:1px solid lightgray;
+    border-radius: 3px;
+    clear:both;
+    margin-top:50px!important;
+}
