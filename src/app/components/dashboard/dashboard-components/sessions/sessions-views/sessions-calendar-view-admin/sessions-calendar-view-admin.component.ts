@@ -19,7 +19,7 @@ import {SessionDetailEditModalComponent} from '../../session-modals/session-deta
 })
 export class SessionsCalendarViewAdminComponent implements OnInit {
 
-  searchForm: FormGroup;
+  searchForm: FormGroup; // searchform by formbuilder
   @ViewChild('content') content;
   options: OptionsInput;
   eventsModel: any;
@@ -67,7 +67,16 @@ export class SessionsCalendarViewAdminComponent implements OnInit {
             }
           ).then(result => {
             if (result.value) {
-              this.modalService.open(SessionDetailEditModalComponent, { size: 'lg' });
+              const Date = this.datePipe.transform(this.fullcalendar.calendar.getDate(), 'yyyy-MM-dd');
+              const modalRef = this.modalService.open(SessionDetailEditModalComponent, { size: 'lg' });
+              (modalRef.componentInstance as SessionDetailEditModalComponent).LessonModel = info.event.extendedProps.info;
+              modalRef.result.then(
+                () => {
+                  this.getEventByDate(Date);
+                },
+                () => {
+                  this.getEventByDate(Date);
+                });
             }
           });
         },
@@ -128,6 +137,13 @@ export class SessionsCalendarViewAdminComponent implements OnInit {
     });
     return data;
   }
+  getEventByDate = (date) =>{
+    this.sessionService.getReceptionistLesson(date).subscribe(event => {
+      console.log(event.Data)
+      this.eventData = this.generateEventData(event.Data);
+      this.eventsModel = this.eventData;
+    });
+  }
   search = () => {
     if (this.searchForm.get('dateOfLesson').value === '' || this.searchForm.get('dateOfLesson').value === null) {
       Swal.fire({
@@ -143,9 +159,6 @@ export class SessionsCalendarViewAdminComponent implements OnInit {
     const date = year + '-' + month + '-' + day + ' 12:00:00';
     const datetoshow = this.datePipe.transform(date, 'yyyy-MM-dd');
     this.fullcalendar.calendar.gotoDate(datetoshow);
-    this.sessionService.getReceptionistLesson(date).subscribe(event => {
-      this.eventData = this.generateEventData(event.Data);
-      this.eventsModel = this.eventData;
-    });
+    this.getEventByDate(date);
   }
 }

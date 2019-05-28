@@ -42,18 +42,19 @@ export class PayrollListComponent implements OnInit {
   ngOnInit() {
   }
 
-  getPayrollData = (beginDate,endDate) => {
+  getPayrollData = (beginDate, endDate) => {
+    this.isloading = true;
     this.payrollservice.getPayroll(beginDate, endDate).subscribe((res) => {
       this.TeacherSalaryList = res.Data.TeacherSalary;
       this.TeacherSalaryListLength = res.Data.TeacherSalary.length;
       this.isloading = false;
     }, (err) => {
       console.log(err);
+      this.isloading = false;
     });
   }
 
   search = () => {
-    this.isloading = true;
     const beginDate = this.searchBeginDate == null ? alert('please enter begin date') :
       this.datePipe.transform(this.searchBeginDate, 'yyyy-MM-dd');
     const endDate = this.searchEndDate == null ? alert('please enter end date') :
