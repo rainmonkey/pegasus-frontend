@@ -10,6 +10,7 @@ import Swal from 'node_modules/sweetalert2/dist/sweetalert2.all.min.js';
 import {FormBuilder, FormGroup} from '@angular/forms';
 import { SessionsService } from 'src/app/services/http/sessions.service';
 import {SessionDetailEditModalComponent} from '../../session-modals/session-detail-edit-modal/session-detail-edit-modal.component';
+import {SessionEdit} from '../../../../../../models/SessionEdit';
 
 @Component({
   selector: 'app-sessions-calendar-view-admin',
@@ -18,14 +19,17 @@ import {SessionDetailEditModalComponent} from '../../session-modals/session-deta
   styleUrls: ['./sessions-calendar-view-admin.component.css']
 })
 export class SessionsCalendarViewAdminComponent implements OnInit {
-
   searchForm: FormGroup; // searchform by formbuilder
+  reason: string;  // session edit reason
   @ViewChild('content') content;
+  @ViewChild('confirmModal') confirmModal;
   options: OptionsInput;
   eventsModel: any;
   id: any;
   private resourceData: any;
   private eventData = [];
+  sessionEditModel;
+  IsConfirmEditSuccess = false;
   @ViewChild(CalendarComponent) fullcalendar: CalendarComponent;
 
   constructor(
@@ -65,26 +69,29 @@ export class SessionsCalendarViewAdminComponent implements OnInit {
               confirmButtonText: 'Edit',
               html: info.event.extendedProps.description
             }
-          ).then(result => {
-            if (result.value) {
-              const Date = this.datePipe.transform(this.fullcalendar.calendar.getDate(), 'yyyy-MM-dd');
-              const modalRef = this.modalService.open(SessionDetailEditModalComponent, { size: 'lg' });
-              (modalRef.componentInstance as SessionDetailEditModalComponent).LessonModel = info.event.extendedProps.info;
-              modalRef.result.then(
-                () => {
-                  this.getEventByDate(Date);
-                },
-                () => {
-                  this.getEventByDate(Date);
-                });
-            }
+          );
+        },
+        eventDrop: (info) => { // when event drag , need to send put request to change the time of this event
+          this.IsConfirmEditSuccess = false;
+          this.reason = '';
+          const Date = this.datePipe.transform(this.fullcalendar.calendar.getDate(), 'yyyy-MM-dd');
+          const newStartTime = this.datePipe.transform(info.event.start, 'yyyy-MM-dd hh:mm');
+          const newEndTime = this.datePipe.transform(info.event.end, 'yyyy-MM-dd hh:mm');
+          const RoomId = info['newResource'] == null ? info.event.extendedProps.info.RoomId : parseInt(info['newResource'].id);
+          this.sessionEditModel = new SessionEdit(info.event.extendedProps.info.LessonId,
+            info.event.extendedProps.info.LearnerId, RoomId, info.event.extendedProps.info.TeacherId,
+          info.event.extendedProps.info.OrgId, null, newStartTime, newEndTime);
+          const modalRef = this.modalService.open(this.confirmModal);
+          modalRef.result.then(() => {
+            this.getEventByDate(Date);
+          }, () => {
+            this.getEventByDate(Date);
           });
         },
         resources: this.resourceData,
         displayEventTime: false,
         events: this.eventData,
         aspectRatio: 1.8,
-        timeZone: 'UTC',
         allDaySlot: false,
         defaultView: 'resourceTimeGridDay',
         schedulerLicenseKey: 'GPL-My-Project-Is-Open-Source',
@@ -137,7 +144,7 @@ export class SessionsCalendarViewAdminComponent implements OnInit {
     });
     return data;
   }
-  getEventByDate = (date) =>{
+  getEventByDate = (date) => {
     this.sessionService.getReceptionistLesson(date).subscribe(event => {
       console.log(event.Data)
       this.eventData = this.generateEventData(event.Data);
@@ -161,4 +168,27 @@ export class SessionsCalendarViewAdminComponent implements OnInit {
     this.fullcalendar.calendar.gotoDate(datetoshow);
     this.getEventByDate(date);
   }
+
+  ConfirmEdit = () => {
+    this.sessionEditModel.reason = this.reason;
+    this.sessionService.SessionEdit(this.sessionEditModel).subscribe(res => {
+      this.IsConfirmEditSuccess = true;
+    }, err => {
+      alert('Change time for this event is not allowed');
+    });
+  }
+
+  openEdit = (info) => {
+    const Date = this.datePipe.transform(this.fullcalendar.calendar.getDate(), 'yyyy-MM-dd');
+    const modalRef = this.modalService.open(SessionDetailEditModalComponent, { size: 'lg' });
+    (modalRef.componentInstance as SessionDetailEditModalComponent).LessonModel = info.event.extendedProps.info;
+    modalRef.result.then(
+      () => {
+        this.getEventByDate(Date);
+      },
+      () => {
+        this.getEventByDate(Date);
+      });
+  }
+
 }
