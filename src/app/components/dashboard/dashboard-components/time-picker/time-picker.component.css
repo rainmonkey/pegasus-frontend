@@ -91,6 +91,27 @@
   opacity: 0.1;
   border-bottom: 1px dotted #e0e0e0;
 }
+.unableToPickAvailableIsBlue {
+  background-color: rgb(8, 26, 43);
+  border-radius: 3px;
+  border: 0px;
+  opacity: 0.1;
+  border-bottom: 1px dotted #e0e0e0;
+}
+.availableButUnableToPick {
+  background-color: rgb(138, 140, 141);
+  border-radius: 3px;
+  border: 0px;
+  opacity: 0.1;
+  border-bottom: 1px dotted #e0e0e0;
+}
+.oneHourUnableToPick {
+  background-color: rgb(232, 95, 152);
+  border-radius: 3px;
+  border: 0px;
+  opacity: 0.1;
+  border-bottom: 1px dotted #e0e0e0;
+}
   /* display: none; 
  position: absolute;
   right: 4px;

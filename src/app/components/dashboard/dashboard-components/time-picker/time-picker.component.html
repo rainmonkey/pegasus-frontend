@@ -1,7 +1,7 @@
 
 <div class="time-picker"> 
   <div *ngFor="let o of teacherAvailableData.Data.AvailableDay">{{o.DayOfWeek | weekFormat}}:&nbsp;  
-    <ol *ngFor="let org of o.Orgs">{{org.OrgName}}</ol>
+    <ol *ngFor="let org of o.Orgs">{{org.OrgId}}{{org.OrgName}}</ol>
   </div>
   <div class="weekly-schedule">
     <div class="hour-labels">
@@ -14,11 +14,13 @@
           <div class="slot" *ngFor="let y of yIndex; let i = index" 
           [ngClass]="{'slot-bottom': i%4==3,
                       'availableDayIsBlue': slot[x][y] == 'isAvailable',
+                      'unableToPickAvailableIsBlue': slot[x][y] == 'isAvailableButUnableToPick',
                       'arrangedIsRed': slot[x][y] == 'isArranged',
                       'dayOffIsGray': slot[x][y] == 'isDayOff', 
                       'tempChangeIsYellow': slot[x][y] == 'isTempChange',
                       'ableToPickIsGreen': slot[x][y] == 'ableToPick',
-                      'unableToPickIsGray': slot[x][y] == 'unableToPick'
+                      'availableButUnableToPick': slot[x][y] == 'tOrgNotIncludesLorg',
+                      'oneHourUnableToPick': slot[x][y] == 'oneHourUnableTopick'
                     }" 
           (mouseover)="mouseoverSlot(x,y)" (mouseout)="mouseoutSlot(x,y)">
           <small *ngIf="slot[x][y]">{{learnerName[x][y]}}</small>

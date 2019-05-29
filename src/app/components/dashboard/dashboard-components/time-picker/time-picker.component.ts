@@ -1,5 +1,6 @@
 import { Component, OnInit, Renderer2, ElementRef, Output, EventEmitter, Input } from '@angular/core';
 import { TimePickerService } from 'src/app/services/http/time-picker.service';
+import { listLazyRoutes } from '@angular/compiler/src/aot/lazy_routes';
 
 
 @Component({
@@ -28,7 +29,7 @@ export class TimePickerComponent implements OnInit {
                     },
                     {
                         "OrgId": 2,
-                        "OrgName": "MOUNT ROSKILL BRANCH"
+                        "OrgName": "EPSOM BRANCH"
                     },
                     {
                         "OrgId": 3,
@@ -48,74 +49,85 @@ export class TimePickerComponent implements OnInit {
         ],
         "Arranged": [
             {
-                "DayOfWeek": 6,
+                "DayOfWeek": 3,
                 "TimeBegin": "13:00:00",
                 "TimeEnd": "14:00:00",
                 "LearnerName": "Oliver Deng",
-                "CourseScheduleId": 2
+                "CourseScheduleId": 2,
+                "OrgId": 2,
+                "OrgName": "MOUNT ALBERT BRANCH"
             },
             {
                 "DayOfWeek": 3,
-                "TimeBegin": "14:00:00",
-                "TimeEnd": "14:30:00",
+                "TimeBegin": "16:30:00",
+                "TimeEnd": "17:30:00",
                 "LearnerName": "Oliver Deng",
-                "CourseScheduleId": 17
+                "CourseScheduleId": 17,
+                "OrgId": 1,
+                "OrgName": "CENTRAL AUCKLAND BRANCH"
             },
             {
                 "DayOfWeek": 5,
                 "TimeBegin": "14:00:00",
                 "TimeEnd": "14:30:00",
                 "LearnerName": "Oliver Deng",
-                "CourseScheduleId": 18
+                "CourseScheduleId": 18,
+                "OrgId": 1,
+                "OrgName": "CENTRAL AUCKLAND BRANCH"
             },
             {
                 "DayOfWeek": 7,
                 "TimeBegin": "14:00:00",
                 "TimeEnd": "14:30:00",
                 "LearnerName": "John Key",
-                "CourseScheduleId": 19
+                "CourseScheduleId": 19,
+                "OrgId": 1,
+                "OrgName": "CENTRAL AUCKLAND BRANCH"
             },
             {
                 "DayOfWeek": 7,
-                "TimeBegin": "15:00:00",
-                "TimeEnd": "16:30:00",
+                "TimeBegin": "15:15:00",
+                "TimeEnd": "15:45:00",
                 "LearnerName": "Mama Key",
-                "CourseScheduleId": 34
+                "CourseScheduleId": 34,
+                "OrgId": 2,
+                "OrgName": "EPSOM BRANCH"
             },
             {
                 "DayOfWeek": 7,
                 "TimeBegin": "17:00:00",
-                "TimeEnd": "18:30:00",
+                "TimeEnd": "17:30:00",
                 "LearnerName": "Mama Key",
-                "CourseScheduleId": 35
+                "CourseScheduleId": 35,
+                "OrgId": 2,
+                "OrgName": "EPSOM BRANCH"
             },
             {
                 "DayOfWeek": 5,
                 "TimeBegin": "14:00:00",
                 "TimeEnd": "14:30:00",
                 "LearnerName": "Mama Key",
-                "CourseScheduleId": 36
+                "CourseScheduleId": 36,
+                "OrgId": 1,
+                "OrgName": "CENTRAL AUCKLAND BRANCH"
             },
             {
-                "DayOfWeek": 5,
-                "TimeBegin": "14:00:00",
-                "TimeEnd": "14:30:00",
-                "LearnerName": "Mama Key",
-                "CourseScheduleId": 38
-            },
-            {
-                "DayOfWeek": 1,
+                "DayOfWeek": 6,
                 "TimeBegin": "13:00:00",
                 "TimeEnd": "14:00:00",
                 "LearnerName": "Group",
-                "CourseScheduleId": 3
+                "CourseScheduleId": 3,
+                "OrgId": 1,
+                "OrgName": "CENTRAL AUCKLAND BRANCH"
             },
             {
                 "DayOfWeek": 2,
                 "TimeBegin": "14:00:00",
                 "TimeEnd": "15:00:00",
                 "LearnerName": "Group",
-                "CourseScheduleId": 4
+                "CourseScheduleId": 4,
+                "OrgId": 1,
+                "OrgName": "CENTRAL AUCKLAND BRANCH"
             }
         ],
         "Dayoff": [
@@ -138,6 +150,10 @@ export class TimePickerComponent implements OnInit {
         ]
     }
   };
+  public learnerOrg = {
+    OrgId: 2,
+    OrgName: "EPSOM BRANCH"
+  }
   public duration: number = 3;
 
   // define day(x) and slot(y)
@@ -215,13 +231,30 @@ export class TimePickerComponent implements OnInit {
       obj['BeginY'] = beginMinutesToY;
       obj['EndY'] = endMinutesToY;
       obj['LearnerName'] = data.LearnerName;
+      obj['OrgId'] = data.OrgId;
       arr.push(obj);
     };
     return arr;
   }
-  /*
-    define every slot's property value for rendering in HTML
-  */
+  teacherOrgNotIncludesLearnerOrg(x) {
+    for(let i = 0; i < 49; i++) {
+      if(this.slot[x][i] == "isAvailable") {
+        this.slot[x][i] = "tOrgNotIncludesLorg";
+      }
+    }  
+  }
+  /* whether one-on-one course org is in teacher available org*/
+  orgIsAvailable(originalArr: any[]) {
+    originalArr.map((obj) => {
+      // console.log('weekday', obj.DayOfWeek);
+      let orgIdArr = obj.Orgs.map((o) => o.OrgId);   
+      console.log('orgIdArr', orgIdArr)
+      // if(orgIdArr.includes(this.learnerOrg.OrgId)) {
+      //   console.log('weekday', obj.DayOfWeek);
+      // } 
+    }); 
+  }
+  /* define every slot's property value for rendering in HTML */
   defineSlotProp(originalArr: any[], prop: string) {
     for(let o of originalArr) {
       let xIndex = o['DayOfWeek']-1;
@@ -232,23 +265,24 @@ export class TimePickerComponent implements OnInit {
     };
     return this.learnerName, this.slot;
   }
-  /*
-    if teacher's available day is in different orgs
-    when u pick up the available duration
-    there should be one hour for teacher driving to another org 
-  */
-  oneHourUnableToPick(originalArr: any[], prop: string) {
-    let xIndex: number;
-    for(let o of originalArr) {
-      xIndex = o['DayOfWeek']-1;
-      for(let i = o['BeginY']-4; i < o['EndY']+5; i++) {
-        this.slot[xIndex][i] = prop;
+/* tempChangeArr is able to pick */
+tempChangeIsAbleToPick(x: number, y: number) {
+  let xIndex: number;
+  this.tempChangeArr.map((o) => {
+    xIndex = o.DayOfWeek-1;
+    if(x == xIndex && y <= o['EndY'] && y >= o['BeginY']) {
+      for(let i = o['BeginY']; i < o['EndY']+1; i++) {
+        this.slot[x][i] = "ableToPick";
       }
-    };
-    return this.slot;
-  }
+    } else {
+      for(let i = o['BeginY']; i < o['EndY']+1; i++) {
+        this.slot[xIndex][i] = "isTempChange";
+      }
+    }
+  })
+}
+  
 //////////////////////////////////////////////////////////////////////////////////////////////////////
-
   /*
     call back transferTime function
     convert original array to new array handy to manipulate
@@ -262,29 +296,30 @@ export class TimePickerComponent implements OnInit {
     console.log('dayOffArr', this.dayOffArr);
     console.log('tempChangeArr', this.tempChangeArr);
   }
-  /*
-    define slot property value for ngClass in HTML
-  */
+  /* define slot property value for ngClass in HTML */
   renderAvailableDay() {
+    this.orgIsAvailable(this.teacherAvailableData.Data.AvailableDay);
     this.teacherAvailableData.Data.AvailableDay.map((o) => {
       let xIndex = o['DayOfWeek']-1;
-      for(let i = 0; i < 49; i++) {
-        this.slot[xIndex][i] = 'isAvailable';
-      };
+      if(this.orgIsAvailable) {
+        for(let i = 0; i < 49; i++) {
+          this.slot[xIndex][i] = 'isAvailable';
+        };
+      } else {
+        for(let i = 0; i < 49; i++) {
+          this.slot[xIndex][i] = 'isAvailableButUnableToPick';
+        }
+      }
     });
   }
-  /*
-    call back defineSlotProp function for ngClass in HTML
-  */
+  /* call back defineSlotProp function for ngClass in HTML */
   renderSlotProp() {
     this.defineSlotProp(this.arrangedArr, 'isArranged');
     this.defineSlotProp(this.dayOffArr, 'isDayOff');
     this.defineSlotProp(this.tempChangeArr, 'isTempChange');
     console.log('slot', this.slot);
   }
-  /*
-    estimate whether next slots equal to isAvailable
-  */
+  /* estimate whether next slots equal to isAvailable */
   hasNextDuration(x: number, y: number) {
     // console.log('slot', this.slot);
     for(let i = y; i < this.duration+y+1; i++) {
@@ -294,9 +329,7 @@ export class TimePickerComponent implements OnInit {
     };
     return true;
   }
-  /*
-    estimate whether former slots equal to isAvailable
-  */
+  /* estimate whether former slots equal to isAvailable */
   hasFormerDuration(x: number, y: number) {
     for(let i = y; i > y-this.duration-1; i--) {
       if(this.slot[x][i] != "isAvailable") {
@@ -305,9 +338,19 @@ export class TimePickerComponent implements OnInit {
     };
     return true;
   }
-  /*
-    set duration range for rendering in HTML
-  */
+  exactlyEqualToDuration(x: number, y: number) {
+    let sameWeekDayArr = this.arrangedArr.filter((o,i,arr) => o.DayOfWeek = x);
+    sameWeekDayArr.map((o,i,arr) => {
+      if(y <= arr[i+1].BeginY && y >= arr[i].EndY && arr[i+1].BeginY > arr[i].BeginY && arr[i+1].BeginY-arr[i].EndY == this.duration+1) {
+        // for(let j = arr[i].EndY; j <  arr[i+1].BeginY; j++) {
+        //   this.slot[x][j] = "ableToPick";
+        // }
+        return true
+      }
+    });
+    return false;
+  }
+  /*  set duration range for rendering in HTML  */
   setDuration(x: number, y: number){
     if(this.hasNextDuration(x,y) && (this.moveoverY > this.moveoutY || this.moveoutY == this.moveoverY)) {
       for(let i = y; i < this.duration+y+1; i++) {
@@ -317,7 +360,7 @@ export class TimePickerComponent implements OnInit {
       for(let i = y; i > y-this.duration-1; i--) {
         this.slot[x][i] = "ableToPick"
       };
-    } else if(this.hasNextDuration(x,y) ) {
+    } else if(this.hasNextDuration(x,y)) {
       for(let i = y; i < this.duration+y+1; i++) {
         this.slot[x][i] = "ableToPick";
       };
@@ -330,18 +373,59 @@ export class TimePickerComponent implements OnInit {
       console.log('the third case');
     }
   }
+  oneHourUnableToPick(o, x, y) {
+    for(let i = o['BeginY']-4; i < o['EndY']+5; i++) {
+      if(this.slot[x][i] != "isArranged") {
+        this.slot[x][i] = "oneHourUnableTopick";
+      }
+    }
+  }
+  teacherHasOneOrg(filterOrgIdArr: any[], x, y) {
+    console.log('teacherHasOneOrg')
+    if(filterOrgIdArr[0] == this.learnerOrg.OrgId) {
+      this.arrangedOrgEqualToLearnerOrg(this.arrangedArr, x, y);
+    } else {
+      this.teacherOrgNotIncludesLearnerOrg(x);
+    }
+  }
+  teacherHasManyOrgs(filterOrgIdArr: any[], x, y) {
+    console.log('teacherHasManyOrgs')
+    if(filterOrgIdArr.includes(this.learnerOrg.OrgId)) {
+      console.log('teacher orgs includes learner org');
+      this.arrangedOrgEqualToLearnerOrg(this.arrangedArr, x, y);
+    } else {
+      this.teacherOrgNotIncludesLearnerOrg(x);
+    }
+  }
+  arrangedOrgEqualToLearnerOrg(arrangedArr: any[], x, y) {
+    let xIndex: number;
+    arrangedArr.map((o) => {
+      // console.log('arrangedarr', arrangedArr)
+      xIndex = o.DayOfWeek - 1;
+      //this.learnerOrg.OrgId
+      if(x == xIndex && o.OrgId == this.learnerOrg.OrgId) {
+        this.setDuration(x,y);
+        // console.log('aOrg == lOrg')
+      } else if(x == xIndex) {
+        this.oneHourUnableToPick(o,x,y);
+        this.setDuration(x,y);
+        console.log('aOrg != lOrg')
+      }
+    })
+  }
   mouseoverSlot(x: number, y: number) {
     this.moveoverY = y;
     let xIndex: number;
+    this.tempChangeIsAbleToPick(x,y);
     this.teacherAvailableData.Data.AvailableDay.map((o) => {
       xIndex = o.DayOfWeek-1;
-      let org = o.Orgs.map((o) => o.OrgId);
-      if(x == xIndex && org.length == 1) {
-        if(this.slot[x][y] != "isArranged") {
-          this.setDuration(x,y);
-        } 
-      } else if(x == xIndex && org.length != 1) {
-        
+      let filterOrgId = o.Orgs.map((o) => o.OrgId);
+      if(x == xIndex && filterOrgId.length == 1) {
+        // console.log('teacherHasOneOrg')
+        this.teacherHasOneOrg(filterOrgId, x, y);
+      } else if(x == xIndex && filterOrgId.length !=1) {
+        // console.log('teacherHasManyOrgs')
+        this.teacherHasManyOrgs(filterOrgId, x, y);
       }
     });
   }
@@ -350,14 +434,11 @@ export class TimePickerComponent implements OnInit {
     let xIndex: number;
     this.teacherAvailableData.Data.AvailableDay.map((o) => {
       xIndex = o.DayOfWeek-1;
-      let org = o.Orgs.map((o) => o.OrgId);
-      if(x == xIndex && org.length == 1) {
         for(let i = 0; i < 49; i++) {
-          if(this.slot[x][i] == "ableToPick") {
-            this.slot[x][i] = "isAvailable";
+          if(this.slot[xIndex][i] == "ableToPick") {
+            this.slot[xIndex][i] = "isAvailable";
           }
         }
-      }
     });
   }
 
