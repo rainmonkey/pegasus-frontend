@@ -147,3 +147,10 @@
 .loaderLarge{
     margin-left:43%;
 }
+.t_m_language_other{
+    text-align: center;
+
+}
+.t_m_language_other:hover{
+    cursor: pointer;
+}   

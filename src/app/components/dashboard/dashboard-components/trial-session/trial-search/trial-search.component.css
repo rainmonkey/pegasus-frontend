@@ -1,21 +1,33 @@
-.t_s_filter_control_title{
-    float: left;
+.t_s_class_title{
+    font-weight: bold;
+    font-size: 20px;
 }
-.t_s_filter_control_btn{
-    float: right;
-    padding:3px!important;
-    border:1px solid lightgrey;
-    background: rgb(243, 241, 241);
-    border-radius:5px;
-    margin-bottom: 10px!important;
+.t_s_tabs{
+    height: 200px;
+    border: 1px solid lightgrey;
+    border-radius: 5px;
+    text-align: center;
+    padding-top: 20px;
+    margin:10px;  
 }
-.t_s_filter_control_btn:hover{
+.t_s_tabs:hover{
     cursor: pointer;
-    color:rgb(240, 85, 85);
 }
-.t_s_filter_option{
-    min-height: 50px;
-    border:1px solid lightgrey;
-    border-radius:5px;
-    clear: both;
+.t_s_tabs:active{
+    position:relative;
+    top:2px;    
+    box-shadow:inset 0px -1px 0px rgba(0,0,0,0.1), 0px 2px 0px rgba(0,0,0,0.1);    
+}
+.t_s_tabs_title{
+    font-size:35px;
+    font-weight: bold;
+}
+.t_s_tabs_img{
+    position: absolute;
+    bottom: 30px;
+    right: 0px;
+}
+.t_s_tabs_img img{
+    width: 50px;
+    height: 50px;
 }
