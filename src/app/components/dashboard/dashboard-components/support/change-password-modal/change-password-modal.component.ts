@@ -36,8 +36,7 @@ export class ChangePasswordModalComponent implements OnInit {
   // Winnie This is your component  圆润的走开好吗
 
   createForm() {
-    this.myForm = this.fb.group({
-      
+    this.myForm = this.fb.group({     
       password: ['', [Validators.required]],
       newPassword: ['', [Validators.required]],
       confirm: ['', [Validators.required]],
@@ -52,18 +51,13 @@ export class ChangePasswordModalComponent implements OnInit {
       (err) => { 
         console.log(err);
         this.UsererrorMessage=err.error.ErrorMessage;
- 
-      }
-        
+        this.success=false;
+      }        
     )}
-
-   
+  
     getUserName(){
       this.userName=localStorage.getItem('userName' );
-
-
     }
-
 
   onSubmit() {
     this.submitted = true;
@@ -71,7 +65,7 @@ export class ChangePasswordModalComponent implements OnInit {
     this.newInfo.oldPassword=this.myForm.value.password;
     this.newInfo.newPassword=this.myForm.value.newPassword
     console.log(this.newInfo)
-    console.log(this.myForm.value)
+   
     // stop here if form is invalid
     this.check()
 
@@ -82,13 +76,11 @@ export class ChangePasswordModalComponent implements OnInit {
       return
     }
     else { 
-      
+      console.log(this.newInfo)
+      console.log(this.myForm)
       console.warn('success')
       this.success = true;    
       this.successMessage="Password change successfully"
     }
   }
-
-
-
 }
