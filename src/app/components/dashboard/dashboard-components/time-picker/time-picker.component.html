@@ -1,9 +1,8 @@
 
 <div class="time-picker"> 
-  <!-- location -->
-  <!-- <button class="btn btn-info">Org1</button>
-  <button class="btn btn-info">Org2</button> -->
-  <!-- time table -->
+  <div *ngFor="let o of teacherAvailableData.Data.AvailableDay">{{o.DayOfWeek | weekFormat}}:&nbsp;  
+    <ol *ngFor="let org of o.Orgs">{{org.OrgId}}{{org.OrgName}}</ol>
+  </div>
   <div class="weekly-schedule">
     <div class="hour-labels">
       <div class="hour-label" *ngFor="let hour of hours">{{hour}}:00</div>
@@ -14,13 +13,16 @@
         <div class="slots">
           <div class="slot" *ngFor="let y of yIndex; let i = index" 
           [ngClass]="{'slot-bottom': i%4==3,
-                      'availableDayIsBlue': slot[x][y] == 'isAvailableDay',
+                      'availableDayIsBlue': slot[x][y] == 'isAvailable',
+                      'unableToPickAvailableIsBlue': slot[x][y] == 'isAvailableButUnableToPick',
                       'arrangedIsRed': slot[x][y] == 'isArranged',
                       'dayOffIsGray': slot[x][y] == 'isDayOff', 
                       'tempChangeIsYellow': slot[x][y] == 'isTempChange',
-                      'availableDurationIsGreen': slotAvailable[x][y] == 'isAvailable'
+                      'ableToPickIsGreen': slot[x][y] == 'ableToPick',
+                      'availableButUnableToPick': slot[x][y] == 'tOrgNotIncludesLorg',
+                      'oneHourUnableToPick': slot[x][y] == 'oneHourUnableTopick'
                     }" 
-          (mouseover)="mouseoverSlot(x,y)" (mouseout)="mouseoutSlot()">
+          (mouseover)="mouseoverSlot(x,y)" (mouseout)="mouseoutSlot(x,y)">
           <small *ngIf="slot[x][y]">{{learnerName[x][y]}}</small>
           </div> 
         </div>
