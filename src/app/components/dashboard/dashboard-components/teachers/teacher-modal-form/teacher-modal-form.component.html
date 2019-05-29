@@ -400,15 +400,15 @@
 
           <div class='row'>
             <div class='col-4'>
-              <input type="file" accept='application/msword,application/pdf' (change)='uploadCV($event)'>
+              <input type="file" accept='application/msword,application/pdf,image/*' (change)='uploadCV($event)' formControlName = 'CV'>
             </div>
 
             <div class='col-4'>
-              <input type="file" accept='application/msword,application/pdf' (change)='uploadForm($event)'>
+              <input type="file" accept='application/msword,application/pdf,image/*' (change)='uploadForm($event)' formControlName = 'CV'>
             </div>
 
             <div class='col-4'>
-              <input type="file" accept='application/msword,application/pdf' (change)='uploadOthers($event)'>
+              <input type="file" accept='application/msword,application/pdf,image/*' (change)='uploadOthers($event)' formControlName = 'CV'>
             </div>
           </div>
         </div>

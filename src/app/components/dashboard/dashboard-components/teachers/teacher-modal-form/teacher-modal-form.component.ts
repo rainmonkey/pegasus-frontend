@@ -368,6 +368,9 @@ export class TeacherModalFormComponent implements OnInit {
     let groupObj: any;
     if (this.command == 0) {
       groupObj = {
+        CV:[null],
+        Form:[null],
+        OtherFile:[null],
         Photo:[null],
         IdPhoto:[null],
         FirstName: [null, Validators.required],
@@ -393,6 +396,9 @@ export class TeacherModalFormComponent implements OnInit {
     }
     else {
       groupObj = {
+        CV:[null],
+        Form:[null],
+        OtherFile:[null],
         Photo:[null],
         IdPhoto:[null],
         //formControlName 决定了提交表单时的参数名
