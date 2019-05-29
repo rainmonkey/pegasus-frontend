@@ -1,3 +1,78 @@
-<p>
-  payroll-list works!
-</p>
+<div class='container tl_body'>
+  <div *ngIf="isloading" class="loaderLarge"></div>
+  <div class='row'>
+    <!--body head-->
+    <div class='col-12 tl_body_title'>
+      <h2>Payroll List</h2>
+    </div>
+    <div class='col-12 tl_body_search'>
+      <span>Begin date:&nbsp;<input type="date" [(ngModel)]="searchBeginDate"/></span>
+      <span>End date:&nbsp;<input type="date"[(ngModel)]="searchEndDate"></span>&nbsp;
+      <button (click)="search()"><span class="fas fa-search"></span></button>
+    </div>
+
+    <!--body main-->
+    <div class='col-12'>
+      <table class='table table-striped'>
+        <thead>
+        <tr>
+          <th *ngFor="let item of titleArray, let i = index" scope='col' class='tl_body_table_head' style='width: 310px; cursor: pointer'>{{item}}</th>
+          <th scope='col' class='tl_body_table_head'>Info</th>
+          <th scope='col' class='tl_body_table_head'></th>
+        </tr>
+        </thead>
+        <tbody>
+        <!-- dataTable-->
+        <tr *ngFor = 'let i of TeacherSalaryList | slice: (page-1)* pageSize : (page-1) * pageSize + pageSize; let j = index'>
+          <th scope="row">{{j+1}}</th>
+          <td>{{i.TeacherId}}</td>
+          <td>{{i.TeacherFirstName}}</td>
+          <td>{{i.TeacherLastName}}</td>
+          <td>${{i.Wage}}</td>
+          <td><a style="cursor: pointer;"><button (click)="openTeacherTransactionModel(teacherTransaction,i.TeacherId)" class="btn btn-primary" style="width: 70px; height: 20px; font-size: 12px; line-height: 6px" >details</button></a><br></td>
+        </tr>
+
+        </tbody>
+      </table>
+    </div>
+
+    <!--body pagination-->
+    <div class='col-12'>
+      <ngb-pagination [collectionSize] = 'TeacherSalaryListLength' [(page)] ='page' [pageSize]='pageSize'></ngb-pagination>
+    </div>
+  </div>
+</div>
+
+<ng-template #teacherTransaction let-modal>
+  <div class="modal-header">
+    <h4>Details</h4>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <table class="table table-striped">
+      <thead>
+      <tr>
+        <th *ngFor="let item of detailsTitleArray, let i = index" scope='col' class='tl_body_table_head' style='width: 310px; cursor: pointer'>{{item}}</th>
+        <th scope='col' class='tl_body_table_head'></th>
+      </tr>
+      </thead>
+      <tbody>
+      <!-- dataTable-->
+      <tr *ngFor = 'let i of teacherTransactionList | slice: (modalpage-1)* modalpageSize : (modalpage-1) * modalpageSize + modalpageSize; let j = index'>
+        <th scope="row">{{j+1}}</th>
+        <td>{{i.TeacherFirstName}}</td>
+        <td>{{i.LessonBeginTime}}</td>
+        <td>{{i.LessonEndTime}}</td>
+        <td>{{i.WageAmount}}</td>
+      </tr>
+      </tbody>
+
+    </table>
+  </div>
+  <!--body pagination-->
+  <div class='col-12'>
+    <ngb-pagination [collectionSize] = 'teacherTransactionListLength' [(page)] ='modalpage' [pageSize]='modalpageSize'></ngb-pagination>
+  </div>
+</ng-template>

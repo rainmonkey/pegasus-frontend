@@ -30,9 +30,15 @@
               <img src="{{userDetail.img}}" alt="..." class="img-fluid rounded-circle">
             </div>
           </li>
-          <li class="nav-item">
-              {{userDetail.firstName}} {{userDetail.lastName}}
+          <li (click)="forgotPassword()" class="nav-item">
+            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                 {{userDetail.firstName}} {{userDetail.lastName}} 
+            </a>  
+            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+              <a class="change-pass dropdown-item" (click)="forgotPassword">Change Password</a>
+            </div>
           </li>
+           
           <!-- Logout    -->
           <li class="nav-item">
             <a style="cursor: pointer;" class="nav-link logout" (click)="logout()"> 

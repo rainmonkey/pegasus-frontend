@@ -14,7 +14,9 @@ export class TeacherModalFormComponent implements OnInit {
   //qualification dropdown options
   public qualificationOptions: Object;
   //language dropdown options
-  public languageOptions: Object;
+  public languageOptions: any;
+  public languageOptions1 :any;
+  public languageOptions2:any;
   //orgs dropdown options
   public orgOptions: Object;
   //Level dropdown options
@@ -32,6 +34,9 @@ export class TeacherModalFormComponent implements OnInit {
   public isAvailableDaysNull: boolean = false;
   public PhotoToSubmit: any;
   public IdPhotoToSubmit:any;
+  public CVToSubmit:any;
+  public FormToSubmit:any;
+  public OthersToSubmit:any;
   public week: Array<object> = [{ "dayName": "Monday", 'dayId': 1 }, { "dayName": "Tuesday", 'dayId': 2 },
   { "dayName": "Wednesday", 'dayId': 3 }, { "dayName": "Thursday", 'dayId': 4 },
   { "dayName": "Friday", 'dayId': 5 }, { "dayName": "Saturday", 'dayId': 6 },
@@ -40,6 +45,9 @@ export class TeacherModalFormComponent implements OnInit {
   { 'idTypeId': 2, 'idTypeName': 'Student ID' },
   { 'idTypeId': 3, 'idTypeName': 'Passport' }];
   public photoUrl: any = environment.photoUrl;
+  public cvmsg = '';
+  public formmsg = '';
+  public othersmsg = '';
 
 
   @Input() command;
@@ -85,6 +93,8 @@ export class TeacherModalFormComponent implements OnInit {
       (res) => {
         this.qualificationOptions = res.Data.qualifications;
         this.languageOptions = res.Data.Languages;
+        this.languageOptions1 = res.Data.Languages.slice(0,3);
+        this.languageOptions2 = res.Data.Languages.slice(3);
         this.orgOptions = res.Data.Orgs;
       },
       (err) => {
@@ -248,6 +258,39 @@ export class TeacherModalFormComponent implements OnInit {
     }
   }
 
+  uploadCV(event){
+    this.CVToSubmit = <File>event.target.files[0];
+  }
+
+  uploadForm(event){
+    this.FormToSubmit = <File>event.target.files[0];
+  }
+
+  uploadOthers(event){
+    this.OthersToSubmit = <File>event.target.files[0];
+  }
+
+  getCVUrl(){
+    if(this.whichTeacher.CV !== null){
+      this.cvmsg = 'Download CV'
+      return this.photoUrl + this.whichTeacher.CV;
+    }
+  }
+
+  getFormUrl(){
+    if(this.whichTeacher.Form !== null){
+      this.formmsg = 'Download Form'
+      return this.photoUrl + this.whichTeacher.Form;
+    }
+  }
+
+  getOthersUrl(){
+    console.log(this.whichTeacher.OtherFile)
+    if(this.whichTeacher.OtherFile !== null){
+      this.othersmsg = 'Download Other Files'
+      return this.photoUrl + this.whichTeacher.OtherFile;
+    }
+  }
   /*
     check photo size, photo size can not lager than limit
   */
@@ -298,6 +341,20 @@ export class TeacherModalFormComponent implements OnInit {
     }
   }
 
+  toggleLanguageOptions(event){
+    let dropDownsObj:any = document.getElementById('languageDropdown');
+    event.target.attributes.flag = !event.target.attributes.flag;
+    if (event.target.attributes.flag == true) {
+      
+      dropDownsObj.style.display = 'block';
+      
+    }
+    else {
+     
+      dropDownsObj.style.display = 'none';
+       
+    }
+  }
   /*
     if photo not found, set default photo 
   */

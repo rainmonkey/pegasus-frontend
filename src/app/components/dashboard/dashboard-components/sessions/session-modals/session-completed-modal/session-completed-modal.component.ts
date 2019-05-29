@@ -20,9 +20,10 @@ export class SessionCompletedModalComponent implements OnInit {
   }
 
   CompletedConfirm = () => {
-    this.sessionsService.SessionCompleted(this.lessonId,this.info).subscribe(res => {
+    this.sessionsService.SessionCompleted(this.lessonId, this.info).subscribe(res => {
       this.isComfirmSuccess = true;
     }, err => {
+      console.log(err);
       this.isConfirmFailed = true;
     });
   }

@@ -94,6 +94,9 @@ export class TeacherUpdateModalComponent implements OnInit {
     submit.append('details', JSON.stringify(vailadValue));
     submit.append('Photo', this.modalUpdateFormComponentObj.PhotoToSubmit);
     submit.append('IdPhoto', this.modalUpdateFormComponentObj.IdPhotoToSubmit);
+    submit.append('CV',this.modalUpdateFormComponentObj.CVToSubmit);
+    submit.append('Form',this.modalUpdateFormComponentObj.FormToSubmit);
+    submit.append('Other',this.modalUpdateFormComponentObj.OthersToSubmit)
     this.submitByMode(submit)
   }
 
@@ -154,6 +157,7 @@ export class TeacherUpdateModalComponent implements OnInit {
  */
   checkLanguages() {
     let languageBoxObj = this.modalUpdateFormComponentObj.languagesCheckBox._results;
+    console.log(languageBoxObj)
     let checkedLanguagesList = [];
     for (let i in languageBoxObj) {
       //whitchever languages is checked, add it to checkedLanguagesList
