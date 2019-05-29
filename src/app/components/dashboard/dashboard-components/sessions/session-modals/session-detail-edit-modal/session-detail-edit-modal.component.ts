@@ -28,7 +28,6 @@ export class SessionDetailEditModalComponent implements OnInit {
     private transactionService: TransactionService,
     private router: Router,
     private sessionsService: SessionsService,
-    private activatedRoute: ActivatedRoute,
   ) {
 
   }
@@ -68,7 +67,7 @@ export class SessionDetailEditModalComponent implements OnInit {
   getBranchs = () => {
     this.sessionsService.GetTeachherFilter(this.LessonModel.courseId).subscribe(res=>{
       this.BranchSelects = res.Data;
-    },err=>{
+    },err => {
       alert('Something ERR');
     });
   }

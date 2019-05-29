@@ -9,7 +9,7 @@ import { NgModule } from '@angular/core';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { routing } from '../app/app-routing.module';
 import { FullCalendarModule } from 'ng-fullcalendar';
-import { DatePipe,CommonModule } from '@angular/common';
+import { DatePipe, CommonModule } from '@angular/common';
 import { ChartsModule } from 'ng2-charts';
 
 // Guards
@@ -88,6 +88,8 @@ import { ForgotPasswordModalComponent } from './components/basic/forgot-password
 import { ChangePasswordModalComponent } from './components/dashboard/dashboard-components/support/change-password-modal/change-password-modal.component';
 import { TrialPanelComponent } from './components/dashboard/dashboard-components/trial-session/trial-panel/trial-panel.component';
 import { TrialInfoComponent } from './components/dashboard/dashboard-components/trial-session/trial-info/trial-info.component';
+import { TrialSearchComponent } from './components/dashboard/dashboard-components/trial-session/trial-search/trial-search.component';
+import { TrialTableComponent } from './components/dashboard/dashboard-components/trial-session/trial-table/trial-table.component';
 
 
 
@@ -165,7 +167,9 @@ import { TrialInfoComponent } from './components/dashboard/dashboard-components/
     ForgotPasswordModalComponent,
     ChangePasswordModalComponent,
     TrialPanelComponent,
-    TrialInfoComponent
+    TrialInfoComponent,
+    TrialSearchComponent,
+    TrialTableComponent
   ],
   imports: [
     NgbModule,
