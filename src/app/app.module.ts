@@ -86,6 +86,7 @@ import { RelationshipPipe } from './shared/pipes/relationship.pipe';
 import { WeekFormatPipe } from './shared/pipes/week-format.pipe';
 import { PaymentPeriodPipe } from './shared/pipes/paymentPeriod.pipe';
 import { IsUnder18Pipe } from './shared/pipes/isUnder18.pipe';
+import { confirmEqualValidatorDirectie } from './shared/confirm-equal-validator.directive';
 
 
 
@@ -168,7 +169,8 @@ import { IsUnder18Pipe } from './shared/pipes/isUnder18.pipe';
     TrialSearchComponent,
     TrialTableComponent,
     PaymentPeriodPipe,
-    IsUnder18Pipe
+    IsUnder18Pipe,
+    confirmEqualValidatorDirectie
   ],
   imports: [
     NgbModule,
