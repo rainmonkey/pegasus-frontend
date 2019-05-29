@@ -60,3 +60,6 @@
 .t_cm_table_striped:nth-child(2n){
     background: rgb(173, 216, 230, 0.25);
 }
+#select_All:hover{
+    cursor: pointer;
+}

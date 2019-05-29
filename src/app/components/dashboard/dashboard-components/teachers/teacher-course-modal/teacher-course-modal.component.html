@@ -17,13 +17,19 @@
     <!--line 1-->
     <div class='row'>
       <div class='col-4'>
-        <div style="margin-right: 5px">
+        <div style="margin-right: 0">
           <label class='t_cm_label_title'>Full Name:</label>
         </div>
       </div>
-      <div class='col-8'>
+      <div class='col-5'>
         <div style="margin-left: 5px">
           <label class='col-12 t_cm_label_title' for="ability">Ability Reference:</label>
+          <!-- <input class='col-12 t_mf_input' type="text" id='ability' formControlName='ability'> -->
+        </div>
+      </div>
+      <div class='col-3'>
+        <div style="margin-left: 5px">
+          <label class='col-12 t_cm_label_title' for="level">Teacher's Level:</label>
           <!-- <input class='col-12 t_mf_input' type="text" id='ability' formControlName='ability'> -->
         </div>
       </div>
@@ -32,14 +38,20 @@
     <!--line 2-->
     <div class='row'>
       <div class='col-4'>
-        <div style="margin-right: 5px">
+        <div style="margin-right: 0">
           <input type="text" value={{getFullName()}} class='col-12 t_cm_input' disabled>
         </div>
 
       </div>
-      <div class='col-8'>
+      <div class='col-5'>
         <div style="margin-left: 5px">
           <input type="text" value={{whichTeacher.Ability}} class='col-12 t_cm_input' disabled>
+        </div>
+      </div>
+
+      <div class='col-3'>
+        <div style="margin-left: 5px">
+          <input type="text" value={{lookupTeacherLevel(whichTeacher.Level)}} class='col-12 t_cm_input' disabled>
         </div>
       </div>
     </div>
@@ -63,7 +75,7 @@
                 {{lookupDuration(i.Course.Duration)}}
               </div>
               <div class='col-4' style="text-align: center">
-                {{lookupGroup(i.Course.isGroup)}}
+                {{lookupGroup(i.Course.CourseType)}}
               </div>
             </div>
           </div>
@@ -83,15 +95,23 @@
             <div class='row'>
               <div class='col-12 t_cm_label_title t_cm_course_dropdown'
                 (click)='toggleCourseOptions($event,i.CourseCategoryName)'
-                style="text-align: center;border-bottom: 1px solid lightgrey;background:rgb(173, 216, 230, 0.1)">
+                style="text-align: center;border-bottom: 1px solid lightgrey;background:rgb(173, 216, 230, 0.2)">
                 {{i.CourseCategoryName}}
               </div>
               <div style="display: none" id={{i.CourseCategoryName}} class='col-12'>
                 <div class='col-12'>
+                  <div class='row' style="background:rgb(173, 216, 230, 0.2)">
+                    <div class='col-12'>
+                      <div style="float:right">
+                        <label for="all" style="text-align: center; font-weight:bold;margin-right: 10px" (click)='selectAll(i.CourseCategoryName)' id='select_All'>Select All:&nbsp;</label>
+                        <label for="None" style="text-align: center; font-weight:bold;margin-right: 10px" (click)='selectNone(i.CourseCategoryName)' id='select_All'>Select None:&nbsp;</label>
+                      </div>
+                    </div>
+                  </div>
                   <div class='row' style="text-align: center; font-weight:bold ">
-                    <div class='col-3'>Course:</div>
-                    <div class='col-3'>Level:</div>
-                    <div class='col-3'>Type:</div>
+                    <div class='col-3'>Course Name:</div>
+                    <div class='col-3'>Course Level:</div>
+                    <div class='col-3'>Course Type:</div>
                     <div class='col-2'>Duration:</div>
                     <div class='col-1'>tick:</div>
 
@@ -129,11 +149,11 @@
           <div class='col-6'>
             <div style="margin-right: 5px">
               <div class='row'>
-                  <div class='col-4'>One to One:</div>
-                  <small class='text-danger errorfontsmall col-8'
-                      *ngIf='CourseForm.get("oneOnoneWage").invalid && CourseForm.get("oneOnoneWage").touched && CourseForm.get("oneOnoneWage").errors?.required'>required</small>
+                <div class='col-4'>One to One:</div>
+                <small class='text-danger errorfontsmall col-8'
+                  *ngIf='CourseForm.get("oneOnoneWage").invalid && CourseForm.get("oneOnoneWage").touched && CourseForm.get("oneOnoneWage").errors?.required'>required</small>
               </div>
-              <div class='col-12'><input type="text" name="" id="one" class='col-12 t_cm_input' 
+              <div class='col-12'><input type="text" name="" id="one" class='col-12 t_cm_input'
                   [class.t_cm_error_border]='CourseForm.get("oneOnoneWage").invalid && CourseForm.get("oneOnoneWage").touched'
                   formControlName='oneOnoneWage'></div>
             </div>
@@ -141,8 +161,8 @@
           <div class='col-6'>
             <div style="margin-left: 5px">
               <div class='row'>
-                  <div class='col-3'>Group:</div>
-                  <small class='text-danger errorfontsmall col-9'
+                <div class='col-3'>Group:</div>
+                <small class='text-danger errorfontsmall col-9'
                   *ngIf='CourseForm.get("groupWage").invalid && CourseForm.get("groupWage").touched && CourseForm.get("groupWage").errors?.required'>required</small>
               </div>
               <div class='col-12'><input type="text" name="" id="group" class='col-12 t_cm_input'
@@ -154,20 +174,22 @@
       </div>
 
       <div *ngIf='isDetailModeFlag'>
-          <div class='row'>
-            <div class='col-6'>
-              <div style="margin-right: 5px">
-                <div class='col-12'>One to One:</div>
-                <div class='col-12'><input type="text" name="" id="one" class='col-12 t_cm_input' [disabled]='true' value={{oneOnoneWage}}></div>
-              </div>
-            </div>
-            <div class='col-6'>
-              <div style="margin-left: 5px">
-                <div class='col-12'>Group:</div>
-                <div class='col-12'><input type="text" name="" id="group" class='col-12 t_cm_input' [disabled]='true' value={{groupWage}}></div>
-              </div>
+        <div class='row'>
+          <div class='col-6'>
+            <div style="margin-right: 5px">
+              <div class='col-12'>One to One:</div>
+              <div class='col-12'><input type="text" name="" id="one" class='col-12 t_cm_input' [disabled]='true'
+                  value={{oneOnoneWage}}></div>
             </div>
           </div>
+          <div class='col-6'>
+            <div style="margin-left: 5px">
+              <div class='col-12'>Group:</div>
+              <div class='col-12'><input type="text" name="" id="group" class='col-12 t_cm_input' [disabled]='true'
+                  value={{groupWage}}></div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
 
@@ -176,13 +198,14 @@
 
 <!--modal footer-->
 <div class='modal-footer'>
-  <span *ngIf='!isDetailModeFlag' class='t_info_table_btn' title="Details" (click)='switchMode(0)'><span
-      class='fas fa-info-circle'></span></span>
+  <!-- <span *ngIf='!isDetailModeFlag' class='t_info_table_btn' title="Details" (click)='switchMode(0)'><span
+      class='fas fa-info-circle'></span></span> -->
   <span *ngIf='isDetailModeFlag' class='t_info_table_btn' title="Edit" (click)='switchMode(1)'><span
       class='fas fa-pen'></span></span>
-  <div *ngIf='loadingGifFlag' class="loaderSmall"></div>
+  <div *ngIf='onsubmit' class="loaderSmall"></div>
   <span *ngIf='isSuccess' class='text-success' style="font-size:20px">Update Success!</span>
   <span *ngIf='isError' class='text-danger' style="font-size:20px">Please check your inputs!</span>
-  <button *ngIf='!isDetailModeFlag&&!isSuccess' type="button" class="btn btn-outline-dark" (click)="onSubmit()">Save</button>
+  <button *ngIf='!isDetailModeFlag&&!isSuccess' type="button" class="btn btn-outline-dark"
+    (click)="onSubmit()">Save</button>
   <button type="button" class="btn btn-outline-dark" (click)="activeModal.close('Close click')">Close</button>
 </div>

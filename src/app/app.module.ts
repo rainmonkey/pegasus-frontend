@@ -9,7 +9,7 @@ import { NgModule } from '@angular/core';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { routing } from '../app/app-routing.module';
 import { FullCalendarModule } from 'ng-fullcalendar';
-import { DatePipe,CommonModule } from '@angular/common';
+import { DatePipe, CommonModule } from '@angular/common';
 import { ChartsModule } from 'ng2-charts';
 
 // Guards
@@ -83,6 +83,13 @@ import { CourseClassDetailModalComponent } from './components/dashboard/dashboar
 import { DashboardHomeComponent } from './components/dashboard/dashboard-components/dashboard-home/dashboard-home.component';
 import { TeacherCourseModalComponent } from './components/dashboard/dashboard-components/teachers/teacher-course-modal/teacher-course-modal.component';
 import { ChartingComponent } from './components/dashboard/dashboard-components/support/charting/charting.component';
+import { RatingModalComponent } from './components/dashboard/dashboard-components/support/rating-modal/rating-modal.component';
+import { ForgotPasswordModalComponent } from './components/basic/forgot-password-modal/forgot-password-modal.component';
+import { ChangePasswordModalComponent } from './components/dashboard/dashboard-components/support/change-password-modal/change-password-modal.component';
+import { TrialPanelComponent } from './components/dashboard/dashboard-components/trial-session/trial-panel/trial-panel.component';
+import { TrialInfoComponent } from './components/dashboard/dashboard-components/trial-session/trial-info/trial-info.component';
+import { TrialSearchComponent } from './components/dashboard/dashboard-components/trial-session/trial-search/trial-search.component';
+import { TrialTableComponent } from './components/dashboard/dashboard-components/trial-session/trial-table/trial-table.component';
 
 
 
@@ -155,7 +162,14 @@ import { ChartingComponent } from './components/dashboard/dashboard-components/s
     DashboardHomeComponent,
     CoursespipesPipe,
     TeacherCourseModalComponent,
-    ChartingComponent
+    ChartingComponent,
+    RatingModalComponent,
+    ForgotPasswordModalComponent,
+    ChangePasswordModalComponent,
+    TrialPanelComponent,
+    TrialInfoComponent,
+    TrialSearchComponent,
+    TrialTableComponent
   ],
   imports: [
     NgbModule,
@@ -189,7 +203,10 @@ import { ChartingComponent } from './components/dashboard/dashboard-components/s
     LearnerDeleteModalComponent,
     LearnerDetailModalComponent,
     SessionCancelModalComponent,
-    SessionCompletedModalComponent
+    SessionCompletedModalComponent,
+    RatingModalComponent,
+    ForgotPasswordModalComponent,
+    ChangePasswordModalComponent
   ],
   exports: [AppComponent],
   bootstrap: [AppComponent]

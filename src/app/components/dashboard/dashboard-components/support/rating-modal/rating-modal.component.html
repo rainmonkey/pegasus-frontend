@@ -1,0 +1,103 @@
+<!--modal header-->
+<div class='modal-header'>
+  <h4 class='modal-title'>Rating</h4>
+  <button type="button" class='btn btn-sm btn-info t_dm_close_btn' aria-label="Close"
+    (click)="activeModal.close('Cross click')">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+
+<!-- modal body -->
+<div class='modal-body'>
+  <form novalidate [formGroup]="myForm">
+    <!--star rating  -->
+    <div>
+      <h5>Please rating your experience:</h5>
+
+      <div class="rating-picker">
+        <input type="radio" class="rating-picker__input rating-picker__input--none" checked="checked" name="rating"
+          value="0" formControlName='rating'>
+
+
+
+        <div class="rating-picker__container">
+
+          <input type="radio" class="rating-picker__input rating-picker__input--item " name="rating" value="0.5"
+            id="rating-1" formControlName='rating'>
+          <label class="rating-picker__label" for="rating-1" title="0.5">0.5</label>
+
+          <input type="radio" class="rating-picker__input rating-picker__input--item " name="rating" value="1"
+            id="rating-2" formControlName='rating'>
+          <label class="rating-picker__label rating-picker__label--even" for="rating-2" title="1">1</label>
+
+          <input type="radio" class="rating-picker__input rating-picker__input--item" name="rating" value="1.5"
+            id="rating-3" formControlName='rating'>
+          <label class="rating-picker__label" for="rating-3" title="1.5">1.5</label>
+
+          <input type="radio" class="rating-picker__input rating-picker__input--item" name="rating" value="2"
+            id="rating-4" formControlName='rating'>
+          <label class="rating-picker__label rating-picker__label--even" for="rating-4" title="2">2</label>
+
+          <input type="radio" class="rating-picker__input rating-picker__input--item" name="rating" value="2.5"
+            id="rating-5" formControlName='rating'>
+          <label class="rating-picker__label" for="rating-5" title="2.5">2.5</label>
+
+          <input type="radio" class="rating-picker__input rating-picker__input--item" name="rating" value="3"
+            id="rating-6" formControlName='rating'>
+          <label class="rating-picker__label rating-picker__label--even" for="rating-6" title="3">3</label>
+
+          <input type="radio" class="rating-picker__input rating-picker__input--item" name="rating" value="3.5"
+            id="rating-7" formControlName='rating'>
+          <label class="rating-picker__label" for="rating-7" title="3.5">3.5</label>
+
+          <input type="radio" class="rating-picker__input rating-picker__input--item" name="rating" value="4"
+            id="rating-8" formControlName='rating'>
+          <label class="rating-picker__label rating-picker__label--even" for="rating-8" title="4">4</label>
+
+          <input type="radio" class="rating-picker__input rating-picker__input--item" name="rating" value="4.5"
+            id="rating-9" formControlName='rating'>
+          <label class="rating-picker__label" for="rating-9" title="4.5">4.5</label>
+
+          <input type="radio" class="rating-picker__input rating-picker__input--item" name="rating" value="5"
+            id="rating-10" formControlName='rating'>
+          <label class="rating-picker__label rating-picker__label--even" for="rating-10" title="5">5</label>
+
+
+        </div>
+        <div class="promptmessage" *ngIf="myForm.controls.rating.invalid && myForm.controls.rating.touched || myForm.controls.rating.dirty">
+          <div *ngIf="myForm.controls.rating.errors.required">
+            Please rate.
+          </div>
+        </div>
+      </div>
+
+      <!-- Comments form -->
+
+      <div>
+        <label style='font-size:25px'>Comments:</label>
+        <div>
+          <textarea class='form-control' rows="6" cols='80' formControlName='comments'
+            placeholder="Leave some comments."></textarea>
+        </div>
+        <span class="promptmessage" *ngIf="myForm.controls.comments.invalid">
+          <div *ngIf="myForm.controls.comments.errors.minlength">
+            The character length of your message should be greater than 2 characters.
+          </div>
+          <div *ngIf="myForm.controls.comments.errors.maxlength">
+            The character length of your message should be no more than 500 characters.
+          </div>
+        </span>
+      </div>
+
+      <br>
+      <span class="promptmessage">
+        <div *ngIf="!success || myForm.invalid">
+          {{errorMessage}}
+        </div>
+      </span>
+      <button (click)="onSubmit()" class="btn btn-outline-primary btn-lg"> Submit </button>
+
+
+    </div>
+  </form>
+</div>

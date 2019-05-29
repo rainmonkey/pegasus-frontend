@@ -33,6 +33,7 @@ import { TeacherInfoComponent } from './components/dashboard/dashboard-component
 import { TestoneComponent } from './components/testcomponent/testone/testone.component';
 import { CourseClassListComponent } from './components/dashboard/dashboard-components/courses/course-class-list/course-class-list.component';
 import { DashboardHomeComponent } from './components/dashboard/dashboard-components/dashboard-home/dashboard-home.component';
+import { TrialInfoComponent } from './components/dashboard/dashboard-components/trial-session/trial-info/trial-info.component';
 
 
 const routes: Routes = [
@@ -96,7 +97,8 @@ const routes: Routes = [
 
           {path: 'list', component: AdminLearnerListComponent},
           {path: 'registration/edit', component: LearnerRegistrationModalComponent},
-          {path: 'registration', component: LearnerRegistrationFormComponent}
+          {path: 'registration', component: LearnerRegistrationFormComponent},
+          {path: 'trial', component: TrialInfoComponent}
       ]},
       // Inventory Area
       { path: 'inventory', component: InventoryPanelComponent,

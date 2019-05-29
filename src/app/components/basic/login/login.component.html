@@ -45,7 +45,7 @@
                 <button [disabled]="loading" class="btn btn-primary">Login</button>
                 <!-- This should be submit button but I replaced it with <a> for demo purposes-->
               </form>
-              <a href="#" class="forgot-pass">Forgot Password?</a>
+              <div class="forgot-pass" (click)='forgotPassword()'>Forgot Password?</div>
             </div>
             <!--End content-->
           </div>

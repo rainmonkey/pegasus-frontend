@@ -50,10 +50,12 @@ export class CourseClassListComponent implements OnInit {
         this.courseClassLists = res['Data'];
         this.courseClassLists.forEach(element => {
           element.CourseName = element.Course.CourseName;
+          element.OrgId = element.Org.OrgId;
           element.OrgName = element.Org.OrgName;
+          element.RoomId = element.Room.RoomId;
           element.RoomName = element.Room.RoomName;
-          element.TeacherFirstName = element.Teacher.FirstName;   
-          element.TeacherLastName = element.Teacher.LastName;
+          element.TeacherId = element.Teacher.TeacherId;
+          element.TeacherName = element.Teacher.FirstName + ' ' + element.Teacher.LastName;
         });
         this.coursesListCopy = this.courseClassLists;
         this.coursesClassListLength = res['Data'].length; //length prop is under Data prop
@@ -134,7 +136,7 @@ export class CourseClassListComponent implements OnInit {
   /*
   update modal
 */
-  detailModal(command, whichCourse) {
+  detailModal(command, whichCourseClass) {
     const modalRef = this.modalService.open(CourseClassDetailModalComponent, { size: 'lg' });
     let that = this;
     modalRef.result.then((result) => {
@@ -144,14 +146,14 @@ export class CourseClassListComponent implements OnInit {
       this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
     });
     modalRef.componentInstance.command = command;
-    modalRef.componentInstance.whichCourse = whichCourse;
+    modalRef.componentInstance.whichCourseClass = whichCourseClass;
   }
 
 
   /*
     delete modal
   */
-  deleteModal(command, whichCourse) {
+  deleteModal(command, whichCourseClass) {
     const modalRef = this.modalService.open(CourseDeleteModalComponent);
     let that = this;
     modalRef.result.then((result) => {
@@ -161,7 +163,7 @@ export class CourseClassListComponent implements OnInit {
       this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
     });
     modalRef.componentInstance.command = command;
-    modalRef.componentInstance.whichCourse = whichCourse;
+    modalRef.componentInstance.whichCourseClass = whichCourseClass;
   }
 
   /*

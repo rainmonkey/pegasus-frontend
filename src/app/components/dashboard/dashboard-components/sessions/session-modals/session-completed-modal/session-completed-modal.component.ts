@@ -10,9 +10,9 @@ import {ActivatedRoute, Router} from '@angular/router';
 })
 export class SessionCompletedModalComponent implements OnInit {
   lessonId;
-  private info;
-  private isComfirmSuccess
-  private isConfirmFailed
+  public info;
+  public isComfirmSuccess
+  public isConfirmFailed
   constructor(public activeModal: NgbActiveModal, private sessionsService: SessionsService,
               private router: Router) { }
 
@@ -20,9 +20,10 @@ export class SessionCompletedModalComponent implements OnInit {
   }
 
   CompletedConfirm = () => {
-    this.sessionsService.SessionCompleted(this.lessonId,this.info).subscribe(res => {
+    this.sessionsService.SessionCompleted(this.lessonId, this.info).subscribe(res => {
       this.isComfirmSuccess = true;
     }, err => {
+      console.log(err);
       this.isConfirmFailed = true;
     });
   }

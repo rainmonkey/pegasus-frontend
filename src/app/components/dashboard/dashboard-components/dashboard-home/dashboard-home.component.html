@@ -1,4 +1,4 @@
-<div style="margin-top:10px;" class="container">
+<div style="margin-top:10px;" class="container-fluid">
     <div class="font4">Dashboard</div>
     <div style="" class="text-info">Welcome &nbsp; Bienvenido &nbsp;  Willkommen  &nbsp; добро  &nbsp; пожаловать &nbsp;  欢迎  &nbsp; Manaakitia &nbsp;  Bienvenue</div> 
     <br>
@@ -47,9 +47,11 @@
                 <!-- <div [ngbPopover]="toDoPopOver" #popOver="ngbPopover" placement="top" [autoClose]="'outside'" popoverTitle="New Task" popoverClass="toDoPopoverClass"></div> -->
                 <div style="max-height:300px; overflow-y:auto">
                     <ul  *ngFor="let task of toDoList" class="list-group list-group-flush">
-                        <li class="list-group-item">
-                            <a href="" [routerLink]="['/' + task.link]">{{task.task}} &nbsp; &nbsp; {{task.origin}} </a> 
-                            <a style="float: right; cursor: pointer; font-size:15px;" class="text-danger" (click)="ignoreTask(task.id)"> Ignore </a>
+                        <li style="font-size:14px;" class="list-group-item">
+                            <!-- <a href="" [routerLink]="['/' + task.link]"> -->
+                                {{task.ListContent}} &nbsp; &nbsp; {{task.origin}}
+                            <!-- </a>  -->
+                            <a style="float: right; cursor: pointer; font-size:15px;" class="text-danger" (click)="completedTask(task.ListId)"> Completed </a>
                         </li>
                     </ul>
                 </div>
