@@ -134,11 +134,11 @@
         </div>
         <div class="grade my-3">
           <label for="grade">Enrollment Agreement Upload</label>
-          <input formControlName="grade" type="file" (change)="uploadGrade($event)" id="grade" accept="image/*">
+          <input formControlName="grade" type="file" (change)="uploadAgreement($event)" id="grade" accept="application/msword,application/pdf,image/*">
         </div>
         <div class="grade my-3">
           <label for="grade">Other File Upload</label>
-          <input formControlName="grade" type="file" (change)="uploadGrade($event)" id="grade" accept="image/*">
+          <input formControlName="grade" type="file" (change)="uploadOther($event)" id="grade" accept="application/msword,application/pdf,image/*">
         </div>
         <div class="under 18">
           <span class="text-primary">Above 18 years old?</span><br>
