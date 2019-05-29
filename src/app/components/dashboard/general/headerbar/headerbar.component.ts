@@ -46,7 +46,7 @@ export class HeaderbarComponent implements OnInit {
     this.settingService.sidebarShowStatus.next(!this.settingService.sidebarShowStatus.value)
   }
 
-  forgotPassword() {
+  changePassword() {
     const modalRef = this.modalService.open(ChangePasswordModalComponent,{size:'lg'})
   }
 }

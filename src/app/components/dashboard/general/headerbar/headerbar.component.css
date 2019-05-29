@@ -21,6 +21,11 @@ nav.navbar {
   /*==== Dropdowns ====*/
 }
 
+.nav{
+  margin-left: 10px;
+  margin-right: 10px;
+}
+
 nav.navbar .badge {
   width: 22px;
   height: 22px;
@@ -31,28 +36,39 @@ nav.navbar .badge {
   font-weight: 400;
 }
 
-nav.navbar .navbar-holder {
-  width: 100%;
+.navbar li{
+  list-style-type:none;
 }
 
-nav.navbar .container-fluid {
-  width: 100%;
+.navbar-itme{
+  margin: auto 0;
+}
+
+.navbar img{
+  width: 42px;
+  height: 42px;
 }
 
 nav.navbar a {
   color: inherit;
+  padding-right: 50px;
 }
 
 nav.navbar .nav-link {
-  position: relative;
+  /* position: relative; */
 }
 
 nav.navbar .nav-link span.badge-corner {
-  position: absolute;
+  /* position: absolute;
   top: 0;
-  right: 0;
+  right: 0; */
   font-weight: 400;
   font-size: 0.7em;
+}
+
+
+.change-pass, .nav-link{
+  cursor: pointer;
 }
 
 nav.navbar .nav-menu {
@@ -98,32 +114,31 @@ nav.navbar .search-box form input {
 
 /*Dropdown-menu*/
 nav.navbar .dropdown-menu {
-  right: 0;
-  min-width: 250px;
+  /* min-width: 250px; */
   left: auto;
-  margin-top: 15px;
   margin-bottom: 0;
   padding: 15px 0;
-  max-width: 400px;
+  /* max-width: 400px; */
   border-radius: 0;
   border: none;
   -webkit-box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.1), -2px 0 2px rgba(0, 0, 0, 0.1);
   box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.1), -2px 0 2px rgba(0, 0, 0, 0.1);
 }
 
-nav.navbar .dropdown-menu .dropdown-item {
-  background: #fff;
+.dropdown-menu .dropdown-item {
+  /* background: #fff; */
   padding: 10px 20px;
   font-size: 0.8rem;
   color: #777;
   width: 100%;
+  margin-right: 10px;
 }
 
-nav.navbar .dropdown-menu .dropdown-item:hover {
+/* nav.navbar .dropdown-menu .dropdown-item:hover {
   background: #f5f5f5;
-}
+} */
 
-nav.navbar .dropdown-menu .dropdown-item i {
+/* nav.navbar .dropdown-menu .dropdown-item i {
   width: 30px;
   height: 30px;
   line-height: 30px;
@@ -132,14 +147,14 @@ nav.navbar .dropdown-menu .dropdown-item i {
   color: #fff;
   border-radius: 50%;
   margin-right: 10px;
-}
+} */
 
 nav.navbar .dropdown-menu .dropdown-item small {
-  margin-left: 40px;
+  /* margin-left: 40px; */
 }
 
 nav.navbar .dropdown-menu span {
-  position: static;
+  /* position: static; */
   font-size: 0.9em;
   color: #999;
 }
@@ -149,9 +164,9 @@ nav.navbar .dropdown-menu strong {
 }
 
 nav.navbar .dropdown-menu .msg-profile {
-  width: 45px;
+  /* width: 45px;
   height: 45px;
-  margin-right: 10px;
+  margin-right: 10px; */
 }
 
 nav.navbar .dropdown-menu h3 {
