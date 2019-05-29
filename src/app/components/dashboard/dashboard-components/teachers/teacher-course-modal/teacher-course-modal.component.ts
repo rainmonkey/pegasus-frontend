@@ -61,7 +61,12 @@ export class TeacherCourseModalComponent implements OnInit {
     let array = []
     for (let i of this.courses) {
       if (i.CourseCategory.CourseCategoryName == cate) {
-        if(i.TeacherLevel == this.whichTeacher.Level){
+        if(cate == 'Piano'){
+          if(i.TeacherLevel == this.whichTeacher.Level){
+            array.push(i)
+          }
+        }
+        else{
           array.push(i)
         }
       }

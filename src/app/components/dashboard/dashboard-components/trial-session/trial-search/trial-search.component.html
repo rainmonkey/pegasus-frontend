@@ -1,0 +1,17 @@
+<div class='row'>
+  <div class='col-12 t_s_class_title'>
+    Categories:
+  </div>
+
+  <div class='col-12'>
+    <div class='row'>
+      <div *ngFor='let i of coursesCate.slice(0,-1)' class='col-2'>
+        <div class='t_s_tabs'>
+            <span class='t_s_tabs_title col-12'>{{i.CourseCategoryName}}</span>
+            <span class='t_s_tabs_img col-12'><img src="../../../../../../assets/images/shared/piano.svg" alt=""></span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
