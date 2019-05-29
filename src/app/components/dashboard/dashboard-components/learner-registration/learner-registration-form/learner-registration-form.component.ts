@@ -22,6 +22,8 @@ export class LearnerRegistrationFormComponent implements OnInit {
   public registrationForm: FormGroup; // define the type of registrationForm
   public selectedPhoto: File = null;
   public selectedGrade: File = null;
+  selectedAgreement: File = null;
+  selectedOther: File = null;
   public errorMsg: string; // display error message from server in template
   public postSuccessMsg: string; // display message to user when they posted data to server successfully
   public guitars: Array<any>;
@@ -242,6 +244,17 @@ export class LearnerRegistrationFormComponent implements OnInit {
     }
     reader.readAsDataURL(photoRender);
   }
+
+  uploadAgreement(event) {
+    this.selectedAgreement = <File>event.target.files[0];
+    this.fd.append('agreement', this.selectedGrade);
+  }
+
+  uploadOther(event) {
+    this.selectedOther = <File>event.target.files[0];
+    this.fd.append('OtherFile', this.selectedGrade);
+  }
+
   getCoursesFromServer() {
     this.coursesService.getCourses().subscribe(
       (res) => {
