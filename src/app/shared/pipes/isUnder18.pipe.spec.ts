@@ -1,11 +1,11 @@
 /* tslint:disable:no-unused-variable */
 
 import { TestBed, async } from '@angular/core/testing';
-import { ReasonLearnPianoPipe } from './Reason-learn-piano.pipe';
+import { IsUnder18Pipe } from './isUnder18.pipe';
 
-describe('Pipe: ReasonLearnPianoe', () => {
+describe('Pipe: IsUnder18e', () => {
   it('create an instance', () => {
-    let pipe = new ReasonLearnPianoPipe();
+    let pipe = new IsUnder18Pipe();
     expect(pipe).toBeTruthy();
   });
 });

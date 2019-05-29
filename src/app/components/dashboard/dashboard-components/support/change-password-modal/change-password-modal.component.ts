@@ -15,13 +15,23 @@ export class ChangePasswordModalComponent implements OnInit {
   success = false;
   oldPassword:any
   userName:any
+  loginList=[]
+  UsererrorMessage:string
+
+  newInfo={
+    userName:null,
+    oldPassword:null,
+    newPassword:null,
+  }
   constructor(
     public fb: FormBuilder,
     public activeModal: NgbActiveModal,
     public loginService:AuthenticationService) { }
 
   ngOnInit() {
+    
     this.createForm()
+    this.check()
   }
   // Winnie This is your component  圆润的走开好吗
 
@@ -34,19 +44,33 @@ export class ChangePasswordModalComponent implements OnInit {
     })
   }
 
+  get f() { return this.myForm.controls; }
   // get old password
-  getOldPassword(){
+  check(){
+    this.loginService.changePassword(this.newInfo).subscribe(
+      (data) => {console.log(data)},
+      (err) => { 
+        console.log(err);
+        this.UsererrorMessage=err.error.ErrorMessage;
+ 
+      }
+        
+    )}
+
    
-  }
+    getUserName(){
+      this.userName=localStorage.getItem('userName' );
 
 
-  // check old password
-  oldPasswordconfirm(){
+    }
 
-  }
 
   onSubmit() {
     this.submitted = true;
+    this.newInfo.userName = this.userName;
+    this.newInfo.oldPassword=this.myForm.value.password;
+    this.newInfo.newPassword=this.myForm.value.newPassword
+    
     console.log(this.myForm.value)
     // stop here if form is invalid
 
@@ -60,9 +84,10 @@ export class ChangePasswordModalComponent implements OnInit {
     else {
       console.warn('success')
       this.success = true;
-
+      this.check()
     }
   }
 
-}
 
+
+}

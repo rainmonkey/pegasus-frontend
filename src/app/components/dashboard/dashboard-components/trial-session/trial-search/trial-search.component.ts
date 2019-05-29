@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 
 @Component({
   selector: 'app-trial-search',
@@ -7,6 +7,9 @@ import { Component, OnInit } from '@angular/core';
               '../../teachers/teacher-panel/teacher-panel.component.css']
 })
 export class TrialSearchComponent implements OnInit {
+
+  @Input() courses;
+  @Input() coursesCate;
 
   constructor() { }
 
