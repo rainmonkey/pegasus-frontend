@@ -17,7 +17,7 @@ export class ChangePasswordModalComponent implements OnInit {
   userName:any
   loginList=[]
   UsererrorMessage:string
-
+  successMessage:string
   newInfo={
     userName:null,
     oldPassword:null,
@@ -29,15 +29,15 @@ export class ChangePasswordModalComponent implements OnInit {
     public loginService:AuthenticationService) { }
 
   ngOnInit() {
-    
+    this.getUserName()
     this.createForm()
-    this.check()
+   
   }
   // Winnie This is your component  圆润的走开好吗
 
   createForm() {
     this.myForm = this.fb.group({
-      userName: ['', [Validators.required]],
+      
       password: ['', [Validators.required]],
       newPassword: ['', [Validators.required]],
       confirm: ['', [Validators.required]],
@@ -70,10 +70,10 @@ export class ChangePasswordModalComponent implements OnInit {
     this.newInfo.userName = this.userName;
     this.newInfo.oldPassword=this.myForm.value.password;
     this.newInfo.newPassword=this.myForm.value.newPassword
-    
+    console.log(this.newInfo)
     console.log(this.myForm.value)
     // stop here if form is invalid
-
+    this.check()
 
     if (this.myForm.invalid) {
       console.log(this.myForm)
@@ -81,10 +81,11 @@ export class ChangePasswordModalComponent implements OnInit {
       this.success = false;
       return
     }
-    else {
+    else { 
+      
       console.warn('success')
-      this.success = true;
-      this.check()
+      this.success = true;    
+      this.successMessage="Password change successfully"
     }
   }
 
