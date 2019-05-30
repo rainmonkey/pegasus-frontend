@@ -132,6 +132,21 @@
           <img src="" id='certificate' style='height: 64px' alt="Certificate preview...">
           <input formControlName="grade" type="file" (change)="uploadGrade($event)" id="grade" accept="image/*">
         </div>
+        <div class="grade my-3">
+          <label for="grade">Enrollment Agreement Upload</label>
+          <input formControlName="grade" type="file" (change)="uploadAgreement($event)" id="grade" accept="application/msword,application/pdf,image/*">
+        </div>
+        <div class="grade my-3">
+          <label for="grade">Other File Upload</label>
+          <input formControlName="grade" type="file" (change)="uploadOther($event)" id="grade" accept="application/msword,application/pdf,image/*">
+        </div>
+        <div class="under 18">
+          <span class="text-primary">Above 18 years old?</span><br>
+          <div class="d-inline-block mx-3">
+              <input type="checkbox" (click)="select18($event)" value=1>&nbsp;&nbsp;
+              <label>I'm Above 18 years old</label>
+          </div>
+        </div>
         <div class="learn purpose">
           <span class="text-primary">Why do you learn the piano?</span><br>
           <div class="d-inline-block mx-3" *ngFor="let learnerPurpose of learnerPurpose; let i = index">
@@ -283,7 +298,7 @@
                 <td>{{groupCourse.Org.OrgName}}</td>
                 <td>{{groupCourse.Room.RoomName}}</td>
                 <td>{{groupCourse.Teacher.FirstName}}</td>
-                <!-- <td><input type="date" [ngModelOptions]="{standalone: true}" [(ngModel)]="groupCourseInstance[i].beginDate"></td> -->
+                <td><input type="date" [ngModelOptions]="{standalone: true}" [(ngModel)]="groupCourseInstance[i].beginDate" ></td>
                 <td><input type="text" [ngModelOptions]="{standalone: true}" [(ngModel)]="groupCourseInstance[i].comments" ></td>
               </tr>
             </tbody>
@@ -309,7 +324,7 @@
                 <label for="course">Course Category</label>
                 <select class="form-control" formControlName="courseCategory" (change)="selectCategory($event.target.value, i)">
                   <option selected>Choose..</option>
-                  <option *ngFor="let courseCategory of catListArray[i]" [value]="courseCategory.CourseCategory.CourseCategoryId">{{courseCategory.CourseCategory.CourseCategoryName}}</option>
+                  <option *ngFor="let courseCategory of setUniCatListArray[i]" [value]="courseCategory.CourseCategoryId">{{courseCategory.CourseCategoryName}}</option>
                 </select>
               </div>
               <div class="col-sm-6 col-md-6">
@@ -328,9 +343,9 @@
                   <option *ngFor="let cInstance of locListArray[i].locItemArray;" [value]="cInstance.OrgId">{{cInstance.OrgName}}</option>
                 </select>
               </div>
-              <div class="col-sm-6 col-md-6">
-                <label for="teacherLevel">Teacher</label>
-                <select class="form-control" id="teacherLevel" (change)="selectTl($event.target.value, i)">
+              <div class="col-sm-6 col-md-6" *ngIf="notPiano == 1">
+                <label for="teacherLevel">Teacher Level</label>
+                <select class="form-control" formControlName="teacherLevel" id="teacherLevel" (change)="selectTl($event.target.value, i)">
                   <option selected>Choose..</option>
                   <option *ngFor="let tLevel of prepareTeaLevListArray[i].prepareTeaLevItemArray;" [value]="tLevel.levelId">{{tLevel.levelName}}</option>
                 </select>
@@ -377,7 +392,7 @@
                   </select>
                 </div>
               <div class="col-sm-3 col-md-3">
-                <label for="customTime">Course Time{{i}}</label>
+                <label for="customTime">Course Time</label>
                 <!-- <input class="form-control" type="text"  value="15:30:00" routerLink="/timePicker" routerLinkActive="active"> -->
                 <ngb-timepicker formControlName="beginTime" [size]="'small'" [hourStep]="hourStep" [minuteStep]="minuteStep"></ngb-timepicker>
               </div>

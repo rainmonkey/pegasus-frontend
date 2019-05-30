@@ -52,7 +52,6 @@ export class AuthenticationService {
     // Saves returned objects into storage
     loginSave(res) {
         console.log(res)
-
         localStorage.setItem('Token', res.Data.token);
         localStorage.setItem('TokenExpiry', res.Data.expires);
         localStorage.setItem('Role', res.Data.roleid);
@@ -61,6 +60,8 @@ export class AuthenticationService {
         localStorage.setItem('userPosition', res.Data.userdetails.position);
         localStorage.setItem('organisations', res.Data.userdetails.OrgName);
         localStorage.setItem('userID', res.Data.userid);
+        localStorage.setItem('userName', res.Data.username);
+        localStorage.setItem('OrgId',JSON.stringify(res.Data.userdetails.OrgId))
 
     }
 
@@ -68,5 +69,10 @@ export class AuthenticationService {
     logout() {
         localStorage.clear();
         sessionStorage.clear();
+    }
+
+    //change password
+    changePassword(info){
+        return this.http.put<any>( this.baseUrl+'changepassword', info )
     }
 }

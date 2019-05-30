@@ -34,6 +34,7 @@ export class TeacherInfoComponent implements OnInit {
   public teachingCourses;
   public level: Array<any> = [];
   public duration: Array<any> = [];
+  public teacherLevel:Array<any> = [];
 
 
   @ViewChild('pagination') pagination;
@@ -118,6 +119,9 @@ export class TeacherInfoComponent implements OnInit {
             }
             else if (i.LookupType == 8) {
               this.duration.push(i)
+            }
+            else if(i.LookupType == 1){
+              this.teacherLevel.push(i);
             }
           }
         }
@@ -255,6 +259,7 @@ export class TeacherInfoComponent implements OnInit {
     modalRef.componentInstance.teachingCourses = this.teachingCourses;
     modalRef.componentInstance.level = this.level;
     modalRef.componentInstance.duration = this.duration;
+    modalRef.componentInstance.teacherLevel = this.teacherLevel;
     modalRef.componentInstance.switch.subscribe(
       (res) => {
         if(res == true){
