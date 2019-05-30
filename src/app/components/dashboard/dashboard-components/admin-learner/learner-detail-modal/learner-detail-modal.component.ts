@@ -20,6 +20,7 @@ export class LearnerDetailModalComponent implements OnInit, AfterViewInit {
   PropNameArray: any;
   otherValueList = [];
   howKnowList = [];
+  learnerLevelList = []
 
   howKnow: any
   reasonList: any
@@ -28,8 +29,10 @@ export class LearnerDetailModalComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit() {
+    
     this.lookUpData1()
     this.lookUpData2()
+    this.lookUpData4()
     console.log(this.whichLearner)
   }
   chooseGroupCourse() {
@@ -66,6 +69,7 @@ export class LearnerDetailModalComponent implements OnInit, AfterViewInit {
       (err) => { console.warn(err) }
     )
   }
+
   lookUpData2() {
     this.LearnerListService.getLookups(3).subscribe(
       (res) => { console.log(res), this.getHowKnowValue(res.Data) },
@@ -73,9 +77,26 @@ export class LearnerDetailModalComponent implements OnInit, AfterViewInit {
     )
   }
 
+  lookUpData4() {
+    this.LearnerListService.getLookups(4).subscribe(
+      (res) => { console.log(res), this.getLearnerValue(res.Data) },
+      (err) => { console.warn(err) }
+    )
+  }
+
+
+  getLearnerValue(displayData1) {
+    displayData1.forEach(element => {
+      console.log(element)
+      if (this.whichLearner.LearnerLevel == element['PropValue']) {
+        this.learnerLevelList.push(element['PropName'])
+      }
+    });
+    console.log(this.learnerLevelList)
+  }
+
   getPurposeValue(displayDatas) {
     console.log(displayDatas)
-
     this.whichLearner.LearnerOthers.forEach(learnerOther => {
       console.log(learnerOther)
       if (learnerOther.OthersType == "2") {
@@ -110,7 +131,7 @@ export class LearnerDetailModalComponent implements OnInit, AfterViewInit {
 
   getHowKnowValue(displayData) {
     console.log(displayData)
-    this.whichLearner.LearnerOthers.forEach(learnerOther => {  
+    this.whichLearner.LearnerOthers.forEach(learnerOther => {
       if (learnerOther.OthersType == "3") {
         displayData.forEach(displayData => {
           console.log(displayData)
@@ -127,6 +148,8 @@ export class LearnerDetailModalComponent implements OnInit, AfterViewInit {
 
 
 
+
+
   /*
    if photo not found, set default photo 
  */
@@ -135,10 +158,10 @@ export class LearnerDetailModalComponent implements OnInit, AfterViewInit {
     return;
   }
 
-  setDefaultPhoto1(event){
-  event.target.src = '../../../../../../assets/images/shared/certificate-icon.png';
-  return
-}
+  setDefaultPhoto1(event) {
+    event.target.src = '../../../../../../assets/images/shared/certificate-icon.png';
+    return
+  }
 }
 
 
