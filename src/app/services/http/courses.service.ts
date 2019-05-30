@@ -44,6 +44,7 @@ export class CoursesService {
   getDuration():any{
     return this.http.get(this.baseUrl + 'Lookups/8');
   }
+  
   /*-----------------------Course Class-----------------------------------*/
   getCourseClasses(){
     return this.http.get(this.baseUrl +'GroupCourseInstance');
@@ -73,7 +74,7 @@ export class CoursesService {
     return this.http.get(this.baseUrl + 'room');
   }
 
-
+/*------------------------ For Edwin testing ----------------------------------*/
   getoioi():any{
     return this.http.get(this.baseUrl+'payment');
   }

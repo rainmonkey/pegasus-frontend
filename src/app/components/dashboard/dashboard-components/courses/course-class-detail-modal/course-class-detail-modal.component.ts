@@ -2,7 +2,6 @@ import { Component, OnInit, Injectable, Input } from '@angular/core';
 import { NgbActiveModal, NgbDateAdapter, NgbDateNativeAdapter, NgbDate } from '@ng-bootstrap/ng-bootstrap';
 import { FormBuilder, Validators, FormGroup, FormArray } from '@angular/forms';
 import { CoursesService } from '../../../../../services/http/courses.service';
-import { DatePipe } from '@angular/common';
 
 
 @Injectable()
@@ -32,7 +31,6 @@ export class CourseClassDetailModalComponent implements OnInit {
   public locationName: Object;
   public roomName: any;
   public rooms: Array<any>;
-  public qweqwe: any;
 
   @Input() command;
   @Input() whichCourseClass;
@@ -40,25 +38,24 @@ export class CourseClassDetailModalComponent implements OnInit {
   constructor(
     public activeModal: NgbActiveModal,
     private coursesService: CoursesService,
-    private fb: FormBuilder,
-    private datePipe: DatePipe  
-  ) {}
+    private fb: FormBuilder
+  ) { }
 
   ngOnInit() {
     this.updateForm = this.fb.group(this.formGroupAssemble());
     this.getCourseName();
     this.getTeacher();
-    this.getLocation(); 
+    this.getLocation();
     this.getRoom();
   }
 
-  /* For Dropdown Options*/
+  /*********** For Dropdown Options *************************************************/
   getCourseName() {
     this.coursesService.getCourseNames().subscribe(
       (res) => {
         this.courseName = res.Data;
         // filter to show only group class
-        this.courseNamefilter = this.courseName.filter((item)=> item.CourseType == 2);
+        this.courseNamefilter = this.courseName.filter((item) => item.CourseType == 2);
       },
       (err) => {
         alert('Server error!')
@@ -74,52 +71,45 @@ export class CourseClassDetailModalComponent implements OnInit {
         alert('Serve error!')
       }
     )
-  }  
-  getLocation(){
+  }
+  getLocation() {
     this.coursesService.getLocations().subscribe(
       (res) => {
         this.locationName = res.Data;
-              
-        // console.log(this.locationName).filter((item) => item.OrgId == num)
       },
       (err) => {
         alert('Serve error!')
       }
     )
   }
-  getRoom(){
+  getRoom() {
     this.coursesService.getRooms().subscribe(
       (res) => {
-        this.roomName = res.Data;  
-        // console.log(this.roomName)       
-        // console.log(this.roomName);
+        this.roomName = res.Data;
       },
       (err) => {
         alert('Serve error!')
       }
-    )  
+    )
   }
 
   // Filter rooms selecting by Location
-  filterrooms(num){
+  filterrooms(num) {
     this.rooms = this.roomName.filter((item) => item.OrgId == num);
   }
-   // filter date
-   onBeginDateSelection(date: NgbDate){
-    if(date.after(this.toDate)) {
+
+  // Validate EndDate > BeginDate
+  onBeginDateSelection(date: NgbDate) {
+    if (date.after(this.toDate)) {
       alert('asdasd')
-    }else{
+    } else {
       this.fromDate = date;
-      this.updateForm['BeginDate'] = this.datePipe.transform(new Date(this.fromDate.year, this.fromDate.month-1,this.fromDate.day),'yyyy-MM-dd');
-      
     }
   }
-  
-  onEndDateSelection(date){
-    // console.log(date)
+  onEndDateSelection(date) {
     if (date.before(this.fromDate)) {
-     alert('123123')
-    } else{
+      alert('123123')
+    } else {
       this.toDate = date;
     }
   }
@@ -139,7 +129,6 @@ export class CourseClassDetailModalComponent implements OnInit {
       }
     } else {
       groupObj = {
-        //formControlName 决定了提交表单时的参数名
         CourseId: [this.whichCourseClass.CourseId, Validators.required],
         TeacherId: [this.whichCourseClass.TeacherId, Validators.required],
         BeginDate: [this.whichCourseClass.BeginDate, Validators.required],
@@ -153,39 +142,31 @@ export class CourseClassDetailModalComponent implements OnInit {
   }
   // Begin time Arrays
   formArrayAssemble() {
-    return this.fb.group({BeginTime: [null, Validators.required]})
+    return this.fb.group({ BeginTime: [null, Validators.required] })
   }
   // add time
   newTime() {
     const sches = this.updateForm.controls.CourseSchedule as FormArray;
     sches.push(this.formArrayAssemble());
-  }  
+  }
 
+  /***** Post form ********************************************************/
   onSubmit() {
     let valueToSubmit = this.updateForm.value;
     let vailadValue = this.checkInputVailad(valueToSubmit);
     if (vailadValue !== null && this.updateForm.dirty) {
       this.submitByMode(vailadValue);
-      // console.log(this.updateForm.value);
     } else if (!this.updateForm.dirty) {
       this.errorMessage = 'Data did no changing!';
     } else {
-      // 数据过滤
-      let abc = this.updateForm.controls['BeginDate'].value;
-      // console.log(abc)
-      console.log(this.datePipe.transform(abc, 'yyyy-MM-dd'))
       this.errorMessage = 'Input incorrect.'
     }
   }
 
-  /*
-   check whether data vailad or not(ruled by Validators).
-  */
+   // check whether data vailad or not(ruled by Validators).
   checkInputVailad(valueToSubmit) {
     if (this.updateForm.status == 'VALID') {
-      console.log(valueToSubmit)
       return valueToSubmit;
-      // return this.filterSubmitData(valueToSubmit);
     }
     else {
       this.infoMessage = 'Please check your input.'
@@ -194,10 +175,7 @@ export class CourseClassDetailModalComponent implements OnInit {
     }
   }
 
-  filterSubmitData(){
-    
-  }
-
+  // Add & Update new data 
   submitByMode(formValue) {
     //while push a stream of new data
     if (this.command == 0) {
@@ -208,7 +186,6 @@ export class CourseClassDetailModalComponent implements OnInit {
         },
         (err) => {
           this.backendErrorHandler(err);
-          // console.log(err);
         }
       );
     }
@@ -221,15 +198,12 @@ export class CourseClassDetailModalComponent implements OnInit {
         },
         (err) => {
           this.backendErrorHandler(err);
-          // console.log(err);
         }
-
       )
     }
   }
-
+  // Show error message
   backendErrorHandler(err) {
-    console.warn(err)
     if (err.error.ErrorMessage != null) {
       this.errorMessage = err.error.ErrorMessage;
     }

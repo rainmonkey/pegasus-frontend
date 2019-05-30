@@ -9,8 +9,11 @@
 
 
 <!--modal body-->
-<div class='modal-body tl_md_body'>
+<div class='modal-body tl_md_body' *ngIf="command == 3">
   Are you sure to delete the Course? &quot;<span class='t_dm_name'>{{whichCourse.CourseName}}</span>&quot;
+</div>
+<div class='modal-body tl_md_body' *ngIf="command == 4">
+  Are you sure to delete the Course? &quot;<span class='t_dm_name'>{{whichCourseClass.CourseName}}</span>&quot;
 </div>
 
 <!--modal footer-->
