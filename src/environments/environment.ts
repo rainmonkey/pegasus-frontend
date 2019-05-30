@@ -3,7 +3,7 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  production: false,
+  production: true,
   baseUrl: 'http://45.76.123.59:5000/api/',
   photoUrl: 'http://gradspace.org:5000/',  
 
