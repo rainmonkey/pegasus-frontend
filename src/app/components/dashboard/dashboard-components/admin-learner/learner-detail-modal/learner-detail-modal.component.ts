@@ -29,6 +29,7 @@ export class LearnerDetailModalComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit() {
+    
     this.lookUpData1()
     this.lookUpData2()
     this.lookUpData4()

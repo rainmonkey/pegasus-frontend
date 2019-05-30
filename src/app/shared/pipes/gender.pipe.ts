@@ -6,12 +6,12 @@ import { Pipe, PipeTransform } from '@angular/core';
 export class GenderPipe implements PipeTransform {
 
   transform(value: any, args?: any): any {
-    switch(value){
+    switch (value){
       case 1:
-        return "Male";
-        break;
+      return "Male"
+      break;
       case 0:
-        return "Female";
+        return "Female"
         break;
   }
   }

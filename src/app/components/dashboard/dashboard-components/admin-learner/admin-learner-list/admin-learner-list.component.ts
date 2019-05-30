@@ -12,7 +12,7 @@ import {LearnerDetailModalComponent } from '../learner-detail-modal/learner-deta
 })
 export class AdminLearnerListComponent implements OnInit {
     //what columns showed in the info page, can get from back-end in the future. must as same as database
-  public columnsToShow: Array<string> = ['FirstName', 'LastName', 'Gender', 'ContactNum', 'Email'];
+  public columnsToShow: Array<string> = ['FirstName', 'LastName', 'ContactNum', 'Email'];
 
   //learners data from servers
   public learnerList: Array<any>;

@@ -89,11 +89,6 @@ import { IsUnder18Pipe } from './shared/pipes/isUnder18.pipe';
 import { confirmEqualValidatorDirectie } from './shared/confirm-equal-validator.directive';
 
 
-
-
-
-
-
 @NgModule({
   declarations: [
     AppComponent,
