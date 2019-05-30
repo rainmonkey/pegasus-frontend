@@ -17,7 +17,7 @@
         <div class="col-6">
           <label class='t_mf_label'>Course Name:</label>
           <select type="text" class='col-12 t_mf_input' formControlName="CourseId">
-            <option *ngFor='let i of courseName' value="{{i.CourseId}}">{{i.CourseName}}</option>
+            <option *ngFor='let i of courseNamefilter' value="{{i.CourseId}}">{{i.CourseName}}</option>
           </select>
           <label class='t_mf_label'>Tutor Name:</label>
           <select type="text" class='col-12 t_mf_input' formControlName="TeacherId">
@@ -25,39 +25,36 @@
           </select>
           <label class='t_mf_label'>Start Date:</label>
           <div class="input-group">
-            <input class="form-control" placeholder="yyyy-mm-dd" name="startDate" formControlName="BeginDate"
-              ngbDatepicker #startDate="ngbDatepicker">
+            <input class="form-control" placeholder="yyyy-mm-dd" name="dp" ngbDatepicker formControlName="BeginDate" 
+              #startDate="ngbDatepicker" (dateSelect)="onBeginDateSelection($event)" id="begindate" value="">
             <div class="input-group-append">
-              <button class="btn btn-outline-secondary calendar" (click)="startDate.toggle()" type="button"></button>
+              <button class="btn btn-outline-secondary calendar" (click)="startDate.toggle()" type="button"  ></button>
             </div>
           </div>
           <label class='t_mf_label'>End Date:</label>
           <div class="input-group">
-            <input class="form-control" placeholder="yyyy-mm-dd" name="endDate" formControlName="EndDate"
-              ngbDatepicker #endDate="ngbDatepicker">
+            <input class="form-control" name="dp" placeholder="yyyy-mm-dd" formControlName="EndDate" ngbDatepicker
+              #endDate="ngbDatepicker" (dateSelect)="onEndDateSelection($event)" id="enddate">
             <div class="input-group-append">
               <button class="btn btn-outline-secondary calendar" (click)="endDate.toggle()" type="button"></button>
             </div>
           </div>
           <label class='t_mf_label'>Location:</label>
-          <select type="text" class='col-12 t_mf_input' formControlName="OrgId">
-            <option *ngFor='let i of locationRoomName' value="{{i.OrgId}}">{{i.OrgName}}</option>
+          <select type="text" class='col-12 t_mf_input' formControlName="OrgId" (change)="filterrooms($event.target.value)">
+            <option *ngFor='let i of locationName' value="{{i.OrgId}}">{{i.OrgName}}</option>
           </select>
           <label class='t_mf_label'>Room:</label>
           <select type="text" class='col-12 t_mf_input' formControlName="RoomId">
-            <option *ngFor='let i of locationRoomName' value="{{i.RoomId}}">{{i.RoomName}}</option>
+            <option *ngFor='let i of rooms' value="{{i.RoomId}}">{{i.RoomName}}</option>
           </select>
         </div>
         <div class="col-6">
-          <div class="t_mf_form">
-            <div class="row" formGroupName="updateArray">
-              <div class="col-6" style="margin-right: -1rem;">
-                <label class='t_mf_label'>Begin Time 1 :</label>
-                <input class="form-control" type="time" step="60" formControlName="BeginTime" />
-              </div>
-              <div class="col-6">
-                <label class='t_mf_label'>End Time 1 :</label>
-                <input class="form-control" type="time" formControlName="EndTime" />
+          <div class="t_mf_form" formArrayName="CourseSchedule">
+            <div class="row">
+              <div class="col-6" style="margin-right: -1rem;"
+                *ngFor="let sches of updateForm.get('CourseSchedule').controls; let i = index" [formGroupName]="i">
+                <label class='t_mf_label'>Begin Time {{i+1}} :</label>
+                <input class="form-control" type="time" step="2" formControlName="BeginTime" />
               </div>
             </div>
           </div>
@@ -68,7 +65,8 @@
 </div>
 <!--modal footer-->
 <div class='modal-footer'>
-  <button type='button' class='btn btn-outline-dark' style="margin-right: 9rem;" *ngIf="command == 0">+ Add New
+  <button type='button' class='btn btn-outline-dark' style="margin-right: 9rem;" *ngIf="command == 0"
+    (click)="newTime()">+ Add New
     Time</button>
   <button type='button' class='btn btn-outline-dark' (click)='onSubmit(this.updateForm)'>Save</button>
 </div>

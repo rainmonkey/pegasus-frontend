@@ -51,7 +51,7 @@
         <!--table body-->
         <tbody>
           <!--pagination is here-->
-          <tr *ngFor='let i of courseClassLists | slice: (page-1)* pageSize : (page-1) * pageSize + pageSize; let j = index'>
+          <tr *ngFor='let i of this.courseClassListsfilter | slice: (page-1)* pageSize : (page-1) * pageSize + pageSize; let j = index' (change)='filterCoursesName()'>
             <th scope="row">{{j+1}}</th>
             <td>
               <ngb-highlight [result]="i.CourseName" [term]="filter.value"></ngb-highlight>

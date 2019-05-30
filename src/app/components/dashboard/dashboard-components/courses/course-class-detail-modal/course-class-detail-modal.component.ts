@@ -1,9 +1,12 @@
 import { Component, OnInit, Injectable, Input } from '@angular/core';
-import { NgbActiveModal, NgbDateAdapter, NgbDateStruct, NgbDateNativeAdapter } from '@ng-bootstrap/ng-bootstrap';
+import { NgbActiveModal, NgbDateAdapter, NgbDateNativeAdapter, NgbDate } from '@ng-bootstrap/ng-bootstrap';
+import { FormBuilder, Validators, FormGroup, FormArray } from '@angular/forms';
 import { CoursesService } from '../../../../../services/http/courses.service';
-import { FormBuilder, Validators, FormGroup, FormArray, FormControl } from '@angular/forms';
+import { DatePipe } from '@angular/common';
+
 
 @Injectable()
+
 @Component({
   selector: 'app-course-class-detail-modal',
   templateUrl: './course-class-detail-modal.component.html',
@@ -19,27 +22,34 @@ export class CourseClassDetailModalComponent implements OnInit {
   public infoMessage: string = '';
   public messageColor: string;
   public updateForm: FormGroup;
-  public updateArray: FormArray;
+  public CourseSchedule: FormArray;
+  public courseNamefilter: Array<any>;
+  public fromDate: NgbDate;
+  public toDate: NgbDate;
   //Level dropdown options
-  public courseName: Object;
+  public courseName: Array<any>;
   public tutorName: Object;
-  public locationRoomName: Object;
+  public locationName: Object;
+  public roomName: any;
+  public rooms: Array<any>;
+  public qweqwe: any;
 
   @Input() command;
   @Input() whichCourseClass;
 
-
   constructor(
     public activeModal: NgbActiveModal,
     private coursesService: CoursesService,
-    private fb: FormBuilder
-  ) { }
+    private fb: FormBuilder,
+    private datePipe: DatePipe  
+  ) {}
 
   ngOnInit() {
     this.updateForm = this.fb.group(this.formGroupAssemble());
     this.getCourseName();
     this.getTeacher();
-    this.getLocationRoom();
+    this.getLocation(); 
+    this.getRoom();
   }
 
   /* For Dropdown Options*/
@@ -47,6 +57,8 @@ export class CourseClassDetailModalComponent implements OnInit {
     this.coursesService.getCourseNames().subscribe(
       (res) => {
         this.courseName = res.Data;
+        // filter to show only group class
+        this.courseNamefilter = this.courseName.filter((item)=> item.CourseType == 2);
       },
       (err) => {
         alert('Server error!')
@@ -62,28 +74,57 @@ export class CourseClassDetailModalComponent implements OnInit {
         alert('Serve error!')
       }
     )
-  }
-  getLocationRoom() {
-    this.coursesService.getLocationsRooms().subscribe(
+  }  
+  getLocation(){
+    this.coursesService.getLocations().subscribe(
       (res) => {
-        this.locationRoomName = res.Data;
-        // var room: any;
-        console.log(this.locationRoomName);
-        // for (var i = 0; this.locationRoomName['length'] > i; i++) {
-        //   if (this.locationRoomName[i].OrgId == 1) {
-        //     room = this.locationRoomName[i].RoomName;
-        //   }
-        //   return room;
-        // }
-
-
+        this.locationName = res.Data;
+              
+        // console.log(this.locationName).filter((item) => item.OrgId == num)
       },
       (err) => {
         alert('Serve error!')
       }
     )
   }
+  getRoom(){
+    this.coursesService.getRooms().subscribe(
+      (res) => {
+        this.roomName = res.Data;  
+        // console.log(this.roomName)       
+        // console.log(this.roomName);
+      },
+      (err) => {
+        alert('Serve error!')
+      }
+    )  
+  }
 
+  // Filter rooms selecting by Location
+  filterrooms(num){
+    this.rooms = this.roomName.filter((item) => item.OrgId == num);
+  }
+   // filter date
+   onBeginDateSelection(date: NgbDate){
+    if(date.after(this.toDate)) {
+      alert('asdasd')
+    }else{
+      this.fromDate = date;
+      this.updateForm['BeginDate'] = this.datePipe.transform(new Date(this.fromDate.year, this.fromDate.month-1,this.fromDate.day),'yyyy-MM-dd');
+      
+    }
+  }
+  
+  onEndDateSelection(date){
+    // console.log(date)
+    if (date.before(this.fromDate)) {
+     alert('123123')
+    } else{
+      this.toDate = date;
+    }
+  }
+
+  // shown data during opening add & edit modal
   formGroupAssemble() {
     let groupObj: any;
     if (this.command == 0) {
@@ -94,7 +135,7 @@ export class CourseClassDetailModalComponent implements OnInit {
         EndDate: [null, Validators.required],
         OrgId: [null, Validators.required],
         RoomId: [null, Validators.required],
-        updateArray: this.fb.array([this.formArrayAssemble()])
+        CourseSchedule: this.fb.array([this.formArrayAssemble()])
       }
     } else {
       groupObj = {
@@ -105,46 +146,34 @@ export class CourseClassDetailModalComponent implements OnInit {
         EndDate: [this.whichCourseClass.EndDate, Validators.required],
         OrgId: [this.whichCourseClass.OrgId, Validators.required],
         RoomId: [this.whichCourseClass.RoomId, Validators.required],
-        updateArray: this.fb.array([this.formArrayAssemble()])
+        CourseSchedule: this.fb.array([])
       }
     }
     return groupObj;
   }
-
+  // Begin time Arrays
   formArrayAssemble() {
-    let arrayObj: any;
-    if (this.command == 0) {
-      arrayObj = {
-        BeginTime: [null, Validators.required],
-        EndTime: [null, Validators.required]
-      } 
-    }else{
-      arrayObj = {
-        BeginTime: [this.whichCourseClass.schedule.BeginTime, Validators.required],
-        EndTime: [this.whichCourseClass.schedule.EndTime, Validators.required]
-      } 
-    }
-    return arrayObj;
+    return this.fb.group({BeginTime: [null, Validators.required]})
   }
-
   // add time
-  newTime(){
-    const arr = this.updateForm.get('updateArray') as FormArray;
-    this.updateArray.push
-  }
+  newTime() {
+    const sches = this.updateForm.controls.CourseSchedule as FormArray;
+    sches.push(this.formArrayAssemble());
+  }  
 
   onSubmit() {
     let valueToSubmit = this.updateForm.value;
     let vailadValue = this.checkInputVailad(valueToSubmit);
-    // fix this
     if (vailadValue !== null && this.updateForm.dirty) {
-      // console.log('Correct')
-      this.stringifySubmitStr(vailadValue);
+      this.submitByMode(vailadValue);
       // console.log(this.updateForm.value);
     } else if (!this.updateForm.dirty) {
       this.errorMessage = 'Data did no changing!';
     } else {
-      console.log(valueToSubmit)
+      // 数据过滤
+      let abc = this.updateForm.controls['BeginDate'].value;
+      // console.log(abc)
+      console.log(this.datePipe.transform(abc, 'yyyy-MM-dd'))
       this.errorMessage = 'Input incorrect.'
     }
   }
@@ -156,6 +185,7 @@ export class CourseClassDetailModalComponent implements OnInit {
     if (this.updateForm.status == 'VALID') {
       console.log(valueToSubmit)
       return valueToSubmit;
+      // return this.filterSubmitData(valueToSubmit);
     }
     else {
       this.infoMessage = 'Please check your input.'
@@ -164,12 +194,8 @@ export class CourseClassDetailModalComponent implements OnInit {
     }
   }
 
-  /*
-    after stringify submition string, data is ready to submit
-  */
-  stringifySubmitStr(formValue) {
-    this.errorMessage = '';
-    this.submitByMode(formValue);
+  filterSubmitData(){
+    
   }
 
   submitByMode(formValue) {

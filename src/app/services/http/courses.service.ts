@@ -66,7 +66,10 @@ export class CoursesService {
   getTeachers():any{
     return this.http.get(this.baseUrl + 'teacher');
   }
-  getLocationsRooms():any{
+  getLocations():any{
+    return this.http.get(this.baseUrl + 'orgs');
+  }
+  getRooms():any{
     return this.http.get(this.baseUrl + 'room');
   }
 

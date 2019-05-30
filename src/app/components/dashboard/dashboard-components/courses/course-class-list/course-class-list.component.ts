@@ -24,6 +24,7 @@ export class CourseClassListComponent implements OnInit {
   public currentPage: number = 1;
   public coursesListCopy: Array<any>;
   public errorMessage: string;
+  public courseClassListsfilter: Array<any>;
     //search by which columns, determine by users
   public queryParams: object = {};
   public filter = new FormControl('');
@@ -41,7 +42,6 @@ export class CourseClassListComponent implements OnInit {
 
   ngOnInit() {
     this.getDataService();
-    
   }
 
   getDataService() {
@@ -50,6 +50,7 @@ export class CourseClassListComponent implements OnInit {
         this.courseClassLists = res['Data'];
         this.courseClassLists.forEach(element => {
           element.CourseName = element.Course.CourseName;
+          element.CourseType = element.Course.CourseType;
           element.OrgId = element.Org.OrgId;
           element.OrgName = element.Org.OrgName;
           element.RoomId = element.Room.RoomId;
@@ -60,7 +61,9 @@ export class CourseClassListComponent implements OnInit {
         this.coursesListCopy = this.courseClassLists;
         this.coursesClassListLength = res['Data'].length; //length prop is under Data prop
         this.refreshPageControl();
-        console.log(this.courseClassLists);
+        console.log(this.courseClassLists)
+        // filter course type = 2
+        this.courseClassListsfilter = this.courseClassLists.filter((item)=> item.CourseType == 2);
       },
       (err) => {
         this.backendErrorHandler(err);
