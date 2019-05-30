@@ -6,6 +6,7 @@ import { NgbTimeStruct, NgbTimeAdapter, NgbModal } from '@ng-bootstrap/ng-bootst
 import { LearnerRegistrationModalComponent } from '../learner-registration-modal/learner-registration-modal.component'
 import { UniqueSelectionDispatcher } from '@angular/cdk/collections';
 import { concat } from 'rxjs';
+import { element } from '@angular/core/src/render3';
 
 @Component({
   selector: 'app-learner-registration-form',
@@ -24,6 +25,7 @@ export class LearnerRegistrationFormComponent implements OnInit {
   public selectedGrade: File = null;
   selectedAgreement: File = null;
   selectedOther: File = null;
+  orgId;
   public errorMsg: string; // display error message from server in template
   public postSuccessMsg: string; // display message to user when they posted data to server successfully
   public guitars: Array<any>;
@@ -35,7 +37,6 @@ export class LearnerRegistrationFormComponent implements OnInit {
   public locations: Array<any>;
   public levelType: Array<any>;
   public customCourseInstance: Array<any>;
-
   public teacherLevel: Array<any>;
   public teacherName: Array<any>;
   //public selectedCourse: string;
@@ -141,6 +142,8 @@ export class LearnerRegistrationFormComponent implements OnInit {
   }); }
   ngOnInit() {
     // init date
+    // get orgId
+    this.orgId = JSON.parse(localStorage.getItem('OrgId'))[0];
     this.getDate();
     this.registrationForm = this.fb.group({
       learnerForm: this.fb.group({
@@ -158,7 +161,7 @@ export class LearnerRegistrationFormComponent implements OnInit {
         learnPurpose: [''],
         infoFrom: [''],
         learnerLevel: [this.selectlearnerLevel],
-        location: ['', Validators.required],
+        location: [this.orgId, Validators.required],
         levelType: [''],
         paymentPeriod: [''],
         referrer: ['']
@@ -275,30 +278,38 @@ export class LearnerRegistrationFormComponent implements OnInit {
         // push item to list
         this.catListArray.push(this.catItemArray);
 
-
+        console.log('aaaa', this.catItemArray)
         let catArray = [];
-        let catNameArray = [];
-        let setUniName = [];
+        // let catNameArray = [];
+        // let setUniName = [];
         let temp;
         let tempArray = [];
-        this.catItemArray.forEach(cat =>{
-          cat.CourseCategory.CourseCategoryId =
-          catArray.push(cat.CourseCategory.CourseCategoryId);
-          catNameArray.push(cat.CourseCategory.CourseCategoryName);
-        })
+        this.catItemArray.forEach(cat => {
+          // cat.CourseCategory.CourseCategoryId =
+          // catArray.push(cat.CourseCategory.CourseCategoryId);
+          // catNameArray.push(cat.CourseCategory.CourseCategoryName);
+           catArray.push(JSON.stringify(cat.CourseCategory));
+          })
+          console.log(catArray)
         let uniCat = arr => Array.from(new Set(arr));
-        this.setUniCat = uniCat(catArray);
-        setUniName = uniCat(catNameArray);
-        setUniName.forEach((name, i) => {
-          temp =
-            {
-              CourseCategoryId: this.setUniCat[i],
-              CourseCategoryName: name
-            }
-          tempArray.push(temp)
-        })
-        this.setUniCat = tempArray;
+        console.log(uniCat(catArray))
+        uniCat(catArray).forEach(ele =>{
+          //@ts-ignore
+          this.setUniCat.push(JSON.parse(ele));
+        });
+        // setUniName = uniCat(catNameArray);
+        // setUniName.forEach((name, i) => {
+        //   temp =
+        //     {
+        //       CourseCategoryId: this.setUniCat[i],
+        //       CourseCategoryName: name
+        //     }
+        //   tempArray.push(temp)
+        // })
+        // this.setUniCat = tempArray;
+        console.log(this.setUniCat)
         this.setUniCatListArray.push(this.setUniCat);
+        console.log(this.setUniCatListArray)
       });
   }
   getLocationFromServer(){
