@@ -163,7 +163,7 @@ export class LearnerRegistrationFormComponent implements OnInit {
         learnerLevel: [this.selectlearnerLevel,Validators.required],
         location: [this.orgId, Validators.required],
         levelType: [''],
-        paymentPeriod: ['2'],
+        paymentPeriod: ['1'],
         referrer: ['']
 
       }),

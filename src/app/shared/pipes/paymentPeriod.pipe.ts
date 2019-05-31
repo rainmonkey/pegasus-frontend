@@ -7,10 +7,10 @@ export class PaymentPeriodPipe implements PipeTransform {
 
   transform(value: any, args?: any): any {
     switch(value){
-      case 1:
+      case 2:
         return "Week";
         break;
-      case 2:
+      case 1:
         return "Term";
         break;
   }
