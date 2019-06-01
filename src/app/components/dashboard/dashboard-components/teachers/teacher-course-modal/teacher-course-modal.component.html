@@ -16,18 +16,12 @@
   <form action="" [formGroup]='CourseForm'>
     <!--line 1-->
     <div class='row'>
-      <div class='col-4'>
+      <div class='col-8'>
         <div style="margin-right: 0">
           <label class='t_cm_label_title'>Full Name:</label>
         </div>
       </div>
-      <div class='col-5'>
-        <div style="margin-left: 5px">
-          <label class='col-12 t_cm_label_title' for="ability">Ability Reference:</label>
-          <!-- <input class='col-12 t_mf_input' type="text" id='ability' formControlName='ability'> -->
-        </div>
-      </div>
-      <div class='col-3'>
+      <div class='col-4'>
         <div style="margin-left: 5px">
           <label class='col-12 t_cm_label_title' for="level">Teacher's Level:</label>
           <!-- <input class='col-12 t_mf_input' type="text" id='ability' formControlName='ability'> -->
@@ -37,21 +31,33 @@
 
     <!--line 2-->
     <div class='row'>
-      <div class='col-4'>
+      <div class='col-8'>
         <div style="margin-right: 0">
           <input type="text" value={{getFullName()}} class='col-12 t_cm_input' disabled>
         </div>
 
       </div>
-      <div class='col-5'>
+      <div class='col-4'>
         <div style="margin-left: 5px">
-          <input type="text" value={{whichTeacher.Ability}} class='col-12 t_cm_input' disabled>
+          <input type="text" value={{lookupTeacherLevel(whichTeacher.Level)}} class='col-12 t_cm_input' disabled>
+        </div>
+      </div>
+    </div>
+
+
+    <div class='row'>
+        <div class='col-12'>
+          <div>
+            <label class='col-12 t_cm_label_title' for="ability">Ability Reference:</label>
+            <!-- <input class='col-12 t_mf_input' type="text" id='ability' formControlName='ability'> -->
+          </div>
         </div>
       </div>
 
-      <div class='col-3'>
-        <div style="margin-left: 5px">
-          <input type="text" value={{lookupTeacherLevel(whichTeacher.Level)}} class='col-12 t_cm_input' disabled>
+    <div class='row' style="margin-bottom: 5px">
+      <div class='col-12'>
+        <div>
+          <input type="text" value={{whichTeacher.Ability}} class='col-12 t_cm_input' disabled>
         </div>
       </div>
     </div>
@@ -103,8 +109,10 @@
                   <div class='row' style="background:rgb(173, 216, 230, 0.2)">
                     <div class='col-12'>
                       <div style="float:right">
-                        <label for="all" style="text-align: center; font-weight:bold;margin-right: 10px" (click)='selectAll(i.CourseCategoryName)' id='select_All'>Select All:&nbsp;</label>
-                        <label for="None" style="text-align: center; font-weight:bold;margin-right: 10px" (click)='selectNone(i.CourseCategoryName)' id='select_All'>Select None:&nbsp;</label>
+                        <label for="all" style="text-align: center; font-weight:bold;margin-right: 10px"
+                          (click)='selectAll(i.CourseCategoryName)' id='select_All'>Select All:&nbsp;</label>
+                        <label for="None" style="text-align: center; font-weight:bold;margin-right: 10px"
+                          (click)='selectNone(i.CourseCategoryName)' id='select_All'>Select None:&nbsp;</label>
                       </div>
                     </div>
                   </div>
