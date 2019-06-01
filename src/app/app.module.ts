@@ -89,6 +89,7 @@ import { IsUnder18Pipe } from './shared/pipes/isUnder18.pipe';
 import { confirmEqualValidatorDirectie } from './shared/confirm-equal-validator.directive';
 import { StaffListComponent } from './components/dashboard/dashboard-components/admin-staff/Staff-list/Staff-list.component';
 import { StaffPanelComponent } from './components/dashboard/dashboard-components/admin-staff/staff-panel/staff-panel.component';
+import { SimplifyOrgPipe } from './shared/pipes/simplify-org.pipe';
 
 
 
@@ -172,6 +173,7 @@ import { StaffPanelComponent } from './components/dashboard/dashboard-components
     //staff
     StaffListComponent,
     StaffPanelComponent,
+    SimplifyOrgPipe,
   ],
   imports: [
     NgbModule,

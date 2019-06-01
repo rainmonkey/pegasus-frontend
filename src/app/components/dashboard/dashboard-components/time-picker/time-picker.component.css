@@ -16,7 +16,7 @@
   height: 40px;
   box-sizing: border-box;
   position: relative;
-  top: 38px;
+  top: 77px;
 }
 .days {
   border: 1px solid rgb(182, 178, 178);
@@ -29,8 +29,16 @@
   background-color: #eaeaf0;
   padding: 10px;
   text-align: center;
-  line-height: 40px;
+  /* line-height: 40px; */
   width: 10vw;
+}
+.location {
+  background-color: #eaeaf0;
+  color: rgb(182, 178, 178);
+  height: 50px;
+  /* text-align: center; */
+  /* line-height: 40px; */
+  /* width: 10vw; */
 }
 .slots {
   border-top: 1px solid rgb(182, 178, 178);
