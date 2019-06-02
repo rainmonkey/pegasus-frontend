@@ -9,14 +9,6 @@ export class CoursesService {
   private baseUrl: any = environment.baseUrl;
 
   constructor(private http:HttpClient) { }
-  getOrgs() {
-    return this.http.get(this.baseUrl + 'orgs');
-  }
-
-  getCourses():any{
-    return this.http.get(this.baseUrl +'courses');
-  }
-
   addNew(data):any{
     return this.http.post(this.baseUrl + 'courses',data)
   }
@@ -29,6 +21,12 @@ export class CoursesService {
     return this.http.delete(this.baseUrl + 'courses/' + courseId);
   }
   /* For dropdown options*/
+  getOrgs() {
+    return this.http.get(this.baseUrl + 'orgs');
+  }
+  getCourses():any{
+    return this.http.get(this.baseUrl +'courses');
+  }
   getCourseCategories():any{
     return this.http.get(this.baseUrl + 'coursecategories');
   }
