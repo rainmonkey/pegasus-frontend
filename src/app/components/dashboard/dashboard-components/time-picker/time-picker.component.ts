@@ -150,6 +150,7 @@ export class TimePickerComponent implements OnInit {
         ]
     }
   };
+  public name: string = 'stella';
   public learnerOrg = {
     OrgId: 2,
     OrgName: "EPSOM BRANCH"
@@ -208,7 +209,14 @@ export class TimePickerComponent implements OnInit {
     this.renderAvailableDay();
     this.renderSlotProp();
   }
-
+  triggerPopover(popover,x,y) {
+    if(this.slot[x][y]=="ableToPick") {
+      popover.open();
+    }
+  }
+  closePopover(popover,x,y) {
+    popover.close();
+  }
 ///////////////////////////////////// Here are reusable functions////////////////////////////////////////
   /* 
     convert begin time and end time to yIndex
@@ -317,60 +325,47 @@ tempChangeIsAbleToPick(x: number, y: number) {
     this.defineSlotProp(this.arrangedArr, 'isArranged');
     this.defineSlotProp(this.dayOffArr, 'isDayOff');
     this.defineSlotProp(this.tempChangeArr, 'isTempChange');
-    console.log('slot', this.slot);
+    // console.log('slot', this.slot);
   }
   /* estimate whether next slots equal to isAvailable */
   hasNextDuration(x: number, y: number) {
-    // console.log('slot', this.slot);
-    for(let i = y; i < this.duration+y+1; i++) {
-      if(this.slot[x][i] != "isAvailable") {
+    for(let i of [0,1,2,3]) {
+      if(this.slot[x][y+i] != "isAvailable") {
         return false;
       }
     };
     return true;
+  }
+  getBottomYindex(x,y) {
+    for(let i of [0,1,2,3]) {
+      if(y!=0 && this.slot[x][y+i] !="isAvailable" && this.slot[x][y+i] !="ableToPick") {
+        return y+i-1;
+      }
+    }
   }
   /* estimate whether former slots equal to isAvailable */
   hasFormerDuration(x: number, y: number) {
-    for(let i = y; i > y-this.duration-1; i--) {
-      if(this.slot[x][i] != "isAvailable") {
+    let bottomY=this.getBottomYindex(x,y);
+    for(let i of [0,1,2,3]) {
+      if(this.slot[x][bottomY-i] != "isAvailable") {
         return false;
       }
     };
     return true;
   }
-  exactlyEqualToDuration(x: number, y: number) {
-    let sameWeekDayArr = this.arrangedArr.filter((o,i,arr) => o.DayOfWeek = x);
-    sameWeekDayArr.map((o,i,arr) => {
-      if(y <= arr[i+1].BeginY && y >= arr[i].EndY && arr[i+1].BeginY > arr[i].BeginY && arr[i+1].BeginY-arr[i].EndY == this.duration+1) {
-        // for(let j = arr[i].EndY; j <  arr[i+1].BeginY; j++) {
-        //   this.slot[x][j] = "ableToPick";
-        // }
-        return true
-      }
-    });
-    return false;
-  }
   /*  set duration range for rendering in HTML  */
   setDuration(x: number, y: number){
-    if(this.hasNextDuration(x,y) && (this.moveoverY > this.moveoutY || this.moveoutY == this.moveoverY)) {
-      for(let i = y; i < this.duration+y+1; i++) {
-        this.slot[x][i] = "ableToPick";
+    if(this.hasNextDuration(x,y)) {
+      for(let i of [0,1,2,3]) {
+        this.slot[x][y+i] = "ableToPick";
       };
-    } else if(this.hasFormerDuration(x,y) && this.moveoverY < this.moveoutY) {
-      for(let i = y; i > y-this.duration-1; i--) {
-        this.slot[x][i] = "ableToPick"
-      };
-    } else if(this.hasNextDuration(x,y)) {
-      for(let i = y; i < this.duration+y+1; i++) {
-        this.slot[x][i] = "ableToPick";
-      };
-    }
-    else if (this.hasFormerDuration(x,y)) {
-      for(let i = y; i > y-this.duration-1; i--) {
-        this.slot[x][i] = "ableToPick";
+    } else if(this.hasFormerDuration(x,y)) {
+      let bottomY=this.getBottomYindex(x,y);
+      for(let i of [0,1,2,3]) {
+        this.slot[x][bottomY-i] = "ableToPick"
       };
     } else {
-      console.log('the third case');
+      console.log('333')
     }
   }
   oneHourUnableToPick(o, x, y) {
@@ -381,7 +376,7 @@ tempChangeIsAbleToPick(x: number, y: number) {
     }
   }
   teacherHasOneOrg(filterOrgIdArr: any[], x, y) {
-    console.log('teacherHasOneOrg')
+    // console.log('teacherHasOneOrg')
     if(filterOrgIdArr[0] == this.learnerOrg.OrgId) {
       this.arrangedOrgEqualToLearnerOrg(this.arrangedArr, x, y);
     } else {
@@ -389,9 +384,9 @@ tempChangeIsAbleToPick(x: number, y: number) {
     }
   }
   teacherHasManyOrgs(filterOrgIdArr: any[], x, y) {
-    console.log('teacherHasManyOrgs')
+    // console.log('teacherHasManyOrgs')
     if(filterOrgIdArr.includes(this.learnerOrg.OrgId)) {
-      console.log('teacher orgs includes learner org');
+      // console.log('teacher orgs includes learner org');
       this.arrangedOrgEqualToLearnerOrg(this.arrangedArr, x, y);
     } else {
       this.teacherOrgNotIncludesLearnerOrg(x);
@@ -409,7 +404,7 @@ tempChangeIsAbleToPick(x: number, y: number) {
       } else if(x == xIndex) {
         this.oneHourUnableToPick(o,x,y);
         this.setDuration(x,y);
-        console.log('aOrg != lOrg')
+        // console.log('aOrg != lOrg')
       }
     })
   }

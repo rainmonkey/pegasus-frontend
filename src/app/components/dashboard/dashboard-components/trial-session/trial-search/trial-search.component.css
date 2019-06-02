@@ -13,6 +13,17 @@
     position: relative;
     overflow: hidden;
 }
+.t_s_tabs_disable{
+    height: 200px;
+    border: 1px solid lightgrey;
+    border-radius: 5px;
+    text-align: center;
+    padding-top: 20px;
+    margin:10px; 
+    
+    position: relative;
+    overflow: hidden;
+}
 /*
     这部分控制tab的hover和点击特效
 */
@@ -28,6 +39,11 @@
 .t_s_tabs:after {
     transition: all 10ms ease;
 }
+.t_s_tabs:active{
+    position:relative;
+    top:2px;    
+    box-shadow:inset 0px -1px 0px rgba(0,0,0,0.1), 0px 2px 0px rgba(0,0,0,0.1);    
+}
 .t_s_tabs:hover:before {
     transform: translate(-200px, -400px) rotate(130deg);
 }
@@ -35,10 +51,9 @@
     cursor: pointer;
     font-size: 38px;
 }
-.t_s_tabs:active{
-    position:relative;
-    top:2px;    
-    box-shadow:inset 0px -1px 0px rgba(0,0,0,0.1), 0px 2px 0px rgba(0,0,0,0.1);    
+.t_s_tabs_disable_hover{
+    cursor: none!important;
+    font-size: 20px;
 }
 
 .t_s_tabs_title{
@@ -64,4 +79,11 @@
 .t_s_tabs_img img{
     width: 50px;
     height: 50px;
+}
+.t_s_tabs_content{
+    /*important可以阻止父元素hover*/
+    font-size: 16px!important;
+    text-transform:capitalize;
+    position: absolute;
+    top: 125px;
 }

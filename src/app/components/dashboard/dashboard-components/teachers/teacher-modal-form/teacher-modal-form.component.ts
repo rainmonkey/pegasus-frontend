@@ -48,6 +48,7 @@ export class TeacherModalFormComponent implements OnInit {
   public cvmsg = '';
   public formmsg = '';
   public othersmsg = '';
+  public avliableTextLength:number = 1000;
 
 
   @Input() command;
@@ -66,7 +67,7 @@ export class TeacherModalFormComponent implements OnInit {
    
       this.getDropdownOptions();
       this.getTeacherLevel();
-  
+    this.getInitTextAreaLength()
   }
   ngAfterViewInit(){
     this.loadingFlag = false;
@@ -74,7 +75,14 @@ export class TeacherModalFormComponent implements OnInit {
 
   /////////////////////////////////////////////methods call by other methods/////////////////////////////////////////////////
 
-
+  getInitTextAreaLength(){
+    if(this.whichTeacher!==null &&this.whichTeacher.Comment !==null){
+     this.avliableTextLength = 1000 - this.whichTeacher.Comment.length;
+    }
+    else{
+      return;
+    }
+  }
   /*
     in detail mode, data can only be read
   */
@@ -361,6 +369,10 @@ export class TeacherModalFormComponent implements OnInit {
   setDefaultPhoto(event) {
     event.target.src = '../../../../../../assets/images/shared/default-employer-profile.png';
     return;
+  }
+
+  calculateTextLength(event){
+    this.avliableTextLength = 1000 - event.target.value.length; 
   }
   /////////////////////////////////////////////form group/////////////////////////////////////////////////
 
