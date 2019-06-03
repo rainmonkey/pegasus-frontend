@@ -1,8 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-
-// Service
-import { GeneralRepoService } from '../../../../../services/repositories/general-repo.service';
 import { CoursesService } from '../../../../../services/http/courses.service';
 
 @Component({
@@ -22,13 +19,12 @@ export class CourseDeleteModalComponent implements OnInit {
 
   constructor(
     public activeModal: NgbActiveModal,
-    public coursesService:CoursesService,
-    public generalRepoService: GeneralRepoService,
+    public coursesService:CoursesService
   ) { }
 
   ngOnInit() {
   }
-
+ // Delete click event
   delete(){  
     if(this.command == 3){
       let courseId = this.whichCourse.CourseId;
@@ -61,24 +57,7 @@ export class CourseDeleteModalComponent implements OnInit {
       );
     }
   }
-
-  // deleteCla(){
-  //   let groupcourseinstanceId = this.whichCourseClass.GroupCourseInstanceId;
-  //   this.coursesService.deleteCourseClass(groupcourseinstanceId).subscribe(
-  //     (res) => {
-  //       this.isDeleteSuccess = true;
-  //       //successful info
-  //       alert('Delete success!');
-  //       this.activeModal.close();
-  //     },
-  //     (err) => {
-  //       //fail info
-  //       this.isDeleteFail = true;
-  //       this.backendErrorHandler(err);
-  //     }
-  //   );
-  // }
-
+  // Show error message
   backendErrorHandler(err) {
     console.warn(err)
     if (err.error.ErrorMessage != null) {

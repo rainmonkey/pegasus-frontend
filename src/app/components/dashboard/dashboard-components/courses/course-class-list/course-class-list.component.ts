@@ -22,8 +22,9 @@ export class CourseClassListComponent implements OnInit {
   public page: number = 1;  //pagination current page
   public pageSize: number = 10;
   public currentPage: number = 1;
-  public coursesListCopy: Array<any>;
+  public coursesClassListCopy: Array<any>;
   public errorMessage: string;
+  public courseClassListsfilter: Array<any>;
     //search by which columns, determine by users
   public queryParams: object = {};
   public filter = new FormControl('');
@@ -41,26 +42,29 @@ export class CourseClassListComponent implements OnInit {
 
   ngOnInit() {
     this.getDataService();
-    
   }
 
   getDataService() {
     this.courseService.getCourseClasses().subscribe(
       (res) => {
         this.courseClassLists = res['Data'];
+        this.coursesClassListCopy = this.courseClassLists;
+        this.coursesClassListLength = res['Data'].length; //length prop is under Data prop
+        this.refreshPageControl();
         this.courseClassLists.forEach(element => {
           element.CourseName = element.Course.CourseName;
+          element.CourseType = element.Course.CourseType;
           element.OrgId = element.Org.OrgId;
           element.OrgName = element.Org.OrgName;
           element.RoomId = element.Room.RoomId;
           element.RoomName = element.Room.RoomName;
           element.TeacherId = element.Teacher.TeacherId;
           element.TeacherName = element.Teacher.FirstName + ' ' + element.Teacher.LastName;
-        });
-        this.coursesListCopy = this.courseClassLists;
-        this.coursesClassListLength = res['Data'].length; //length prop is under Data prop
-        this.refreshPageControl();
-        console.log(this.courseClassLists);
+        });                
+        console.log(this.courseClassLists)
+        // filter course type = 2
+        this.courseClassListsfilter = this.courseClassLists.filter((item)=> item.CourseType == 2);
+        
       },
       (err) => {
         this.backendErrorHandler(err);
@@ -86,10 +90,10 @@ export class CourseClassListComponent implements OnInit {
     this.activatedRoute.queryParams.subscribe(res => {
       let { searchString, searchBy, orderBy, orderControl, currentPage } = res;
       if (searchString !== undefined && searchBy !== undefined) {
-        this.onSearch(null, { 'searchString': searchString, 'searchBy': searchBy })
+        this.onSearch(null, { 'searchString': searchString, 'searchBy': searchBy })        
       }
       if (orderBy !== undefined && orderControl !== undefined) {
-        this.onSort(orderBy, orderControl)
+        this.onSort(orderBy, orderControl)        
       }
       if (currentPage !== undefined) {
         this.currentPage = currentPage;
@@ -121,6 +125,7 @@ export class CourseClassListComponent implements OnInit {
   private getDismissReason(reason: any): string {
     if (reason === ModalDismissReasons.ESC) {
       return 'by pressing ESC';
+      alert('qewqwe')
     } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
       return 'by clicking on a backdrop';
     } else {
@@ -128,10 +133,10 @@ export class CourseClassListComponent implements OnInit {
     }
   }
 
-  getCurrentPage() {
-    let currentPage = this.pagination.page;
-    this.setQueryParams('currentPage', currentPage)
-  }
+  // getCurrentPage() {
+  //   let currentPage = this.pagination.page;
+  //   this.setQueryParams('currentPage', currentPage)
+  // }
 
   /*
   update modal
@@ -192,7 +197,7 @@ export class CourseClassListComponent implements OnInit {
         { searchString: searchingInputObj['value'], searchBy: 'CourseName' } :
         { searchString, searchBy } = initValue;
 
-      this.courseClassLists = this.ngTable.searching(this.coursesListCopy, searchBy, searchString);
+      this.courseClassLists = this.ngTable.searching(this.coursesClassListCopy, searchBy, searchString);
       this.coursesClassListLength = this.courseClassLists.length;
 
       this.setQueryParams('searchBy', searchBy);

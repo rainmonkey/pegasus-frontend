@@ -6,6 +6,7 @@ import { NgbTimeStruct, NgbTimeAdapter, NgbModal } from '@ng-bootstrap/ng-bootst
 import { LearnerRegistrationModalComponent } from '../learner-registration-modal/learner-registration-modal.component'
 import { UniqueSelectionDispatcher } from '@angular/cdk/collections';
 import { concat } from 'rxjs';
+import { element } from '@angular/core/src/render3';
 
 @Component({
   selector: 'app-learner-registration-form',
@@ -24,6 +25,7 @@ export class LearnerRegistrationFormComponent implements OnInit {
   public selectedGrade: File = null;
   selectedAgreement: File = null;
   selectedOther: File = null;
+  orgId;
   public errorMsg: string; // display error message from server in template
   public postSuccessMsg: string; // display message to user when they posted data to server successfully
   public guitars: Array<any>;
@@ -35,7 +37,6 @@ export class LearnerRegistrationFormComponent implements OnInit {
   public locations: Array<any>;
   public levelType: Array<any>;
   public customCourseInstance: Array<any>;
-
   public teacherLevel: Array<any>;
   public teacherName: Array<any>;
   //public selectedCourse: string;
@@ -134,33 +135,35 @@ export class LearnerRegistrationFormComponent implements OnInit {
     beginDate: [this.myDate()],
     endDate: [''],
     schedule: this.fb.group({
-      dayOfWeek: [''],
+      dayOfWeek: ['6'],
       beginTime: [this.time],
       durationType: ['']
     }),
   }); }
   ngOnInit() {
     // init date
+    // get orgId
+    this.orgId = JSON.parse(localStorage.getItem('OrgId'))[0];
     this.getDate();
     this.registrationForm = this.fb.group({
       learnerForm: this.fb.group({
-        firstName: ['www', Validators.required],
+        firstName: ['Donald', Validators.required],
         middleName: ['e'],
-        lastName: ['li', Validators.required],
+        lastName: ['Trump', Validators.required],
         gender: ['2', Validators.required],
-        birthday: ['2018-01-01'],
+        birthday: ['2010-12-01'],
         enrollmentDate: [this.myDate()],
-        contactPhone: ['012345678'],
-        email: ['jijoir@gamil.com', [Validators.required, Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$')]],
+        contactNum: ['032345678'],
+        email: ['Trump@gmail.com', [Validators.required,Validators.email]],
         address: ['1188 Station'],
         photo: [''],
         grade: [''],
         learnPurpose: [''],
         infoFrom: [''],
-        learnerLevel: [this.selectlearnerLevel],
-        location: ['', Validators.required],
+        learnerLevel: [this.selectlearnerLevel,Validators.required],
+        location: [this.orgId, Validators.required],
         levelType: [''],
-        paymentPeriod: [''],
+        paymentPeriod: ['1'],
         referrer: ['']
 
       }),
@@ -170,7 +173,7 @@ export class LearnerRegistrationFormComponent implements OnInit {
           lastName: ['ye', Validators.required],
           relationship: ['2', Validators.required],
           contactPhone: ['9989900', Validators.required],
-          email: ['ivfkhhkn@gmail.com', [Validators.required, Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$')]]
+          email: ['ivfkhhkn@gmail.com', [Validators.required,Validators.email]]
         })
       ]),
       groupCourse: this.fb.array([]),
@@ -273,32 +276,43 @@ export class LearnerRegistrationFormComponent implements OnInit {
         console.log(this.catItemArray);
         // this.catItemArray = this.courses121.filter((item) => item.Level === 0);
         // push item to list
+        this.catListArray=[];
         this.catListArray.push(this.catItemArray);
 
-
+        console.log('aaaa', this.catItemArray)
         let catArray = [];
-        let catNameArray = [];
-        let setUniName = [];
+        // let catNameArray = [];
+        // let setUniName = [];
         let temp;
         let tempArray = [];
-        this.catItemArray.forEach(cat =>{
-          cat.CourseCategory.CourseCategoryId =
-          catArray.push(cat.CourseCategory.CourseCategoryId);
-          catNameArray.push(cat.CourseCategory.CourseCategoryName);
-        })
+        this.catItemArray.forEach(cat => {
+          // cat.CourseCategory.CourseCategoryId =
+          // catArray.push(cat.CourseCategory.CourseCategoryId);
+          // catNameArray.push(cat.CourseCategory.CourseCategoryName);
+           catArray.push(JSON.stringify(cat.CourseCategory));
+          })
+          console.log(catArray)
         let uniCat = arr => Array.from(new Set(arr));
-        this.setUniCat = uniCat(catArray);
-        setUniName = uniCat(catNameArray);
-        setUniName.forEach((name, i) => {
-          temp =
-            {
-              CourseCategoryId: this.setUniCat[i],
-              CourseCategoryName: name
-            }
-          tempArray.push(temp)
-        })
-        this.setUniCat = tempArray;
+        console.log(uniCat(catArray))
+        this.setUniCat=[];
+        uniCat(catArray).forEach(ele =>{
+          //@ts-ignore
+          this.setUniCat.push(JSON.parse(ele));
+        });
+        // setUniName = uniCat(catNameArray);
+        // setUniName.forEach((name, i) => {
+        //   temp =
+        //     {
+        //       CourseCategoryId: this.setUniCat[i],
+        //       CourseCategoryName: name
+        //     }
+        //   tempArray.push(temp)
+        // })
+        // this.setUniCat = tempArray;
+        console.log(this.setUniCat);
+        this.setUniCatListArray=[];
         this.setUniCatListArray.push(this.setUniCat);
+        console.log(this.setUniCatListArray)
       });
   }
   getLocationFromServer(){
@@ -574,7 +588,7 @@ export class LearnerRegistrationFormComponent implements OnInit {
       tempObj['RoomId'] = parseInt(cc.room);
       tempObj['BeginDate'] = cc.beginDate;
       let tempScheduleObj = {};
-      tempScheduleObj['DayOfWeek'] = cc.schedule.dayOfWeek;
+      tempScheduleObj['DayOfWeek'] = parseInt(cc.schedule.dayOfWeek);
       tempScheduleObj['BeginTime'] = this.courseTime;
       tempScheduleObj['DurationType'] = parseInt(cc.course);
       tempObj['Schedule'] = tempScheduleObj;
@@ -589,19 +603,21 @@ export class LearnerRegistrationFormComponent implements OnInit {
     console.log(this.courseGroup);
     // encapsulate learner form data
     this.learner = this.learnerForm.value;
+    console.log(this.learner);    
     this.fdObj['FirstName'] = this.learner.firstName;
     this.fdObj['MiddleName']=this.learner.middleName;
     this.fdObj['LastName'] = this.learner.lastName;
     this.fdObj['Gender'] = this.learner.gender;
     this.fdObj['dob'] = this.learner.birthday;
     this.fdObj['EnrollDate']= this.learner.enrollmentDate;
-    this.fdObj['ContactPhone'] = this.learner.contactPhone;
+    this.fdObj['ContactNum'] = this.learner.contactNum;
     this.fdObj['Email'] = this.learner.email;
     this.fdObj['Address'] = this.learner.address;
     this.fdObj['OrgId'] = this.learner.location;
     this.fdObj['LearnerLevel'] = this.selectlearnerLevel;
     this.fdObj['LevelType'] = this.learnerlevelType;
     this.fdObj['IsUnder18'] = this.isUnder18;
+    this.fdObj['PaymentPeriod'] = parseInt(this.learner.paymentPeriod);    
     this.fdObj['Referrer'] = this.learner.referrer;
     // encapsulate parent form data
     // console.log('submit', this.parentForm.value)
@@ -619,6 +635,7 @@ export class LearnerRegistrationFormComponent implements OnInit {
     this.fdObj['LearnerGroupCourse'] = this.learnerGroupCourse;
     this.fdObj['One2oneCourseInstance'] = this.oneOnOneCourse;
     this.fdObj['LearnerOthers'] = this.learnerOthers;
+    console.log(this.fdObj);
     this.fd.append('details', JSON.stringify(this.fdObj));
     console.log('form data', this.fd);
     this.registrationService.postStudent(this.fd)

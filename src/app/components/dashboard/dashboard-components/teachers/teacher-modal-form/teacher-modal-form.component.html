@@ -378,8 +378,9 @@
       <!--line 11-->
       <div class='col-12'>
         <div class='col-12 t_mf_commits_label'>Comments:</div>
-        <textarea style='height:70px;' name="Comment" id="Comment" class='col-12 t_mf_input'
-          formControlName='Comment'></textarea>
+        <div style="position: absolute;right: 5px;bottom: 8px" *ngIf='command !==1'><span style="color: red">{{avliableTextLength}}</span> characters left.</div>
+        <textarea style='height:150px;' name="Comment" id="Comment" class='col-12 t_mf_input'
+          formControlName='Comment' maxlength="1000" (input)='calculateTextLength($event)'></textarea>
       </div>
 
       <!--line 12-->

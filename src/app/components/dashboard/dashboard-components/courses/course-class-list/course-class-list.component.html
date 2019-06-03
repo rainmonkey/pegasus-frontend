@@ -17,7 +17,7 @@
           </span>
         </div>
         <!--add more btn-->
-        <span class='btn btn-info t_info_addnew_btn' (click)="detailModal(0,null)">+ Add More</span>
+        <span class='btn btn-info t_info_addnew_btn' (click)="detailModal(0, null)">+ Add More</span>
       </div>
     </div>
     <br>
@@ -33,7 +33,7 @@
             <th scope='col' class='tl_body_table_head' style="width:1rem;">#</th>
             <th scope='col' class='tl_body_table_head sorting_item' style="width:16rem;" (click)='onSort("CourseName")'>
               Course Name</th>
-            <th scope='col' class='tl_body_table_head sorting_item' style="width:8rem;" (click)='onSort("TeacherFirstName")'>
+            <th scope='col' class='tl_body_table_head sorting_item' style="width:8rem;" (click)='onSort("TeacherName")'>
               Tutor</th>
             <!--sort-->
             <th scope='col' class='tl_body_table_head sorting_item' style="width:9rem;" (click)='onSort("BeginDate")'>
@@ -80,10 +80,7 @@
 
     <!--info page pagination-->
     <div class='col-12'>
-      <!--pagination is here-->
-      <ngb-pagination #pagination [collectionSize]='teachersListLength' [(page)]='currentPage' [pageSize]='pageSize'
-        (click)='getCurrentPage()'>
-      </ngb-pagination>
+      <ngb-pagination [collectionSize]='coursesClassListLength' [(page)]='page' [pageSize]='pageSize'></ngb-pagination>
     </div>
 
   </div>

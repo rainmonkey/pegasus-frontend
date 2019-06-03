@@ -9,14 +9,6 @@ export class CoursesService {
   private baseUrl: any = environment.baseUrl;
 
   constructor(private http:HttpClient) { }
-  getOrgs() {
-    return this.http.get(this.baseUrl + 'orgs');
-  }
-
-  getCourses():any{
-    return this.http.get(this.baseUrl +'courses');
-  }
-
   addNew(data):any{
     return this.http.post(this.baseUrl + 'courses',data)
   }
@@ -29,6 +21,12 @@ export class CoursesService {
     return this.http.delete(this.baseUrl + 'courses/' + courseId);
   }
   /* For dropdown options*/
+  getOrgs() {
+    return this.http.get(this.baseUrl + 'orgs');
+  }
+  getCourses():any{
+    return this.http.get(this.baseUrl +'courses');
+  }
   getCourseCategories():any{
     return this.http.get(this.baseUrl + 'coursecategories');
   }
@@ -44,6 +42,7 @@ export class CoursesService {
   getDuration():any{
     return this.http.get(this.baseUrl + 'Lookups/8');
   }
+  
   /*-----------------------Course Class-----------------------------------*/
   getCourseClasses(){
     return this.http.get(this.baseUrl +'GroupCourseInstance');
@@ -66,11 +65,14 @@ export class CoursesService {
   getTeachers():any{
     return this.http.get(this.baseUrl + 'teacher');
   }
-  getLocationsRooms():any{
+  getLocations():any{
+    return this.http.get(this.baseUrl + 'orgs');
+  }
+  getRooms():any{
     return this.http.get(this.baseUrl + 'room');
   }
 
-
+/*------------------------ For Edwin testing ----------------------------------*/
   getoioi():any{
     return this.http.get(this.baseUrl+'payment');
   }

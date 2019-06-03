@@ -87,10 +87,9 @@ import { WeekFormatPipe } from './shared/pipes/week-format.pipe';
 import { PaymentPeriodPipe } from './shared/pipes/paymentPeriod.pipe';
 import { IsUnder18Pipe } from './shared/pipes/isUnder18.pipe';
 import { confirmEqualValidatorDirectie } from './shared/confirm-equal-validator.directive';
-
-
-
-
+import { StaffListComponent } from './components/dashboard/dashboard-components/admin-staff/Staff-list/Staff-list.component';
+import { StaffPanelComponent } from './components/dashboard/dashboard-components/admin-staff/staff-panel/staff-panel.component';
+import { SimplifyOrgPipe } from './shared/pipes/simplify-org.pipe';
 
 
 
@@ -170,7 +169,11 @@ import { confirmEqualValidatorDirectie } from './shared/confirm-equal-validator.
     TrialTableComponent,
     PaymentPeriodPipe,
     IsUnder18Pipe,
-    confirmEqualValidatorDirectie
+    confirmEqualValidatorDirectie,
+    //staff
+    StaffListComponent,
+    StaffPanelComponent,
+    SimplifyOrgPipe,
   ],
   imports: [
     NgbModule,
