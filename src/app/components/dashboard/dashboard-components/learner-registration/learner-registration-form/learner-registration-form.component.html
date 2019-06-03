@@ -77,15 +77,15 @@
         </div>
         <div class="contactPhone-email row">
           <div class="col-sm-6 col-md-6">
-            <label for="contactPhone">Contact Phone</label>
-            <input class="form-control" formControlName="contactPhone" type="tel" id="contactPhone">
+            <label for="contactNum">Contact Phone</label>
+            <input class="form-control" formControlName="contactNum" type="tel" id="contactPhone">
           </div>
           <div class="col-sm-6 col-md-6">
             <label for="email">Email</label>
             <input class="form-control" formControlName="email" type="email" id="email">
             <div *ngIf="email.invalid && (email.dirty || email.touched)" class="text-danger">
               <small *ngIf="email.errors.required">Email is required</small>
-              <small *ngIf="email.errors.pattern">Email is invalid</small>
+              <small *ngIf="email.errors.email">Email is invalid</small>
             </div>
           </div>
         </div>
@@ -99,6 +99,10 @@
               <select class="form-control" formControlName="learnerLevel" (change)="selectLearnerLevel($event.target.value)">
                 <option  *ngFor="let llevel of learnerLevel" [value]="llevel.PropValue">{{llevel.PropName}}</option>
               </select>
+              <div *ngIf="learnerLevel.invalid && (learnerLevel.dirty || learnerLevel.touched)" class="text-danger">
+                <small *ngIf="email.errors.required">Learner current Level is required</small>
+                <small *ngIf="email.errors.email">Email is invalid</small>
+              </div>              
               <div *ngIf="isSelectedLevel">
                 <span>Did you take an exam before?</span><br>
                 <div class="d-inline-flex" *ngFor="let levelType of levelType; let i=index">
@@ -118,8 +122,8 @@
             <div class="col-sm-6 col-md-6">
               <label>Payment Period</label>
               <select  class="form-control" formControlName="paymentPeriod">
-                <option value="2">Term</option>
-                <option value="1">Week</option>
+                <option value="1">Term</option>
+                <option value="2">Week</option>
               </select>
             </div>
             <div class="col-sm-6 col-md-6">
@@ -244,7 +248,7 @@
               <div *ngIf="parent.get('email').invalid && (parent.get('email').dirty || parent.get('email').touched)"
                 style="color: red; margin-bottom: 5px;">
                 <small *ngIf="parent.get('email').errors.required">Email is required.</small>
-                <small *ngIf="parent.get('email').errors.pattern">Email is invalid</small>
+                <small *ngIf="parent.get('email').errors.email">Email is invalid</small>
               </div>
             </div>
           </div>

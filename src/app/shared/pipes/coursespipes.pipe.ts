@@ -1,13 +1,12 @@
 import { Pipe, PipeTransform } from '@angular/core';
 import { CourseDetailModalComponent } from '../../components/dashboard/dashboard-components/courses/course-detail-modal/course-detail-modal.component';
-import { DatePipe } from '@angular/common';
+
 @Pipe({
   name: 'coursespipes'
 })
 export class CoursespipesPipe implements PipeTransform {
   public coursedetailmodal: CourseDetailModalComponent;
   constructor(
-    private datePipe: DatePipe
   ){}
 
   transform(valueToSubmit) {
