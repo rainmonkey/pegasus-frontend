@@ -179,7 +179,7 @@ export class TimePickerComponent implements OnInit {
 
   moveoverY: any;
   moveoutY: any;
-
+  public isleft: boolean = false;
 
   constructor(private timePickerService: TimePickerService) {
   }
@@ -188,7 +188,7 @@ export class TimePickerComponent implements OnInit {
     console.log('customCourse', this.customCourse);
 
     // define yIndex
-    for(let i = 0; i < 49; i++) {
+    for(let i = 0; i < 48; i++) {
       this.yIndex.push(i);
     }
     // define five type of slots
@@ -209,9 +209,39 @@ export class TimePickerComponent implements OnInit {
     this.renderAvailableDay();
     this.renderSlotProp();
   }
-  triggerPopover(popover,x,y) {
-    if(this.slot[x][y]=="ableToPick") {
+  hasNextAbleToPick(x,y){
+    for(let i of [0,1,2,3]) {
+      if(this.slot[x][y+i] != "ableToPick") {
+        return false;
+      }
+    }; 
+    return true;
+  }
+  getUnableToPickYindex(x,y) {
+    for(let i of [0,1,2,3]) {
+      if(this.slot[x][y+i] != "ableToPick") {
+        return y+i-1
+      }
+    }
+  }
+  hasFormerAbleToPick(x,y) {
+    let bottomY = this.getUnableToPickYindex(x,y);
+    for(let i of [0,1,2,3]) {
+      if(this.slot[x][bottomY-i] != "ableToPick") {
+        return false;
+      }
+    }; 
+    return true;
+  }
+  triggerPopover(popover,x,y,event) {
+    // popover.open();
+    // console.log('event',event)
+    if(this.hasNextAbleToPick(x,y)) {
       popover.open();
+    } else if(this.hasFormerAbleToPick(x,y)) {
+      popover.close();
+    } else {
+      // console.log('3333',event)
     }
   }
   closePopover(popover,x,y) {
@@ -245,7 +275,7 @@ export class TimePickerComponent implements OnInit {
     return arr;
   }
   teacherOrgNotIncludesLearnerOrg(x) {
-    for(let i = 0; i < 49; i++) {
+    for(let i = 0; i < 48; i++) {
       if(this.slot[x][i] == "isAvailable") {
         this.slot[x][i] = "tOrgNotIncludesLorg";
       }
@@ -310,11 +340,11 @@ tempChangeIsAbleToPick(x: number, y: number) {
     this.teacherAvailableData.Data.AvailableDay.map((o) => {
       let xIndex = o['DayOfWeek']-1;
       if(this.orgIsAvailable) {
-        for(let i = 0; i < 49; i++) {
+        for(let i = 0; i < 48; i++) {
           this.slot[xIndex][i] = 'isAvailable';
         };
       } else {
-        for(let i = 0; i < 49; i++) {
+        for(let i = 0; i < 48; i++) {
           this.slot[xIndex][i] = 'isAvailableButUnableToPick';
         }
       }
@@ -364,9 +394,7 @@ tempChangeIsAbleToPick(x: number, y: number) {
       for(let i of [0,1,2,3]) {
         this.slot[x][bottomY-i] = "ableToPick"
       };
-    } else {
-      console.log('333')
-    }
+    } 
   }
   oneHourUnableToPick(o, x, y) {
     for(let i = o['BeginY']-4; i < o['EndY']+5; i++) {
@@ -409,6 +437,7 @@ tempChangeIsAbleToPick(x: number, y: number) {
     })
   }
   mouseoverSlot(x: number, y: number) {
+    // console.log('mouse over')
     this.moveoverY = y;
     let xIndex: number;
     this.tempChangeIsAbleToPick(x,y);
@@ -425,11 +454,12 @@ tempChangeIsAbleToPick(x: number, y: number) {
     });
   }
   mouseoutSlot(x: number, y: number) {
+    // console.log('mouse out')
     this.moveoutY = y;
     let xIndex: number;
     this.teacherAvailableData.Data.AvailableDay.map((o) => {
       xIndex = o.DayOfWeek-1;
-        for(let i = 0; i < 49; i++) {
+        for(let i = 0; i < 48; i++) {
           if(this.slot[xIndex][i] == "ableToPick") {
             this.slot[xIndex][i] = "isAvailable";
           }
