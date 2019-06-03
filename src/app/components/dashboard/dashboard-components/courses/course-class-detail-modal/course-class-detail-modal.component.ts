@@ -2,6 +2,7 @@ import { Component, OnInit, Injectable, Input } from '@angular/core';
 import { NgbActiveModal, NgbDateAdapter, NgbDateNativeAdapter, NgbDate } from '@ng-bootstrap/ng-bootstrap';
 import { FormBuilder, Validators, FormGroup, FormArray } from '@angular/forms';
 import { CoursesService } from '../../../../../services/http/courses.service';
+import { from } from 'rxjs';
 
 
 @Injectable()
@@ -31,6 +32,7 @@ export class CourseClassDetailModalComponent implements OnInit {
   public locationName: Object;
   public roomName: any;
   public rooms: Array<any>;
+  public roomsUpdate: Array<any>;
 
   @Input() command;
   @Input() whichCourseClass;
@@ -101,14 +103,14 @@ export class CourseClassDetailModalComponent implements OnInit {
   // Validate EndDate > BeginDate
   onBeginDateSelection(date: NgbDate) {
     if (date.after(this.toDate)) {
-      alert('asdasd')
+      alert('End Date must be later than Begin Date')      
     } else {
       this.fromDate = date;
     }
   }
   onEndDateSelection(date) {
     if (date.before(this.fromDate)) {
-      alert('123123')
+      alert('End Date must be later than Begin Date')      
     } else {
       this.toDate = date;
     }
@@ -135,8 +137,9 @@ export class CourseClassDetailModalComponent implements OnInit {
         EndDate: [this.whichCourseClass.EndDate, Validators.required],
         OrgId: [this.whichCourseClass.OrgId, Validators.required],
         RoomId: [this.whichCourseClass.RoomId, Validators.required],
-        CourseSchedule: this.fb.array([])
+        CourseSchedule: this.fb.array([this.formArrayAssembleUpdate()])
       }
+      // console.log(groupObj.RoomId)
     }
     return groupObj;
   }
@@ -144,10 +147,17 @@ export class CourseClassDetailModalComponent implements OnInit {
   formArrayAssemble() {
     return this.fb.group({ BeginTime: [null, Validators.required] })
   }
+  formArrayAssembleUpdate(){
+    return this.fb.group({ BeginTime: [this.whichCourseClass.BeginTime, Validators.required] })
+  }
   // add time
   newTime() {
     const sches = this.updateForm.controls.CourseSchedule as FormArray;
     sches.push(this.formArrayAssemble());
+  }
+  deleteTime(index){
+    const sches = this.updateForm.controls.CourseSchedule as FormArray;
+    sches.removeAt(index);
   }
 
   /***** Post form ********************************************************/
@@ -181,6 +191,7 @@ export class CourseClassDetailModalComponent implements OnInit {
     if (this.command == 0) {
       this.coursesService.addNewCourseClass(formValue).subscribe(
         (res) => {
+          console.log(formValue)
           alert('Submit success!');
           this.activeModal.close();
         },
