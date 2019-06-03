@@ -11,6 +11,8 @@ import {FormBuilder, FormGroup} from '@angular/forms';
 import { SessionsService } from 'src/app/services/http/sessions.service';
 import {SessionDetailEditModalComponent} from '../../session-modals/session-detail-edit-modal/session-detail-edit-modal.component';
 import {SessionEdit} from '../../../../../../models/SessionEdit';
+import {SessionCancelModalComponent} from '../../session-modals/session-cancel-modal/session-cancel-modal.component';
+import {SessionCompletedModalComponent} from '../../session-modals/session-completed-modal/session-completed-modal.component';
 
 @Component({
   selector: 'app-sessions-calendar-view-admin',
@@ -21,8 +23,10 @@ import {SessionEdit} from '../../../../../../models/SessionEdit';
 export class SessionsCalendarViewAdminComponent implements OnInit {
   searchForm: FormGroup; // searchform by formbuilder
   reason: string;  // session edit reason
-  @ViewChild('content') content;
+  @ViewChild('content') content; // date-pick modal
   @ViewChild('confirmModal') confirmModal;
+  @ViewChild('methodModal') methodModal;
+  eventInfo;
   options: OptionsInput;
   eventsModel: any;
   id: any;
@@ -59,24 +63,31 @@ export class SessionsCalendarViewAdminComponent implements OnInit {
             }
           }
         },
+        ////////
         eventClick: (info) => {
           Swal.fire({
-              type: 'info',
-              title: 'Student',
-              showCancelButton: true,
-              confirmButtonColor: '#3085d6',
-              cancelButtonColor: '#d33',
-              confirmButtonText: 'Edit',
-              html: info.event.extendedProps.description
+            type: 'info',
+            title: 'Student',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            showCloseButton: true,
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Choose method',
+            html: info.event.extendedProps.description
+          }).then(result => {
+            if (result.value) {
+              this.eventInfo = info;
+              const modalRef = this.modalService.open(this.methodModal);
             }
-          );
+          });
         },
+        ////////
         eventDrop: (info) => { // when event drag , need to send put request to change the time of this event
           this.IsConfirmEditSuccess = false;
           this.reason = '';
           const Date = this.datePipe.transform(this.fullcalendar.calendar.getDate(), 'yyyy-MM-dd');
-          const newStartTime = this.datePipe.transform(info.event.start, 'yyyy-MM-dd hh:mm');
-          const newEndTime = this.datePipe.transform(info.event.end, 'yyyy-MM-dd hh:mm');
+          const newStartTime = this.datePipe.transform(info.event.start, 'yyyy-MM-dd HH:mm');
+          const newEndTime = this.datePipe.transform(info.event.end, 'yyyy-MM-dd HH:mm');
           const RoomId = info['newResource'] == null ? info.event.extendedProps.info.RoomId : parseInt(info['newResource'].id);
           this.sessionEditModel = new SessionEdit(info.event.extendedProps.info.LessonId,
             info.event.extendedProps.info.LearnerId, RoomId, info.event.extendedProps.info.TeacherId,
@@ -145,8 +156,8 @@ export class SessionsCalendarViewAdminComponent implements OnInit {
     return data;
   }
   getEventByDate = (date) => {
+    this.fullcalendar.calendar.removeAllEvents();
     this.sessionService.getReceptionistLesson(date).subscribe(event => {
-      console.log(event.Data)
       this.eventData = this.generateEventData(event.Data);
       this.eventsModel = this.eventData;
     });
@@ -182,6 +193,32 @@ export class SessionsCalendarViewAdminComponent implements OnInit {
     const Date = this.datePipe.transform(this.fullcalendar.calendar.getDate(), 'yyyy-MM-dd');
     const modalRef = this.modalService.open(SessionDetailEditModalComponent, { size: 'lg' });
     (modalRef.componentInstance as SessionDetailEditModalComponent).LessonModel = info.event.extendedProps.info;
+    modalRef.result.then(
+      () => {
+        this.getEventByDate(Date);
+      },
+      () => {
+        this.getEventByDate(Date);
+      });
+  }
+
+  openDelete = (info) => {
+    const Date = this.datePipe.transform(this.fullcalendar.calendar.getDate(), 'yyyy-MM-dd');
+    const modalRef = this.modalService.open(SessionCancelModalComponent);
+    (modalRef.componentInstance as SessionCancelModalComponent).lessionId = info.event.id;
+    modalRef.result.then(
+      (result) => {
+        this.getEventByDate(Date);
+      },
+      () => {
+        this.getEventByDate(Date);
+      });
+  }
+
+  openConfirm = (info) => {
+    const Date = this.datePipe.transform(this.fullcalendar.calendar.getDate(), 'yyyy-MM-dd');
+    const modalRef = this.modalService.open(SessionCompletedModalComponent);
+    (modalRef.componentInstance as SessionCompletedModalComponent).lessonId = info.event.id;
     modalRef.result.then(
       () => {
         this.getEventByDate(Date);

@@ -60,6 +60,33 @@
   </div>
 </ng-template>
 
+<ng-template let-modal #methodModal>
+  <div class="modal-header m-2">
+    <h4>Please choose operation method</h4>
+    <button
+      type="button"
+      class="close"
+      aria-label="Close"
+      (click)="modal.dismiss('Cross click')"
+    >
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="container">
+    <div class="row">
+      <div class="col-4">
+        <button (click)="openEdit(eventInfo)" (click)="modal.dismiss('Cross click')" class="btn btn-primary btn-block">Edit </button>
+      </div>
+      <div class="col-4">
+        <button  class="btn btn-success btn-block" (click)="openConfirm(eventInfo)" (click)="modal.dismiss('Cross click')"  >Confirm</button>
+      </div>
+      <div class="col-4">
+        <button (click)="openDelete(eventInfo)" (click)="modal.dismiss('Cross click')"  class="btn btn-danger btn-block" >Cancel</button>
+      </div>
+    </div>
+  </div>
+</ng-template>
+
 <div class="container">
   <div *ngIf="options">
     <ng-fullcalendar
