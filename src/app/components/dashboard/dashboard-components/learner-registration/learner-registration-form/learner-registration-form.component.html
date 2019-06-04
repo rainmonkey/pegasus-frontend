@@ -19,10 +19,10 @@
     </ul>
     <div formGroupName="learnerForm" class="card">
       <div class="card-body">
-        <div class="button text-right">
+         <div class="button text-right">
           <button class="btn_reset my-3" (click)="resetLearner()">Reset</button>
         </div>
-        <div class="learnerPhoto">
+         <div class="learnerPhoto">
           <label for="photo"></label>
           <img src="" id='photoID' style='height: 64px' alt="ID preview...">
           <input formControlName="photo" type="file" (change)="uploadPhoto($event)" id="photo" accept="image/*">
@@ -99,17 +99,16 @@
               <select class="form-control" formControlName="learnerLevel" (change)="selectLearnerLevel($event.target.value)">
                 <option  *ngFor="let llevel of learnerLevel" [value]="llevel.PropValue">{{llevel.PropName}}</option>
               </select>
-              <div *ngIf="learnerLevel.invalid && (learnerLevel.dirty || learnerLevel.touched)" class="text-danger">
-                <small *ngIf="email.errors.required">Learner current Level is required</small>
-                <small *ngIf="email.errors.email">Email is invalid</small>
-              </div>              
+              <!-- <div *ngIf="learnerLevel.invalid && (learnerLevel.dirty || learnerLevel.touched)" class="text-danger">
+                <small *ngIf="learnerLevel.errors.required">Learner current Level is required</small>
+              </div>               -->
               <div *ngIf="isSelectedLevel">
                 <span>Did you take an exam before?</span><br>
                 <div class="d-inline-flex" *ngFor="let levelType of levelType; let i=index">
-                  <div *ngIf="i == 0" class="form-check">
+                  <!-- <div *ngIf="i == 0" class="form-check">
                       <input class="form-check-input" (click)="selectLevelType($event.target.value)" name="levelType" type="radio" [value]="levelType.PropValue" checked>
                       <label class="form-check-label" for="ABRSM">ABRSM</label>
-                  </div>
+                  </div> -->
                   <div *ngIf="i != 0" class="form-check">
                     <input class="form-check-input" (click)="selectLevelType($event.target.value)" name="levelType" type="radio" [value]="levelType.PropValue">
                     <label class="form-check-label" for="levelType">{{levelType.PropName}}</label>
@@ -147,14 +146,16 @@
         <div class="under 18">
           <span class="text-primary">Above 18 years old?</span><br>
           <div class="d-inline-block mx-3">
-              <input type="checkbox" (click)="select18($event)" value=1>&nbsp;&nbsp;
+              <!-- <input type="checkbox" (click)="select18($event)" value=1>&nbsp;&nbsp; -->
+              <input type="checkbox" formControlName="isUnder18">
               <label>I'm Above 18 years old</label>
           </div>
         </div>
         <div class="learn purpose">
           <span class="text-primary">Why do you learn the piano?</span><br>
           <div class="d-inline-block mx-3" *ngFor="let learnerPurpose of learnerPurpose; let i = index">
-              <input type="checkbox" (click)="selectLearnerPurpose(i, $event)" [value]="learnerPurpose.PropValue">&nbsp;&nbsp;
+              <input type="checkbox" (click)="selectLearnerPurpose(i, $event)" [value]="learnerPurpose.PropValue"
+                 [checked]="learnerPurpose.isChecked">&nbsp;&nbsp;
               <label>{{learnerPurpose.PropName}}</label>
           </div>
         </div>
@@ -163,7 +164,8 @@
         <div class="how know us">
           <span class="text-primary">How do you know about us?</span><br>
           <div class="d-inline-block mx-3" *ngFor="let howKnown of howKnown; let i = index">
-              <input type="checkbox" (click)="selectHowKnown(i, $event)" [value]="howKnown.PropValue">&nbsp;&nbsp;
+              <input type="checkbox" (click)="selectHowKnown(i, $event)" [value]="howKnown.PropValue"
+              [checked]="howKnown.isChecked">&nbsp;&nbsp;
               <label>{{howKnown.PropName}}</label>
           </div>
         <!-- <br>
@@ -274,7 +276,10 @@
     <div>
       <button (click)="chooseGroupCourse()">Group Course</button>
       <button (click)="chooseCustomCourse()">One-on-One Course</button>
+      <button style='float:right' [disabled]="registrationForm.invalid" (click)="onSubmit()" class="btn_submit"
+        type="submit">Submit</button>
     </div>
+
 
     <div class="card" *ngIf="isGroupCourse" >
       <div class="select-group-course card-body" >
@@ -282,14 +287,14 @@
           <table class="table">
             <thead>
               <tr>
-                <th>Please Check</th>
-                <th>Course</th>
-                <th>Schedule</th>
-                <th>Location</th>
-                <th>Room</th>
-                <th>Teacher</th>
-                <th>Begin Time</th>
-                <th>How to know us</th>
+                <th >Please Check</th>
+                <th >Course</th>
+                <th >Schedule</th>
+                <th >Location</th>
+                <th >Room</th>
+                <th >Teacher</th>
+                <th >Begin Time</th>
+                <th >How to know us</th>
               </tr>
             </thead>
             <tbody >
@@ -309,7 +314,8 @@
           </table>
           <div class="text-right">
             <button class="btn_back mx-3" (click)="next('parentForm')">Back</button>
-            <button class='btn_back mx-3' (click)="chooseCustomCourse()">Next</button>
+            <button [disabled]="registrationForm.invalid" (click)="onSubmit()" class="btn_submit"
+            type="submit">Submit</button>
           </div>
         </div>
       </div>
@@ -405,9 +411,9 @@
               </div>
             </div>
             <div class="d-flex my-3 justify-content-end">
-              <button class="mx-3 btn_back" (click)=chooseGroupCourse()>Back</button>
+              <button class="mx-3 btn_back" (click)="next('parentForm')">Back</button>
               <button [disabled]="registrationForm.invalid" (click)="onSubmit()" class="btn_submit"
-                type="submit">Submit</button>
+              type="submit">Submit</button>
             </div>
           </div>
         </div>

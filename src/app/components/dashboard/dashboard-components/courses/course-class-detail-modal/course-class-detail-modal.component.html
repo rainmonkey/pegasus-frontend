@@ -25,27 +25,30 @@
           </select>
           <label class='t_mf_label'>Start Date:</label>
           <div class="input-group">
-            <input class="form-control" placeholder="yyyy-mm-dd" name="dp" ngbDatepicker formControlName="BeginDate" 
-              #startDate="ngbDatepicker" (dateSelect)="onBeginDateSelection($event)" id="begindate" value="">
+            <input class="form-control" formControlName="BeginDate" placeholder='yyyy-mm-dd' ngbDatepicker
+              #startDate="ngbDatepicker" (dateSelect)="onBeginDateSelection($event)">
             <div class="input-group-append">
-              <button class="btn btn-outline-secondary" (click)="startDate.toggle()" type="button"><i class="far fa-calendar-alt"></i></button>
+              <button class="btn btn-outline-secondary" (click)="startDate.toggle()" type="button"><i
+                  class="far fa-calendar-alt"></i></button>
             </div>
           </div>
           <label class='t_mf_label'>End Date:</label>
           <div class="input-group">
-            <input class="form-control" name="dp" placeholder="yyyy-mm-dd" formControlName="EndDate" ngbDatepicker
-              #endDate="ngbDatepicker" (dateSelect)="onEndDateSelection($event)" id="enddate">
+            <input class="form-control" placeholder="yyyy-mm-dd" formControlName="EndDate" ngbDatepicker
+              #endDate="ngbDatepicker" (dateSelect)="onEndDateSelection($event)">
             <div class="input-group-append">
-              <button class="btn btn-outline-secondary calendar" (click)="endDate.toggle()" type="button"><i class="far fa-calendar-alt"></i></button>
+              <button class="btn btn-outline-secondary calendar" (click)="endDate.toggle()" type="button"><i
+                  class="far fa-calendar-alt"></i></button>
             </div>
           </div>
           <label class='t_mf_label'>Location:</label>
-          <select type="text" class='col-12 t_mf_input' formControlName="OrgId" (change)="filterrooms($event.target.value)">
+          <select type="text" class='col-12 t_mf_input' formControlName="OrgId"
+            (change)="filterrooms($event.target.value)">
             <option *ngFor='let i of locationName' value="{{i.OrgId}}">{{i.OrgName}}</option>
           </select>
           <label class='t_mf_label'>Room:</label>
           <select type="text" class='col-12 t_mf_input' formControlName="RoomId">
-            <option *ngFor='let i of rooms' value="{{i.RoomId}}">{{i.RoomName}}</option>                      
+            <option *ngFor='let i of rooms' value="{{i.RoomId}}">{{i.RoomName}}</option>
           </select>
         </div>
         <div class="col-6">
@@ -54,8 +57,10 @@
               <div class="col-6" style="margin-right: -1rem;"
                 *ngFor="let sches of updateForm.get('CourseSchedule').controls; let i = index" [formGroupName]="i">
                 <label class='t_mf_label'>Begin Time {{i+1}} :</label>
-                <span style="float:right;" (click)="deleteTime(i)"><i class="far fa-calendar-times" style="cursor:hand;"></i></span>
-                <input class="form-control" type="time" name="time" step="900" formControlName="BeginTime" />                
+                <span style="float:right;" (click)="deleteTime(i)">
+                  <i class="far fa-calendar-times" style="cursor:hand;"></i>
+                </span>
+                <input class="form-control" type="time" name="time" step="900" formControlName="BeginTime" />
               </div>
             </div>
           </div>
@@ -66,6 +71,7 @@
 </div>
 <!--modal footer-->
 <div class='modal-footer'>
-  <button type='button' class='btn btn-outline-dark' style="margin-right: 9rem;" (click)="newTime()">+ Add New Time</button>
+  <button type='button' class='btn btn-outline-dark' style="margin-right: 9rem;" (click)="newTime()">+ Add New
+    Time</button>
   <button type='button' class='btn btn-outline-dark' (click)='onSubmit(this.updateForm)'>Save</button>
 </div>

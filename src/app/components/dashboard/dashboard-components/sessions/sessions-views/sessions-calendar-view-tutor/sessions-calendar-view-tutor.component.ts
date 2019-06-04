@@ -6,6 +6,7 @@ declare let $: any;
 import timeGridPlugin from '@fullcalendar/timegrid';
 import Swal from 'sweetalert2';
 import {SessionsService} from '../../../../../../services/http/sessions.service';
+import { copyStyles } from '@angular/animations/browser/src/util';
 
 @Component({
   selector: 'app-sessions-calendar-view-tutor',
@@ -20,10 +21,12 @@ export class SessionsCalendarViewTutorComponent implements OnInit {
   constructor(private sessionsService: SessionsService) { }
   ngOnInit() {
     this.sessionsService.getTeacherLesson().subscribe(data => {
+      console.log(data.Data)
       this.eventsModel = this.generateEventData(data.Data);
       this.options = {
         editable: true,
         height: 700,
+        displayEventTime: false,
         maxTime: '22:00',
         minTime: '08:00',
         scrollTime: '08:00',
@@ -47,6 +50,7 @@ export class SessionsCalendarViewTutorComponent implements OnInit {
   }
   generateEventData = (data) => {
     data.forEach(s => {
+      s.title = s.orgName + ' ( ' + s.title + ' )'
       s.description += '<h4>Students Name</h4><div class="row">';
       if (s.student.length === 1) {
         s.description = '<h4>Students Name</h4>' + s.student[0];

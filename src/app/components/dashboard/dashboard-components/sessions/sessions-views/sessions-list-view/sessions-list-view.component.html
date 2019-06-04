@@ -35,8 +35,8 @@
               <td>{{i.Learner?i.Learner:null}}</td>
               <td>{{i.CourseName}}</td>
               <td>{{i.IsTrial?'Yes':'No'}}</td>
-              <td>{{i.BeginTime}}</td>
-              <td>{{i.EndTime}}</td>
+              <td>{{i.BeginTime | date: "yyyy"}}<br/>{{i.BeginTime |date: "MM-dd"}}<br/>{{i.BeginTime| date: "HH:mm:ss"}}</td>
+              <td>{{i.EndTime | date: "yyyy"}}<br/>{{i.EndTime |date: "MM-dd"}}<br/>{{i.EndTime| date: "HH:mm:ss"}}</td>
               <td>{{i.Room}}</td>
               <td>{{i.Branch}}</td>
               <td>{{i.IsCanceled?'Yes':'No'}}</td>

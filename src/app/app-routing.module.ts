@@ -38,7 +38,7 @@ import { StaffListComponent } from './components/dashboard/dashboard-components/
 
 
 const routes: Routes = [
-  { path: '', component: DashboardPanelComponent, canActivate: [DashboardRestrictGuard],  
+  { path: '', component: DashboardPanelComponent, canActivate: [DashboardRestrictGuard],
     children: [
       {path:'home', component: DashboardHomeComponent},
       // Testing path
@@ -46,8 +46,8 @@ const routes: Routes = [
       // Payment Area
       { path: 'payment/invoice', pathMatch: 'prefix', component: AdminLearnerPaymentPanelComponent,
         children:[
-          { path: 'pay/:id', component: AdminLearnerPaymentInvoiceComponent },
-          { path: 'pay/success', component: AdminLearnerPaymentSuccessComponent },
+          { path: ':id', component: AdminLearnerPaymentInvoiceComponent },
+          { path: 'success', component: AdminLearnerPaymentSuccessComponent },
       ]},
       { path: 'payment/product', pathMatch: 'prefix', component: AdminLearnerPaymentPanelComponent,
         children: [
@@ -99,7 +99,8 @@ const routes: Routes = [
           {path: 'list', component: AdminLearnerListComponent},
           {path: 'registration/edit', component: LearnerRegistrationModalComponent},
           {path: 'registration', component: LearnerRegistrationFormComponent},
-          {path: 'trial', component: TrialInfoComponent}
+          {path: 'trial', component: TrialInfoComponent},
+          { path: 'success', component: AdminLearnerPaymentSuccessComponent },
       ]},
       // Inventory Area
       { path: 'inventory', component: InventoryPanelComponent,
