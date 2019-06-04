@@ -44,6 +44,7 @@ import { InventoryListComponent } from './components/dashboard/dashboard-compone
 import { InventoryPanelComponent } from './components/dashboard/dashboard-components/inventory/inventory-panel/inventory-panel.component';
 import { LearnerRegistrationFormComponent } from './components/dashboard/dashboard-components/learner-registration/learner-registration-form/learner-registration-form.component';
 import { LearnerRegistrationModalComponent } from './components/dashboard/dashboard-components/learner-registration/learner-registration-modal/learner-registration-modal.component';
+import { LearnerRegistrationConfirmModalComponent } from './components/dashboard/dashboard-components/learner-registration/learner-registration-confirm-modal/learner-registration-confirm-modal.component';
 import { SessionCancelModalComponent } from './components/dashboard/dashboard-components/sessions/session-modals/session-cancel-modal/session-cancel-modal.component';
 import { SessionCompletedModalComponent } from './components/dashboard/dashboard-components/sessions/session-modals/session-completed-modal/session-completed-modal.component';
 import { SessionDetailEditModalComponent } from './components/dashboard/dashboard-components/sessions/session-modals/session-detail-edit-modal/session-detail-edit-modal.component';
@@ -116,6 +117,7 @@ import { SimplifyOrgPipe } from './shared/pipes/simplify-org.pipe';
     WeekFormatPipe,
     LearnerRegistrationFormComponent,
     LearnerRegistrationModalComponent,
+    LearnerRegistrationConfirmModalComponent,
     CommandFormatPipe,
     SessionsPanelComponent,
     SessionsListViewComponent,
@@ -213,7 +215,9 @@ import { SimplifyOrgPipe } from './shared/pipes/simplify-org.pipe';
     SessionCompletedModalComponent,
     RatingModalComponent,
     ForgotPasswordModalComponent,
-    ChangePasswordModalComponent
+    ChangePasswordModalComponent,
+    LearnerRegistrationModalComponent,
+    LearnerRegistrationConfirmModalComponent
   ],
   exports: [AppComponent],
   bootstrap: [AppComponent]

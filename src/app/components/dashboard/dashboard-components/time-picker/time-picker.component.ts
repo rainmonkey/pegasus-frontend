@@ -11,7 +11,6 @@ import { listLazyRoutes } from '@angular/compiler/src/aot/lazy_routes';
 export class TimePickerComponent implements OnInit {
   // data get form registration component
   @Input() customCourse;
-
   // data will from server, now just hard core
   public teacherAvailableData: any = {
     "IsSuccess": true,
@@ -150,6 +149,8 @@ export class TimePickerComponent implements OnInit {
         ]
     }
   };
+  // modal test
+  public testMyInput = 2;
   public name: string = 'stella';
   public learnerOrg = {
     OrgId: 2,
@@ -203,7 +204,7 @@ export class TimePickerComponent implements OnInit {
       }
     }
     console.log('slot time', this.slotTime);
-    
+
     // manipulate by order
     this.setSpecificTime();
     this.renderAvailableDay();
@@ -218,7 +219,7 @@ export class TimePickerComponent implements OnInit {
     popover.close();
   }
 ///////////////////////////////////// Here are reusable functions////////////////////////////////////////
-  /* 
+  /*
     convert begin time and end time to yIndex
     and then refactor a new arr
   */
@@ -249,18 +250,18 @@ export class TimePickerComponent implements OnInit {
       if(this.slot[x][i] == "isAvailable") {
         this.slot[x][i] = "tOrgNotIncludesLorg";
       }
-    }  
+    }
   }
   /* whether one-on-one course org is in teacher available org*/
   orgIsAvailable(originalArr: any[]) {
     originalArr.map((obj) => {
       // console.log('weekday', obj.DayOfWeek);
-      let orgIdArr = obj.Orgs.map((o) => o.OrgId);   
+      let orgIdArr = obj.Orgs.map((o) => o.OrgId);
       console.log('orgIdArr', orgIdArr)
       // if(orgIdArr.includes(this.learnerOrg.OrgId)) {
       //   console.log('weekday', obj.DayOfWeek);
-      // } 
-    }); 
+      // }
+    });
   }
   /* define every slot's property value for rendering in HTML */
   defineSlotProp(originalArr: any[], prop: string) {
@@ -289,7 +290,7 @@ tempChangeIsAbleToPick(x: number, y: number) {
     }
   })
 }
-  
+
 //////////////////////////////////////////////////////////////////////////////////////////////////////
   /*
     call back transferTime function
@@ -299,7 +300,7 @@ tempChangeIsAbleToPick(x: number, y: number) {
     this.arrangedArr = this.transferTime(this.teacherAvailableData.Data.Arranged);
     this.dayOffArr = this.transferTime(this.teacherAvailableData.Data.Dayoff);
     this.tempChangeArr = this.transferTime(this.teacherAvailableData.Data.TempChange);
-    // will delete 
+    // will delete
     console.log('arrangedArr', this.arrangedArr);
     console.log('dayOffArr', this.dayOffArr);
     console.log('tempChangeArr', this.tempChangeArr);

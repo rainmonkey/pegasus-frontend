@@ -1,20 +1,22 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, DoCheck } from '@angular/core';
 import { FormGroup, FormArray, FormBuilder, Validators, FormControl } from '@angular/forms';
 import { LearnerRegistrationService } from '../../../../../services/http/learner-registration.service';
 import { CoursesService } from '../../../../../services/http/courses.service';
 import { NgbTimeStruct, NgbTimeAdapter, NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { LearnerRegistrationModalComponent } from '../learner-registration-modal/learner-registration-modal.component'
+import { LearnerRegistrationModalComponent } from '../learner-registration-modal/learner-registration-modal.component';
+import { LearnerRegistrationConfirmModalComponent } from '../learner-registration-confirm-modal/learner-registration-confirm-modal.component';
 import { UniqueSelectionDispatcher } from '@angular/cdk/collections';
 import { concat } from 'rxjs';
 import { element } from '@angular/core/src/render3';
-import { forkJoin } from 'rxjs'; 
+import { forkJoin } from 'rxjs';
+import { TimePickerComponent } from '../../time-picker/time-picker.component';
 
 @Component({
   selector: 'app-learner-registration-form',
   templateUrl: './learner-registration-form.component.html',
   styleUrls: ['./learner-registration-form.component.css']
 })
-export class LearnerRegistrationFormComponent implements OnInit {
+export class LearnerRegistrationFormComponent implements OnInit, DoCheck {
   // @Input() receivedParentMessage: any;
   // receivedChildMessage: any;
   // courseIntanceGroup: FormGroup;
@@ -30,7 +32,6 @@ export class LearnerRegistrationFormComponent implements OnInit {
   selectedOther: File = null;
   orgId;
   public errorMsg: string; // display error message from server in template
-  public postSuccessMsg: string; // display message to user when they posted data to server successfully
   public guitars: Array<any>;
   public pianos: Array<any>;
   public drums: Array<any>;
@@ -105,6 +106,11 @@ export class LearnerRegistrationFormComponent implements OnInit {
   prepareRoomListArray = [];
   prepareTeaNameListArray = [];
   prepareTeaNameItemArray = [];
+  // active modal
+  modalRefTimePicker;
+  timePickArrayNumber;
+  modalRefConfirm;
+  // needSubmit = false;
 
   // getter method: simplify the way to capture form controls
   get firstName() { return this.registrationForm.get('learnerForm').get('firstName'); }
@@ -143,6 +149,7 @@ export class LearnerRegistrationFormComponent implements OnInit {
       durationType: ['']
     }),
   }); }
+
   ngOnInit() {
     // init date
     // get orgId
@@ -169,7 +176,7 @@ export class LearnerRegistrationFormComponent implements OnInit {
         levelType: [this.whichLearner?this.whichLearner.LevelType:''],
         paymentPeriod: [this.whichLearner?this.whichLearner.PaymentPeriod:'1'],
         referrer: [this.whichLearner?this.whichLearner.Referrer:''],
-        isUnder18: [this.whichLearner?this.whichLearner.isUnder18:0],        
+        isUnder18: [this.whichLearner?this.whichLearner.isUnder18:0],
       }),
       parentForm: this.fb.array([]),
       groupCourse: this.fb.array([]),
@@ -293,10 +300,8 @@ export class LearnerRegistrationFormComponent implements OnInit {
           // catArray.push(cat.CourseCategory.CourseCategoryId);
           // catNameArray.push(cat.CourseCategory.CourseCategoryName);
            catArray.push(JSON.stringify(cat.CourseCategory));
-          })
-          console.log(catArray)
+          });
         let uniCat = arr => Array.from(new Set(arr));
-        console.log(uniCat(catArray))
         this.setUniCat=[];
         uniCat(catArray).forEach(ele =>{
           //@ts-ignore
@@ -321,7 +326,7 @@ export class LearnerRegistrationFormComponent implements OnInit {
           this.whichLearner.One2oneCourseInstance.forEach((e,i)=>{
             this.selectCategory(e.Course.CourseCategoryId, i);
             this.selectCourse(e.CourseId, i);
-  
+
           })
         }
         console.log(this.setUniCatListArray)
@@ -352,10 +357,10 @@ export class LearnerRegistrationFormComponent implements OnInit {
           this.learnerPurpose = data.Data;
           for (let lP of this.learnerPurpose) {
             lP.isChecked = false;
-            if (this.whichLearner!=null){  //for edit  
+            if (this.whichLearner!=null){  //for edit
                 if (this.whichLearner.LearnerOthers.filter(e=>(
                   e.OthersType=='2'&&e.OthersValue==lP.PropValue)).length>0)
-                  lP.isChecked = true; 
+                  lP.isChecked = true;
               }
            }
         },
@@ -370,7 +375,7 @@ export class LearnerRegistrationFormComponent implements OnInit {
           this.howKnown = data.Data;
           this.howKnown.map((o, i) =>{
             o.isChecked = false;
-            if (this.whichLearner!=null){  //for edit  
+            if (this.whichLearner!=null){  //for edit
               if (this.whichLearner.LearnerOthers.filter(e=>(
                 e.OthersType=='3'&&e.OthersValue==o.PropValue)).length>0)
                 o.isChecked = true;
@@ -572,8 +577,8 @@ export class LearnerRegistrationFormComponent implements OnInit {
     }
     console.log(this.selectedLocListArray[i]);
     console.log(this.prepareTeaNameListArray[i]);
-    console.log(this.prepareTeaLevListArray[i]);        
-    console.log(this.prepareRoomListArray[i]);            
+    console.log(this.prepareTeaLevListArray[i]);
+    console.log(this.prepareRoomListArray[i]);
   }
   selectTl(id, i) {
     console.log(i,this.selectedprepareTeaLevInOrgObjListArray)
@@ -633,7 +638,7 @@ export class LearnerRegistrationFormComponent implements OnInit {
     console.log(this.courseGroup);
     // encapsulate learner form data
     this.learner = this.learnerForm.value;
-    console.log(this.learner);    
+    console.log(this.learner);
     this.fdObj['FirstName'] = this.learner.firstName;
     this.fdObj['MiddleName']=this.learner.middleName;
     this.fdObj['LastName'] = this.learner.lastName;
@@ -647,7 +652,7 @@ export class LearnerRegistrationFormComponent implements OnInit {
     this.fdObj['LearnerLevel'] = this.selectlearnerLevel;
     this.fdObj['LevelType'] = this.learnerlevelType;
     this.fdObj['IsUnder18'] = this.learner.isUnder18;
-    this.fdObj['PaymentPeriod'] = parseInt(this.learner.paymentPeriod);    
+    this.fdObj['PaymentPeriod'] = parseInt(this.learner.paymentPeriod);
     this.fdObj['Referrer'] = this.learner.referrer;
     // encapsulate parent form data
     // console.log('submit', this.parentForm.value)
@@ -667,18 +672,9 @@ export class LearnerRegistrationFormComponent implements OnInit {
     this.fdObj['LearnerOthers'] = this.learnerOthers;
     console.log(this.fdObj);
     this.fd.append('details', JSON.stringify(this.fdObj));
-    console.log('form data', this.fd);
-    this.registrationService.postStudent(this.fd)
-      .subscribe(
-        data => {
-          this.postSuccessMsg = data;
-          console.log('Success!', data);
-        },
-        error => {
-          this.errorMsg = error;
-          console.log('Error!', error);
-        }
-      )
+    // console.log('form data', this.fd);
+    // active modal waiting for decision
+    this.openConfirm();
   }
   resetLearner() {
     this.learnerForm.reset();
@@ -750,11 +746,26 @@ export class LearnerRegistrationFormComponent implements OnInit {
     this.prepareTeaNameInLevObjItemArray = [];
     this.prepareTeaNameItemArray = [];
   }
-  //ng-activeModal
+  //ng-activeModal for time picker
   open(i) {
-    const modalRef = this.modalService.open(LearnerRegistrationModalComponent,{ windowClass: 'my-class' });
-    modalRef.componentInstance.customCourse = this.customCourse.value[i];
+    this.modalRefTimePicker = this.modalService.open(LearnerRegistrationModalComponent,{ windowClass: 'my-class' });
+    this.modalRefTimePicker.componentInstance.customCourse = this.customCourse.value[i];
+    this.timePickArrayNumber = i;
   }
+
+  // // ng-activeModal for confirm submit
+  openConfirm(){
+    this.modalRefConfirm = this.modalService.open(LearnerRegistrationConfirmModalComponent);
+    this.modalRefConfirm.componentInstance.fdObj = this.fd;
+  }
+  // // check changes
+  ngDoCheck(){
+    console.log(this.modalRefTimePicker);
+    // this.modalRefConfirm?this.needSubmit = this.modalRefConfirm.componentInstance.submitClicked:this.needSubmit = false;
+    // console.log(this.needSubmit)
+    // this.onSubmit()
+  }
+
   chooseGroupCourse() {
     this.isGroupCourse = true;
     this.isCustomCourse = false;
@@ -804,7 +815,7 @@ export class LearnerRegistrationFormComponent implements OnInit {
           }))
         })
     };
-  
+
   }
   setOneToOneForm(){
     if  ((!this.whichLearner)||this.whichLearner.One2oneCourseInstance.length===0){
@@ -814,17 +825,17 @@ export class LearnerRegistrationFormComponent implements OnInit {
     {
       this.isSelectedLevel = true;
       this.selectlearnerLevel = this.whichLearner.LearnerLevel;
-  
+
       let TeacherFilter,PureCourses;
       let CatList=[];
       this.setUniCatListArray=new Array();
       this.courseListArray=new Array();
       this.locListArray=new Array();
-      this.prepareTeaLevListArray=new Array(); 
+      this.prepareTeaLevListArray=new Array();
       this.prepareTeaNameListArray=new Array();
       this.prepareRoomListArray=new Array();
 
-      forkJoin([this.coursesService.getCourses(), 
+      forkJoin([this.coursesService.getCourses(),
         this.registrationService.getTeacherFilter(this.whichLearner.LearnerLevel)]).subscribe(
         (res) => {
           PureCourses = res[0].Data;
@@ -884,24 +895,24 @@ export class LearnerRegistrationFormComponent implements OnInit {
                   //{ hour: 9, minute: 0, second: 0 }  09:03:14
                   durationType: [o.Course.Duration]
                 }),
-              })   
+              })
             );
-           console.log(this.setUniCatListArray,this.courseListArray); 
-           console.log(this.locListArray,this.prepareTeaLevListArray); 
-           console.log(this.prepareTeaNameListArray,this.prepareRoomListArray); 
+           console.log(this.setUniCatListArray,this.courseListArray);
+           console.log(this.locListArray,this.prepareTeaLevListArray);
+           console.log(this.prepareTeaNameListArray,this.prepareRoomListArray);
 
-           console.log(this.customCourse); 
-        }); 
-    
+           console.log(this.customCourse);
+        });
+
         },
         (err) => {
           console.log(err);
           alert('Sorry, something went wrong.')
         }
       );
-    
-        
-     
+
+
+
   }}
 }
-  
+
