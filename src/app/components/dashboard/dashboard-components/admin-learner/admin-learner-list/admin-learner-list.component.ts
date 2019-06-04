@@ -174,7 +174,8 @@ detailModal(command, whichLearner) {
   Edit modal
 */
 EditModal(command, whichLearner) {
-  const modalRef = this.modalService.open(LearnerEditModalComponent, { size: 'lg' });
+  const modalRef = this.modalService.open(LearnerEditModalComponent,{ windowClass: 'my-class' });
+ 
   let that = this;
   modalRef.result.then(
     (res) => {
