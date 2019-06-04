@@ -19,6 +19,7 @@ import { AdminLearnerListComponent } from './components/dashboard/dashboard-comp
 import { AdminLearnerPanelComponent } from './components/dashboard/dashboard-components/admin-learner/admin-learner-panel/admin-learner-panel.component';
 import { LearnerDeleteModalComponent } from './components/dashboard/dashboard-components/admin-learner/learner-delete-modal/learner-delete-modal.component';
 import { LearnerDetailModalComponent } from './components/dashboard/dashboard-components/admin-learner/learner-detail-modal/learner-detail-modal.component';
+import { LearnerEditModalComponent } from './components/dashboard/dashboard-components/admin-learner/learner-edit-modal/learner-edit-modal.component';
 import { AdminLearnerPaymentInvoiceComponent } from './components/dashboard/dashboard-components/admin-payment/admin-learner-payment-invoice/admin-learner-payment-invoice.component';
 import { AdminLearnerPaymentOtherComponent } from './components/dashboard/dashboard-components/admin-payment/admin-learner-payment-other/admin-learner-payment-other.component';
 import { AdminLearnerPaymentPanelComponent } from './components/dashboard/dashboard-components/admin-payment/admin-learner-payment-panel/admin-learner-payment-panel.component';
@@ -146,6 +147,7 @@ import { SimplifyOrgPipe } from './shared/pipes/simplify-org.pipe';
 
     LearnerDeleteModalComponent,
     LearnerDetailModalComponent,
+    LearnerEditModalComponent,
 
 
     SessionCancelModalComponent,
@@ -206,6 +208,7 @@ import { SimplifyOrgPipe } from './shared/pipes/simplify-org.pipe';
     CourseClassDetailModalComponent,
     LearnerDeleteModalComponent,
     LearnerDetailModalComponent,
+    LearnerEditModalComponent,
     SessionCancelModalComponent,
     SessionCompletedModalComponent,
     RatingModalComponent,

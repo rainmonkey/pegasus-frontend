@@ -89,6 +89,7 @@ export class SearchNameModuleComponent implements OnInit {
   }
   open(content) {
     // search learner
+    this.router.navigate([this.payPath]);
     this.learnersListService
       .getLearners(this.searchForm.value.search)
       .subscribe(data => {
@@ -154,7 +155,7 @@ export class SearchNameModuleComponent implements OnInit {
       const path1 = url[0].path;
       let path2 = url[1].path;
       if(path2 === 'invoice') {
-        path2 = 'invoice/pay';
+        path2 = 'invoice';
         this.payPath = `/${path1}/${path2}/`;
       } else {
       this.payPath = `/${path1}/${path2}/`; }
