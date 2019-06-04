@@ -14,13 +14,13 @@ import {DatePipe} from '@angular/common';
   styleUrls: ['./sessions-list-view.component.css'],
 })
 export class SessionsListViewComponent implements OnInit {
+  InitialSessionList;
+  teacherSearchValue: string;
   isloading = false;
   searchBeginDate;
   searchEndDate;
-  public learnerList: any;
-  public learnerListLength: number;
-  public temLearnerList: any; // save the original teacherList
-  public temLearnerListLength: number; // save the original teacherList length
+  public SessionList: any;
+  public SessionListLength: number;
   public page = 1;  // pagination current page
   public pageSize = 10;    // [can modify] pagination page size
   // error alert
@@ -48,7 +48,12 @@ export class SessionsListViewComponent implements OnInit {
     ) { }
 
   ngOnInit() {
-    this.getData('2019-01-01', '2020-01-01');
+    const today = new Date();
+    const todayDate = this.datePipe.transform(today, 'yyyy-MM-dd')
+    const weekbeforeDate = this.datePipe.transform(new Date(today.getFullYear(), today.getMonth(), today.getDate() - 6), 'yyyy-MM-dd')
+    console.log(weekbeforeDate)
+    console.log(todayDate)
+    this.getData(weekbeforeDate, todayDate);
   }
 
   // open confirm modal
@@ -95,18 +100,17 @@ export class SessionsListViewComponent implements OnInit {
     this.sessionsService.getReceptionistLessonBetweenDate(begin, end).subscribe(
       (res) => {
         this.isloading = false;
-        this.learnerList = res.Data;
-        this.learnerListLength = res.Data.length; // length prop is under Data prop
-        this.temLearnerList = res.Data;
-        this.temLearnerListLength = res.Data.length;
+        this.InitialSessionList = res.Data;
+        this.SessionList = res.Data;
+        this.SessionListLength = res.Data.length; // length prop is under Data prop
       },
       error => {
-        alert(error);
+        alert('Server Error')
         this.isloading = false;
       });
   }
 
-  search = () => {
+  searchByDate = () => {
     const beginDate = this.searchBeginDate == null ? alert('please enter begin date') :
       this.datePipe.transform(this.searchBeginDate, 'yyyy-MM-dd');
     const endDate = this.searchEndDate == null ? alert('please enter end date') :
@@ -115,5 +119,12 @@ export class SessionsListViewComponent implements OnInit {
       return;
     }
     this.getData(beginDate, endDate);
+  }
+
+  teacherSearch = () => {
+    this.SessionList = this.InitialSessionList;
+    this.SessionList = this.SessionList.filter(s =>
+      s.TeacherFirstName.toString().toUpperCase().includes(this.teacherSearchValue.toString().toUpperCase()));
+    this.SessionListLength = this.SessionList.length;
   }
 }

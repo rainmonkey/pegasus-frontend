@@ -43,6 +43,9 @@ export class CourseClassDetailModalComponent implements OnInit {
 
   ngOnInit() {
     this.updateForm = this.fb.group(this.formGroupAssemble());
+    if (this.command == 2) {
+      this.formArrayAssembleUpdate();
+    }
     this.getCourseName();
     this.getTeacher();
     this.getLocation();
@@ -86,6 +89,10 @@ export class CourseClassDetailModalComponent implements OnInit {
     this.coursesService.getRooms().subscribe(
       (res) => {
         this.roomName = res.Data;
+        // During editing, run filterrooms() to show Room Num.
+        if (this.command == 2) {
+          this.filterrooms(this.whichCourseClass.OrgId);
+        }
       },
       (err) => {
         alert('Serve error!')
@@ -101,14 +108,14 @@ export class CourseClassDetailModalComponent implements OnInit {
   // Validate EndDate > BeginDate
   onBeginDateSelection(date: NgbDate) {
     if (date.after(this.toDate)) {
-      alert('asdasd')
+      alert('End Date must be later than Begin Date');
     } else {
       this.fromDate = date;
     }
   }
-  onEndDateSelection(date) {
+  onEndDateSelection(date: NgbDate) {
     if (date.before(this.fromDate)) {
-      alert('123123')
+      alert('End Date must be later than Begin Date');
     } else {
       this.toDate = date;
     }
@@ -128,11 +135,13 @@ export class CourseClassDetailModalComponent implements OnInit {
         CourseSchedule: this.fb.array([this.formArrayAssemble()])
       }
     } else {
+      // Show selected data during editing
       groupObj = {
+        // GroupCourseInstanceId:[this.whichCourseClass.GroupCourseInstanceId],
         CourseId: [this.whichCourseClass.CourseId, Validators.required],
         TeacherId: [this.whichCourseClass.TeacherId, Validators.required],
-        BeginDate: [this.whichCourseClass.BeginDate, Validators.required],
-        EndDate: [this.whichCourseClass.EndDate, Validators.required],
+        BeginDate: [new Date(this.whichCourseClass.BeginDate), Validators.required],
+        EndDate: [new Date(this.whichCourseClass.EndDate), Validators.required],
         OrgId: [this.whichCourseClass.OrgId, Validators.required],
         RoomId: [this.whichCourseClass.RoomId, Validators.required],
         CourseSchedule: this.fb.array([])
@@ -144,10 +153,19 @@ export class CourseClassDetailModalComponent implements OnInit {
   formArrayAssemble() {
     return this.fb.group({ BeginTime: [null, Validators.required] })
   }
+  formArrayAssembleUpdate() {
+    for (var i = 0; i < this.whichCourseClass.schedule.length; i++) {
+      (this.updateForm.controls.CourseSchedule as FormArray).push(this.fb.group({ BeginTime: [this.whichCourseClass.schedule[i].BeginTime, Validators.required] }));
+    }
+  }
   // add time
   newTime() {
     const sches = this.updateForm.controls.CourseSchedule as FormArray;
     sches.push(this.formArrayAssemble());
+  }
+  deleteTime(index) {
+    const sches = this.updateForm.controls.CourseSchedule as FormArray;
+    sches.removeAt(index);
   }
 
   /***** Post form ********************************************************/
@@ -163,7 +181,7 @@ export class CourseClassDetailModalComponent implements OnInit {
     }
   }
 
-   // check whether data vailad or not(ruled by Validators).
+  // check whether data vailad or not(ruled by Validators).
   checkInputVailad(valueToSubmit) {
     if (this.updateForm.status == 'VALID') {
       return valueToSubmit;
@@ -181,6 +199,7 @@ export class CourseClassDetailModalComponent implements OnInit {
     if (this.command == 0) {
       this.coursesService.addNewCourseClass(formValue).subscribe(
         (res) => {
+          console.log(formValue)
           alert('Submit success!');
           this.activeModal.close();
         },
@@ -191,7 +210,7 @@ export class CourseClassDetailModalComponent implements OnInit {
     }
     //while update data
     else if (this.command == 2) {
-      this.coursesService.updateCourseClass(formValue, this.whichCourseClass.CourseId).subscribe(
+      this.coursesService.updateCourseClass(formValue, this.whichCourseClass.GroupCourseInstanceId).subscribe(
         (res) => {
           alert('Submit success!');
           this.activeModal.close();

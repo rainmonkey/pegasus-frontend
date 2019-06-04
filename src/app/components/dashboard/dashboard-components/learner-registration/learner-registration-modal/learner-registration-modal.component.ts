@@ -7,7 +7,7 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 })
 export class LearnerRegistrationModalComponent implements OnInit {
 
-  @Input() customCourse;
+  @Input() whichLearner;
    constructor(public activeModal: NgbActiveModal) {}
 
    ngOnInit() {

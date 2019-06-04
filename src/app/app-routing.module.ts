@@ -46,8 +46,8 @@ const routes: Routes = [
       // Payment Area
       { path: 'payment/invoice', pathMatch: 'prefix', component: AdminLearnerPaymentPanelComponent,
         children:[
-          { path: 'pay/:id', component: AdminLearnerPaymentInvoiceComponent },
-          { path: 'pay/success', component: AdminLearnerPaymentSuccessComponent },
+          { path: ':id', component: AdminLearnerPaymentInvoiceComponent },
+          { path: 'success', component: AdminLearnerPaymentSuccessComponent },
       ]},
       { path: 'payment/product', pathMatch: 'prefix', component: AdminLearnerPaymentPanelComponent,
         children: [

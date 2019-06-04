@@ -145,6 +145,7 @@ getCourse(){
   // data combination
   combiData (){
     let valueObj = this.invoiceEditForm.value;
+    console.log(valueObj);
     // get rest then re-define all others
     let {
       LessonFee,
@@ -156,23 +157,32 @@ getCourse(){
       ...rest
     } = valueObj;
     let valueTemp = {
-      LessonFee : null ? 0 : this.invoiceEditForm.controls.LessonFee.value,
-      ConcertFee: null ? 0 : this.invoiceEditForm.controls.ConcertFee.value,
-      NoteFee: null ? 0 : this.invoiceEditForm.controls.NoteFee.value,
-      Other1Fee: null ? 0 : this.invoiceEditForm.controls.Other1Fee.value,
-      Other2Fee: null ? 0 : this.invoiceEditForm.controls.Other2Fee.value,
-      Other3Fee: null ? 0 : this.invoiceEditForm.controls.Other3Fee.value
+      LessonFee :  this.invoiceEditForm.controls.LessonFee.value==null ? 0 : this.invoiceEditForm.controls.LessonFee.value,
+      ConcertFee:  this.invoiceEditForm.controls.ConcertFee.value==null ? 0 : this.invoiceEditForm.controls.ConcertFee.value,
+      NoteFee:  this.invoiceEditForm.controls.NoteFee.value==null ? 0 : this.invoiceEditForm.controls.NoteFee.value,
+      Other1Fee:  this.invoiceEditForm.controls.Other1Fee.value==null ? 0 : this.invoiceEditForm.controls.Other1Fee.value,
+      Other2Fee: this.invoiceEditForm.controls.Other2Fee.value==null ? 0 : this.invoiceEditForm.controls.Other2Fee.value,
+      Other3Fee: this.invoiceEditForm.controls.Other3Fee.value==null ? 0 : this.invoiceEditForm.controls.Other3Fee.value
     };
     rest.OwingFee = valueTemp.LessonFee + valueTemp.ConcertFee + valueTemp.NoteFee + valueTemp.Other1Fee + valueTemp.Other2Fee + valueTemp.Other3Fee;
     rest.TotalFee = rest.OwingFee;
     Object.assign(valueTemp, rest);
-    let {...itemTemp } = this.item;
-    Object.assign(itemTemp, valueTemp);
-    this.itemTempPublic = itemTemp;
+    //let {...itemTemp } = this.item;
+    //let itemTemp;
+    //Object.assign(itemTemp, valueTemp);
+    this.itemTempPublic = valueTemp;
+    this.itemTempPublic.WaitingId = this.item.WaitingId;    
+    this.itemTempPublic.InvoiceNum = this.item.InvoiceNum;  
+    this.itemTempPublic.LearnerId = this.item.LearnerId;    
+    this.itemTempPublic.LearnerName = this.item.LearnerName;  
+    this.itemTempPublic.TermId = this.item.TermId;    
+    this.itemTempPublic.GroupCourseInstanceId = this.item.GroupCourseInstanceId; 
+    this.itemTempPublic.CourseInstanceId = this.item.CourseInstanceId;                         
   }
 
   putInvoiceData(){
-    return this.transactionService.update(this.itemTempPublic)
+    console.log(this.itemTempPublic);
+    this.transactionService.update(this.itemTempPublic)
           .subscribe(
             (res) => {
               console.log(res);

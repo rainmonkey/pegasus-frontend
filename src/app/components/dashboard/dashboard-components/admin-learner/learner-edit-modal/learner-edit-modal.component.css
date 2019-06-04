@@ -1,0 +1,34 @@
+.lable-pos{  
+    text-align: left
+}
+.label{
+    font-size:15px;
+}
+.label1{
+    font-size: 15px;
+    font-weight: bold;
+}
+.text{
+    font-size:19px;
+    font-family: 'Times New Roman', Times, serif;
+    font-weight: 300;
+}
+.imageSize{
+    height: 190px;
+    width: 170px;
+     text-align: center!important;
+    display: block;
+    margin-top:-13px;
+}
+
+.G5imageSize{
+    height: 190px;
+    width: 280px;
+     text-align: center!important;
+    display: block;
+    margin-top:-13px;
+}
+.button-margin{
+    margin-right:10px;
+    margin-left:10px;
+}

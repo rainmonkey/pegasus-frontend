@@ -7,6 +7,7 @@ import { LearnerRegistrationModalComponent } from '../learner-registration-modal
 import { UniqueSelectionDispatcher } from '@angular/cdk/collections';
 import { concat } from 'rxjs';
 import { element } from '@angular/core/src/render3';
+import { forkJoin } from 'rxjs'; 
 
 @Component({
   selector: 'app-learner-registration-form',
@@ -17,6 +18,8 @@ export class LearnerRegistrationFormComponent implements OnInit {
   // @Input() receivedParentMessage: any;
   // receivedChildMessage: any;
   // courseIntanceGroup: FormGroup;
+  @Input() whichLearner;
+
   public time: NgbTimeStruct = { hour: 9, minute: 0, second: 0 };
   public hourStep = 1;
   public minuteStep = 15;
@@ -46,8 +49,8 @@ export class LearnerRegistrationFormComponent implements OnInit {
   public learner: any;
   public parent = [];
   public fdObj = {};
-  public isGroupCourse: boolean = true;
-  public isCustomCourse: boolean = false;
+  public isGroupCourse: boolean = false;
+  public isCustomCourse: boolean = true;
   public tempGroupCourseObj = {};
   public groupCourseInstanceId: number;
   public learnerGroupCourse: Array<any> = [];
@@ -64,7 +67,7 @@ export class LearnerRegistrationFormComponent implements OnInit {
   public pureCourses: any[];
   notPiano;
   notPianoTeaArray = [];
-  isUnder18 = 0;
+ // isUnder18 = 0;
   myDate;
   public;
   courses121;
@@ -145,40 +148,37 @@ export class LearnerRegistrationFormComponent implements OnInit {
     // get orgId
     this.orgId = JSON.parse(localStorage.getItem('OrgId'))[0];
     this.getDate();
+    if (this.whichLearner!=null) console.log(this.whichLearner);
     this.registrationForm = this.fb.group({
       learnerForm: this.fb.group({
-        firstName: ['Donald', Validators.required],
-        middleName: ['e'],
-        lastName: ['Trump', Validators.required],
-        gender: ['2', Validators.required],
-        birthday: ['2010-12-01'],
-        enrollmentDate: [this.myDate()],
-        contactNum: ['032345678'],
-        email: ['Trump@gmail.com', [Validators.required,Validators.email]],
-        address: ['1188 Station'],
+        firstName: [this.whichLearner?this.whichLearner.FirstName:'', Validators.required],
+        middleName: [this.whichLearner?this.whichLearner.MiddleName:''],
+        lastName: [this.whichLearner?this.whichLearner.LastName:'', Validators.required],
+        gender: [this.whichLearner?this.whichLearner.Gender:'2', Validators.required],
+        birthday: [this.whichLearner&&this.whichLearner.Dob?this.whichLearner.Dob.slice(0,10):''],
+        enrollmentDate: [this.whichLearner?this.whichLearner.EnrollDate.slice(0,10):this.myDate()],
+        contactNum: [this.whichLearner?this.whichLearner.ContactNum:''],
+        email: [this.whichLearner?this.whichLearner.Email:'', [Validators.required,Validators.email]],
+        address: [this.whichLearner?this.whichLearner.Address:''],
         photo: [''],
         grade: [''],
-        learnPurpose: [''],
-        infoFrom: [''],
-        learnerLevel: [this.selectlearnerLevel,Validators.required],
-        location: [this.orgId, Validators.required],
-        levelType: [''],
-        paymentPeriod: ['1'],
-        referrer: ['']
-
+        //learnPurpose: [this.whichLearner?this.whichLearner.learnPurpose:''],
+        //infoFrom: [this.whichLearner?this.whichLearner.infoFrom:''],
+        learnerLevel: [this.whichLearner?this.whichLearner.LearnerLevel:this.selectlearnerLevel,Validators.required],
+        location: [this.whichLearner?this.whichLearner.OrgId:this.orgId, Validators.required],
+        levelType: [this.whichLearner?this.whichLearner.LevelType:'0'],
+        paymentPeriod: [this.whichLearner?this.whichLearner.PaymentPeriod:'1'],
+        referrer: [this.whichLearner?this.whichLearner.Referrer:''],
+        isUnder18: [this.whichLearner?this.whichLearner.isUnder18:0],        
       }),
-      parentForm: this.fb.array([
-        this.fb.group({
-          firstName: ['uiy', Validators.required],
-          lastName: ['ye', Validators.required],
-          relationship: ['2', Validators.required],
-          contactPhone: ['9989900', Validators.required],
-          email: ['ivfkhhkn@gmail.com', [Validators.required,Validators.email]]
-        })
-      ]),
+      parentForm: this.fb.array([]),
       groupCourse: this.fb.array([]),
-      customCourse: this.fb.array([this.courseIntanceGroup]),
+      customCourse: this.fb.array([]),
     });
+
+    this.setParentForm();
+    this.setOneToOneForm();
+
 
    //@ts-ignore
     // let abc = this.customCourse.controls[0].controls.roomArray;
@@ -194,6 +194,9 @@ export class LearnerRegistrationFormComponent implements OnInit {
     this.getLocationFromServer();
     // init array
     this.initArrays()
+
+    //
+    console.log(this.registrationForm);
   }
 
   getDate(){
@@ -312,6 +315,7 @@ export class LearnerRegistrationFormComponent implements OnInit {
         console.log(this.setUniCat);
         this.setUniCatListArray=[];
         this.setUniCatListArray.push(this.setUniCat);
+
         console.log(this.setUniCatListArray)
       });
   }
@@ -326,8 +330,8 @@ export class LearnerRegistrationFormComponent implements OnInit {
     this.registrationService.getLookups(1)
       .subscribe(
         data => {
-          console.log('teacher info', data);
-          this.learnerPurpose = data.Data;
+          console.log('teacher level', data);
+          this.teacherLevel = data.Data;
         },
         err => {
           console.log('teacher info err', err);
@@ -336,11 +340,16 @@ export class LearnerRegistrationFormComponent implements OnInit {
     this.registrationService.getLookups(2)
       .subscribe(
         data => {
-          console.log('learner purpose', data);
+          console.log('learner purpose');
           this.learnerPurpose = data.Data;
           for (let lP of this.learnerPurpose) {
             lP.isChecked = false;
-          }
+            if (this.whichLearner!=null){  //for edit  
+                if (this.whichLearner.LearnerOthers.filter(e=>(
+                  e.OthersType=='2'&&e.OthersValue==lP.PropValue)).length>0)
+                  lP.isChecked = true; 
+              }
+           }
         },
         err => {
           console.log('learner purpose err', err);
@@ -349,10 +358,16 @@ export class LearnerRegistrationFormComponent implements OnInit {
     this.registrationService.getLookups(3)
       .subscribe(
         data => {
-          console.log('how know', data);
+          console.log('how know', data,this.whichLearner);
           this.howKnown = data.Data;
-          this.howKnown.map((o, i) =>
-            o.isChecked = false)
+          this.howKnown.map((o, i) =>{
+            o.isChecked = false;
+            if (this.whichLearner!=null){  //for edit  
+              if (this.whichLearner.LearnerOthers.filter(e=>(
+                e.OthersType=='3'&&e.OthersValue==o.PropValue)).length>0)
+                o.isChecked = true;
+            }
+          })
         },
         err => {
           console.log('how know err', err);
@@ -392,11 +407,11 @@ export class LearnerRegistrationFormComponent implements OnInit {
 
   }
   // check lists
-  select18(event){
-    if (event.target.checked){
-      this.isUnder18 = 1;
-    }
-  }
+  // select18(event){
+  //   if (event.target.checked){
+  //     this.isUnder18 = 1;
+  //   }
+  // }
 
   selectLearnerPurpose(i, event) {
     this.learnerPurpose[i].isChecked = event.target.checked;
@@ -522,13 +537,15 @@ export class LearnerRegistrationFormComponent implements OnInit {
   selectCourse(value,i) {
     this.emptySelectionCour(i)
     this.locListArray[i].locItemArray = [];
-    this.registrationService.getTeacherFilter(value).subscribe(
+    return this.registrationService.getTeacherFilter(value).subscribe(
       res=>{
         this.locListArray[i].locItemArray = res.Data;
         console.log(this.locItemArray);
+        // if (this.whichLearner)
+        //     this.selectLocation(this.whichLearner.One2oneCourseInstance[i].OrgId, i);
+
       }, error => {
         this.locListArray[i].locItemArray = [];
-
         this.errorMsgSub = JSON.parse(error.error);
         console.log("Error!", this.errorMsgSub.ErrorCode);
         this.errorAlert = true;
@@ -545,6 +562,10 @@ export class LearnerRegistrationFormComponent implements OnInit {
       });
       this.prepareTeaNameListArray[i].prepareTeaNameItemArray = this.notPianoTeaArray;
     }
+    console.log(this.selectedLocListArray[i]);
+    console.log(this.prepareTeaNameListArray[i]);
+    console.log(this.prepareTeaLevListArray[i]);        
+    console.log(this.prepareRoomListArray[i]);            
   }
   selectTl(id, i) {
     console.log(i,this.selectedprepareTeaLevInOrgObjListArray)
@@ -581,6 +602,7 @@ export class LearnerRegistrationFormComponent implements OnInit {
     console.log('custom Course Form value', cs);
     // let tempObj = {};
     for (let cc of this.customCourse.value) {
+      if (cc.course==='') continue;
       let tempObj = {};
       tempObj['CourseId'] = parseInt(cc.course);
       tempObj['OrgId'] = cc.location;
@@ -589,7 +611,7 @@ export class LearnerRegistrationFormComponent implements OnInit {
       tempObj['BeginDate'] = cc.beginDate;
       let tempScheduleObj = {};
       tempScheduleObj['DayOfWeek'] = parseInt(cc.schedule.dayOfWeek);
-      tempScheduleObj['BeginTime'] = this.courseTime;
+      tempScheduleObj['BeginTime'] = cc.schedule.beginTime.hour+':'+cc.schedule.beginTime.minute+':'+cc.schedule.beginTime.second ;//this.courseTime;
       tempScheduleObj['DurationType'] = parseInt(cc.course);
       tempObj['Schedule'] = tempScheduleObj;
       this.oneOnOneCourse.push(tempObj);
@@ -616,7 +638,7 @@ export class LearnerRegistrationFormComponent implements OnInit {
     this.fdObj['OrgId'] = this.learner.location;
     this.fdObj['LearnerLevel'] = this.selectlearnerLevel;
     this.fdObj['LevelType'] = this.learnerlevelType;
-    this.fdObj['IsUnder18'] = this.isUnder18;
+    this.fdObj['IsUnder18'] = this.learner.isUnder18;
     this.fdObj['PaymentPeriod'] = parseInt(this.learner.paymentPeriod);    
     this.fdObj['Referrer'] = this.learner.referrer;
     // encapsulate parent form data
@@ -652,7 +674,8 @@ export class LearnerRegistrationFormComponent implements OnInit {
   }
   resetLearner() {
     this.learnerForm.reset();
-    this.photoObj.setAttribute('src',null);
+    if (this.photoObj)
+      this.photoObj.setAttribute('src',null);
   }
   resetParent() {
     this.parentForm.reset();
@@ -667,7 +690,7 @@ export class LearnerRegistrationFormComponent implements OnInit {
         lastName: ['', Validators.required],
         relationship: ['', Validators.required],
         contactPhone: ['', Validators.required],
-        email: ['', [Validators.required, Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$')]]
+        email: ['',  [Validators.required,Validators.email]]
       })
     );
     // console.log('addParent', this.parentForm.value)
@@ -737,7 +760,7 @@ export class LearnerRegistrationFormComponent implements OnInit {
     this.getErrorW === false?this.showErrorW = true:this.showErrorW=false;
     this.getErrorH === false?this.showErrorH = true:this.showErrorH=false;
     this.touchNext = true;
-    // if (value === 'parentForm') { this.confirmLearner(); }
+    if (value === 'parentForm') { this.confirmLearner(); }
     if ((this.getErrorH === true) && (this.getErrorW === true)){
       this.showErrorW = false;
       this.showErrorH = false;
@@ -747,5 +770,138 @@ export class LearnerRegistrationFormComponent implements OnInit {
       document.getElementById('courseForm').style.display = 'none';
       document.getElementById(value).style.display = 'block';}
   }
-}
+  setParentForm(){
+    if  (!this.whichLearner){
+      this.parentForm.push(
+            this.fb.group({
+              firstName: ['', Validators.required],
+              lastName: ['', Validators.required],
+              relationship: ['', Validators.required],
+              contactPhone: ['', Validators.required],
+              email: ['', [Validators.required,Validators.email]]
+            })
+        );
+       }
+    else
+    {
+      this.whichLearner.Parent.map(p=>{
+        this.parentForm.push(
+          this.fb.group({
+              firstName: [p.FirstName, Validators.required],
+              lastName: [p.LastName, Validators.required],
+              relationship: [p.Relationship, Validators.required],
+              contactPhone: [p.ContactNum, Validators.required],
+              email: [p.Email, [Validators.required,Validators.email]]
 
+          }))
+        })
+    };
+  
+  }
+  setOneToOneForm(){
+    if  ((!this.whichLearner)||this.whichLearner.One2oneCourseInstance.length===0){
+      this.customCourse.push(this.courseIntanceGroup);
+       }
+    else
+    {
+      this.isSelectedLevel = true;
+      this.selectlearnerLevel = this.whichLearner.LearnerLevel;
+  
+      let teacherFilter,pureCourses,groupCourse;
+      let CatList=[];
+      this.setUniCatListArray=new Array();
+      this.courseListArray=new Array();
+      this.locListArray=new Array();
+      this.prepareTeaLevListArray=new Array(); 
+      this.prepareTeaNameListArray=new Array();
+      this.prepareRoomListArray=new Array();
+
+      forkJoin([this.coursesService.getCourses(), 
+        this.registrationService.getTeacherFilter(this.whichLearner.LearnerLevel),
+        this.registrationService.getGroupCourse()]).subscribe(
+        (res) => {
+          pureCourses = res[0].Data;
+          teacherFilter = res[1].Data;
+          groupCourse = res[2].Data;
+          // for (let groupCourse of this.groupCourseInstance) {
+          //   groupCourse.comments = null;
+          //   groupCourse.isChecked = false;
+          //   groupCourse.beginDate = this.myDate();
+          // };
+          //this.setUniCatListArray
+          console.log(pureCourses,teacherFilter)
+          pureCourses.forEach(e=>{
+            //console.log(e);
+            if (CatList.findIndex(c=>c.CourseCategoryId===e.CourseCategory.CourseCategoryId)<0)
+            CatList.push(e.CourseCategory);
+          });
+          console.log(CatList);
+          // courseList
+
+          this.whichLearner.One2oneCourseInstance.map((o,i)=>{
+            console.log(o,pureCourses);
+            this.setUniCatListArray[i]=CatList;
+            let courseItemArray1 = pureCourses.filter(e=>
+              e.CourseCategory.CourseCategoryId==o.Course.CourseCategoryId
+            )
+            console.log(courseItemArray1);
+            let courseItemArray=courseItemArray1
+            .filter(ele=>
+              ((o.Course.CourseCategoryId==1&&ele.Level==this.selectlearnerLevel)
+              ||o.Course.CourseCategoryId!=1)
+            );
+            console.log(courseItemArray);
+            console.log(this.courseListArray);
+            this.courseListArray[i]={courseItemArray:courseItemArray};
+            console.log(this.courseListArray);
+            //let locItemArray = TeacherFilter;
+            this.locListArray[i]={locItemArray:teacherFilter};
+            //prepareTeaLevListArray[i].
+            let prepareTeaLevItemArray = teacherFilter.find(e=>e.orgId==o.OrgId).Level;
+            this.prepareTeaLevListArray[i]={prepareTeaLevItemArray:prepareTeaLevItemArray};
+            //prepareTeaNameListArray[i].prepareTeaNameItemArray
+            let prepareTeaNameItemArray=prepareTeaLevItemArray.find(e=>e.levelId==o.Course.TeacherLevel).teacher;
+            this.prepareTeaNameListArray[i]={prepareTeaNameItemArray:prepareTeaNameItemArray};
+            //prepareRoomListArray[i].prepareRoomItemArray
+            let prepareRoomItemArray = teacherFilter.find(e=>e.orgId=o.OrgId).Room;
+            this.prepareRoomListArray[i]={prepareRoomItemArray:prepareRoomItemArray};
+            this.customCourse.push(
+              this.fb.group({
+                courseCategory: [o.Course.CourseCategoryId],
+                course: [o.Course.CourseId],
+                teacherLevel: [o.Course.TeacherLevel],
+                teacherName: [o.TeacherId],
+                location: [o.OrgId],
+                room: [o.RoomId],
+                beginDate: [o.BeginDate?o.BeginDate.slice(0,10):''],
+                endDate: [o.EndDate?o.EndDate.slice(0,10):''],
+                schedule: this.fb.group({
+                  dayOfWeek: [o.CourseSchedule[0].DayOfWeek],
+                  beginTime: [{hour:parseInt(o.CourseSchedule[0].BeginTime.slice(0,2)),
+                    minute:parseInt(o.CourseSchedule[0].BeginTime.slice(3,5)),
+                    second:parseInt(o.CourseSchedule[0].BeginTime.slice(6,8))}],//{ hour: 9, minute: 0, second: 0 }
+                  //{ hour: 9, minute: 0, second: 0 }  09:03:14
+                  durationType: [o.Course.Duration]
+                }),
+              })   
+            );
+           console.log(o);
+           console.log(this.setUniCatListArray,this.courseListArray); 
+           console.log(this.locListArray,this.prepareTeaLevListArray); 
+           console.log(this.prepareTeaNameListArray,this.prepareRoomListArray); 
+
+           console.log(this.customCourse); 
+        }); 
+    
+        },
+        (err) => {
+          console.log(err);
+          alert('Sorry, something went wrong.')
+        }
+      );
+    
+        
+     
+  }}
+}
+  

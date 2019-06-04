@@ -246,6 +246,12 @@ export class AdminLearnerPaymentInvoiceComponent implements OnInit {
         {
         this.learner = res;
         console.log(this.learner)
+        }
+        ,error=>{
+          console.log(error);
+          this.errorMsg = JSON.parse(error.error);
+          this.errorAlert = true;
+          //alert(this.errorMsg);          
         })
     }
     // make sure the data allignment
@@ -267,16 +273,24 @@ export class AdminLearnerPaymentInvoiceComponent implements OnInit {
     ngOnInit() {
       // put to service
       this.activatedRouter.paramMap.subscribe((obs:ParamMap) => {
+      //  this.learnerId = this.activatedRouter.snapshot.paramMap.get("id")        
         this.learnerId = parseInt(obs.get('id'));
+        this.errorAlert = false;
+        this.errorMsg ='';
         this.errMsgM = false;
         this.errMsgO = false;
         this.paymentsListService
         .getInvoice(this.learnerId)
-        .subscribe(dataInvoice => {
+        .subscribe(res => {
           // return console.log(dataInvoice)
-          this.dataInvoice = dataInvoice;
+          this.dataInvoice = res['Data'];
           this.incaseDateIsNull();
           this.reSearchPrepare();
+        },error=>{
+          console.log(error);
+          this.errorMsg =error.error.ErrorMessage;
+          this.errorAlert = true;
+          //alert(this.errorMsg);          
         });
       });
       this.nameSubejct();

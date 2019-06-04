@@ -3,7 +3,7 @@ import { DecimalPipe } from '@angular/common';
 import { FormControl } from '@angular/forms';
 import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 import { Router, ActivatedRoute } from '@angular/router';
-import { NgbootstraptableService } from 'src/app/services/others/ngbootstraptable.service';
+import { NgbootstraptableService } from '../../../../../services/others/ngbootstraptable.service';
 
 import { CoursesService } from '../../../../../services/http/courses.service';
 import { CourseDetailModalComponent } from '../course-detail-modal/course-detail-modal.component';
@@ -28,7 +28,7 @@ export class CoursesListComponent implements OnInit {
   public queryParams: object = {};
   public filter = new FormControl('');
 
-  @ViewChild('pagination') pagination;
+  // @ViewChild('pagination') pagination;
 
 
   constructor(
@@ -53,7 +53,6 @@ export class CoursesListComponent implements OnInit {
         this.coursesListCopy = this.coursesList;
         this.coursesListLength = res.Data.length; //length prop is under Data prop
         this.refreshPageControl();
-        console.log(this.coursesList);
         // console.log(this.coursesList);
       },
       (err) => { 
@@ -188,8 +187,8 @@ export class CoursesListComponent implements OnInit {
 
   }
 
-  getCurrentPage(){
-    let currentPage = this.pagination.page;
-    this.setQueryParams('currentPage',currentPage)
-  }
+  // getCurrentPage(){
+  //   let currentPage = this.pagination.page;
+  //   this.setQueryParams('currentPage',currentPage)
+  // }
 }
