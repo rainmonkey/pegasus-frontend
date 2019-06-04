@@ -151,22 +151,22 @@ export class LearnerRegistrationFormComponent implements OnInit {
     if (this.whichLearner!=null) console.log(this.whichLearner);
     this.registrationForm = this.fb.group({
       learnerForm: this.fb.group({
-        firstName: [this.whichLearner?this.whichLearner.FirstName:'Who123', Validators.required],
-        middleName: [this.whichLearner?this.whichLearner.MiddleName:'e'],
-        lastName: [this.whichLearner?this.whichLearner.LastName:'Ami321', Validators.required],
+        firstName: [this.whichLearner?this.whichLearner.FirstName:'', Validators.required],
+        middleName: [this.whichLearner?this.whichLearner.MiddleName:''],
+        lastName: [this.whichLearner?this.whichLearner.LastName:'', Validators.required],
         gender: [this.whichLearner?this.whichLearner.Gender:'2', Validators.required],
-        birthday: [this.whichLearner&&this.whichLearner.Dob?this.whichLearner.Dob.slice(0,10):'2001-12-25'],
+        birthday: [this.whichLearner&&this.whichLearner.Dob?this.whichLearner.Dob.slice(0,10):''],
         enrollmentDate: [this.whichLearner?this.whichLearner.EnrollDate.slice(0,10):this.myDate()],
-        contactNum: [this.whichLearner?this.whichLearner.ContactNum:'912345678'],
-        email: [this.whichLearner?this.whichLearner.Email:'Aks123@gmail.com', [Validators.required,Validators.email]],
-        address: [this.whichLearner?this.whichLearner.Address:'1188 Station'],
+        contactNum: [this.whichLearner?this.whichLearner.ContactNum:''],
+        email: [this.whichLearner?this.whichLearner.Email:'', [Validators.required,Validators.email]],
+        address: [this.whichLearner?this.whichLearner.Address:''],
         photo: [''],
         grade: [''],
         //learnPurpose: [this.whichLearner?this.whichLearner.learnPurpose:''],
         //infoFrom: [this.whichLearner?this.whichLearner.infoFrom:''],
         learnerLevel: [this.whichLearner?this.whichLearner.LearnerLevel:this.selectlearnerLevel,Validators.required],
         location: [this.whichLearner?this.whichLearner.OrgId:this.orgId, Validators.required],
-        levelType: [this.whichLearner?this.whichLearner.LevelType:''],
+        levelType: [this.whichLearner?this.whichLearner.LevelType:'0'],
         paymentPeriod: [this.whichLearner?this.whichLearner.PaymentPeriod:'1'],
         referrer: [this.whichLearner?this.whichLearner.Referrer:''],
         isUnder18: [this.whichLearner?this.whichLearner.isUnder18:0],        
@@ -774,11 +774,11 @@ export class LearnerRegistrationFormComponent implements OnInit {
     if  (!this.whichLearner){
       this.parentForm.push(
             this.fb.group({
-              firstName: ['uiy', Validators.required],
-              lastName: ['ye', Validators.required],
-              relationship: ['2', Validators.required],
-              contactPhone: ['9989900', Validators.required],
-              email: ['ivfkhhkn@gmail.com', [Validators.required,Validators.email]]
+              firstName: ['', Validators.required],
+              lastName: ['', Validators.required],
+              relationship: ['', Validators.required],
+              contactPhone: ['', Validators.required],
+              email: ['', [Validators.required,Validators.email]]
             })
         );
        }
@@ -855,15 +855,15 @@ export class LearnerRegistrationFormComponent implements OnInit {
             this.courseListArray[i]={courseItemArray:courseItemArray};
             console.log(this.courseListArray);
             //let locItemArray = TeacherFilter;
-            this.locListArray[i]={locItemArray:TeacherFilter};
+            this.locListArray[i]={locItemArray:teacherFilter};
             //prepareTeaLevListArray[i].
-            let prepareTeaLevItemArray = TeacherFilter.find(e=>e.orgId=o.OrgId).Level;
+            let prepareTeaLevItemArray = teacherFilter.find(e=>e.orgId==o.OrgId).Level;
             this.prepareTeaLevListArray[i]={prepareTeaLevItemArray:prepareTeaLevItemArray};
             //prepareTeaNameListArray[i].prepareTeaNameItemArray
             let prepareTeaNameItemArray=prepareTeaLevItemArray.find(e=>e.levelId==o.Course.TeacherLevel).teacher;
             this.prepareTeaNameListArray[i]={prepareTeaNameItemArray:prepareTeaNameItemArray};
             //prepareRoomListArray[i].prepareRoomItemArray
-            let prepareRoomItemArray = TeacherFilter.find(e=>e.orgId=o.OrgId).Room;
+            let prepareRoomItemArray = teacherFilter.find(e=>e.orgId=o.OrgId).Room;
             this.prepareRoomListArray[i]={prepareRoomItemArray:prepareRoomItemArray};
             this.customCourse.push(
               this.fb.group({
@@ -878,8 +878,8 @@ export class LearnerRegistrationFormComponent implements OnInit {
                 schedule: this.fb.group({
                   dayOfWeek: [o.CourseSchedule[0].DayOfWeek],
                   beginTime: [{hour:parseInt(o.CourseSchedule[0].BeginTime.slice(0,2)),
-                    minute:parseInt(o.CourseSchedule[0].BeginTime.slice(3,4)),
-                    second:parseInt(o.CourseSchedule[0].BeginTime.slice(6,7))}],//{ hour: 9, minute: 0, second: 0 }
+                    minute:parseInt(o.CourseSchedule[0].BeginTime.slice(3,5)),
+                    second:parseInt(o.CourseSchedule[0].BeginTime.slice(6,8))}],//{ hour: 9, minute: 0, second: 0 }
                   //{ hour: 9, minute: 0, second: 0 }  09:03:14
                   durationType: [o.Course.Duration]
                 }),
