@@ -315,15 +315,7 @@ export class LearnerRegistrationFormComponent implements OnInit {
         console.log(this.setUniCat);
         this.setUniCatListArray=[];
         this.setUniCatListArray.push(this.setUniCat);
-        if (this.whichLearner){
-          this.isSelectedLevel = true;
-          this.selectlearnerLevel = this.whichLearner.LearnerLevel;
-          this.whichLearner.One2oneCourseInstance.forEach((e,i)=>{
-            this.selectCategory(e.Course.CourseCategoryId, i);
-            this.selectCourse(e.CourseId, i);
-  
-          })
-        }
+
         console.log(this.setUniCatListArray)
       });
   }
@@ -549,8 +541,8 @@ export class LearnerRegistrationFormComponent implements OnInit {
       res=>{
         this.locListArray[i].locItemArray = res.Data;
         console.log(this.locItemArray);
-        if (this.whichLearner)
-            this.selectLocation(this.whichLearner.One2oneCourseInstance[i].OrgId, i);
+        // if (this.whichLearner)
+        //     this.selectLocation(this.whichLearner.One2oneCourseInstance[i].OrgId, i);
 
       }, error => {
         this.locListArray[i].locItemArray = [];
@@ -619,7 +611,7 @@ export class LearnerRegistrationFormComponent implements OnInit {
       tempObj['BeginDate'] = cc.beginDate;
       let tempScheduleObj = {};
       tempScheduleObj['DayOfWeek'] = parseInt(cc.schedule.dayOfWeek);
-      tempScheduleObj['BeginTime'] = this.courseTime;
+      tempScheduleObj['BeginTime'] = cc.schedule.beginTime.hour+':'+cc.schedule.beginTime.minute+':'+cc.schedule.beginTime.second ;//this.courseTime;
       tempScheduleObj['DurationType'] = parseInt(cc.course);
       tempObj['Schedule'] = tempScheduleObj;
       this.oneOnOneCourse.push(tempObj);
@@ -815,7 +807,7 @@ export class LearnerRegistrationFormComponent implements OnInit {
       this.isSelectedLevel = true;
       this.selectlearnerLevel = this.whichLearner.LearnerLevel;
   
-      let TeacherFilter,PureCourses;
+      let teacherFilter,pureCourses,groupCourse;
       let CatList=[];
       this.setUniCatListArray=new Array();
       this.courseListArray=new Array();
@@ -825,13 +817,20 @@ export class LearnerRegistrationFormComponent implements OnInit {
       this.prepareRoomListArray=new Array();
 
       forkJoin([this.coursesService.getCourses(), 
-        this.registrationService.getTeacherFilter(this.whichLearner.LearnerLevel)]).subscribe(
+        this.registrationService.getTeacherFilter(this.whichLearner.LearnerLevel),
+        this.registrationService.getGroupCourse()]).subscribe(
         (res) => {
-          PureCourses = res[0].Data;
-          TeacherFilter = res[1].Data;
+          pureCourses = res[0].Data;
+          teacherFilter = res[1].Data;
+          groupCourse = res[2].Data;
+          // for (let groupCourse of this.groupCourseInstance) {
+          //   groupCourse.comments = null;
+          //   groupCourse.isChecked = false;
+          //   groupCourse.beginDate = this.myDate();
+          // };
           //this.setUniCatListArray
-          console.log(PureCourses,TeacherFilter)
-          PureCourses.forEach(e=>{
+          console.log(pureCourses,teacherFilter)
+          pureCourses.forEach(e=>{
             //console.log(e);
             if (CatList.findIndex(c=>c.CourseCategoryId===e.CourseCategory.CourseCategoryId)<0)
             CatList.push(e.CourseCategory);
@@ -840,9 +839,9 @@ export class LearnerRegistrationFormComponent implements OnInit {
           // courseList
 
           this.whichLearner.One2oneCourseInstance.map((o,i)=>{
-            console.log(o,PureCourses);
+            console.log(o,pureCourses);
             this.setUniCatListArray[i]=CatList;
-            let courseItemArray1 = PureCourses.filter(e=>
+            let courseItemArray1 = pureCourses.filter(e=>
               e.CourseCategory.CourseCategoryId==o.Course.CourseCategoryId
             )
             console.log(courseItemArray1);
@@ -861,7 +860,7 @@ export class LearnerRegistrationFormComponent implements OnInit {
             let prepareTeaLevItemArray = TeacherFilter.find(e=>e.orgId=o.OrgId).Level;
             this.prepareTeaLevListArray[i]={prepareTeaLevItemArray:prepareTeaLevItemArray};
             //prepareTeaNameListArray[i].prepareTeaNameItemArray
-            let prepareTeaNameItemArray=prepareTeaLevItemArray.find(e=>e.levelId=o.Course.Level).teacher;
+            let prepareTeaNameItemArray=prepareTeaLevItemArray.find(e=>e.levelId==o.Course.TeacherLevel).teacher;
             this.prepareTeaNameListArray[i]={prepareTeaNameItemArray:prepareTeaNameItemArray};
             //prepareRoomListArray[i].prepareRoomItemArray
             let prepareRoomItemArray = TeacherFilter.find(e=>e.orgId=o.OrgId).Room;
@@ -869,7 +868,7 @@ export class LearnerRegistrationFormComponent implements OnInit {
             this.customCourse.push(
               this.fb.group({
                 courseCategory: [o.Course.CourseCategoryId],
-                course: [o.Course.CourseName],
+                course: [o.Course.CourseId],
                 teacherLevel: [o.Course.TeacherLevel],
                 teacherName: [o.TeacherId],
                 location: [o.OrgId],
@@ -886,6 +885,7 @@ export class LearnerRegistrationFormComponent implements OnInit {
                 }),
               })   
             );
+           console.log(o);
            console.log(this.setUniCatListArray,this.courseListArray); 
            console.log(this.locListArray,this.prepareTeaLevListArray); 
            console.log(this.prepareTeaNameListArray,this.prepareRoomListArray); 
