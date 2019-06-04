@@ -498,6 +498,7 @@ export class LearnerRegistrationFormComponent implements OnInit, DoCheck {
 
   // 121 course section
   selectLevelType(value) {
+    console.log(value)
     this.learnerlevelType = Number(value);
   }
   emptySelectionCat(i) {
@@ -752,7 +753,7 @@ export class LearnerRegistrationFormComponent implements OnInit, DoCheck {
   }
   // // check changes
   ngDoCheck() {
-    console.log(this.modalRefTimePicker);
+    // console.log(this.modalRefTimePicker);
     // this.modalRefConfirm?this.needSubmit = this.modalRefConfirm.componentInstance.submitClicked:this.needSubmit = false;
     // console.log(this.needSubmit)
     // this.onSubmit()

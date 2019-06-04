@@ -105,10 +105,10 @@
               <div *ngIf="isSelectedLevel">
                 <span>Did you take an exam before?</span><br>
                 <div class="d-inline-flex" *ngFor="let levelType of levelType; let i=index">
-                  <div *ngIf="i == 0" class="form-check">
+                  <!-- <div *ngIf="i == 0" class="form-check">
                       <input class="form-check-input" (click)="selectLevelType($event.target.value)" name="levelType" type="radio" [value]="levelType.PropValue" checked>
                       <label class="form-check-label" for="ABRSM">ABRSM</label>
-                  </div>
+                  </div> -->
                   <div *ngIf="i != 0" class="form-check">
                     <input class="form-check-input" (click)="selectLevelType($event.target.value)" name="levelType" type="radio" [value]="levelType.PropValue">
                     <label class="form-check-label" for="levelType">{{levelType.PropName}}</label>
@@ -314,6 +314,8 @@
           </table>
           <div class="text-right">
             <button class="btn_back mx-3" (click)="next('parentForm')">Back</button>
+            <button [disabled]="registrationForm.invalid" (click)="onSubmit()" class="btn_submit"
+            type="submit">Submit</button>
           </div>
         </div>
       </div>
@@ -410,6 +412,8 @@
             </div>
             <div class="d-flex my-3 justify-content-end">
               <button class="mx-3 btn_back" (click)="next('parentForm')">Back</button>
+              <button [disabled]="registrationForm.invalid" (click)="onSubmit()" class="btn_submit"
+              type="submit">Submit</button>
             </div>
           </div>
         </div>
