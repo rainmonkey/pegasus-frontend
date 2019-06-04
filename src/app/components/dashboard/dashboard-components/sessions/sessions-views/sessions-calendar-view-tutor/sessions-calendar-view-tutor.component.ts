@@ -6,6 +6,7 @@ declare let $: any;
 import timeGridPlugin from '@fullcalendar/timegrid';
 import Swal from 'sweetalert2';
 import {SessionsService} from '../../../../../../services/http/sessions.service';
+import { copyStyles } from '@angular/animations/browser/src/util';
 
 @Component({
   selector: 'app-sessions-calendar-view-tutor',
@@ -20,6 +21,7 @@ export class SessionsCalendarViewTutorComponent implements OnInit {
   constructor(private sessionsService: SessionsService) { }
   ngOnInit() {
     this.sessionsService.getTeacherLesson().subscribe(data => {
+      console.log(data.Data)
       this.eventsModel = this.generateEventData(data.Data);
       this.options = {
         editable: true,
