@@ -261,12 +261,12 @@ export class LearnerRegistrationFormComponent implements OnInit, DoCheck {
 
   uploadAgreement(event) {
     this.selectedAgreement = <File>event.target.files[0];
-    this.fd.append('agreement', this.selectedGrade);
+    this.fd.append('agreement', this.selectedAgreement);
   }
 
   uploadOther(event) {
     this.selectedOther = <File>event.target.files[0];
-    this.fd.append('OtherFile', this.selectedGrade);
+    this.fd.append('OtherFile', this.selectedOther);
   }
 
   getCoursesFromServer() {
@@ -393,6 +393,7 @@ export class LearnerRegistrationFormComponent implements OnInit, DoCheck {
         data => {
           console.log('level type', data);
           this.levelType = data.Data;
+          console.log('level type', this.levelType)
         },
         err => {
           console.log('level type err', err);
@@ -498,7 +499,7 @@ export class LearnerRegistrationFormComponent implements OnInit, DoCheck {
 
   // 121 course section
   selectLevelType(value) {
-    console.log(value)
+    console.log(this.levelType)
     this.learnerlevelType = Number(value);
   }
   emptySelectionCat(i) {

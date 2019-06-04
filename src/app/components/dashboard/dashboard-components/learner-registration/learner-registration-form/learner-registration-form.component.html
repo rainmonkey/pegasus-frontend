@@ -109,7 +109,7 @@
                       <input class="form-check-input" (click)="selectLevelType($event.target.value)" name="levelType" type="radio" [value]="levelType.PropValue" checked>
                       <label class="form-check-label" for="ABRSM">ABRSM</label>
                   </div> -->
-                  <div *ngIf="i != 0" class="form-check">
+                  <div class="form-check">
                     <input class="form-check-input" (click)="selectLevelType($event.target.value)" name="levelType" type="radio" [value]="levelType.PropValue">
                     <label class="form-check-label" for="levelType">{{levelType.PropName}}</label>
                   </div>
