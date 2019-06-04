@@ -69,7 +69,6 @@ import { TimePickerComponent } from './components/dashboard/dashboard-components
 import { TrialInfoComponent } from './components/dashboard/dashboard-components/trial-session/trial-info/trial-info.component';
 import { TrialPanelComponent } from './components/dashboard/dashboard-components/trial-session/trial-panel/trial-panel.component';
 import { TrialSearchComponent } from './components/dashboard/dashboard-components/trial-session/trial-search/trial-search.component';
-import { TrialTableComponent } from './components/dashboard/dashboard-components/trial-session/trial-table/trial-table.component';
 import { DashboardPanelComponent } from './components/dashboard/general/dashboard-panel/dashboard-panel.component';
 import { HeaderbarComponent } from './components/dashboard/general/headerbar/headerbar.component';
 import { SidebarComponent } from './components/dashboard/general/sidebar/sidebar.component';
@@ -92,6 +91,7 @@ import { confirmEqualValidatorDirectie } from './shared/confirm-equal-validator.
 import { StaffListComponent } from './components/dashboard/dashboard-components/admin-staff/Staff-list/Staff-list.component';
 import { StaffPanelComponent } from './components/dashboard/dashboard-components/admin-staff/staff-panel/staff-panel.component';
 import { SimplifyOrgPipe } from './shared/pipes/simplify-org.pipe';
+import { TrialModalComponent } from './components/dashboard/dashboard-components/trial-session/trial-modal/trial-modal.component';
 
 
 
@@ -170,7 +170,6 @@ import { SimplifyOrgPipe } from './shared/pipes/simplify-org.pipe';
     TrialPanelComponent,
     TrialInfoComponent,
     TrialSearchComponent,
-    TrialTableComponent,
     PaymentPeriodPipe,
     IsUnder18Pipe,
     confirmEqualValidatorDirectie,
@@ -178,6 +177,7 @@ import { SimplifyOrgPipe } from './shared/pipes/simplify-org.pipe';
     StaffListComponent,
     StaffPanelComponent,
     SimplifyOrgPipe,
+    TrialModalComponent,
   ],
   imports: [
     NgbModule,

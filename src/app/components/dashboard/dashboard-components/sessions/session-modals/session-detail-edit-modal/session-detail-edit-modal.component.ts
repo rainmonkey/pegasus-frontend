@@ -13,8 +13,10 @@ import {SessionEdit} from '../../../../../../models/SessionEdit';
 })
 export class SessionDetailEditModalComponent implements OnInit {
   @Input() LessonModel;
+  isloading = false;
   isEditSuccess = false;
   isEditFail = false;
+  ConfirmClick = false;
   public errorMsg;
   public hasError = false;
   public SessionForm;
@@ -92,16 +94,19 @@ export class SessionDetailEditModalComponent implements OnInit {
   }
 
   ConfrimEdit = () => {
+    this.isloading = true;
+    this.ConfirmClick = true;
     const sessionEdit = new SessionEdit(this.LessonModel.LessonId,
       this.LessonModel.LearnerId, parseInt(this.SessionForm.value.Room),
       parseInt(this.SessionForm.value.Teacher), parseInt(this.SessionForm.value.Branch), this.SessionForm.value.Reason,
       this.SessionForm.value.BeginTime,this.SessionForm.value.EndTime);
 
-    this.sessionsService.SessionEdit(sessionEdit).subscribe(res =>{
+    this.sessionsService.SessionEdit(sessionEdit).subscribe(res => {
       this.isEditSuccess = true;
+      this.isloading = false;
     }, err => {
       this.isEditFail = true;
-      setTimeout(() =>{
+      setTimeout(() => {
         this.isEditFail = false;
       }, 3000);
       alert(err.error.ErrorMessage);

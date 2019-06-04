@@ -10,6 +10,8 @@ import {ActivatedRoute, Router} from '@angular/router';
 })
 export class SessionCompletedModalComponent implements OnInit {
   lessonId;
+  isloading = false;
+  ConfirmClick = false;
   public info;
   public isComfirmSuccess
   public isConfirmFailed
@@ -20,11 +22,15 @@ export class SessionCompletedModalComponent implements OnInit {
   }
 
   CompletedConfirm = () => {
+    this.isloading = true;
+    this.ConfirmClick = true;
     this.sessionsService.SessionCompleted(this.lessonId, this.info).subscribe(res => {
       this.isComfirmSuccess = true;
+      this.isloading = false;
     }, err => {
       console.log(err);
       this.isConfirmFailed = true;
+      this.isloading = false;
     });
   }
 }

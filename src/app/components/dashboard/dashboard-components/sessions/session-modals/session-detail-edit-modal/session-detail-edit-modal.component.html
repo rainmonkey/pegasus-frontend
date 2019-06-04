@@ -72,8 +72,9 @@
     <span *ngIf='isEditSuccess' class='text-success'>Edit Success </span>
     <span *ngIf='isEditFail' class='text-danger'>Edit Fail </span>
     <span *ngIf="hasError" class='text-danger'>{{errorMsg}}</span>
+    <div *ngIf="isloading" class="loaderSmall"></div>
     <button
-      *ngIf="!isEditSuccess"
+      *ngIf="!ConfirmClick"
       (click)="open(confirmModal)"
       type="button"
       class="btn btn-outline-dark"
