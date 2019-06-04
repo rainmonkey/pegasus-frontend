@@ -19,6 +19,7 @@ import { AdminLearnerListComponent } from './components/dashboard/dashboard-comp
 import { AdminLearnerPanelComponent } from './components/dashboard/dashboard-components/admin-learner/admin-learner-panel/admin-learner-panel.component';
 import { LearnerDeleteModalComponent } from './components/dashboard/dashboard-components/admin-learner/learner-delete-modal/learner-delete-modal.component';
 import { LearnerDetailModalComponent } from './components/dashboard/dashboard-components/admin-learner/learner-detail-modal/learner-detail-modal.component';
+import { LearnerEditModalComponent } from './components/dashboard/dashboard-components/admin-learner/learner-edit-modal/learner-edit-modal.component';
 import { AdminLearnerPaymentInvoiceComponent } from './components/dashboard/dashboard-components/admin-payment/admin-learner-payment-invoice/admin-learner-payment-invoice.component';
 import { AdminLearnerPaymentOtherComponent } from './components/dashboard/dashboard-components/admin-payment/admin-learner-payment-other/admin-learner-payment-other.component';
 import { AdminLearnerPaymentPanelComponent } from './components/dashboard/dashboard-components/admin-payment/admin-learner-payment-panel/admin-learner-payment-panel.component';
@@ -67,7 +68,6 @@ import { TimePickerComponent } from './components/dashboard/dashboard-components
 import { TrialInfoComponent } from './components/dashboard/dashboard-components/trial-session/trial-info/trial-info.component';
 import { TrialPanelComponent } from './components/dashboard/dashboard-components/trial-session/trial-panel/trial-panel.component';
 import { TrialSearchComponent } from './components/dashboard/dashboard-components/trial-session/trial-search/trial-search.component';
-import { TrialTableComponent } from './components/dashboard/dashboard-components/trial-session/trial-table/trial-table.component';
 import { DashboardPanelComponent } from './components/dashboard/general/dashboard-panel/dashboard-panel.component';
 import { HeaderbarComponent } from './components/dashboard/general/headerbar/headerbar.component';
 import { SidebarComponent } from './components/dashboard/general/sidebar/sidebar.component';
@@ -90,6 +90,7 @@ import { confirmEqualValidatorDirectie } from './shared/confirm-equal-validator.
 import { StaffListComponent } from './components/dashboard/dashboard-components/admin-staff/Staff-list/Staff-list.component';
 import { StaffPanelComponent } from './components/dashboard/dashboard-components/admin-staff/staff-panel/staff-panel.component';
 import { SimplifyOrgPipe } from './shared/pipes/simplify-org.pipe';
+import { TrialModalComponent } from './components/dashboard/dashboard-components/trial-session/trial-modal/trial-modal.component';
 
 
 
@@ -146,6 +147,7 @@ import { SimplifyOrgPipe } from './shared/pipes/simplify-org.pipe';
 
     LearnerDeleteModalComponent,
     LearnerDetailModalComponent,
+    LearnerEditModalComponent,
 
 
     SessionCancelModalComponent,
@@ -166,7 +168,6 @@ import { SimplifyOrgPipe } from './shared/pipes/simplify-org.pipe';
     TrialPanelComponent,
     TrialInfoComponent,
     TrialSearchComponent,
-    TrialTableComponent,
     PaymentPeriodPipe,
     IsUnder18Pipe,
     confirmEqualValidatorDirectie,
@@ -174,6 +175,7 @@ import { SimplifyOrgPipe } from './shared/pipes/simplify-org.pipe';
     StaffListComponent,
     StaffPanelComponent,
     SimplifyOrgPipe,
+    TrialModalComponent,
   ],
   imports: [
     NgbModule,
@@ -206,6 +208,7 @@ import { SimplifyOrgPipe } from './shared/pipes/simplify-org.pipe';
     CourseClassDetailModalComponent,
     LearnerDeleteModalComponent,
     LearnerDetailModalComponent,
+    LearnerEditModalComponent,
     SessionCancelModalComponent,
     SessionCompletedModalComponent,
     RatingModalComponent,
