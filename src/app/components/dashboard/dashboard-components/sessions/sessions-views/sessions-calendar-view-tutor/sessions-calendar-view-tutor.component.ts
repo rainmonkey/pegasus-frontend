@@ -24,6 +24,7 @@ export class SessionsCalendarViewTutorComponent implements OnInit {
       this.options = {
         editable: true,
         height: 700,
+        displayEventTime: false,
         maxTime: '22:00',
         minTime: '08:00',
         scrollTime: '08:00',
@@ -47,6 +48,7 @@ export class SessionsCalendarViewTutorComponent implements OnInit {
   }
   generateEventData = (data) => {
     data.forEach(s => {
+      s.title = s.orgName + ' ( ' + s.title + ' )'
       s.description += '<h4>Students Name</h4><div class="row">';
       if (s.student.length === 1) {
         s.description = '<h4>Students Name</h4>' + s.student[0];
