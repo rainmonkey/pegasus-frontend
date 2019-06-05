@@ -562,10 +562,16 @@ export class LearnerRegistrationFormComponent implements OnInit, DoCheck {
     );
   }
 selectLocation(id, i) {
+    // filter branch
     this.selectedLocListArray[i].selectedLocItemArray = this.locListArray[i].locItemArray.filter(item => item.OrgId == id);
+    // get level value
     this.prepareTeaLevListArray[i].prepareTeaLevItemArray = this.selectedLocListArray[i].selectedLocItemArray[0].Level;
+    // get room value
     this.prepareRoomListArray[i].prepareRoomItemArray = this.selectedLocListArray[i].selectedLocItemArray[0].Room;
+    // if piano apply teacher level, else not apply
     if (this.notPiano !== 1) {
+      // empty array;
+      this.notPianoTeaArray = [];
       this.prepareTeaLevListArray[i].prepareTeaLevItemArray.forEach(ele => {
         this.notPianoTeaArray = this.notPianoTeaArray.concat(ele.teacher);
       });
@@ -824,13 +830,13 @@ selectLocation(id, i) {
 
       this.isSelectedLevel = true;
       this.selectlearnerLevel = this.whichLearner.LearnerLevel;
-  
+
       let allData,teacherFilter,pureCourses;
       let CatList=[];
       this.setUniCatListArray=new Array();
       this.courseListArray=new Array();
       this.locListArray=new Array();
-      this.prepareTeaLevListArray=new Array(); 
+      this.prepareTeaLevListArray=new Array();
       this.prepareTeaNameListArray=new Array();
       this.prepareRoomListArray=new Array();
 
@@ -844,9 +850,9 @@ selectLocation(id, i) {
       forkJoin(...funArr).subscribe(
         (res) => {
           pureCourses = res[0].Data;
-          this.groupCourseInstance = res[1].Data;          
+          this.groupCourseInstance = res[1].Data;
           allData = res;
-    
+
           console.log(pureCourses,allData)
           pureCourses.forEach(e=>{
             //console.log(e);
@@ -861,7 +867,7 @@ selectLocation(id, i) {
               let foundGroupCourse=this.whichLearner.LearnerGroupCourse.find(e=>
                 e.GroupCourseInstanceId===g.GroupCourseInstanceId
               );
-         
+
             if (foundGroupCourse){
               g.isChecked = true;
               g.comments = foundGroupCourse.Comment;
@@ -872,7 +878,7 @@ selectLocation(id, i) {
               g.beginDate = this.myDate();
             }
           });
-          console.log(this.whichLearner.LearnerGroupCourse,this.groupCourseInstance);          
+          console.log(this.whichLearner.LearnerGroupCourse,this.groupCourseInstance);
           this.whichLearner.LearnerGroupCourse.forEach(lg=>{
 
           })
