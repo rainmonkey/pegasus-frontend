@@ -110,7 +110,7 @@
                       <label class="form-check-label" for="ABRSM">ABRSM</label>
                   </div> -->
                   <div class="form-check">
-                    <input class="form-check-input" (click)="selectLevelType($event.target.value)" name="levelType" type="radio" [value]="levelType.PropValue">
+                    <input class="form-check-input" (click)="selectLevelType($event.target.value)" type="radio" [value]="levelType.PropValue" formControlName="levelTypeRadio">
                     <label class="form-check-label" for="levelType">{{levelType.PropName}}</label>
                   </div>
                 </div>
@@ -276,8 +276,6 @@
     <div>
       <button (click)="chooseGroupCourse()">Group Course</button>
       <button (click)="chooseCustomCourse()">One-on-One Course</button>
-      <button style='float:right' [disabled]="registrationForm.invalid" (click)="onSubmit()" class="btn_submit"
-        type="submit">Submit</button>
     </div>
 
 
