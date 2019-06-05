@@ -64,14 +64,17 @@ export class TrialSearchComponent implements OnInit {
     display teachers that fit all the filters requirement
   */
   displayTeachers() {
-    return this.teachers
-    // let array: Array<any> = [];
-    // for (let i of this.groupCoursesInstance) {
-    //   if (i.Org.OrgId == this.filters['OrgsId'] && i.Course.CourseCategory.CourseCategoryId == this.filters['CategoriesId']) {
-    //     array.push(i)
-    //   }
-    // }
-    // return [{ 'a': 1 }, { "a": 1 }, { "a": 1 }]
+    let array:Array<any> = [];
+    for(let i of this.teachers){
+      for(let j of i.AvailableDays){
+        if(j.OrgId == this.filters['OrgsId']){
+          array.push(i)
+        }
+      }
+    }
+
+    //需要保存一次array
+    
   }
 
   /*
