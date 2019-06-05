@@ -10,6 +10,8 @@ import {ActivatedRoute, Router} from '@angular/router';
 })
 export class SessionCancelModalComponent implements OnInit {
   public CancelReason;
+  isloading = false;
+  isConfirmClick = false;
   public isCancelSuccess = false;
   public isCancelFailed = false;
   @Input() lessionId: any;
@@ -20,9 +22,13 @@ export class SessionCancelModalComponent implements OnInit {
   }
 
   CancelConfirm = () => {
+    this.isloading = true;
+    this.isConfirmClick = true;
     this.sessionsService.DeleteSession(this.lessionId, this.CancelReason).subscribe( data => {
+      this.isloading = false;
       this.isCancelSuccess = true;
     }, err => {
+      this.isloading = false;
       this.isCancelFailed = true;
     });
   }
