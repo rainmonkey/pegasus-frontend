@@ -61,6 +61,7 @@ export class CourseClassListComponent implements OnInit {
           element.TeacherId = element.Teacher.TeacherId;
           element.TeacherName = element.Teacher.FirstName + ' ' + element.Teacher.LastName;
         });
+        // console.log(this.courseClassLists);
         // filter course type = 2
         this.courseClassListsfilter = this.courseClassLists.filter((item)=> item.CourseType == 2);
         

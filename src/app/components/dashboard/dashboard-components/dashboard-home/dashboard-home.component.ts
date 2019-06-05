@@ -81,7 +81,7 @@ export class DashboardHomeComponent implements OnInit, AfterViewInit {
   getToDoList(){
     this.userService.getToDoList().subscribe(
       (res)=>{
-        console.log(res)
+        // console.log(res)
         this.toDoList = res['Data']
       },
       (err)=>console.warn(err)
