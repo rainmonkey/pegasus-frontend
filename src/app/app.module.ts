@@ -44,6 +44,7 @@ import { InventoryListComponent } from './components/dashboard/dashboard-compone
 import { InventoryPanelComponent } from './components/dashboard/dashboard-components/inventory/inventory-panel/inventory-panel.component';
 import { LearnerRegistrationFormComponent } from './components/dashboard/dashboard-components/learner-registration/learner-registration-form/learner-registration-form.component';
 import { LearnerRegistrationModalComponent } from './components/dashboard/dashboard-components/learner-registration/learner-registration-modal/learner-registration-modal.component';
+import { LearnerRegistrationConfirmModalComponent } from './components/dashboard/dashboard-components/learner-registration/learner-registration-confirm-modal/learner-registration-confirm-modal.component';
 import { SessionCancelModalComponent } from './components/dashboard/dashboard-components/sessions/session-modals/session-cancel-modal/session-cancel-modal.component';
 import { SessionCompletedModalComponent } from './components/dashboard/dashboard-components/sessions/session-modals/session-completed-modal/session-completed-modal.component';
 import { SessionDetailEditModalComponent } from './components/dashboard/dashboard-components/sessions/session-modals/session-detail-edit-modal/session-detail-edit-modal.component';
@@ -68,7 +69,6 @@ import { TimePickerComponent } from './components/dashboard/dashboard-components
 import { TrialInfoComponent } from './components/dashboard/dashboard-components/trial-session/trial-info/trial-info.component';
 import { TrialPanelComponent } from './components/dashboard/dashboard-components/trial-session/trial-panel/trial-panel.component';
 import { TrialSearchComponent } from './components/dashboard/dashboard-components/trial-session/trial-search/trial-search.component';
-import { TrialTableComponent } from './components/dashboard/dashboard-components/trial-session/trial-table/trial-table.component';
 import { DashboardPanelComponent } from './components/dashboard/general/dashboard-panel/dashboard-panel.component';
 import { HeaderbarComponent } from './components/dashboard/general/headerbar/headerbar.component';
 import { SidebarComponent } from './components/dashboard/general/sidebar/sidebar.component';
@@ -116,6 +116,7 @@ import { OrderbyPipe } from './shared/pipes/orderby.pipe';
     WeekFormatPipe,
     LearnerRegistrationFormComponent,
     LearnerRegistrationModalComponent,
+    LearnerRegistrationConfirmModalComponent,
     CommandFormatPipe,
     SessionsPanelComponent,
     SessionsListViewComponent,
@@ -167,7 +168,6 @@ import { OrderbyPipe } from './shared/pipes/orderby.pipe';
     TrialPanelComponent,
     TrialInfoComponent,
     TrialSearchComponent,
-    TrialTableComponent,
     PaymentPeriodPipe,
     IsUnder18Pipe,
     confirmEqualValidatorDirectie,
@@ -212,7 +212,9 @@ import { OrderbyPipe } from './shared/pipes/orderby.pipe';
     SessionCompletedModalComponent,
     RatingModalComponent,
     ForgotPasswordModalComponent,
-    ChangePasswordModalComponent
+    ChangePasswordModalComponent,
+    LearnerRegistrationModalComponent,
+    LearnerRegistrationConfirmModalComponent
   ],
   exports: [AppComponent],
   bootstrap: [AppComponent]
