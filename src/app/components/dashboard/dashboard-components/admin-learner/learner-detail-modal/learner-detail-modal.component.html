@@ -15,7 +15,7 @@
       <div class="col-5">
         <p style="font-weight: bold">Student Photo</p>
         <div>
-          <img class="imageSize" src="http://gradspace.org:5000/{{whichLearner.Photo}}"
+          <img class="imageSize" src="{{photoUrl+whichLearner.Photo}}"
             (error)='setDefaultPhoto($event)'>
         </div>
       </div>
@@ -23,7 +23,7 @@
       <div class="col-7">
         <p style="font-weight: bold">ABRSM Certific</p>
         <div>
-          <img class="G5imageSize" src="http://gradspace.org:5000/{{whichLearner.G5Certification}}"
+          <img class="G5imageSize" src="{{photoUrl+whichLearner.G5Certification}}"
             (error)='setDefaultPhoto1($event)'>
         </div>
       </div>

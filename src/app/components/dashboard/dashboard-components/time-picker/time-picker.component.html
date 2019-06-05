@@ -1,6 +1,5 @@
-
-<div class="time-picker"> 
-  <div *ngFor="let o of teacherAvailableData.Data.AvailableDay">{{o.DayOfWeek | weekFormat}}:&nbsp;  
+<div class="time-picker">
+  <div *ngFor="let o of teacherAvailableData.Data.AvailableDay">{{o.DayOfWeek | weekFormat}}:&nbsp;
     <ol *ngFor="let org of o.Orgs">{{org.OrgId}}{{org.OrgId | simplifyOrg}}</ol>
   </div>
   <div class="weekly-schedule">
@@ -19,32 +18,33 @@
         </div>
        </div>
         <div class="slots">
-          <div class="slot" *ngFor="let y of yIndex; let i = index" 
+          <div class="slot" *ngFor="let y of yIndex; let i = index"
           [ngClass]="{'slot-bottom': i%4==3,
                       'availableDayIsBlue': slot[x][y] == 'isAvailable',
                       'unableToPickAvailableIsBlue': slot[x][y] == 'isAvailableButUnableToPick',
                       'arrangedIsRed': slot[x][y] == 'isArranged',
-                      'dayOffIsGray': slot[x][y] == 'isDayOff', 
+                      'dayOffIsGray': slot[x][y] == 'isDayOff',
                       'tempChangeIsYellow': slot[x][y] == 'isTempChange',
                       'ableToPickIsGreen': slot[x][y] == 'ableToPick',
                       'availableButUnableToPick': slot[x][y] == 'tOrgNotIncludesLorg',
                       'oneHourUnableToPick': slot[x][y] == 'oneHourUnableTopick'
-                    }" 
+                    }"
           (mouseover)="mouseoverSlot(x,y)" (mouseout)="mouseoutSlot(x,y)"
           [ngbPopover]="popContent" [popoverTitle]="popTitle" triggers="manual" placement="top"
-          #p="ngbPopover" (mouseenter)="triggerPopover(p,x,y)" (mouseleave)="closePopover(p,x,y)">
+          #p="ngbPopover" (mouseenter)="triggerPopover(p,x,y,$event)" (mouseleave)="closePopover(p,x,y)"
+          >
           <ng-template #popTitle>{{name}}</ng-template>
           <ng-template #popContent>
             <p style="margin: 10px"><b>Weekday:</b>&nbsp;{{weekdays[x]}}</p>
-            <p style="margin: 10px"><b>Time:</b>&nbsp;{{slotTime[x][y]}}-{{slotTime[x][y+duration+1]}}</p> 
+            <p style="margin: 10px"><b>Time:</b>&nbsp;{{slotTime[x][y]}}-{{slotTime[x][y+duration+1]}}</p>
             <p style="margin: 10px"><b>Location:</b>&nbsp;{{learnerOrg.OrgId | simplifyOrg}}</p>
             <button class="btn btn-info btn-sm" style="width:100%">confirm</button>
           </ng-template>
           <small *ngIf="slot[x][y]">{{learnerName[x][y]}}</small>
-          </div> 
+          </div>
         </div>
       </div>
     </div>
-  </div> 
+  </div>
   <!-- color meanings -->
 </div>

@@ -20,29 +20,29 @@
           <label class='t_mf_label'>Type:</label>
           <select type="text" class='col-12 t_mf_input' formControlName='CourseType'
             [class.t_mf_error_border]='updateForm.get("CourseType").invalid && updateForm.get("CourseType").touched'>
-            <option *ngFor='let i of courseTypes' value={{i.PropName}}>{{i.PropName}}</option>
+            <option *ngFor='let i of courseTypes' value={{i.PropValue}}>{{i.PropName}}</option>
           </select>
           <label class='t_mf_label'>Teacher Level:</label>
           <select type="text" class='col-12 t_mf_input' formControlName='TeacherLevel'
             [class.t_mf_error_border]='updateForm.get("TeacherLevel").invalid && updateForm.get("TeacherLevel").touched'>
-            <option *ngFor='let i of teachersLevels' value={{i.PropName}}>{{i.PropName}}</option>
+            <option *ngFor='let i of teachersLevels' value={{i.PropValue}}>{{i.PropName}}</option>
           </select>
           <label class='t_mf_label'>Learner Level:</label>
           <select type="text" class='col-12 t_mf_input' formControlName='Level'
             [class.t_mf_error_border]='updateForm.get("Level").invalid && updateForm.get("Level").touched'>
-            <option *ngFor='let i of levels' value={{i.PropName}}>{{i.PropName}}</option>
+            <option *ngFor='let i of levels' value={{i.PropValue}}>{{i.PropName}}</option>
           </select>
         </div>
         <div class="col-6">
           <label class='t_mf_label'>Category:</label>
           <select type="text" class='col-12 t_mf_input' formControlName='CourseCategoryId'
             [class.t_mf_error_border]='updateForm.get("CourseCategoryId").invalid && updateForm.get("CourseCategoryId").touched'>
-            <option *ngFor='let i of courseCategories' value={{i.CourseCategoryName}}>{{i.CourseCategoryName}}</option>
+            <option *ngFor='let i of courseCategories' value={{i.CourseCategoryId}}>{{i.CourseCategoryName}}</option>
           </select>
           <label class='t_mf_label'>Duration(mins):</label>
           <select type="text" class='col-12 t_mf_input' formControlName='Duration' 
           [class.t_mf_error_border]='updateForm.get("Duration").invalid && updateForm.get("Duration").touched'>
-            <option *ngFor='let i of durations' value={{i.PropName}}>{{i.PropName}}</option>
+            <option *ngFor='let i of durations' value={{i.PropValue}}>{{i.PropName}}</option>
           </select>
           <label class='t_mf_label'>Price(Total):</label>
           <input type="number" class='col-12 t_mf_input' formControlName='Price'
