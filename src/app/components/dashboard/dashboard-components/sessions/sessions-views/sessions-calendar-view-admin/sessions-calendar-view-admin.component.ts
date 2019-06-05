@@ -23,6 +23,7 @@ import {SessionCompletedModalComponent} from '../../session-modals/session-compl
 export class SessionsCalendarViewAdminComponent implements OnInit {
   searchForm: FormGroup; // searchform by formbuilder
   reason: string;  // session edit reason
+  isloadingSmall = false;  // when drag the event, it will pop up the window for confirm (this loading icon is for this modal)
   @ViewChild('content') content; // date-pick modal
   @ViewChild('confirmModal') confirmModal;
   @ViewChild('methodModal') methodModal;
@@ -183,10 +184,13 @@ export class SessionsCalendarViewAdminComponent implements OnInit {
   }
 
   ConfirmEdit = () => {
+    this.isloadingSmall = true;
     this.sessionEditModel.reason = this.reason;
     this.sessionService.SessionEdit(this.sessionEditModel).subscribe(res => {
       this.IsConfirmEditSuccess = true;
+      this.isloadingSmall = false;
     }, err => {
+      this.isloadingSmall = false;
       alert('Change time for this event is not allowed');
     });
   }

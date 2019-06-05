@@ -1,3 +1,9 @@
-
-  <ng-fullcalendar id='calendar'></ng-fullcalendar>
-
+<div class="container">
+  <div *ngIf="options">
+    <ng-fullcalendar
+      #fullcalendar
+      [options]="options"
+      [eventsModel]="eventsModel"
+    ></ng-fullcalendar>
+  </div>
+</div>
