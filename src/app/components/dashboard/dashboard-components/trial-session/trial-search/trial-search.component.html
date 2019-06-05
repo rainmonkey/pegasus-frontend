@@ -46,7 +46,7 @@
     <div class='col-12'>
       <div class='row'>
         <div *ngFor='let i of displayTeachers(); let index = index' class='col-2 Teachers' id={{index}}>
-          <div class='t_s_tabs' (click)="selectTab($event,'Teachers',null,index,null)">
+          <div class='t_s_tabs' (click)="popUpModal()">
             <span class='t_s_tabs_close' (click)="unSelectTab($event,'Teachers')" style="display: none"><span
                 class='far fa-times-circle'></span></span>
             <span class='t_s_tabs_title col-12'>{{i.a}}</span>

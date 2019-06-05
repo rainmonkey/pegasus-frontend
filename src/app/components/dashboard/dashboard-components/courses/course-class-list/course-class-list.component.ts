@@ -47,7 +47,7 @@ export class CourseClassListComponent implements OnInit {
   getDataService() {
     this.courseService.getCourseClasses().subscribe(
       (res) => {
-        this.courseClassLists = res['Data'];
+        this.courseClassLists = res['Data'];        
         this.coursesClassListCopy = this.courseClassLists;
         this.coursesClassListLength = res['Data'].length; //length prop is under Data prop
         this.refreshPageControl();
@@ -60,8 +60,7 @@ export class CourseClassListComponent implements OnInit {
           element.RoomName = element.Room.RoomName;
           element.TeacherId = element.Teacher.TeacherId;
           element.TeacherName = element.Teacher.FirstName + ' ' + element.Teacher.LastName;
-        });                
-        console.log(this.courseClassLists)
+        });
         // filter course type = 2
         this.courseClassListsfilter = this.courseClassLists.filter((item)=> item.CourseType == 2);
         

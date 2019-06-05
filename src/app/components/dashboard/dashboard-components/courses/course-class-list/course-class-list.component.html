@@ -61,7 +61,7 @@
             <td>{{i.OrgName}}</td>
             <td>{{i.RoomName}}</td>
             <td>
-              <span *ngFor='let k of i.schedule;'>
+              <span *ngFor="let k of i.schedule;">
               <span>{{k.BeginTime | slice:0:5}} - {{k.EndTime | slice:0:5}}</span><br>
             </span>
             </td>

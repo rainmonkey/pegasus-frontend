@@ -1,16 +1,22 @@
+
 <!--modal header-->
 <div class='modal-header'>
-  <h4 class='modal-title'>aaaaa</h4>
-  <button type="button" class='btn btn-sm btn-info t_dm_close_btn' aria-label="Close" (click)="activeModal.close('Close click')">
+  <h4 class='modal-title'>aaaa</h4>
+  <button type="button" class='btn btn-sm btn-info t_dm_close_btn' aria-label="Close"
+    (click)="activeModal.close('Cross click')">
     <span aria-hidden="true">&times;</span>
   </button>
 </div>
 
+<!--modal body-->
 <div class='modal-body'>
-  <ng-fullcalendar id='calendar'></ng-fullcalendar>
+  <div *ngIf="options">
+    <ng-fullcalendar #fullcalendar [options]="options" [eventsModel]="eventsModel"></ng-fullcalendar>
+  </div>
+  
 </div>
 
 <!--modal footer-->
 <div class='modal-footer'>
-  <button type="button" class="btn btn-outline-dark">Close</button>
+  <button type="button" class="btn btn-outline-dark" (click)="activeModal.close('Close click')">Close</button>
 </div>

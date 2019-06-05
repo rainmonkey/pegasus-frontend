@@ -103,9 +103,9 @@ export class TrialSearchComponent implements OnInit {
             if(nextClass !== null){
               this.styleFlowControl[nextClass].display = true;
             }
-            if(className =='Teachers'){
-              this.popUpModal(i,event);
-            }
+            // if(className =='Teachers'){
+            //   this.popUpModal(i,event);
+            // }
           }, 500)
         }
       }
@@ -145,7 +145,7 @@ export class TrialSearchComponent implements OnInit {
     event.stopPropagation();
   }
 
-  popUpModal(teacherSelected,event){
+  popUpModal(){
     //this.childEvent.emit(teacherSelected);
     const modalRef = this.modalService.open(TrialModalComponent, { size: 'lg', backdrop: 'static', keyboard: false });
   }

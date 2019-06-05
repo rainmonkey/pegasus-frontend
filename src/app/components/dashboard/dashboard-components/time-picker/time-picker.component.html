@@ -31,7 +31,8 @@
                     }"
           (mouseover)="mouseoverSlot(x,y)" (mouseout)="mouseoutSlot(x,y)"
           [ngbPopover]="popContent" [popoverTitle]="popTitle" triggers="manual" placement="top"
-          #p="ngbPopover" (mouseenter)="triggerPopover(p,x,y)" (mouseleave)="closePopover(p,x,y)">
+          #p="ngbPopover" (mouseenter)="triggerPopover(p,x,y,$event)" (mouseleave)="closePopover(p,x,y)"
+          >
           <ng-template #popTitle>{{name}}</ng-template>
           <ng-template #popContent>
             <p style="margin: 10px"><b>Weekday:</b>&nbsp;{{weekdays[x]}}</p>

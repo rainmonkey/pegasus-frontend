@@ -5,11 +5,12 @@
   </button>
 </div>
 <div class="modal-body">
+  <div *ngIf="isloading" class='loaderSmall'></div>
   <div class="container">
     <p>Do you want upload this new student infomation?</p>
   </div>
 </div>
 <div class="modal-footer">
-    <button type="button" class="btn btn-outline-dark" (click)="onSubmit()">Save</button>
+    <button type="button" class="btn btn-outline-dark" (click)="onSubmit()" [disabled]='isConfirmClick'>Save</button>
   <button type="button" class="btn btn-outline-dark" (click)="activeModal.close('Close click')">Close</button>
 </div>

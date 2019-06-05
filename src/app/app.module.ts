@@ -79,7 +79,6 @@ import { ColumnTitleFormatPipe } from './shared/pipes/column-title-format.pipe';
 //import { NgbdSortableHeader } from './services/others/ngbootstraptable.service';
 // Pipes
 import { CommandFormatPipe } from './shared/pipes/command-format.pipe';
-import { CoursespipesPipe } from './shared/pipes/coursespipes.pipe';
 import { GenderPipe } from './shared/pipes/gender.pipe';
 import { MyTypePipe } from './shared/pipes/myType-format.pipe';
 import { OrgFormatPipe } from './shared/pipes/org-format.pipe';
@@ -93,6 +92,7 @@ import { StaffPanelComponent } from './components/dashboard/dashboard-components
 import { SimplifyOrgPipe } from './shared/pipes/simplify-org.pipe';
 import { TrialModalComponent } from './components/dashboard/dashboard-components/trial-session/trial-modal/trial-modal.component';
 import { TrialTesterComponent } from './components/dashboard/dashboard-components/trial-session/trial-tester/trial-tester.component';
+import { OrderbyPipe } from './shared/pipes/orderby.pipe';
 
 
 
@@ -162,7 +162,6 @@ import { TrialTesterComponent } from './components/dashboard/dashboard-component
     CourseClassListComponent,
     CourseClassDetailModalComponent,
     DashboardHomeComponent,
-    CoursespipesPipe,
     TeacherCourseModalComponent,
     ChartingComponent,
     RatingModalComponent,
@@ -180,6 +179,7 @@ import { TrialTesterComponent } from './components/dashboard/dashboard-component
     SimplifyOrgPipe,
     TrialModalComponent,
     TrialTesterComponent,
+    OrderbyPipe,
   ],
   imports: [
     NgbModule,
@@ -197,8 +197,7 @@ import { TrialTesterComponent } from './components/dashboard/dashboard-component
     ChartsModule
   ],
   providers: [
-    DatePipe,
-    CoursespipesPipe
+    DatePipe
   ],
   entryComponents:[
     TeacherDeleteModalComponent,

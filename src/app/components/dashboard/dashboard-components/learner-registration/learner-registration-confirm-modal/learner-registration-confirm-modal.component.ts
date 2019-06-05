@@ -11,6 +11,9 @@ import { LearnerRegistrationService } from '../../../../../services/http/learner
 export class LearnerRegistrationConfirmModalComponent implements OnInit {
   fdObj = {};
   errorMsg;
+  // loading icon
+  isloading = false;
+  isConfirmClick = false;
   constructor(
     public activeModal: NgbActiveModal,
     private registrationService: LearnerRegistrationService,
@@ -21,13 +24,19 @@ export class LearnerRegistrationConfirmModalComponent implements OnInit {
   }
   onSubmit(){
     // return console.log(this.fdObj)
+    this.isloading = true;
+    this.isConfirmClick = true;
     this.registrationService.postStudent(this.fdObj)
     .subscribe(
       data => {
+        this.isloading = false;
+        this.isConfirmClick = false;
         console.log('Success!', data);
         this.router.navigate(['/learner/success']);
       },
       error => {
+        this.isloading = false;
+        this.isConfirmClick = false;
         this.errorMsg = error;
         console.log('Error!', error);
       }

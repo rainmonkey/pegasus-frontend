@@ -16,7 +16,7 @@
   height: 40px;
   box-sizing: border-box;
   position: relative;
-  top: 77px;
+  top: 72px;
 }
 .days {
   border: 1px solid rgb(182, 178, 178);
@@ -47,9 +47,9 @@
   border-bottom: 1px dotted #e0e0e0;
   height: 10px;
 }
-/* .slot:last-child {
+.slot:last-child {
   border-bottom: none;
-} */
+}
 .slot-bottom {
   border-bottom: 1px solid #ddd;
 }
@@ -119,6 +119,12 @@
   border: 0px;
   opacity: 0.1;
   border-bottom: 1px dotted #e0e0e0;
+}
+.blue-circle {
+  background-color: rgba(15, 191, 235, 0.5);
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
 }
   /* display: none; 
  position: absolute;
