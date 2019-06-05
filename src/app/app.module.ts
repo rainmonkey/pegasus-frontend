@@ -68,6 +68,7 @@ import { TeacherUpdateModalComponent } from './components/dashboard/dashboard-co
 import { TimePickerComponent } from './components/dashboard/dashboard-components/time-picker/time-picker.component';
 import { TrialInfoComponent } from './components/dashboard/dashboard-components/trial-session/trial-info/trial-info.component';
 import { TrialPanelComponent } from './components/dashboard/dashboard-components/trial-session/trial-panel/trial-panel.component';
+import {TrialModalComponent} from './components/dashboard/dashboard-components/trial-session/trial-modal/trial-modal.component';
 import { TrialSearchComponent } from './components/dashboard/dashboard-components/trial-session/trial-search/trial-search.component';
 import { DashboardPanelComponent } from './components/dashboard/general/dashboard-panel/dashboard-panel.component';
 import { HeaderbarComponent } from './components/dashboard/general/headerbar/headerbar.component';
@@ -79,7 +80,6 @@ import { ColumnTitleFormatPipe } from './shared/pipes/column-title-format.pipe';
 //import { NgbdSortableHeader } from './services/others/ngbootstraptable.service';
 // Pipes
 import { CommandFormatPipe } from './shared/pipes/command-format.pipe';
-import { CoursespipesPipe } from './shared/pipes/coursespipes.pipe';
 import { GenderPipe } from './shared/pipes/gender.pipe';
 import { MyTypePipe } from './shared/pipes/myType-format.pipe';
 import { OrgFormatPipe } from './shared/pipes/org-format.pipe';
@@ -92,6 +92,8 @@ import { StaffListComponent } from './components/dashboard/dashboard-components/
 import { StaffPanelComponent } from './components/dashboard/dashboard-components/admin-staff/staff-panel/staff-panel.component';
 import { SimplifyOrgPipe } from './shared/pipes/simplify-org.pipe';
 import { TrialModalComponent } from './components/dashboard/dashboard-components/trial-session/trial-modal/trial-modal.component';
+import { TrialTesterComponent } from './components/dashboard/dashboard-components/trial-session/trial-tester/trial-tester.component';
+import { OrderbyPipe } from './shared/pipes/orderby.pipe';
 
 
 
@@ -161,7 +163,6 @@ import { TrialModalComponent } from './components/dashboard/dashboard-components
     CourseClassListComponent,
     CourseClassDetailModalComponent,
     DashboardHomeComponent,
-    CoursespipesPipe,
     TeacherCourseModalComponent,
     ChartingComponent,
     RatingModalComponent,
@@ -169,6 +170,7 @@ import { TrialModalComponent } from './components/dashboard/dashboard-components
     ChangePasswordModalComponent,
     TrialPanelComponent,
     TrialInfoComponent,
+    TrialModalComponent,
     TrialSearchComponent,
     PaymentPeriodPipe,
     IsUnder18Pipe,
@@ -178,6 +180,8 @@ import { TrialModalComponent } from './components/dashboard/dashboard-components
     StaffPanelComponent,
     SimplifyOrgPipe,
     TrialModalComponent,
+    TrialTesterComponent,
+    OrderbyPipe,
   ],
   imports: [
     NgbModule,
@@ -195,8 +199,7 @@ import { TrialModalComponent } from './components/dashboard/dashboard-components
     ChartsModule
   ],
   providers: [
-    DatePipe,
-    CoursespipesPipe
+    DatePipe
   ],
   entryComponents:[
     TeacherDeleteModalComponent,
@@ -217,7 +220,9 @@ import { TrialModalComponent } from './components/dashboard/dashboard-components
     ForgotPasswordModalComponent,
     ChangePasswordModalComponent,
     LearnerRegistrationModalComponent,
-    LearnerRegistrationConfirmModalComponent
+    LearnerRegistrationConfirmModalComponent,
+    TrialModalComponent,
+    TrialTesterComponent
   ],
   exports: [AppComponent],
   bootstrap: [AppComponent]

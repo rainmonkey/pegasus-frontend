@@ -47,6 +47,7 @@
   </div>
   <div class="modal-footer">
     <span *ngIf='IsConfirmEditSuccess' class='text-success'>Edit Success </span>
+    <div *ngIf="isloadingSmall" class="loaderSmall"></div>
     <button [class.d-none]="IsConfirmEditSuccess" type="button" class="btn btn-dark" (click)="ConfirmEdit()">
       Confirm
     </button>

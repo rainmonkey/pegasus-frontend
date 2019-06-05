@@ -22,7 +22,7 @@ export class AppSettingsService implements OnDestroy {
       this.currentSidebarSettings = this.sidebarData.asObservable()
       this.prepareUserLookUpData()
       this.prepareUserSidebarData()
-      console.log('Settings repository running')
+      // console.log('Settings repository running')
     }
 
   // Get Lookup list from API

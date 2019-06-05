@@ -3,9 +3,7 @@ import { NgbActiveModal, NgbDateAdapter, NgbDateNativeAdapter, NgbDate } from '@
 import { FormBuilder, Validators, FormGroup, FormArray } from '@angular/forms';
 import { CoursesService } from '../../../../../services/http/courses.service';
 
-
 @Injectable()
-
 @Component({
   selector: 'app-course-class-detail-modal',
   templateUrl: './course-class-detail-modal.component.html',
@@ -24,7 +22,8 @@ export class CourseClassDetailModalComponent implements OnInit {
   public CourseSchedule: FormArray;
   public courseNamefilter: Array<any>;
   public fromDate: NgbDate;
-  public toDate: NgbDate;
+  public toDate: NgbDate;  
+  public weeks = [1,2,3,4,5,6,7];
   //Level dropdown options
   public courseName: Array<any>;
   public tutorName: Object;
@@ -108,7 +107,7 @@ export class CourseClassDetailModalComponent implements OnInit {
   // Validate EndDate > BeginDate
   onBeginDateSelection(date: NgbDate) {
     if (date.after(this.toDate)) {
-      alert('End Date must be later than Begin Date');
+      alert('End Date must be later than Begin Date');     
     } else {
       this.fromDate = date;
     }
@@ -137,7 +136,6 @@ export class CourseClassDetailModalComponent implements OnInit {
     } else {
       // Show selected data during editing
       groupObj = {
-        // GroupCourseInstanceId:[this.whichCourseClass.GroupCourseInstanceId],
         CourseId: [this.whichCourseClass.CourseId, Validators.required],
         TeacherId: [this.whichCourseClass.TeacherId, Validators.required],
         BeginDate: [new Date(this.whichCourseClass.BeginDate), Validators.required],
@@ -151,11 +149,20 @@ export class CourseClassDetailModalComponent implements OnInit {
   }
   // Begin time Arrays
   formArrayAssemble() {
-    return this.fb.group({ BeginTime: [null, Validators.required] })
+    return this.fb.group({ 
+      BeginTime: [null, Validators.required],
+      DayOfWeek: [null, Validators.required] 
+    })
   }
   formArrayAssembleUpdate() {
     for (var i = 0; i < this.whichCourseClass.schedule.length; i++) {
-      (this.updateForm.controls.CourseSchedule as FormArray).push(this.fb.group({ BeginTime: [this.whichCourseClass.schedule[i].BeginTime, Validators.required] }));
+      // Transform this.updateForm.controls.CourseSchedule as FormArray, then push 
+      (this.updateForm.controls.CourseSchedule as FormArray).push(
+        this.fb.group({ 
+          BeginTime: [this.whichCourseClass.schedule[i].BeginTime, Validators.required],
+          DayOfWeek: [this.whichCourseClass.schedule[i].DayOfWeek, Validators.required] 
+        })
+      );
     }
   }
   // add time
@@ -184,7 +191,11 @@ export class CourseClassDetailModalComponent implements OnInit {
   // check whether data vailad or not(ruled by Validators).
   checkInputVailad(valueToSubmit) {
     if (this.updateForm.status == 'VALID') {
-      return valueToSubmit;
+      if(this.command == 0){
+        return valueToSubmit;
+      } else {
+        return this.prepareSubmitData(valueToSubmit);
+      }
     }
     else {
       this.infoMessage = 'Please check your input.'
@@ -193,13 +204,19 @@ export class CourseClassDetailModalComponent implements OnInit {
     }
   }
 
+  prepareSubmitData(valueToSubmit) {
+    valueToSubmit.BeginDate = this.whichCourseClass.BeginDate;
+    valueToSubmit.EndDate = this.whichCourseClass.EndDate;
+    return valueToSubmit;
+  }
+
   // Add & Update new data 
   submitByMode(formValue) {
     //while push a stream of new data
     if (this.command == 0) {
       this.coursesService.addNewCourseClass(formValue).subscribe(
         (res) => {
-          console.log(formValue)
+          // console.log(formValue)
           alert('Submit success!');
           this.activeModal.close();
         },
