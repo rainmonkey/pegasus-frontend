@@ -21,7 +21,7 @@
           </select>
           <label class='t_mf_label'>Tutor Name:</label>
           <select type="text" class='col-12 t_mf_input' formControlName="TeacherId">
-            <option *ngFor='let i of tutorName' value="{{i.TeacherId}}">{{i.FirstName}} {{i.LastName}}</option>
+            <option *ngFor="let i of tutorName | orderby:'FirstName'" value="{{i.TeacherId}}">{{i.FirstName}} {{i.LastName}}</option>
           </select>
           <label class='t_mf_label'>Start Date:</label>
           <div class="input-group">
@@ -44,7 +44,7 @@
           <label class='t_mf_label'>Location:</label>
           <select type="text" class='col-12 t_mf_input' formControlName="OrgId"
             (change)="filterrooms($event.target.value)">
-            <option *ngFor='let i of locationName' value="{{i.OrgId}}">{{i.OrgName}}</option>
+            <option *ngFor='let i of locationName |  orderby:"OrgName"' value="{{i.OrgId}}">{{i.OrgName}}</option>
           </select>
           <label class='t_mf_label'>Room:</label>
           <select type="text" class='col-12 t_mf_input' formControlName="RoomId">

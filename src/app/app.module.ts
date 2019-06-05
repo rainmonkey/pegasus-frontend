@@ -79,7 +79,6 @@ import { ColumnTitleFormatPipe } from './shared/pipes/column-title-format.pipe';
 //import { NgbdSortableHeader } from './services/others/ngbootstraptable.service';
 // Pipes
 import { CommandFormatPipe } from './shared/pipes/command-format.pipe';
-import { CoursespipesPipe } from './shared/pipes/coursespipes.pipe';
 import { GenderPipe } from './shared/pipes/gender.pipe';
 import { MyTypePipe } from './shared/pipes/myType-format.pipe';
 import { OrgFormatPipe } from './shared/pipes/org-format.pipe';
@@ -91,6 +90,7 @@ import { confirmEqualValidatorDirectie } from './shared/confirm-equal-validator.
 import { StaffListComponent } from './components/dashboard/dashboard-components/admin-staff/Staff-list/Staff-list.component';
 import { StaffPanelComponent } from './components/dashboard/dashboard-components/admin-staff/staff-panel/staff-panel.component';
 import { SimplifyOrgPipe } from './shared/pipes/simplify-org.pipe';
+import { OrderbyPipe } from './shared/pipes/orderby.pipe';
 
 
 
@@ -159,7 +159,6 @@ import { SimplifyOrgPipe } from './shared/pipes/simplify-org.pipe';
     CourseClassListComponent,
     CourseClassDetailModalComponent,
     DashboardHomeComponent,
-    CoursespipesPipe,
     TeacherCourseModalComponent,
     ChartingComponent,
     RatingModalComponent,
@@ -176,6 +175,7 @@ import { SimplifyOrgPipe } from './shared/pipes/simplify-org.pipe';
     StaffListComponent,
     StaffPanelComponent,
     SimplifyOrgPipe,
+    OrderbyPipe,
   ],
   imports: [
     NgbModule,
@@ -193,8 +193,7 @@ import { SimplifyOrgPipe } from './shared/pipes/simplify-org.pipe';
     ChartsModule
   ],
   providers: [
-    DatePipe,
-    CoursespipesPipe
+    DatePipe
   ],
   entryComponents:[
     TeacherDeleteModalComponent,
