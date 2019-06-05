@@ -300,14 +300,14 @@
             </thead>
             <tbody >
               <tr formArrayName="groupCourse" *ngFor="let groupCourse of groupCourseInstance; let i = index">
-                <td><input type="checkbox" (click)="selectCheckboxes(i, $event)"></td>
+                <td><input type="checkbox" [checked]="groupCourse.isChecked"  (click)="selectCheckboxes(i, $event)"></td>
                 <td>{{groupCourse.Course.CourseName}}</td>
                 <td>
                   <p *ngFor="let schedule of groupCourse.schedule">{{schedule.DayOfWeek | weekFormat}}: {{schedule.BeginTime}}-{{schedule.EndTime}}</p>
                 </td>
                 <td>{{groupCourse.Org.OrgName}}</td>
                 <td>{{groupCourse.Room.RoomName}}</td>
-                <td>{{groupCourse.Teacher.FirstName}}</td>
+                <td>{{groupCourse.Teacher.FirstName}}{{groupCourse.beginDate}}{{groupCourse.comments}}</td>
                 <td><input type="date" [ngModelOptions]="{standalone: true}" [(ngModel)]="groupCourseInstance[i].beginDate" ></td>
                 <td><input type="text" [ngModelOptions]="{standalone: true}" [(ngModel)]="groupCourseInstance[i].comments" ></td>
               </tr>

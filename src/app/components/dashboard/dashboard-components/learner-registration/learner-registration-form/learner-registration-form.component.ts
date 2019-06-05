@@ -157,7 +157,7 @@ export class LearnerRegistrationFormComponent implements OnInit {
         gender: [this.whichLearner?this.whichLearner.Gender:'2', Validators.required],
         birthday: [this.whichLearner&&this.whichLearner.Dob?this.whichLearner.Dob.slice(0,10):''],
         enrollmentDate: [this.whichLearner?this.whichLearner.EnrollDate.slice(0,10):this.myDate()],
-        contactNum: [this.whichLearner?this.whichLearner.ContactNum:''],
+        contactNum: [this.whichLearner?this.whichLearner.ContactNum:'',Validators.required],
         email: [this.whichLearner?this.whichLearner.Email:'', [Validators.required,Validators.email]],
         address: [this.whichLearner?this.whichLearner.Address:''],
         photo: [''],
@@ -167,7 +167,7 @@ export class LearnerRegistrationFormComponent implements OnInit {
         learnerLevel: [this.whichLearner?this.whichLearner.LearnerLevel:this.selectlearnerLevel,Validators.required],
         location: [this.whichLearner?this.whichLearner.OrgId:this.orgId, Validators.required],
         levelType: [this.whichLearner?this.whichLearner.LevelType:'0'],
-        paymentPeriod: [this.whichLearner?this.whichLearner.PaymentPeriod:'1'],
+        paymentPeriod: [this.whichLearner?this.whichLearner.PaymentPeriod:'1',Validators.required],
         referrer: [this.whichLearner?this.whichLearner.Referrer:''],
         isUnder18: [this.whichLearner?this.whichLearner.isUnder18:0],        
       }),
@@ -205,7 +205,7 @@ export class LearnerRegistrationFormComponent implements OnInit {
       const year: number = Dates.getFullYear();
       const month: any = ( Dates.getMonth() + 1 ) < 10 ? '0' + ( Dates.getMonth() + 1 ) : ( Dates.getMonth() + 1 );
       const day: any = Dates.getDate() < 10 ? '0' + Dates.getDate() : Dates.getDate();
-      console.log( Dates, year, month,)
+//      console.log( Dates, year, month,)
       return year + '-' + month + '-' + day;
     };
   }
@@ -459,7 +459,7 @@ export class LearnerRegistrationFormComponent implements OnInit {
         for (let groupCourse of this.groupCourseInstance) {
           groupCourse.comments = null;
           groupCourse.isChecked = false;
-          groupCourse.beginDate = this.myDate();
+          groupCourse.beginDate = this.myDate().slice(0,10);
         };
         console.log('new group course', this.groupCourseInstance)
         // this.addCheckboxes();
@@ -602,7 +602,7 @@ export class LearnerRegistrationFormComponent implements OnInit {
     console.log('custom Course Form value', cs);
     // let tempObj = {};
     for (let cc of this.customCourse.value) {
-      if (cc.course==='') continue;
+      if (cc.course===''||!cc.course) continue;
       let tempObj = {};
       tempObj['CourseId'] = parseInt(cc.course);
       tempObj['OrgId'] = cc.location;
@@ -799,15 +799,18 @@ export class LearnerRegistrationFormComponent implements OnInit {
   
   }
   setOneToOneForm(){
-    if  ((!this.whichLearner)||this.whichLearner.One2oneCourseInstance.length===0){
+    if  (!this.whichLearner){
       this.customCourse.push(this.courseIntanceGroup);
        }
     else
     {
+      if (this.whichLearner.One2oneCourseInstance.length===0)
+        this.customCourse.push(this.courseIntanceGroup);
+
       this.isSelectedLevel = true;
       this.selectlearnerLevel = this.whichLearner.LearnerLevel;
   
-      let teacherFilter,pureCourses,groupCourse;
+      let allData,teacherFilter,pureCourses,groupCourse;
       let CatList=[];
       this.setUniCatListArray=new Array();
       this.courseListArray=new Array();
@@ -816,20 +819,25 @@ export class LearnerRegistrationFormComponent implements OnInit {
       this.prepareTeaNameListArray=new Array();
       this.prepareRoomListArray=new Array();
 
-      forkJoin([this.coursesService.getCourses(), 
-        this.registrationService.getTeacherFilter(this.whichLearner.LearnerLevel),
-        this.registrationService.getGroupCourse()]).subscribe(
+      let funArr=[];
+      funArr.push(this.coursesService.getCourses());
+      funArr.push(this.registrationService.getGroupCourse());
+      this.whichLearner.One2oneCourseInstance.forEach(e=>{
+        funArr.push(this.registrationService.getTeacherFilter(e.CourseId));
+      })
+      //funArr.push(this.registrationService.getTeacherFilter(this.whichLearner.One2oneCourseInstance[0].CourseId));
+      forkJoin(...funArr).subscribe(
         (res) => {
           pureCourses = res[0].Data;
-          teacherFilter = res[1].Data;
-          groupCourse = res[2].Data;
+          this.groupCourseInstance = res[1].Data;          
+          allData = res;
           // for (let groupCourse of this.groupCourseInstance) {
           //   groupCourse.comments = null;
           //   groupCourse.isChecked = false;
           //   groupCourse.beginDate = this.myDate();
           // };
           //this.setUniCatListArray
-          console.log(pureCourses,teacherFilter)
+          console.log(pureCourses,allData)
           pureCourses.forEach(e=>{
             //console.log(e);
             if (CatList.findIndex(c=>c.CourseCategoryId===e.CourseCategory.CourseCategoryId)<0)
@@ -837,9 +845,35 @@ export class LearnerRegistrationFormComponent implements OnInit {
           });
           console.log(CatList);
           // courseList
+          //group course
+          //groupCourse
+          console.log(this.whichLearner.LearnerGroupCourse,this.groupCourseInstance);
+          this.groupCourseInstance.forEach(g=>
+           {
+            //g.comments = null;
 
+              let foundGroupCourse=this.whichLearner.LearnerGroupCourse.find(e=>
+                e.GroupCourseInstanceId===g.GroupCourseInstanceId
+              );
+         
+            if (foundGroupCourse){
+              g.isChecked = true;
+              g.comments = foundGroupCourse.Comment;
+              g.beginDate = foundGroupCourse.BeginDate.slice(0,10);
+            }else{
+              g.comments = null;
+              g.isChecked = false;
+              g.beginDate = this.myDate();
+            }
+          });
+          console.log(this.whichLearner.LearnerGroupCourse,this.groupCourseInstance);          
+          this.whichLearner.LearnerGroupCourse.forEach(lg=>{
+
+          })
+          //one to one
           this.whichLearner.One2oneCourseInstance.map((o,i)=>{
             console.log(o,pureCourses);
+            teacherFilter = allData[i+2].Data;
             this.setUniCatListArray[i]=CatList;
             let courseItemArray1 = pureCourses.filter(e=>
               e.CourseCategory.CourseCategoryId==o.Course.CourseCategoryId
@@ -857,13 +891,14 @@ export class LearnerRegistrationFormComponent implements OnInit {
             //let locItemArray = TeacherFilter;
             this.locListArray[i]={locItemArray:teacherFilter};
             //prepareTeaLevListArray[i].
-            let prepareTeaLevItemArray = teacherFilter.find(e=>e.orgId==o.OrgId).Level;
+            console.log(teacherFilter);
+            let prepareTeaLevItemArray = teacherFilter.find(e=>e.OrgId==o.OrgId).Level;
             this.prepareTeaLevListArray[i]={prepareTeaLevItemArray:prepareTeaLevItemArray};
             //prepareTeaNameListArray[i].prepareTeaNameItemArray
             let prepareTeaNameItemArray=prepareTeaLevItemArray.find(e=>e.levelId==o.Course.TeacherLevel).teacher;
             this.prepareTeaNameListArray[i]={prepareTeaNameItemArray:prepareTeaNameItemArray};
             //prepareRoomListArray[i].prepareRoomItemArray
-            let prepareRoomItemArray = teacherFilter.find(e=>e.orgId=o.OrgId).Room;
+            let prepareRoomItemArray = teacherFilter.find(e=>e.OrgId==o.OrgId).Room;
             this.prepareRoomListArray[i]={prepareRoomItemArray:prepareRoomItemArray};
             this.customCourse.push(
               this.fb.group({
