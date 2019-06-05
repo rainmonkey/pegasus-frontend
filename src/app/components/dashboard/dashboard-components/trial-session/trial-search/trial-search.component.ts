@@ -1,4 +1,6 @@
+import { TrialModalComponent } from './../trial-modal/trial-modal.component';
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-trial-search',
@@ -23,7 +25,8 @@ export class TrialSearchComponent implements OnInit {
   @Input() groupCoursesInstance;
   @Output() childEvent = new EventEmitter();
 
-  constructor() { }
+  constructor(  private modalService: NgbModal,
+    ) { }
 
   ngOnInit() {
 
@@ -100,9 +103,9 @@ export class TrialSearchComponent implements OnInit {
             if(nextClass !== null){
               this.styleFlowControl[nextClass].display = true;
             }
-            if(className =='Teachers'){
-              this.emitToParent(i);
-            }
+            // if(className =='Teachers'){
+            //   this.popUpModal(i,event);
+            // }
           }, 500)
         }
       }
@@ -142,8 +145,9 @@ export class TrialSearchComponent implements OnInit {
     event.stopPropagation();
   }
 
-  emitToParent(teacherSelected){
-    this.childEvent.emit(teacherSelected);
+  popUpModal(){
+    //this.childEvent.emit(teacherSelected);
+    const modalRef = this.modalService.open(TrialModalComponent, { size: 'lg', backdrop: 'static', keyboard: false });
   }
 
 }
