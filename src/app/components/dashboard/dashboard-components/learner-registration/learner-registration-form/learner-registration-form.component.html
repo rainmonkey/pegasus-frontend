@@ -256,7 +256,7 @@
           </div>
           <div class="parentForm__button my-3 d-flex justify-content-end">
             <button class="btn_back mx-3" (click)="next('learnerForm')">Back</button>
-            <button class="btn_next" [disabled]="parentForm.invalid"
+            <button class="btn_next" [disabled]="parentForm.invalid && !this.learnerForm.value.isUnder18"
               (click)="next('courseForm')">Next</button>
           </div>
         </div>

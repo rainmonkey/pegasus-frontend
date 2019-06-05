@@ -415,9 +415,10 @@ export class LearnerRegistrationFormComponent implements OnInit, DoCheck {
   }
   // check lists
   // select18(event){
-  //   if (event.target.checked){
-  //     this.isUnder18 = 1;
-  //   }
+    // if (event.target.checked){
+    //   this.isUnder18 = 1;
+    // }
+    // console.log(this.learnerForm.value.isUnder18)
   // }
 
   selectLearnerPurpose(i, event) {
