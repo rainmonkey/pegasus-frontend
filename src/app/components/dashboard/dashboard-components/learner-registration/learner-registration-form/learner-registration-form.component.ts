@@ -561,7 +561,7 @@ export class LearnerRegistrationFormComponent implements OnInit, DoCheck {
       }
     );
   }
-  selectLocation(id, i) {
+selectLocation(id, i) {
     this.selectedLocListArray[i].selectedLocItemArray = this.locListArray[i].locItemArray.filter(item => item.OrgId == id);
     this.prepareTeaLevListArray[i].prepareTeaLevItemArray = this.selectedLocListArray[i].selectedLocItemArray[0].Level;
     this.prepareRoomListArray[i].prepareRoomItemArray = this.selectedLocListArray[i].selectedLocItemArray[0].Room;
@@ -825,7 +825,7 @@ export class LearnerRegistrationFormComponent implements OnInit, DoCheck {
       this.isSelectedLevel = true;
       this.selectlearnerLevel = this.whichLearner.LearnerLevel;
   
-      let allData,teacherFilter,pureCourses,groupCourse;
+      let allData,teacherFilter,pureCourses;
       let CatList=[];
       this.setUniCatListArray=new Array();
       this.courseListArray=new Array();
