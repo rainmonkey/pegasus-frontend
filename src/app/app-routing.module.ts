@@ -35,86 +35,110 @@ import { CourseClassListComponent } from './components/dashboard/dashboard-compo
 import { DashboardHomeComponent } from './components/dashboard/dashboard-components/dashboard-home/dashboard-home.component';
 import { TrialInfoComponent } from './components/dashboard/dashboard-components/trial-session/trial-info/trial-info.component';
 import { StaffListComponent } from './components/dashboard/dashboard-components/admin-staff/Staff-list/Staff-list.component';
+import { LearnerCreditPanelComponent } from "./components/dashboard/dashboard-components/learner-credit/learner-credit-panel/learner-credit-panel.component";
+import { LearnerCreditDetailsComponent } from "./components/dashboard/dashboard-components/learner-credit/learner-credit-details/learner-credit-details.component"
 
 
 const routes: Routes = [
-  { path: '', component: DashboardPanelComponent, canActivate: [DashboardRestrictGuard],
+  {
+    path: '', component: DashboardPanelComponent, canActivate: [DashboardRestrictGuard],
     children: [
-      {path:'home', component: DashboardHomeComponent},
+      { path: 'home', component: DashboardHomeComponent },
       // Testing path
-      {path:'testone', component: TestoneComponent},
+      { path: 'testone', component: TestoneComponent },
       // Payment Area
-      { path: 'payment/invoice', pathMatch: 'prefix', component: AdminLearnerPaymentPanelComponent,
-        children:[
+      {
+        path: 'payment/invoice', pathMatch: 'prefix', component: AdminLearnerPaymentPanelComponent,
+        children: [
           { path: ':id', component: AdminLearnerPaymentInvoiceComponent },
           { path: 'success', component: AdminLearnerPaymentSuccessComponent },
-      ]},
-      { path: 'payment/product', pathMatch: 'prefix', component: AdminLearnerPaymentPanelComponent,
+        ]
+      },
+      {
+        path: 'payment/product', pathMatch: 'prefix', component: AdminLearnerPaymentPanelComponent,
         children: [
           { path: 'success', component: AdminLearnerPaymentSuccessComponent },
           { path: ':id', component: AdminLearnerPaymentProductsComponent },
         ]
       },
-      { path: 'payment/registration', pathMatch: 'prefix', component: AdminLearnerPaymentPanelComponent,
+      {
+        path: 'payment/registration', pathMatch: 'prefix', component: AdminLearnerPaymentPanelComponent,
         children: [
           { path: 'success', component: AdminLearnerPaymentSuccessComponent },
           { path: ':id', component: AdminLearnerPaymentRegistrationComponent },
         ]
       },
-      { path: 'payment/other', pathMatch: 'prefix', component: AdminLearnerPaymentOtherComponent,
+      {
+        path: 'payment/other', pathMatch: 'prefix', component: AdminLearnerPaymentOtherComponent,
         children: [
           { path: 'success', component: AdminLearnerPaymentSuccessComponent },
         ]
       },
       // Transaction Area
-      { path: 'transaction', component: TransactionsPanelComponent,
+      {
+        path: 'transaction', component: TransactionsPanelComponent,
         children: [
           { path: 'invoices', component: AdminInvoiceListComponent },
           { path: 'success', component: AdminLearnerPaymentSuccessComponent },
           { path: 'payments', component: AdminPaymentListComponent },
           { path: 'sales', component: AdminSalesListComponent }
-        ]},
+        ]
+      },
       // Teacher Area
-      { path: 'tutors', component: TeacherPanelComponent,
-        children:[
+      {
+        path: 'tutors', component: TeacherPanelComponent,
+        children: [
           { path: 'list', component: TeacherInfoComponent }
-        ]},
+        ]
+      },
       // Sessions Area
-      { path: 'sessions', component: SessionsPanelComponent,
-        children:[
-          {path: 'list', component: SessionsListViewComponent},
-          {path: 'calendar/admin', component: SessionsCalendarViewAdminComponent},
-          {path: 'calendar/tutor', component: SessionsCalendarViewTutorComponent}
-      ]},
+      {
+        path: 'sessions', component: SessionsPanelComponent,
+        children: [
+          { path: 'list', component: SessionsListViewComponent },
+          { path: 'calendar/admin', component: SessionsCalendarViewAdminComponent },
+          { path: 'calendar/tutor', component: SessionsCalendarViewTutorComponent }
+        ]
+      },
       // Courses Area
-      { path: 'courses', component: CoursesPanelComponent,
-        children:[
-        { path: 'list', component: CoursesListComponent},
-        { path: 'class/list', component: CourseClassListComponent}
-      ]},
+      {
+        path: 'courses', component: CoursesPanelComponent,
+        children: [
+          { path: 'list', component: CoursesListComponent },
+          { path: 'class/list', component: CourseClassListComponent }
+        ]
+      },
       // Learner Area
-      { path: 'learner', component:AdminLearnerPanelComponent,
-        children:[
-
-          {path: 'list', component: AdminLearnerListComponent},
-          {path: 'registration/edit', component: LearnerRegistrationModalComponent},
-          {path: 'registration', component: LearnerRegistrationFormComponent},
-          {path: 'trial', component: TrialInfoComponent},
+      {
+        path: 'learner', component: AdminLearnerPanelComponent,
+        children: [
+          { path: 'list', component: AdminLearnerListComponent },
+          { path: 'registration/edit', component: LearnerRegistrationModalComponent },
+          { path: 'registration', component: LearnerRegistrationFormComponent },
+          { path: 'trial', component: TrialInfoComponent },
+          {
+            path: "credit", component: LearnerCreditPanelComponent,
+            children: [{ path: ":id", component: LearnerCreditDetailsComponent }]
+          },
           { path: 'success', component: AdminLearnerPaymentSuccessComponent },
-      ]},
+        ]
+      },
       // Inventory Area
-      { path: 'inventory', component: InventoryPanelComponent,
-        children:[
-          {path:'list', component: InventoryListComponent}
-      ]},
+      {
+        path: 'inventory', component: InventoryPanelComponent,
+        children: [
+          { path: 'list', component: InventoryListComponent }
+        ]
+      },
       // Payroll Area
-      { path: 'payroll' , component: PayrollPanelComponent,
-        children:[
-          {path:'list', component:PayrollListComponent}
+      {
+        path: 'payroll', component: PayrollPanelComponent,
+        children: [
+          { path: 'list', component: PayrollListComponent }
         ]
       },
       //Staff Area
-      {path: 'staff/list', component:StaffListComponent},
+      { path: 'staff/list', component: StaffListComponent },
       // Below to be rearranged
       { path: 'time/picker', component: TimePickerComponent },
     ]
