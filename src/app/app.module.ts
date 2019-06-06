@@ -92,6 +92,8 @@ import { StaffListComponent } from './components/dashboard/dashboard-components/
 import { StaffPanelComponent } from './components/dashboard/dashboard-components/admin-staff/staff-panel/staff-panel.component';
 import { SimplifyOrgPipe } from './shared/pipes/simplify-org.pipe';
 import { TrialModalComponent } from './components/dashboard/dashboard-components/trial-session/trial-modal/trial-modal.component';
+import { LearnerCreditPanelComponent } from './components/dashboard/dashboard-components/learner-credit/learner-credit-panel/learner-credit-panel.component';
+import { LearnerCreditDetailsComponent } from './components/dashboard/dashboard-components/learner-credit/learner-credit-details/learner-credit-details.component';
 
 
 
@@ -178,6 +180,8 @@ import { TrialModalComponent } from './components/dashboard/dashboard-components
     StaffPanelComponent,
     SimplifyOrgPipe,
     TrialModalComponent,
+    LearnerCreditPanelComponent,
+    LearnerCreditDetailsComponent,
   ],
   imports: [
     NgbModule,
