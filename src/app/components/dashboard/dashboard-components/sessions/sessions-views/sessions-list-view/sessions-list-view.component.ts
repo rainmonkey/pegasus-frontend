@@ -7,6 +7,7 @@ import { SessionDetailEditModalComponent } from '../../session-modals/session-de
 import {SessionCancelModalComponent} from '../../session-modals/session-cancel-modal/session-cancel-modal.component';
 import {SessionCompletedModalComponent} from '../../session-modals/session-completed-modal/session-completed-modal.component';
 import {DatePipe} from '@angular/common';
+import {SessionRescheduleModalComponent} from '../../session-modals/session-reschedule-modal/session-reschedule-modal.component';
 
 @Component({
   selector: 'app-sessions-list-view',
@@ -17,8 +18,9 @@ export class SessionsListViewComponent implements OnInit {
   InitialSessionList;
   teacherSearchValue: string;
   isloading = false;
-  searchBeginDate;
-  searchEndDate;
+  searchBeginDate = this.datePipe.
+  transform(new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate() - 6), 'yyyy-MM-dd');
+  searchEndDate = this.datePipe.transform(new Date(), 'yyyy-MM-dd');
   public SessionList: any;
   public SessionListLength: number;
   public page = 1;  // pagination current page
@@ -48,12 +50,7 @@ export class SessionsListViewComponent implements OnInit {
     ) { }
 
   ngOnInit() {
-    const today = new Date();
-    const todayDate = this.datePipe.transform(today, 'yyyy-MM-dd')
-    const weekbeforeDate = this.datePipe.transform(new Date(today.getFullYear(), today.getMonth(), today.getDate() - 6), 'yyyy-MM-dd')
-    console.log(weekbeforeDate)
-    console.log(todayDate)
-    this.getData(weekbeforeDate, todayDate);
+    this.getData(this.searchBeginDate, this.searchEndDate);
   }
 
   // open confirm modal
@@ -73,6 +70,18 @@ export class SessionsListViewComponent implements OnInit {
   openSessionEditModal(LessonModel) {
     const modalRef = this.modalService.open(SessionDetailEditModalComponent, { size: 'lg' });
     (modalRef.componentInstance as SessionDetailEditModalComponent).LessonModel = LessonModel;
+    modalRef.result.then(
+      () => {
+        this.ngOnInit();
+      },
+      () => {
+        this.ngOnInit();
+      });
+  }
+
+  openRescheduleModal(lessonId){
+    const modalRef = this.modalService.open(SessionRescheduleModalComponent);
+    (modalRef.componentInstance as SessionRescheduleModalComponent).lessonid = lessonId;
     modalRef.result.then(
       () => {
         this.ngOnInit();
@@ -119,6 +128,7 @@ export class SessionsListViewComponent implements OnInit {
       return;
     }
     this.getData(beginDate, endDate);
+    this.teacherSearchValue = '';
   }
 
   teacherSearch = () => {

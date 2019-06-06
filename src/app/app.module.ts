@@ -92,7 +92,7 @@ import { StaffListComponent } from './components/dashboard/dashboard-components/
 import { StaffPanelComponent } from './components/dashboard/dashboard-components/admin-staff/staff-panel/staff-panel.component';
 import { SimplifyOrgPipe } from './shared/pipes/simplify-org.pipe';
 import { OrderbyPipe } from './shared/pipes/orderby.pipe';
-
+import { SessionRescheduleModalComponent } from './components/dashboard/dashboard-components/sessions/session-modals/session-reschedule-modal/session-reschedule-modal.component';
 
 
 @NgModule({
@@ -178,6 +178,7 @@ import { OrderbyPipe } from './shared/pipes/orderby.pipe';
     StaffPanelComponent,
     SimplifyOrgPipe,
     OrderbyPipe,
+    SessionRescheduleModalComponent,
   ],
   imports: [
     NgbModule,
@@ -212,6 +213,7 @@ import { OrderbyPipe } from './shared/pipes/orderby.pipe';
     LearnerEditModalComponent,
     SessionCancelModalComponent,
     SessionCompletedModalComponent,
+    SessionRescheduleModalComponent,
     RatingModalComponent,
     ForgotPasswordModalComponent,
     ChangePasswordModalComponent,
