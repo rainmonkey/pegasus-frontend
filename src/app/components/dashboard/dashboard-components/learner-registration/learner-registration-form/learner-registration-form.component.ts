@@ -10,6 +10,7 @@ import { concat } from 'rxjs';
 import { element } from '@angular/core/src/render3';
 import { forkJoin } from 'rxjs';
 import { TimePickerComponent } from '../../time-picker/time-picker.component';
+import { ngtimepickerValidator } from './validators';
 
 @Component({
   selector: 'app-learner-registration-form',
@@ -145,7 +146,7 @@ export class LearnerRegistrationFormComponent implements OnInit, DoCheck {
       endDate: [''],
       schedule: this.fb.group({
         dayOfWeek: ['6'],
-        beginTime: [this.time],
+        beginTime: [this.time, ngtimepickerValidator],
         durationType: ['']
       }),
     });
@@ -630,8 +631,8 @@ selectLocation(id, i) {
       tempScheduleObj['DurationType'] = parseInt(cc.course);
       tempObj['Schedule'] = tempScheduleObj;
       this.oneOnOneCourse.push(tempObj);
+      console.log('oneOnOne', this.oneOnOneCourse);
     };
-    console.log('oneOnOne', this.oneOnOneCourse);
   }
 
   onSubmit() {
@@ -762,6 +763,7 @@ selectLocation(id, i) {
   }
   // // check changes
   ngDoCheck() {
+    console.log(this.customCourse)
     // console.log(this.modalRefTimePicker);
     // this.modalRefConfirm?this.needSubmit = this.modalRefConfirm.componentInstance.submitClicked:this.needSubmit = false;
     // console.log(this.needSubmit)
