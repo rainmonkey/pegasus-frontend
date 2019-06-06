@@ -151,7 +151,7 @@ export class LearnerRegistrationFormComponent implements OnInit, DoCheck {
       }),
     });
   }
-
+//
   ngOnInit() {
     // init date
     // get orgId
