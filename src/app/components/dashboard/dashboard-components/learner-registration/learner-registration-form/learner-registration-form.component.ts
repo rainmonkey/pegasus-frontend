@@ -197,7 +197,7 @@ export class LearnerRegistrationFormComponent implements OnInit, DoCheck {
     document.getElementById('parentForm').style.display = 'none';
     document.getElementById('courseForm').style.display = 'none';
 
-    this.getGroupCourseFromServer();
+    if (!this.whichLearner) this.getGroupCourseFromServer();
     this.getLookups(1);
     this.toModel(this.time);
     this.getLocationFromServer();
@@ -248,7 +248,7 @@ export class LearnerRegistrationFormComponent implements OnInit, DoCheck {
 
   uploadGrade(event: any) {
     this.selectedGrade = <File>event.target.files[0];
-    this.fd.append('grade', this.selectedGrade);
+    this.fd.append('ABRSM', this.selectedGrade);
     let photoRender = this.selectedGrade;
     this.photoObj = document.querySelector('#certificate');
     let that = this;
@@ -262,7 +262,7 @@ export class LearnerRegistrationFormComponent implements OnInit, DoCheck {
 
   uploadAgreement(event) {
     this.selectedAgreement = <File>event.target.files[0];
-    this.fd.append('agreement', this.selectedAgreement);
+    this.fd.append('form', this.selectedAgreement);
   }
 
   uploadOther(event) {
@@ -562,10 +562,16 @@ export class LearnerRegistrationFormComponent implements OnInit, DoCheck {
     );
   }
 selectLocation(id, i) {
+    // filter branch
     this.selectedLocListArray[i].selectedLocItemArray = this.locListArray[i].locItemArray.filter(item => item.OrgId == id);
+    // get level value
     this.prepareTeaLevListArray[i].prepareTeaLevItemArray = this.selectedLocListArray[i].selectedLocItemArray[0].Level;
+    // get room value
     this.prepareRoomListArray[i].prepareRoomItemArray = this.selectedLocListArray[i].selectedLocItemArray[0].Room;
+    // if piano apply teacher level, else not apply
     if (this.notPiano !== 1) {
+      // empty array;
+      this.notPianoTeaArray = [];
       this.prepareTeaLevListArray[i].prepareTeaLevItemArray.forEach(ele => {
         this.notPianoTeaArray = this.notPianoTeaArray.concat(ele.teacher);
       });
@@ -647,7 +653,7 @@ selectLocation(id, i) {
     this.fdObj['OrgId'] = this.learner.location;
     this.fdObj['LearnerLevel'] = this.selectlearnerLevel;
     this.fdObj['LevelType'] = this.learnerlevelType;
-    this.fdObj['IsUnder18'] = this.learner.isUnder18;
+    this.fdObj['IsUnder18'] = this.learner.isUnder18 ? 1 : 0;;
     this.fdObj['PaymentPeriod'] = parseInt(this.learner.paymentPeriod);
     this.fdObj['Referrer'] = this.learner.referrer;
     // encapsulate parent form data
@@ -824,13 +830,13 @@ selectLocation(id, i) {
 
       this.isSelectedLevel = true;
       this.selectlearnerLevel = this.whichLearner.LearnerLevel;
-  
+
       let allData,teacherFilter,pureCourses;
       let CatList=[];
       this.setUniCatListArray=new Array();
       this.courseListArray=new Array();
       this.locListArray=new Array();
-      this.prepareTeaLevListArray=new Array(); 
+      this.prepareTeaLevListArray=new Array();
       this.prepareTeaNameListArray=new Array();
       this.prepareRoomListArray=new Array();
 
@@ -844,14 +850,9 @@ selectLocation(id, i) {
       forkJoin(...funArr).subscribe(
         (res) => {
           pureCourses = res[0].Data;
-          this.groupCourseInstance = res[1].Data;          
+          this.groupCourseInstance = res[1].Data;
           allData = res;
-          // for (let groupCourse of this.groupCourseInstance) {
-          //   groupCourse.comments = null;
-          //   groupCourse.isChecked = false;
-          //   groupCourse.beginDate = this.myDate();
-          // };
-          //this.setUniCatListArray
+
           console.log(pureCourses,allData)
           pureCourses.forEach(e=>{
             //console.log(e);
@@ -859,18 +860,14 @@ selectLocation(id, i) {
               CatList.push(e.CourseCategory);
           });
           console.log(CatList);
-          // courseList
-          //group course
+
           //groupCourse
           console.log(this.whichLearner.LearnerGroupCourse,this.groupCourseInstance);
-          this.groupCourseInstance.forEach(g=>
-           {
-            //g.comments = null;
-
+          this.groupCourseInstance.forEach(g=>{
               let foundGroupCourse=this.whichLearner.LearnerGroupCourse.find(e=>
                 e.GroupCourseInstanceId===g.GroupCourseInstanceId
               );
-         
+
             if (foundGroupCourse){
               g.isChecked = true;
               g.comments = foundGroupCourse.Comment;
@@ -881,7 +878,7 @@ selectLocation(id, i) {
               g.beginDate = this.myDate();
             }
           });
-          console.log(this.whichLearner.LearnerGroupCourse,this.groupCourseInstance);          
+          console.log(this.whichLearner.LearnerGroupCourse,this.groupCourseInstance);
           this.whichLearner.LearnerGroupCourse.forEach(lg=>{
 
           })
@@ -945,7 +942,7 @@ selectLocation(id, i) {
           },
             (err) => {
               console.log(err);
-              alert('Sorry, something went wrong.')
+              alert('Sorry, something went wrong.'+err)
             }
           );
         })
