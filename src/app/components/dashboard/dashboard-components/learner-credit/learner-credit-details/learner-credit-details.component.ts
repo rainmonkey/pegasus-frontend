@@ -22,10 +22,9 @@ export class LearnerCreditDetailsComponent implements OnInit {
     })
     this.learnerService.getLearnerList().subscribe(data => {
       this.data = data["Data"]
-      this.data.filter(learnerId => learnerId === this.learnerId)
+      this.data = this.data.find(learner => learner.LearnerId == this.learnerId)
       console.log(this.data)
     }, error => {
-      console.log(this.learnerId)
       console.log(error)
     })
   }

@@ -1,3 +1,19 @@
-<p>
-  learner-credit-details works!
-</p>
+<div class="container">
+  <ngb-accordion>
+    <ngb-panel id="1" title="one">
+      <ng-template ngbPanelContent>
+        First name: {{this.data.FirstName}}
+      </ng-template>
+    </ngb-panel>
+    <ngb-panel id="2" title="two">
+      <ng-template ngbPanelContent>
+        Last name: {{this.data.LastName}}
+      </ng-template>
+    </ngb-panel>
+    <ngb-panel id="3" title="three">
+      <ng-template ngbPanelContent>
+        Contact Number: {{this.data.ContactNum}}
+      </ng-template>
+    </ngb-panel>
+  </ngb-accordion>
+</div>
