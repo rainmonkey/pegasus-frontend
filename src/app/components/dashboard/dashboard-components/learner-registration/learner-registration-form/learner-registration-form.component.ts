@@ -136,14 +136,14 @@ export class LearnerRegistrationFormComponent implements OnInit, DoCheck {
   }
   get courseIntanceGroup(): FormGroup {
     return this.fb.group({
-      courseCategory: [''],
-      course: [''],
+      courseCategory: ['',Validators.required],
+      course: ['',Validators.required],
       teacherLevel: [''],
-      teacherName: [''],
+      teacherName: ['',Validators.required],
       location: [''],
-      room: [''],
+      room: ['',Validators.required],
       beginDate: [this.myDate()],
-      endDate: [''],
+      endDate: ['',Validators.required],
       schedule: this.fb.group({
         dayOfWeek: ['6'],
         beginTime: [this.time, ngtimepickerValidator],
@@ -763,7 +763,8 @@ selectLocation(id, i) {
   }
   // // check changes
   ngDoCheck() {
-    console.log(this.customCourse)
+    // console.log(this.customCourse)
+    // console.log(this.customCourse.controls[0].get('schedule').get('beginTime').invalid)
     // console.log(this.modalRefTimePicker);
     // this.modalRefConfirm?this.needSubmit = this.modalRefConfirm.componentInstance.submitClicked:this.needSubmit = false;
     // console.log(this.needSubmit)

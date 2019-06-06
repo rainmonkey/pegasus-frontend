@@ -403,6 +403,7 @@
                 <label for="customTime">Course Time</label>
                 <!-- <input class="form-control" type="text"  value="15:30:00" routerLink="/timePicker" routerLinkActive="active"> -->
                 <ngb-timepicker formControlName="beginTime" [size]="'small'" [hourStep]="hourStep" [minuteStep]="minuteStep"></ngb-timepicker>
+                <small class="text-danger" *ngIf="this.customCourse.controls[0].get('schedule').get('beginTime').invalid">Please Select a Valid Time</small>
               </div>
               <div class='col-sm-3 col-md-3 mt-3'>
                 <button class='btn btn-primary' (click)="open(i)">Pick Course Time by Calendar</button>
@@ -415,7 +416,7 @@
         </div>
         <div class="text-right">
           <button class="btn_add" (click)="addCustomCourse()"><b>Add more courses</b></button>
-          <button [disabled]="customCourse.invalid" (click)="onSubmit()" class="btn_submit"
+          <button [disabled]="customCourse.invalid || customCourse.untouched" (click)="onSubmit()" class="btn_submit"
           type="submit">Submit</button>
         </div>
       </div>
