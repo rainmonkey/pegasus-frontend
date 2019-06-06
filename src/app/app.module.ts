@@ -91,9 +91,11 @@ import { confirmEqualValidatorDirectie } from './shared/confirm-equal-validator.
 import { StaffListComponent } from './components/dashboard/dashboard-components/admin-staff/Staff-list/Staff-list.component';
 import { StaffPanelComponent } from './components/dashboard/dashboard-components/admin-staff/staff-panel/staff-panel.component';
 import { SimplifyOrgPipe } from './shared/pipes/simplify-org.pipe';
+import { LearnerCreditPanelComponent } from './components/dashboard/dashboard-components/learner-credit/learner-credit-panel/learner-credit-panel.component';
+import { LearnerCreditDetailsComponent } from './components/dashboard/dashboard-components/learner-credit/learner-credit-details/learner-credit-details.component';
 import { TrialTesterComponent } from './components/dashboard/dashboard-components/trial-session/trial-tester/trial-tester.component';
 import { OrderbyPipe } from './shared/pipes/orderby.pipe';
-
+import { SessionRescheduleModalComponent } from './components/dashboard/dashboard-components/sessions/session-modals/session-reschedule-modal/session-reschedule-modal.component';
 
 
 @NgModule({
@@ -174,13 +176,15 @@ import { OrderbyPipe } from './shared/pipes/orderby.pipe';
     PaymentPeriodPipe,
     IsUnder18Pipe,
     confirmEqualValidatorDirectie,
-    //staff
     StaffListComponent,
     StaffPanelComponent,
     SimplifyOrgPipe,
     TrialModalComponent,
+    LearnerCreditPanelComponent,
+    LearnerCreditDetailsComponent,
     TrialTesterComponent,
     OrderbyPipe,
+    SessionRescheduleModalComponent,
   ],
   imports: [
     NgbModule,
@@ -215,6 +219,7 @@ import { OrderbyPipe } from './shared/pipes/orderby.pipe';
     LearnerEditModalComponent,
     SessionCancelModalComponent,
     SessionCompletedModalComponent,
+    SessionRescheduleModalComponent,
     RatingModalComponent,
     ForgotPasswordModalComponent,
     ChangePasswordModalComponent,

@@ -2,6 +2,7 @@ import { Component, OnInit, Injectable, Input } from '@angular/core';
 import { NgbActiveModal, NgbDateAdapter, NgbDateNativeAdapter, NgbDate } from '@ng-bootstrap/ng-bootstrap';
 import { FormBuilder, Validators, FormGroup, FormArray } from '@angular/forms';
 import { CoursesService } from '../../../../../services/http/courses.service';
+import {DatePipe} from '@angular/common';
 
 @Injectable()
 @Component({
@@ -24,6 +25,7 @@ export class CourseClassDetailModalComponent implements OnInit {
   public fromDate: NgbDate;
   public toDate: NgbDate;  
   public weeks = [1,2,3,4,5,6,7];
+  public begin: any;
   //Level dropdown options
   public courseName: Array<any>;
   public tutorName: Object;
@@ -37,6 +39,7 @@ export class CourseClassDetailModalComponent implements OnInit {
   constructor(
     public activeModal: NgbActiveModal,
     private coursesService: CoursesService,
+    private datePipe: DatePipe,
     private fb: FormBuilder
   ) { }
 
@@ -178,7 +181,9 @@ export class CourseClassDetailModalComponent implements OnInit {
   /***** Post form ********************************************************/
   onSubmit() {
     let valueToSubmit = this.updateForm.value;
+    // console.log(valueToSubmit)
     let vailadValue = this.checkInputVailad(valueToSubmit);
+    // console.log(vailadValue)
     if (vailadValue !== null && this.updateForm.dirty) {
       this.submitByMode(vailadValue);
     } else if (!this.updateForm.dirty) {
@@ -189,12 +194,13 @@ export class CourseClassDetailModalComponent implements OnInit {
   }
 
   // check whether data vailad or not(ruled by Validators).
-  checkInputVailad(valueToSubmit) {
+  checkInputVailad(valueSubmit) {
     if (this.updateForm.status == 'VALID') {
       if(this.command == 0){
-        return valueToSubmit;
-      } else {
-        return this.prepareSubmitData(valueToSubmit);
+        return valueSubmit;
+      } else {        
+        return this.prepareSubmitData(valueSubmit);
+        // return valueSubmit;
       }
     }
     else {
@@ -204,10 +210,10 @@ export class CourseClassDetailModalComponent implements OnInit {
     }
   }
 
-  prepareSubmitData(valueToSubmit) {
-    valueToSubmit.BeginDate = this.whichCourseClass.BeginDate;
-    valueToSubmit.EndDate = this.whichCourseClass.EndDate;
-    return valueToSubmit;
+  prepareSubmitData(valueTo) {
+    valueTo.BeginDate = this.datePipe.transform(this.updateForm.controls.BeginDate.value,'yyyy-MM-dd');
+    valueTo.EndDate = this.datePipe.transform(this.updateForm.controls.EndDate.value,'yyyy-MM-dd');
+    return valueTo;
   }
 
   // Add & Update new data 
@@ -216,7 +222,7 @@ export class CourseClassDetailModalComponent implements OnInit {
     if (this.command == 0) {
       this.coursesService.addNewCourseClass(formValue).subscribe(
         (res) => {
-          // console.log(formValue)
+          // console.log(formValue);
           alert('Submit success!');
           this.activeModal.close();
         },
