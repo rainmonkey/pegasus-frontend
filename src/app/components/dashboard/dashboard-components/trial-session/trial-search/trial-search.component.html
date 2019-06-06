@@ -29,7 +29,7 @@
           <div class='t_s_tabs' (click)="selectTab($event,'Orgs','Teachers',index,i.OrgId)">
             <span class='t_s_tabs_close' (click)="unSelectTab($event,'Orgs')" style="display: none"><span
                 class='far fa-times-circle'></span></span>
-            <span class='t_s_tabs_title col-12'>{{i.Abbr}}</span>
+            <span class='t_s_tabs_title col-12' style="font-size: 25px">{{i.Abbr}}</span>
             <div class='t_s_tabs_content col-12'>{{i.OrgName.toLowerCase()}}</div>
           </div>
         </div>
@@ -46,11 +46,12 @@
     <div class='col-12'>
       <div class='row'>
         <div *ngFor='let i of displayTeachers(); let index = index' class='col-2 Teachers' id={{index}}>
-          <div class='t_s_tabs' (click)="selectTab($event,'Teachers',null,index,null)">
+          <div class='t_s_tabs' (click)="popUpModal()">
             <span class='t_s_tabs_close' (click)="unSelectTab($event,'Teachers')" style="display: none"><span
                 class='far fa-times-circle'></span></span>
-            <span class='t_s_tabs_title col-12'>{{i.a}}</span>
-            <!-- <div class='t_s_tabs_content col-12'>level</div> -->
+            <div class='t_s_tabs_title col-12' style="font-size: 25px">{{i.FirstName}}</div>
+            <div class='t_s_tabs_title col-12' style="font-size: 25px">{{i.LastName}}</div>
+            <div class='t_s_tabs_content col-12'>{{i.Level}}</div>
           </div>
         </div>
       </div>

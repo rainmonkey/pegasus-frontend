@@ -106,10 +106,6 @@ export class SessionDetailEditModalComponent implements OnInit {
       this.isloading = false;
     }, err => {
       this.isEditFail = true;
-      setTimeout(() => {
-        this.isEditFail = false;
-      }, 3000);
-      alert(err.error.ErrorMessage);
     });
   }
 }

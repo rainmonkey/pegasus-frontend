@@ -1,4 +1,6 @@
+import { TrialModalComponent } from './../trial-modal/trial-modal.component';
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-trial-search',
@@ -23,7 +25,8 @@ export class TrialSearchComponent implements OnInit {
   @Input() groupCoursesInstance;
   @Output() childEvent = new EventEmitter();
 
-  constructor() { }
+  constructor(  private modalService: NgbModal,
+    ) { }
 
   ngOnInit() {
 
@@ -61,14 +64,17 @@ export class TrialSearchComponent implements OnInit {
     display teachers that fit all the filters requirement
   */
   displayTeachers() {
-    return this.teachers
-    // let array: Array<any> = [];
-    // for (let i of this.groupCoursesInstance) {
-    //   if (i.Org.OrgId == this.filters['OrgsId'] && i.Course.CourseCategory.CourseCategoryId == this.filters['CategoriesId']) {
-    //     array.push(i)
-    //   }
-    // }
-    // return [{ 'a': 1 }, { "a": 1 }, { "a": 1 }]
+    let array:Array<any> = [];
+    for(let i of this.teachers){
+      for(let j of i.AvailableDays){
+        if(j.OrgId == this.filters['OrgsId']){
+          array.push(i)
+        }
+      }
+    }
+
+    //需要保存一次array
+    
   }
 
   /*
@@ -100,9 +106,9 @@ export class TrialSearchComponent implements OnInit {
             if(nextClass !== null){
               this.styleFlowControl[nextClass].display = true;
             }
-            if(className =='Teachers'){
-              this.emitToParent(i);
-            }
+            // if(className =='Teachers'){
+            //   this.popUpModal(i,event);
+            // }
           }, 500)
         }
       }
@@ -142,8 +148,9 @@ export class TrialSearchComponent implements OnInit {
     event.stopPropagation();
   }
 
-  emitToParent(teacherSelected){
-    this.childEvent.emit(teacherSelected);
+  popUpModal(){
+    //this.childEvent.emit(teacherSelected);
+    const modalRef = this.modalService.open(TrialModalComponent, { size: 'lg', backdrop: 'static', keyboard: false });
   }
 
 }
