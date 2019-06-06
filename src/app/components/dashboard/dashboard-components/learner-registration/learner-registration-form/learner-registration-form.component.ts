@@ -164,7 +164,7 @@ export class LearnerRegistrationFormComponent implements OnInit, DoCheck {
         middleName: [this.whichLearner ? this.whichLearner.MiddleName : ''],
         lastName: [this.whichLearner ? this.whichLearner.LastName : '', Validators.required],
         gender: [this.whichLearner ? this.whichLearner.Gender : '2', Validators.required],
-        birthday: [this.whichLearner && this.whichLearner.Dob ? this.whichLearner.Dob.slice(0, 10) : ''],
+        birthday: [this.whichLearner && this.whichLearner.Dob ? this.whichLearner.Dob.slice(0, 10) : null],
         enrollmentDate: [this.whichLearner ? this.whichLearner.EnrollDate.slice(0, 10) : this.myDate()],
         contactNum: [this.whichLearner ? this.whichLearner.ContactNum : ''],
         email: [this.whichLearner ? this.whichLearner.Email : '', [Validators.required, Validators.email]],
@@ -640,13 +640,14 @@ selectLocation(id, i) {
     this.confirmCustomCourse();
     console.log(this.courseGroup);
     // encapsulate learner form data
+    this.learner = [];
     this.learner = this.learnerForm.value;
     console.log(this.learner);
     this.fdObj['FirstName'] = this.learner.firstName;
     this.fdObj['MiddleName'] = this.learner.middleName;
     this.fdObj['LastName'] = this.learner.lastName;
     this.fdObj['Gender'] = this.learner.gender;
-    this.fdObj['dob'] = this.learner.birthday;
+    this.fdObj['dob'] = this.learner.birthday == null? null: this.learner.birthday;
     this.fdObj['EnrollDate'] = this.learner.enrollmentDate;
     this.fdObj['ContactNum'] = this.learner.contactNum;
     this.fdObj['Email'] = this.learner.email;
@@ -763,7 +764,7 @@ selectLocation(id, i) {
   }
   // // check changes
   ngDoCheck() {
-    // console.log(this.customCourse)
+     console.log(this.selectlearnerLevel)
     // console.log(this.customCourse.controls[0].get('schedule').get('beginTime').invalid)
     // console.log(this.modalRefTimePicker);
     // this.modalRefConfirm?this.needSubmit = this.modalRefConfirm.componentInstance.submitClicked:this.needSubmit = false;
