@@ -143,7 +143,7 @@ export class LearnerRegistrationFormComponent implements OnInit, DoCheck {
       location: [''],
       room: ['',Validators.required],
       beginDate: [this.myDate()],
-      endDate: ['',Validators.required],
+      endDate: [''],
       schedule: this.fb.group({
         dayOfWeek: ['6'],
         beginTime: [this.time, ngtimepickerValidator],
@@ -165,7 +165,7 @@ export class LearnerRegistrationFormComponent implements OnInit, DoCheck {
         lastName: [this.whichLearner ? this.whichLearner.LastName : '', Validators.required],
         gender: [this.whichLearner ? this.whichLearner.Gender : '2', Validators.required],
         birthday: [this.whichLearner && this.whichLearner.Dob ? this.whichLearner.Dob.slice(0, 10) : ''],
-        enrollmentDate: [this.whichLearner ? this.whichLearner.EnrollDate.slice(0, 10) : this.myDate()],
+        enrollmentDate: [this.whichLearner&&this.whichLearner.EnrollDate ? this.whichLearner.EnrollDate.slice(0, 10) : this.myDate()],
         contactNum: [this.whichLearner ? this.whichLearner.ContactNum : ''],
         email: [this.whichLearner ? this.whichLearner.Email : '', [Validators.required, Validators.email]],
         address: [this.whichLearner ? this.whichLearner.Address : ''],
