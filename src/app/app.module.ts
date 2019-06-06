@@ -91,7 +91,8 @@ import { confirmEqualValidatorDirectie } from './shared/confirm-equal-validator.
 import { StaffListComponent } from './components/dashboard/dashboard-components/admin-staff/Staff-list/Staff-list.component';
 import { StaffPanelComponent } from './components/dashboard/dashboard-components/admin-staff/staff-panel/staff-panel.component';
 import { SimplifyOrgPipe } from './shared/pipes/simplify-org.pipe';
-// import { TrialModalComponent } from './components/dashboard/dashboard-components/trial-session/trial-modal/trial-modal.component';
+import { LearnerCreditPanelComponent } from './components/dashboard/dashboard-components/learner-credit/learner-credit-panel/learner-credit-panel.component';
+import { LearnerCreditDetailsComponent } from './components/dashboard/dashboard-components/learner-credit/learner-credit-details/learner-credit-details.component';
 import { TrialTesterComponent } from './components/dashboard/dashboard-components/trial-session/trial-tester/trial-tester.component';
 import { OrderbyPipe } from './shared/pipes/orderby.pipe';
 
@@ -179,6 +180,8 @@ import { OrderbyPipe } from './shared/pipes/orderby.pipe';
     StaffPanelComponent,
     SimplifyOrgPipe,
     TrialModalComponent,
+    LearnerCreditPanelComponent,
+    LearnerCreditDetailsComponent,
     TrialTesterComponent,
     OrderbyPipe,
   ],

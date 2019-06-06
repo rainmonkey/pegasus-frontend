@@ -53,6 +53,7 @@ export class SearchNameModuleComponent implements OnInit {
   searchForm = this.fb.group({
     search: ['', Validators.required]
   });
+
   get search() {
     return this.searchForm.get('search');
   }
@@ -73,6 +74,7 @@ export class SearchNameModuleComponent implements OnInit {
     });
     this.onChangePath(this.learners.LearnerId);
   }
+
   modalServiceMethod(content) {
     if (this.data.length > 1) {
       this.modalService
@@ -87,6 +89,7 @@ export class SearchNameModuleComponent implements OnInit {
         );
     }
   }
+
   open(content) {
     // search learner
     this.router.navigate([this.payPath]);
@@ -108,15 +111,16 @@ export class SearchNameModuleComponent implements OnInit {
           this.onChangePath(this.learners.LearnerId);
         }
       },
-        (error) =>{
+        (error) => {
           console.log(error)
           this.errorAlert = true;
           this.errorMsg = error.error;
         }
       );
   }
+
   // close alert
-  closeErro(){
+  closeErro() {
     this.errorAlert = false;
   }
 
@@ -137,6 +141,7 @@ export class SearchNameModuleComponent implements OnInit {
       });
       this.learners.learnerId = this.data[i].LearnerId;
       this.generalRepoService.fisrtName.next(this.data[i]);
+      console.log(this.generalRepoService)
       this.onChangePath(this.learners.learnerId);
     }
   }
@@ -150,15 +155,21 @@ export class SearchNameModuleComponent implements OnInit {
       return `with: ${reason}`;
     }
   }
+
   ngOnInit() {
     this.activatedRouter.url.subscribe(url => {
       const path1 = url[0].path;
-      let path2 = url[1].path;
-      if(path2 === 'invoice') {
-        path2 = 'invoice';
-        this.payPath = `/${path1}/${path2}/`;
+      if (path1 === "credit") {
+        this.payPath = "learner/" + path1
       } else {
-      this.payPath = `/${path1}/${path2}/`; }
+        let path2 = url[1].path;
+        if (path2 === 'invoice') {
+          path2 = 'invoice';
+          this.payPath = `/${path1}/${path2}/`;
+        } else {
+          this.payPath = `/${path1}/${path2}/`;
+        }
+      }
     });
   }
 
