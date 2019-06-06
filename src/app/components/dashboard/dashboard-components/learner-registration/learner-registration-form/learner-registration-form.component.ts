@@ -917,11 +917,11 @@ selectLocation(id, i) {
                 beginDate: [o.BeginDate ? o.BeginDate.slice(0, 10) : ''],
                 endDate: [o.EndDate ? o.EndDate.slice(0, 10) : ''],
                 schedule: this.fb.group({
-                  dayOfWeek: [o.CourseSchedule[0].DayOfWeek],
+                  dayOfWeek: [o.CourseSchedule[0].DayOfWeek?o.CourseSchedule[0].DayOfWeek:null],
                   beginTime: [{
-                    hour: parseInt(o.CourseSchedule[0].BeginTime.slice(0, 2)),
-                    minute: parseInt(o.CourseSchedule[0].BeginTime.slice(3, 5)),
-                    second: parseInt(o.CourseSchedule[0].BeginTime.slice(6, 8))
+                    hour: o.CourseSchedule[0].BeginTime?parseInt(o.CourseSchedule[0].BeginTime.slice(0, 2)):null,
+                    minute: o.CourseSchedule[0].BeginTime?parseInt(o.CourseSchedule[0].BeginTime.slice(3, 5)):null,
+                    second: o.CourseSchedule[0].BeginTime?parseInt(o.CourseSchedule[0].BeginTime.slice(6, 8)):null
                   }],//{ hour: 9, minute: 0, second: 0 }
                   //{ hour: 9, minute: 0, second: 0 }  09:03:14
                   durationType: [o.Course.Duration]
@@ -932,7 +932,6 @@ selectLocation(id, i) {
             console.log(this.setUniCatListArray, this.courseListArray);
             console.log(this.locListArray, this.prepareTeaLevListArray);
             console.log(this.prepareTeaNameListArray, this.prepareRoomListArray);
-
           },
             (err) => {
               console.log(err);
