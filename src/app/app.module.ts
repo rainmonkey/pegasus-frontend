@@ -95,7 +95,7 @@ import { LearnerCreditPanelComponent } from './components/dashboard/dashboard-co
 import { LearnerCreditDetailsComponent } from './components/dashboard/dashboard-components/learner-credit/learner-credit-details/learner-credit-details.component';
 import { TrialTesterComponent } from './components/dashboard/dashboard-components/trial-session/trial-tester/trial-tester.component';
 import { OrderbyPipe } from './shared/pipes/orderby.pipe';
-
+import { SessionRescheduleModalComponent } from './components/dashboard/dashboard-components/sessions/session-modals/session-reschedule-modal/session-reschedule-modal.component';
 
 
 @NgModule({
@@ -184,6 +184,7 @@ import { OrderbyPipe } from './shared/pipes/orderby.pipe';
     LearnerCreditDetailsComponent,
     TrialTesterComponent,
     OrderbyPipe,
+    SessionRescheduleModalComponent,
   ],
   imports: [
     NgbModule,
@@ -218,6 +219,7 @@ import { OrderbyPipe } from './shared/pipes/orderby.pipe';
     LearnerEditModalComponent,
     SessionCancelModalComponent,
     SessionCompletedModalComponent,
+    SessionRescheduleModalComponent,
     RatingModalComponent,
     ForgotPasswordModalComponent,
     ChangePasswordModalComponent,

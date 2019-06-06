@@ -66,4 +66,10 @@ export class SessionsService {
     // @ts-ignore
     return this.http.put<any>(this.baseUrl + 'session/Confirm/' + lessonId + '/' + reason);
   }
+
+  SessionReSchedule(lessonId, reason) {
+    console.log(this.httpHeaders);
+    // @ts-ignore
+    return this.http.put<any>(this.baseUrl + 'LessonReschedule/' + lessonId + '/' + localStorage.getItem('userID') + '/' + reason);
+  }
 }

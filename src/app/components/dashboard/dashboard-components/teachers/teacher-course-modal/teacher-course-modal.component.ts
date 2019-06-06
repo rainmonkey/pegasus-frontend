@@ -47,6 +47,7 @@ export class TeacherCourseModalComponent implements OnInit {
   ngOnInit() {
     this.getCourseCategory();
     this.getCoursesByTeacher();
+    this.formGroupAssemble();
   }
 
 
@@ -201,24 +202,31 @@ export class TeacherCourseModalComponent implements OnInit {
     else {
       this.disableCourseDivFlag = false;
     }
-    this.getTeacherSalary(array);
+    // this.getTeacherSalary(array);
     this.coursesByTeacher = array;
   }
 
   /*
     get this teacher's salary
   */
-  getTeacherSalary(coursesByTeacher) {
-    for (let i of coursesByTeacher) {
-      //one on one salary
-      if (i.Course.CourseType == 1) {
-        this.oneOnoneWage = i.HourlyWage;
+  getTeacherSalary(course) {
+    if(this.whichTeacher.TeacherWageRate !== null){
+      if(course == 'piano'){
+        return this.whichTeacher.TeacherWageRate.PianoRates;
       }
-      else if (i.Course.CourseType == 2) {
-        this.groupWage = i.HourlyWage;
+      else if(course == 'theory'){
+        return this.whichTeacher.TeacherWageRate.TheoryRates;
+      }
+      else if(course == 'others'){
+        return this.whichTeacher.TeacherWageRate.OthersRates;
+      }
+      else if(course == 'group'){
+        return this.whichTeacher.TeacherWageRate.GroupRates;
       }
     }
-    this.formGroupAssemble();
+    else{
+      return '--';
+    }
   }
 
   onSubmit() {
@@ -240,54 +248,75 @@ export class TeacherCourseModalComponent implements OnInit {
   prepareData() {
     let objToSubmit = {
       "TeacherId": this.whichTeacher.TeacherId,
-      "TeacherCourses": []
+      "Courses": [],
+      "TeacherWageRates":{}
     }
+    //添加course Id
     for (let i of this.courseCheckBox._results) {
-      //添加course Id
       if (i.nativeElement.checked == true) {
-        let teacherCourse = { "CourseId": null, "HourlyWage": null };
-        teacherCourse.CourseId = (Number(i.nativeElement.value));
-
-        //添加工资
-        // 1: one to one 
-        if (i.nativeElement.id == 1) {
-          let wage = document.getElementById('one');
-          teacherCourse.HourlyWage = (Number(wage['value']))
-        }
-        //2: group
-        else if (i.nativeElement.id == 2) {
-          let wage = document.getElementById('group');
-          teacherCourse.HourlyWage = (Number(wage['value']))
-        }
-
-        objToSubmit.TeacherCourses.push(teacherCourse)
+        objToSubmit.Courses.push((Number(i.nativeElement.value)))
       }
     }
+    //添加 wage
+    for(let i in this.CourseForm.value){
+      this.CourseForm.value[i] =  Number(this.CourseForm.value[i]);
+    }
+
+    objToSubmit.TeacherWageRates = (this.CourseForm.value);
+
+    console.log(objToSubmit)
     return objToSubmit;
 
   }
 
   submitToServer(dataToSubmit) {
-    this.teacherService.updateTeacherCourse(dataToSubmit).subscribe(
-      (res) => {
-        this.onsubmit = false;
-        this.isSuccess = true;
-      },
-      (err) => {
-        this.onsubmit = false;
-        alert(err)
-      }
-    )
+    if(this.whichTeacher.TeacherWageRate == null){
+      this.teacherService.updateTeacherCoursePost(dataToSubmit).subscribe(
+        (res) => {
+          this.onsubmit = false;
+          this.isSuccess = true;
+        },
+        (err) => {
+          this.onsubmit = false;
+          console.log(err)
+          alert(err)
+        }
+      )
+    } 
+    else{
+      this.teacherService.updateTeacherCoursePut(dataToSubmit).subscribe(
+        (res) => {
+          this.onsubmit = false;
+          this.isSuccess = true;
+        },
+        (err) => {
+          this.onsubmit = false;
+          console.log(err)
+          alert(err)
+        }
+      )
+    }
   }
 
   formGroupAssemble() {
     let groupObj;
-
-    groupObj = {
-      oneOnoneWage: [{ value: this.oneOnoneWage, disabled: false }, Validators.required],
-      groupWage: [{ value: this.groupWage, disabled: false }, Validators.required]
-    }
-
-    this.CourseForm = this.fb.group(groupObj);
+      if(this.whichTeacher.TeacherWageRate == null){
+        groupObj = {
+          PianoRates: [{ value:null, disabled: false }, Validators.required],
+          TheoryRates: [{ value: null, disabled: false }, Validators.required],
+          OthersRates:[{ value: null, disabled: false }, Validators.required],
+          GroupRates:[{ value: null, disabled: false }, Validators.required],
+        }
+      }
+      else{
+        groupObj = {
+          PianoRates: [{ value: this.whichTeacher.TeacherWageRate.PianoRates, disabled: false }, Validators.required],
+          TheoryRates: [{ value: this.whichTeacher.TeacherWageRate.TheoryRates, disabled: false }, Validators.required],
+          OthersRates:[{ value: this.whichTeacher.TeacherWageRate.OthersRates, disabled: false }, Validators.required],
+          GroupRates:[{ value: this.whichTeacher.TeacherWageRate.GroupRates, disabled: false }, Validators.required],
+        }
+      }
+      this.CourseForm = this.fb.group(groupObj);
+    
   }
 }

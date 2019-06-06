@@ -29,25 +29,34 @@ export class TrialModalComponent implements OnInit {
       height: 700,
       selectable: true,
       select: (info) => {
-        alert(info.start)
+        
       },
-      maxTime: '21:00',
       selectConstraint: {
-        daysOfWeek: [1, 2, 3], //周
-        startTime: '10:00',
-        endTime: '13:10'
+        // daysOfWeek: [1, 2, 3], //周
+        // startTime: '10:00',
+        // endTime: '13:10'
+        start: '2019-06-02T12:00:00',
+        end: '2019-06-02T13:00:00',
       },
-      businessHours:[
+      businessHours: [
         {
           daysOfWeek: [1],
-          startTime:'09:00',
-          endTime:'12:00'
+          startTime: '09:00',
+          endTime: '09:00'
         },
-        {
-          daysOfWeek: [1],
-          startTime:'15:00',
-          endTime:'16:00'
-        }
+
+
+      ],
+      events: [{
+        id: 'available_hours',
+        start: '2019-06-02T12:00:00',
+        end: '2019-06-02T13:00:00',
+        // constraint:{
+        //   startTime: '2019-06-02T12:00:00',
+        //    endTime:   '2019-06-02T13:00:00',
+        // },
+        rendering: 'background'
+      }
       ],
       minTime: '09:00',
       slotDuration: '00:15',
