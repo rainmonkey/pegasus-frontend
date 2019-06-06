@@ -56,10 +56,13 @@
             <div class="row">
               <div class="col-6" style="margin-right: -1rem;"
                 *ngFor="let sches of updateForm.get('CourseSchedule').controls; let i = index" [formGroupName]="i">
-                <label class='t_mf_label'>Begin Time {{i+1}} :</label>
+                <label class='t_mf_label'>Begin Time {{i+1}} :</label>                
                 <span style="float:right;" (click)="deleteTime(i)">
                   <i class="far fa-calendar-times" style="cursor:hand;"></i>
                 </span>
+                <select type="text" class='col-12 t_mf_input' formControlName="DayOfWeek">
+                  <option *ngFor="let j of weeks" [value]=j>{{j | weekFormat}}</option>
+                </select>
                 <input class="form-control" type="time" name="time" step="900" formControlName="BeginTime" />
               </div>
             </div>

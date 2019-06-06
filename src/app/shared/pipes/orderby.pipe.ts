@@ -6,8 +6,11 @@ import { Pipe, PipeTransform } from '@angular/core';
 })
 export class OrderbyPipe implements PipeTransform {
   transform(value: any, propertyName: string): any[] {
+      // Method 1
       // value = value || [];    
       // return value.sort((a: any, b: any) => a[propertyName].localeCompare(b[propertyName]));
+
+      // Method 2
       if(!Array.isArray(value)){
         return;
       }  

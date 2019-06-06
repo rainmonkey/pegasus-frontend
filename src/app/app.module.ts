@@ -68,8 +68,8 @@ import { TeacherUpdateModalComponent } from './components/dashboard/dashboard-co
 import { TimePickerComponent } from './components/dashboard/dashboard-components/time-picker/time-picker.component';
 import { TrialInfoComponent } from './components/dashboard/dashboard-components/trial-session/trial-info/trial-info.component';
 import { TrialPanelComponent } from './components/dashboard/dashboard-components/trial-session/trial-panel/trial-panel.component';
-import {TrialModalComponent} from './components/dashboard/dashboard-components/trial-session/trial-modal/trial-modal.component';
 import { TrialSearchComponent } from './components/dashboard/dashboard-components/trial-session/trial-search/trial-search.component';
+import { TrialModalComponent } from './components/dashboard/dashboard-components/trial-session/trial-modal/trial-modal.component';
 import { DashboardPanelComponent } from './components/dashboard/general/dashboard-panel/dashboard-panel.component';
 import { HeaderbarComponent } from './components/dashboard/general/headerbar/headerbar.component';
 import { SidebarComponent } from './components/dashboard/general/sidebar/sidebar.component';
@@ -91,6 +91,9 @@ import { confirmEqualValidatorDirectie } from './shared/confirm-equal-validator.
 import { StaffListComponent } from './components/dashboard/dashboard-components/admin-staff/Staff-list/Staff-list.component';
 import { StaffPanelComponent } from './components/dashboard/dashboard-components/admin-staff/staff-panel/staff-panel.component';
 import { SimplifyOrgPipe } from './shared/pipes/simplify-org.pipe';
+import { LearnerCreditPanelComponent } from './components/dashboard/dashboard-components/learner-credit/learner-credit-panel/learner-credit-panel.component';
+import { LearnerCreditDetailsComponent } from './components/dashboard/dashboard-components/learner-credit/learner-credit-details/learner-credit-details.component';
+import { TrialTesterComponent } from './components/dashboard/dashboard-components/trial-session/trial-tester/trial-tester.component';
 import { OrderbyPipe } from './shared/pipes/orderby.pipe';
 import { SessionRescheduleModalComponent } from './components/dashboard/dashboard-components/sessions/session-modals/session-reschedule-modal/session-reschedule-modal.component';
 
@@ -173,10 +176,13 @@ import { SessionRescheduleModalComponent } from './components/dashboard/dashboar
     PaymentPeriodPipe,
     IsUnder18Pipe,
     confirmEqualValidatorDirectie,
-    //staff
     StaffListComponent,
     StaffPanelComponent,
     SimplifyOrgPipe,
+    TrialModalComponent,
+    LearnerCreditPanelComponent,
+    LearnerCreditDetailsComponent,
+    TrialTesterComponent,
     OrderbyPipe,
     SessionRescheduleModalComponent,
   ],
@@ -218,7 +224,9 @@ import { SessionRescheduleModalComponent } from './components/dashboard/dashboar
     ForgotPasswordModalComponent,
     ChangePasswordModalComponent,
     LearnerRegistrationModalComponent,
-    LearnerRegistrationConfirmModalComponent
+    LearnerRegistrationConfirmModalComponent,
+    TrialModalComponent,
+    TrialTesterComponent
   ],
   exports: [AppComponent],
   bootstrap: [AppComponent]

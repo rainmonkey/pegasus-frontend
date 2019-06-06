@@ -22,7 +22,7 @@ export class SidebarComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    console.log('Sidebar')
+    // console.log('Sidebar')
     this.settingService.currentSidebarSettings.subscribe(
       (res)=>{this.navitem = res;}
     )

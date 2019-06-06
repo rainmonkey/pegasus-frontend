@@ -280,30 +280,30 @@
 
 
     <div class="card" *ngIf="isGroupCourse" >
-      <div class="select-group-course card-body" >
+      <div class="select-group-course card-body " >
         <div class="guitar">
-          <table class="table">
+          <table class="table ">
             <thead>
               <tr>
-                <th >Please Check</th>
-                <th >Course</th>
-                <th >Schedule</th>
-                <th >Location</th>
-                <th >Room</th>
-                <th >Teacher</th>
-                <th >Begin Time</th>
-                <th >How to know us</th>
+                <!-- <th class="">Please Check</th> -->
+                <th class="table">Course</th>
+                <th class="table ">Schedule</th>
+                <th class="table ">Location</th>
+                <!-- <th class="table ">Room</th>-->
+                <th class="table">Teacher</th>
+                <th class="table ">Begin Time</th>
+                <th class="table ">How to know us</th>
               </tr>
             </thead>
             <tbody >
               <tr formArrayName="groupCourse" *ngFor="let groupCourse of groupCourseInstance; let i = index">
-                <td><input type="checkbox" [checked]="groupCourse.isChecked"  (click)="selectCheckboxes(i, $event)"></td>
-                <td>{{groupCourse.Course.CourseName}}</td>
+                <td ><input type="checkbox" [checked]="groupCourse.isChecked"  (click)="selectCheckboxes(i, $event)">
+                {{groupCourse.Course.CourseName}}</td>
                 <td>
                   <p *ngFor="let schedule of groupCourse.schedule">{{schedule.DayOfWeek | weekFormat}}: {{schedule.BeginTime}}-{{schedule.EndTime}}</p>
                 </td>
-                <td>{{groupCourse.Org.OrgName}}</td>
-                <td>{{groupCourse.Room.RoomName}}</td>
+                <td><div>{{groupCourse.Org.OrgName}}</div><div><i class="fas fa-street-view"></i>{{groupCourse.Room.RoomName}}</div></td>
+                <!-- <td>{{groupCourse.Room.RoomName}}</td>-->
                 <td>{{groupCourse.Teacher.FirstName}}</td>
                 <td><input type="date" [ngModelOptions]="{standalone: true}" [(ngModel)]="groupCourseInstance[i].beginDate" ></td>
                 <td><input type="text" [ngModelOptions]="{standalone: true}" [(ngModel)]="groupCourseInstance[i].comments" ></td>
@@ -403,6 +403,7 @@
                 <label for="customTime">Course Time</label>
                 <!-- <input class="form-control" type="text"  value="15:30:00" routerLink="/timePicker" routerLinkActive="active"> -->
                 <ngb-timepicker formControlName="beginTime" [size]="'small'" [hourStep]="hourStep" [minuteStep]="minuteStep"></ngb-timepicker>
+                <small class="text-danger" *ngIf="this.customCourse.controls[0].get('schedule').get('beginTime').invalid">Please Select a Valid Time</small>
               </div>
               <div class='col-sm-3 col-md-3 mt-3'>
                 <button class='btn btn-primary' (click)="open(i)">Pick Course Time by Calendar</button>
@@ -410,13 +411,13 @@
             </div>
             <div class="d-flex my-3 justify-content-end">
               <button class="mx-3 btn_back" (click)="next('parentForm')">Back</button>
-              <button [disabled]="registrationForm.invalid" (click)="onSubmit()" class="btn_submit"
-              type="submit">Submit</button>
             </div>
           </div>
         </div>
         <div class="text-right">
           <button class="btn_add" (click)="addCustomCourse()"><b>Add more courses</b></button>
+          <button [disabled]="customCourse.invalid || customCourse.untouched" (click)="onSubmit()" class="btn_submit"
+          type="submit">Submit</button>
         </div>
       </div>
   </div>

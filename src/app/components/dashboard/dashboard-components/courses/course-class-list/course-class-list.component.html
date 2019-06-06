@@ -22,7 +22,8 @@
     </div>
     <br>
     <!--Error Message-->
-    <div style="margin-left: auto;margin-right: auto;" *ngIf="errorMessage" class="text-danger">{{errorMessage}}<br></div>
+    <div style="margin-left: auto;margin-right: auto;" *ngIf="errorMessage" class="text-danger">{{errorMessage}}<br>
+    </div>
 
     <!--info page table-->
     <div class='col-12'>
@@ -51,7 +52,8 @@
         <!--table body-->
         <tbody>
           <!--pagination is here-->
-          <tr *ngFor='let i of courseClassLists | slice: (page-1)* pageSize : (page-1) * pageSize + pageSize; let j = index'>
+          <tr
+            *ngFor='let i of courseClassLists | slice: (page-1)* pageSize : (page-1) * pageSize + pageSize; let j = index'>
             <th scope="row">{{j+1}}</th>
             <td>
               <ngb-highlight [result]="i.CourseName" [term]="filter.value"></ngb-highlight>
@@ -61,9 +63,10 @@
             <td>{{i.OrgName}}</td>
             <td>{{i.RoomName}}</td>
             <td>
-              <span *ngFor="let k of i.schedule;">
-              <span>{{k.BeginTime | slice:0:5}} - {{k.EndTime | slice:0:5}}</span><br>
-            </span>
+              <span *ngFor="let k of i.schedule;">     
+                <span>{{k.DayOfWeek | weekFormat}}</span><br>        
+                <span>{{k.BeginTime | slice:0:5}} - {{k.EndTime | slice:0:5}}</span><br>
+              </span>
             </td>
             <td class='tl_body_table_btns'>
               <span (click)='detailModal(2,i)' class='tl_body_table_btn' style="margin-right: 2rem;">
