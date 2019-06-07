@@ -762,9 +762,14 @@ selectLocation(id, i) {
   // // ng-activeModal for confirm submit
   openConfirm() {
     this.modalRefConfirm = this.modalService.open(LearnerRegistrationConfirmModalComponent);
-    let activeModal = this.modalRefConfirm.componentInstance;
-    activeModal.fdObj = this.fd;
-    this.whichLearner? activeModal.fdObj = this.whichLearner: activeModal.fdObj = {};
+    this.modalRefConfirm.componentInstance.fdObj = this.fd;
+    if (this.whichLearner){
+      this.modalRefConfirm.componentInstance.command = 2;  //add
+      this.modalRefConfirm.componentInstance.learnerId = this.whichLearner.LearnerId;
+    }
+    else
+      this.modalRefConfirm.componentInstance.command = 1;   //post
+
   }
   // // check changes
   ngDoCheck() {

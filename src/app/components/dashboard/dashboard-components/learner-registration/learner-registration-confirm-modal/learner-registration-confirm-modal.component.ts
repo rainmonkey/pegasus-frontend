@@ -10,7 +10,8 @@ import { LearnerRegistrationService } from '../../../../../services/http/learner
 })
 export class LearnerRegistrationConfirmModalComponent implements OnInit {
   fdObj = {};
-  whichLearner = {};
+  command:number;
+  learnerId:number;
   errorMsg;
   // loading icon
   isloading = false;
@@ -27,11 +28,15 @@ export class LearnerRegistrationConfirmModalComponent implements OnInit {
     // return console.log(this.fdObj)
     this.isloading = true;
     this.isConfirmClick = true;
-    if (this.whichLearner){
-      this.updateTable();
-    } else {
-    this.registrationService.postStudent(this.fdObj)
-    .subscribe(
+    console.log(this.command,this.learnerId);
+    let fun;
+    if (this.command === 1){
+      fun= this.registrationService.postStudent(this.fdObj);
+    }else
+      fun= this.registrationService.putStudent(this.learnerId,this.fdObj);
+    
+
+    fun.subscribe(
       data => {
         this.isloading = false;
         this.isConfirmClick = false;
@@ -46,25 +51,8 @@ export class LearnerRegistrationConfirmModalComponent implements OnInit {
         console.log('Error!', error);
       }
     )
-    }
+ 
     this.activeModal.dismiss();
   }
-  updateTable(){
-    this.registrationService.updateStudent(this.whichLearner).subscribe(
-      data => {
-        this.isloading = false;
-        this.isConfirmClick = false;
-        console.log('Success!', data);
-        this.router.navigate(['/learner/list/success']);
-        this.activeModal.dismiss();
-      },
-      error => {
-        this.isloading = false;
-        this.isConfirmClick = false;
-        this.errorMsg = error;
-        this.router.navigate(['/learner/list/success']);
-        console.log('Error!', error);
-      }
-    )
-  }
+
 }
