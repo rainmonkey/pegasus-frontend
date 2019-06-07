@@ -763,6 +763,13 @@ selectLocation(id, i) {
   openConfirm() {
     this.modalRefConfirm = this.modalService.open(LearnerRegistrationConfirmModalComponent);
     this.modalRefConfirm.componentInstance.fdObj = this.fd;
+    if (this.whichLearner){
+      this.modalRefConfirm.componentInstance.command = 2;  //add
+      this.modalRefConfirm.componentInstance.learnerId = this.whichLearner.LearnerId; 
+    }
+    else
+      this.modalRefConfirm.componentInstance.command = 1;   //post
+
   }
   // // check changes
   ngDoCheck() {
@@ -929,7 +936,7 @@ selectLocation(id, i) {
                 beginDate: [o.BeginDate ? o.BeginDate.slice(0, 10) : ''],
                 endDate: [o.EndDate ? o.EndDate.slice(0, 10) : ''],
                 schedule: this.fb.group({
-                  dayOfWeek: [o.CourseSchedule[0].DayOfWeek?o.CourseSchedule[0].DayOfWeek:null],
+                  dayOfWeek: [o.CourseSchedule[0].DayOfWeek==undefined?null:o.CourseSchedule[0].DayOfWeek],
                   beginTime: [{
                     hour: o.CourseSchedule[0].BeginTime?parseInt(o.CourseSchedule[0].BeginTime.slice(0, 2)):null,
                     minute: o.CourseSchedule[0].BeginTime?parseInt(o.CourseSchedule[0].BeginTime.slice(3, 5)):null,

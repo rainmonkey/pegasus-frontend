@@ -10,6 +10,8 @@ import { LearnerRegistrationService } from '../../../../../services/http/learner
 })
 export class LearnerRegistrationConfirmModalComponent implements OnInit {
   fdObj = {};
+  command:number;
+  learnerId:number;
   errorMsg;
   // loading icon
   isloading = false;
@@ -26,8 +28,15 @@ export class LearnerRegistrationConfirmModalComponent implements OnInit {
     // return console.log(this.fdObj)
     this.isloading = true;
     this.isConfirmClick = true;
-    this.registrationService.postStudent(this.fdObj)
-    .subscribe(
+    console.log(this.command,this.learnerId);
+    let fun;
+    if (this.command === 1){
+      fun= this.registrationService.postStudent(this.fdObj);
+    }else
+      fun= this.registrationService.putStudent(this.learnerId,this.fdObj);
+    
+
+    fun.subscribe(
       data => {
         this.isloading = false;
         this.isConfirmClick = false;
