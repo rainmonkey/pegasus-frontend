@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { Router, ActivatedRoute } from '@angular/router';
+import { Router } from '@angular/router';
 import { LearnerRegistrationService } from '../../../../../services/http/learner-registration.service';
 
 @Component({
@@ -42,6 +42,7 @@ export class LearnerRegistrationConfirmModalComponent implements OnInit {
         this.isConfirmClick = false;
         console.log('Success!', data);
         this.router.navigate(['/learner/success']);
+        this.activeModal.dismiss();
       },
       error => {
         this.isloading = false;
@@ -50,6 +51,8 @@ export class LearnerRegistrationConfirmModalComponent implements OnInit {
         console.log('Error!', error);
       }
     )
+ 
     this.activeModal.dismiss();
   }
+
 }
