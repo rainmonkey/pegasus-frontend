@@ -19,6 +19,8 @@ export class AdminLearnerPaymentSuccessComponent implements OnInit {
       this.router.navigate(['../'], {relativeTo: this.activatedRouter});
     } else if (this.showTitle ==='registration'){
       this.router.navigate(['../registration'],{relativeTo: this.activatedRouter});
+    } else if (this.showTitle ==='update'){
+      this.router.navigate(['../'],{relativeTo: this.activatedRouter});
     } else {
         this.router.navigate(['../invoices'], {relativeTo: this.activatedRouter});
       }
@@ -27,13 +29,15 @@ export class AdminLearnerPaymentSuccessComponent implements OnInit {
   ngOnInit() {
     switch (this.router.url) {
     case '/transaction/success':
-    this.showTitle = 'edit';
+      this.showTitle = 'edit';
     break;
+    case '/learner/list/success':
+      this.showTitle = 'update';
     case '/learner/success':
-    this.showTitle = 'registration';
+      this.showTitle = 'registration';
     break;
     default:
-    this.showTitle = 'payment';
+      this.showTitle = 'payment';
     }
   }
 

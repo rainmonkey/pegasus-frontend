@@ -40,6 +40,11 @@ export class LearnerRegistrationService {
                  catchError(this.errorHandler)
                );
   }
+  // update student's data to server
+  updateStudent(student): Observable<any> {
+    return this.http.put(this.baseUrl + '', student)
+  }
+
   // throw error to component
   errorHandler(error: HttpErrorResponse) {
     return throwError(error);
