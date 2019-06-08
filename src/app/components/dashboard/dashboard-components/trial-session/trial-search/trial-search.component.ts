@@ -15,7 +15,7 @@ export class TrialSearchComponent implements OnInit {
     "Orgs": { "clicked": false, "display": false, "id": 2 },
     "Teachers": { "clicked": false, "display": false, "id": 3 },
   }
-  public filters: object = { "CategoriesId": null, "OrgsId": null}
+  public filters: object = { "CategoriesId": null, "OrgsId": null }
   public previousCloseBtn: any = null;
 
   @Input() courses;
@@ -23,10 +23,11 @@ export class TrialSearchComponent implements OnInit {
   @Input() orgs;
   @Input() teachers;
   @Input() groupCoursesInstance;
+  @Input() teachingCourses;
   @Output() childEvent = new EventEmitter();
 
-  constructor(  private modalService: NgbModal,
-    ) { }
+  constructor(private modalService: NgbModal,
+  ) { }
 
   ngOnInit() {
 
@@ -64,17 +65,33 @@ export class TrialSearchComponent implements OnInit {
     display teachers that fit all the filters requirement
   */
   displayTeachers() {
-    let array:Array<any> = [];
-    for(let i of this.teachers){
-      for(let j of i.AvailableDays){
-        if(j.OrgId == this.filters['OrgsId']){
+    let array: Array<any> = [];
+    for (let i of this.teachers) {
+      for (let j of i.AvailableDays) {
+        if (j.OrgId == this.filters['OrgsId']) {
           array.push(i)
         }
       }
     }
 
+    let array1: Array<any> = [];
+    for (let i of this.teachingCourses){
+      for(let j of array){
+        if(j.TeacherId == i.TeacherId  && i.Course.CourseCategory.CourseCategoryId == this.filters["CategoriesId"]){
+          array1.push(j)
+        }
+      }
+    }
+
+    let hash = {};
+    let result = array1.reduce(function (item, next) {
+      hash[next.TeacherId] ? '' : hash[next.TeacherId] = true && item.push(next);
+      return item;
+    }, [])
+
     //需要保存一次array
-    
+    return result;
+
   }
 
   /*
@@ -103,7 +120,7 @@ export class TrialSearchComponent implements OnInit {
           setTimeout(() => {
             //★★★★★ event.currentTarget: 获取的是目标元素的父节点(如果目标元素是父节点则获取它自己) ★★★★★//
             targetObj.firstChild.style.display = 'block';
-            if(nextClass !== null){
+            if (nextClass !== null) {
               this.styleFlowControl[nextClass].display = true;
             }
             // if(className =='Teachers'){
@@ -148,7 +165,7 @@ export class TrialSearchComponent implements OnInit {
     event.stopPropagation();
   }
 
-  popUpModal(){
+  popUpModal() {
     //this.childEvent.emit(teacherSelected);
     const modalRef = this.modalService.open(TrialModalComponent, { size: 'lg', backdrop: 'static', keyboard: false });
   }
