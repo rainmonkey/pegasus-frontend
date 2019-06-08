@@ -96,6 +96,7 @@ import { LearnerCreditDetailsComponent } from './components/dashboard/dashboard-
 import { TrialTesterComponent } from './components/dashboard/dashboard-components/trial-session/trial-tester/trial-tester.component';
 import { OrderbyPipe } from './shared/pipes/orderby.pipe';
 import { SessionRescheduleModalComponent } from './components/dashboard/dashboard-components/sessions/session-modals/session-reschedule-modal/session-reschedule-modal.component';
+import { MondayDateInWeekByDatePipe } from './shared/pipes/monday-date-in-week-by-date.pipe';
 
 
 @NgModule({
@@ -161,6 +162,7 @@ import { SessionRescheduleModalComponent } from './components/dashboard/dashboar
     GenderPipe,
     RelationshipPipe,
     ColumnTitleFormatPipe,
+    MondayDateInWeekByDatePipe,
     CourseClassListComponent,
     CourseClassDetailModalComponent,
     DashboardHomeComponent,
@@ -185,6 +187,7 @@ import { SessionRescheduleModalComponent } from './components/dashboard/dashboar
     TrialTesterComponent,
     OrderbyPipe,
     SessionRescheduleModalComponent,
+    MondayDateInWeekByDatePipe,
   ],
   imports: [
     NgbModule,
@@ -202,7 +205,8 @@ import { SessionRescheduleModalComponent } from './components/dashboard/dashboar
     ChartsModule
   ],
   providers: [
-    DatePipe
+    DatePipe,
+    MondayDateInWeekByDatePipe
   ],
   entryComponents:[
     TeacherDeleteModalComponent,
