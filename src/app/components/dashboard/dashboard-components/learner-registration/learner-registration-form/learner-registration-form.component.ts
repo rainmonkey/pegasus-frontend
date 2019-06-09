@@ -10,6 +10,7 @@ import { concat } from 'rxjs';
 import { element } from '@angular/core/src/render3';
 import { forkJoin } from 'rxjs';
 import { TimePickerComponent } from '../../time-picker/time-picker.component';
+import { ngtimepickerValidator } from './validators';
 
 @Component({
   selector: 'app-learner-registration-form',
@@ -135,22 +136,22 @@ export class LearnerRegistrationFormComponent implements OnInit, DoCheck {
   }
   get courseIntanceGroup(): FormGroup {
     return this.fb.group({
-      courseCategory: [''],
-      course: [''],
+      courseCategory: ['',Validators.required],
+      course: ['',Validators.required],
       teacherLevel: [''],
-      teacherName: [''],
+      teacherName: ['',Validators.required],
       location: [''],
-      room: [''],
+      room: ['',Validators.required],
       beginDate: [this.myDate()],
       endDate: [''],
       schedule: this.fb.group({
         dayOfWeek: ['6'],
-        beginTime: [this.time],
+        beginTime: [this.time, ngtimepickerValidator],
         durationType: ['']
       }),
     });
   }
-
+//
   ngOnInit() {
     // init date
     // get orgId
@@ -163,8 +164,10 @@ export class LearnerRegistrationFormComponent implements OnInit, DoCheck {
         middleName: [this.whichLearner ? this.whichLearner.MiddleName : ''],
         lastName: [this.whichLearner ? this.whichLearner.LastName : '', Validators.required],
         gender: [this.whichLearner ? this.whichLearner.Gender : '2', Validators.required],
-        birthday: [this.whichLearner && this.whichLearner.Dob ? this.whichLearner.Dob.slice(0, 10) : ''],
-        enrollmentDate: [this.whichLearner ? this.whichLearner.EnrollDate.slice(0, 10) : this.myDate()],
+
+        birthday: [this.whichLearner && this.whichLearner.Dob ? this.whichLearner.Dob.slice(0, 10) : null],
+        enrollmentDate: [this.whichLearner&&this.whichLearner.EnrollDate ? this.whichLearner.EnrollDate.slice(0, 10) : this.myDate()],
+
         contactNum: [this.whichLearner ? this.whichLearner.ContactNum : ''],
         email: [this.whichLearner ? this.whichLearner.Email : '', [Validators.required, Validators.email]],
         address: [this.whichLearner ? this.whichLearner.Address : ''],
@@ -630,8 +633,8 @@ selectLocation(id, i) {
       tempScheduleObj['DurationType'] = parseInt(cc.course);
       tempObj['Schedule'] = tempScheduleObj;
       this.oneOnOneCourse.push(tempObj);
+      console.log('oneOnOne', this.oneOnOneCourse);
     };
-    console.log('oneOnOne', this.oneOnOneCourse);
   }
 
   onSubmit() {
@@ -639,13 +642,14 @@ selectLocation(id, i) {
     this.confirmCustomCourse();
     console.log(this.courseGroup);
     // encapsulate learner form data
+    this.learner = [];
     this.learner = this.learnerForm.value;
     console.log(this.learner);
     this.fdObj['FirstName'] = this.learner.firstName;
     this.fdObj['MiddleName'] = this.learner.middleName;
     this.fdObj['LastName'] = this.learner.lastName;
     this.fdObj['Gender'] = this.learner.gender;
-    this.fdObj['dob'] = this.learner.birthday;
+    this.fdObj['dob'] = this.learner.birthday == null? null: this.learner.birthday;
     this.fdObj['EnrollDate'] = this.learner.enrollmentDate;
     this.fdObj['ContactNum'] = this.learner.contactNum;
     this.fdObj['Email'] = this.learner.email;
@@ -759,9 +763,18 @@ selectLocation(id, i) {
   openConfirm() {
     this.modalRefConfirm = this.modalService.open(LearnerRegistrationConfirmModalComponent);
     this.modalRefConfirm.componentInstance.fdObj = this.fd;
+    if (this.whichLearner){
+      this.modalRefConfirm.componentInstance.command = 2;  //add
+      this.modalRefConfirm.componentInstance.learnerId = this.whichLearner.LearnerId;
+    }
+    else
+      this.modalRefConfirm.componentInstance.command = 1;   //post
+
   }
   // // check changes
   ngDoCheck() {
+     console.log(this.selectlearnerLevel)
+    // console.log(this.customCourse.controls[0].get('schedule').get('beginTime').invalid)
     // console.log(this.modalRefTimePicker);
     // this.modalRefConfirm?this.needSubmit = this.modalRefConfirm.componentInstance.submitClicked:this.needSubmit = false;
     // console.log(this.needSubmit)
@@ -923,11 +936,11 @@ selectLocation(id, i) {
                 beginDate: [o.BeginDate ? o.BeginDate.slice(0, 10) : ''],
                 endDate: [o.EndDate ? o.EndDate.slice(0, 10) : ''],
                 schedule: this.fb.group({
-                  dayOfWeek: [o.CourseSchedule[0].DayOfWeek],
+                  dayOfWeek: [o.CourseSchedule[0]?(o.CourseSchedule[0].DayOfWeek?o.CourseSchedule[0].DayOfWeek:null):null],
                   beginTime: [{
-                    hour: parseInt(o.CourseSchedule[0].BeginTime.slice(0, 2)),
-                    minute: parseInt(o.CourseSchedule[0].BeginTime.slice(3, 5)),
-                    second: parseInt(o.CourseSchedule[0].BeginTime.slice(6, 8))
+                    hour: o.CourseSchedule[0]?(o.CourseSchedule[0].BeginTime?parseInt(o.CourseSchedule[0].BeginTime.slice(0, 2)):null):null,
+                    minute: o.CourseSchedule[0]?(o.CourseSchedule[0].BeginTime?parseInt(o.CourseSchedule[0].BeginTime.slice(3, 5)):null):null,
+                    second: o.CourseSchedule[0]?(o.CourseSchedule[0].BeginTime?parseInt(o.CourseSchedule[0].BeginTime.slice(6, 8)):null):null
                   }],//{ hour: 9, minute: 0, second: 0 }
                   //{ hour: 9, minute: 0, second: 0 }  09:03:14
                   durationType: [o.Course.Duration]
@@ -938,7 +951,6 @@ selectLocation(id, i) {
             console.log(this.setUniCatListArray, this.courseListArray);
             console.log(this.locListArray, this.prepareTeaLevListArray);
             console.log(this.prepareTeaNameListArray, this.prepareRoomListArray);
-
           },
             (err) => {
               console.log(err);

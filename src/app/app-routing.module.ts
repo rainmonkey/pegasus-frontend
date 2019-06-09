@@ -112,7 +112,10 @@ const routes: Routes = [
       {
         path: 'learner', component: AdminLearnerPanelComponent,
         children: [
-          { path: 'list', component: AdminLearnerListComponent },
+          {
+            path: 'list', component: AdminLearnerListComponent,
+            children: [{path: 'success', component: AdminLearnerPaymentSuccessComponent}]
+          },
           { path: 'registration/edit', component: LearnerRegistrationModalComponent },
           { path: 'registration', component: LearnerRegistrationFormComponent },
           { path: 'trial', component: TrialInfoComponent },
