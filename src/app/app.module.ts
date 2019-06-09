@@ -97,6 +97,10 @@ import { TrialTesterComponent } from './components/dashboard/dashboard-component
 import { OrderbyPipe } from './shared/pipes/orderby.pipe';
 import { SessionRescheduleModalComponent } from './components/dashboard/dashboard-components/sessions/session-modals/session-reschedule-modal/session-reschedule-modal.component';
 import { MondayDateInWeekByDatePipe } from './shared/pipes/monday-date-in-week-by-date.pipe';
+import { StaffDeleteModalComponent } from './components/dashboard/dashboard-components/admin-staff/staff-delete-modal/staff-delete-modal.component';
+import { StaffDetailModalComponent } from './components/dashboard/dashboard-components/admin-staff/staff-detail-modal/staff-detail-modal.component';
+import { StaffEditModalComponent } from './components/dashboard/dashboard-components/admin-staff/staff-edit-modal/staff-edit-modal.component';
+import { StaffModalFormComponent } from './components/dashboard/dashboard-components/admin-staff/staff-modal-form/staff-modal-form.component';
 
 
 @NgModule({
@@ -188,6 +192,11 @@ import { MondayDateInWeekByDatePipe } from './shared/pipes/monday-date-in-week-b
     OrderbyPipe,
     SessionRescheduleModalComponent,
     MondayDateInWeekByDatePipe,
+
+    StaffModalFormComponent,
+    StaffDeleteModalComponent,
+    StaffDetailModalComponent,
+    StaffEditModalComponent,
   ],
   imports: [
     NgbModule,
@@ -230,7 +239,12 @@ import { MondayDateInWeekByDatePipe } from './shared/pipes/monday-date-in-week-b
     LearnerRegistrationModalComponent,
     LearnerRegistrationConfirmModalComponent,
     TrialModalComponent,
-    TrialTesterComponent
+    TrialTesterComponent,
+    StaffDeleteModalComponent,
+    StaffDetailModalComponent,
+    StaffEditModalComponent,
+
+
   ],
   exports: [AppComponent],
   bootstrap: [AppComponent]
