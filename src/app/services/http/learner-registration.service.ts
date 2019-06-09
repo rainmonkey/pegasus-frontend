@@ -40,6 +40,14 @@ export class LearnerRegistrationService {
                  catchError(this.errorHandler)
                );
   }
+// post student's data to server and catch error from server
+  putStudent(learnerId:number,student: any): Observable<any> {
+  return this.http.put<any>(this.baseUrl + 'learner/'+learnerId, student)
+             .pipe(
+               catchError(this.errorHandler)
+             );
+}
+
   // throw error to component
   errorHandler(error: HttpErrorResponse) {
     return throwError(error);
