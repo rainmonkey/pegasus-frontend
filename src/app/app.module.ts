@@ -97,6 +97,7 @@ import { TrialTesterComponent } from './components/dashboard/dashboard-component
 import { OrderbyPipe } from './shared/pipes/orderby.pipe';
 import { SessionRescheduleModalComponent } from './components/dashboard/dashboard-components/sessions/session-modals/session-reschedule-modal/session-reschedule-modal.component';
 import { MondayDateInWeekByDatePipe } from './shared/pipes/monday-date-in-week-by-date.pipe';
+import { TrialConfirmComponent } from './components/dashboard/dashboard-components/trial-session/trial-confirm/trial-confirm.component';
 import { StaffDeleteModalComponent } from './components/dashboard/dashboard-components/admin-staff/staff-delete-modal/staff-delete-modal.component';
 import { StaffDetailModalComponent } from './components/dashboard/dashboard-components/admin-staff/staff-detail-modal/staff-detail-modal.component';
 import { StaffEditModalComponent } from './components/dashboard/dashboard-components/admin-staff/staff-edit-modal/staff-edit-modal.component';
@@ -192,6 +193,7 @@ import { StaffModalFormComponent } from './components/dashboard/dashboard-compon
     OrderbyPipe,
     SessionRescheduleModalComponent,
     MondayDateInWeekByDatePipe,
+    TrialConfirmComponent,
 
     StaffModalFormComponent,
     StaffDeleteModalComponent,
@@ -240,6 +242,7 @@ import { StaffModalFormComponent } from './components/dashboard/dashboard-compon
     LearnerRegistrationConfirmModalComponent,
     TrialModalComponent,
     TrialTesterComponent,
+    TrialConfirmComponent,
     StaffDeleteModalComponent,
     StaffDetailModalComponent,
     StaffEditModalComponent,

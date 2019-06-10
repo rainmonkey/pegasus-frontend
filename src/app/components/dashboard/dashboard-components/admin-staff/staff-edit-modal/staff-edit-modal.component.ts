@@ -25,12 +25,13 @@ export class StaffEditModalComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    console.log(this.modalUpdateFormComponentObj)
   }
-  onClose(){
-    if(this.modalUpdateFormComponentObj.updateForm.dirty == true){
+  onClose() {
+    if (this.modalUpdateFormComponentObj.updateForm.dirty == true ) {
       this.refreshFlag.emit(true);
     }
-    else{
+    else {
       this.refreshFlag.emit(false);
     }
     this.activeModal.close('Cross click');
@@ -48,7 +49,7 @@ export class StaffEditModalComponent implements OnInit {
         this.stringifySubmitStr(vailadValue)
       }
     }
-    else{
+    else {
       this.infoMessage = 'Value has not changed.'
       return;
     }
@@ -78,63 +79,75 @@ export class StaffEditModalComponent implements OnInit {
     valueToSubmit.IdType = Number(valueToSubmit.IdType);
     valueToSubmit.Gender = Number(valueToSubmit.Gender);
     valueToSubmit.RoleId = Number(valueToSubmit.RoleId);
-    console.log(valueToSubmit)
+    valueToSubmit.StaffOrg = this.checkOrgs();
     return valueToSubmit;
   }
-/*
-    after stringify submition string, data is ready to submit
-  */
- stringifySubmitStr(vailadValue) {
-  let submit = new FormData();
-  submit.append('details', JSON.stringify(vailadValue));
-  submit.append('Photo', this.modalUpdateFormComponentObj.PhotoToSubmit);
-  submit.append('IdPhoto', this.modalUpdateFormComponentObj.IdPhotoToSubmit);
-  this.submitByMode(submit)
-  console.log(submit)
-}
+  /*
+      after stringify submition string, data is ready to submit
+    */
+  stringifySubmitStr(vailadValue) {
+    let submit = new FormData();
+    submit.append('details', JSON.stringify(vailadValue));
+    submit.append('Photo', this.modalUpdateFormComponentObj.PhotoToSubmit);
+    submit.append('IdPhoto', this.modalUpdateFormComponentObj.IdPhotoToSubmit);
+    this.submitByMode(submit)
+  }
 
   /*
    post the data by diffrent api
  */
-submitByMode(submitData) {
-  //while push a stream of new data
-  if (this.command == 0) {
-    let obj = this.staffService.addNew(submitData);
-    this.subscribeHandler(obj);
-    console.log(submitData)
-  }
-  //while update data
-  else if (this.command == 2) {
-    let obj = this.staffService.update(submitData, this.whichStaff.StaffId);
-    this.subscribeHandler(obj);
-  }
-}
-
-subscribeHandler(obj) {
-  obj.subscribe(
-    (res) => {
-      this.showInfoMessage('Submit success!', '#28a745', false)
-      this.submitionFlag = false;
-    },
-    (err) => {
-      if (err.error.ErrorMessage == 'Staff has exist.') {
-        this.showInfoMessage(err.error.ErrorMessage + ' Please check ID Number.', '#dc3545', false);
-        this.submitionFlag = true;
-      }
-      else {
-        this.showInfoMessage('Sorry, there are something wrong in server.', '#dc3545', false);
-        this.submitionFlag = true;
-      }
-      console.log('Error', err);
+  submitByMode(submitData) {
+    //while push a stream of new data
+    if (this.command == 0) {
+      let obj = this.staffService.addNew(submitData);
+      this.subscribeHandler(obj);
     }
-  );
-}
+    //while update data
+    else if (this.command == 2) {
+      let obj = this.staffService.update(submitData, this.whichStaff.StaffId);
+      this.subscribeHandler(obj);
+    }
+  }
+
+  subscribeHandler(obj) {
+    obj.subscribe(
+      (res) => {
+        this.showInfoMessage('Submit success!', '#28a745', false)
+        this.submitionFlag = false;
+      },
+      (err) => {
+        if (err.error.ErrorMessage == 'Staff has exist.') {
+          this.showInfoMessage(err.error.ErrorMessage + ' Please check ID Number.', '#dc3545', false);
+          this.submitionFlag = true;
+        }
+        else {
+          this.showInfoMessage('Sorry, there are something wrong in server.', '#dc3545', false);
+          this.submitionFlag = true;
+        }
+        console.log('Error', err);
+      }
+    );
+  }
 
 
-showInfoMessage(msg, fontColor, gifFlag) {
-  this.infoMessage = msg;
-  this.loadingGifFlag = gifFlag;
-  this.messageColor = fontColor;
-}
+  showInfoMessage(msg, fontColor, gifFlag) {
+    this.infoMessage = msg;
+    this.loadingGifFlag = gifFlag;
+    this.messageColor = fontColor;
+  }
+
+  checkOrgs() {
+    let temBranches = this.modalUpdateFormComponentObj.branchesCheckBox._results;
+    console.log(temBranches)
+    let temBranchesList=[]
+    for (let i of temBranches) {
+      console.log(temBranchesList)
+      if (i.nativeElement.checked == true) {
+        temBranchesList.push({"OrgId":Number(i.nativeElement.defaultValue)})
+
+      }
+    }
+    return temBranchesList
+  }
 
 }

@@ -844,8 +844,9 @@ selectLocation(id, i) {
        }
     else
     {
-      if (this.whichLearner.One2oneCourseInstance.length===0)
+      if (this.whichLearner.One2oneCourseInstance.length===0){
         this.customCourse.push(this.courseIntanceGroup);
+      }
 
       this.isSelectedLevel = true;
       this.selectLearnerLevel = this.whichLearner.LearnerLevel;

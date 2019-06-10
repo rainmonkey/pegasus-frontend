@@ -23,11 +23,9 @@ export class StaffDeleteModalComponent implements OnInit {
     console.log(this.whichStaff)
   }
  delete(){
-
   this.staffService.deleteStaff(this.whichStaff.StaffId).subscribe(
     (res) => {
       this.isDeleteSuccess = true;
-
     },
     (err) => {
       //失败信息
