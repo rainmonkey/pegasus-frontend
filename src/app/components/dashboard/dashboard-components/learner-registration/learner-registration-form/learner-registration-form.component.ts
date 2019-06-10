@@ -157,7 +157,10 @@ export class LearnerRegistrationFormComponent implements OnInit, DoCheck {
     // get orgId
     this.orgId = JSON.parse(localStorage.getItem('OrgId'))[0];
     this.getDate();
-    if (this.whichLearner != null) console.log(this.whichLearner);
+    if (this.whichLearner != null) { //set LevelType
+      console.log(this.whichLearner);
+      this.learnerlevelType  = this.whichLearner.LevelType;
+    }
     this.registrationForm = this.fb.group({
       learnerForm: this.fb.group({
         firstName: [this.whichLearner ? this.whichLearner.FirstName : '', Validators.required],
@@ -188,6 +191,7 @@ export class LearnerRegistrationFormComponent implements OnInit, DoCheck {
       customCourse: this.fb.array([]),
     });
 
+   
     this.setParentForm();
     this.setOneToOneForm();
 
@@ -504,10 +508,11 @@ export class LearnerRegistrationFormComponent implements OnInit, DoCheck {
   }
 
   // 121 course section
-  selectLevelType(value) {
-    console.log(this.levelType)
-    this.learnerlevelType = Number(value);
-  }
+  // selectLevelType(value) {
+  //   console.log(this.levelType)
+  //   console.log(value)    
+  //   this.learnerlevelType = Number(value);
+  // }
   emptySelectionCat(i) {
 
     this.customCourse.controls[i].patchValue({

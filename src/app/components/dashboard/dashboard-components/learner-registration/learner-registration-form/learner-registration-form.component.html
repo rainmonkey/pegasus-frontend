@@ -110,7 +110,7 @@
                       <label class="form-check-label" for="ABRSM">ABRSM</label>
                   </div> -->
                   <div class="form-check">
-                    <input class="form-check-input" (click)="selectLevelType($event.target.value)" type="radio" [value]="levelType.PropValue" formControlName="levelTypeRadio">
+                    <input class="form-check-input" [(ngModel)]="learnerlevelType" type="radio" [value]="levelType.PropValue" formControlName="levelTypeRadio">
                     <label class="form-check-label" for="levelType">{{levelType.PropName}}</label>
                   </div>
                 </div>
