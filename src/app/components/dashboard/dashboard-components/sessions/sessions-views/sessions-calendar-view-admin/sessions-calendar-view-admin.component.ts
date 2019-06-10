@@ -178,7 +178,7 @@ export class SessionsCalendarViewAdminComponent implements OnInit {
     const year = this.searchForm.get('dateOfLesson').value.year;
     const month = this.searchForm.get('dateOfLesson').value.month;
     const day = this.searchForm.get('dateOfLesson').value.day;
-    const date = year + '-' + month + '-' + day + ' 12:00:00';
+    const date = year + '-' + month + '-' + day
     const datetoshow = this.datePipe.transform(date, 'yyyy-MM-dd');
     this.fullcalendar.calendar.gotoDate(datetoshow);
     this.getEventByDate(date);

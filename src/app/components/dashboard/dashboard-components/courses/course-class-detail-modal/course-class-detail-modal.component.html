@@ -15,21 +15,31 @@
     <form [formGroup]="updateForm">
       <div class="row">
         <div class="col-6">
+          
           <label class='t_mf_label'>Course Name:</label>
-          <select type="text" class='col-12 t_mf_input' formControlName="CourseId">
+          <small class='text-danger col-12 errorfontsmall' style='text-align: center'
+            *ngIf='updateForm.get("CourseId").invalid && updateForm.get("CourseId").touched && updateForm.get("CourseId").errors?.required'>required</small>
+          <select type="text" class='col-12 t_mf_input' formControlName="CourseId" [class.t_mf_error_border]='updateForm.get("CourseId").invalid && updateForm.get("CourseId").touched'>
             <option *ngFor='let i of courseNamefilter' value="{{i.CourseId}}">{{i.CourseName}}</option>
           </select>
+
           <label class='t_mf_label'>Tutor Name:</label>
-          <select type="text" class='col-12 t_mf_input' formControlName="TeacherId">
-            <option *ngFor="let i of tutorName | orderby:'FirstName'" value="{{i.TeacherId}}">{{i.FirstName}} {{i.LastName}}</option>
+          <small class='text-danger col-12 errorfontsmall' style='text-align: center'
+            *ngIf='updateForm.get("TeacherId").invalid && updateForm.get("TeacherId").touched && updateForm.get("TeacherId").errors?.required'>required</small>
+          <select type="text" class='col-12 t_mf_input' formControlName="TeacherId"
+            [class.t_mf_error_border]='updateForm.get("TeacherId").invalid && updateForm.get("TeacherId").touched'>
+            <option *ngFor="let i of tutorName | orderby:'FirstName'" value="{{i.TeacherId}}">{{i.FirstName}}
+              {{i.LastName}}</option>
           </select>
           <label class='t_mf_label'>Start Date:</label>
           <div class="input-group">
             <input class="form-control" formControlName="BeginDate" placeholder='yyyy-mm-dd' ngbDatepicker
-              #startDate="ngbDatepicker" (dateSelect)="onBeginDateSelection($event)">
+              #startDate="ngbDatepicker" (dateSelect)="onBeginDateSelection($event)"
+              [class.t_mf_error_border]='updateForm.get("BeginDate").invalid && updateForm.get("BeginDate").touched'>
             <div class="input-group-append">
-              <button class="btn btn-outline-secondary" (click)="startDate.toggle()" type="button"><i
-                  class="far fa-calendar-alt"></i></button>
+              <button class="btn btn-outline-secondary" (click)="startDate.toggle()" type="button">
+                <i class="far fa-calendar-alt"></i>
+              </button>
             </div>
           </div>
           <label class='t_mf_label'>End Date:</label>
@@ -43,20 +53,23 @@
           </div>
           <label class='t_mf_label'>Location:</label>
           <select type="text" class='col-12 t_mf_input' formControlName="OrgId"
-            (change)="filterrooms($event.target.value)">
+            (change)="filterrooms($event.target.value)"
+            [class.t_mf_error_border]='updateForm.get("OrgId").invalid && updateForm.get("OrgId").touched'>
             <option *ngFor='let i of locationName |  orderby:"OrgName"' value="{{i.OrgId}}">{{i.OrgName}}</option>
           </select>
           <label class='t_mf_label'>Room:</label>
-          <select type="text" class='col-12 t_mf_input' formControlName="RoomId">
+          <select type="text" class='col-12 t_mf_input' formControlName="RoomId"
+            [class.t_mf_error_border]='updateForm.get("RoomId").invalid && updateForm.get("RoomId").touched'>
             <option *ngFor='let i of rooms' value="{{i.RoomId}}">{{i.RoomName}}</option>
           </select>
         </div>
         <div class="col-6">
-          <div class="t_mf_form" formArrayName="CourseSchedule">
+          <div class="t_mf_form" formArrayName="CourseSchedule"
+            [class.t_mf_error_border]='updateForm.get("CourseSchedule").invalid && updateForm.get("CourseSchedule").touched'>
             <div class="row">
               <div class="col-6" style="margin-right: -1rem;"
                 *ngFor="let sches of updateForm.get('CourseSchedule').controls; let i = index" [formGroupName]="i">
-                <label class='t_mf_label'>Begin Time {{i+1}} :</label>                
+                <label class='t_mf_label'>Begin Time {{i+1}} :</label>
                 <span style="float:right;" (click)="deleteTime(i)">
                   <i class="far fa-calendar-times" style="cursor:hand;"></i>
                 </span>
@@ -76,5 +89,7 @@
 <div class='modal-footer'>
   <button type='button' class='btn btn-outline-dark' style="margin-right: 9rem;" (click)="newTime()">+ Add New
     Time</button>
-  <button type='button' class='btn btn-outline-dark' (click)='onSubmit(this.updateForm)'>Save</button>
+  <div *ngIf='loadingGifFlag' class="loaderSmall"></div>
+  <button type='button' class='btn btn-outline-dark' (click)='onSubmit(this.updateForm)'
+    *ngIf='submitionFlag'>Save</button>
 </div>

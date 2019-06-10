@@ -96,6 +96,11 @@ import { LearnerCreditDetailsComponent } from './components/dashboard/dashboard-
 import { TrialTesterComponent } from './components/dashboard/dashboard-components/trial-session/trial-tester/trial-tester.component';
 import { OrderbyPipe } from './shared/pipes/orderby.pipe';
 import { SessionRescheduleModalComponent } from './components/dashboard/dashboard-components/sessions/session-modals/session-reschedule-modal/session-reschedule-modal.component';
+import { MondayDateInWeekByDatePipe } from './shared/pipes/monday-date-in-week-by-date.pipe';
+import { StaffDeleteModalComponent } from './components/dashboard/dashboard-components/admin-staff/staff-delete-modal/staff-delete-modal.component';
+import { StaffDetailModalComponent } from './components/dashboard/dashboard-components/admin-staff/staff-detail-modal/staff-detail-modal.component';
+import { StaffEditModalComponent } from './components/dashboard/dashboard-components/admin-staff/staff-edit-modal/staff-edit-modal.component';
+import { StaffModalFormComponent } from './components/dashboard/dashboard-components/admin-staff/staff-modal-form/staff-modal-form.component';
 
 
 @NgModule({
@@ -161,6 +166,7 @@ import { SessionRescheduleModalComponent } from './components/dashboard/dashboar
     GenderPipe,
     RelationshipPipe,
     ColumnTitleFormatPipe,
+    MondayDateInWeekByDatePipe,
     CourseClassListComponent,
     CourseClassDetailModalComponent,
     DashboardHomeComponent,
@@ -185,6 +191,12 @@ import { SessionRescheduleModalComponent } from './components/dashboard/dashboar
     TrialTesterComponent,
     OrderbyPipe,
     SessionRescheduleModalComponent,
+    MondayDateInWeekByDatePipe,
+
+    StaffModalFormComponent,
+    StaffDeleteModalComponent,
+    StaffDetailModalComponent,
+    StaffEditModalComponent,
   ],
   imports: [
     NgbModule,
@@ -202,7 +214,8 @@ import { SessionRescheduleModalComponent } from './components/dashboard/dashboar
     ChartsModule
   ],
   providers: [
-    DatePipe
+    DatePipe,
+    MondayDateInWeekByDatePipe
   ],
   entryComponents:[
     TeacherDeleteModalComponent,
@@ -226,7 +239,12 @@ import { SessionRescheduleModalComponent } from './components/dashboard/dashboar
     LearnerRegistrationModalComponent,
     LearnerRegistrationConfirmModalComponent,
     TrialModalComponent,
-    TrialTesterComponent
+    TrialTesterComponent,
+    StaffDeleteModalComponent,
+    StaffDetailModalComponent,
+    StaffEditModalComponent,
+
+
   ],
   exports: [AppComponent],
   bootstrap: [AppComponent]
