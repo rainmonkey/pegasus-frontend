@@ -149,21 +149,22 @@ detailModal(command, whichStaff) {
 
 updateModal(command, whichStaff) {
  const modalRef = this.modalService.open(StaffEditModalComponent, { size: 'lg', backdrop: 'static', keyboard: false });
+ let that = this;
  modalRef.componentInstance.command = command;
  modalRef.componentInstance.whichStaff = whichStaff;
- // modalRef.componentInstance.refreshFlag.subscribe(
- //   (res) => {
- //     modalRef.result.then(
- //       function () {
- //         if (res == true) {
- //           that.ngOnInit();
- //         }
- //       },
- //       function () {
- //         return;
- //       })
- //   }
- // )
+ modalRef.componentInstance.refreshFlag.subscribe(
+   (res) => {
+     modalRef.result.then(
+       function () {
+         if (res == true) {
+           that.ngOnInit();
+         }
+       },
+       function () {
+         return;
+       })
+   }
+ )
 }
 }
 

@@ -298,6 +298,6 @@ export class TeacherInfoComponent implements OnInit {
   detailModal(command, whichTeacher) {
     const modalRef = this.modalService.open(TeacherDetailModalComponent, { size: 'lg' });
     modalRef.componentInstance.command = command;
-    modalRef.componentInstance.whichTeacher = whichTeacher;
+    modalRef.componentInstance.whichTeacher = whichTeacher; 
   }
 }

@@ -19,6 +19,7 @@ export class TrialSearchComponent implements OnInit {
   public filters: object = { "CategoriesId": null, "OrgsId": null }
   public previousCloseBtn: any = null;
   public coursesTeachingByCate;
+  public termPeriod;
 
   @Input() courses;
   @Input() coursesCate;
@@ -32,8 +33,20 @@ export class TrialSearchComponent implements OnInit {
               private coursesService: CoursesService) { }
 
   ngOnInit() {
-
+    this.getSemesterPeriod();
   }
+
+  getSemesterPeriod(){
+    this.coursesService.getoioi().subscribe(
+      (res) => {
+        this.termPeriod = res.Data;
+        console.log(this.termPeriod)
+      },
+      (err) => {
+        alert('Sorry, something went wrong in server.')
+      }
+    )
+  };
 
   /*
     display courses categories tabs in HTML
@@ -64,11 +77,11 @@ export class TrialSearchComponent implements OnInit {
   }
 
   /*
-    display teachers that fit all the filters requirement
+    display teachers tabs passing all filters
   */
   displayTeachers() {
     let array: Array<any> = [];
-    //先从teacher api里寻找在指定org教课的老师
+    //先从teacher api里寻找在指定org教课的老师的课
     for (let i of this.teachers) {
       for (let j of i.AvailableDays) {
         if (j.OrgId == this.filters['OrgsId']) {
@@ -76,8 +89,8 @@ export class TrialSearchComponent implements OnInit {
         }
       }
     }
-    //console.log(array)
-    //再从teachingcourse里寻找教指定乐器的老师
+ 
+    //再从teachingcourse里寻找教指定乐器的老师的课
     let array1: Array<any> = [];
     for (let i of this.teachingCourses){
       for(let j of array){
@@ -102,7 +115,7 @@ export class TrialSearchComponent implements OnInit {
 
   /*
     (onclick event handler) select the tab that user clicked
-     --> when user click a tab, select this tab and show some animations
+      --> when user click a tab, select this tab and show some animations
   */
   selectTab(event, className, nextClass, index, filterId) {
     //only no tab select, mouse click event work.
@@ -171,10 +184,14 @@ export class TrialSearchComponent implements OnInit {
     event.stopPropagation();
   }
 
+  /*
+    pop up FullCalendar modal
+  */
   popUpModal(whichTeacher) {
     let coursesTeachingByWhichTeacher = this.getCoursesTeachingByWhichTeacher(whichTeacher);
     //console.log(coursesTeachingByWhichTeacher)
     const modalRef = this.modalService.open(TrialModalComponent, { size: 'lg', backdrop: 'static', keyboard: false });
+    modalRef.componentInstance.termPeriod = this.termPeriod;
   }
 
   getCoursesTeachingByWhichTeacher(whichTeacher){
