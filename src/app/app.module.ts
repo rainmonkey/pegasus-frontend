@@ -97,7 +97,14 @@ import { TrialTesterComponent } from './components/dashboard/dashboard-component
 import { OrderbyPipe } from './shared/pipes/orderby.pipe';
 import { SessionRescheduleModalComponent } from './components/dashboard/dashboard-components/sessions/session-modals/session-reschedule-modal/session-reschedule-modal.component';
 import { MondayDateInWeekByDatePipe } from './shared/pipes/monday-date-in-week-by-date.pipe';
+<<<<<<< HEAD
 import { TrialConfirmComponent } from './components/dashboard/dashboard-components/trial-session/trial-confirm/trial-confirm.component';
+=======
+import { StaffDeleteModalComponent } from './components/dashboard/dashboard-components/admin-staff/staff-delete-modal/staff-delete-modal.component';
+import { StaffDetailModalComponent } from './components/dashboard/dashboard-components/admin-staff/staff-detail-modal/staff-detail-modal.component';
+import { StaffEditModalComponent } from './components/dashboard/dashboard-components/admin-staff/staff-edit-modal/staff-edit-modal.component';
+import { StaffModalFormComponent } from './components/dashboard/dashboard-components/admin-staff/staff-modal-form/staff-modal-form.component';
+>>>>>>> f46aed3dfab75e8800093453025c3c56943a7114
 
 
 @NgModule({
@@ -189,7 +196,15 @@ import { TrialConfirmComponent } from './components/dashboard/dashboard-componen
     OrderbyPipe,
     SessionRescheduleModalComponent,
     MondayDateInWeekByDatePipe,
+<<<<<<< HEAD
     TrialConfirmComponent,
+=======
+
+    StaffModalFormComponent,
+    StaffDeleteModalComponent,
+    StaffDetailModalComponent,
+    StaffEditModalComponent,
+>>>>>>> f46aed3dfab75e8800093453025c3c56943a7114
   ],
   imports: [
     NgbModule,
@@ -233,7 +248,15 @@ import { TrialConfirmComponent } from './components/dashboard/dashboard-componen
     LearnerRegistrationConfirmModalComponent,
     TrialModalComponent,
     TrialTesterComponent,
+<<<<<<< HEAD
     TrialConfirmComponent,
+=======
+    StaffDeleteModalComponent,
+    StaffDetailModalComponent,
+    StaffEditModalComponent,
+
+
+>>>>>>> f46aed3dfab75e8800093453025c3c56943a7114
   ],
   exports: [AppComponent],
   bootstrap: [AppComponent]

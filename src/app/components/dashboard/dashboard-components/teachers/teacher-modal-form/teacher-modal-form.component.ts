@@ -64,7 +64,7 @@ export class TeacherModalFormComponent implements OnInit {
     this.loadingFlag = true;
     this.setReadOnly();
     this.updateForm = this.fb.group(this.formGroupAssemble());
-   
+
       this.getDropdownOptions();
       this.getTeacherLevel();
     this.getInitTextAreaLength()
@@ -123,7 +123,7 @@ export class TeacherModalFormComponent implements OnInit {
   }
 
   /*
-    when only date format is like YYYY-MM-DD, formControlName will show the correct things 
+    when only date format is like YYYY-MM-DD, formControlName will show the correct things
   */
   getDateFormat(date) {
     if (date !== null) {
@@ -252,8 +252,8 @@ export class TeacherModalFormComponent implements OnInit {
     let fileSize = (Number(<File>event.target.files[0].size)) / 1024;
     //if size valid, continue; else return
     if (this.checkPhotoSize(fileSize)) {
-      //important! 
-      //set src and read it 
+      //important!
+      //set src and read it
       let reader = new FileReader();
       reader.readAsDataURL(this[whichPhoto + 'ToSubmit']);
       reader.onloadend = function (event) {
@@ -353,18 +353,18 @@ export class TeacherModalFormComponent implements OnInit {
     let dropDownsObj:any = document.getElementById('languageDropdown');
     event.target.attributes.flag = !event.target.attributes.flag;
     if (event.target.attributes.flag == true) {
-      
+
       dropDownsObj.style.display = 'block';
-      
+
     }
     else {
-     
+
       dropDownsObj.style.display = 'none';
-       
+
     }
   }
   /*
-    if photo not found, set default photo 
+    if photo not found, set default photo
   */
   setDefaultPhoto(event) {
     event.target.src = '../../../../../../assets/images/shared/default-employer-profile.png';
@@ -372,7 +372,7 @@ export class TeacherModalFormComponent implements OnInit {
   }
 
   calculateTextLength(event){
-    this.avliableTextLength = 1000 - event.target.value.length; 
+    this.avliableTextLength = 1000 - event.target.value.length;
   }
   /////////////////////////////////////////////form group/////////////////////////////////////////////////
 
@@ -441,4 +441,4 @@ export class TeacherModalFormComponent implements OnInit {
     return groupObj;
   }
 
-} 
+}
