@@ -1,4 +1,4 @@
-
+<pre>{{ registrationForm.value | json }}</pre>
 <!-- <app-time-picker (messageToEmit)="getMessage($event)"></app-time-picker> -->
 <!-- <pre>{{ parentForm.value | json }}</pre> -->
 <form [formGroup]="registrationForm" class="container">
@@ -96,7 +96,7 @@
           </div>
           <div class="col-sm-6 col-md-6">
               <label for="learnerLevel">Your Current Level</label>
-              <select class="form-control" formControlName="learnerLevel" (change)="selectLearnerLevel($event.target.value)">
+              <select class="form-control" formControlName="learnerLevel" (change)="selectLearnerLevelFun($event.target.value)">
                 <option  *ngFor="let llevel of learnerLevel" [value]="llevel.PropValue">{{llevel.PropName}}</option>
               </select>
               <!-- <div *ngIf="learnerLevel.invalid && (learnerLevel.dirty || learnerLevel.touched)" class="text-danger">
@@ -110,7 +110,7 @@
                       <label class="form-check-label" for="ABRSM">ABRSM</label>
                   </div> -->
                   <div class="form-check">
-                    <input class="form-check-input" [(ngModel)]="learnerlevelType" type="radio" [value]="levelType.PropValue" formControlName="levelTypeRadio">
+                    <input class="form-check-input" (click)="selectLevelType(levelType.PropValue)" type="radio" [value]="levelType.PropValue" formControlName="levelTypeRadio">
                     <label class="form-check-label" for="levelType">{{levelType.PropName}}</label>
                   </div>
                 </div>
