@@ -31,9 +31,11 @@
                     }"
           (mouseover)="mouseoverSlot(x,y)" (mouseout)="mouseoutSlot(x,y)"
           [ngbPopover]="popContent" [popoverTitle]="popTitle" triggers="manual" placement="top"
-          #p="ngbPopover" (mouseenter)="triggerPopover(p,x,y,$event)" (mouseleave)="closePopover(p,x,y)"
+          #p="ngbPopover" (mouseenter)="openPopover(p,x,y,$event)" (mouseleave)="closePopover(p,x,y,$event)"
           >
-          <ng-template #popTitle>{{name}}</ng-template>
+          <ng-template #popTitle>
+            {{name}}
+          </ng-template>
           <ng-template #popContent>
             <p style="margin: 10px"><b>Weekday:</b>&nbsp;{{weekdays[x]}}</p>
             <p style="margin: 10px"><b>Time:</b>&nbsp;{{slotTime[x][y]}}-{{slotTime[x][y+duration+1]}}</p>
@@ -45,14 +47,6 @@
         </div>
       </div>
     </div>
-<<<<<<< HEAD
-    <!-- define color meaning -->
-    <!-- <div style="margin-top: 20px">
-      <div class="blue-circle inline-block"><p>available to pick</p></div>
-    </div> -->
-  </div> 
-=======
   </div>
   <!-- color meanings -->
->>>>>>> e95db5ec21b76d20a2eab34ce81719d2fac035e6
 </div>
