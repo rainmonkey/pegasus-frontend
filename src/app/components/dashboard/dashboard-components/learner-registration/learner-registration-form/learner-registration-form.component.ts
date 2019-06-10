@@ -405,6 +405,7 @@ export class LearnerRegistrationFormComponent implements OnInit, DoCheck {
       );
   }
   selectLearnerLevel(value) {
+    if (this.whichLearner) return 
     this.customCourse.reset();
     this.customCourse.controls.forEach((item, index) => {
       this.customCourse.removeAt(index);
@@ -838,8 +839,9 @@ selectLocation(id, i) {
        }
     else
     {
-      if (this.whichLearner.One2oneCourseInstance.length===0)
+      if (this.whichLearner.One2oneCourseInstance.length===0){
         this.customCourse.push(this.courseIntanceGroup);
+      }
 
       this.isSelectedLevel = true;
       this.selectlearnerLevel = this.whichLearner.LearnerLevel;
