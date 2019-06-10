@@ -38,7 +38,7 @@ export class CourseDetailModalComponent implements OnInit {
     this.getTeacherLevel();
     this.getLevel();
     this.getCourseType();
-    this.getDuration();    
+    this.getDuration();
     // console.log(typeof(this.getTeacherLevel()))
   }
 
@@ -138,6 +138,7 @@ export class CourseDetailModalComponent implements OnInit {
       // console.log(this.updateForm.value);
     } else if (!this.updateForm.dirty) {
       this.errorMessage = 'Data did no changing!';
+      // stop here if form is invalid
     } else {
       // console.log('errors')
       this.errorMessage = 'Input incorrect.'
@@ -157,7 +158,7 @@ export class CourseDetailModalComponent implements OnInit {
       this.messageColor = '#dc3545'
       return null;
     }
-  } 
+  }
 
   /*
     after stringify submition string, data is ready to submit
@@ -171,7 +172,7 @@ export class CourseDetailModalComponent implements OnInit {
     //while push a stream of new data
     if (this.command == 0) {
       this.coursesService.addNew(formValue).subscribe(
-        (res) => {          
+        (res) => {
           alert('Submit success!');
           this.activeModal.close();
         },
