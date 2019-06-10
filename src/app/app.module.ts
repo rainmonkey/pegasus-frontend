@@ -95,7 +95,13 @@ import { LearnerCreditPanelComponent } from './components/dashboard/dashboard-co
 import { LearnerCreditDetailsComponent } from './components/dashboard/dashboard-components/learner-credit/learner-credit-details/learner-credit-details.component';
 import { TrialTesterComponent } from './components/dashboard/dashboard-components/trial-session/trial-tester/trial-tester.component';
 import { OrderbyPipe } from './shared/pipes/orderby.pipe';
-
+import { SessionRescheduleModalComponent } from './components/dashboard/dashboard-components/sessions/session-modals/session-reschedule-modal/session-reschedule-modal.component';
+import { MondayDateInWeekByDatePipe } from './shared/pipes/monday-date-in-week-by-date.pipe';
+import { TrialConfirmComponent } from './components/dashboard/dashboard-components/trial-session/trial-confirm/trial-confirm.component';
+import { StaffDeleteModalComponent } from './components/dashboard/dashboard-components/admin-staff/staff-delete-modal/staff-delete-modal.component';
+import { StaffDetailModalComponent } from './components/dashboard/dashboard-components/admin-staff/staff-detail-modal/staff-detail-modal.component';
+import { StaffEditModalComponent } from './components/dashboard/dashboard-components/admin-staff/staff-edit-modal/staff-edit-modal.component';
+import { StaffModalFormComponent } from './components/dashboard/dashboard-components/admin-staff/staff-modal-form/staff-modal-form.component';
 
 
 @NgModule({
@@ -161,6 +167,7 @@ import { OrderbyPipe } from './shared/pipes/orderby.pipe';
     GenderPipe,
     RelationshipPipe,
     ColumnTitleFormatPipe,
+    MondayDateInWeekByDatePipe,
     CourseClassListComponent,
     CourseClassDetailModalComponent,
     DashboardHomeComponent,
@@ -184,6 +191,14 @@ import { OrderbyPipe } from './shared/pipes/orderby.pipe';
     LearnerCreditDetailsComponent,
     TrialTesterComponent,
     OrderbyPipe,
+    SessionRescheduleModalComponent,
+    MondayDateInWeekByDatePipe,
+    TrialConfirmComponent,
+
+    StaffModalFormComponent,
+    StaffDeleteModalComponent,
+    StaffDetailModalComponent,
+    StaffEditModalComponent,
   ],
   imports: [
     NgbModule,
@@ -201,7 +216,8 @@ import { OrderbyPipe } from './shared/pipes/orderby.pipe';
     ChartsModule
   ],
   providers: [
-    DatePipe
+    DatePipe,
+    MondayDateInWeekByDatePipe
   ],
   entryComponents:[
     TeacherDeleteModalComponent,
@@ -218,13 +234,20 @@ import { OrderbyPipe } from './shared/pipes/orderby.pipe';
     LearnerEditModalComponent,
     SessionCancelModalComponent,
     SessionCompletedModalComponent,
+    SessionRescheduleModalComponent,
     RatingModalComponent,
     ForgotPasswordModalComponent,
     ChangePasswordModalComponent,
     LearnerRegistrationModalComponent,
     LearnerRegistrationConfirmModalComponent,
     TrialModalComponent,
-    TrialTesterComponent
+    TrialTesterComponent,
+    TrialConfirmComponent,
+    StaffDeleteModalComponent,
+    StaffDetailModalComponent,
+    StaffEditModalComponent,
+
+
   ],
   exports: [AppComponent],
   bootstrap: [AppComponent]

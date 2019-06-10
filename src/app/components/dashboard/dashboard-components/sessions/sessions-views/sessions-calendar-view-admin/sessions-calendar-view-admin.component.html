@@ -75,14 +75,17 @@
   </div>
   <div class="container">
     <div class="row">
-      <div class="col-4">
+      <div class="col-3">
         <button (click)="openEdit(eventInfo)" (click)="modal.dismiss('Cross click')" class="btn btn-primary btn-block">Edit </button>
       </div>
-      <div class="col-4">
+      <div class="col-3">
         <button  class="btn btn-success btn-block" (click)="openConfirm(eventInfo)" (click)="modal.dismiss('Cross click')"  >Confirm</button>
       </div>
-      <div class="col-4">
+      <div class="col-3">
         <button (click)="openDelete(eventInfo)" (click)="modal.dismiss('Cross click')"  class="btn btn-danger btn-block" >Cancel</button>
+      </div>
+      <div class="col-3">
+        <button (click)="openReschedule(eventInfo)" (click)="modal.dismiss('Cross click')" class="btn btn-warning btn-block"><div style="color: #ffffff">Split</div></button>
       </div>
     </div>
   </div>

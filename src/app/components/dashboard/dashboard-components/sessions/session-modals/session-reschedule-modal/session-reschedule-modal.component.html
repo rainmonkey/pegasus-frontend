@@ -1,0 +1,40 @@
+<div>
+  <div class="modal-header m-2">
+    <h4>Please Confirm</h4>
+    <button
+      type="button"
+      class="close"
+      aria-label="Close"
+      (click)="activeModal.dismiss('Cross click')"
+    >
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+
+  <!-- modal-body -->
+  <div class="container">
+    <div class="d-flex justify-content-center row">
+      <p>Please confirm the course has been re-schedule</p>
+      <div>
+        <div class="row mb-2">
+          <label class="mt-2">re-schedule Reason</label>
+          <input class="form-control" type="text" [(ngModel)]="reason"/>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <span *ngIf='isRescheduleSuccess' class='text-success'>Reschedule Success </span>
+    <span *ngIf='isRescheduleFail' class='text-danger'>Reschedule Fail </span>
+    <div *ngIf="isloading" class="loaderSmall"></div>
+    <button *ngIf="!isConfirmClick" type="button" class="btn btn-dark" (click)="RescheduleConfirm()">
+      Confirm
+    </button>
+    <button
+      type="button"
+      class="btn btn-outline-dark"
+      (click)="activeModal.dismiss('Cross click')">
+      Cancel
+    </button>
+  </div>
+</div>

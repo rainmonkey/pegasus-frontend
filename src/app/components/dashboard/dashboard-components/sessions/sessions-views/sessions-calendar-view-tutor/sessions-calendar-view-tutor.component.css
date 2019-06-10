@@ -28,3 +28,12 @@ th{
 .fc-time-grid .fc-slats td{
   height: 1.2em;
 }
+
+.container .loaderLarge{
+  position: absolute;
+  top: 30%;
+  left: 50%;
+  right: 50%;
+  -ms-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+}

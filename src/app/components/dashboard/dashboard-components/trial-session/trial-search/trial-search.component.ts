@@ -1,6 +1,7 @@
 import { TrialModalComponent } from './../trial-modal/trial-modal.component';
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { CoursesService } from 'src/app/services/http/courses.service';
 
 @Component({
   selector: 'app-trial-search',
@@ -15,22 +16,37 @@ export class TrialSearchComponent implements OnInit {
     "Orgs": { "clicked": false, "display": false, "id": 2 },
     "Teachers": { "clicked": false, "display": false, "id": 3 },
   }
-  public filters: object = { "CategoriesId": null, "OrgsId": null}
+  public filters: object = { "CategoriesId": null, "OrgsId": null }
   public previousCloseBtn: any = null;
+  public coursesTeachingByCate;
+  public termPeriod;
 
   @Input() courses;
   @Input() coursesCate;
   @Input() orgs;
   @Input() teachers;
   @Input() groupCoursesInstance;
+  @Input() teachingCourses;
   @Output() childEvent = new EventEmitter();
 
-  constructor(  private modalService: NgbModal,
-    ) { }
+  constructor(private modalService: NgbModal,
+              private coursesService: CoursesService) { }
 
   ngOnInit() {
-
+    this.getSemesterPeriod();
   }
+
+  getSemesterPeriod(){
+    this.coursesService.getoioi().subscribe(
+      (res) => {
+        this.termPeriod = res.Data;
+        console.log(this.termPeriod)
+      },
+      (err) => {
+        alert('Sorry, something went wrong in server.')
+      }
+    )
+  };
 
   /*
     display courses categories tabs in HTML
@@ -61,25 +77,45 @@ export class TrialSearchComponent implements OnInit {
   }
 
   /*
-    display teachers that fit all the filters requirement
+    display teachers tabs passing all filters
   */
   displayTeachers() {
-    let array:Array<any> = [];
-    for(let i of this.teachers){
-      for(let j of i.AvailableDays){
-        if(j.OrgId == this.filters['OrgsId']){
+    let array: Array<any> = [];
+    //先从teacher api里寻找在指定org教课的老师的课
+    for (let i of this.teachers) {
+      for (let j of i.AvailableDays) {
+        if (j.OrgId == this.filters['OrgsId']) {
           array.push(i)
         }
       }
     }
+ 
+    //再从teachingcourse里寻找教指定乐器的老师的课
+    let array1: Array<any> = [];
+    for (let i of this.teachingCourses){
+      for(let j of array){
+        if(j.TeacherId == i.TeacherId  && i.Course.CourseCategory.CourseCategoryId == this.filters["CategoriesId"]){
+          array1.push(j)
+        }
+      }
+    }
+
+    this.coursesTeachingByCate = array1;
+
+    let hash = {};
+    let result = array1.reduce(function (item, next) {
+      hash[next.TeacherId] ? '' : hash[next.TeacherId] = true && item.push(next);
+      return item;
+    }, [])
 
     //需要保存一次array
-    
+    return result;
+
   }
 
   /*
     (onclick event handler) select the tab that user clicked
-     --> when user click a tab, select this tab and show some animations
+      --> when user click a tab, select this tab and show some animations
   */
   selectTab(event, className, nextClass, index, filterId) {
     //only no tab select, mouse click event work.
@@ -103,7 +139,7 @@ export class TrialSearchComponent implements OnInit {
           setTimeout(() => {
             //★★★★★ event.currentTarget: 获取的是目标元素的父节点(如果目标元素是父节点则获取它自己) ★★★★★//
             targetObj.firstChild.style.display = 'block';
-            if(nextClass !== null){
+            if (nextClass !== null) {
               this.styleFlowControl[nextClass].display = true;
             }
             // if(className =='Teachers'){
@@ -148,9 +184,28 @@ export class TrialSearchComponent implements OnInit {
     event.stopPropagation();
   }
 
-  popUpModal(){
-    //this.childEvent.emit(teacherSelected);
+  /*
+    pop up FullCalendar modal
+  */
+  popUpModal(whichTeacher) {
+    let coursesTeachingByWhichTeacher = this.getCoursesTeachingByWhichTeacher(whichTeacher);
+    //console.log(coursesTeachingByWhichTeacher)
     const modalRef = this.modalService.open(TrialModalComponent, { size: 'lg', backdrop: 'static', keyboard: false });
+    modalRef.componentInstance.termPeriod = this.termPeriod;
+  }
+
+  getCoursesTeachingByWhichTeacher(whichTeacher){
+    //console.log(whichTeacher.TeacherId)
+    this.coursesService.getLessonsByTeacherId(1).subscribe(
+      (res) => {
+        console.log(res.Data)
+      },
+      (err) => {
+
+      }
+    )
+    //测试用 1
+
   }
 
 }

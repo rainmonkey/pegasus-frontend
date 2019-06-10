@@ -11,6 +11,7 @@ import { element } from '@angular/core/src/render3';
 import { forkJoin } from 'rxjs';
 import { TimePickerComponent } from '../../time-picker/time-picker.component';
 import { ngtimepickerValidator } from './validators';
+import { FindValueSubscriber } from 'rxjs/internal/operators/find';
 
 @Component({
   selector: 'app-learner-registration-form',
@@ -65,7 +66,7 @@ export class LearnerRegistrationFormComponent implements OnInit, DoCheck {
   public learnerOthers: any[] = [];
   public learnerlevelType = 1;
   public duration: Array<any>;
-  public selectlearnerLevel: number;
+  public selectLearnerLevel: number;
   public pureCourses: any[];
   notPiano;
   notPianoTeaArray = [];
@@ -112,6 +113,8 @@ export class LearnerRegistrationFormComponent implements OnInit, DoCheck {
   timePickArrayNumber;
   modalRefConfirm;
   // needSubmit = false;
+  // for edit component;
+  assignValue = false;
 
   // getter method: simplify the way to capture form controls
   get firstName() { return this.registrationForm.get('learnerForm').get('firstName'); }
@@ -143,7 +146,7 @@ export class LearnerRegistrationFormComponent implements OnInit, DoCheck {
       location: [''],
       room: ['',Validators.required],
       beginDate: [this.myDate()],
-      endDate: ['',Validators.required],
+      endDate: [''],
       schedule: this.fb.group({
         dayOfWeek: ['6'],
         beginTime: [this.time, ngtimepickerValidator],
@@ -151,21 +154,26 @@ export class LearnerRegistrationFormComponent implements OnInit, DoCheck {
       }),
     });
   }
-
+//
   ngOnInit() {
     // init date
     // get orgId
     this.orgId = JSON.parse(localStorage.getItem('OrgId'))[0];
     this.getDate();
-    if (this.whichLearner != null) console.log(this.whichLearner);
+    if (this.whichLearner != null) { //set LevelType
+      console.log(this.whichLearner);
+      this.learnerlevelType  = this.whichLearner.LevelType;
+    }
     this.registrationForm = this.fb.group({
       learnerForm: this.fb.group({
         firstName: [this.whichLearner ? this.whichLearner.FirstName : '', Validators.required],
         middleName: [this.whichLearner ? this.whichLearner.MiddleName : ''],
         lastName: [this.whichLearner ? this.whichLearner.LastName : '', Validators.required],
         gender: [this.whichLearner ? this.whichLearner.Gender : '2', Validators.required],
+
         birthday: [this.whichLearner && this.whichLearner.Dob ? this.whichLearner.Dob.slice(0, 10) : null],
-        enrollmentDate: [this.whichLearner ? this.whichLearner.EnrollDate.slice(0, 10) : this.myDate()],
+        enrollmentDate: [this.whichLearner&&this.whichLearner.EnrollDate ? this.whichLearner.EnrollDate.slice(0, 10) : this.myDate()],
+
         contactNum: [this.whichLearner ? this.whichLearner.ContactNum : ''],
         email: [this.whichLearner ? this.whichLearner.Email : '', [Validators.required, Validators.email]],
         address: [this.whichLearner ? this.whichLearner.Address : ''],
@@ -173,7 +181,7 @@ export class LearnerRegistrationFormComponent implements OnInit, DoCheck {
         grade: [''],
         //learnPurpose: [this.whichLearner?this.whichLearner.learnPurpose:''],
         //infoFrom: [this.whichLearner?this.whichLearner.infoFrom:''],
-        learnerLevel: [this.whichLearner ? this.whichLearner.LearnerLevel : this.selectlearnerLevel, Validators.required],
+        learnerLevel: [this.whichLearner ? this.whichLearner.LearnerLevel : this.selectLearnerLevel, Validators.required],
         location: [this.whichLearner ? this.whichLearner.OrgId : this.orgId, Validators.required],
         levelType: [this.whichLearner ? this.whichLearner.LevelType : '0'],
         levelTypeRadio: [1],
@@ -186,9 +194,9 @@ export class LearnerRegistrationFormComponent implements OnInit, DoCheck {
       customCourse: this.fb.array([]),
     });
 
+   
     this.setParentForm();
     this.setOneToOneForm();
-
 
     //@ts-ignore
     // let abc = this.customCourse.controls[0].controls.roomArray;
@@ -204,7 +212,8 @@ export class LearnerRegistrationFormComponent implements OnInit, DoCheck {
     this.getLocationFromServer();
     // init array
     this.initArrays()
-
+    // get data if input
+    this.selectLearnerLevelFun(this.whichLearner?this.whichLearner.learnerLevel:null);
     //
     console.log(this.registrationForm);
   }
@@ -278,11 +287,11 @@ export class LearnerRegistrationFormComponent implements OnInit, DoCheck {
         // get one to one courses
         this.courses121 = res.Data.filter(item => item.CourseType === 1);
         // apply learner level filter
-        console.log(this.selectlearnerLevel)
+        console.log(this.selectLearnerLevel)
 
         let coursePiano = this.courses121.filter(item => item.CourseCategory.CourseCategoryId === 1)
-          .filter((item) => item.Level == this.selectlearnerLevel);
-        console.log(this.selectlearnerLevel, coursePiano);
+          .filter((item) => item.Level == this.selectLearnerLevel);
+        console.log(this.selectLearnerLevel, coursePiano);
         // if not piano, do not filter the learner level
         let courseOther = this.courses121.filter(item => item.CourseCategory.CourseCategoryId !== 1);
         this.catItemArray = coursePiano.concat(courseOther);
@@ -296,18 +305,17 @@ export class LearnerRegistrationFormComponent implements OnInit, DoCheck {
         let catArray = [];
         // let catNameArray = [];
         // let setUniName = [];
-        let temp;
-        let tempArray = [];
         this.catItemArray.forEach(cat => {
           // cat.CourseCategory.CourseCategoryId =
           // catArray.push(cat.CourseCategory.CourseCategoryId);
           // catNameArray.push(cat.CourseCategory.CourseCategoryName);
           catArray.push(JSON.stringify(cat.CourseCategory));
         });
+        // use set to find unique values of the stringify array
         let uniCat = arr => Array.from(new Set(arr));
         this.setUniCat = [];
         uniCat(catArray).forEach(ele => {
-          //@ts-ignore
+          // @ts-ignore
           this.setUniCat.push(JSON.parse(ele));
         });
         // setUniName = uniCat(catNameArray);
@@ -320,10 +328,8 @@ export class LearnerRegistrationFormComponent implements OnInit, DoCheck {
         //   tempArray.push(temp)
         // })
         // this.setUniCat = tempArray;
-        console.log(this.setUniCat);
         this.setUniCatListArray = [];
         this.setUniCatListArray.push(this.setUniCat);
-        console.log(this.setUniCatListArray)
       });
   }
   getLocationFromServer() {
@@ -402,16 +408,21 @@ export class LearnerRegistrationFormComponent implements OnInit, DoCheck {
         }
       );
   }
-  selectLearnerLevel(value) {
-    this.customCourse.reset();
+  selectLearnerLevelFun(value) {
+    console.log(value)
+    if (this.whichLearner && this.assignValue) {
+      this.assignValue = true;
+    }
+    else {
+    this.customCourse.reset();}
     this.customCourse.controls.forEach((item, index) => {
       this.customCourse.removeAt(index);
     });
-    this.customCourse.push(this.courseIntanceGroup)
+    this.customCourse.push(this.courseIntanceGroup);
     this.isSelectedLevel = true;
-    this.selectlearnerLevel = value;
+    this.selectLearnerLevel = value;
     this.getCoursesFromServer();
-    // let a = this.courses.filter((e) =>  this.selectlearnerLevel == e.Level);
+    // let a = this.courses.filter((e) =>  this.selectLearnerLevel == e.Level);
 
   }
   // check lists
@@ -502,8 +513,10 @@ export class LearnerRegistrationFormComponent implements OnInit, DoCheck {
 
   // 121 course section
   selectLevelType(value) {
-    console.log(this.levelType)
+    console.log(value)
     this.learnerlevelType = Number(value);
+    console.log(value)
+    console.log(this.learnerlevelType)
   }
   emptySelectionCat(i) {
 
@@ -653,7 +666,7 @@ selectLocation(id, i) {
     this.fdObj['Email'] = this.learner.email;
     this.fdObj['Address'] = this.learner.address;
     this.fdObj['OrgId'] = this.learner.location;
-    this.fdObj['LearnerLevel'] = this.selectlearnerLevel;
+    this.fdObj['LearnerLevel'] = this.selectLearnerLevel;
     this.fdObj['LevelType'] = this.learnerlevelType;
     this.fdObj['IsUnder18'] = this.learner.isUnder18 ? 1 : 0;;
     this.fdObj['PaymentPeriod'] = parseInt(this.learner.paymentPeriod);
@@ -761,10 +774,17 @@ selectLocation(id, i) {
   openConfirm() {
     this.modalRefConfirm = this.modalService.open(LearnerRegistrationConfirmModalComponent);
     this.modalRefConfirm.componentInstance.fdObj = this.fd;
+    if (this.whichLearner){
+      this.modalRefConfirm.componentInstance.command = 2;  //add
+      this.modalRefConfirm.componentInstance.learnerId = this.whichLearner.LearnerId;
+    }
+    else
+      this.modalRefConfirm.componentInstance.command = 1;   //post
+
   }
   // // check changes
   ngDoCheck() {
-     console.log(this.selectlearnerLevel)
+    //  console.log(this.selectLearnerLevel)
     // console.log(this.customCourse.controls[0].get('schedule').get('beginTime').invalid)
     // console.log(this.modalRefTimePicker);
     // this.modalRefConfirm?this.needSubmit = this.modalRefConfirm.componentInstance.submitClicked:this.needSubmit = false;
@@ -817,7 +837,6 @@ selectLocation(id, i) {
             relationship: [p.Relationship, Validators.required],
             contactPhone: [p.ContactNum, Validators.required],
             email: [p.Email, [Validators.required, Validators.email]]
-
           }))
       })
     };
@@ -829,11 +848,12 @@ selectLocation(id, i) {
        }
     else
     {
-      if (this.whichLearner.One2oneCourseInstance.length===0)
+      if (this.whichLearner.One2oneCourseInstance.length===0){
         this.customCourse.push(this.courseIntanceGroup);
+      }
 
       this.isSelectedLevel = true;
-      this.selectlearnerLevel = this.whichLearner.LearnerLevel;
+      this.selectLearnerLevel = this.whichLearner.LearnerLevel;
 
       let allData,teacherFilter,pureCourses;
       let CatList=[];
@@ -897,7 +917,7 @@ selectLocation(id, i) {
             console.log(courseItemArray1);
             let courseItemArray = courseItemArray1
               .filter(ele =>
-                ((o.Course.CourseCategoryId == 1 && ele.Level == this.selectlearnerLevel)
+                ((o.Course.CourseCategoryId == 1 && ele.Level == this.selectLearnerLevel)
                   || o.Course.CourseCategoryId != 1)
               );
             console.log(courseItemArray);
@@ -927,11 +947,11 @@ selectLocation(id, i) {
                 beginDate: [o.BeginDate ? o.BeginDate.slice(0, 10) : ''],
                 endDate: [o.EndDate ? o.EndDate.slice(0, 10) : ''],
                 schedule: this.fb.group({
-                  dayOfWeek: [o.CourseSchedule[0].DayOfWeek?o.CourseSchedule[0].DayOfWeek:null],
+                  dayOfWeek: [o.CourseSchedule[0]?(o.CourseSchedule[0].DayOfWeek?o.CourseSchedule[0].DayOfWeek:null):null],
                   beginTime: [{
-                    hour: o.CourseSchedule[0].BeginTime?parseInt(o.CourseSchedule[0].BeginTime.slice(0, 2)):null,
-                    minute: o.CourseSchedule[0].BeginTime?parseInt(o.CourseSchedule[0].BeginTime.slice(3, 5)):null,
-                    second: o.CourseSchedule[0].BeginTime?parseInt(o.CourseSchedule[0].BeginTime.slice(6, 8)):null
+                    hour: o.CourseSchedule[0]?(o.CourseSchedule[0].BeginTime?parseInt(o.CourseSchedule[0].BeginTime.slice(0, 2)):null):null,
+                    minute: o.CourseSchedule[0]?(o.CourseSchedule[0].BeginTime?parseInt(o.CourseSchedule[0].BeginTime.slice(3, 5)):null):null,
+                    second: o.CourseSchedule[0]?(o.CourseSchedule[0].BeginTime?parseInt(o.CourseSchedule[0].BeginTime.slice(6, 8)):null):null
                   }],//{ hour: 9, minute: 0, second: 0 }
                   //{ hour: 9, minute: 0, second: 0 }  09:03:14
                   durationType: [o.Course.Duration]

@@ -18,6 +18,7 @@ export class TrialInfoComponent implements OnInit {
   public orgs;
   public teachers;
   public groupCoursesInstance;
+  public teachingCourses;
   public popUpFlag:boolean = false;
 
   @Input() childEvent;
@@ -31,16 +32,6 @@ export class TrialInfoComponent implements OnInit {
     
   }
 
-  // ngDoCheck(){
-  //   if(this.childEvent !== undefined){
-  //     if(this.popUpFlag == false){
-  //       this.popUpFlag = true;
-  //       console.log('a')
-  //       this.popUpModal(this.childEvent);  
-  //     }
-  //   }
-  // }
-
   //并发获取所有数据
   getDataFromServer() {
     let coursesService = this.coursesService.getCourseClasses();
@@ -48,14 +39,16 @@ export class TrialInfoComponent implements OnInit {
     let orgsService = this.coursesService.getLocations();
     let teachersService = this.teachersService.getTeachersInfo();
     let groupCourseInstance = this.coursesService.getCourseClasses();
+    let teachingCourseService = this.teachersService.getTeachingCourse();
 
-    forkJoin([coursesService, coursesCategories,orgsService,teachersService,groupCourseInstance]).subscribe(
+    forkJoin([coursesService, coursesCategories,orgsService,teachersService,groupCourseInstance,teachingCourseService]).subscribe(
       (res) => {
         this.courses = res[0]['Data'];
         this.coursesCate = res[1]['Data'];
         this.orgs = res[2]['Data'];
         this.teachers = res[3]['Data'];
         this.groupCoursesInstance = res[4]['Data'];
+        this.teachingCourses = res[5]['Data'];
       },
       (err) => {
         alert('Sorry, something went wrong.')

@@ -130,14 +130,14 @@ export class AdminInvoiceListComponent implements OnInit {
       let searchString: string;
       let searchBy: string;
       let searchingInputObj = document.getElementById('searchingInput');
-      let optionsObj = document.getElementById('searchOption');
+      //let optionsObj = document.getElementById('searchOption');
 
-      (initValue == undefined) ? { searchString, searchBy } = { searchString: searchingInputObj['value'], searchBy: optionsObj['value'] } :
+      (initValue == undefined) ? { searchString, searchBy } = { searchString: searchingInputObj['value'], searchBy: 'FirstName' } :
         { searchString, searchBy } = initValue;
 
-      this.myArray = this.ngTable.searching(this.myArrayCopy, searchBy, searchString);
+      this.myArray = this.ngTable.searching(this.myArray, searchBy, searchString);
       this.myArrayLength = this.myArray.length;
-      optionsObj['value'] = searchBy;
+      //optionsObj['value'] = searchBy;
     }
 
   }

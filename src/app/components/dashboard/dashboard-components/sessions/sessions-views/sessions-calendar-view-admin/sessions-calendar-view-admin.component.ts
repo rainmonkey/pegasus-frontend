@@ -13,6 +13,7 @@ import {SessionDetailEditModalComponent} from '../../session-modals/session-deta
 import {SessionEdit} from '../../../../../../models/SessionEdit';
 import {SessionCancelModalComponent} from '../../session-modals/session-cancel-modal/session-cancel-modal.component';
 import {SessionCompletedModalComponent} from '../../session-modals/session-completed-modal/session-completed-modal.component';
+import {SessionRescheduleModalComponent} from '../../session-modals/session-reschedule-modal/session-reschedule-modal.component';
 
 @Component({
   selector: 'app-sessions-calendar-view-admin',
@@ -177,7 +178,7 @@ export class SessionsCalendarViewAdminComponent implements OnInit {
     const year = this.searchForm.get('dateOfLesson').value.year;
     const month = this.searchForm.get('dateOfLesson').value.month;
     const day = this.searchForm.get('dateOfLesson').value.day;
-    const date = year + '-' + month + '-' + day + ' 12:00:00';
+    const date = year + '-' + month + '-' + day
     const datetoshow = this.datePipe.transform(date, 'yyyy-MM-dd');
     this.fullcalendar.calendar.gotoDate(datetoshow);
     this.getEventByDate(date);
@@ -199,6 +200,19 @@ export class SessionsCalendarViewAdminComponent implements OnInit {
     const Date = this.datePipe.transform(this.fullcalendar.calendar.getDate(), 'yyyy-MM-dd');
     const modalRef = this.modalService.open(SessionDetailEditModalComponent, { size: 'lg' });
     (modalRef.componentInstance as SessionDetailEditModalComponent).LessonModel = info.event.extendedProps.info;
+    modalRef.result.then(
+      () => {
+        this.getEventByDate(Date);
+      },
+      () => {
+        this.getEventByDate(Date);
+      });
+  }
+
+  openReschedule = (info) => {
+    const Date = this.datePipe.transform(this.fullcalendar.calendar.getDate(), 'yyyy-MM-dd');
+    const modalRef = this.modalService.open(SessionRescheduleModalComponent);
+    (modalRef.componentInstance as SessionRescheduleModalComponent).lessonid = info.event.id;
     modalRef.result.then(
       () => {
         this.getEventByDate(Date);

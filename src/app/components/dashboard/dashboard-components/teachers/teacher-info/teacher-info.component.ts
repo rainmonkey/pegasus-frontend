@@ -18,7 +18,7 @@ import { LookUpsService } from 'src/app/services/http/look-ups.service';
 })
 export class TeacherInfoComponent implements OnInit {
   //what columns showed in the info page, can get from back-end in the future. must as same as database
-  public columnsToShow: Array<string> = ['FirstName', 'LastName', 'Email'];
+  public columnsToShow: Array<string> = ['FirstName', 'LastName', 'MobilePhone'];
   //teachers data from database
   public teachersList: Array<any>;
   //teachers list copy. Using in searching method, in order to initialize data to original
@@ -298,6 +298,6 @@ export class TeacherInfoComponent implements OnInit {
   detailModal(command, whichTeacher) {
     const modalRef = this.modalService.open(TeacherDetailModalComponent, { size: 'lg' });
     modalRef.componentInstance.command = command;
-    modalRef.componentInstance.whichTeacher = whichTeacher;
+    modalRef.componentInstance.whichTeacher = whichTeacher; 
   }
 }
