@@ -1,6 +1,7 @@
 import { TrialModalComponent } from './../trial-modal/trial-modal.component';
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { CoursesService } from 'src/app/services/http/courses.service';
 
 @Component({
   selector: 'app-trial-search',
@@ -17,6 +18,7 @@ export class TrialSearchComponent implements OnInit {
   }
   public filters: object = { "CategoriesId": null, "OrgsId": null }
   public previousCloseBtn: any = null;
+  public coursesTeachingByCate;
 
   @Input() courses;
   @Input() coursesCate;
@@ -27,7 +29,7 @@ export class TrialSearchComponent implements OnInit {
   @Output() childEvent = new EventEmitter();
 
   constructor(private modalService: NgbModal,
-  ) { }
+              private coursesService: CoursesService) { }
 
   ngOnInit() {
 
@@ -66,6 +68,7 @@ export class TrialSearchComponent implements OnInit {
   */
   displayTeachers() {
     let array: Array<any> = [];
+    //先从teacher api里寻找在指定org教课的老师
     for (let i of this.teachers) {
       for (let j of i.AvailableDays) {
         if (j.OrgId == this.filters['OrgsId']) {
@@ -73,7 +76,8 @@ export class TrialSearchComponent implements OnInit {
         }
       }
     }
-
+    //console.log(array)
+    //再从teachingcourse里寻找教指定乐器的老师
     let array1: Array<any> = [];
     for (let i of this.teachingCourses){
       for(let j of array){
@@ -82,6 +86,8 @@ export class TrialSearchComponent implements OnInit {
         }
       }
     }
+
+    this.coursesTeachingByCate = array1;
 
     let hash = {};
     let result = array1.reduce(function (item, next) {
@@ -165,9 +171,24 @@ export class TrialSearchComponent implements OnInit {
     event.stopPropagation();
   }
 
-  popUpModal() {
-    //this.childEvent.emit(teacherSelected);
+  popUpModal(whichTeacher) {
+    let coursesTeachingByWhichTeacher = this.getCoursesTeachingByWhichTeacher(whichTeacher);
+    //console.log(coursesTeachingByWhichTeacher)
     const modalRef = this.modalService.open(TrialModalComponent, { size: 'lg', backdrop: 'static', keyboard: false });
+  }
+
+  getCoursesTeachingByWhichTeacher(whichTeacher){
+    //console.log(whichTeacher.TeacherId)
+    this.coursesService.getLessonsByTeacherId(1).subscribe(
+      (res) => {
+        console.log(res.Data)
+      },
+      (err) => {
+
+      }
+    )
+    //测试用 1
+
   }
 
 }
