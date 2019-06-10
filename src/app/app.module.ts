@@ -97,6 +97,7 @@ import { TrialTesterComponent } from './components/dashboard/dashboard-component
 import { OrderbyPipe } from './shared/pipes/orderby.pipe';
 import { SessionRescheduleModalComponent } from './components/dashboard/dashboard-components/sessions/session-modals/session-reschedule-modal/session-reschedule-modal.component';
 import { MondayDateInWeekByDatePipe } from './shared/pipes/monday-date-in-week-by-date.pipe';
+import { TrialConfirmComponent } from './components/dashboard/dashboard-components/trial-session/trial-confirm/trial-confirm.component';
 
 
 @NgModule({
@@ -188,6 +189,7 @@ import { MondayDateInWeekByDatePipe } from './shared/pipes/monday-date-in-week-b
     OrderbyPipe,
     SessionRescheduleModalComponent,
     MondayDateInWeekByDatePipe,
+    TrialConfirmComponent,
   ],
   imports: [
     NgbModule,
@@ -230,7 +232,8 @@ import { MondayDateInWeekByDatePipe } from './shared/pipes/monday-date-in-week-b
     LearnerRegistrationModalComponent,
     LearnerRegistrationConfirmModalComponent,
     TrialModalComponent,
-    TrialTesterComponent
+    TrialTesterComponent,
+    TrialConfirmComponent,
   ],
   exports: [AppComponent],
   bootstrap: [AppComponent]
