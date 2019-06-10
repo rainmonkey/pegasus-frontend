@@ -24,6 +24,7 @@ export class StaffModalFormComponent implements OnInit {
   public typeList: any;
   public orgList: any;
   public staffOrg: any
+  public staffType:any;
 
   @Input() command;
   @Input() whichStaff;
@@ -85,9 +86,9 @@ export class StaffModalFormComponent implements OnInit {
 
   setDefaultBranchSelection(selectOrgId) {
     if (this.command !== 0) {
-      console.log('aaaa',selectOrgId)
+      // console.log('aaaa',selectOrgId)
       for(let i of this.whichStaff.StaffOrg){
-        console.log('bbbbb',i.OrgId)
+        // console.log('bbbbb',i.OrgId)
        if(i.OrgId == selectOrgId){
          //return的作用 直接跳出function
          //但是 你要的
@@ -194,6 +195,8 @@ export class StaffModalFormComponent implements OnInit {
     event.target.src = '../../../../../../assets/images/shared/default-employer-profile.png';
     return;
   }
+
+
 
   formGroupAssemble() {
     let groupObj: any;

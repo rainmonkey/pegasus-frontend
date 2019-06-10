@@ -28,7 +28,7 @@ export class StaffEditModalComponent implements OnInit {
     console.log(this.modalUpdateFormComponentObj)
   }
   onClose() {
-    if (this.modalUpdateFormComponentObj.updateForm.dirty == true) {
+    if (this.modalUpdateFormComponentObj.updateForm.dirty == true ) {
       this.refreshFlag.emit(true);
     }
     else {
