@@ -23,8 +23,8 @@
     </div>
   </div>
   <div class="modal-footer">
-    <span *ngIf='isComfirmSuccess' class='text-success'>Cancel Success </span>
-    <span *ngIf='isConfirmFailed' class='text-danger'>Cancel Fail </span>
+    <span *ngIf='isComfirmSuccess' class='text-success'>Confirm Success </span>
+    <span *ngIf='isConfirmFailed' class='text-danger'>Confirm Fail </span>
     <div *ngIf="isloading" class="loaderSmall"></div>
     <button *ngIf="!ConfirmClick" type="button" class="btn btn-dark" (click)="CompletedConfirm()">
       Confirm

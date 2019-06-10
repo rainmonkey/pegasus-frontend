@@ -10,6 +10,7 @@ import { concat } from 'rxjs';
 import { element } from '@angular/core/src/render3';
 import { forkJoin } from 'rxjs';
 import { TimePickerComponent } from '../../time-picker/time-picker.component';
+import { ngtimepickerValidator } from './validators';
 
 @Component({
   selector: 'app-learner-registration-form',
@@ -135,22 +136,22 @@ export class LearnerRegistrationFormComponent implements OnInit, DoCheck {
   }
   get courseIntanceGroup(): FormGroup {
     return this.fb.group({
-      courseCategory: [''],
-      course: [''],
+      courseCategory: ['',Validators.required],
+      course: ['',Validators.required],
       teacherLevel: [''],
-      teacherName: [''],
+      teacherName: ['',Validators.required],
       location: [''],
-      room: [''],
+      room: ['',Validators.required],
       beginDate: [this.myDate()],
       endDate: [''],
       schedule: this.fb.group({
         dayOfWeek: ['6'],
-        beginTime: [this.time],
+        beginTime: [this.time, ngtimepickerValidator],
         durationType: ['']
       }),
     });
   }
-
+//
   ngOnInit() {
     // init date
     // get orgId
@@ -163,8 +164,10 @@ export class LearnerRegistrationFormComponent implements OnInit, DoCheck {
         middleName: [this.whichLearner ? this.whichLearner.MiddleName : ''],
         lastName: [this.whichLearner ? this.whichLearner.LastName : '', Validators.required],
         gender: [this.whichLearner ? this.whichLearner.Gender : '2', Validators.required],
-        birthday: [this.whichLearner && this.whichLearner.Dob ? this.whichLearner.Dob.slice(0, 10) : ''],
-        enrollmentDate: [this.whichLearner ? this.whichLearner.EnrollDate.slice(0, 10) : this.myDate()],
+
+        birthday: [this.whichLearner && this.whichLearner.Dob ? this.whichLearner.Dob.slice(0, 10) : null],
+        enrollmentDate: [this.whichLearner&&this.whichLearner.EnrollDate ? this.whichLearner.EnrollDate.slice(0, 10) : this.myDate()],
+
         contactNum: [this.whichLearner ? this.whichLearner.ContactNum : ''],
         email: [this.whichLearner ? this.whichLearner.Email : '', [Validators.required, Validators.email]],
         address: [this.whichLearner ? this.whichLearner.Address : ''],
@@ -175,6 +178,7 @@ export class LearnerRegistrationFormComponent implements OnInit, DoCheck {
         learnerLevel: [this.whichLearner ? this.whichLearner.LearnerLevel : this.selectlearnerLevel, Validators.required],
         location: [this.whichLearner ? this.whichLearner.OrgId : this.orgId, Validators.required],
         levelType: [this.whichLearner ? this.whichLearner.LevelType : '0'],
+        levelTypeRadio: [1],
         paymentPeriod: [this.whichLearner ? this.whichLearner.PaymentPeriod : '1'],
         referrer: [this.whichLearner ? this.whichLearner.Referrer : ''],
         isUnder18: [this.whichLearner ? this.whichLearner.isUnder18 : 0],
@@ -196,7 +200,7 @@ export class LearnerRegistrationFormComponent implements OnInit, DoCheck {
     document.getElementById('parentForm').style.display = 'none';
     document.getElementById('courseForm').style.display = 'none';
 
-    this.getGroupCourseFromServer();
+    if (!this.whichLearner) this.getGroupCourseFromServer();
     this.getLookups(1);
     this.toModel(this.time);
     this.getLocationFromServer();
@@ -213,7 +217,7 @@ export class LearnerRegistrationFormComponent implements OnInit, DoCheck {
       const year: number = Dates.getFullYear();
       const month: any = (Dates.getMonth() + 1) < 10 ? '0' + (Dates.getMonth() + 1) : (Dates.getMonth() + 1);
       const day: any = Dates.getDate() < 10 ? '0' + Dates.getDate() : Dates.getDate();
-      console.log(Dates, year, month)
+//      console.log( Dates, year, month,)
       return year + '-' + month + '-' + day;
     };
   }
@@ -247,7 +251,7 @@ export class LearnerRegistrationFormComponent implements OnInit, DoCheck {
 
   uploadGrade(event: any) {
     this.selectedGrade = <File>event.target.files[0];
-    this.fd.append('grade', this.selectedGrade);
+    this.fd.append('ABRSM', this.selectedGrade);
     let photoRender = this.selectedGrade;
     this.photoObj = document.querySelector('#certificate');
     let that = this;
@@ -261,12 +265,12 @@ export class LearnerRegistrationFormComponent implements OnInit, DoCheck {
 
   uploadAgreement(event) {
     this.selectedAgreement = <File>event.target.files[0];
-    this.fd.append('agreement', this.selectedGrade);
+    this.fd.append('form', this.selectedAgreement);
   }
 
   uploadOther(event) {
     this.selectedOther = <File>event.target.files[0];
-    this.fd.append('OtherFile', this.selectedGrade);
+    this.fd.append('OtherFile', this.selectedOther);
   }
 
   getCoursesFromServer() {
@@ -393,6 +397,7 @@ export class LearnerRegistrationFormComponent implements OnInit, DoCheck {
         data => {
           console.log('level type', data);
           this.levelType = data.Data;
+          console.log('level type', this.levelType)
         },
         err => {
           console.log('level type err', err);
@@ -400,6 +405,7 @@ export class LearnerRegistrationFormComponent implements OnInit, DoCheck {
       );
   }
   selectLearnerLevel(value) {
+    if (this.whichLearner) return 
     this.customCourse.reset();
     this.customCourse.controls.forEach((item, index) => {
       this.customCourse.removeAt(index);
@@ -413,9 +419,10 @@ export class LearnerRegistrationFormComponent implements OnInit, DoCheck {
   }
   // check lists
   // select18(event){
-  //   if (event.target.checked){
-  //     this.isUnder18 = 1;
-  //   }
+    // if (event.target.checked){
+    //   this.isUnder18 = 1;
+    // }
+    // console.log(this.learnerForm.value.isUnder18)
   // }
 
   selectLearnerPurpose(i, event) {
@@ -464,7 +471,7 @@ export class LearnerRegistrationFormComponent implements OnInit, DoCheck {
         for (let groupCourse of this.groupCourseInstance) {
           groupCourse.comments = null;
           groupCourse.isChecked = false;
-          groupCourse.beginDate = this.myDate();
+          groupCourse.beginDate = this.myDate().slice(0,10);
         };
         console.log('new group course', this.groupCourseInstance)
         // this.addCheckboxes();
@@ -498,7 +505,7 @@ export class LearnerRegistrationFormComponent implements OnInit, DoCheck {
 
   // 121 course section
   selectLevelType(value) {
-    console.log(value)
+    console.log(this.levelType)
     this.learnerlevelType = Number(value);
   }
   emptySelectionCat(i) {
@@ -558,11 +565,17 @@ export class LearnerRegistrationFormComponent implements OnInit, DoCheck {
       }
     );
   }
-  selectLocation(id, i) {
+selectLocation(id, i) {
+    // filter branch
     this.selectedLocListArray[i].selectedLocItemArray = this.locListArray[i].locItemArray.filter(item => item.OrgId == id);
+    // get level value
     this.prepareTeaLevListArray[i].prepareTeaLevItemArray = this.selectedLocListArray[i].selectedLocItemArray[0].Level;
+    // get room value
     this.prepareRoomListArray[i].prepareRoomItemArray = this.selectedLocListArray[i].selectedLocItemArray[0].Room;
+    // if piano apply teacher level, else not apply
     if (this.notPiano !== 1) {
+      // empty array;
+      this.notPianoTeaArray = [];
       this.prepareTeaLevListArray[i].prepareTeaLevItemArray.forEach(ele => {
         this.notPianoTeaArray = this.notPianoTeaArray.concat(ele.teacher);
       });
@@ -608,7 +621,7 @@ export class LearnerRegistrationFormComponent implements OnInit, DoCheck {
     console.log('custom Course Form value', cs);
     // let tempObj = {};
     for (let cc of this.customCourse.value) {
-      if (cc.course === '') continue;
+      if (cc.course===''||!cc.course) continue;
       let tempObj = {};
       tempObj['CourseId'] = parseInt(cc.course);
       tempObj['OrgId'] = cc.location;
@@ -621,8 +634,8 @@ export class LearnerRegistrationFormComponent implements OnInit, DoCheck {
       tempScheduleObj['DurationType'] = parseInt(cc.course);
       tempObj['Schedule'] = tempScheduleObj;
       this.oneOnOneCourse.push(tempObj);
+      console.log('oneOnOne', this.oneOnOneCourse);
     };
-    console.log('oneOnOne', this.oneOnOneCourse);
   }
 
   onSubmit() {
@@ -630,13 +643,14 @@ export class LearnerRegistrationFormComponent implements OnInit, DoCheck {
     this.confirmCustomCourse();
     console.log(this.courseGroup);
     // encapsulate learner form data
+    this.learner = [];
     this.learner = this.learnerForm.value;
     console.log(this.learner);
     this.fdObj['FirstName'] = this.learner.firstName;
     this.fdObj['MiddleName'] = this.learner.middleName;
     this.fdObj['LastName'] = this.learner.lastName;
     this.fdObj['Gender'] = this.learner.gender;
-    this.fdObj['dob'] = this.learner.birthday;
+    this.fdObj['dob'] = this.learner.birthday == null? null: this.learner.birthday;
     this.fdObj['EnrollDate'] = this.learner.enrollmentDate;
     this.fdObj['ContactNum'] = this.learner.contactNum;
     this.fdObj['Email'] = this.learner.email;
@@ -644,7 +658,7 @@ export class LearnerRegistrationFormComponent implements OnInit, DoCheck {
     this.fdObj['OrgId'] = this.learner.location;
     this.fdObj['LearnerLevel'] = this.selectlearnerLevel;
     this.fdObj['LevelType'] = this.learnerlevelType;
-    this.fdObj['IsUnder18'] = this.learner.isUnder18;
+    this.fdObj['IsUnder18'] = this.learner.isUnder18 ? 1 : 0;;
     this.fdObj['PaymentPeriod'] = parseInt(this.learner.paymentPeriod);
     this.fdObj['Referrer'] = this.learner.referrer;
     // encapsulate parent form data
@@ -750,9 +764,18 @@ export class LearnerRegistrationFormComponent implements OnInit, DoCheck {
   openConfirm() {
     this.modalRefConfirm = this.modalService.open(LearnerRegistrationConfirmModalComponent);
     this.modalRefConfirm.componentInstance.fdObj = this.fd;
+    if (this.whichLearner){
+      this.modalRefConfirm.componentInstance.command = 2;  //add
+      this.modalRefConfirm.componentInstance.learnerId = this.whichLearner.LearnerId;
+    }
+    else
+      this.modalRefConfirm.componentInstance.command = 1;   //post
+
   }
   // // check changes
   ngDoCheck() {
+     console.log(this.selectlearnerLevel)
+    // console.log(this.customCourse.controls[0].get('schedule').get('beginTime').invalid)
     // console.log(this.modalRefTimePicker);
     // this.modalRefConfirm?this.needSubmit = this.modalRefConfirm.componentInstance.submitClicked:this.needSubmit = false;
     // console.log(this.needSubmit)
@@ -810,50 +833,77 @@ export class LearnerRegistrationFormComponent implements OnInit, DoCheck {
     };
 
   }
-  setOneToOneForm() {
-    if ((!this.whichLearner) || this.whichLearner.One2oneCourseInstance.length === 0) {
+  setOneToOneForm(){
+    if  (!this.whichLearner){
       this.customCourse.push(this.courseIntanceGroup);
-    }
-    else {
+       }
+    else
+    {
+      if (this.whichLearner.One2oneCourseInstance.length===0){
+        this.customCourse.push(this.courseIntanceGroup);
+      }
+
       this.isSelectedLevel = true;
       this.selectlearnerLevel = this.whichLearner.LearnerLevel;
 
-      let teacherFilter, pureCourses, groupCourse;
-      let CatList = [];
-      this.setUniCatListArray = new Array();
-      this.courseListArray = new Array();
-      this.locListArray = new Array();
-      this.prepareTeaLevListArray = new Array();
-      this.prepareTeaNameListArray = new Array();
-      this.prepareRoomListArray = new Array();
+      let allData,teacherFilter,pureCourses;
+      let CatList=[];
+      this.setUniCatListArray=new Array();
+      this.courseListArray=new Array();
+      this.locListArray=new Array();
+      this.prepareTeaLevListArray=new Array();
+      this.prepareTeaNameListArray=new Array();
+      this.prepareRoomListArray=new Array();
 
-      forkJoin([this.coursesService.getCourses(),
-      this.registrationService.getTeacherFilter(this.whichLearner.LearnerLevel),
-      this.registrationService.getGroupCourse()]).subscribe(
+      let funArr=[];
+      funArr.push(this.coursesService.getCourses());
+      funArr.push(this.registrationService.getGroupCourse());
+      this.whichLearner.One2oneCourseInstance.forEach(e=>{
+        funArr.push(this.registrationService.getTeacherFilter(e.CourseId));
+      })
+      //funArr.push(this.registrationService.getTeacherFilter(this.whichLearner.One2oneCourseInstance[0].CourseId));
+      forkJoin(...funArr).subscribe(
         (res) => {
           pureCourses = res[0].Data;
-          teacherFilter = res[1].Data;
-          groupCourse = res[2].Data;
-          // for (let groupCourse of this.groupCourseInstance) {
-          //   groupCourse.comments = null;
-          //   groupCourse.isChecked = false;
-          //   groupCourse.beginDate = this.myDate();
-          // };
-          //this.setUniCatListArray
-          console.log(pureCourses, teacherFilter)
-          pureCourses.forEach(e => {
+          this.groupCourseInstance = res[1].Data;
+          allData = res;
+
+          console.log(pureCourses,allData)
+          pureCourses.forEach(e=>{
             //console.log(e);
             if (CatList.findIndex(c => c.CourseCategoryId === e.CourseCategory.CourseCategoryId) < 0)
               CatList.push(e.CourseCategory);
           });
           console.log(CatList);
-          // courseList
 
-          this.whichLearner.One2oneCourseInstance.map((o, i) => {
-            console.log(o, pureCourses);
-            this.setUniCatListArray[i] = CatList;
-            let courseItemArray1 = pureCourses.filter(e =>
-              e.CourseCategory.CourseCategoryId == o.Course.CourseCategoryId
+          //groupCourse
+          console.log(this.whichLearner.LearnerGroupCourse,this.groupCourseInstance);
+          this.groupCourseInstance.forEach(g=>{
+              let foundGroupCourse=this.whichLearner.LearnerGroupCourse.find(e=>
+                e.GroupCourseInstanceId===g.GroupCourseInstanceId
+              );
+
+            if (foundGroupCourse){
+              g.isChecked = true;
+              g.comments = foundGroupCourse.Comment;
+              g.beginDate = foundGroupCourse.BeginDate.slice(0,10);
+            }else{
+              g.comments = null;
+              g.isChecked = false;
+              g.beginDate = this.myDate();
+            }
+          });
+          console.log(this.whichLearner.LearnerGroupCourse,this.groupCourseInstance);
+          this.whichLearner.LearnerGroupCourse.forEach(lg=>{
+
+          })
+          //one to one
+          this.whichLearner.One2oneCourseInstance.map((o,i)=>{
+            console.log(o,pureCourses);
+            teacherFilter = allData[i+2].Data;
+            this.setUniCatListArray[i]=CatList;
+            let courseItemArray1 = pureCourses.filter(e=>
+              e.CourseCategory.CourseCategoryId==o.Course.CourseCategoryId
             )
             console.log(courseItemArray1);
             let courseItemArray = courseItemArray1
@@ -868,14 +918,15 @@ export class LearnerRegistrationFormComponent implements OnInit, DoCheck {
             //let locItemArray = TeacherFilter;
             this.locListArray[i] = { locItemArray: teacherFilter };
             //prepareTeaLevListArray[i].
-            let prepareTeaLevItemArray = teacherFilter.find(e => e.orgId == o.OrgId).Level;
-            this.prepareTeaLevListArray[i] = { prepareTeaLevItemArray: prepareTeaLevItemArray };
+            console.log(teacherFilter);
+            let prepareTeaLevItemArray = teacherFilter.find(e=>e.OrgId==o.OrgId).Level;
+            this.prepareTeaLevListArray[i]={prepareTeaLevItemArray:prepareTeaLevItemArray};
             //prepareTeaNameListArray[i].prepareTeaNameItemArray
             let prepareTeaNameItemArray = prepareTeaLevItemArray.find(e => e.levelId == o.Course.TeacherLevel).teacher;
             this.prepareTeaNameListArray[i] = { prepareTeaNameItemArray: prepareTeaNameItemArray };
             //prepareRoomListArray[i].prepareRoomItemArray
-            let prepareRoomItemArray = teacherFilter.find(e => e.orgId = o.OrgId).Room;
-            this.prepareRoomListArray[i] = { prepareRoomItemArray: prepareRoomItemArray };
+            let prepareRoomItemArray = teacherFilter.find(e=>e.OrgId==o.OrgId).Room;
+            this.prepareRoomListArray[i]={prepareRoomItemArray:prepareRoomItemArray};
             this.customCourse.push(
               this.fb.group({
                 courseCategory: [o.Course.CourseCategoryId],
@@ -887,11 +938,11 @@ export class LearnerRegistrationFormComponent implements OnInit, DoCheck {
                 beginDate: [o.BeginDate ? o.BeginDate.slice(0, 10) : ''],
                 endDate: [o.EndDate ? o.EndDate.slice(0, 10) : ''],
                 schedule: this.fb.group({
-                  dayOfWeek: [o.CourseSchedule[0].DayOfWeek],
+                  dayOfWeek: [o.CourseSchedule[0]?(o.CourseSchedule[0].DayOfWeek?o.CourseSchedule[0].DayOfWeek:null):null],
                   beginTime: [{
-                    hour: parseInt(o.CourseSchedule[0].BeginTime.slice(0, 2)),
-                    minute: parseInt(o.CourseSchedule[0].BeginTime.slice(3, 5)),
-                    second: parseInt(o.CourseSchedule[0].BeginTime.slice(6, 8))
+                    hour: o.CourseSchedule[0]?(o.CourseSchedule[0].BeginTime?parseInt(o.CourseSchedule[0].BeginTime.slice(0, 2)):null):null,
+                    minute: o.CourseSchedule[0]?(o.CourseSchedule[0].BeginTime?parseInt(o.CourseSchedule[0].BeginTime.slice(3, 5)):null):null,
+                    second: o.CourseSchedule[0]?(o.CourseSchedule[0].BeginTime?parseInt(o.CourseSchedule[0].BeginTime.slice(6, 8)):null):null
                   }],//{ hour: 9, minute: 0, second: 0 }
                   //{ hour: 9, minute: 0, second: 0 }  09:03:14
                   durationType: [o.Course.Duration]
@@ -902,11 +953,10 @@ export class LearnerRegistrationFormComponent implements OnInit, DoCheck {
             console.log(this.setUniCatListArray, this.courseListArray);
             console.log(this.locListArray, this.prepareTeaLevListArray);
             console.log(this.prepareTeaNameListArray, this.prepareRoomListArray);
-
           },
             (err) => {
               console.log(err);
-              alert('Sorry, something went wrong.')
+              alert('Sorry, something went wrong.'+err)
             }
           );
         })

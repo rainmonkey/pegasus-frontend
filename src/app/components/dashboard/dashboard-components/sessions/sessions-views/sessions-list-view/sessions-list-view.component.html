@@ -41,10 +41,11 @@
               <td>{{i.Branch}}</td>
               <td>{{i.IsCanceled?'Yes':'No'}}</td>
               <td>{{i.IsConfirm?'Yes':'No'}}</td>
-              <td>{{i.CancelReson}}</td>
+              <td><button type="button" class="btn btn-outline-secondary" placement="left" [ngbTooltip]='i.CancelReson'>here</button></td>
               <td>
                 <a *ngIf='!i.IsCanceled&&!i.IsConfirm' (click)='openSessionEditModal(i)' style="cursor: pointer;"><button class="btn btn-primary" style="width: 70px; height: 20px; font-size: 12px; line-height: 6px" >Edit</button></a><br>
                 <a *ngIf='!i.IsCanceled&&!i.IsConfirm'  (click)="openSessionConfirmModal(i.LessonId)" style="cursor: pointer;"><button class="btn btn-success" style="width: 70px; height: 20px; font-size: 12px; line-height: 6px">Confirm</button></a><br>
+                <a *ngIf='!i.IsCanceled&&!i.IsConfirm' (click)='openRescheduleModal(i.LessonId)' style="cursor: pointer;"><button class="btn btn-warning" style="color: white; width: 70px; height: 20px; font-size: 12px; line-height: 6px">Split</button></a>
                 <a *ngIf='!i.IsCanceled&&!i.IsConfirm' (click)='openSessionCancelModal(i.LessonId)' style="cursor: pointer;"><button class="btn btn-danger" style="width: 70px; height: 20px; font-size: 12px; line-height: 6px">Cancel</button></a>
               </td>
             </tr>

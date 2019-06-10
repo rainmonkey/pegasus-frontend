@@ -1,6 +1,7 @@
 import { Component, OnInit, Input, AfterViewInit } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { LearnersService } from 'src/app/services/http/learners.service';
+import { environment } from 'src/environments/environment.prod';
 
 @Component({
   selector: 'app-learner-detail-modal',
@@ -24,6 +25,7 @@ export class LearnerDetailModalComponent implements OnInit, AfterViewInit {
 
   howKnow: any
   reasonList: any
+  public photoUrl: any = environment.photoUrl;
   constructor(public activeModal: NgbActiveModal, private LearnerListService: LearnersService, ) {
 
   }

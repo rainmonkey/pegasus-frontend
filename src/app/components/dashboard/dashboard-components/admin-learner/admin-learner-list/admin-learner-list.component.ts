@@ -166,7 +166,7 @@ deleteModal(command, whichLearner) {
   detail modal
 */
 detailModal(command, whichLearner) {
-  const modalRef = this.modalService.open(LearnerDetailModalComponent, { size: 'lg' });
+  const modalRef = this.modalService.open(LearnerDetailModalComponent, { size: 'lg' ,backdrop: 'static', keyboard: false });
   modalRef.componentInstance.command = command;
   modalRef.componentInstance.whichLearner = whichLearner;
 }
@@ -174,7 +174,7 @@ detailModal(command, whichLearner) {
   Edit modal
 */
 EditModal(command, whichLearner) {
-  const modalRef = this.modalService.open(LearnerEditModalComponent,{ windowClass: 'my-class' });
+  const modalRef = this.modalService.open(LearnerEditModalComponent,{ windowClass: 'my-class',backdrop: 'static', keyboard: false  });
  
   let that = this;
   modalRef.result.then(

@@ -1,4 +1,7 @@
+import { TrialModalComponent } from './../trial-modal/trial-modal.component';
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { CoursesService } from 'src/app/services/http/courses.service';
 
 @Component({
   selector: 'app-trial-search',
@@ -13,17 +16,20 @@ export class TrialSearchComponent implements OnInit {
     "Orgs": { "clicked": false, "display": false, "id": 2 },
     "Teachers": { "clicked": false, "display": false, "id": 3 },
   }
-  public filters: object = { "CategoriesId": null, "OrgsId": null}
+  public filters: object = { "CategoriesId": null, "OrgsId": null }
   public previousCloseBtn: any = null;
+  public coursesTeachingByCate;
 
   @Input() courses;
   @Input() coursesCate;
   @Input() orgs;
   @Input() teachers;
   @Input() groupCoursesInstance;
+  @Input() teachingCourses;
   @Output() childEvent = new EventEmitter();
 
-  constructor() { }
+  constructor(private modalService: NgbModal,
+              private coursesService: CoursesService) { }
 
   ngOnInit() {
 
@@ -61,14 +67,37 @@ export class TrialSearchComponent implements OnInit {
     display teachers that fit all the filters requirement
   */
   displayTeachers() {
-    return this.teachers
-    // let array: Array<any> = [];
-    // for (let i of this.groupCoursesInstance) {
-    //   if (i.Org.OrgId == this.filters['OrgsId'] && i.Course.CourseCategory.CourseCategoryId == this.filters['CategoriesId']) {
-    //     array.push(i)
-    //   }
-    // }
-    // return [{ 'a': 1 }, { "a": 1 }, { "a": 1 }]
+    let array: Array<any> = [];
+    //先从teacher api里寻找在指定org教课的老师
+    for (let i of this.teachers) {
+      for (let j of i.AvailableDays) {
+        if (j.OrgId == this.filters['OrgsId']) {
+          array.push(i)
+        }
+      }
+    }
+    //console.log(array)
+    //再从teachingcourse里寻找教指定乐器的老师
+    let array1: Array<any> = [];
+    for (let i of this.teachingCourses){
+      for(let j of array){
+        if(j.TeacherId == i.TeacherId  && i.Course.CourseCategory.CourseCategoryId == this.filters["CategoriesId"]){
+          array1.push(j)
+        }
+      }
+    }
+
+    this.coursesTeachingByCate = array1;
+
+    let hash = {};
+    let result = array1.reduce(function (item, next) {
+      hash[next.TeacherId] ? '' : hash[next.TeacherId] = true && item.push(next);
+      return item;
+    }, [])
+
+    //需要保存一次array
+    return result;
+
   }
 
   /*
@@ -97,12 +126,12 @@ export class TrialSearchComponent implements OnInit {
           setTimeout(() => {
             //★★★★★ event.currentTarget: 获取的是目标元素的父节点(如果目标元素是父节点则获取它自己) ★★★★★//
             targetObj.firstChild.style.display = 'block';
-            if(nextClass !== null){
+            if (nextClass !== null) {
               this.styleFlowControl[nextClass].display = true;
             }
-            if(className =='Teachers'){
-              this.emitToParent(i);
-            }
+            // if(className =='Teachers'){
+            //   this.popUpModal(i,event);
+            // }
           }, 500)
         }
       }
@@ -142,8 +171,24 @@ export class TrialSearchComponent implements OnInit {
     event.stopPropagation();
   }
 
-  emitToParent(teacherSelected){
-    this.childEvent.emit(teacherSelected);
+  popUpModal(whichTeacher) {
+    let coursesTeachingByWhichTeacher = this.getCoursesTeachingByWhichTeacher(whichTeacher);
+    //console.log(coursesTeachingByWhichTeacher)
+    const modalRef = this.modalService.open(TrialModalComponent, { size: 'lg', backdrop: 'static', keyboard: false });
+  }
+
+  getCoursesTeachingByWhichTeacher(whichTeacher){
+    //console.log(whichTeacher.TeacherId)
+    this.coursesService.getLessonsByTeacherId(1).subscribe(
+      (res) => {
+        console.log(res.Data)
+      },
+      (err) => {
+
+      }
+    )
+    //测试用 1
+
   }
 
 }

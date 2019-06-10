@@ -46,13 +46,13 @@
 
 
     <div class='row'>
-        <div class='col-12'>
-          <div>
-            <label class='col-12 t_cm_label_title' for="ability">Ability Reference:</label>
-            <!-- <input class='col-12 t_mf_input' type="text" id='ability' formControlName='ability'> -->
-          </div>
+      <div class='col-12'>
+        <div>
+          <label class='col-12 t_cm_label_title' for="ability">Ability Reference:</label>
+          <!-- <input class='col-12 t_mf_input' type="text" id='ability' formControlName='ability'> -->
         </div>
       </div>
+    </div>
 
     <div class='row' style="margin-bottom: 5px">
       <div class='col-12'>
@@ -158,12 +158,42 @@
             <div style="margin-right: 5px">
               <div class='row'>
                 <div class='col-4'>One to One:</div>
-                <small class='text-danger errorfontsmall col-8'
-                  *ngIf='CourseForm.get("oneOnoneWage").invalid && CourseForm.get("oneOnoneWage").touched && CourseForm.get("oneOnoneWage").errors?.required'>required</small>
               </div>
-              <div class='col-12'><input type="text" name="" id="one" class='col-12 t_cm_input'
-                  [class.t_cm_error_border]='CourseForm.get("oneOnoneWage").invalid && CourseForm.get("oneOnoneWage").touched'
-                  formControlName='oneOnoneWage'></div>
+              <div class='row'>
+                  <small class='text-danger errorfontsmall col-12'
+                  *ngIf='CourseForm.get("PianoRates").invalid && CourseForm.get("PianoRates").touched && CourseForm.get("PianoRates").errors?.required'>required</small>
+                <div class='col-2'>
+                  Piano:
+                </div>
+                <div class='col-10' style="margin-bottom: 5px">
+                  <input type="text" name="" id="one" class='col-12 t_cm_input'
+                    [class.t_cm_error_border]='CourseForm.get("PianoRates").invalid && CourseForm.get("PianoRates").touched'
+                    formControlName='PianoRates'>
+                </div>
+
+                <small class='text-danger errorfontsmall col-12'
+                  *ngIf='CourseForm.get("TheoryRates").invalid && CourseForm.get("TheoryRates").touched && CourseForm.get("TheoryRates").errors?.required'>required</small>
+                <div class='col-2'>
+                  Theory:
+                </div>
+                <div class='col-10' style="margin-bottom: 5px">
+                  <input type="text" name="" id="one" class='col-12 t_cm_input'
+                    [class.t_cm_error_border]='CourseForm.get("TheoryRates").invalid && CourseForm.get("TheoryRates").touched'
+                    formControlName='TheoryRates'>
+                </div>
+
+
+                <small class='text-danger errorfontsmall col-12'
+                  *ngIf='CourseForm.get("OthersRates").invalid && CourseForm.get("OthersRates").touched && CourseForm.get("OthersRates").errors?.required'>required</small>
+                <div class='col-2'>
+                  Others:
+                </div>
+                <div class='col-10'>
+                  <input type="text" name="" id="one" class='col-12 t_cm_input'
+                    [class.t_cm_error_border]='CourseForm.get("OthersRates").invalid && CourseForm.get("OthersRates").touched'
+                    formControlName='OthersRates'>
+                </div>
+              </div>
             </div>
           </div>
           <div class='col-6'>
@@ -171,11 +201,11 @@
               <div class='row'>
                 <div class='col-3'>Group:</div>
                 <small class='text-danger errorfontsmall col-9'
-                  *ngIf='CourseForm.get("groupWage").invalid && CourseForm.get("groupWage").touched && CourseForm.get("groupWage").errors?.required'>required</small>
+                  *ngIf='CourseForm.get("GroupRates").invalid && CourseForm.get("GroupRates").touched && CourseForm.get("GroupRates").errors?.required'>required</small>
               </div>
               <div class='col-12'><input type="text" name="" id="group" class='col-12 t_cm_input'
-                  [class.t_cm_error_border]='CourseForm.get("groupWage").invalid && CourseForm.get("groupWage").touched'
-                  formControlName='groupWage'></div>
+                  [class.t_cm_error_border]='CourseForm.get("GroupRates").invalid && CourseForm.get("GroupRates").touched'
+                  formControlName='GroupRates'></div>
             </div>
           </div>
         </div>
@@ -186,15 +216,34 @@
           <div class='col-6'>
             <div style="margin-right: 5px">
               <div class='col-12'>One to One:</div>
-              <div class='col-12'><input type="text" name="" id="one" class='col-12 t_cm_input' [disabled]='true'
-                  value={{oneOnoneWage}}></div>
+              <div class='row' style='margin-bottom:5px'>
+                <div class='col-2'>
+                  Piano:
+                </div>
+                <div class='col-10'><input type="text" name="" id="one" class='col-12 t_cm_input' [disabled]='true'
+                    [value]='getTeacherSalary("piano")'></div>
+              </div>
+              <div class='row' style='margin-bottom:5px'>
+                <div class='col-2'>
+                  Theory:
+                </div>
+                <div class='col-10'><input type="text" name="" id="one" class='col-12 t_cm_input' [disabled]='true'
+                  [value]='getTeacherSalary("theory")'></div>
+              </div>
+              <div class='row' style='margin-bottom:5px'>
+                <div class='col-2'>
+                  Other:
+                </div>
+                <div class='col-10'><input type="text" name="" id="one" class='col-12 t_cm_input' [disabled]='true'
+                  [value]='getTeacherSalary("others")'></div>
+              </div>
             </div>
           </div>
           <div class='col-6'>
             <div style="margin-left: 5px">
               <div class='col-12'>Group:</div>
               <div class='col-12'><input type="text" name="" id="group" class='col-12 t_cm_input' [disabled]='true'
-                  value={{groupWage}}></div>
+                [value]='getTeacherSalary("group")'></div>
             </div>
           </div>
         </div>

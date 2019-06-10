@@ -69,6 +69,7 @@ import { TimePickerComponent } from './components/dashboard/dashboard-components
 import { TrialInfoComponent } from './components/dashboard/dashboard-components/trial-session/trial-info/trial-info.component';
 import { TrialPanelComponent } from './components/dashboard/dashboard-components/trial-session/trial-panel/trial-panel.component';
 import { TrialSearchComponent } from './components/dashboard/dashboard-components/trial-session/trial-search/trial-search.component';
+import { TrialModalComponent } from './components/dashboard/dashboard-components/trial-session/trial-modal/trial-modal.component';
 import { DashboardPanelComponent } from './components/dashboard/general/dashboard-panel/dashboard-panel.component';
 import { HeaderbarComponent } from './components/dashboard/general/headerbar/headerbar.component';
 import { SidebarComponent } from './components/dashboard/general/sidebar/sidebar.component';
@@ -79,7 +80,6 @@ import { ColumnTitleFormatPipe } from './shared/pipes/column-title-format.pipe';
 //import { NgbdSortableHeader } from './services/others/ngbootstraptable.service';
 // Pipes
 import { CommandFormatPipe } from './shared/pipes/command-format.pipe';
-import { CoursespipesPipe } from './shared/pipes/coursespipes.pipe';
 import { GenderPipe } from './shared/pipes/gender.pipe';
 import { MyTypePipe } from './shared/pipes/myType-format.pipe';
 import { OrgFormatPipe } from './shared/pipes/org-format.pipe';
@@ -91,8 +91,17 @@ import { confirmEqualValidatorDirectie } from './shared/confirm-equal-validator.
 import { StaffListComponent } from './components/dashboard/dashboard-components/admin-staff/Staff-list/Staff-list.component';
 import { StaffPanelComponent } from './components/dashboard/dashboard-components/admin-staff/staff-panel/staff-panel.component';
 import { SimplifyOrgPipe } from './shared/pipes/simplify-org.pipe';
-import { TrialModalComponent } from './components/dashboard/dashboard-components/trial-session/trial-modal/trial-modal.component';
-
+import { LearnerCreditPanelComponent } from './components/dashboard/dashboard-components/learner-credit/learner-credit-panel/learner-credit-panel.component';
+import { LearnerCreditDetailsComponent } from './components/dashboard/dashboard-components/learner-credit/learner-credit-details/learner-credit-details.component';
+import { TrialTesterComponent } from './components/dashboard/dashboard-components/trial-session/trial-tester/trial-tester.component';
+import { OrderbyPipe } from './shared/pipes/orderby.pipe';
+import { SessionRescheduleModalComponent } from './components/dashboard/dashboard-components/sessions/session-modals/session-reschedule-modal/session-reschedule-modal.component';
+import { MondayDateInWeekByDatePipe } from './shared/pipes/monday-date-in-week-by-date.pipe';
+import { TrialConfirmComponent } from './components/dashboard/dashboard-components/trial-session/trial-confirm/trial-confirm.component';
+import { StaffDeleteModalComponent } from './components/dashboard/dashboard-components/admin-staff/staff-delete-modal/staff-delete-modal.component';
+import { StaffDetailModalComponent } from './components/dashboard/dashboard-components/admin-staff/staff-detail-modal/staff-detail-modal.component';
+import { StaffEditModalComponent } from './components/dashboard/dashboard-components/admin-staff/staff-edit-modal/staff-edit-modal.component';
+import { StaffModalFormComponent } from './components/dashboard/dashboard-components/admin-staff/staff-modal-form/staff-modal-form.component';
 
 
 @NgModule({
@@ -158,10 +167,10 @@ import { TrialModalComponent } from './components/dashboard/dashboard-components
     GenderPipe,
     RelationshipPipe,
     ColumnTitleFormatPipe,
+    MondayDateInWeekByDatePipe,
     CourseClassListComponent,
     CourseClassDetailModalComponent,
     DashboardHomeComponent,
-    CoursespipesPipe,
     TeacherCourseModalComponent,
     ChartingComponent,
     RatingModalComponent,
@@ -169,15 +178,27 @@ import { TrialModalComponent } from './components/dashboard/dashboard-components
     ChangePasswordModalComponent,
     TrialPanelComponent,
     TrialInfoComponent,
+    TrialModalComponent,
     TrialSearchComponent,
     PaymentPeriodPipe,
     IsUnder18Pipe,
     confirmEqualValidatorDirectie,
-    //staff
     StaffListComponent,
     StaffPanelComponent,
     SimplifyOrgPipe,
     TrialModalComponent,
+    LearnerCreditPanelComponent,
+    LearnerCreditDetailsComponent,
+    TrialTesterComponent,
+    OrderbyPipe,
+    SessionRescheduleModalComponent,
+    MondayDateInWeekByDatePipe,
+    TrialConfirmComponent,
+
+    StaffModalFormComponent,
+    StaffDeleteModalComponent,
+    StaffDetailModalComponent,
+    StaffEditModalComponent,
   ],
   imports: [
     NgbModule,
@@ -196,7 +217,7 @@ import { TrialModalComponent } from './components/dashboard/dashboard-components
   ],
   providers: [
     DatePipe,
-    CoursespipesPipe
+    MondayDateInWeekByDatePipe
   ],
   entryComponents:[
     TeacherDeleteModalComponent,
@@ -213,11 +234,20 @@ import { TrialModalComponent } from './components/dashboard/dashboard-components
     LearnerEditModalComponent,
     SessionCancelModalComponent,
     SessionCompletedModalComponent,
+    SessionRescheduleModalComponent,
     RatingModalComponent,
     ForgotPasswordModalComponent,
     ChangePasswordModalComponent,
     LearnerRegistrationModalComponent,
-    LearnerRegistrationConfirmModalComponent
+    LearnerRegistrationConfirmModalComponent,
+    TrialModalComponent,
+    TrialTesterComponent,
+    TrialConfirmComponent,
+    StaffDeleteModalComponent,
+    StaffDetailModalComponent,
+    StaffEditModalComponent,
+
+
   ],
   exports: [AppComponent],
   bootstrap: [AppComponent]

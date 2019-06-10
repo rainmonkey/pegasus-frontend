@@ -2,7 +2,6 @@ import { Component, OnInit, Input } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { CoursesService } from '../../../../../services/http/courses.service';
 import { FormBuilder, Validators, FormGroup } from '@angular/forms';
-import { CoursespipesPipe } from '../../../../../shared/pipes/coursespipes.pipe'
 
 @Component({
   selector: 'app-course-detail-modal',
@@ -26,7 +25,6 @@ export class CourseDetailModalComponent implements OnInit {
   @Input() whichCourse;
 
   constructor(
-    public coursesPipe: CoursespipesPipe,
     public activeModal: NgbActiveModal,
     private coursesService: CoursesService,
     private fb: FormBuilder
@@ -40,7 +38,7 @@ export class CourseDetailModalComponent implements OnInit {
     this.getTeacherLevel();
     this.getLevel();
     this.getCourseType();
-    this.getDuration();    
+    this.getDuration();
     // console.log(typeof(this.getTeacherLevel()))
   }
 
@@ -60,6 +58,7 @@ export class CourseDetailModalComponent implements OnInit {
     this.coursesService.getTeacherLevel().subscribe(
       (res) => {
         this.teachersLevels = res.Data;
+        // console.log(this.teachersLevels);
       },
       (err) => {
         alert('Server error!')
@@ -117,12 +116,12 @@ export class CourseDetailModalComponent implements OnInit {
       groupObj = {
         //formControlName 决定了提交表单时的参数名
         CourseName: [this.whichCourse.CourseName, Validators.required],
-        CourseType: [this.whichCourse.CourseTypeName, Validators.required],
-        Level: [this.whichCourse.LevelName, Validators.required],
-        TeacherLevel: [this.whichCourse.TeacherLevelName, Validators.required],
-        Duration: [this.whichCourse.DurationName, Validators.required],
+        CourseType: [this.whichCourse.CourseType, Validators.required],
+        Level: [this.whichCourse.Level, Validators.required],
+        TeacherLevel: [this.whichCourse.TeacherLevel, Validators.required],
+        Duration: [this.whichCourse.Duration, Validators.required],
         Price: [this.whichCourse.Price, Validators.compose([Validators.required, Validators.min(1)])],
-        CourseCategoryId: [this.whichCourse.CourseCategory.CourseCategoryName, Validators.required],
+        CourseCategoryId: [this.whichCourse.CourseCategory.CourseCategoryId, Validators.required],
         CourseId: [this.whichCourse.CourseId, Validators.required]
       }
     }
@@ -139,6 +138,7 @@ export class CourseDetailModalComponent implements OnInit {
       // console.log(this.updateForm.value);
     } else if (!this.updateForm.dirty) {
       this.errorMessage = 'Data did no changing!';
+      // stop here if form is invalid
     } else {
       // console.log('errors')
       this.errorMessage = 'Input incorrect.'
@@ -149,13 +149,9 @@ export class CourseDetailModalComponent implements OnInit {
    check whether data vailad or not(ruled by Validators).
   */
   checkInputVailad(valueToSubmit) {
-    //once click save btn, touch all inputs form with for-loop. In order to trigger Validator
-    // for (let i in this.updateForm.controls) {
-    //   this.updateForm.controls[i].touched = true;
-    // }
     //when input value pass the check of Validators, there is a [status] attr equal to 'VALID'
     if (this.updateForm.status == 'VALID') {
-      return this.prepareSubmitData(valueToSubmit);
+      return valueToSubmit;
     }
     else {
       this.infoMessage = 'Please check your input.'
@@ -163,17 +159,6 @@ export class CourseDetailModalComponent implements OnInit {
       return null;
     }
   }
-
-  prepareSubmitData(valueToSubmit) {
-    valueToSubmit.CourseType = this.coursesPipe.checkCourseType(valueToSubmit);
-    valueToSubmit.Level = this.coursesPipe.checkLevel(valueToSubmit);
-    valueToSubmit.CourseCategoryId = this.coursesPipe.checkCourseCategoryId(valueToSubmit);
-    valueToSubmit.Duration = this.coursesPipe.checkDuration(valueToSubmit);
-    valueToSubmit.TeacherLevel = this.coursesPipe.checkTeacherLevel(valueToSubmit);
-    return valueToSubmit;
-  }
-
-  
 
   /*
     after stringify submition string, data is ready to submit
@@ -187,7 +172,7 @@ export class CourseDetailModalComponent implements OnInit {
     //while push a stream of new data
     if (this.command == 0) {
       this.coursesService.addNew(formValue).subscribe(
-        (res) => {          
+        (res) => {
           alert('Submit success!');
           this.activeModal.close();
         },

@@ -52,7 +52,10 @@ export class TeachersService {
     return this.http.get(this.baseUrl + 'teachercourse'); 
   }
   
-  updateTeacherCourse(data):any{
+  updateTeacherCoursePut(data):any{
     return this.http.put(this.baseUrl + 'teachercourse',data)
+  }
+  updateTeacherCoursePost(data):any{
+    return this.http.post(this.baseUrl + 'teachercourse',data)
   }
 }

@@ -2,10 +2,9 @@ import { Component, OnInit, Injectable, Input } from '@angular/core';
 import { NgbActiveModal, NgbDateAdapter, NgbDateNativeAdapter, NgbDate } from '@ng-bootstrap/ng-bootstrap';
 import { FormBuilder, Validators, FormGroup, FormArray } from '@angular/forms';
 import { CoursesService } from '../../../../../services/http/courses.service';
-
+import { DatePipe } from '@angular/common';
 
 @Injectable()
-
 @Component({
   selector: 'app-course-class-detail-modal',
   templateUrl: './course-class-detail-modal.component.html',
@@ -18,13 +17,16 @@ import { CoursesService } from '../../../../../services/http/courses.service';
 export class CourseClassDetailModalComponent implements OnInit {
   public errorMessage: string;
   public successMessage: string;
-  public infoMessage: string = '';
+  public submitionFlag: boolean = true;
+  public loadingGifFlag: boolean = false;
   public messageColor: string;
   public updateForm: FormGroup;
   public CourseSchedule: FormArray;
   public courseNamefilter: Array<any>;
   public fromDate: NgbDate;
   public toDate: NgbDate;
+  public weeks = [1, 2, 3, 4, 5, 6, 7];
+  public begin: any;
   //Level dropdown options
   public courseName: Array<any>;
   public tutorName: Object;
@@ -38,6 +40,7 @@ export class CourseClassDetailModalComponent implements OnInit {
   constructor(
     public activeModal: NgbActiveModal,
     private coursesService: CoursesService,
+    private datePipe: DatePipe,
     private fb: FormBuilder
   ) { }
 
@@ -50,6 +53,11 @@ export class CourseClassDetailModalComponent implements OnInit {
     this.getTeacher();
     this.getLocation();
     this.getRoom();
+  }
+
+  // convenience getter for easy access to form fields
+  get f() {
+    return this.updateForm.controls;
   }
 
   /*********** For Dropdown Options *************************************************/
@@ -108,14 +116,14 @@ export class CourseClassDetailModalComponent implements OnInit {
   // Validate EndDate > BeginDate
   onBeginDateSelection(date: NgbDate) {
     if (date.after(this.toDate)) {
-      alert('End Date must be later than Begin Date');
+      alert('End Date must be later than Begin Date!');
     } else {
       this.fromDate = date;
     }
   }
   onEndDateSelection(date: NgbDate) {
     if (date.before(this.fromDate)) {
-      alert('End Date must be later than Begin Date');
+      alert('End Date must be later than Begin Date!');
     } else {
       this.toDate = date;
     }
@@ -137,7 +145,6 @@ export class CourseClassDetailModalComponent implements OnInit {
     } else {
       // Show selected data during editing
       groupObj = {
-        // GroupCourseInstanceId:[this.whichCourseClass.GroupCourseInstanceId],
         CourseId: [this.whichCourseClass.CourseId, Validators.required],
         TeacherId: [this.whichCourseClass.TeacherId, Validators.required],
         BeginDate: [new Date(this.whichCourseClass.BeginDate), Validators.required],
@@ -151,11 +158,20 @@ export class CourseClassDetailModalComponent implements OnInit {
   }
   // Begin time Arrays
   formArrayAssemble() {
-    return this.fb.group({ BeginTime: [null, Validators.required] })
+    return this.fb.group({
+      BeginTime: [null, Validators.required],
+      DayOfWeek: [null, Validators.required]
+    })
   }
   formArrayAssembleUpdate() {
     for (var i = 0; i < this.whichCourseClass.schedule.length; i++) {
-      (this.updateForm.controls.CourseSchedule as FormArray).push(this.fb.group({ BeginTime: [this.whichCourseClass.schedule[i].BeginTime, Validators.required] }));
+      // Transform this.updateForm.controls.CourseSchedule as FormArray, then push 
+      (this.updateForm.controls.CourseSchedule as FormArray).push(
+        this.fb.group({
+          BeginTime: [this.whichCourseClass.schedule[i].BeginTime, Validators.required],
+          DayOfWeek: [this.whichCourseClass.schedule[i].DayOfWeek, Validators.required]
+        })
+      );
     }
   }
   // add time
@@ -173,24 +189,48 @@ export class CourseClassDetailModalComponent implements OnInit {
     let valueToSubmit = this.updateForm.value;
     let vailadValue = this.checkInputVailad(valueToSubmit);
     if (vailadValue !== null && this.updateForm.dirty) {
-      this.submitByMode(vailadValue);
+      if (vailadValue.BeginDate > vailadValue.EndDate) {
+        alert('End Date must be later than Begin Date!');
+        return;
+      } else {
+        this.submitionFlag = false;
+        this.loadingGifFlag = true;
+        this.submitByMode(vailadValue);
+      }
     } else if (!this.updateForm.dirty) {
       this.errorMessage = 'Data did no changing!';
     } else {
-      this.errorMessage = 'Input incorrect.'
+      this.errorMessage = 'Please check your input.'
     }
   }
 
   // check whether data vailad or not(ruled by Validators).
-  checkInputVailad(valueToSubmit) {
+  checkInputVailad(valueSubmit) {
+    //once click save btn, touch all inputs form with for-loop. In order to trigger Validator
+    for (let i in this.updateForm.controls) {
+      this.updateForm.controls[i].touched == true;
+    }
     if (this.updateForm.status == 'VALID') {
-      return valueToSubmit;
+      if (this.command == 0) {
+        return valueSubmit;
+      } else {
+        return this.prepareSubmitData(valueSubmit);
+        // return valueSubmit;
+      }
     }
     else {
-      this.infoMessage = 'Please check your input.'
+      this.loadingGifFlag = false;
       this.messageColor = '#dc3545'
+      this.submitionFlag = true;
       return null;
     }
+  }
+
+  prepareSubmitData(valueTo) {
+    valueTo.BeginDate = this.datePipe.transform(this.updateForm.controls.BeginDate.value, 'yyyy-MM-dd');
+    valueTo.EndDate = this.datePipe.transform(this.updateForm.controls.EndDate.value, 'yyyy-MM-dd');
+    return valueTo;
+
   }
 
   // Add & Update new data 
@@ -199,7 +239,7 @@ export class CourseClassDetailModalComponent implements OnInit {
     if (this.command == 0) {
       this.coursesService.addNewCourseClass(formValue).subscribe(
         (res) => {
-          console.log(formValue)
+          // console.log(formValue);
           alert('Submit success!');
           this.activeModal.close();
         },

@@ -12,10 +12,24 @@ export class StaffListService {
 constructor( private http:HttpClient) { }
 
 getStaffInfo():any{
-  return this.http.get(this.baseUrl + '');
+  return this.http.get(this.baseUrl + 'staff');
 }
 
-deleteStaff(staffId):any{
-  return this.http.delete(this.baseUrl + '' + staffId);
+deleteStaff(StaffId):any{
+  return this.http.delete(this.baseUrl + 'staff/' + StaffId);
+}
+
+addNew(data):any{
+  return this.http.post(this.baseUrl +'staff',data)
+}
+
+update(data,StaffId):any{
+  return this.http.put(this.baseUrl + 'staff/' + StaffId, data)
+}
+getStaffType():any{
+  return this.http.get(this.baseUrl + 'Lookups/13')
+}
+getOrg():any{
+  return this.http.get(this.baseUrl + 'orgs')
 }
 }

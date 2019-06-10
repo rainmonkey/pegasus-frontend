@@ -1,4 +1,4 @@
-import { Component, OnInit} from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { PaymentService } from '../../../../../services/http/payment.service';
 import { FormBuilder, Validators } from '@angular/forms';
 import { NgbModal, ModalDismissReasons, NgbTab, NgbTabTitle, } from '@ng-bootstrap/ng-bootstrap';
@@ -14,7 +14,7 @@ import { getLocaleDateFormat } from '@angular/common';
   templateUrl: './admin-learner-payment-invoice.component.html',
   styleUrls: ['./admin-learner-payment-invoice.component.css']
 })
-export class AdminLearnerPaymentInvoiceComponent implements OnInit {
+export class AdminLearnerPaymentInvoiceComponent implements OnInit, OnDestroy {
   // invoice
   public dataInvoice: any;
   public learnerId: any;
@@ -32,6 +32,8 @@ export class AdminLearnerPaymentInvoiceComponent implements OnInit {
   public dateCurrent;
   // ng-modal variable
   closeResult: string;
+  // distroy subscribe
+  fistNameSubscription
 
   invoiceForm = this.fb.group({
     owing: ['', Validators.required],
@@ -242,7 +244,7 @@ export class AdminLearnerPaymentInvoiceComponent implements OnInit {
     // get FirstName
     nameSubejct(){
       console.log('a')
-      this.generalRepoService.fisrtName.subscribe(res=>
+      this.fistNameSubscription = this.generalRepoService.fisrtName.subscribe(res=>
         {
         this.learner = res;
         console.log(this.learner)
@@ -251,7 +253,7 @@ export class AdminLearnerPaymentInvoiceComponent implements OnInit {
           console.log(error);
           this.errorMsg = JSON.parse(error.error);
           this.errorAlert = true;
-          //alert(this.errorMsg);          
+          //alert(this.errorMsg);
         })
     }
     // make sure the data allignment
@@ -273,7 +275,7 @@ export class AdminLearnerPaymentInvoiceComponent implements OnInit {
     ngOnInit() {
       // put to service
       this.activatedRouter.paramMap.subscribe((obs:ParamMap) => {
-      //  this.learnerId = this.activatedRouter.snapshot.paramMap.get("id")        
+      //  this.learnerId = this.activatedRouter.snapshot.paramMap.get("id")
         this.learnerId = parseInt(obs.get('id'));
         this.errorAlert = false;
         this.errorMsg ='';
@@ -290,9 +292,12 @@ export class AdminLearnerPaymentInvoiceComponent implements OnInit {
           console.log(error);
           this.errorMsg =error.error.ErrorMessage;
           this.errorAlert = true;
-          //alert(this.errorMsg);          
+          //alert(this.errorMsg);
         });
       });
       this.nameSubejct();
     }
+  ngOnDestroy(){
+    this.fistNameSubscription.unsubscribe();
+  }
 }
