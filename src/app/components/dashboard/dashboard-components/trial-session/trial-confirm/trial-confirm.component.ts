@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-trial-confirm',
@@ -7,7 +8,8 @@ import { Component, OnInit } from '@angular/core';
 })
 export class TrialConfirmComponent implements OnInit {
 
-  constructor() { }
+  constructor(public activeModal: NgbActiveModal,
+              private modalService: NgbModal,) { }
 
   ngOnInit() {
   }
