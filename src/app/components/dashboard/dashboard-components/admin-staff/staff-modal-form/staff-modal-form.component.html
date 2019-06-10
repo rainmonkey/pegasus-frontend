@@ -84,7 +84,7 @@
                   </label>
                   <select name='RoleId' class='col-12 t_mf_input' formControlName='RoleId'
                     [class.t_mf_error_border]='updateForm.get("RoleId").invalid && updateForm.get("RoleId").touched'>
-                    <option *ngFor='let i of typeList' value={{i.PropName}}>{{i.PropName}}</option>
+                    <option *ngFor='let i of typeList' value={{i.PropValue}}>{{i.PropName}}</option>
                   </select>
                 </div>
 
@@ -238,8 +238,8 @@
                 <div class="col-6" >
                   <label class="t_mf_label">Branch:
                     <span class="promptmessage"
-                      *ngIf="updateForm.controls.branch.invalid && updateForm.controls.branch.touched || updateForm.controls.branch.dirty">
-                      <span *ngIf="updateForm.controls.branch.errors?.required">
+                      *ngIf="updateForm.controls.StaffOrg.invalid && updateForm.controls.StaffOrg.touched || updateForm.controls.StaffOrg.dirty">
+                      <span *ngIf="updateForm.controls.StaffOrg.errors?.required">
                         required
                       </span>
                     </span>
@@ -247,7 +247,7 @@
                   <div *ngFor='let j of orgList' class='col-12' >
                     <label class='col-11 t_mf_branch_orgs'
                       style="font-size:15px; text-align:left; margin:0px; padding:0px;">{{j.OrgName.replace('BRANCH','')}}</label>
-                    <input value={{j.OrgId}} class=" col-1" formControlName="branch" type="checkbox"
+                    <input #branches value={{j.OrgId}} class=" col-1" formControlName="StaffOrg" type="checkbox"
                     [checked]='setDefaultBranchSelection(j.OrgId)'>
                   </div>
                 </div>
