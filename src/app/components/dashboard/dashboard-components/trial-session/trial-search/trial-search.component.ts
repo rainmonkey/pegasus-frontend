@@ -196,6 +196,8 @@ export class TrialSearchComponent implements OnInit {
     modalRef.componentInstance.cateName = this.filters['CategoriesName'];
     modalRef.componentInstance.orgName = this.filters['OrgsName'];
     modalRef.componentInstance.whichTeacher = whichTeacher;
+    modalRef.componentInstance.cateId = this.filters["CategoriesId"];
+    modalRef.componentInstance.orgId = this.filters[ "OrgsId"];
   }
 
   getCoursesTeachingByWhichTeacher(whichTeacher){

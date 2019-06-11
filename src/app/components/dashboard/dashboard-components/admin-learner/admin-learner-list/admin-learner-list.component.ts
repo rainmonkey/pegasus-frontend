@@ -48,6 +48,7 @@ export class AdminLearnerListComponent implements OnInit {
   getDataFromServer() {
     this.LearnerListService.getLearnerList().subscribe(
       (res) => {
+        console.log('a')
         console.log(res)
         //@ts-ignore
         this.learnerList = res.Data;
@@ -58,6 +59,7 @@ export class AdminLearnerListComponent implements OnInit {
 
       },
       (err) => {
+        console.log('b')
         console.log(err); this.errorMessage = "Wrong"
       }
     )
