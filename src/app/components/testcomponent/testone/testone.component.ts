@@ -4,7 +4,7 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { variable } from '@angular/compiler/src/output/output_ast';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ChangePasswordModalComponent } from '../../dashboard/dashboard-components/support/change-password-modal/change-password-modal.component';
-
+import { environment } from 'src/environments/environment.prod';
 
 
 @Component({
@@ -18,6 +18,7 @@ import { ChangePasswordModalComponent } from '../../dashboard/dashboard-componen
 export class TestoneComponent implements OnInit {
   public qweqwe: Object;
   public poi: FormGroup;
+  public url:any = environment.baseUrl + 'trial'
   constructor(
     private courseService: CoursesService,
     private fb: FormBuilder,

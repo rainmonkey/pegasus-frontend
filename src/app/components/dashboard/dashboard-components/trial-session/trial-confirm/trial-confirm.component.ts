@@ -11,7 +11,9 @@ export class TrialConfirmComponent implements OnInit {
   @Input() startTime;
   @Input() endTime;
   @Input() orgName;
+  @Input() orgId;
   @Input() cateName;
+  @Input() cateId;
   @Input() whichTeacher;
   
   public whichTeacherFullName;
