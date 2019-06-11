@@ -13,7 +13,7 @@ export class StaffEditModalComponent implements OnInit {
   public messageColor: string;
   public submitionFlag: boolean = true;
   public loadingGifFlag: boolean = false;
-
+  typeList=''
 
   @Input() command;
   @Input() whichStaff;
@@ -26,7 +26,22 @@ export class StaffEditModalComponent implements OnInit {
 
   ngOnInit() {
     console.log(this.modalUpdateFormComponentObj)
+    this.getStaffType()
+
   }
+
+  getStaffType() {
+    this.staffService.getStaffType().subscribe(
+      (res) => {
+        this.typeList = res.Data
+        console.log(this.typeList)
+      },
+      (err) => {
+        alert('Server Error!')
+      }
+    )
+  }
+
   onClose() {
     if (this.modalUpdateFormComponentObj.updateForm.dirty == true ) {
       this.refreshFlag.emit(true);
@@ -44,6 +59,7 @@ export class StaffEditModalComponent implements OnInit {
       this.infoMessage = 'loading.....'
       this.loadingGifFlag = true;
       let valueToSubmit = this.modalUpdateFormComponentObj.updateForm.value;
+      console.log(valueToSubmit)
       let vailadValue = this.checkInputVailad(valueToSubmit);
       if (vailadValue !== null) {
         this.stringifySubmitStr(vailadValue)
@@ -78,10 +94,19 @@ export class StaffEditModalComponent implements OnInit {
   prepareSubmitData(valueToSubmit) {
     valueToSubmit.IdType = Number(valueToSubmit.IdType);
     valueToSubmit.Gender = Number(valueToSubmit.Gender);
-    valueToSubmit.RoleId = Number(valueToSubmit.RoleId);
+    valueToSubmit.RoleId = this.changeRoleNameToNumber(valueToSubmit);
     valueToSubmit.StaffOrg = this.checkOrgs();
     return valueToSubmit;
   }
+
+  changeRoleNameToNumber(valueToSubmit){
+   for(let i of this.modalUpdateFormComponentObj.typeList){
+     if(valueToSubmit.RoleId == i.PropName ){
+       return i.PropValue
+     }
+   }
+  }
+
   /*
       after stringify submition string, data is ready to submit
     */

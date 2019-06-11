@@ -1,30 +1,30 @@
 <div class='container tl_body'>
   <div class='row'>
     <!--body head-->
+    <div class='col-12 t_info_title'>
+      Classes Info
+    </div>
+    <!--body search-->
     <div class="col-12 row">
-      <!--body tittle-->
-      <div class='col-12 t_info_title'>
-        Classes Info
-      </div>
-      <!--body search-->
-      <div class="col-12">
-        <div class='t_info_search'>
+      <div class="col-6">
+        <div class='t_info_search_bar'>
           <input id='searchingInput' type="text" placeholder="Search by Course" (keydown)='onSearch($event)'>
         </div>
-        <div class='t_info_search_by'>
+        <div class='t_info_search_icon'>
           <span (click)="onSearch(null)">
-            <span class='fas fa-search'></span>
+            <i class='fas fa-search'></i>
           </span>
         </div>
-        <!--add more btn-->
-        <span class='btn btn-info t_info_addnew_btn' (click)="detailModal(0, null)">+ Add More</span>
+      </div>
+      <!--add more btn-->
+      <div class="col-6">
+        <span class='btn btn-info t_info_addmore_btn' (click)="detailModal(0, null)">+ Add More</span>
       </div>
     </div>
-    <br>
     <!--Error Message-->
-    <div style="margin-left: auto;margin-right: auto;" *ngIf="errorMessage" class="text-danger">{{errorMessage}}<br>
+    <div class="col-12" style="margin-left: auto;margin-right: auto;" *ngIf="errorMessage" class="text-danger">
+      {{errorMessage}}<br>
     </div>
-
     <!--info page table-->
     <div class='col-12'>
       <table class='table table-striped' style="text-align: center;">
@@ -63,8 +63,8 @@
             <td>{{i.OrgName}}</td>
             <td>{{i.RoomName}}</td>
             <td>
-              <span *ngFor="let k of i.schedule;">     
-                <span>{{k.DayOfWeek | weekFormat}}</span><br>        
+              <span *ngFor="let k of i.schedule;">
+                <span>{{k.DayOfWeek | weekFormat}}</span><br>
                 <span>{{k.BeginTime | slice:0:5}} - {{k.EndTime | slice:0:5}}</span><br>
               </span>
             </td>

@@ -1,4 +1,4 @@
-.lable-pos{  
+.lable-pos{
     text-align: left
 }
 .label{
@@ -31,4 +31,12 @@
 .button-margin{
     margin-right:10px;
     margin-left:10px;
+}
+.download{
+  color: blue
+}
+.download:hover{
+  text-decoration: underline;
+  color:lightskyblue;
+  cursor:pointer
 }

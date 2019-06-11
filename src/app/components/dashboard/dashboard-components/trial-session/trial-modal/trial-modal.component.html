@@ -1,9 +1,7 @@
-
 <!--modal header-->
 <div class='modal-header'>
   <h4 class='modal-title'>aaaa</h4>
-  <button type="button" class='btn btn-sm btn-info t_dm_close_btn' aria-label="Close"
-    (click)="activeModal.close('Cross click')">
+  <button type="button" class='btn btn-sm btn-info' aria-label="Close" (click)="activeModal.close('Cross click')">
     <span aria-hidden="true">&times;</span>
   </button>
 </div>
@@ -13,7 +11,7 @@
   <div *ngIf="options">
     <ng-fullcalendar #fullcalendar [options]="options" [eventsModel]="eventsModel"></ng-fullcalendar>
   </div>
-  
+
 </div>
 
 <!--modal footer-->
