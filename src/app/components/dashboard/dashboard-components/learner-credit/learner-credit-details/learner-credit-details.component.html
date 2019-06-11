@@ -1,3 +1,62 @@
-<p>
-  learner-credit-details works!
-</p>
+<div class="container">
+  <ngb-accordion>
+    <ngb-panel id="1" title="Finished Course">
+      <ng-template ngbPanelContent>
+        <!-- First name: {{this.data.FirstName}} -->
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th scope="col">#</th>
+              <th scope="col" sortable="TermId" (sort)="onSort($event)">TermId</th>
+              <th scope="col" sortable="BeginDate" (sort)="onSort($event)">Begin Date</th>
+              <th scope="col" sortable="EndDate" (sort)="onSort($event)">End Date</th>
+              <th scope="col" sortable="CourseName" (sort)="onSort($event)">Course Name</th>
+              <th scope="col" sortable="Quantity" (sort)="onSort($event)">Quantity</th>
+              <th scope="col" sortable="ExpiryDate" (sort)="onSort($event)">Expiry Date</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let i of remainingCourseData;let j = index">
+              <th scope="row">{{j}}</th>
+              <td>{{i.TermId}}</td>
+              <td>{{i.Term.BeginDate}}</td>
+              <td>{{i.Term.EndDate}}</td>
+              <td>{{i.CourseInstance.Course.CourseName}}</td>
+              <td>{{i.Quantity}}</td>
+              <td>{{i.ExpiryDate}}</td>
+            </tr>
+          </tbody>
+        </table>
+      </ng-template>
+    </ngb-panel>
+    <ngb-panel id="2" title="Remaning Course">
+      <ng-template ngbPanelContent>
+        <!-- Last name: {{this.data.LastName}} -->
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th scope="col">#</th>
+              <th scope="col" sortable="TermId" (sort)="onSort($event)">TermId</th>
+              <th scope="col" sortable="BeginDate" (sort)="onSort($event)">Begin Date</th>
+              <th scope="col" sortable="EndDate" (sort)="onSort($event)">End Date</th>
+              <th scope="col" sortable="CourseName" (sort)="onSort($event)">Course Name</th>
+              <th scope="col" sortable="Quantity" (sort)="onSort($event)">Quantity</th>
+              <th scope="col" sortable="EndDate" (sort)="onSort($event)">Expiry Date</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let i of remainingCourseData;let j = index">
+              <th scope="row">{{j}}</th>
+              <td>{{i.TermId}}</td>
+              <td>{{i.Term.BeginDate}}</td>
+              <td>{{i.Term.EndDate}}</td>
+              <td>{{i.CourseInstance.Course.CourseName}}</td>
+              <td>{{i.Quantity}}</td>
+              <td>{{i.ExpiryDate}}</td>
+            </tr>
+          </tbody>
+        </table>
+      </ng-template>
+    </ngb-panel>
+  </ngb-accordion>
+</div>
