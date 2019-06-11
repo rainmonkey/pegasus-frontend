@@ -195,7 +195,7 @@ export class LearnerRegistrationFormComponent implements OnInit, DoCheck, AfterV
       customCourse: this.fb.array([]),
     });
 
-   
+
     this.setParentForm();
     if (this.addCourse == undefined){
     this.setOneToOneForm();}
@@ -205,7 +205,6 @@ export class LearnerRegistrationFormComponent implements OnInit, DoCheck, AfterV
     //@ts-ignore
     // let abc = this.customCourse.controls[0].controls.roomArray;
     if (!this.whichLearner || this.addCourse) {
-      console.log(6666)
       this.getGroupCourseFromServer();
     }
 
