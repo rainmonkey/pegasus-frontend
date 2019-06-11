@@ -20,6 +20,7 @@ import { AdminLearnerPanelComponent } from './components/dashboard/dashboard-com
 import { LearnerDeleteModalComponent } from './components/dashboard/dashboard-components/admin-learner/learner-delete-modal/learner-delete-modal.component';
 import { LearnerDetailModalComponent } from './components/dashboard/dashboard-components/admin-learner/learner-detail-modal/learner-detail-modal.component';
 import { LearnerEditModalComponent } from './components/dashboard/dashboard-components/admin-learner/learner-edit-modal/learner-edit-modal.component';
+import { LearnerAddModalComponent } from './components/dashboard/dashboard-components/admin-learner/learner-add-modal/learner-add-modal.component';
 import { AdminLearnerPaymentInvoiceComponent } from './components/dashboard/dashboard-components/admin-payment/admin-learner-payment-invoice/admin-learner-payment-invoice.component';
 import { AdminLearnerPaymentOtherComponent } from './components/dashboard/dashboard-components/admin-payment/admin-learner-payment-other/admin-learner-payment-other.component';
 import { AdminLearnerPaymentPanelComponent } from './components/dashboard/dashboard-components/admin-payment/admin-learner-payment-panel/admin-learner-payment-panel.component';
@@ -159,7 +160,7 @@ import { StaffModalFormComponent } from './components/dashboard/dashboard-compon
     LearnerDeleteModalComponent,
     LearnerDetailModalComponent,
     LearnerEditModalComponent,
-
+    LearnerAddModalComponent,
 
     SessionCancelModalComponent,
     SessionTutorReportModalComponent,
@@ -232,6 +233,7 @@ import { StaffModalFormComponent } from './components/dashboard/dashboard-compon
     LearnerDeleteModalComponent,
     LearnerDetailModalComponent,
     LearnerEditModalComponent,
+    LearnerAddModalComponent,
     SessionCancelModalComponent,
     SessionCompletedModalComponent,
     SessionRescheduleModalComponent,

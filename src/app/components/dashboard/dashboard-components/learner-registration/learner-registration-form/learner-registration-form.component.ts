@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, DoCheck } from '@angular/core';
+import { Component, OnInit, Input, DoCheck, AfterViewInit } from '@angular/core';
 import { FormGroup, FormArray, FormBuilder, Validators, FormControl } from '@angular/forms';
 import { LearnerRegistrationService } from '../../../../../services/http/learner-registration.service';
 import { CoursesService } from '../../../../../services/http/courses.service';
@@ -18,11 +18,12 @@ import { FindValueSubscriber } from 'rxjs/internal/operators/find';
   templateUrl: './learner-registration-form.component.html',
   styleUrls: ['./learner-registration-form.component.css']
 })
-export class LearnerRegistrationFormComponent implements OnInit, DoCheck {
+export class LearnerRegistrationFormComponent implements OnInit, DoCheck, AfterViewInit {
   // @Input() receivedParentMessage: any;
   // receivedChildMessage: any;
   // courseIntanceGroup: FormGroup;
   @Input() whichLearner;
+  @Input() addCourse;
 
   public time: NgbTimeStruct = { hour: 9, minute: 0, second: 0 };
   public hourStep = 1;
@@ -196,26 +197,39 @@ export class LearnerRegistrationFormComponent implements OnInit, DoCheck {
 
    
     this.setParentForm();
-    this.setOneToOneForm();
-
+    if (this.addCourse == undefined){
+    this.setOneToOneForm();}
+    else{
+      this.customCourse.push(this.courseIntanceGroup);
+    }
     //@ts-ignore
     // let abc = this.customCourse.controls[0].controls.roomArray;
+    if (!this.whichLearner || this.addCourse) {
+      console.log(6666)
+      this.getGroupCourseFromServer();
+    }
 
-    // initialize card display
-    document.getElementById('learnerForm').style.display = 'block';
-    document.getElementById('parentForm').style.display = 'none';
-    document.getElementById('courseForm').style.display = 'none';
-
-    if (!this.whichLearner) this.getGroupCourseFromServer();
     this.getLookups(1);
     this.toModel(this.time);
     this.getLocationFromServer();
     // init array
     this.initArrays()
     // get data if input
-    this.selectLearnerLevelFun(this.whichLearner?this.whichLearner.learnerLevel:null);
-    //
-    console.log(this.registrationForm);
+    if (this.addCourse){
+    this.selectLearnerLevelFun(this.whichLearner.learnerLevel);
+    }
+  }
+
+  ngAfterViewInit(){
+        // initialize card display
+        if(this.addCourse == undefined){
+          document.getElementById('learnerForm').style.display = 'block';
+          document.getElementById('parentForm').style.display = 'none';
+          document.getElementById('courseForm').style.display = 'none';
+        }
+          else{
+            document.getElementById('courseForm').style.display='block'
+          }
   }
 
   getDate() {
@@ -409,12 +423,11 @@ export class LearnerRegistrationFormComponent implements OnInit, DoCheck {
       );
   }
   selectLearnerLevelFun(value) {
-    console.log(value)
-    if (this.whichLearner && this.assignValue) {
-      this.assignValue = true;
-    }
-    else {
-    this.customCourse.reset();}
+    // console.log(value);
+    // if (this.whichLearner && this.assignValue && this.addCourse) {
+    //   this.assignValue = true;
+    // }
+    this.customCourse.reset();
     this.customCourse.controls.forEach((item, index) => {
       this.customCourse.removeAt(index);
     });
