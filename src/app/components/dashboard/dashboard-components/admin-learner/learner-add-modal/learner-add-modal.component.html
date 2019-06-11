@@ -9,8 +9,9 @@
 </div>
 
 <div class='modal-body'>
-  <app-learner-registration-form [whichLearner]= 'whichLearner'></app-learner-registration-form>
+  <app-learner-registration-form [whichLearner]='whichLearner' [addCourse]='addCourse'></app-learner-registration-form>
 </div>
+
 <!--modal footer-->
 <div class='modal-footer'>
   <button type="button" class="btn btn-outline-dark" (click)="activeModal.close('Close click')">Close</button>

@@ -5,7 +5,7 @@ import { LearnersService } from 'src/app/services/http/learners.service';
 import {LearnerDeleteModalComponent } from '../learner-delete-modal/learner-delete-modal.component';
 import {LearnerDetailModalComponent } from '../learner-detail-modal/learner-detail-modal.component';
 import {LearnerEditModalComponent } from '../learner-edit-modal/learner-edit-modal.component';
-
+import { LearnerAddModalComponent } from '../learner-add-modal/learner-add-modal.component';
 
 @Component({
   selector: 'app-admin-learner-list',
@@ -131,6 +131,9 @@ export class AdminLearnerListComponent implements OnInit {
   */
  popUpModal(command, whichLearner) {
   switch (command) {
+    case 0:
+      this.addModal(command, whichLearner)
+      break;
     case 1:
       this.detailModal(command, whichLearner)
       break;
@@ -175,7 +178,7 @@ detailModal(command, whichLearner) {
 */
 EditModal(command, whichLearner) {
   const modalRef = this.modalService.open(LearnerEditModalComponent,{ windowClass: 'my-class',backdrop: 'static', keyboard: false  });
- 
+
   let that = this;
   modalRef.result.then(
     (res) => {
@@ -188,4 +191,23 @@ EditModal(command, whichLearner) {
   modalRef.componentInstance.command = command;
   modalRef.componentInstance.whichLearner = whichLearner;
 }
+/*
+  Add modal
+*/
+addModal(command, whichLearner){
+  const modalRef = this.modalService.open(LearnerAddModalComponent,{ windowClass: 'my-class',backdrop: 'static', keyboard: false  });
+
+  let that = this;
+  modalRef.result.then(
+    (res) => {
+        that.ngOnInit()
+    },
+    (err) =>{
+      return
+    }
+  )
+  modalRef.componentInstance.command = command;
+  modalRef.componentInstance.whichLearner = whichLearner;
+}
+
 }
