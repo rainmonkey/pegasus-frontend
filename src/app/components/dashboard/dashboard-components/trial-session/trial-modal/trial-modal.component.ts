@@ -29,13 +29,16 @@ export class TrialModalComponent implements OnInit {
     { "start": "2019-06-12T16:30:00", "end": "2019-06-12T17:00:00", "rendering": 'background', }
   ];
   //1800000 milliseconds in 30 min
-  public timeInterval30Min:number = 1800000;
+  public timeInterval30Min: number = 1800000;
   //84600000 milliseconds in a day
-  public timeStamp1Day:number = 86400000;
-  public currentDay:string;
-  public availableDOW:Array<number> = [2, 3, 4];
+  public timeStamp1Day: number = 86400000;
+  public currentDay: string;
+  public availableDOW: Array<number> = [2, 3, 4];
 
-  @Input() termPeriod:Array<any>;
+  @Input() termPeriod: Array<any>;
+  @Input() orgName;
+  @Input() cateName;
+  @Input() whichTeacher;
   @ViewChild('fullcalendar') fullcalendar: CalendarComponent;
   options: OptionsInput;
   //eventsModel: any;
@@ -45,6 +48,8 @@ export class TrialModalComponent implements OnInit {
               private coursesService: CoursesService) { }
 
   ngOnInit() {
+    //assign current day as semester begain day.
+    this.currentDay = this.transferTimestampToTime(new Date().getTime(), 1);
     this.initFullCalendar(this);
 
   }
@@ -84,17 +89,22 @@ export class TrialModalComponent implements OnInit {
   selectCallBack(info) {
     let startTimestamp = Date.parse(info.startStr);
     let endTimestamp = Date.parse(info.endStr);
-    if(endTimestamp - startTimestamp < this.timeInterval30Min){
+    if (endTimestamp - startTimestamp < this.timeInterval30Min) {
       alert('Sorry, course can not less than 30 min.')
     }
-    else{
-      this.popUpConfirmModal();
+    else {
+      this.popUpConfirmModal(startTimestamp, endTimestamp);
     }
   }
 
-  popUpConfirmModal(){
+  popUpConfirmModal(startTimestamp,endTimestamp) {
     const modalRef = this.modalService.open(TrialConfirmComponent, { size: 'lg', backdrop: 'static', keyboard: false });
-  } 
+    modalRef.componentInstance.startTime = this.transferTimestampToTime(startTimestamp);
+    modalRef.componentInstance.endTime = this.transferTimestampToTime(endTimestamp);
+    modalRef.componentInstance.orgName = this.orgName;
+    modalRef.componentInstance.cateName = this.cateName;
+    modalRef.componentInstance.whichTeacher = this.whichTeacher;
+  }
   /*
     get teacher's available time.
       --> in order to pick a period of time to take the trial lesson.
@@ -120,12 +130,10 @@ export class TrialModalComponent implements OnInit {
           else, drop it.
   */
   checkAvailableDOW(array) {
-    this.currentDay = this.transferTimestampToTime(new Date().getTime(), 1);
-    //assign current day as semester begain day.
     //  --> the days befor current day are unavailable.
     this.termPeriod[0].BeginDate = this.currentDay;
     //outer for-loop can support multiple semesters
-    for (let j of this.termPeriod){
+    for (let j of this.termPeriod) {
       //check each day of a semester, if it is available, push it in an array, else drop it
       for (let i = Date.parse(j.BeginDate); i <= Date.parse(j.EndDate); i += this.timeStamp1Day) {
         let date = new Date(i);
@@ -143,7 +151,7 @@ export class TrialModalComponent implements OnInit {
       --> if a period of time is already taken(on lessons time), drop it from available time array,
           else push it to available time array.
   */
-  checkAvailablePeriod(array){
+  checkAvailablePeriod(array) {
     for (let i of this.timeslot) {
       if (Date.parse(i.start) >= Date.parse(this.currentDay)) {
         array.push(Date.parse(i.start));

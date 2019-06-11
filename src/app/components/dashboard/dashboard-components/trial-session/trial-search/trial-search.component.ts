@@ -16,7 +16,7 @@ export class TrialSearchComponent implements OnInit {
     "Orgs": { "clicked": false, "display": false, "id": 2 },
     "Teachers": { "clicked": false, "display": false, "id": 3 },
   }
-  public filters: object = { "CategoriesId": null, "OrgsId": null }
+  public filters: object = { "CategoriesId": null, "OrgsId": null,"OrgsName":null, "CategoriesName":null }
   public previousCloseBtn: any = null;
   public coursesTeachingByCate;
   public termPeriod;
@@ -117,7 +117,7 @@ export class TrialSearchComponent implements OnInit {
     (onclick event handler) select the tab that user clicked
       --> when user click a tab, select this tab and show some animations
   */
-  selectTab(event, className, nextClass, index, filterId) {
+  selectTab(event, className, nextClass, index, filterId, filterName) {
     //only no tab select, mouse click event work.
     if (this.styleFlowControl[className].clicked == false) {
       //set true flag means that this tab has already selected. if continue cliking on this tab, no click event occur, nothing happend.
@@ -135,6 +135,7 @@ export class TrialSearchComponent implements OnInit {
         else {
           //get the filter options(id) and save it.
           this.filters[className + 'Id'] = filterId;
+          this.filters[className + 'Name'] = filterName;
           let targetObj = event.currentTarget;
           setTimeout(() => {
             //★★★★★ event.currentTarget: 获取的是目标元素的父节点(如果目标元素是父节点则获取它自己) ★★★★★//
@@ -192,6 +193,9 @@ export class TrialSearchComponent implements OnInit {
     //console.log(coursesTeachingByWhichTeacher)
     const modalRef = this.modalService.open(TrialModalComponent, { size: 'lg', backdrop: 'static', keyboard: false });
     modalRef.componentInstance.termPeriod = this.termPeriod;
+    modalRef.componentInstance.cateName = this.filters['CategoriesName'];
+    modalRef.componentInstance.orgName = this.filters['OrgsName'];
+    modalRef.componentInstance.whichTeacher = whichTeacher;
   }
 
   getCoursesTeachingByWhichTeacher(whichTeacher){
