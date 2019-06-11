@@ -103,6 +103,7 @@ import { StaffDeleteModalComponent } from './components/dashboard/dashboard-comp
 import { StaffDetailModalComponent } from './components/dashboard/dashboard-components/admin-staff/staff-detail-modal/staff-detail-modal.component';
 import { StaffEditModalComponent } from './components/dashboard/dashboard-components/admin-staff/staff-edit-modal/staff-edit-modal.component';
 import { StaffModalFormComponent } from './components/dashboard/dashboard-components/admin-staff/staff-modal-form/staff-modal-form.component';
+import { HolidayCalendarComponent } from './components/dashboard/dashboard-components/admin-holidays/holiday-calendar/holiday-calendar.component';
 
 
 @NgModule({
@@ -200,6 +201,8 @@ import { StaffModalFormComponent } from './components/dashboard/dashboard-compon
     StaffDeleteModalComponent,
     StaffDetailModalComponent,
     StaffEditModalComponent,
+
+    HolidayCalendarComponent,
   ],
   imports: [
     NgbModule,
