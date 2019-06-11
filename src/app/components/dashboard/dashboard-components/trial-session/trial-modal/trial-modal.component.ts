@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
+import { Component, OnInit, ViewChild, ViewEncapsulation, Input } from '@angular/core';
 import { OptionsInput } from '@fullcalendar/core';
 import interactionPlugin from '@fullcalendar/interaction';
 import { CalendarComponent } from 'ng-fullcalendar';
@@ -8,6 +8,7 @@ import Swal from 'sweetalert2';
 import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { reduce } from 'rxjs/operators';
 import { TrialConfirmComponent } from '../trial-confirm/trial-confirm.component';
+import { CoursesService } from 'src/app/services/http/courses.service';
 
 
 
@@ -28,48 +29,50 @@ export class TrialModalComponent implements OnInit {
     { "start": "2019-06-12T16:30:00", "end": "2019-06-12T17:00:00", "rendering": 'background', }
   ];
   //1800000 milliseconds in 30 min
-  public timeInterval30Min = 1800000;
+  public timeInterval30Min: number = 1800000;
   //84600000 milliseconds in a day
-  public timeStamp1Day = 86400000;
-  public currentDay;
-  public availableDOW = [2,3,4];
-  options: OptionsInput;
+  public timeStamp1Day: number = 86400000;
+  public currentDay: string;
+  public availableDOW: Array<number> = [2, 3, 4];
 
+  @Input() termPeriod: Array<any>;
+  @Input() orgName;
+  @Input() cateName;
+  @Input() whichTeacher;
   @ViewChild('fullcalendar') fullcalendar: CalendarComponent;
-  eventsModel: any;
+  options: OptionsInput;
+  //eventsModel: any;
+
   constructor(public activeModal: NgbActiveModal,
-              private modalService: NgbModal) { }
+              private modalService: NgbModal,
+              private coursesService: CoursesService) { }
 
   ngOnInit() {
-    //this.getAvailableTime();
+    //assign current day as semester begain day.
+    this.currentDay = this.transferTimestampToTime(new Date().getTime(), 1);
     this.initFullCalendar(this);
-    
+
   }
 
-  initFullCalendar(pointer){
+  /*
+    initiate settings of full calendar mode
+  */
+  initFullCalendar(pointer) {
     let that = pointer;
     this.options = {
       allDaySlot: false,
       height: 700,
       selectable: true,
+      //starting time of a day
       minTime: '09:00',
+      //end time of a day
       maxTime: '18:00',
+      //each grid represents 15 min
       slotDuration: '00:15',
-      businessHours: [],
-          // resourceIds: 'unAvailable'},
-        // {
-        //   startTime:"09:00",
-        //   endTime:"18:00",
-        //   daysOfWeek:[1,3,5],
-        // },],
-      // eventSources: [{
-      //   events: this.timeslot,
-      //   color: 'lightgrey',
-      // }],
-      events:this.getAvailableTime(),
+      events: this.getAvailableTime(),
       selectConstraint: this.getAvailableTime(),
-      select:function(){
-        that.selectCallBack();
+      select: function (info) {
+        that.selectCallBack(info);
       },
       header: {
         left: 'prev,next today',
@@ -80,71 +83,88 @@ export class TrialModalComponent implements OnInit {
     };
   }
 
-  selectCallBack(){
-    const modalRef = this.modalService.open(TrialConfirmComponent, { size: 'sm' });
-    return null;
-    //modalRef.componentInstance.command = command;
-    //modalRef.componentInstance.whichTeacher = whichTeacher; 
+  /*
+    events handler when user select grids on calendar 
+  */
+  selectCallBack(info) {
+    let startTimestamp = Date.parse(info.startStr);
+    let endTimestamp = Date.parse(info.endStr);
+    if (endTimestamp - startTimestamp < this.timeInterval30Min) {
+      alert('Sorry, course can not less than 30 min.')
+    }
+    else {
+      this.popUpConfirmModal(startTimestamp, endTimestamp);
+    }
   }
 
+  popUpConfirmModal(startTimestamp,endTimestamp) {
+    const modalRef = this.modalService.open(TrialConfirmComponent, { size: 'lg', backdrop: 'static', keyboard: false });
+    modalRef.componentInstance.startTime = this.transferTimestampToTime(startTimestamp);
+    modalRef.componentInstance.endTime = this.transferTimestampToTime(endTimestamp);
+    modalRef.componentInstance.orgName = this.orgName;
+    modalRef.componentInstance.cateName = this.cateName;
+    modalRef.componentInstance.whichTeacher = this.whichTeacher;
+  }
+  /*
+    get teacher's available time.
+      --> in order to pick a period of time to take the trial lesson.
+  */
   getAvailableTime() {
-    //console.log(Date.parse(this.timeslot[0].start) - Date.parse(this.timeslot[0].end));
     let array = [];
-    array = this.abcd(array);
-    //增加一个课程开始的时间 api需要加字段
-    //array.push(Date.parse("2019-05-20T09:00:00"))
-    for (let i of this.timeslot) {
-      if(Date.parse(i.start) >= this.currentDay){
-        array.push(Date.parse(i.start));
-      array.push(Date.parse(i.end))
-      }
-    }
-    //增加一个课程结束的时间 api需要加字段
-    //array.push(Date.parse("2019-06-12T18:00:00"))
-
+    array = this.checkAvailableDOW(array);
+    array = this.checkAvailablePeriod(array);
     array.sort()
-    
-
 
     let newObjArr = [];
     for (let i = 0; i < array.length; i += 2) {
       if (array[i + 1] - array[i] >= this.timeInterval30Min) {
-        newObjArr.push({ "start": this.transferTimestampToTime(array[i]), "end": this.transferTimestampToTime(array[i + 1]),"rendering": 'background', })
+        newObjArr.push({ "start": this.transferTimestampToTime(array[i]), "end": this.transferTimestampToTime(array[i + 1]), "rendering": 'background', })
       }
     }
-    // newObjArr.push( {
-    //   startTime:'09:00',
-    //   endTime:'18:00',
-    //   daysOfWeek:[1,2,3,4,5]
-    // })
-    console.log(newObjArr)
     return newObjArr
   }
 
-
-  abcd(array){
-    //let start = Date.parse("2019-05-20T00:00:00");
-    let end = Date.parse("2019-06-20T23:59:59");
-    console.log(new Date())
-    let start = Date.parse(this.transferTimestampToTime(new Date().getTime(),1));
-    this.currentDay = start;
-    console.log(start)
-    for(let i = start; i <= end; i+=this.timeStamp1Day){
-      var date = new Date(i)
-      console.log(date.getDay())
-      if(this.availableDOW.indexOf(date.getDay()) !== -1){
-        array.push(i),
-        array.push(i + this.timeStamp1Day)
+  /*
+    get available day of week in semester period
+      --> if available, push this day in an array,
+          else, drop it.
+  */
+  checkAvailableDOW(array) {
+    //  --> the days befor current day are unavailable.
+    this.termPeriod[0].BeginDate = this.currentDay;
+    //outer for-loop can support multiple semesters
+    for (let j of this.termPeriod) {
+      //check each day of a semester, if it is available, push it in an array, else drop it
+      for (let i = Date.parse(j.BeginDate); i <= Date.parse(j.EndDate); i += this.timeStamp1Day) {
+        let date = new Date(i);
+        if (this.availableDOW.indexOf(date.getDay()) !== -1) {
+          array.push(i); //start time
+          array.push(i + this.timeStamp1Day); //end time
+        }
       }
     }
-
     return array;
-
   }
+
+  /*
+    get available period of time in a day
+      --> if a period of time is already taken(on lessons time), drop it from available time array,
+          else push it to available time array.
+  */
+  checkAvailablePeriod(array) {
+    for (let i of this.timeslot) {
+      if (Date.parse(i.start) >= Date.parse(this.currentDay)) {
+        array.push(Date.parse(i.start));
+        array.push(Date.parse(i.end));
+      }
+    }
+    return array;
+  }
+
   /*
     transfer time stamp to the timeStr that fullcalendar can read.
   */
-  transferTimestampToTime(timestamp,code?) {
+  transferTimestampToTime(timestamp, code?) {
     var date = new Date(timestamp);//时间戳为10位需*1000，时间戳为13位的话不需乘1000
     var Y = date.getFullYear() + '-';
     var M = (date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1) + '-';
@@ -152,10 +172,10 @@ export class TrialModalComponent implements OnInit {
     var h = (date.getHours() < 10 ? '0' + (date.getHours()) : date.getHours()) + ':';
     var m = (date.getMinutes() < 10 ? '0' + (date.getMinutes()) : date.getMinutes()) + ':';
     var s = (date.getSeconds() < 10 ? '0' + (date.getSeconds()) : date.getSeconds());
-    if(code == 1){
+    if (code == 1) {
       return Y + M + D + '00:00:00';
     }
-    else{
+    else {
       return Y + M + D + h + m + s;
     }
   }

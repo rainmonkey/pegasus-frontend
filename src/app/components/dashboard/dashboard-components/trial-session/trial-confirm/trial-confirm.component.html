@@ -1,3 +1,74 @@
-<p>
-  trial-confirm works!
-</p>
+<!--modal header-->
+<div class='modal-header'>
+  <h4 class='modal-title'>Trial Course Confirmation</h4>
+  <button type="button" class='btn btn-sm btn-info t_dm_close_btn' aria-label="Close"
+    (click)="activeModal.close('Cross click')">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+
+<!--modal body-->
+<div class='modal-body'>
+  <div class='row' style="margin-bottom: 5px">
+    <div class='col-2'>
+      Student:
+    </div>
+    <div class=col-4>
+        <input type="text" disabled class='col-12 t_c_inputs'>
+    </div>
+    <div class='col-2'>
+      Teacher:
+    </div>
+    <div class='col-4'>
+        <input type="text" disabled class='col-12 t_c_inputs' value={{whichTeacherFullName}}> 
+    </div>
+  </div>
+  <div class='row' style="margin-bottom: 5px">
+    <div class='col-2'>
+      Course:
+    </div>
+    <div class='col-4'>
+        <input type="text" disabled class='col-12 t_c_inputs' value={{cateName}}>
+    </div>
+    <div class='col-2'>
+      Location:
+    </div>
+    <div class='col-4'>
+        <input type="text" disabled class='col-12 t_c_inputs' value={{orgName.toLowerCase()}}>
+    </div>
+  </div>
+  <div class='row' style="margin-bottom: 5px">
+    <div class='col-2'>
+      Start Time:
+    </div>
+    <div class='col-4'>
+        <input type="text" disabled class='col-12 t_c_inputs' value={{startTime}}>
+    </div>
+    <div class='col-2'>
+      End Time:
+    </div>
+    <div class='col-4'>
+        <input type="text" disabled class='col-12 t_c_inputs' value={{endTime}}>
+    </div>
+  </div>
+  <div class='row' style="margin-bottom: 5px">
+    <div class='col-2'>
+      Class Room:
+    </div>
+    <div class='col-4'>
+        <input type="text" disabled class='col-12 t_c_inputs' >
+    </div>
+    <div class='col-2'>
+      Price:
+    </div>
+    <div class='col-4'>
+      <input type="text" disabled class='col-12 t_c_inputs' >
+    </div>
+  </div>
+</div>
+
+<!--modal footer-->
+<div class='modal-footer'>
+  <button type="button" class="btn btn-outline-dark" (click)="activeModal.close('Close click')">Confirm</button>
+  <button type="button" class="btn btn-outline-dark" (click)="activeModal.close('Close click')">Cancel</button>
+</div>

@@ -22,19 +22,24 @@ export class LearnerDetailModalComponent implements OnInit, AfterViewInit {
   otherValueList = [];
   howKnowList = [];
   learnerLevelList = []
-
+  othersmsg = '';
+  agreeFormMsg='';
   howKnow: any
   reasonList: any
   public photoUrl: any = environment.photoUrl;
+  otherFileUrl = ''
+  agreeFileUrl=''
   constructor(public activeModal: NgbActiveModal, private LearnerListService: LearnersService, ) {
 
   }
 
   ngOnInit() {
-    
+
     this.lookUpData1()
     this.lookUpData2()
     this.lookUpData4()
+    this.getOthersUrl()
+    this.getFormUrl()
     console.log(this.whichLearner)
   }
   chooseGroupCourse() {
@@ -57,7 +62,7 @@ export class LearnerDetailModalComponent implements OnInit, AfterViewInit {
   // }
   // lookUpData2(data1){
   //   this.LearnerListService.getLookups(3).subscribe(
-  //     (res)=>{console.log(res), 
+  //     (res)=>{console.log(res),
 
   //       this.getPurposeValue(data1.concat(res['Data'])
   //       )},
@@ -153,7 +158,7 @@ export class LearnerDetailModalComponent implements OnInit, AfterViewInit {
 
 
   /*
-   if photo not found, set default photo 
+   if photo not found, set default photo
  */
   setDefaultPhoto(event) {
     event.target.src = '../../../../../../assets/images/shared/learner-people.jpg';
@@ -163,6 +168,31 @@ export class LearnerDetailModalComponent implements OnInit, AfterViewInit {
   setDefaultPhoto1(event) {
     event.target.src = '../../../../../../assets/images/shared/certificate-icon.png';
     return
+  }
+
+  // other files
+  getOthersUrl(){
+    console.log(this.whichLearner.OtherfileUrl)
+    if(this.whichLearner.OtherfileUrl !== null){
+      this.othersmsg = 'Download Other Files'
+      return this.otherFileUrl=this.photoUrl + this.whichLearner.OtherfileUrl;
+    }
+  }
+
+  clickOtherFileUrl(){
+    return window.open(this.otherFileUrl)
+  }
+
+  // agreeement Form
+  getFormUrl(){
+    if(this.whichLearner.FormUrl !== null){
+      this.agreeFormMsg = 'Download Enrollment Agreement Form'
+      return this.agreeFileUrl=this.photoUrl + this.whichLearner.FormUrl;
+    }
+  }
+
+  clickFormUrl(){
+    return window.open(this.agreeFileUrl)
   }
 }
 

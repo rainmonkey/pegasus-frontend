@@ -32,16 +32,6 @@ export class TrialInfoComponent implements OnInit {
     
   }
 
-  // ngDoCheck(){
-  //   if(this.childEvent !== undefined){
-  //     if(this.popUpFlag == false){
-  //       this.popUpFlag = true;
-  //       console.log('a')
-  //       this.popUpModal(this.childEvent);  
-  //     }
-  //   }
-  // }
-
   //并发获取所有数据
   getDataFromServer() {
     let coursesService = this.coursesService.getCourseClasses();

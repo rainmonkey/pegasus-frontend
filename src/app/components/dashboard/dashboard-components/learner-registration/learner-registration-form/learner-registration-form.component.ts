@@ -161,7 +161,10 @@ export class LearnerRegistrationFormComponent implements OnInit, DoCheck, AfterV
     // get orgId
     this.orgId = JSON.parse(localStorage.getItem('OrgId'))[0];
     this.getDate();
-    if (this.whichLearner != null) console.log(this.whichLearner);
+    if (this.whichLearner != null) { //set LevelType
+      console.log(this.whichLearner);
+      this.learnerlevelType  = this.whichLearner.LevelType;
+    }
     this.registrationForm = this.fb.group({
       learnerForm: this.fb.group({
         firstName: [this.whichLearner ? this.whichLearner.FirstName : '', Validators.required],
@@ -192,6 +195,7 @@ export class LearnerRegistrationFormComponent implements OnInit, DoCheck, AfterV
       customCourse: this.fb.array([]),
     });
 
+   
     this.setParentForm();
     if (this.addCourse == undefined){
     this.setOneToOneForm();}
