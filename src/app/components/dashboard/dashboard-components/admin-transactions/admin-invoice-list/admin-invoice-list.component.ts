@@ -10,7 +10,7 @@ interface Learner {
   MiddleName: string;
   LastName: string;
   IsUnder18: string;
-  }
+}
 @Component({
   selector: 'app-admin-invoice-list',
   templateUrl: './admin-invoice-list.component.html',
@@ -35,8 +35,6 @@ export class AdminInvoiceListComponent implements OnInit {
   myArray = [];
   //teachers list copy. Using in searching method, in order to initialize data to original
   public myArrayCopy: Array<any>;
-  //how many datas in teachersList
-  public myArrayLength: number;
 
   constructor(
     private modalService: NgbModal,
@@ -44,14 +42,14 @@ export class AdminInvoiceListComponent implements OnInit {
     // private learnersservice: LearnersService,
     private transactionService: TransactionService,
 
-    ) { }
+  ) { }
 
   ngOnInit() {
     this.getData();
   }
 
   // modal method
-  open(i){
+  open(i) {
     const modalRef = this.modalService.open(AdminInvoiceEditModalComponent, { size: 'lg' });
     let that = this;
     console.log(modalRef)
@@ -78,7 +76,7 @@ export class AdminInvoiceListComponent implements OnInit {
       });
   }
   // push to array for sort
-  makeArray(){
+  makeArray() {
     this.learnerList.forEach(list => {
       let tempObj = {
         OwingFee: list.OwingFee,
@@ -104,9 +102,9 @@ export class AdminInvoiceListComponent implements OnInit {
   //     this.queryParams[paraName] = paraValue;
   //   }
 
-    // this.router.navigate(['tutors/list'], {
-    //   queryParams: this.queryParams
-    // });
+  // this.router.navigate(['tutors/list'], {
+  //   queryParams: this.queryParams
+  // });
   // }
   // search name
   // onSearch(event){
@@ -135,8 +133,19 @@ export class AdminInvoiceListComponent implements OnInit {
       (initValue == undefined) ? { searchString, searchBy } = { searchString: searchingInputObj['value'], searchBy: 'FirstName' } :
         { searchString, searchBy } = initValue;
 
-      this.myArray = this.ngTable.searching(this.myArray, searchBy, searchString);
-      this.myArrayLength = this.myArray.length;
+      //If there is a value, do search. If there is no value, return the initial list.
+      if (searchingInputObj['value']) {
+        this.myArray = this.ngTable.searching(this.myArray, searchBy, searchString);
+        // change length inside pagination
+        this.learnerListLength = this.myArray.length;
+      } else {
+        this.myArray = this.temLearnerList.map(data => data.Learner)
+        // change length inside pagination
+        this.learnerListLength = this.temLearnerListLength
+      }
+
+
+
       //optionsObj['value'] = searchBy;
     }
 

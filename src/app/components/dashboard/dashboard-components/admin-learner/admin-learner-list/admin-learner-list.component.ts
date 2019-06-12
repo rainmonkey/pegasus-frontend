@@ -6,7 +6,7 @@ import { LearnerDeleteModalComponent } from '../learner-delete-modal/learner-del
 import { LearnerDetailModalComponent } from '../learner-detail-modal/learner-detail-modal.component';
 import { LearnerEditModalComponent } from '../learner-edit-modal/learner-edit-modal.component';
 import { LearnerAddModalComponent } from '../learner-add-modal/learner-add-modal.component';
-
+import { LearnerDeleteCourseModalComponent } from '../learner-delete-course-modal/learner-delete-course-modal.component';
 @Component({
   selector: 'app-admin-learner-list',
   templateUrl: './admin-learner-list.component.html',
@@ -145,6 +145,8 @@ export class AdminLearnerListComponent implements OnInit {
       case 3:
         this.deleteModal(command, whichLearner);
         break;
+      case 4:
+        this.deleteCourseModal(whichLearner);
     }
   }
 
@@ -211,12 +213,26 @@ export class AdminLearnerListComponent implements OnInit {
     modalRef.result.then(
       (res) => {
         that.ngOnInit()
-      },
-      (err) => {
-        return
-      }
-    )
-    modalRef.componentInstance.command = command;
-    modalRef.componentInstance.whichLearner = whichLearner;
-  }
+    },
+    (err) =>{
+      return
+    }
+  )
+  modalRef.componentInstance.command = command;
+  modalRef.componentInstance.whichLearner = whichLearner;
+}
+deleteCourseModal(whichLearner){
+  const modalRef = this.modalService.open(LearnerDeleteCourseModalComponent,{ windowClass: 'my-class',backdrop: 'static', keyboard: false  });
+
+  let that = this;
+  modalRef.result.then(
+    (res) => {
+        that.ngOnInit()
+    },
+    (err) =>{
+      return
+    }
+  )
+  modalRef.componentInstance.whichLearner = whichLearner;
+}
 }

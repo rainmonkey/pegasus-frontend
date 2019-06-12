@@ -3,6 +3,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { NgbActiveModal, NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 import { FormBuilder, Validator, Validators, RequiredValidator } from '@angular/forms';
 import { TransactionService } from '../../../../../services/http/transaction.service';
+import { InvoiceValidatorsService } from "src/app/services/others/invoice-validators.service"
 import { restoreView } from '@angular/core/src/render3';
 
 @Component({
@@ -35,10 +36,11 @@ export class AdminInvoiceEditModalComponent implements OnInit {
     public modalService: NgbModal,
     private router: Router,
     private activatedRoute: ActivatedRoute,
-    private transactionService: TransactionService
-    ) {
+    private transactionService: TransactionService,
+    private invoiceValidator: InvoiceValidatorsService
+  ) {
 
-     }
+  }
 
   // invoice list fb
   invoiceEditForm = this.fb.group({
@@ -47,22 +49,32 @@ export class AdminInvoiceEditModalComponent implements OnInit {
     LessonQuantity: [null, Validators.required],
     BeginDate: [null],
     LessonFee: [null, Validators.required],
-    Concert: [null],
-    ConcertFee: [null],
-    Note: [null],
-    NoteFee: [null],
-    Other1FeeName: [' '],
-    Other2FeeName: [' '],
-    Other3FeeName: [' '],
-    Other1Fee: [],
-    Other2Fee: [],
-    Other3Fee: [],
+    Concert: this.fb.group({
+      ConcertFeeName: [null],
+      ConcertFee: [null]
+    }, { validator: this.invoiceValidator.matcher }),
+    Note: this.fb.group({
+      NoteFeeName: [null],
+      NoteFee: [null]
+    }, { validator: this.invoiceValidator.matcher }),
+    Other1: this.fb.group({
+      Other1FeeName: [null],
+      Other1Fee: [null]
+    }, { validator: this.invoiceValidator.matcher }),
+    Other2: this.fb.group({
+      Other2FeeName: [null],
+      Other2Fee: [null]
+    }, { validator: this.invoiceValidator.matcher }),
+    Other3: this.fb.group({
+      Other3FeeName: [null],
+      Other3Fee: [null]
+    }, { validator: this.invoiceValidator.matcher }),
     PaidFee: [null],
     OwingFee: [null]
   });
 
   // get quantity
-  get LessonQuantity(){
+  get LessonQuantity() {
     return this.invoiceEditForm.get('LessonQuantity');
   }
 
@@ -72,55 +84,65 @@ export class AdminInvoiceEditModalComponent implements OnInit {
     this.owingFeeLocal = this.item.OwingFee;
     this.getCourse();
   }
-// get group or 121 course id
-getCourse(){
-  let type;
-  let courseId = this.item.CourseInstanceId
-  switch (courseId) {
-    case null:
-      type = 1;
-      break;
-    default:
-      type = 0;
+  // get group or 121 course id
+  getCourse() {
+    let type;
+    let courseId = this.item.CourseInstanceId
+    console.log(type, courseId)
+    switch (courseId) {
+      case null:
+        type = 1;
+        break;
+      default:
+        type = 0;
+    }
+    this.transactionService.GroupOr121(courseId, type)
+      .subscribe(
+        res => {
+          this.courseData = res
+          this.coursePrice = res.Data.Course.Price
+          console.log(this.courseData)
+        },
+        error => {
+          this.errorMsg = JSON.parse(error.error);
+          console.log("Error!", this.errorMsg.ErrorMsg);
+          this.errorAlert = false;
+        });
   }
-  this.transactionService.GroupOr121(courseId, type)
-  .subscribe(
-    res => {
-      this.courseData = res
-      this.coursePrice = res.Data.Course.Price
-      console.log(this.courseData)
-    },
-    error => {
-      this.errorMsg = JSON.parse(error.error);
-      console.log("Error!", this.errorMsg.ErrorMsg);
-      this.errorAlert = false;
-    });
-}
 
-// patch data to invoiceEditForm
+  // patch data to invoiceEditForm
   patchToInvoice() {
-    console.log(this.item)
     this.invoiceEditForm.patchValue({
       CourseName: this.item.CourseName,
       LessonQuantity: this.item.LessonQuantity,
       BeginDate: this.item.BeginDate === null ? null : this.item.BeginDate.slice(0, 10),
       LessonFee: this.item.LessonFee,
-      Concert: this.item.Concert,
-      ConcertFee: this.item.ConcertFee,
-      Note: this.item.Note,
-      NoteFee: this.item.NoteFee,
-      Other1FeeName: this.item.Other1FeeName,
-      Other2FeeName: this.item.Other2FeeName,
-      Other3FeeName: this.item.Other3FeeName,
-      Other1Fee: this.item.Other1Fee,
-      Other2Fee: this.item.Other2Fee,
-      Other3Fee: this.item.Other3Fee,
+      Concert: {
+        ConcertFeeName: this.item.ConcertFeeName,
+        ConcertFee: this.item.ConcertFee
+      },
+      Note: {
+        NoteFeeName: this.item.Note,
+        NoteFee: this.item.NoteFee
+      },
+      Other1: {
+        Other1FeeName: this.item.Other1FeeName,
+        Other1Fee: this.item.Other1Fee,
+      },
+      Other2: {
+        Other2FeeName: this.item.Other2FeeName,
+        Other2Fee: this.item.Other2Fee,
+      },
+      Other3: {
+        Other3FeeName: this.item.Other3FeeName,
+        Other3Fee: this.item.Other3Fee
+      },
       PaidFee: this.item.PaidFee
     });
   }
 
   // moniting user change course quantity
-  changeQuantity(){
+  changeQuantity() {
     this.invoiceEditForm.patchValue({
       LessonFee: Number(this.invoiceEditForm.value.LessonQuantity) * Number(this.coursePrice)
     });
@@ -133,89 +155,89 @@ getCourse(){
     this.errorAlert = false;
   }
 
-// post data to server side
+  // post data to server side
   sendMail(confirmModal) {
     if (this.invoiceEditForm.invalid) {
-    this.errMsgM = true;
+      this.errMsgM = true;
     } else {
       this.open(confirmModal);
     }
   }
 
   // data combination
-  combiData (){
-    let valueObj = this.invoiceEditForm.value;
-    console.log(valueObj);
-    // get rest then re-define all others
-    let {
-      LessonFee,
-      ConcertFee,
-      NoteFee,
-      Other1Fee,
-      Other2Fee,
-      Other3Fee,
-      ...rest
-    } = valueObj;
-    let valueTemp = {
-      LessonFee :  this.invoiceEditForm.controls.LessonFee.value==null ? 0 : this.invoiceEditForm.controls.LessonFee.value,
-      ConcertFee:  this.invoiceEditForm.controls.ConcertFee.value==null ? 0 : this.invoiceEditForm.controls.ConcertFee.value,
-      NoteFee:  this.invoiceEditForm.controls.NoteFee.value==null ? 0 : this.invoiceEditForm.controls.NoteFee.value,
-      Other1Fee:  this.invoiceEditForm.controls.Other1Fee.value==null ? 0 : this.invoiceEditForm.controls.Other1Fee.value,
-      Other2Fee: this.invoiceEditForm.controls.Other2Fee.value==null ? 0 : this.invoiceEditForm.controls.Other2Fee.value,
-      Other3Fee: this.invoiceEditForm.controls.Other3Fee.value==null ? 0 : this.invoiceEditForm.controls.Other3Fee.value
-    };
-    rest.OwingFee = valueTemp.LessonFee + valueTemp.ConcertFee + valueTemp.NoteFee + valueTemp.Other1Fee + valueTemp.Other2Fee + valueTemp.Other3Fee;
-    rest.TotalFee = rest.OwingFee;
-    Object.assign(valueTemp, rest);
-    //let {...itemTemp } = this.item;
-    //let itemTemp;
-    //Object.assign(itemTemp, valueTemp);
-    this.itemTempPublic = valueTemp;
-    this.itemTempPublic.WaitingId = this.item.WaitingId;    
-    this.itemTempPublic.InvoiceNum = this.item.InvoiceNum;  
-    this.itemTempPublic.LearnerId = this.item.LearnerId;    
-    this.itemTempPublic.LearnerName = this.item.LearnerName;  
-    this.itemTempPublic.TermId = this.item.TermId;    
-    this.itemTempPublic.GroupCourseInstanceId = this.item.GroupCourseInstanceId; 
-    this.itemTempPublic.CourseInstanceId = this.item.CourseInstanceId;                         
+  combiData() {
+    let data = {
+      BeginDate: this.invoiceEditForm.value.BeginDate,
+      CourseName: this.invoiceEditForm.value.CourseName,
+      DueDate: this.invoiceEditForm.value.DueDate,
+      LessonFee: this.invoiceEditForm.value.LessonFee || 0,
+      LessonQuantity: this.invoiceEditForm.value.LessonQuantity,
+      OwingFee: this.invoiceEditForm.value.OwingFee,
+      PaidFee: this.invoiceEditForm.value.PaidFee,
+      ...this.invoiceEditForm.value.Concert,
+      ...this.invoiceEditForm.value.Note,
+      ...this.invoiceEditForm.value.Other1,
+      ...this.invoiceEditForm.value.Other2,
+      ...this.invoiceEditForm.value.Other3,
+      WaitingId: this.item.WaitingId,
+      InvoiceNum: this.item.InvoiceNum,
+      LearnerId: this.item.LearnerId,
+      LearnerName: this.item.LearnerName,
+      TermId: this.item.TermId,
+      GroupCourseInstanceId: this.item.GroupCourseInstanceId,
+      CourseInstanceId: this.item.CourseInstanceId
+    }
+
+    data.ConcertFee = data.ConcertFee || 0
+    data.NoteFee = data.NoteFee || 0
+    data.Other1Fee = data.Other1Fee || 0
+    data.Other2Fee = data.Other2Fee || 0
+    data.Other3Fee = data.Other3Fee || 0
+
+    data.OwingFee = data.LessonFee + data.ConcertFee + data.NoteFee + data.Other1Fee + data.Other2Fee + data.Other3Fee;
+    data.TotalFee = data.OwingFee;
+
+    this.itemTempPublic = data
+
+    console.log(data);
   }
 
-  putInvoiceData(){
+  putInvoiceData() {
     console.log(this.itemTempPublic);
     this.transactionService.update(this.itemTempPublic)
-          .subscribe(
-            (res) => {
-              console.log(res);
-              this.activeModal.dismiss();
-              this.router.navigate(['/transaction/success']);
-            },
-            (error) => {
-              console.log(error)
-              this.errorMsg = error.error.ErrorMessage;
-              console.log(this.errorMsg);
-              this.errorAlert = true;
-            },
-          );
+      .subscribe(
+        (res) => {
+          console.log(res);
+          this.activeModal.dismiss();
+          this.router.navigate(['/transaction/success']);
+        },
+        (error) => {
+          console.log(error)
+          this.errorMsg = error.error.ErrorMessage;
+          console.log(this.errorMsg);
+          this.errorAlert = true;
+        },
+    );
   }
 
-// confirm Modal
+  // confirm Modal
   open(confirmModal) {
     this.combiData();
     this.validatePrice();
     this.modalService
-    .open(confirmModal)
-    .result.then(
-      (result) => {
-        this.putInvoiceData();
-      }, (reason) => {
-        this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
-      });
+      .open(confirmModal)
+      .result.then(
+        (result) => {
+          this.putInvoiceData();
+        }, (reason) => {
+          this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+        });
   }
-// validate lesson price
-validatePrice(){
-  this.originPrice = Number(this.invoiceEditForm.value.LessonQuantity) * Number(this.coursePrice);
-  this.userChosenPrice = this.invoiceEditForm.value.LessonFee;
-}
+  // validate lesson price
+  validatePrice() {
+    this.originPrice = Number(this.invoiceEditForm.value.LessonQuantity) * Number(this.coursePrice);
+    this.userChosenPrice = this.invoiceEditForm.value.LessonFee;
+  }
 
   // dismiss reason of modal
   private getDismissReason(reason: any): string {
@@ -224,7 +246,7 @@ validatePrice(){
     } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
       return 'by clicking on a backdrop';
     } else {
-      return  `with: ${reason}`;
+      return `with: ${reason}`;
     }
   }
 

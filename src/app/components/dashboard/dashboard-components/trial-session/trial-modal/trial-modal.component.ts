@@ -96,7 +96,7 @@ export class TrialModalComponent implements OnInit {
   }
 
   /*
-    events handler when user select grids on calendar 
+    events handler when user select grids on calendar
   */
   selectCallBack(info) {
     let startTimestamp = Date.parse(info.startStr);

@@ -21,6 +21,7 @@ import { LearnerDeleteModalComponent } from './components/dashboard/dashboard-co
 import { LearnerDetailModalComponent } from './components/dashboard/dashboard-components/admin-learner/learner-detail-modal/learner-detail-modal.component';
 import { LearnerEditModalComponent } from './components/dashboard/dashboard-components/admin-learner/learner-edit-modal/learner-edit-modal.component';
 import { LearnerAddModalComponent } from './components/dashboard/dashboard-components/admin-learner/learner-add-modal/learner-add-modal.component';
+import { LearnerDeleteCourseModalComponent } from './components/dashboard/dashboard-components/admin-learner/learner-delete-course-modal/learner-delete-course-modal.component';
 import { AdminLearnerPaymentInvoiceComponent } from './components/dashboard/dashboard-components/admin-payment/admin-learner-payment-invoice/admin-learner-payment-invoice.component';
 import { AdminLearnerPaymentOtherComponent } from './components/dashboard/dashboard-components/admin-payment/admin-learner-payment-other/admin-learner-payment-other.component';
 import { AdminLearnerPaymentPanelComponent } from './components/dashboard/dashboard-components/admin-payment/admin-learner-payment-panel/admin-learner-payment-panel.component';
@@ -46,6 +47,7 @@ import { InventoryPanelComponent } from './components/dashboard/dashboard-compon
 import { LearnerRegistrationFormComponent } from './components/dashboard/dashboard-components/learner-registration/learner-registration-form/learner-registration-form.component';
 import { LearnerRegistrationModalComponent } from './components/dashboard/dashboard-components/learner-registration/learner-registration-modal/learner-registration-modal.component';
 import { LearnerRegistrationConfirmModalComponent } from './components/dashboard/dashboard-components/learner-registration/learner-registration-confirm-modal/learner-registration-confirm-modal.component';
+import { LearnerRegistrationDeleteModalComponent } from './components/dashboard/dashboard-components/learner-registration/learner-registration-delete-modal/learner-registration-delete-modal.component';
 import { SessionCancelModalComponent } from './components/dashboard/dashboard-components/sessions/session-modals/session-cancel-modal/session-cancel-modal.component';
 import { SessionCompletedModalComponent } from './components/dashboard/dashboard-components/sessions/session-modals/session-completed-modal/session-completed-modal.component';
 import { SessionDetailEditModalComponent } from './components/dashboard/dashboard-components/sessions/session-modals/session-detail-edit-modal/session-detail-edit-modal.component';
@@ -103,6 +105,7 @@ import { StaffDeleteModalComponent } from './components/dashboard/dashboard-comp
 import { StaffDetailModalComponent } from './components/dashboard/dashboard-components/admin-staff/staff-detail-modal/staff-detail-modal.component';
 import { StaffEditModalComponent } from './components/dashboard/dashboard-components/admin-staff/staff-edit-modal/staff-edit-modal.component';
 import { StaffModalFormComponent } from './components/dashboard/dashboard-components/admin-staff/staff-modal-form/staff-modal-form.component';
+import { HolidayCalendarComponent } from './components/dashboard/dashboard-components/admin-holidays/holiday-calendar/holiday-calendar.component';
 
 
 @NgModule({
@@ -128,6 +131,7 @@ import { StaffModalFormComponent } from './components/dashboard/dashboard-compon
     LearnerRegistrationFormComponent,
     LearnerRegistrationModalComponent,
     LearnerRegistrationConfirmModalComponent,
+    LearnerRegistrationDeleteModalComponent,
     CommandFormatPipe,
     SessionsPanelComponent,
     SessionsListViewComponent,
@@ -161,6 +165,7 @@ import { StaffModalFormComponent } from './components/dashboard/dashboard-compon
     LearnerDetailModalComponent,
     LearnerEditModalComponent,
     LearnerAddModalComponent,
+    LearnerDeleteCourseModalComponent,
 
     SessionCancelModalComponent,
     SessionTutorReportModalComponent,
@@ -200,6 +205,8 @@ import { StaffModalFormComponent } from './components/dashboard/dashboard-compon
     StaffDeleteModalComponent,
     StaffDetailModalComponent,
     StaffEditModalComponent,
+
+    HolidayCalendarComponent,
   ],
   imports: [
     NgbModule,
@@ -234,6 +241,7 @@ import { StaffModalFormComponent } from './components/dashboard/dashboard-compon
     LearnerDetailModalComponent,
     LearnerEditModalComponent,
     LearnerAddModalComponent,
+    LearnerDeleteCourseModalComponent,
     SessionCancelModalComponent,
     SessionCompletedModalComponent,
     SessionRescheduleModalComponent,
@@ -242,6 +250,7 @@ import { StaffModalFormComponent } from './components/dashboard/dashboard-compon
     ChangePasswordModalComponent,
     LearnerRegistrationModalComponent,
     LearnerRegistrationConfirmModalComponent,
+    LearnerRegistrationDeleteModalComponent,
     TrialModalComponent,
     TrialTesterComponent,
     TrialConfirmComponent,
