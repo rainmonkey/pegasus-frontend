@@ -103,3 +103,8 @@ table {
   color: grey;
   text-align: center;
 }
+.loaderLarge{
+  position: fixed;
+  top:40%;
+  left: 50%;
+}

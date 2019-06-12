@@ -1,3 +1,85 @@
-<p>
-  inventory-list works!
-</p>
+<div *ngIf='loadingFlag' class="loaderLarge"></div>
+<div *ngIf='!loadingFlag' class='t_mf_form'>
+  <div class='container tl_body'>
+    <div class="row">
+      <!--body head-->
+      <div class='col-12 t_info_title'>
+        Inventory List
+      </div>
+      <!--body search-->
+      <div class="col-12 row">
+        <div class="col-6">
+          <div class='t_info_search_bar'>
+            <input id='searchingInput' type="text" placeholder="Search by Course" (keydown)='onSearch($event)'>
+          </div>
+          <div class='t_info_search_icon'>
+            <span (click)="onSearch(null)">
+              <i class='fas fa-search'></i>
+            </span>
+          </div>
+        </div>
+        <!--add more btn-->
+        <div class="col-6">
+          <span class='btn btn-info t_info_addmore_btn' (click)="addModal(0, null)">+ Add More</span>
+        </div>
+      </div>
+      <!--Error Message-->
+      <div class="col-12" style="margin-left: auto;margin-right: auto;" *ngIf="errorMessage" class="text-danger">
+        {{errorMessage}}<br>
+      </div>
+      <!--body main-->
+      <div class='col-12'>
+        <table class='table table-striped' style="text-align: center;">
+          <thead>
+            <tr>
+              <th scope='col' class='tl_body_table_head' style="width:2rem;">#</th>
+              <th scope='col' class='tl_body_table_head sorting_item' style="width:12rem"
+                (click)='onSort("ProductName")'>
+                Product
+              </th>
+              <th scope='col' class='tl_body_table_head sorting_item' style="width:12rem" (click)='onSort("OrgName")'>
+                Location
+              </th>
+              <th scope='col' class='tl_body_table_head sorting_item' style="width:6rem" (click)='onSort("Quantity")'>
+                QTY
+              </th>
+              <th scope='col' class='tl_body_table_head sorting_item' style="width:6rem"
+                (click)='onSort("BuyingPrice")'>
+                Amt.
+              </th>
+              <th scope='col' class='tl_body_table_head sorting_item' style="width:8rem" (click)='onSort("FirstName")'>
+                Staff
+              </th>
+              <th scope='col' class='tl_body_table_head' style="width:4rem">
+                Receipt
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <!-- dataTable-->
+            <tr
+              *ngFor='let i of stockOrdersList | slice: (page-1)* pageSize : (page-1) * pageSize + pageSize;let j = index'>
+              <th scope="row">{{j+1}}</th>
+              <td>
+                <ngb-highlight [result]="i.ProductName" [term]="filter.value"></ngb-highlight>
+              </td>
+              <td>{{i.OrgName}}</td>
+              <td>{{i.Quantity}}</td>
+              <td>${{i.BuyingPrice}}</td>
+              <td>{{i.FirstName}} {{i.LastName}}</td>
+              <td>
+                <span (click)='imageModal(5, i)' class='tl_body_table_btn col-4' style="text-align: center;">
+                  <i class="fas fa-receipt"></i>
+                </span>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <!--body pagination-->
+      <div class='col-12'>
+        <ngb-pagination [collectionSize]='stockOrdersListLength' [(page)]='page' [pageSize]='pageSize'></ngb-pagination>
+      </div>
+    </div>
+  </div>
+</div>
