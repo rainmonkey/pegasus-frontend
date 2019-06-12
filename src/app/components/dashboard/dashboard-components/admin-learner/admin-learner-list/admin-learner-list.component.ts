@@ -5,6 +5,8 @@ import { LearnersService } from 'src/app/services/http/learners.service';
 import {LearnerDeleteModalComponent } from '../learner-delete-modal/learner-delete-modal.component';
 import {LearnerDetailModalComponent } from '../learner-detail-modal/learner-detail-modal.component';
 import {LearnerEditModalComponent } from '../learner-edit-modal/learner-edit-modal.component';
+import {AdminLearnerLeaveComponent} from '../admin-learner-leave/admin-learner-leave.component';
+import {AdminLearnerPeriodCourseChangeModalComponent} from '../admin-learner-period-course-change-modal/admin-learner-period-course-change-modal.component';
 
 
 @Component({
@@ -42,6 +44,11 @@ export class AdminLearnerListComponent implements OnInit {
   ngOnInit() {
     this.getDataFromServer()
   }
+
+
+
+
+
 
 
   //get data from server
@@ -140,10 +147,25 @@ export class AdminLearnerListComponent implements OnInit {
     case 3:
       this.deleteModal(command, whichLearner);
       break;
+    case 4:
+      this.leaverModal(command, whichLearner);
+      break;
+    case 5:
+      this.periodCourseChangeModal(command, whichLearner);
   }
 }
 
 
+// 学生请假
+  leaverModal(command, whichLearner){
+   const modalRef = this.modalService.open(AdminLearnerLeaveComponent,{size: 'lg'});
+   modalRef.componentInstance.learner = whichLearner;
+  }
+
+  periodCourseChangeModal(cammand, whichlearner) {
+    const modalRef = this.modalService.open(AdminLearnerPeriodCourseChangeModalComponent, {size: 'lg'});
+    modalRef.componentInstance.learner = whichlearner;
+  }
 /*
   delete modal
 */

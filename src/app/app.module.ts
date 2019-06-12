@@ -97,6 +97,9 @@ import { TrialTesterComponent } from './components/dashboard/dashboard-component
 import { OrderbyPipe } from './shared/pipes/orderby.pipe';
 import { SessionRescheduleModalComponent } from './components/dashboard/dashboard-components/sessions/session-modals/session-reschedule-modal/session-reschedule-modal.component';
 import { MondayDateInWeekByDatePipe } from './shared/pipes/monday-date-in-week-by-date.pipe';
+import { AdminLearnerLeaveComponent } from './components/dashboard/dashboard-components/admin-learner/admin-learner-leave/admin-learner-leave.component';
+import { AdminLearnerCourseEditComponent } from './components/dashboard/dashboard-components/admin-learner/admin-learner-course-edit/admin-learner-course-edit.component';
+import { AdminLearnerPeriodCourseChangeModalComponent } from './components/dashboard/dashboard-components/admin-learner/admin-learner-period-course-change-modal/admin-learner-period-course-change-modal.component';
 
 
 @NgModule({
@@ -188,6 +191,9 @@ import { MondayDateInWeekByDatePipe } from './shared/pipes/monday-date-in-week-b
     OrderbyPipe,
     SessionRescheduleModalComponent,
     MondayDateInWeekByDatePipe,
+    AdminLearnerLeaveComponent,
+    AdminLearnerCourseEditComponent,
+    AdminLearnerPeriodCourseChangeModalComponent,
   ],
   imports: [
     NgbModule,
@@ -225,7 +231,9 @@ import { MondayDateInWeekByDatePipe } from './shared/pipes/monday-date-in-week-b
     SessionCompletedModalComponent,
     SessionRescheduleModalComponent,
     RatingModalComponent,
+    AdminLearnerPeriodCourseChangeModalComponent,
     ForgotPasswordModalComponent,
+    AdminLearnerLeaveComponent,
     ChangePasswordModalComponent,
     LearnerRegistrationModalComponent,
     LearnerRegistrationConfirmModalComponent,

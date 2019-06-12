@@ -47,5 +47,15 @@ export class LearnersService {
     getLookups(typeId: number): Observable<any> {
       return this.http.get(this.baseUrl + 'lookups/'+ typeId);
     }
- 
+  learnerDayOff(dayOffModel){
+    return this.http.post(this.baseUrl + 'LearnerDayOff', dayOffModel);
+  }
+
+  GetOrgRoom() {
+    return this.http.get(this.baseUrl + 'Orgs/OrgAndRoom');
+  }
+
+  PeriodCourseChange(model) {
+    return this.http.post(this.baseUrl + 'PeriodCourseChange', model);
+  }
 }
