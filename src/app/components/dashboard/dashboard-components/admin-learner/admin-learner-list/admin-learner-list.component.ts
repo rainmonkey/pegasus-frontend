@@ -154,6 +154,12 @@ export class AdminLearnerListComponent implements OnInit {
         break;
       case 4:
         this.deleteCourseModal(whichLearner);
+        break;
+      case 9:
+        this.leaverModal(command, whichLearner);
+        break;
+      case 10:
+        this.periodCourseChangeModal(command, whichLearner);
     }
   }
 
