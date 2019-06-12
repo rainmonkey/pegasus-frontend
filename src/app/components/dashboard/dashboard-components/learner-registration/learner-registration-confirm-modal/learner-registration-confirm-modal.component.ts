@@ -12,6 +12,10 @@ export class LearnerRegistrationConfirmModalComponent implements OnInit {
   fdObj = {};
   command:number;
   learnerId:number;
+  groupCourse = [];
+  oneOnOneCourse = [];
+  isGroupCourse = false;
+  addCourse = false;
   errorMsg;
   // loading icon
   isloading = false;
@@ -23,6 +27,7 @@ export class LearnerRegistrationConfirmModalComponent implements OnInit {
     ) { }
 
   ngOnInit() {
+    console.log(this.learnerId);
   }
   onSubmit(){
     // return console.log(this.fdObj)
@@ -32,26 +37,39 @@ export class LearnerRegistrationConfirmModalComponent implements OnInit {
     let fun;
     if (this.command === 1){
       fun= this.registrationService.postStudent(this.fdObj);
-    }else
+    }else if (this.command === 2){
       fun= this.registrationService.putStudent(this.learnerId,this.fdObj);
-    
+    }else if (this.command ===3) {
+      if(this.isGroupCourse){
+      let temp = {LearnerGroupCourses: this.groupCourse};
+      fun= this.registrationService.addGroupCourse(temp);
+    }
+      else{
+        fun = this.registrationService.add121Course(this.oneOnOneCourse);
+      }
+    }
 
     fun.subscribe(
       data => {
         this.isloading = false;
         this.isConfirmClick = false;
+        this.isGroupCourse = false;
         console.log('Success!', data);
-        this.router.navigate(['/learner/success']);
+        if(this.addCourse){}else{
+        this.router.navigate(['/learner/success']);}
         this.activeModal.dismiss();
+        this.addCourse = false;
       },
       error => {
         this.isloading = false;
         this.isConfirmClick = false;
+        this.isGroupCourse = false;
+        this.addCourse = false;
         this.errorMsg = error;
         console.log('Error!', error);
       }
     )
- 
+
     this.activeModal.dismiss();
   }
 
