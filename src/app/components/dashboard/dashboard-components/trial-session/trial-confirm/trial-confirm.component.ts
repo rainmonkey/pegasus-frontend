@@ -49,14 +49,14 @@ export class TrialConfirmComponent implements OnInit {
     let LookUpsService = this.lookupsService.getLookUps(7);
     
 
-    // forkJoin([LookUpsService]).subscribe(
-    //   (res) => {
-    //     this.paymentMethods =  res[0]['Data'];
-    //   },
-    //   (err) => {
-    //     alert('Sorry, something went wrong.')
-    //   }
-    // );
+    forkJoin([LookUpsService]).subscribe(
+      (res) => {
+        this.paymentMethods =  res[0]['Data'];
+      },
+      (err) => {
+        alert('Sorry, something went wrong.')
+      }
+    );
   }
 
   timeFormatting(time) {
