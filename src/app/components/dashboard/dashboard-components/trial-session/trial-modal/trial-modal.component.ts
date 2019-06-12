@@ -37,7 +37,9 @@ export class TrialModalComponent implements OnInit {
 
   @Input() termPeriod: Array<any>;
   @Input() orgName;
+  @Input() orgId;
   @Input() cateName;
+  @Input() cateId;
   @Input() whichTeacher;
   @ViewChild('fullcalendar') fullcalendar: CalendarComponent;
   options: OptionsInput;
@@ -90,7 +92,10 @@ export class TrialModalComponent implements OnInit {
     let startTimestamp = Date.parse(info.startStr);
     let endTimestamp = Date.parse(info.endStr);
     if (endTimestamp - startTimestamp < this.timeInterval30Min) {
-      alert('Sorry, course can not less than 30 min.')
+      alert('Sorry, course duration can not less than 30 min.')
+    }
+    else if(endTimestamp - startTimestamp > 2 * this.timeInterval30Min){
+      alert('Sorry, course duration can not more than 1 hour.')
     }
     else {
       this.popUpConfirmModal(startTimestamp, endTimestamp);
@@ -104,6 +109,8 @@ export class TrialModalComponent implements OnInit {
     modalRef.componentInstance.orgName = this.orgName;
     modalRef.componentInstance.cateName = this.cateName;
     modalRef.componentInstance.whichTeacher = this.whichTeacher;
+    modalRef.componentInstance.orgId = this.orgId;
+    modalRef.componentInstance.cateId = this.cateId;
   }
   /*
     get teacher's available time.
