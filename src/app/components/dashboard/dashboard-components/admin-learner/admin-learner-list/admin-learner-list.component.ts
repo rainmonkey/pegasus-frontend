@@ -7,11 +7,6 @@ import {LearnerDetailModalComponent } from '../learner-detail-modal/learner-deta
 import {LearnerEditModalComponent } from '../learner-edit-modal/learner-edit-modal.component';
 import {AdminLearnerLeaveComponent} from '../admin-learner-leave/admin-learner-leave.component';
 import {AdminLearnerPeriodCourseChangeModalComponent} from '../admin-learner-period-course-change-modal/admin-learner-period-course-change-modal.component';
-
-
-import { LearnerDeleteModalComponent } from '../learner-delete-modal/learner-delete-modal.component';
-import { LearnerDetailModalComponent } from '../learner-detail-modal/learner-detail-modal.component';
-import { LearnerEditModalComponent } from '../learner-edit-modal/learner-edit-modal.component';
 import { LearnerAddModalComponent } from '../learner-add-modal/learner-add-modal.component';
 import { LearnerDeleteCourseModalComponent } from '../learner-delete-course-modal/learner-delete-course-modal.component';
 @Component({
