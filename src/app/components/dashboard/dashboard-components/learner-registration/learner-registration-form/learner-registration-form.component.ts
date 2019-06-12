@@ -303,6 +303,7 @@ export class LearnerRegistrationFormComponent implements OnInit, DoCheck, AfterV
         this.courses121 = res.Data.filter(item => item.CourseType === 1);
         // apply learner level filter
         console.log(this.selectLearnerLevel)
+        this.selectLearnerLevel = this.whichLearner?this.whichLearner.LearnerLevel:this.selectLearnerLevel;
 
         let coursePiano = this.courses121.filter(item => item.CourseCategory.CourseCategoryId === 1)
           .filter((item) => item.Level == this.selectLearnerLevel);
@@ -685,7 +686,7 @@ selectLocation(id, i) {
     this.fdObj['Email'] = this.learner.email;
     this.fdObj['Address'] = this.learner.address;
     this.fdObj['OrgId'] = this.learner.location;
-    this.fdObj['LearnerLevel'] = this.selectLearnerLevel;
+    this.fdObj['LearnerLevel'] = this.learner.learnerLevel;
     this.fdObj['LevelType'] = this.learnerlevelType;
     this.fdObj['IsUnder18'] = this.learner.isUnder18 ? 1 : 0;;
     this.fdObj['PaymentPeriod'] = parseInt(this.learner.paymentPeriod);
@@ -703,8 +704,10 @@ selectLocation(id, i) {
       // console.log('parent',this.parent);
     }
     this.fdObj['Parent'] = this.parent;
-    this.fdObj['LearnerGroupCourse'] = this.learnerGroupCourse;
-    this.fdObj['One2oneCourseInstance'] = this.oneOnOneCourse;
+    if (!this.whichLearner){
+      this.fdObj['LearnerGroupCourse'] = this.learnerGroupCourse;
+      this.fdObj['One2oneCourseInstance'] = this.oneOnOneCourse;
+    }
     this.fdObj['LearnerOthers'] = this.learnerOthers;
     console.log(this.fdObj);
     this.fd.append('details', JSON.stringify(this.fdObj));

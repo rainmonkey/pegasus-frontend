@@ -65,7 +65,7 @@
       <input type="text" disabled class='col-12 t_c_inputs' value={{coursePrice}}>
     </div>
   </div>
-  <div class='row'>
+  <div class='row' [class.error_border]='error'>
     <div class='col-2'>
       Payment:
     </div>
@@ -78,6 +78,10 @@
 
 <!--modal footer-->
 <div class='modal-footer'>
-  <button type="button" class="btn btn-outline-dark" (click)="onSubmit()">Confirm</button>
-  <button type="button" class="btn btn-outline-dark" (click)="activeModal.close('Close click')">Cancel</button>
+  <span *ngIf='error' style="color:#dc3545">Please select payment method.</span>
+  <span *ngIf='successFlag' style="color:green">Thanks, trial course enrolled successfull.</span>
+  <div *ngIf='loadingGifFlag' class="loaderSmall"></div>
+  <button *ngIf='!successFlag' type="button" class="btn btn-outline-dark" (click)="onSubmit()">Confirm</button>
+  <button *ngIf='!successFlag' type="button" class="btn btn-outline-dark" (click)="activeModal.close('Close click')">Cancel</button>
+  <button *ngIf='successFlag' type="button" class="btn btn-outline-dark" (click)="closeModal()" routerLink='/learner/list'>Close</button>
 </div>

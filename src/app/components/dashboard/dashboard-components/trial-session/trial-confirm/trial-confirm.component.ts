@@ -1,6 +1,6 @@
 import { CoursesService } from 'src/app/services/http/courses.service';
 import { LookUpsService } from './../../../../../services/http/look-ups.service';
-import { Component, OnInit, Input, ViewChildren } from '@angular/core';
+import { Component, OnInit, Input, Output, ViewChildren, EventEmitter } from '@angular/core';
 import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
@@ -21,11 +21,15 @@ export class TrialConfirmComponent implements OnInit {
   @Input() learnerId;
   @Input() courseId;
   @ViewChildren('radios') radios;
+  @Output() closeModalFlag: EventEmitter<any> = new EventEmitter();
 
   public whichTeacherFullName;
-  public paymentMethodValue;
+  public paymentMethodValue=null;
   public startTimeTem;
   public endTimeTem;
+  public error:boolean = false;
+  public loadingGifFlag = false;
+  public successFlag = false;
 
   constructor(public activeModal: NgbActiveModal,
     private modalService: NgbModal,
@@ -47,7 +51,6 @@ export class TrialConfirmComponent implements OnInit {
     this.lookupsService.getLookUps(7).subscribe(
       (res) => {
         this.paymentMethods = res.Data;
-        console.log(this.paymentMethods)
       }
     )
   }
@@ -57,14 +60,26 @@ export class TrialConfirmComponent implements OnInit {
   }
 
   onSubmit() {
+    if(this.paymentMethodValue == null){
+      this.error = true;
+      return
+    }
+    else{
+      this.error = false;
+    }
+
+    this.loadingGifFlag = true;
     let dataToSubmit = this.prepareData();
-    console.log(this.radios)
+    //console.log(this.radios)
     this.CoursesService.postTrialLesson(dataToSubmit).subscribe(
       (res) =>{
-        console.log(res)
+        this.loadingGifFlag = false;
+        this.successFlag = true;
       },
       (err) =>{
-        console.log(err)
+        console.log(err);
+        this.loadingGifFlag = false;
+        alert('Sorry,something went wrong in server.');
       }
     )
   }
@@ -79,11 +94,14 @@ export class TrialConfirmComponent implements OnInit {
       "EndTime": this.endTime,
       "PaymentMethod": this.paymentMethodValue,
       "Amount": this.coursePrice,
-      "StaffId": 1,
+      "StaffId":  Number(localStorage.userID),
       "TrialCourseId": this.courseId
     }
-
-    console.log(obj)
     return obj
+  }
+
+  closeModal(){
+    this.closeModalFlag.emit(true);
+    this.activeModal.close('Cross click')
   }
 }

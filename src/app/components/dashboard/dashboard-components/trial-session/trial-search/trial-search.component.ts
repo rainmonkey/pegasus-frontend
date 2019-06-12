@@ -20,6 +20,7 @@ export class TrialSearchComponent implements OnInit {
   public previousCloseBtn: any = null;
   public coursesTeachingByCate;
   public termPeriod;
+  public timeSlot:Array<any>=[];
 
   @Input() courses;
   @Input() coursesCate;
@@ -28,6 +29,7 @@ export class TrialSearchComponent implements OnInit {
   @Input() groupCoursesInstance;
   @Input() teachingCourses;
   @Input() LearnerId;
+  @Input() learners;
   @Output() childEvent = new EventEmitter();
 
   constructor(private modalService: NgbModal,
@@ -41,7 +43,7 @@ export class TrialSearchComponent implements OnInit {
     this.coursesService.getoioi().subscribe(
       (res) => {
         this.termPeriod = res.Data;
-        console.log(this.termPeriod)
+        //console.log(this.termPeriod)
       },
       (err) => {
         alert('Sorry, something went wrong in server.')
@@ -189,9 +191,7 @@ export class TrialSearchComponent implements OnInit {
   /*
     pop up FullCalendar modal
   */
-  popUpModal(whichTeacher) {
-    let coursesTeachingByWhichTeacher = this.getCoursesTeachingByWhichTeacher(whichTeacher);
-    //console.log(coursesTeachingByWhichTeacher)
+ popUpModalReady(whichTeacher,coursesTeachingByWhichTeacher) {
     const modalRef = this.modalService.open(TrialModalComponent, { size: 'lg', backdrop: 'static', keyboard: false });
     modalRef.componentInstance.termPeriod = this.termPeriod;
     modalRef.componentInstance.cateName = this.filters['CategoriesName'];
@@ -201,20 +201,28 @@ export class TrialSearchComponent implements OnInit {
     modalRef.componentInstance.orgId = this.filters[ "OrgsId"];
     modalRef.componentInstance.courses = this.courses;
     modalRef.componentInstance.LearnerId = this.LearnerId;
+    modalRef.componentInstance.availableDOW = this.getAvailabelDOW(whichTeacher);
+    modalRef.componentInstance.learners = this.learners;
+    modalRef.componentInstance.coursesTeachingByWhichTeacher = coursesTeachingByWhichTeacher;
   }
 
-  getCoursesTeachingByWhichTeacher(whichTeacher){
-    //console.log(whichTeacher.TeacherId)
-    this.coursesService.getLessonsByTeacherId(1).subscribe(
+  popUpModal(whichTeacher){
+   let teacherId = whichTeacher.TeacherId;
+    this.coursesService.getLessonsByTeacherId(teacherId).subscribe(
       (res) => {
-        console.log(res.Data)
-      },
-      (err) => {
-
+        this.popUpModalReady(whichTeacher,res.Data);
       }
     )
-    //测试用 1
+  }
 
+  getAvailabelDOW(whichTeacher){
+    let array:Array<any>=[];
+    for(let i of whichTeacher.AvailableDays){
+      if(i.OrgId == this.filters["OrgsId"]){
+        array.push(i.DayOfWeek)
+      }
+    }
+    return array;
   }
 
 }
