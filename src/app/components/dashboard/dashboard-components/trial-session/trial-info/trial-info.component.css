@@ -6,3 +6,16 @@
     color:grey;
     text-align: center;
 }
+.t_info_back{
+    float: right;
+    color: #272822;
+    border: 1px solid #272822;
+    border-radius: 3px;
+    margin-top: 1.5rem;
+    padding: 5px;
+}
+.t_info_back:hover{
+    cursor: pointer;
+    color: white;
+    background: #272822;
+}

@@ -6,6 +6,7 @@ import { TeachersService } from 'src/app/services/http/teachers.service';
 import { NgbModal, NgbModalRef, NgbPagination } from '@ng-bootstrap/ng-bootstrap';
 import { TrialModalComponent } from '../trial-modal/trial-modal.component';
 import { TrialTesterComponent } from '../trial-tester/trial-tester.component';
+import { LearnersService } from 'src/app/services/http/learners.service';
 
 @Component({
   selector: 'app-trial-info',
@@ -22,13 +23,15 @@ export class TrialInfoComponent implements OnInit {
   public teachingCourses;
   public popUpFlag:boolean = false;
   public LearnerId;
+  public learners;
 
   @Input() childEvent;
   
   constructor(private coursesService: CoursesService,
               private teachersService: TeachersService,
               private modalService: NgbModal,
-              private routerInfo:ActivatedRoute) { }
+              private routerInfo:ActivatedRoute,
+              private learnersService:LearnersService) { }
 
   ngOnInit() {
     this.getDataFromServer();
@@ -44,8 +47,9 @@ export class TrialInfoComponent implements OnInit {
     let teachersService = this.teachersService.getTeachersInfo();
     let groupCourseInstance = this.coursesService.getCourseClasses();
     let teachingCourseService = this.teachersService.getTeachingCourse();
+    let learnersService = this.learnersService.getLearnerList();
 
-    forkJoin([coursesService, coursesCategories,orgsService,teachersService,groupCourseInstance,teachingCourseService]).subscribe(
+    forkJoin([coursesService, coursesCategories,orgsService,teachersService,groupCourseInstance,teachingCourseService,learnersService]).subscribe(
       (res) => {
         this.courses = res[0]['Data'];
         this.coursesCate = res[1]['Data'];
@@ -53,6 +57,7 @@ export class TrialInfoComponent implements OnInit {
         this.teachers = res[3]['Data'];
         this.groupCoursesInstance = res[4]['Data'];
         this.teachingCourses = res[5]['Data'];
+        this.learners = res[6]['Data'];
       },
       (err) => {
         alert('Sorry, something went wrong.')
