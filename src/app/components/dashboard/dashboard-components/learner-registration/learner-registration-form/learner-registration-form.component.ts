@@ -645,6 +645,12 @@ selectLocation(id, i) {
     this.prepareTeaNameInLevObjListArray.push(this.prepareTeaNameInLevObjItemArray);
     this.prepareTeaNameListArray.push(this.prepareTeaNameItemArray);
   }
+  transformTime(n){
+    if (n<10)
+      return '0'+n;
+    else
+      return n;
+  }
   confirmCustomCourse() {
     let cs = this.customCourse.value;
     console.log('custom Course Form value', cs);
@@ -652,15 +658,16 @@ selectLocation(id, i) {
     for (let cc of this.customCourse.value) {
       if (cc.course===''||!cc.course) continue;
       let tempObj = {};
-      tempObj['OrgId'] = cc.location;
+      tempObj['OrgId'] = Number(cc.location);
       this.whichLearner?tempObj['CourseId'] = Number(cc.course):tempObj['CourseId'] = parseInt(cc.course);
       this.whichLearner?tempObj['TeacherId'] = Number(cc.teacherName):tempObj['TeacherId'] = parseInt(cc.teacherName);
       this.whichLearner?tempObj['RoomId'] = Number(cc.room):tempObj['RoomId'] = parseInt(cc.room);
       tempObj['BeginDate'] = cc.beginDate;
       let tempScheduleObj = {};
       tempScheduleObj['DayOfWeek'] = parseInt(cc.schedule.dayOfWeek);
-      tempScheduleObj['BeginTime'] = cc.schedule.beginTime.hour + ':' + cc.schedule.beginTime.minute + ':' + cc.schedule.beginTime.second;//this.courseTime;
-      tempScheduleObj['DurationType'] = parseInt(cc.course);
+      tempScheduleObj['BeginTime'] = this.transformTime(cc.schedule.beginTime.hour) + ':' + this.transformTime(cc.schedule.beginTime.minute) + ':' + this.transformTime(cc.schedule.beginTime.second);//this.courseTime;
+      // tempScheduleObj['DurationType'] = parseInt(cc.course);
+      console.log('edwin',cc.schedule.beginTime)
       tempObj['Schedule'] = tempScheduleObj;
       if(this.whichLearner){
         tempObj['LearnerId'] = Number(this.whichLearner.LearnerId)};
