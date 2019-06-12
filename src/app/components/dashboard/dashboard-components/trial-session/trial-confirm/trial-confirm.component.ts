@@ -47,16 +47,16 @@ export class TrialConfirmComponent implements OnInit {
 
   getDataFromServer() {
     let LookUpsService = this.lookupsService.getLookUps(7);
-    let 
+    
 
-    forkJoin([LookUpsService]).subscribe(
-      (res) => {
-        this.paymentMethods =  res[0]['Data'];
-      },
-      (err) => {
-        alert('Sorry, something went wrong.')
-      }
-    );
+    // forkJoin([LookUpsService]).subscribe(
+    //   (res) => {
+    //     this.paymentMethods =  res[0]['Data'];
+    //   },
+    //   (err) => {
+    //     alert('Sorry, something went wrong.')
+    //   }
+    // );
   }
 
   timeFormatting(time) {

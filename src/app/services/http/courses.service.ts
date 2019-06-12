@@ -87,5 +87,5 @@ export class CoursesService {
   postTrialLesson(data):any{
     return this.http.post(this.baseUrl +'TrialLesson',data);
   }
-  getAvailableRoom
+ // getAvailableRoom(orgId,)
 }
