@@ -2,9 +2,8 @@ import { Component, OnInit, ViewChild, Input, ViewEncapsulation } from '@angular
 import { CalendarComponent } from 'ng-fullcalendar';
 import interactionPlugin from '@fullcalendar/interaction';
 import dayGridPlugin from '@fullcalendar/daygrid';
-import { Calendar } from '@fullcalendar/core';
 import { OptionsInput } from '@fullcalendar/core';
-import timeGridPlugin from '@fullcalendar/timegrid';
+
 
 @Component({
   selector: 'app-holiday-calendar',
