@@ -116,6 +116,8 @@ export class LearnerRegistrationFormComponent implements OnInit, DoCheck, AfterV
   // needSubmit = false;
   // for edit component;
   assignValue = false;
+  // for addcourse modal
+  groupCourseForSubmit = [];
 
   // getter method: simplify the way to capture form controls
   get firstName() { return this.registrationForm.get('learnerForm').get('firstName'); }
@@ -185,7 +187,7 @@ export class LearnerRegistrationFormComponent implements OnInit, DoCheck, AfterV
         learnerLevel: [this.whichLearner ? this.whichLearner.LearnerLevel : this.selectLearnerLevel, Validators.required],
         location: [this.whichLearner ? this.whichLearner.OrgId : this.orgId, Validators.required],
         levelType: [this.whichLearner ? this.whichLearner.LevelType : '0'],
-        levelTypeRadio: [1],
+        levelTypeRadio: [this.whichLearner ? this.whichLearner.LevelType: '1'],
         paymentPeriod: [this.whichLearner ? this.whichLearner.PaymentPeriod : '1'],
         referrer: [this.whichLearner ? this.whichLearner.Referrer : ''],
         isUnder18: [this.whichLearner ? this.whichLearner.isUnder18 : 0],
@@ -301,6 +303,7 @@ export class LearnerRegistrationFormComponent implements OnInit, DoCheck, AfterV
         this.courses121 = res.Data.filter(item => item.CourseType === 1);
         // apply learner level filter
         console.log(this.selectLearnerLevel)
+        this.selectLearnerLevel = this.whichLearner?this.whichLearner.LearnerLevel:this.selectLearnerLevel;
 
         let coursePiano = this.courses121.filter(item => item.CourseCategory.CourseCategoryId === 1)
           .filter((item) => item.Level == this.selectLearnerLevel);
@@ -511,6 +514,7 @@ export class LearnerRegistrationFormComponent implements OnInit, DoCheck, AfterV
     this.groupCourseInstance[i].isChecked = event.target.checked;
   }
   confirmGroupCourse() {
+    let tempGroupModal = {};
     console.log('wo yao jia ji tui', this.groupCourseInstance)
     for (let groupCourse of this.groupCourseInstance) {
       if (groupCourse.isChecked) {
@@ -519,6 +523,9 @@ export class LearnerRegistrationFormComponent implements OnInit, DoCheck, AfterV
         this.tempGroupCourseObj['Comment'] = groupCourse.comments;
         this.tempGroupCourseObj['BeginDate'] = groupCourse.beginDate;
         this.learnerGroupCourse.push(this.tempGroupCourseObj);
+        tempGroupModal = {...this.tempGroupCourseObj};
+        tempGroupModal['LearnerId'] = this.whichLearner.LearnerId;
+        this.groupCourseForSubmit.push(tempGroupModal);
       }
     }
   }
@@ -638,6 +645,12 @@ selectLocation(id, i) {
     this.prepareTeaNameInLevObjListArray.push(this.prepareTeaNameInLevObjItemArray);
     this.prepareTeaNameListArray.push(this.prepareTeaNameItemArray);
   }
+  transformTime(n){
+    if (n<10)
+      return '0'+n;
+    else
+      return n;
+  }
   confirmCustomCourse() {
     let cs = this.customCourse.value;
     console.log('custom Course Form value', cs);
@@ -645,18 +658,20 @@ selectLocation(id, i) {
     for (let cc of this.customCourse.value) {
       if (cc.course===''||!cc.course) continue;
       let tempObj = {};
-      tempObj['CourseId'] = parseInt(cc.course);
-      tempObj['OrgId'] = cc.location;
-      tempObj['TeacherId'] = parseInt(cc.teacherName);
-      tempObj['RoomId'] = parseInt(cc.room);
+      tempObj['OrgId'] = Number(cc.location);
+      this.whichLearner?tempObj['CourseId'] = Number(cc.course):tempObj['CourseId'] = parseInt(cc.course);
+      this.whichLearner?tempObj['TeacherId'] = Number(cc.teacherName):tempObj['TeacherId'] = parseInt(cc.teacherName);
+      this.whichLearner?tempObj['RoomId'] = Number(cc.room):tempObj['RoomId'] = parseInt(cc.room);
       tempObj['BeginDate'] = cc.beginDate;
       let tempScheduleObj = {};
       tempScheduleObj['DayOfWeek'] = parseInt(cc.schedule.dayOfWeek);
-      tempScheduleObj['BeginTime'] = cc.schedule.beginTime.hour + ':' + cc.schedule.beginTime.minute + ':' + cc.schedule.beginTime.second;//this.courseTime;
-      tempScheduleObj['DurationType'] = parseInt(cc.course);
+      tempScheduleObj['BeginTime'] = this.transformTime(cc.schedule.beginTime.hour) + ':' + this.transformTime(cc.schedule.beginTime.minute) + ':' + this.transformTime(cc.schedule.beginTime.second);//this.courseTime;
+      // tempScheduleObj['DurationType'] = parseInt(cc.course);
+      console.log('edwin',cc.schedule.beginTime)
       tempObj['Schedule'] = tempScheduleObj;
+      if(this.whichLearner){
+        tempObj['LearnerId'] = Number(this.whichLearner.LearnerId)};
       this.oneOnOneCourse.push(tempObj);
-      console.log('oneOnOne', this.oneOnOneCourse);
     };
   }
 
@@ -678,7 +693,7 @@ selectLocation(id, i) {
     this.fdObj['Email'] = this.learner.email;
     this.fdObj['Address'] = this.learner.address;
     this.fdObj['OrgId'] = this.learner.location;
-    this.fdObj['LearnerLevel'] = this.selectLearnerLevel;
+    this.fdObj['LearnerLevel'] = this.learner.learnerLevel;
     this.fdObj['LevelType'] = this.learnerlevelType;
     this.fdObj['IsUnder18'] = this.learner.isUnder18 ? 1 : 0;;
     this.fdObj['PaymentPeriod'] = parseInt(this.learner.paymentPeriod);
@@ -696,8 +711,10 @@ selectLocation(id, i) {
       // console.log('parent',this.parent);
     }
     this.fdObj['Parent'] = this.parent;
-    this.fdObj['LearnerGroupCourse'] = this.learnerGroupCourse;
-    this.fdObj['One2oneCourseInstance'] = this.oneOnOneCourse;
+    if (!this.whichLearner){
+      this.fdObj['LearnerGroupCourse'] = this.learnerGroupCourse;
+      this.fdObj['One2oneCourseInstance'] = this.oneOnOneCourse;
+    }
     this.fdObj['LearnerOthers'] = this.learnerOthers;
     console.log(this.fdObj);
     this.fd.append('details', JSON.stringify(this.fdObj));
@@ -784,14 +801,23 @@ selectLocation(id, i) {
 
   // // ng-activeModal for confirm submit
   openConfirm() {
+    console.log(this.addCourse)
     this.modalRefConfirm = this.modalService.open(LearnerRegistrationConfirmModalComponent);
     this.modalRefConfirm.componentInstance.fdObj = this.fd;
-    if (this.whichLearner){
-      this.modalRefConfirm.componentInstance.command = 2;  //add
+    if (this.whichLearner && !this.addCourse){
+      this.modalRefConfirm.componentInstance.command = 2;  //edit
       this.modalRefConfirm.componentInstance.learnerId = this.whichLearner.LearnerId;
+    } else if (this.addCourse){
+      this.modalRefConfirm.componentInstance.command = 3; //add
+      this.modalRefConfirm.componentInstance.groupCourse = this.groupCourseForSubmit;
+      this.modalRefConfirm.componentInstance.isGroupCourse = this.isGroupCourse;
+      this.modalRefConfirm.componentInstance.oneOnOneCourse = this.oneOnOneCourse;
+      this.modalRefConfirm.componentInstance.learnerId = this.whichLearner.LearnerId;
+      this.modalRefConfirm.componentInstance.addCourse = this.addCourse;
     }
     else
       this.modalRefConfirm.componentInstance.command = 1;   //post
+
 
   }
   // // check changes

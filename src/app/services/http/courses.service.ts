@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../environments/environment.prod';
 
 @Injectable({
@@ -82,5 +82,9 @@ export class CoursesService {
   }
   postoioi(TermId):any{
     return this.http.post(this.baseUrl + 'payment/'+ TermId, '')
+  }
+
+  postTrialLesson(data):any{
+    return this.http.post(this.baseUrl +'TrialLesson',data);
   }
 }

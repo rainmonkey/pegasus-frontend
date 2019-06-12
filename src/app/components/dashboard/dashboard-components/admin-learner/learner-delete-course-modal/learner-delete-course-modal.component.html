@@ -9,7 +9,7 @@
 </div>
 
 <!--modal body-->
-<div>
+<div class='container'>
   <h4>Course</h4>
   <div>
     <div class="row lable-pos">
@@ -17,7 +17,7 @@
       <button class=' btn btn-outline-primary' (click)="chooseCourse()">One-on-One Course</button>
     </div>
 
-    <div *ngIf='isGroupCourse'>
+    <div *ngIf='isGroupCourse' class='m-2'>
       <div *ngFor='let groupCourse of whichLearner.LearnerGroupCourse '>
         <br>
         <div class="card">
@@ -65,7 +65,7 @@
     <!-- one2one Course -->
     <div *ngIf='!isGroupCourse'>
 
-      <div *ngFor="let ele of whichLearner.One2oneCourseInstance">
+      <div *ngFor="let ele of whichLearner.One2oneCourseInstance" class='m-2'>
         <br>
         <div class="card">
           <div class="card-body">

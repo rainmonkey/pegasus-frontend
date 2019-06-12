@@ -14,13 +14,13 @@
       Student:
     </div>
     <div class=col-4>
-        <input type="text" disabled class='col-12 t_c_inputs'>
+      <input type="text" disabled class='col-12 t_c_inputs' value={{studentFullName}}>
     </div>
     <div class='col-2'>
       Teacher:
     </div>
     <div class='col-4'>
-        <input type="text" disabled class='col-12 t_c_inputs' value={{whichTeacherFullName}}> 
+      <input type="text" disabled class='col-12 t_c_inputs' value={{whichTeacherFullName}}>
     </div>
   </div>
   <div class='row' style="margin-bottom: 5px">
@@ -28,13 +28,13 @@
       Course:
     </div>
     <div class='col-4'>
-        <input type="text" disabled class='col-12 t_c_inputs' value={{cateName}}>
+      <input type="text" disabled class='col-12 t_c_inputs' value={{cateName}}>
     </div>
     <div class='col-2'>
       Location:
     </div>
     <div class='col-4'>
-        <input type="text" disabled class='col-12 t_c_inputs' value={{orgName.toLowerCase()}}>
+      <input type="text" disabled class='col-12 t_c_inputs' value={{orgName.toLowerCase()}}>
     </div>
   </div>
   <div class='row' style="margin-bottom: 5px">
@@ -42,13 +42,13 @@
       Start Time:
     </div>
     <div class='col-4'>
-        <input type="text" disabled class='col-12 t_c_inputs' value={{startTime}}>
+      <input type="text" disabled class='col-12 t_c_inputs' value={{startTimeTem}}>
     </div>
     <div class='col-2'>
       End Time:
     </div>
     <div class='col-4'>
-        <input type="text" disabled class='col-12 t_c_inputs' value={{endTime}}>
+      <input type="text" disabled class='col-12 t_c_inputs' value={{endTimeTem}}>
     </div>
   </div>
   <div class='row' style="margin-bottom: 5px">
@@ -56,19 +56,32 @@
       Class Room:
     </div>
     <div class='col-4'>
-        <input type="text" disabled class='col-12 t_c_inputs' >
+      <input type="text" disabled class='col-12 t_c_inputs'>
     </div>
     <div class='col-2'>
       Price:
     </div>
     <div class='col-4'>
-      <input type="text" disabled class='col-12 t_c_inputs' >
+      <input type="text" disabled class='col-12 t_c_inputs' value={{coursePrice}}>
+    </div>
+  </div>
+  <div class='row' [class.error_border]='error'>
+    <div class='col-2'>
+      Payment:
+    </div>
+    <div *ngFor='let i of paymentMethods' class='col-3'>
+      <label for={{i.PropName}} style="margin-right:1.5rem">{{i.PropName}}</label>
+      <input #radios type="radio" name="payment" id={{i.PropName}} value={{i.PropValue}} (click)='getRadioValue(i.PropValue)'>
     </div>
   </div>
 </div>
 
 <!--modal footer-->
 <div class='modal-footer'>
-  <button type="button" class="btn btn-outline-dark" (click)="activeModal.close('Close click')">Confirm</button>
-  <button type="button" class="btn btn-outline-dark" (click)="activeModal.close('Close click')">Cancel</button>
+  <span *ngIf='error' style="color:#dc3545">Please select payment method.</span>
+  <span *ngIf='successFlag' style="color:green">Thanks, trial course enrolled successfull.</span>
+  <div *ngIf='loadingGifFlag' class="loaderSmall"></div>
+  <button *ngIf='!successFlag' type="button" class="btn btn-outline-dark" (click)="onSubmit()">Confirm</button>
+  <button *ngIf='!successFlag' type="button" class="btn btn-outline-dark" (click)="activeModal.close('Close click')">Cancel</button>
+  <button *ngIf='successFlag' type="button" class="btn btn-outline-dark" (click)="closeModal()" routerLink='/learner/list'>Close</button>
 </div>
