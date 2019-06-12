@@ -2,6 +2,7 @@ import { CoursesService } from 'src/app/services/http/courses.service';
 import { LookUpsService } from './../../../../../services/http/look-ups.service';
 import { Component, OnInit, Input, Output, ViewChildren, EventEmitter } from '@angular/core';
 import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { forkJoin } from 'rxjs';
 
 @Component({
   selector: 'app-trial-confirm',
@@ -40,20 +41,28 @@ export class TrialConfirmComponent implements OnInit {
     this.startTimeTem = this.timeFormatting(this.startTime);
     this.endTimeTem = this.timeFormatting(this.endTime);
     this.whichTeacherFullName = this.whichTeacher.FirstName + ' ' + this.whichTeacher.LastName;
-    this.getPaymentMethod();
+    this.getDataFromServer();
+
+  }
+
+  getDataFromServer() {
+    let LookUpsService = this.lookupsService.getLookUps(7);
+    let 
+
+    forkJoin([LookUpsService]).subscribe(
+      (res) => {
+        this.paymentMethods =  res[0]['Data'];
+      },
+      (err) => {
+        alert('Sorry, something went wrong.')
+      }
+    );
   }
 
   timeFormatting(time) {
     return time.replace('T', '  ');
   }
 
-  getPaymentMethod() {
-    this.lookupsService.getLookUps(7).subscribe(
-      (res) => {
-        this.paymentMethods = res.Data;
-      }
-    )
-  }
 
   getRadioValue(value){
     this.paymentMethodValue = value;
