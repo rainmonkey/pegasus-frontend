@@ -16,7 +16,7 @@ import { StaffEditModalComponent } from '../staff-edit-modal/staff-edit-modal.co
 export class StaffListComponent implements OnInit {
 
  //what columns showed in the info page, can get from back-end in the future. must as same as database
- public columnsToShow: Array<string> = ['FirstName', 'LastName', 'Email', 'MobilePhone'];
+ public columnsToShow: Array<string> = ['FirstName', 'LastName',  'MobilePhone','Email'];
  //staffs data from database
  public staffList: Array<any>;
  //staffs list copy. Using in searching method, in order to initialize data to original
@@ -113,7 +113,7 @@ showSearchingSelection(event) {
      eg: FirstName --> First Name
  */
 AddSpaceInString(strToAdd) {
- return strToAdd.replace(/(?=[A-Z])/g, ' ');
+ return strToAdd.replace(/(?=[A-Z])/g, '');
 }
 
 

@@ -1,3 +1,4 @@
+import { ActivatedRoute } from '@angular/router';
 import { Component, OnInit, Input } from '@angular/core';
 import { CoursesService } from 'src/app/services/http/courses.service';
 import { forkJoin } from 'rxjs'; //卧槽他妈的成功了！ rxjs 6 直接import forkJoin就行 不用再import Observable
@@ -20,21 +21,24 @@ export class TrialInfoComponent implements OnInit {
   public groupCoursesInstance;
   public teachingCourses;
   public popUpFlag:boolean = false;
+  public LearnerId;
 
   @Input() childEvent;
   
   constructor(private coursesService: CoursesService,
               private teachersService: TeachersService,
-              private modalService: NgbModal) { }
+              private modalService: NgbModal,
+              private routerInfo:ActivatedRoute) { }
 
   ngOnInit() {
     this.getDataFromServer();
-    
+    this.LearnerId = this.routerInfo.snapshot.queryParams.LearnerId;
+    //console.log(this.studentLevel)
   }
 
   //并发获取所有数据
   getDataFromServer() {
-    let coursesService = this.coursesService.getCourseClasses();
+    let coursesService = this.coursesService.getCourses();
     let coursesCategories = this.coursesService.getCourseCategories();
     let orgsService = this.coursesService.getLocations();
     let teachersService = this.teachersService.getTeachersInfo();

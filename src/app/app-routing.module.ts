@@ -37,6 +37,7 @@ import { TrialInfoComponent } from './components/dashboard/dashboard-components/
 import { StaffListComponent } from './components/dashboard/dashboard-components/admin-staff/Staff-list/Staff-list.component';
 import { LearnerCreditPanelComponent } from "./components/dashboard/dashboard-components/learner-credit/learner-credit-panel/learner-credit-panel.component";
 import { LearnerCreditDetailsComponent } from "./components/dashboard/dashboard-components/learner-credit/learner-credit-details/learner-credit-details.component"
+import { HolidayCalendarComponent } from './components/dashboard/dashboard-components/admin-holidays/holiday-calendar/holiday-calendar.component';
 
 
 const routes: Routes = [
@@ -144,6 +145,7 @@ const routes: Routes = [
       { path: 'staff/list', component: StaffListComponent },
       // Below to be rearranged
       { path: 'time/picker', component: TimePickerComponent },
+      {path: 'holidays', component:HolidayCalendarComponent}
     ]
   },
   { path: 'login', component: LoginComponent },

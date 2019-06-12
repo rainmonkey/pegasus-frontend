@@ -12,6 +12,7 @@ export class LookUpsService {
 
   /*
     4: Level
+    7: payment methods
     8: durations
   */
  

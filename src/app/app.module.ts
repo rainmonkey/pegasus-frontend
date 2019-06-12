@@ -20,6 +20,8 @@ import { AdminLearnerPanelComponent } from './components/dashboard/dashboard-com
 import { LearnerDeleteModalComponent } from './components/dashboard/dashboard-components/admin-learner/learner-delete-modal/learner-delete-modal.component';
 import { LearnerDetailModalComponent } from './components/dashboard/dashboard-components/admin-learner/learner-detail-modal/learner-detail-modal.component';
 import { LearnerEditModalComponent } from './components/dashboard/dashboard-components/admin-learner/learner-edit-modal/learner-edit-modal.component';
+import { LearnerAddModalComponent } from './components/dashboard/dashboard-components/admin-learner/learner-add-modal/learner-add-modal.component';
+import { LearnerDeleteCourseModalComponent } from './components/dashboard/dashboard-components/admin-learner/learner-delete-course-modal/learner-delete-course-modal.component';
 import { AdminLearnerPaymentInvoiceComponent } from './components/dashboard/dashboard-components/admin-payment/admin-learner-payment-invoice/admin-learner-payment-invoice.component';
 import { AdminLearnerPaymentOtherComponent } from './components/dashboard/dashboard-components/admin-payment/admin-learner-payment-other/admin-learner-payment-other.component';
 import { AdminLearnerPaymentPanelComponent } from './components/dashboard/dashboard-components/admin-payment/admin-learner-payment-panel/admin-learner-payment-panel.component';
@@ -45,6 +47,7 @@ import { InventoryPanelComponent } from './components/dashboard/dashboard-compon
 import { LearnerRegistrationFormComponent } from './components/dashboard/dashboard-components/learner-registration/learner-registration-form/learner-registration-form.component';
 import { LearnerRegistrationModalComponent } from './components/dashboard/dashboard-components/learner-registration/learner-registration-modal/learner-registration-modal.component';
 import { LearnerRegistrationConfirmModalComponent } from './components/dashboard/dashboard-components/learner-registration/learner-registration-confirm-modal/learner-registration-confirm-modal.component';
+import { LearnerRegistrationDeleteModalComponent } from './components/dashboard/dashboard-components/learner-registration/learner-registration-delete-modal/learner-registration-delete-modal.component';
 import { SessionCancelModalComponent } from './components/dashboard/dashboard-components/sessions/session-modals/session-cancel-modal/session-cancel-modal.component';
 import { SessionCompletedModalComponent } from './components/dashboard/dashboard-components/sessions/session-modals/session-completed-modal/session-completed-modal.component';
 import { SessionDetailEditModalComponent } from './components/dashboard/dashboard-components/sessions/session-modals/session-detail-edit-modal/session-detail-edit-modal.component';
@@ -129,6 +132,7 @@ import { InventoryRecieptModalComponent } from './components/dashboard/dashboard
     LearnerRegistrationFormComponent,
     LearnerRegistrationModalComponent,
     LearnerRegistrationConfirmModalComponent,
+    LearnerRegistrationDeleteModalComponent,
     CommandFormatPipe,
     SessionsPanelComponent,
     SessionsListViewComponent,
@@ -161,7 +165,8 @@ import { InventoryRecieptModalComponent } from './components/dashboard/dashboard
     LearnerDeleteModalComponent,
     LearnerDetailModalComponent,
     LearnerEditModalComponent,
-
+    LearnerAddModalComponent,
+    LearnerDeleteCourseModalComponent,
 
     SessionCancelModalComponent,
     SessionTutorReportModalComponent,
@@ -236,6 +241,8 @@ import { InventoryRecieptModalComponent } from './components/dashboard/dashboard
     LearnerDeleteModalComponent,
     LearnerDetailModalComponent,
     LearnerEditModalComponent,
+    LearnerAddModalComponent,
+    LearnerDeleteCourseModalComponent,
     SessionCancelModalComponent,
     SessionCompletedModalComponent,
     SessionRescheduleModalComponent,
@@ -244,6 +251,7 @@ import { InventoryRecieptModalComponent } from './components/dashboard/dashboard
     ChangePasswordModalComponent,
     LearnerRegistrationModalComponent,
     LearnerRegistrationConfirmModalComponent,
+    LearnerRegistrationDeleteModalComponent,
     TrialModalComponent,
     TrialTesterComponent,
     TrialConfirmComponent,
