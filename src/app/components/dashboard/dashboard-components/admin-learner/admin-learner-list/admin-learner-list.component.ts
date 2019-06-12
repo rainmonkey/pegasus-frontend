@@ -2,9 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { NgbootstraptableService } from 'src/app/services/others/ngbootstraptable.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { LearnersService } from 'src/app/services/http/learners.service';
-import { LearnerDeleteModalComponent } from '../learner-delete-modal/learner-delete-modal.component';
-import { LearnerDetailModalComponent } from '../learner-detail-modal/learner-detail-modal.component';
-import { LearnerEditModalComponent } from '../learner-edit-modal/learner-edit-modal.component';
+import {LearnerDeleteModalComponent } from '../learner-delete-modal/learner-delete-modal.component';
+import {LearnerDetailModalComponent } from '../learner-detail-modal/learner-detail-modal.component';
+import {LearnerEditModalComponent } from '../learner-edit-modal/learner-edit-modal.component';
+import {AdminLearnerLeaveComponent} from '../admin-learner-leave/admin-learner-leave.component';
+import {AdminLearnerPeriodCourseChangeModalComponent} from '../admin-learner-period-course-change-modal/admin-learner-period-course-change-modal.component';
 import { LearnerAddModalComponent } from '../learner-add-modal/learner-add-modal.component';
 import { LearnerDeleteCourseModalComponent } from '../learner-delete-course-modal/learner-delete-course-modal.component';
 @Component({
@@ -42,6 +44,11 @@ export class AdminLearnerListComponent implements OnInit {
   ngOnInit() {
     this.getDataFromServer()
   }
+
+
+
+
+
 
 
   //get data from server
@@ -150,7 +157,15 @@ export class AdminLearnerListComponent implements OnInit {
     }
   }
 
-
+  leaverModal(command, whichLearner){
+    const modalRef = this.modalService.open(AdminLearnerLeaveComponent,{size: 'lg'});
+    modalRef.componentInstance.learner = whichLearner;
+   }
+ 
+   periodCourseChangeModal(cammand, whichlearner) {
+     const modalRef = this.modalService.open(AdminLearnerPeriodCourseChangeModalComponent, {size: 'lg'});
+     modalRef.componentInstance.learner = whichlearner;
+   }
   /*
     delete modal
   */
