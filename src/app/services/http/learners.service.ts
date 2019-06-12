@@ -11,35 +11,35 @@ import { catchError } from 'rxjs/operators';
 })
 export class LearnersService {
   httpHeaders: HttpHeaders;
-  token:string
-  
+  token: string
+
   private baseUrl: any = environment.baseUrl;
 
   constructor(private http: HttpClient) { }
 
   // API Request headers
-  prepareHeaders(){
+  prepareHeaders() {
     this.token = localStorage.getItem('Token')
-    this.httpHeaders = new HttpHeaders({'Authorization': ""+ localStorage.getItem('Token')})
+    this.httpHeaders = new HttpHeaders({ 'Authorization': "" + localStorage.getItem('Token') })
   }
 
   getLearners(name) {
-  return this.http.get<any[]>(this.baseUrl + 'learner/' + name)
-  //   .pipe(
-  //     catchError(this.errorHandler)
-  //   );
-  // }
-  //  errorHandler(error: HttpErrorResponse){
-  //   return Observable.throw(error.message || "Server Error");
-  //  }
+    return this.http.get<any[]>(this.baseUrl + 'learner/' + name)
+    //   .pipe(
+    //     catchError(this.errorHandler)
+    //   );
+    // }
+    //  errorHandler(error: HttpErrorResponse){
+    //   return Observable.throw(error.message || "Server Error");
+    //  }
   }
 
-  getLearnerList(){
-    return this.http.get(this.baseUrl+'learner')
+  getLearnerList() {
+    return this.http.get(this.baseUrl + 'learner')
   }
 
 
-  deleteLearner(LearnerId):any{
+  deleteLearner(LearnerId): any {
     return this.http.delete(this.baseUrl + 'learner/' + LearnerId);
   }
 
@@ -57,5 +57,8 @@ export class LearnersService {
 
   PeriodCourseChange(model) {
     return this.http.post(this.baseUrl + 'PeriodCourseChange', model);
+  }
+  getRemainingCourses(LearnerId: number): Observable<any> {
+    return this.http.get(this.baseUrl + "CourseRemaining/" + LearnerId)
   }
 }

@@ -16,7 +16,7 @@ export class TeacherUpdateModalComponent implements OnInit {
 
   @Input() command;
   @Input() whichTeacher;
-  @Output() refreshFlag: EventEmitter<any> = new EventEmitter(); 
+  @Output() refreshFlag: EventEmitter<any> = new EventEmitter();
   //in order to get the form from child component(TeacherModalFormDComponent)
   @ViewChild('modalUpdateFormComponent') modalUpdateFormComponentObj;
 

@@ -64,10 +64,10 @@ export class TeacherModalFormComponent implements OnInit {
     this.loadingFlag = true;
     this.setReadOnly();
     this.updateForm = this.fb.group(this.formGroupAssemble());
-   
+
       this.getDropdownOptions();
       this.getTeacherLevel();
-    this.getInitTextAreaLength()
+    this.getInitTextAreaLength();
   }
   ngAfterViewInit(){
     this.loadingFlag = false;
@@ -123,7 +123,7 @@ export class TeacherModalFormComponent implements OnInit {
   }
 
   /*
-    when only date format is like YYYY-MM-DD, formControlName will show the correct things 
+    when only date format is like YYYY-MM-DD, formControlName will show the correct things
   */
   getDateFormat(date) {
     if (date !== null) {
@@ -252,8 +252,8 @@ export class TeacherModalFormComponent implements OnInit {
     let fileSize = (Number(<File>event.target.files[0].size)) / 1024;
     //if size valid, continue; else return
     if (this.checkPhotoSize(fileSize)) {
-      //important! 
-      //set src and read it 
+      //important!
+      //set src and read it
       let reader = new FileReader();
       reader.readAsDataURL(this[whichPhoto + 'ToSubmit']);
       reader.onloadend = function (event) {
@@ -293,7 +293,7 @@ export class TeacherModalFormComponent implements OnInit {
   }
 
   getOthersUrl(){
-    console.log(this.whichTeacher.OtherFile)
+    // console.log(this.whichTeacher.OtherFile)
     if(this.whichTeacher.OtherFile !== null){
       this.othersmsg = 'Download Other Files'
       return this.photoUrl + this.whichTeacher.OtherFile;
@@ -353,18 +353,18 @@ export class TeacherModalFormComponent implements OnInit {
     let dropDownsObj:any = document.getElementById('languageDropdown');
     event.target.attributes.flag = !event.target.attributes.flag;
     if (event.target.attributes.flag == true) {
-      
+
       dropDownsObj.style.display = 'block';
-      
+
     }
     else {
-     
+
       dropDownsObj.style.display = 'none';
-       
+
     }
   }
   /*
-    if photo not found, set default photo 
+    if photo not found, set default photo
   */
   setDefaultPhoto(event) {
     event.target.src = '../../../../../../assets/images/shared/default-employer-profile.png';
@@ -372,7 +372,7 @@ export class TeacherModalFormComponent implements OnInit {
   }
 
   calculateTextLength(event){
-    this.avliableTextLength = 1000 - event.target.value.length; 
+    this.avliableTextLength = 1000 - event.target.value.length;
   }
   /////////////////////////////////////////////form group/////////////////////////////////////////////////
 
@@ -391,7 +391,7 @@ export class TeacherModalFormComponent implements OnInit {
         Dob: [null, Validators.required],
         Qualificatiion: [null, Validators.required],
         MobilePhone: [null, Validators.required],
-        HomePhone: [null, Validators.required],
+        HomePhone: [null],
         Email: [null, [Validators.required, Validators.email]],
         IRDNumber: [null, Validators.required],
         Language: [null, Validators.required],
@@ -421,7 +421,7 @@ export class TeacherModalFormComponent implements OnInit {
         Dob: [{ value: this.getDateFormat(this.whichTeacher.Dob), disabled: this.readOnlyFlag }, Validators.required],
         Qualificatiion: [{ value: this.getQualiId(), disabled: this.readOnlyFlag }, Validators.required],
         MobilePhone: [{ value: this.whichTeacher.MobilePhone, disabled: this.readOnlyFlag }, Validators.required],
-        HomePhone: [{ value: this.whichTeacher.HomePhone, disabled: this.readOnlyFlag }, Validators.required],
+        HomePhone: [{ value: this.whichTeacher.HomePhone, disabled: this.readOnlyFlag }],
         Email: [{ value: this.whichTeacher.Email, disabled: this.readOnlyFlag }, [Validators.required, Validators.email]],
         IRDNumber: [{ value: this.whichTeacher.IrdNumber, disabled: this.readOnlyFlag }, Validators.required],
         Language: [{ value: this.whichTeacher.TeacherLanguage, disabled: this.readOnlyFlag }, Validators.required],
@@ -441,4 +441,4 @@ export class TeacherModalFormComponent implements OnInit {
     return groupObj;
   }
 
-} 
+}

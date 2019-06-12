@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../environments/environment.prod';
 
 @Injectable({
@@ -42,6 +42,7 @@ export class CoursesService {
   getDuration():any{
     return this.http.get(this.baseUrl + 'Lookups/8');
   }
+
   
   /*-----------------------Course Class-----------------------------------*/
   getCourseClasses(){
@@ -72,11 +73,18 @@ export class CoursesService {
     return this.http.get(this.baseUrl + 'room');
   }
 
+  getLessonsByTeacherId(teacherId):any{
+    return this.http.get(this.baseUrl + 'lesson/GetLessonsTeacherId/' + teacherId)
+  }
 /*------------------------ For Edwin testing ----------------------------------*/
   getoioi():any{
     return this.http.get(this.baseUrl+'payment');
   }
   postoioi(TermId):any{
     return this.http.post(this.baseUrl + 'payment/'+ TermId, '')
+  }
+
+  postTrialLesson(data):any{
+    return this.http.post(this.baseUrl +'TrialLesson',data);
   }
 }
