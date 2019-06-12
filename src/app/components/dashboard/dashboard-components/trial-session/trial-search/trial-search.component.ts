@@ -27,6 +27,7 @@ export class TrialSearchComponent implements OnInit {
   @Input() teachers;
   @Input() groupCoursesInstance;
   @Input() teachingCourses;
+  @Input() LearnerId;
   @Output() childEvent = new EventEmitter();
 
   constructor(private modalService: NgbModal,
@@ -198,6 +199,8 @@ export class TrialSearchComponent implements OnInit {
     modalRef.componentInstance.whichTeacher = whichTeacher;
     modalRef.componentInstance.cateId = this.filters["CategoriesId"];
     modalRef.componentInstance.orgId = this.filters[ "OrgsId"];
+    modalRef.componentInstance.courses = this.courses;
+    modalRef.componentInstance.LearnerId = this.LearnerId;
   }
 
   getCoursesTeachingByWhichTeacher(whichTeacher){

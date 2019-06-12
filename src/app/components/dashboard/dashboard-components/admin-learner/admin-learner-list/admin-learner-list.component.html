@@ -33,10 +33,11 @@
         <thead>
           <tr>
             <th scope='col' style='width: 50px'>#</th>
-            <th *ngFor='let i of columnsToShow' scope='col' style='width: 150px' (click)='onSort(i)' counter='0'
-              style='width: 150px' class='t_sort_title'>
+            <th *ngFor='let i of columnsToShow' scope='col' (click)='onSort(i)' counter='0'
+              style='width: 100px' class='t_sort_title'>
               {{AddSpaceInString(i)}}</th>
-            <th scope='col' style='width: 150px'></th>
+            <th scope='col' style='width: 130px; padding-left:35px'></th>
+            <th scope='col' style='width: 130px'></th>
           </tr>
         </thead>
         <!--table body-->
@@ -46,14 +47,19 @@
             *ngFor='let i of learnerList | slice: (currentPage-1)* pageSize : (currentPage-1) * pageSize + pageSize; let index = index'>
             <th scope="row">{{index + 1}}</th>
             <td *ngFor='let j of columnsToShow'>{{i[j]}}</td>
-            <td>
-              <span class='t_info_table_btn' (click)='popUpModal(1,i)'><span class='fas fa-info-circle'></span></span>
+            <td style='padding-left:35px'>
+              <span class='t_info_table_btn' (click)='popUpModal(1,i)' title='student info'><span class='fas fa-info-circle'></span></span>
              <!--编辑功能跳转 stella 的页面  -->
               <span class='t_info_table_btn' (click)='popUpModal(2,i)'><span class='fas fa-pen'></span></span>
               <span class='t_info_table_btn' (click)='popUpModal(0,i)'><span class="fas fa-folder-plus"></span></span>
-              <span class='t_info_table_btn' (click)='popUpModal(4,i)'><span class="fas fa-folder-minus"></span></span>
               <span class='t_info_table_btn' (click)='popUpModal(3,i)'><span class='fas fa-trash-alt'></span></span>
+              <!--calendar icon功能跳转至 trial course 页面-->
+              <span class='t_info_table_btn' (click)='jumpToTrialCoursePage()' routerLink='/learner/trial' [queryParams] = '{LearnerId:i.LearnerId}'><a class='fas fa-calendar-week'></a></span>
+              <span class='t_info_table_btn' (click)='popUpModal(4,i)'><span class="fas fa-folder-minus"></span></span>
               <span class='t_info_table_btn' (click)='jump()'></span>
+            </td>
+            <td>
+              <span class='t_info_table_btn' (click)='popUpModal(3,i)' title='delete'><span class='fas fa-trash-alt'></span></span>
             </td>
           </tr>
         </tbody>

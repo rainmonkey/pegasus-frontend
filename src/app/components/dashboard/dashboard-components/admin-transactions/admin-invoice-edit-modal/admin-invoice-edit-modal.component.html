@@ -2,14 +2,9 @@
 <div class="modal-header">
   <h4 class="modal-title col-4">Invoice Editing </h4>
   <div class="d-flex">
-  <p> Invoice No.&nbsp; {{item.InvoiceNum}}</p>
-</div>
-  <button
-    type="button"
-    class="btn btn-sm btn-info tl_mu_btn"
-    aria-label="Close"
-    (click)="activeModal.dismiss('Cross click')"
-  >
+    <p> Invoice No.&nbsp; {{item.InvoiceNum}}</p>
+  </div>
+  <button type="button" class="btn btn-sm btn-info tl_mu_btn" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
     <span aria-hidden="true">&times;</span>
   </button>
 </div>
@@ -21,12 +16,12 @@
       <div class="col-5">
         <div>
           <label class="mt-2">Course Name</label>
-          <input class="form-control" type="text" formControlName="CourseName"/>
+          <input class="form-control" type="text" formControlName="CourseName" />
           <!-- <small *ngIf="invoiceEditForm.get('CourseName').touched && invoiceEditForm.get('CourseName').invalid">(Course Name)</small> -->
         </div>
         <div>
           <label class="mt-2">Begining at</label>
-          <input class="form-control" type="date" formControlName='BeginDate'/>
+          <input class="form-control" type="date" formControlName='BeginDate' />
           <!-- <small *ngIf="invoiceEditForm.get('BeginDate').touched">(Begining Date)</small> -->
         </div>
       </div>
@@ -34,90 +29,108 @@
       <div class="col-5">
         <div>
           <label class="mt-2">Lesson Quantity (Price: ${{coursePrice}})</label>
-          <input class="form-control" type="number" min="0" formControlName="LessonQuantity" (change)='changeQuantity()'/>
+          <input class="form-control" type="number" min="0" formControlName="LessonQuantity" (change)='changeQuantity()' />
           <!-- <small *ngIf="invoiceEditForm.get('LessonQuantity').touched">(Lesson quantity)</small> -->
         </div>
         <div>
           <label class="mt-2">Lesson Fee</label>
-          <input class="form-control" type="number" min="0" formControlName="LessonFee"/>
+          <input class="form-control" type="number" min="0" formControlName="LessonFee" />
           <!-- <small *ngIf="invoiceEditForm.get('LessonFee').touched">(Lesson Fee)</small> -->
         </div>
       </div>
+    </div>
 
+    <div formGroupName="Concert" class="form-group row justify-content-center">
       <div class="col-5">
         <label class="mt-2">Concert Term and Date</label>
-        <input class="form-control" type="text" formControlName="Concert" />
+        <input class="form-control" type="text" formControlName="ConcertFeeName" />
+        <div class="text-danger" *ngIf="invoiceEditForm.controls.Concert.errors?.fillFeeName">Please fill concert term and date</div>
         <!-- <small *ngIf="invoiceEditForm.get('CourseName').touched"
-          >(Concert term and date, e.g.,concert for term 1, yyyy-dd-mm)</small
-        > -->
+        >(Concert term and date, e.g.,concert for term 1, yyyy-dd-mm)</small
+      > -->
       </div>
       <div class="col-5">
         <label class="mt-2">Concert Fee</label>
-        <input class="form-control" type="number" min='0' formControlName="ConcertFee"/>
+        <input class="form-control" type="number" min='0' formControlName="ConcertFee" />
+        <div class="text-danger" *ngIf="invoiceEditForm.controls.Concert.errors?.fillFee">Please fill fee</div>
         <!-- <small *ngIf="invoiceEditForm.get('ConcertFee').touched">(Concert Fee)</small> -->
       </div>
+    </div>
+
+    <div formGroupName="Note" class="form-group row justify-content-center">
       <div class="col-5">
         <label class="mt-2">Lesson Note Term and Date</label>
-        <input class="form-control" type="text" formControlName='Note'/>
+        <input class="form-control" type="text" formControlName='NoteFeeName' />
+        <div class="text-danger" *ngIf="invoiceEditForm.controls.Note.errors?.fillFeeName">Please fill note term and date</div>
         <!-- <small *ngIf="invoiceEditForm.get('Note').touched"
-          >(e.g.,Lesson Note term 1, yyyy-dd-mm)</small
-        > -->
+        >(e.g.,Lesson Note term 1, yyyy-dd-mm)</small
+      > -->
       </div>
       <div class="col-5">
         <label class="mt-2">Note Fee</label>
-        <input class="form-control" type="number" min='0' formControlName="NoteFee"/>
+        <!-- 有错 显示不出来默认值 -->
+        <input class="form-control" type="number" min='0' formControlName="NoteFee" />
+        <div class="text-danger" *ngIf="invoiceEditForm.controls.Note.errors?.fillFee">Please fill fee</div>
         <!-- <small *ngIf="invoiceEditForm.get('NoteFee').touched">(Note Fee)</small> -->
+      </div>
+    </div>
+
+    <hr />
+
+    <div>
+      <div formGroupName="Other1" class="form-group row justify-content-center">
+        <div class="col-5">
+          <label class="mt-2">Others 1</label>
+          <input class="form-control" type="text" formControlName="Other1FeeName" />
+          <div class="text-danger" *ngIf="invoiceEditForm.controls.Other1.errors?.fillFeeName">Please fill fee name</div>
+          <!-- <small *ngIf="invoiceEditForm.get('Other1FeeName').touched">(Other1 Fee title)</small> -->
+        </div>
+        <div class="col-5">
+          <label class="mt-2">Others Fee 1</label>
+          <input class="form-control" type="number" min='0' formControlName="Other1Fee" />
+          <div class="text-danger" *ngIf="invoiceEditForm.controls.Other1.errors?.fillFee">Please fill fee</div>
+          <!-- <small *ngIf="invoiceEditForm.get('Other1Fee').touched">(Other1 Fee)</small> -->
+        </div>
+      </div>
+      <div formGroupName="Other2" class="form-group row justify-content-center">
+        <div class="col-5">
+          <label class="mt-2">Others 2</label>
+          <input class="form-control" type="text" formControlName="Other2FeeName" />
+          <div class="text-danger" *ngIf="invoiceEditForm.controls.Other2.errors?.fillFeeName">Please fill fee name</div>
+          <!-- <small *ngIf="invoiceEditForm.get('Other2').get('Other2FeeName').touched && invoiceEditForm.get('Other2').get('Other2FeeName').invalid">(Other2 Fee title)</small> -->
+        </div>
+        <div class="col-5">
+          <label class="mt-2">Others Fee 2</label>
+          <input class="form-control" type="number" onkeypress="return (/[\d]/.test(String.fromCharCode(event.keyCode)))" min='0' formControlName="Other2Fee" />
+          <div class="text-danger" *ngIf="invoiceEditForm.controls.Other2.errors?.fillFee">Please fill fee</div>
+          <!-- <small *ngIf="invoiceEditForm.get('Other2').get('Other2Fee').touched">(Other2 Fee)</small> -->
+        </div>
+      </div>
+      <div formGroupName="Other3" class="form-group row justify-content-center">
+        <div class="col-5">
+          <label class="mt-2">Others 3</label>
+          <input class="form-control" type="text" formControlName="Other3FeeName" />
+          <div class="text-danger" *ngIf="invoiceEditForm.controls.Other2.errors?.fillFeeName">Please fill fee name</div>
+          <!-- <small *ngIf="invoiceEditForm.get('Other3FeeName').touched"
+          >(Other3 Fee title)</small -->
+        </div>
+        <div class="col-5">
+          <label class="mt-2">Other Fee 3</label>
+          <input class="form-control" type="number" min="0" formControlName="Other3Fee" />
+          <div class="text-danger" *ngIf="invoiceEditForm.controls.Other2.errors?.fillFee">Please fill fee</div>
+          <!-- <small *ngIf="invoiceEditForm.get('Other3Fee').touched">(Other3 Fee)</small> -->
+        </div>
       </div>
     </div>
     <hr />
     <div class="form-group row justify-content-center">
       <div class="col-5">
-        <label class="mt-2">Others 1</label>
-        <input class="form-control" type="text" formControlName="Other1FeeName"/>
-        <!-- <small *ngIf="invoiceEditForm.get('Other1FeeName').touched">(Other1 Fee title)</small> -->
-      </div>
-      <div class="col-5">
-        <label class="mt-2">Others Fee 1</label>
-        <input class="form-control" type="number" min='0' formControlName="Other1Fee"/>
-        <!-- <small *ngIf="invoiceEditForm.get('Other1Fee').touched">(Other1 Fee)</small> -->
-      </div>
-
-      <div class="col-5">
-        <label class="mt-2">Others 2</label>
-        <input class="form-control" type="text" formControlName="Other2FeeName"/>
-        <!-- <small *ngIf="invoiceEditForm.get('Other2FeeName').touched && invoiceEditForm.get('Other2FeeName').invalid"
-          >(Other2 Fee title)</small
-        > -->
-      </div>
-      <div class="col-5">
-        <label class="mt-2">Others Fee 2</label>
-        <input
-          class="form-control"
-          type="number"
-          onkeypress="return (/[\d]/.test(String.fromCharCode(event.keyCode)))" min='0' formControlName="Other2Fee"
-        />
-        <!-- <small *ngIf="invoiceEditForm.get('Other2Fee').touched">(Other2 Fee)</small> -->
-      </div>
-      <div class="col-5">
-        <label class="mt-2">Others 3</label>
-        <input class="form-control" type="text" formControlName="Other3FeeName"/>
-        <!-- <small *ngIf="invoiceEditForm.get('Other3FeeName').touched"
-          >(Other3 Fee title)</small -->
-      </div>
-      <div class="col-5">
-        <label class="mt-2">Other Fee 3</label>
-        <input class="form-control" type="number" min="0" formControlName="Other3Fee"/>
-        <!-- <small *ngIf="invoiceEditForm.get('Other3Fee').touched">(Other3 Fee)</small> -->
-      </div>
-    </div>
-    <hr />
-     <div class="form-group row justify-content-center">
-      <div class="col-5">
         <label class="mt-2"> All Subject in Total:</label>
         <p>{{owingFeeLocal}}</p>
       </div>
       <div class="col-5">
-        <label class="mt-2"> Due Date:</label> <p>{{dueDateLocal|date:'medium'}}</p>
+        <label class="mt-2"> Due Date:</label>
+        <p>{{dueDateLocal|date:'medium'}}</p>
       </div>
     </div>
   </form>
@@ -125,22 +138,11 @@
 
 <!--modal footer-->
 <div class="modal-footer">
-  <button
-    type="button"
-    class="btn btn-outline-dark"
-    (click)="sendMail(confirmModal)"
-    id="save"
-  >
+  <button type="button" class="btn btn-outline-dark" (click)="sendMail(confirmModal)" id="save">
     Save
   </button>
-  <small *ngIf="errMsgM" class="text-danger"
-    >Please make sure all field are correct</small
-  >
-  <button
-    type="button"
-    class="btn btn-outline-dark"
-    (click)="activeModal.dismiss('Click click')"
-  >
+  <small *ngIf="errMsgM" class="text-danger">Please make sure all field are correct</small>
+  <button type="button" class="btn btn-outline-dark" (click)="activeModal.dismiss('Click click')">
     Close
   </button>
 </div>
@@ -151,19 +153,14 @@
 <ng-template #confirmModal let-modal>
   <div class="modal-header m-2">
     <h4>Please Confirm</h4>
-    <button
-      type="button"
-      class="close"
-      aria-label="Close"
-      (click)="modal.dismiss('Cross click')"
-    >
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
       <span aria-hidden="true">&times;</span>
     </button>
   </div>
   <!-- modal-body -->
   <div class="container">
     <div class="d-flex justify-content-center">
-        <p class='text-danger' *ngIf="originPrice !== userChosenPrice">The original lesson fee is {{originPrice}}, you have changed to {{userChosenPrice}}, please confirm</p>
+      <p class='text-danger' *ngIf="originPrice !== userChosenPrice">The original lesson fee is {{originPrice}}, you have changed to {{userChosenPrice}}, please confirm</p>
     </div>
     <div class="d-flex justify-content-center">
       <p>Please click send button by update this invoice to database</p>
@@ -173,11 +170,7 @@
     <button type="button" class="btn btn-dark" (click)="modal.close('Save')">
       Confirm
     </button>
-    <button
-      type="button"
-      class="btn btn-outline-dark"
-      (click)="modal.dismiss('Cross click')"
-    >
+    <button type="button" class="btn btn-outline-dark" (click)="modal.dismiss('Cross click')">
       Cancel
     </button>
   </div>
