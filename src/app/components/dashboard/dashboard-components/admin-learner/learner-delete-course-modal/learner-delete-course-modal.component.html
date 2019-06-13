@@ -13,18 +13,17 @@
   <h4>Course</h4>
   <div>
     <div class="row lable-pos">
-      <button class="button-margin btn btn-outline-primary" (click)="chooseCourse()">Group Course</button>
-      <button class=' btn btn-outline-primary' (click)="chooseCourse()">One-on-One Course</button>
+      <button class="button-margin btn btn-outline-primary" (click)="chooseCourse()">Group/One-on-One Course</button>
     </div>
 
-    <div *ngIf='isGroupCourse' class='m-2'>
+    <div *ngIf='!isGroupCourse' class='m-2'>
       <div *ngFor='let groupCourse of whichLearner.LearnerGroupCourse '>
         <br>
         <div class="card">
           <div class="card-body">
             <div class="row">
               <div class="col-6">
-                <span class="label">Course: </span>
+                <span class="label">Group Course: </span>
                 <span class='text'>{{groupCourse.GroupCourseInstance.Course.CourseName}}</span>
               </div>
 
@@ -47,6 +46,8 @@
                 <span class='text'>{{groupCourse.GroupCourseInstance.Teacher.FirstName}}
                   {{groupCourse.GroupCourseInstance.Teacher.LastName}}
                 </span>
+                <p class='text'>Edit End Day:</p>
+                <input type="date">
               </div>
 
               <div class="col-6">
@@ -56,6 +57,9 @@
                     {{time.BeginTime}} -- {{time.EndTime}}</span>
                 </div>
               </div>
+              <div class='col-6'>
+                <button>Submit End Date</button>
+              </div>
             </div>
           </div>
         </div>
@@ -63,7 +67,7 @@
     </div>
 
     <!-- one2one Course -->
-    <div *ngIf='!isGroupCourse'>
+    <div *ngIf='isGroupCourse'>
 
       <div *ngFor="let ele of whichLearner.One2oneCourseInstance" class='m-2'>
         <br>
@@ -71,7 +75,7 @@
           <div class="card-body">
             <div class="row">
               <div class="col-6">
-                <span class="label">Course: </span>
+                <span class="label">One-on-One Course: </span>
                 <span class='text'>{{ele.Course.CourseName}}</span>
               </div>
 
@@ -100,6 +104,11 @@
               <div class="col-6">
                 <span class="label">Course End Day: </span>
                 <span class='text'>{{ele.EndDate}}</span>
+                <p class='text'>Edit End Day:</p>
+                <input type="date">
+              </div>
+              <div class='col-6'>
+                <button>Submit End Date</button>
               </div>
 
               <div class="col-6">
