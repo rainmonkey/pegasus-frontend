@@ -11,7 +11,8 @@
 }
 
 .reimg {
-  text-align: center
+  text-align: center;
+  background-size: contain;
 }
 
 .loaderLarge {

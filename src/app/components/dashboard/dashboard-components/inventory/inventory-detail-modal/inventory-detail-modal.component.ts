@@ -12,8 +12,6 @@ export class InventoryDetailModalComponent implements OnInit {
   public errorMessage: string;
   public successMessage: string;
   public infoMessage: string = '';
-  public messageColor: string;
-  public submitionFlag: boolean = true;
   public loadingGifFlag: boolean = false;
   public receiptFile: any;
   public updateForm: FormGroup;
@@ -89,9 +87,7 @@ export class InventoryDetailModalComponent implements OnInit {
     let valueToSubmit = this.updateForm.value;
     let vailadValue = this.checkInputVailad(valueToSubmit);
     if (vailadValue !== null && this.updateForm.dirty) {
-      this.submitionFlag = false;
       this.loadingGifFlag = true;
-      // this.submitByMode(vailadValue);
       this.stringifySubmitStr();
     } else if (!this.updateForm.dirty) {
       this.errorMessage = 'Data did no changing!';
@@ -109,48 +105,54 @@ export class InventoryDetailModalComponent implements OnInit {
       return valueSubmit;
     } else {
       this.loadingGifFlag = false;
-      this.messageColor = '#dc3545'
-      this.submitionFlag = true;
       return null;
     }
   }
   /*
     after data is ready to submit
   */
- stringifySubmitStr() {
-  let formData = new FormData();
-  formData.append('productIdstr', this.updateForm.get('ProductId').value);
-  formData.append('orgIdstr', this.updateForm.get('OrgId').value);
-  formData.append('quantitystr', JSON.stringify(this.updateForm.get('Quantity').value));
-  formData.append('pricestr', JSON.stringify(this.updateForm.get('BuyingPrice').value));
-  formData.append('staffIdstr', this.updateForm.get('StaffId').value);
-  formData.append('Receipt', this.receiptFile);  
-  console.log(typeof(this.receiptFile))
-  this.submitByMode(formData);
-}
+  stringifySubmitStr() {
+    // To judge file fomat is image type, or not
+    let filePath = this.receiptFile.name;
+    let index = filePath.lastIndexOf(".");
+    let ext = filePath.substr(index + 1);
+    if (this.isAssetTypeAnImage(ext)) {
+      let formData = new FormData();
+      formData.append('productIdstr', this.updateForm.get('ProductId').value);
+      formData.append('orgIdstr', this.updateForm.get('OrgId').value);
+      formData.append('quantitystr', JSON.stringify(this.updateForm.get('Quantity').value));
+      formData.append('pricestr', JSON.stringify(this.updateForm.get('BuyingPrice').value));
+      formData.append('staffIdstr', this.updateForm.get('StaffId').value);
+      formData.append('Receipt', this.receiptFile);
+      this.submitByMode(formData);
+    } else {
+      alert('Format of the uploaded file is only png, jpg or jpeg!');
+      this.loadingGifFlag = false;
+    }
+  }
   // Add & Update new data 
   submitByMode(formValue) {
     //while push a stream of new data
-      this.inventoriesService.addNew(formValue).subscribe(
-        (res) => {
-          console.log(formValue);
-          alert('Submit success!');
-          this.activeModal.close();
-        },
-        (err) => {
-          this.backendErrorHandler(err);
-          console.log(err)
-        }
-      );
+    this.inventoriesService.addNew(formValue).subscribe(
+      (res) => {
+        alert('Submit success!');
+        this.activeModal.close();
+      },
+      (err) => {
+        this.backendErrorHandler(err);
+        console.log(err)
+      }
+    );
   }
   // Upload Receipt
   uploadReceipt(event) {
     //assign file to ReceiptToSubmit
-      this.receiptFile = <File>event.target.files[0];
-      // this.updateForm.get('ReceiptImg').setValue(this.receiptFile);
-      
+    this.receiptFile = <File>event.target.files[0];
   }
-  
+  // limiting file formats is only image
+  isAssetTypeAnImage(ext) {
+    return ['png', 'jpg', 'jpeg'].indexOf(ext.toLowerCase()) !== -1;
+  }
   // Show error message
   backendErrorHandler(err) {
     if (err.error.ErrorMessage != null) {
@@ -160,5 +162,5 @@ export class InventoryDetailModalComponent implements OnInit {
       this.errorMessage = 'Error! Please check your input.'
     }
   }
-  
+
 }

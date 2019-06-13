@@ -48,9 +48,8 @@
             *ngIf='updateForm.get("BuyingPrice").invalid && updateForm.get("BuyingPrice").touched'>required</small>
           <input type="number" class='col-12 t_mf_input' formControlName='BuyingPrice'
             [class.t_mf_error_border]='updateForm.get("BuyingPrice").invalid && updateForm.get("BuyingPrice").touched'>
-          <label class='t_mf_label'>Receipt File (Only Word/PDF/Image):</label>&nbsp;
-          <input type="file" name="ReceiptImg" accept='.doc,.docx,application/pdf,application/msword,image/*' (change)='uploadReceipt($event)'
-            formControlName='ReceiptImg'>
+          <label class='t_mf_label'>Receipt File (Only png/jpg/jpeg):</label>&nbsp;
+          <input type="file" name="ReceiptImg" accept='image/*' (change)='uploadReceipt($event)' formControlName='ReceiptImg'>
         </div>
       </div>
     </form>
@@ -60,5 +59,5 @@
 <div class='modal-footer'>
   <div *ngIf='loadingGifFlag' class="loaderSmall"></div>
   <button type='button' class='btn btn-outline-dark' [disabled]="!this.updateForm.valid"
-    (click)='this.updateForm.valid && onSubmit(this.updateForm)' *ngIf='submitionFlag'>Save</button>
+    (click)='this.updateForm.valid && onSubmit(this.updateForm)'>Save</button>
 </div>
