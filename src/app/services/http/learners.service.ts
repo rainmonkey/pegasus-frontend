@@ -61,4 +61,5 @@ export class LearnersService {
   getRemainingCourses(LearnerId: number): Observable<any> {
     return this.http.get(this.baseUrl + "CourseRemaining/" + LearnerId)
   }
+
 }

@@ -187,7 +187,7 @@ export class LearnerRegistrationFormComponent implements OnInit, DoCheck, AfterV
         learnerLevel: [this.whichLearner ? this.whichLearner.LearnerLevel : this.selectLearnerLevel, Validators.required],
         location: [this.whichLearner ? this.whichLearner.OrgId : this.orgId, Validators.required],
         levelType: [this.whichLearner ? this.whichLearner.LevelType : '0'],
-        levelTypeRadio: [this.whichLearner ? this.whichLearner.LevelType: '1'],
+        levelTypeRadio: [this.whichLearner ? this.whichLearner.LevelType: 1],
         paymentPeriod: [this.whichLearner ? this.whichLearner.PaymentPeriod : '1'],
         referrer: [this.whichLearner ? this.whichLearner.Referrer : ''],
         isUnder18: [this.whichLearner ? this.whichLearner.isUnder18 : 0],
@@ -524,7 +524,8 @@ export class LearnerRegistrationFormComponent implements OnInit, DoCheck, AfterV
         this.tempGroupCourseObj['BeginDate'] = groupCourse.beginDate;
         this.learnerGroupCourse.push(this.tempGroupCourseObj);
         tempGroupModal = {...this.tempGroupCourseObj};
-        tempGroupModal['LearnerId'] = this.whichLearner.LearnerId;
+        if (this.whichLearner)
+          tempGroupModal['LearnerId'] = this.whichLearner.LearnerId;
         this.groupCourseForSubmit.push(tempGroupModal);
       }
     }

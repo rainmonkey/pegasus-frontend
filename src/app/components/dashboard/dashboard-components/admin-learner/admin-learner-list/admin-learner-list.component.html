@@ -34,10 +34,13 @@
           <tr>
             <th scope='col' style='width: 50px'>#</th>
             <th *ngFor='let i of columnsToShow' scope='col' (click)='onSort(i)' counter='0'
-              style='width: 100px' class='t_sort_title'>
+              style='width: 60px' class='t_sort_title'>
               {{AddSpaceInString(i)}}</th>
-            <th scope='col' style='width: 130px; padding-left:35px'></th>
-            <th scope='col' style='width: 130px'></th>
+              <th *ngFor='let i of columnsToShow1' scope='col' (click)='onSort(i)' counter='0'
+              style='width: 110px' class='t_sort_title'>
+              {{AddSpaceInString(i)}}</th>
+            <th scope='col' style='width: 100px; padding-right:0px'> details & Course</th>
+            <th scope='col' style='width: 100px; padding-left: 0px;'>Trial course & others</th>
           </tr>
         </thead>
         <!--table body-->
@@ -46,25 +49,24 @@
           <tr
             *ngFor='let i of learnerList | slice: (currentPage-1)* pageSize : (currentPage-1) * pageSize + pageSize; let index = index'>
             <th scope="row">{{index + 1}}</th>
-            <td *ngFor='let j of columnsToShow'>{{i[j]}}</td>
-            <td style='padding-left:35px'>
+            <td *ngFor='let j of columnsToShow' style='width: 60px'>{{i[j]}}</td>
+            <td *ngFor='let j of columnsToShow1' style='width: 110px'>{{i[j]}}</td>
+            <td  style='width: 100px; padding-right:0px;'>
               <span class='t_info_table_btn' (click)='popUpModal(1,i)' title='student info'><span class='fas fa-info-circle'></span></span>
-             <!--编辑功能跳转 stella 的页面  -->
-              <span class='t_info_table_btn' (click)='popUpModal(2,i)'><span class='fas fa-pen'></span></span>
-              <span class='t_info_table_btn' (click)='popUpModal(0,i)'><span class="fas fa-folder-plus"></span></span>
-              <span class='t_info_table_btn' (click)='popUpModal(3,i)'><span class='fas fa-trash-alt'></span></span>
+              <span class='t_info_table_btn' (click)='popUpModal(2,i)' title='edit student info'><span class='fas fa-pen'></span></span>
+              <span class='t_info_table_btn' (click)='popUpModal(0,i)' title='add course'><span class="fas fa-folder-plus"></span></span>
+              <span class='t_info_table_btn' (click)='popUpModal(4,i)' title='delete course'><span class="fas fa-folder-minus"></span></span>
 
-              <!--calendar icon功能跳转至 trial course 页面-->
-              <span class='t_info_table_btn' (click)='jumpToTrialCoursePage()' routerLink='/learner/trial' [queryParams] = '{LearnerId:i.LearnerId}'><a class='fas fa-calendar-week'></a></span>
-              <span class='t_info_table_btn' (click)='popUpModal(4,i)'><span class="fas fa-folder-minus"></span></span>
-              <span class='t_info_table_btn' (click)='jump()'></span>
             </td>
-            <td>
-              <span class='t_info_table_btn' (click)='popUpModal(3,i)' title='delete'><span class='fas fa-trash-alt'></span></span>
+            <td style='width: 100px; padding-left:0px'>
+                <!--calendar icon功能跳转至 trial course 页面-->
+                <span class='t_info_table_btn' (click)='jumpToTrialCoursePage()' title='trial course' routerLink='/learner/trial' [queryParams] = '{LearnerId:i.LearnerId}'><a class='fas fa-calendar-week'></a></span>
               <!--              请假-->
-              <span class='t_info_table_btn' (click)="popUpModal(9,i)"><span class='fas fa-book'></span></span>
+              <span class='t_info_table_btn' (click)="popUpModal(9,i)" title='leave'><span class='fas fa-bed' ></span></span>
               <!--              永久改课时间-->
-              <span class='t_info_table_btn' (click)="popUpModal(10,i)"><span class='fas fa-book'></span></span>
+              <span class='t_info_table_btn' (click)="popUpModal(10,i)" title='Student Period Course Duration Change
+              '><span class='fas fa-book'></span></span>
+              <span class='t_info_table_btn' (click)='popUpModal(3,i)' title='delete student record'><span class='fas fa-trash-alt'></span></span>
             </td>
           </tr>
         </tbody>
