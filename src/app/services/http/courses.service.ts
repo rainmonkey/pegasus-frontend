@@ -87,4 +87,7 @@ export class CoursesService {
   postTrialLesson(data):any{
     return this.http.post(this.baseUrl +'TrialLesson',data);
   }
+  getAvailableRoom(orgId,startTime,endTime):any{
+    return this.http.get(this.baseUrl + 'RoomAvailableCheck/checkbylesson/' + orgId + '/' + startTime + '/' + endTime);
+  }
 }

@@ -13,8 +13,9 @@ export class PayrollListComponent implements OnInit {
   public TeacherSalaryListLength: number;
   public page = 1;  // pagination current page
   public pageSize = 10;    // [can modify] pagination page size
-  public searchBeginDate;
-  public searchEndDate;
+  searchBeginDate = this.datePipe.
+  transform(new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate() - 6), 'yyyy-MM-dd');
+  searchEndDate = this.datePipe.transform(new Date(), 'yyyy-MM-dd');
   public isloading = false;
   public titleArray = [
     '#',
@@ -40,6 +41,7 @@ export class PayrollListComponent implements OnInit {
               private modalservice: NgbModal) { }
 
   ngOnInit() {
+    this.getPayrollData(this.searchBeginDate, this.searchEndDate);
   }
 
   getPayrollData = (beginDate, endDate) => {

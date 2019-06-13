@@ -100,6 +100,9 @@ import { TrialTesterComponent } from './components/dashboard/dashboard-component
 import { OrderbyPipe } from './shared/pipes/orderby.pipe';
 import { SessionRescheduleModalComponent } from './components/dashboard/dashboard-components/sessions/session-modals/session-reschedule-modal/session-reschedule-modal.component';
 import { MondayDateInWeekByDatePipe } from './shared/pipes/monday-date-in-week-by-date.pipe';
+import { AdminLearnerLeaveComponent } from './components/dashboard/dashboard-components/admin-learner/admin-learner-leave/admin-learner-leave.component';
+import { AdminLearnerCourseEditComponent } from './components/dashboard/dashboard-components/admin-learner/admin-learner-course-edit/admin-learner-course-edit.component';
+import { AdminLearnerPeriodCourseChangeModalComponent } from './components/dashboard/dashboard-components/admin-learner/admin-learner-period-course-change-modal/admin-learner-period-course-change-modal.component';
 import { TrialConfirmComponent } from './components/dashboard/dashboard-components/trial-session/trial-confirm/trial-confirm.component';
 import { StaffDeleteModalComponent } from './components/dashboard/dashboard-components/admin-staff/staff-delete-modal/staff-delete-modal.component';
 import { StaffDetailModalComponent } from './components/dashboard/dashboard-components/admin-staff/staff-detail-modal/staff-detail-modal.component';
@@ -202,6 +205,9 @@ import { AddHolidayModalComponent } from './components/dashboard/dashboard-compo
     OrderbyPipe,
     SessionRescheduleModalComponent,
     MondayDateInWeekByDatePipe,
+    AdminLearnerLeaveComponent,
+    AdminLearnerCourseEditComponent,
+    AdminLearnerPeriodCourseChangeModalComponent,
     TrialConfirmComponent,
 
     StaffModalFormComponent,
@@ -251,7 +257,9 @@ import { AddHolidayModalComponent } from './components/dashboard/dashboard-compo
     SessionCompletedModalComponent,
     SessionRescheduleModalComponent,
     RatingModalComponent,
+    AdminLearnerPeriodCourseChangeModalComponent,
     ForgotPasswordModalComponent,
+    AdminLearnerLeaveComponent,
     ChangePasswordModalComponent,
     LearnerRegistrationModalComponent,
     LearnerRegistrationConfirmModalComponent,
