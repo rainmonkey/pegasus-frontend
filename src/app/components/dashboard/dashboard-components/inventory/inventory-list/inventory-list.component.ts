@@ -7,7 +7,7 @@ import { NgbootstraptableService } from '../../../../../services/others/ngbootst
 
 import { InventoriesService } from '../../../../../services/http/inventories.service';
 import { InventoryDetailModalComponent } from '../inventory-detail-modal/inventory-detail-modal.component';
-import { InventoryReceiptModalComponent } from '../inventory-Receipt-modal/inventory-Receipt-modal.component';
+import { InventoryReceiptModalComponent } from '../inventory-receipt-modal/inventory-receipt-modal.component';
 
 @Component({
   selector: 'app-inventory-list',
