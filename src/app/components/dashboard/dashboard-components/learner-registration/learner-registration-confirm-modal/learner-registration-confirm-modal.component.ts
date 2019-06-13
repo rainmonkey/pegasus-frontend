@@ -37,7 +37,6 @@ export class LearnerRegistrationConfirmModalComponent implements OnInit {
     let fun;
     if (this.command === 1){
       fun= this.registrationService.postStudent(this.fdObj);
-      this.fdObj={};
     }else if (this.command === 2){
       fun= this.registrationService.putStudent(this.learnerId,this.fdObj);
     }else if (this.command ===3) {
