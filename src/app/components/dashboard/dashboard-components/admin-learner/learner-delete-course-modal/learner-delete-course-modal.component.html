@@ -16,7 +16,7 @@
       <button class="button-margin btn btn-outline-primary" (click)="chooseCourse()">Group/One-on-One Course</button>
     </div>
 
-    <div *ngIf='!isGroupCourse' class='m-2'>
+    <div *ngIf='isGroupCourse' class='m-2'>
       <div *ngFor='let groupCourse of whichLearner.LearnerGroupCourse '>
         <br>
         <div class="card">
@@ -47,7 +47,7 @@
                   {{groupCourse.GroupCourseInstance.Teacher.LastName}}
                 </span>
                 <p class='text'>Edit End Day:</p>
-                <input type="date">
+                <input type="date" [(ngModel)]="groupEndDate" required>
               </div>
 
               <div class="col-6">
@@ -58,7 +58,7 @@
                 </div>
               </div>
               <div class='col-6'>
-                <button>Submit End Date</button>
+                <button (click)='onSubmit()'>Submit End Date</button>
               </div>
             </div>
           </div>
@@ -67,7 +67,7 @@
     </div>
 
     <!-- one2one Course -->
-    <div *ngIf='isGroupCourse'>
+    <div *ngIf='!isGroupCourse'>
 
       <div *ngFor="let ele of whichLearner.One2oneCourseInstance" class='m-2'>
         <br>
@@ -105,10 +105,10 @@
                 <span class="label">Course End Day: </span>
                 <span class='text'>{{ele.EndDate}}</span>
                 <p class='text'>Edit End Day:</p>
-                <input type="date">
+                <input type="date" [(ngModel)]="one2OneEndDate">
               </div>
               <div class='col-6'>
-                <button>Submit End Date</button>
+                <button (click)='onSubmit()'>Submit End Date</button>
               </div>
 
               <div class="col-6">
