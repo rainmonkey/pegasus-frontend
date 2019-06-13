@@ -37,6 +37,7 @@ export class LearnerRegistrationConfirmModalComponent implements OnInit {
     let fun;
     if (this.command === 1){
       fun= this.registrationService.postStudent(this.fdObj);
+      this.fdObj={};
     }else if (this.command === 2){
       fun= this.registrationService.putStudent(this.learnerId,this.fdObj);
     }else if (this.command ===3) {
@@ -56,14 +57,15 @@ export class LearnerRegistrationConfirmModalComponent implements OnInit {
         this.isConfirmClick = false;
         this.isGroupCourse = false;
         console.log('Success!', data);
-        if(this.addCourse){}else{
-        this.router.navigate(['/learner/success']);}
         this.activeModal.dismiss();
-        Swal.fire({
-          title: 'Your Work Has Been Saved',
-          type: 'success',
-          showConfirmButton: false,
-        });
+        if(this.addCourse || this.learnerId){
+          Swal.fire({
+            title: 'Your Work Has Been Saved',
+            type: 'success',
+            showConfirmButton: false,
+          });
+        }else{
+          this.router.navigate(['/learner/success']);}
         this.addCourse = false;
       },
       error => {
