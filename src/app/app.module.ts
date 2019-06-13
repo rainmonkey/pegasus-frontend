@@ -108,6 +108,7 @@ import { StaffModalFormComponent } from './components/dashboard/dashboard-compon
 import { InventoryDetailModalComponent } from './components/dashboard/dashboard-components/inventory/inventory-detail-modal/inventory-detail-modal.component';
 import { InventoryRecieptModalComponent } from './components/dashboard/dashboard-components/inventory/inventory-reciept-modal/inventory-reciept-modal.component';
 import { HolidayCalendarComponent } from './components/dashboard/dashboard-components/admin-holidays/holiday-calendar/holiday-calendar.component';
+import { AddHolidayModalComponent } from './components/dashboard/dashboard-components/admin-holidays/add-holiday-modal/add-holiday-modal.component';
 
 
 @NgModule({
@@ -209,7 +210,8 @@ import { HolidayCalendarComponent } from './components/dashboard/dashboard-compo
     StaffEditModalComponent,
     InventoryDetailModalComponent,
     InventoryRecieptModalComponent,
-    HolidayCalendarComponent
+    HolidayCalendarComponent,
+    AddHolidayModalComponent
   ],
   imports: [
     NgbModule,
@@ -262,6 +264,7 @@ import { HolidayCalendarComponent } from './components/dashboard/dashboard-compo
     StaffEditModalComponent,
     InventoryDetailModalComponent,
     InventoryRecieptModalComponent,
+    AddHolidayModalComponent
   ],
   exports: [AppComponent],
   bootstrap: [AppComponent]
