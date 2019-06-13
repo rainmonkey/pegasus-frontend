@@ -154,7 +154,7 @@ export class InventoryListComponent implements OnInit {
       let searchingInputObj = document.getElementById('searchingInput');
 
       (initValue == undefined) ? { searchString, searchBy } =
-        { searchString: searchingInputObj['value'], searchBy: 'ProductId' } :
+        { searchString: searchingInputObj['value'], searchBy: 'ProductName' } :
         { searchString, searchBy } = initValue;
 
       this.stockOrdersList = this.ngTable.searching(this.stockOrdersListCopy, searchBy, searchString);
