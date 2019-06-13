@@ -58,7 +58,6 @@ export class InventoryListComponent implements OnInit {
         this.stockOrdersListLength = res['Data'].length; //length prop is under Data prop
         this.refreshPageControl();
         this.loadingFlag = false;
-        console.log(this.stockOrdersList);
       },
       (err) => {
         this.backendErrorHandler(err);

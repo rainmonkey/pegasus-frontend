@@ -1,7 +1,8 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { InventoriesService } from '../../../../../services/http/inventories.service';
-import { FormBuilder, Validators, FormGroup } from '@angular/forms';
+import { FormBuilder, Validators, FormGroup, FormArray } from '@angular/forms';
+import { element } from '@angular/core/src/render3';
 
 @Component({
   selector: 'app-inventory-detail-modal',
@@ -17,8 +18,10 @@ export class InventoryDetailModalComponent implements OnInit {
   public updateForm: FormGroup;
   //Level dropdown options
   public productName: Array<any>;
-  public staffName: Object;
-  public orgName: Object;
+  public staffData: any;
+  public staffName: Array<any>;
+  public orgData: any;
+  public orgName: Array<any> = [];
 
   @Input() command;
   @Input() whichStockOrder;
@@ -40,7 +43,6 @@ export class InventoryDetailModalComponent implements OnInit {
     this.inventoriesService.getProdts().subscribe(
       (res) => {
         this.productName = res['Data'];
-        // console.log(this.productName);
       },
       (err) => {
         alert('Server error!')
@@ -48,8 +50,8 @@ export class InventoryDetailModalComponent implements OnInit {
     );
     this.inventoriesService.getOrgs().subscribe(
       (res) => {
-        this.orgName = res['Data'];
-        // console.log(this.orgName);
+        this.orgData = res['Data'];    
+        this.filterOrg();
       },
       (err) => {
         alert('Server error!')
@@ -57,13 +59,25 @@ export class InventoryDetailModalComponent implements OnInit {
     );
     this.inventoriesService.getStaff().subscribe(
       (res) => {
-        this.staffName = res['Data'];
-        // console.log(this.staffName);
+        this.staffData = res['Data'];
+        this.staffData.forEach(element => {
+          element.StaffFullName = element.FirstName + ' ' + element.LastName;
+        })
+        this.filterStaff();
       },
       (err) => {
         alert('Server error!')
       }
     )
+  }
+  // Filter Org selecting by localstorage
+  filterStaff() {
+    this.staffName = this.staffData.filter((item) => item.StaffId == localStorage.getItem('staffId'));
+  }
+  filterOrg(){
+    for(let i=0;i<JSON.parse(localStorage.getItem('OrgId')).length;i++){      
+      this.orgName[i] = this.orgData.filter((item) => item.OrgId == JSON.parse(localStorage.getItem('OrgId'))[i])[0];
+    }   
   }
 
   /* Form Group*/
@@ -75,7 +89,7 @@ export class InventoryDetailModalComponent implements OnInit {
         OrgId: [null, Validators.required],
         Quantity: [null, Validators.required],
         BuyingPrice: [null, Validators.required],
-        StaffId: [null, Validators.required],
+        StaffId: [{value:localStorage.getItem('staffId'), disabled: true}],
         ReceiptImg: [null, Validators.required]
       }
     }

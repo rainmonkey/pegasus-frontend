@@ -27,7 +27,7 @@ export class InventoryReceiptModalComponent implements OnInit {
   /*
    get photo src
  */
-  getPhotoSrc(photoObj) {    
+  getPhotoSrc(photoObj) {
     if (this.whichStockOrder[photoObj] == null) {
       return '../../../../../../assets/images/shared/default-employer-profile.png';
     }
