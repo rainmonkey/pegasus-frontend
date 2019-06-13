@@ -1,0 +1,140 @@
+<!--modal header-->
+<div class="modal-header">
+  <h4 class="modal-title">Student Period Course Duration Change</h4>
+  <button type="button" class='btn btn-sm btn-info tl_dm_btn' aria-label="Close" (click)="activeModal.close('Cross click')">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+
+<form [formGroup]="PeriodCourseChangeForm" (ngSubmit)="submit()">
+  <div class='modal-body tl_md_body'>
+    <div class="form-group">
+      <div class="row">
+        <div class="col-5">
+          <div>Begin Date</div>
+          <input type="date" class="form-control" formControlName="BeginDate">
+          <small class="text-danger" *ngIf="BeginDate.invalid && BeginDate.touched">Please enter the begin date</small>
+        </div>
+        <div class="col-5">
+          <div>End Date</div>
+          <input type="date" class="form-control" formControlName="EndDate">
+        </div>
+        <div class="col-5">
+          <div>Begin Time</div>
+          <input type="time" class="form-control" formControlName="BeginTime">
+          <small class="text-danger" *ngIf="BeginTime.invalid && BeginTime.touched">Please enter the begin time</small>
+        </div>
+        <div class="col-6">
+          <div>Org Name</div>
+          <div>
+            <select formControlName="OrgId" (change)="GetRoom($event.target.value)">
+              <option disabled selected value> -- select an option -- </option>
+              <option *ngFor="let org of Orgs" [value]="org.OrgId">{{org.OrgName}}</option>
+            </select>
+          </div>
+          <small class="text-danger" *ngIf="OrgId.invalid && OrgId.touched">Please select branch</small>
+        </div>
+        <div class="col-5">
+          <div>Room Name</div>
+          <div>
+            <select formControlName="RoomId">
+              <option disabled selected value> -- select an option -- </option>
+              <option *ngFor="let room of Rooms" [value]="room.RoomId">{{room.RoomName}}</option>
+            </select>
+          </div>
+          <small class="text-danger" *ngIf="RoomId.invalid && RoomId.touched">Please select Room</small>
+        </div>
+        <div class="col-5">
+          <div>Day of week</div>
+          <div>
+            <select formControlName="DayOfWeek">
+              <option disabled selected value> -- select an option -- </option>
+              <option value="1">Monday</option>
+              <option value="2">Tuesday</option>
+              <option value="3">Wednesday</option>
+              <option value="4">Thursday</option>
+              <option value="5">Friday</option>
+              <option value="6">Saturday</option>
+              <option value="7">Sunday</option>
+            </select>
+          </div>
+          <small class="text-danger" *ngIf="DayOfWeek.invalid && DayOfWeek.touched">Please select day of week</small>
+        </div>
+        <div class="col-5">
+          <div>Is Temporary</div>
+          <select formControlName="IsTemporary" (change)="IsTemporaryChange()">
+            <option value="0">No</option>
+            <option value="1">Yes</option>
+          </select>
+          <small class="text-danger" *ngIf="IsTemporary.invalid && IsTemporary.touched">Please select isTemporary</small>
+        </div>
+        <div class="col-10">
+          <div>Reason</div>
+          <input type="text" class="form-control" formControlName="reason">
+          <small class="text-danger" *ngIf="reason.invalid && reason.touched">Please enter reason</small>
+        </div>
+      </div>
+
+      <fieldset *ngFor="let ele of learner.One2oneCourseInstance">
+        <input [value]="ele.CourseInstanceId" type="radio" formControlName="instanceId" (change)="CourseRadioButtonChange()">
+        <br>
+        <div class="card">
+          <div class="card-body">
+            <div class="row">
+              <div class="col-6">
+                <span class="label" style="font-weight: bold">Course: </span>
+                <span class='text'>{{ele.Course.CourseName}}</span>
+              </div>
+
+              <div class="col-6">
+                <span class="label" style="font-weight: bold">Teacher Name: </span>
+                <span class='text'>{{ele.Teacher.FirstName}} {{ele.Teacher.LastName}}</span>
+              </div>
+
+              <div *ngIf='ele.Org' class="col-6">
+                <span class="label" style="font-weight: bold">Location: </span>
+                <span class='text'>{{ele.Org.OrgName}}</span>
+              </div>
+
+              <div class="col-6">
+                <div >
+                  <span class="label" style="font-weight: bold">Room: </span>
+                  <span class='text'> {{ele.Room.RoomName}}</span>
+                </div>
+              </div>
+
+              <div class="col-6">
+                <span class="label" style="font-weight: bold">Course Start Day: </span>
+                <span class='text'>{{ele.BeginDate}}</span>
+              </div>
+
+              <div class="col-6">
+                <span class="label" style="font-weight: bold">Course End Day: </span>
+                <span class='text'>{{ele.EndDate}}</span>
+              </div>
+
+              <div class="col-6">
+                <span class="label" style="font-weight: bold">Course Sechdule: </span>
+                <fieldset *ngFor='let sechdule of ele.CourseSchedule'>
+                  <input type="radio" [value]="sechdule.CourseScheduleId" (change)="ScheduleRadioButtonChange(sechdule.CourseInstanceId)" formControlName="CourseScheduleId">
+                  <label>
+                    <span class='text'> {{sechdule.DayOfWeek|weekFormat}}
+                      {{sechdule.BeginTime}} -- {{sechdule.EndTime}} </span>
+                  </label>
+                </fieldset>
+              </div>
+            </div>
+          </div>
+        </div>
+      </fieldset>
+    </div>
+  </div>
+  <div class='modal-footer'>
+    <span *ngIf='isEditSuccess' class='text-success'>Cancel Success </span>
+    <span *ngIf='isEditFail' class='text-danger'>Cancel Fail </span>
+    <div *ngIf="isloading" class="loaderSmall"></div>
+    <span *ngIf="IsformError" class="text-danger">{{errorMessage}}</span>
+    <button *ngIf="!isConfirmClick" type='button' type="submit" class='btn btn-outline-dark'>Confirm</button>
+    <button  type="button" class="btn btn-outline-dark" (click)="activeModal.close('Close click')">Close</button>
+  </div>
+</form>
