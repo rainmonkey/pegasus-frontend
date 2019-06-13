@@ -5,6 +5,7 @@ import { UserDetail } from '../../../../models/UserDetail';
 import { AppSettingsService } from 'src/app/settings/app-settings.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ChangePasswordModalComponent } from '../../dashboard-components/support/change-password-modal/change-password-modal.component'
+import { environment } from 'src/environments/environment.prod';
 
 @Component({
   selector: 'app-headerbar',
@@ -12,7 +13,7 @@ import { ChangePasswordModalComponent } from '../../dashboard-components/support
   styleUrls: ['./headerbar.component.css']
 })
 export class HeaderbarComponent implements OnInit {
-  
+  photoUrl: any = environment.photoUrl;
   userDetail =
     {
       img : '../../../../assets/images/usersimg/testimg.jpg',
@@ -33,8 +34,11 @@ export class HeaderbarComponent implements OnInit {
   }
 
   getUserDetail(){
-    this.userDetail['firstName'] = localStorage.getItem('userFirstName')
-    this.userDetail['lastName'] = localStorage.getItem('userLastName')
+    this.userDetail['firstName'] = localStorage.getItem('userFirstName');
+    this.userDetail['lastName'] = localStorage.getItem('userLastName');
+    let photo = localStorage.getItem('photo');
+    if (photo)
+      this.userDetail.img=this.photoUrl+photo;
   }
 
   logout() {
