@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { Router } from '@angular/router';
 import { LearnerRegistrationService } from '../../../../../services/http/learner-registration.service';
+import Swal from 'sweetalert2'
 
 @Component({
   selector: 'app-learner-registration-confirm-modal',
@@ -27,7 +28,6 @@ export class LearnerRegistrationConfirmModalComponent implements OnInit {
     ) { }
 
   ngOnInit() {
-    console.log(this.learnerId);
   }
   onSubmit(){
     // return console.log(this.fdObj)
@@ -45,7 +45,8 @@ export class LearnerRegistrationConfirmModalComponent implements OnInit {
       fun= this.registrationService.addGroupCourse(temp);
     }
       else{
-        fun = this.registrationService.add121Course(this.oneOnOneCourse);
+        let temp = {OnetoOneCourses: this.oneOnOneCourse};
+        fun = this.registrationService.add121Course(temp);
       }
     }
 
@@ -58,6 +59,11 @@ export class LearnerRegistrationConfirmModalComponent implements OnInit {
         if(this.addCourse){}else{
         this.router.navigate(['/learner/success']);}
         this.activeModal.dismiss();
+        Swal.fire({
+          title: 'Your Work Has Been Saved',
+          type: 'success',
+          showConfirmButton: false,
+        });
         this.addCourse = false;
       },
       error => {
@@ -66,6 +72,12 @@ export class LearnerRegistrationConfirmModalComponent implements OnInit {
         this.isGroupCourse = false;
         this.addCourse = false;
         this.errorMsg = error;
+        this.activeModal.dismiss();
+        Swal.fire({
+          title: 'Sorry! ' + error.error.ErrorMessage,
+          type: 'error',
+          showConfirmButton: false,
+        });
         console.log('Error!', error);
       }
     )
