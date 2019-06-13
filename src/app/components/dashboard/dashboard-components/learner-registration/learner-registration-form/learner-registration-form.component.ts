@@ -646,7 +646,8 @@ selectLocation(id, i) {
     this.prepareTeaNameInLevObjListArray.push(this.prepareTeaNameInLevObjItemArray);
     this.prepareTeaNameListArray.push(this.prepareTeaNameItemArray);
   }
-  transformTime(n){
+  // give 0 for time if less than 10
+  transformTime(n:number){
     if (n<10)
       return '0'+n;
     else
