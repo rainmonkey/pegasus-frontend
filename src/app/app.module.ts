@@ -106,7 +106,7 @@ import { StaffDetailModalComponent } from './components/dashboard/dashboard-comp
 import { StaffEditModalComponent } from './components/dashboard/dashboard-components/admin-staff/staff-edit-modal/staff-edit-modal.component';
 import { StaffModalFormComponent } from './components/dashboard/dashboard-components/admin-staff/staff-modal-form/staff-modal-form.component';
 import { InventoryDetailModalComponent } from './components/dashboard/dashboard-components/inventory/inventory-detail-modal/inventory-detail-modal.component';
-import { InventoryRecieptModalComponent } from './components/dashboard/dashboard-components/inventory/inventory-reciept-modal/inventory-reciept-modal.component';
+import { InventoryReceiptModalComponent } from './components/dashboard/dashboard-components/inventory/inventory-Receipt-modal/inventory-Receipt-modal.component';
 import { HolidayCalendarComponent } from './components/dashboard/dashboard-components/admin-holidays/holiday-calendar/holiday-calendar.component';
 
 
@@ -208,7 +208,7 @@ import { HolidayCalendarComponent } from './components/dashboard/dashboard-compo
     StaffDetailModalComponent,
     StaffEditModalComponent,
     InventoryDetailModalComponent,
-    InventoryRecieptModalComponent,
+    InventoryReceiptModalComponent,
     HolidayCalendarComponent
   ],
   imports: [
@@ -261,7 +261,7 @@ import { HolidayCalendarComponent } from './components/dashboard/dashboard-compo
     StaffDetailModalComponent,
     StaffEditModalComponent,
     InventoryDetailModalComponent,
-    InventoryRecieptModalComponent,
+    InventoryReceiptModalComponent,
   ],
   exports: [AppComponent],
   bootstrap: [AppComponent]

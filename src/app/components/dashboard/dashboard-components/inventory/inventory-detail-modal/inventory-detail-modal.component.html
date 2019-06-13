@@ -48,8 +48,8 @@
             *ngIf='updateForm.get("BuyingPrice").invalid && updateForm.get("BuyingPrice").touched'>required</small>
           <input type="number" class='col-12 t_mf_input' formControlName='BuyingPrice'
             [class.t_mf_error_border]='updateForm.get("BuyingPrice").invalid && updateForm.get("BuyingPrice").touched'>
-          <label class='t_mf_label'>Reciept File (Only Word/PDF/Image):</label>&nbsp;
-          <input type="file" accept='.doc,.docx,.pdf,application/msword,image/*' (change)='uploadReciept($event)'
+          <label class='t_mf_label'>Receipt File (Only Word/PDF/Image):</label>&nbsp;
+          <input type="file" accept='.doc,.docx,.pdf,application/msword,image/*' (change)='uploadReceipt($event)'
             formControlName='ReceiptImg'>
         </div>
       </div>

@@ -15,7 +15,7 @@ export class InventoryDetailModalComponent implements OnInit {
   public messageColor: string;
   public submitionFlag: boolean = true;
   public loadingGifFlag: boolean = false;
-  public RecieptToSubmit:any;
+  public ReceiptToSubmit: any;
   public updateForm: FormGroup;
   //Level dropdown options
   public productName: Array<any>;
@@ -78,7 +78,7 @@ export class InventoryDetailModalComponent implements OnInit {
         Quantity: [null, Validators.required],
         BuyingPrice: [null, Validators.required],
         StaffId: [null, Validators.required],
-        ReceiptImg:[null, Validators.required]
+        ReceiptImg: [null, Validators.required]
       }
     }
     return groupObj;
@@ -139,8 +139,9 @@ export class InventoryDetailModalComponent implements OnInit {
       this.errorMessage = 'Error! Please check your input.'
     }
   }
-  // Upload Reciept
-  uploadReciept(event){
-    this.RecieptToSubmit = <File>event.target.files[0];
+  // Upload Receipt
+  uploadReceipt(event) {
+    //assign file to ReceiptToSubmit
+    this.ReceiptToSubmit = <File>event.target.files[0];
   }
 }
