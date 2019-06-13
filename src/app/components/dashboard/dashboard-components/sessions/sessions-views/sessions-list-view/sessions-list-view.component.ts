@@ -8,6 +8,7 @@ import {SessionCancelModalComponent} from '../../session-modals/session-cancel-m
 import {SessionCompletedModalComponent} from '../../session-modals/session-completed-modal/session-completed-modal.component';
 import {DatePipe} from '@angular/common';
 import {SessionRescheduleModalComponent} from '../../session-modals/session-reschedule-modal/session-reschedule-modal.component';
+import {__await} from 'tslib';
 
 @Component({
   selector: 'app-sessions-list-view',
@@ -104,7 +105,7 @@ export class SessionsListViewComponent implements OnInit {
   }
 
   // get data from server side
-  getData(begin, end) {
+   getData(begin, end) {
     this.isloading = true;
     this.sessionsService.getReceptionistLessonBetweenDate(begin, end).subscribe(
       (res) => {
@@ -112,6 +113,7 @@ export class SessionsListViewComponent implements OnInit {
         this.InitialSessionList = res.Data;
         this.SessionList = res.Data;
         this.SessionListLength = res.Data.length; // length prop is under Data prop
+        this.teacherSearch()
       },
       error => {
         alert('Server Error')
@@ -128,7 +130,6 @@ export class SessionsListViewComponent implements OnInit {
       return;
     }
     this.getData(beginDate, endDate);
-    this.teacherSearchValue = '';
   }
 
   teacherSearch = () => {
