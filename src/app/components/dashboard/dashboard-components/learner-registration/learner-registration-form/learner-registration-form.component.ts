@@ -187,7 +187,7 @@ export class LearnerRegistrationFormComponent implements OnInit, DoCheck, AfterV
         learnerLevel: [this.whichLearner ? this.whichLearner.LearnerLevel : this.selectLearnerLevel, Validators.required],
         location: [this.whichLearner ? this.whichLearner.OrgId : this.orgId, Validators.required],
         levelType: [this.whichLearner ? this.whichLearner.LevelType : '0'],
-        levelTypeRadio: [this.whichLearner ? this.whichLearner.LevelType: '1'],
+        levelTypeRadio: [this.whichLearner ? this.whichLearner.LevelType: 1],
         paymentPeriod: [this.whichLearner ? this.whichLearner.PaymentPeriod : '1'],
         referrer: [this.whichLearner ? this.whichLearner.Referrer : ''],
         isUnder18: [this.whichLearner ? this.whichLearner.isUnder18 : 0],
@@ -516,6 +516,8 @@ export class LearnerRegistrationFormComponent implements OnInit, DoCheck, AfterV
   confirmGroupCourse() {
     let tempGroupModal = {};
     console.log('wo yao jia ji tui', this.groupCourseInstance)
+    this.groupCourseForSubmit = [];
+    this.learnerGroupCourse = []
     for (let groupCourse of this.groupCourseInstance) {
       if (groupCourse.isChecked) {
         this.tempGroupCourseObj = {};
@@ -656,6 +658,7 @@ selectLocation(id, i) {
     let cs = this.customCourse.value;
     console.log('custom Course Form value', cs);
     // let tempObj = {};
+    this.oneOnOneCourse = [];
     for (let cc of this.customCourse.value) {
       if (cc.course===''||!cc.course) continue;
       let tempObj = {};
@@ -701,6 +704,7 @@ selectLocation(id, i) {
     this.fdObj['Referrer'] = this.learner.referrer;
     // encapsulate parent form data
     // console.log('submit', this.parentForm.value)
+    this.parent = [];
     for (let parent of this.parentForm.value) {
       let parentTempObj = {};
       parentTempObj['FirstName'] = parent.firstName;
@@ -718,7 +722,9 @@ selectLocation(id, i) {
     }
     this.fdObj['LearnerOthers'] = this.learnerOthers;
     console.log(this.fdObj);
+    this.fd.delete('details');
     this.fd.append('details', JSON.stringify(this.fdObj));
+    console.log(this.fd)
     // console.log('form data', this.fd);
     // active modal waiting for decision
     this.openConfirm();
