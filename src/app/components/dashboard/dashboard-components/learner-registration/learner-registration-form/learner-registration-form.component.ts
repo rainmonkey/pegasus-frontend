@@ -526,7 +526,8 @@ export class LearnerRegistrationFormComponent implements OnInit, DoCheck, AfterV
         this.tempGroupCourseObj['BeginDate'] = groupCourse.beginDate;
         this.learnerGroupCourse.push(this.tempGroupCourseObj);
         tempGroupModal = {...this.tempGroupCourseObj};
-        tempGroupModal['LearnerId'] = this.whichLearner.LearnerId;
+        if (this.whichLearner)
+          tempGroupModal['LearnerId'] = this.whichLearner.LearnerId;
         this.groupCourseForSubmit.push(tempGroupModal);
       }
     }

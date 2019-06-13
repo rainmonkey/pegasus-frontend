@@ -15,7 +15,7 @@ export class InventoryDetailModalComponent implements OnInit {
   public messageColor: string;
   public submitionFlag: boolean = true;
   public loadingGifFlag: boolean = false;
-  public RecieptToSubmit:any;
+  public receiptFile: any;
   public updateForm: FormGroup;
   //Level dropdown options
   public productName: Array<any>;
@@ -78,7 +78,7 @@ export class InventoryDetailModalComponent implements OnInit {
         Quantity: [null, Validators.required],
         BuyingPrice: [null, Validators.required],
         StaffId: [null, Validators.required],
-        ReceiptImg:[null, Validators.required]
+        ReceiptImg: [null, Validators.required]
       }
     }
     return groupObj;
@@ -91,7 +91,8 @@ export class InventoryDetailModalComponent implements OnInit {
     if (vailadValue !== null && this.updateForm.dirty) {
       this.submitionFlag = false;
       this.loadingGifFlag = true;
-      this.submitByMode(vailadValue);
+      // this.submitByMode(vailadValue);
+      this.stringifySubmitStr();
     } else if (!this.updateForm.dirty) {
       this.errorMessage = 'Data did no changing!';
     } else {
@@ -113,13 +114,26 @@ export class InventoryDetailModalComponent implements OnInit {
       return null;
     }
   }
+  /*
+    after data is ready to submit
+  */
+ stringifySubmitStr() {
+  let formData = new FormData();
+  formData.append('productIdstr', this.updateForm.get('ProductId').value);
+  formData.append('orgIdstr', this.updateForm.get('OrgId').value);
+  formData.append('quantitystr', JSON.stringify(this.updateForm.get('Quantity').value));
+  formData.append('pricestr', JSON.stringify(this.updateForm.get('BuyingPrice').value));
+  formData.append('staffIdstr', this.updateForm.get('StaffId').value);
+  formData.append('Receipt', this.receiptFile);  
+  console.log(typeof(this.receiptFile))
+  this.submitByMode(formData);
+}
   // Add & Update new data 
   submitByMode(formValue) {
     //while push a stream of new data
-    if (this.command == 0) {
       this.inventoriesService.addNew(formValue).subscribe(
         (res) => {
-          // console.log(formValue);
+          console.log(formValue);
           alert('Submit success!');
           this.activeModal.close();
         },
@@ -128,8 +142,15 @@ export class InventoryDetailModalComponent implements OnInit {
           console.log(err)
         }
       );
-    }
   }
+  // Upload Receipt
+  uploadReceipt(event) {
+    //assign file to ReceiptToSubmit
+      this.receiptFile = <File>event.target.files[0];
+      // this.updateForm.get('ReceiptImg').setValue(this.receiptFile);
+      
+  }
+  
   // Show error message
   backendErrorHandler(err) {
     if (err.error.ErrorMessage != null) {
@@ -139,8 +160,5 @@ export class InventoryDetailModalComponent implements OnInit {
       this.errorMessage = 'Error! Please check your input.'
     }
   }
-  // Upload Reciept
-  uploadReciept(event){
-    this.RecieptToSubmit = <File>event.target.files[0];
-  }
+  
 }

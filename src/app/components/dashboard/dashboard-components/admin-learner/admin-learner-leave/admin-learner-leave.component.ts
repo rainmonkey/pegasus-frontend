@@ -3,7 +3,7 @@ import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
 import {FormBuilder} from '@angular/forms';
 import {LearnerDayOff} from '../../../../../models/LearnerDayOff';
 import {LearnersService} from '../../../../../services/http/learners.service';
-
+import Swal from 'sweetalert2';
 @Component({
   selector: 'app-admin-learner-leave',
   templateUrl: './admin-learner-leave.component.html',
@@ -45,6 +45,11 @@ export class AdminLearnerLeaveComponent implements OnInit {
       this.isConfirmClick = false;
       this.isloading = false;
       this.isCancelFailed = true;
+      Swal.fire({
+        type: 'error',
+        title: 'Oops...',
+        text: err.error.ErrorMessage,
+      });
     });
   }
 

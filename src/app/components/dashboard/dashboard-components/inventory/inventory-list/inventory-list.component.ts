@@ -7,7 +7,7 @@ import { NgbootstraptableService } from '../../../../../services/others/ngbootst
 
 import { InventoriesService } from '../../../../../services/http/inventories.service';
 import { InventoryDetailModalComponent } from '../inventory-detail-modal/inventory-detail-modal.component';
-import { InventoryRecieptModalComponent } from '../inventory-reciept-modal/inventory-reciept-modal.component';
+import { InventoryReceiptModalComponent } from '../inventory-Receipt-modal/inventory-Receipt-modal.component';
 
 @Component({
   selector: 'app-inventory-list',
@@ -91,10 +91,10 @@ export class InventoryListComponent implements OnInit {
   }
 
   /* 
-    Reciept Image
+    Receipt Image
   */
   imageModal(command, whichStockOrder) {
-    const modalRef = this.modalService.open(InventoryRecieptModalComponent);
+    const modalRef = this.modalService.open(InventoryReceiptModalComponent);
     let that = this;
     modalRef.result.then((result) => {
       this.closeResult = `Closed with: ${result}`;

@@ -3,6 +3,7 @@ import { CoursesService } from 'src/app/services/http/courses.service';
 import { Component, OnInit, Input, Output, ViewChildren, EventEmitter } from '@angular/core';
 import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { forkJoin } from 'rxjs';
+import * as jsPDF from 'jspdf';
 
 @Component({
   selector: 'app-trial-confirm',
@@ -137,5 +138,15 @@ export class TrialConfirmComponent implements OnInit {
   closeModal(){
     this.closeModalFlag.emit(true);
     this.activeModal.close('Cross click')
+  }
+
+  downloadInvoice(){
+    let doc = new jsPDF({
+      orientation: 'orientation',
+      format: [595.28, 841.89],
+    });
+
+    doc.text('${s Payment Invoice', null, null,null,null,"center");
+    doc.save('aaaa');
   }
 }

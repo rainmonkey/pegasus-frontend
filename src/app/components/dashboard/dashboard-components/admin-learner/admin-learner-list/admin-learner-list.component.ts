@@ -16,8 +16,9 @@ import { LearnerDeleteCourseModalComponent } from '../learner-delete-course-moda
 })
 export class AdminLearnerListComponent implements OnInit {
   //what columns showed in the info page, can get from back-end in the future. must as same as database
-  public columnsToShow: Array<string> = ['FirstName', 'LastName', 'ContactNum', 'Email'];
+  public columnsToShow: Array<string> = ['FirstName', 'LastName'];
 
+public columnsToShow1: Array<string> = ['ContactNum', 'Email'];
   //learners data from servers
   public learnerList: Array<any>;
 
@@ -167,7 +168,7 @@ export class AdminLearnerListComponent implements OnInit {
     const modalRef = this.modalService.open(AdminLearnerLeaveComponent,{size: 'lg'});
     modalRef.componentInstance.learner = whichLearner;
    }
- 
+
    periodCourseChangeModal(cammand, whichlearner) {
      const modalRef = this.modalService.open(AdminLearnerPeriodCourseChangeModalComponent, {size: 'lg'});
      modalRef.componentInstance.learner = whichlearner;
