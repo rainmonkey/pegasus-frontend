@@ -13,6 +13,7 @@
         <div class="col-5">
           <div>Begin Date</div>
           <input type="date" class="form-control" formControlName="BeginDate">
+          <small class="text-danger" *ngIf="BeginDate.invalid && BeginDate.touched">Please enter the begin date</small>
         </div>
         <div class="col-5">
           <div>End Date</div>
@@ -21,48 +22,56 @@
         <div class="col-5">
           <div>Begin Time</div>
           <input type="time" class="form-control" formControlName="BeginTime">
+          <small class="text-danger" *ngIf="BeginTime.invalid && BeginTime.touched">Please enter the begin time</small>
         </div>
-        <div class="col-5">
-          <div>End Time</div>
-          <input class="form-control" type="time" class="form-control" formControlName="EndTime">
-        </div>
-        <div class="col-5">
+        <div class="col-6">
           <div>Org Name</div>
-          <select formControlName="OrgId" (change)="GetRoom($event.target.value)">
-            <option disabled selected value> -- select an option -- </option>
-            <option *ngFor="let org of Orgs" [value]="org.OrgId">{{org.OrgName}}</option>
-          </select>
+          <div>
+            <select formControlName="OrgId" (change)="GetRoom($event.target.value)">
+              <option disabled selected value> -- select an option -- </option>
+              <option *ngFor="let org of Orgs" [value]="org.OrgId">{{org.OrgName}}</option>
+            </select>
+          </div>
+          <small class="text-danger" *ngIf="OrgId.invalid && OrgId.touched">Please select branch</small>
         </div>
         <div class="col-5">
           <div>Room Name</div>
-          <select formControlName="RoomId">
-            <option disabled selected value> -- select an option -- </option>
-            <option *ngFor="let room of Rooms" [value]="room.RoomId">{{room.RoomName}}</option>
-          </select>
+          <div>
+            <select formControlName="RoomId">
+              <option disabled selected value> -- select an option -- </option>
+              <option *ngFor="let room of Rooms" [value]="room.RoomId">{{room.RoomName}}</option>
+            </select>
+          </div>
+          <small class="text-danger" *ngIf="RoomId.invalid && RoomId.touched">Please select Room</small>
         </div>
         <div class="col-5">
           <div>Day of week</div>
-          <select formControlName="DayOfWeek">
-            <option disabled selected value> -- select an option -- </option>
-            <option value="1">Monday</option>
-            <option value="2">Tuesday</option>
-            <option value="3">Wednesday</option>
-            <option value="4">Thursday</option>
-            <option value="5">Friday</option>
-            <option value="6">Saturday</option>
-            <option value="7">Sunday</option>
-          </select>
+          <div>
+            <select formControlName="DayOfWeek">
+              <option disabled selected value> -- select an option -- </option>
+              <option value="1">Monday</option>
+              <option value="2">Tuesday</option>
+              <option value="3">Wednesday</option>
+              <option value="4">Thursday</option>
+              <option value="5">Friday</option>
+              <option value="6">Saturday</option>
+              <option value="7">Sunday</option>
+            </select>
+          </div>
+          <small class="text-danger" *ngIf="DayOfWeek.invalid && DayOfWeek.touched">Please select day of week</small>
         </div>
         <div class="col-5">
           <div>Is Temporary</div>
-          <select formControlName="IsTemporary">
+          <select formControlName="IsTemporary" (change)="IsTemporaryChange()">
             <option value="0">No</option>
             <option value="1">Yes</option>
           </select>
+          <small class="text-danger" *ngIf="IsTemporary.invalid && IsTemporary.touched">Please select isTemporary</small>
         </div>
         <div class="col-10">
           <div>Reason</div>
           <input type="text" class="form-control" formControlName="reason">
+          <small class="text-danger" *ngIf="reason.invalid && reason.touched">Please enter reason</small>
         </div>
       </div>
 
@@ -124,6 +133,7 @@
     <span *ngIf='isEditSuccess' class='text-success'>Cancel Success </span>
     <span *ngIf='isEditFail' class='text-danger'>Cancel Fail </span>
     <div *ngIf="isloading" class="loaderSmall"></div>
+    <span *ngIf="IsformError" class="text-danger">{{errorMessage}}</span>
     <button *ngIf="!isConfirmClick" type='button' type="submit" class='btn btn-outline-dark'>Confirm</button>
     <button  type="button" class="btn btn-outline-dark" (click)="activeModal.close('Close click')">Close</button>
   </div>
