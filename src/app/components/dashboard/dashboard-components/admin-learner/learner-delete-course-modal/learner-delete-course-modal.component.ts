@@ -17,13 +17,15 @@ export class LearnerDeleteCourseModalComponent implements OnInit {
   chooseCourse(){
     this.isGroupCourse = !this.isGroupCourse;
   }
-  onSubmit(){
-    let id = this.whichLearner.LearnerId;
+  onSubmit(ele){
+    console.log(ele)
     let fun;
     if(this.isGroupCourse){
-      fun = this.endCourse.endGroupCourse(id, this.groupEndDate);
+      let idIns = ele.GroupCourseInstanceId
+      fun = this.endCourse.endGroupCourse(idIns, this.groupEndDate);
     } else{
-      fun = this.endCourse.end121Course(id, this.one2OneEndDate);
+      let idIns = ele.CourseInstanceId
+      fun = this.endCourse.end121Course(idIns, this.one2OneEndDate);
     }
     fun.subscribe(
       res => {

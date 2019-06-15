@@ -13,7 +13,7 @@
   <h4>Course</h4>
   <div>
     <div class="row lable-pos">
-      <button class="button-margin btn btn-outline-primary" (click)="chooseCourse()">Group/One-on-One Course</button>
+      <button class="button-margin btn btn-outline-primary pl-2" (click)="chooseCourse()">Group/One-on-One Course</button>
     </div>
 
     <div *ngIf='isGroupCourse' class='m-2'>
@@ -58,7 +58,7 @@
                 </div>
               </div>
               <div class='col-6'>
-                <button (click)='onSubmit()'>Submit End Date</button>
+                <button (click)='onSubmit(groupCourse)'>Submit End Date</button>
               </div>
             </div>
           </div>
@@ -108,7 +108,7 @@
                 <input type="date" [(ngModel)]="one2OneEndDate">
               </div>
               <div class='col-6'>
-                <button (click)='onSubmit()'>Submit End Date</button>
+                <button (click)='onSubmit(ele)'>Submit End Date</button>
               </div>
 
               <div class="col-6">

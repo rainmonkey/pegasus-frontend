@@ -63,12 +63,12 @@ export class LearnerRegistrationService {
   // set end date for group course
   endGroupCourse(id,endDate){
     // @ts-ignore
-    return this.http.put(this.baseUrl + 'LearnerGroupCourse' + id + '/' + endDate);
+    return this.http.put(this.baseUrl + 'LearnerGroupCourse/' + id + '/' + endDate);
   }
   // set end date for 121 course
   end121Course(id,endDate){
     // @ts-ignore
-    return this.http.put(this.baseUrl + 'OnetoOneCourseInstance' + id + '/' + endDate);
+    return this.http.put(this.baseUrl + 'OnetoOneCourseInstance/' + id + '/' + endDate);
   }
 
 }
