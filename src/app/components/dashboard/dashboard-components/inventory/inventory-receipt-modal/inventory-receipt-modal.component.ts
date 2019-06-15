@@ -28,12 +28,11 @@ export class InventoryReceiptModalComponent implements OnInit {
    get photo src
  */
   getPhotoSrc(photoObj) {
-    let src = this.whichStockOrder[photoObj];
-    if (src == null) {
+    if (this.whichStockOrder[photoObj] == null) {
       return '../../../../../../assets/images/shared/default-employer-profile.png';
     }
     else {
-      return this.photoUrl + src;
+      return this.photoUrl + this.whichStockOrder[photoObj];
     }
   }
 
@@ -44,5 +43,4 @@ export class InventoryReceiptModalComponent implements OnInit {
     event.target.src = '../../../../../../assets/images/shared/default-employer-profile.png';
     return;
   }
-
 }

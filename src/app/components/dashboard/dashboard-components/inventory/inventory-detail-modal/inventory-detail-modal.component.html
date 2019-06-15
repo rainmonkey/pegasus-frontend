@@ -26,15 +26,12 @@
             *ngIf='updateForm.get("OrgId").invalid && updateForm.get("OrgId").touched'>required</small>
           <select type="text" class='col-12 t_mf_input' formControlName="OrgId"
             [class.t_mf_error_border]='updateForm.get("OrgId").invalid && updateForm.get("OrgId").touched'>
-            <option *ngFor='let i of orgName |  orderby:"OrgName"' value="{{i.OrgId}}">{{i.OrgName}}</option>
+            <option *ngFor='let i of orgName | orderby:"OrgName"' value="{{i.OrgId}}">{{i.OrgName}}</option>
           </select>
           <label class='t_mf_label'>Staff Name:</label>&nbsp;
-          <small class='text-danger col-12 errorfontsmall' style='text-align: center'
-            *ngIf='updateForm.get("StaffId").invalid && updateForm.get("StaffId").touched'>required</small>
           <select type="text" class='col-12 t_mf_input' formControlName="StaffId"
             [class.t_mf_error_border]='updateForm.get("StaffId").invalid && updateForm.get("StaffId").touched'>
-            <option *ngFor="let i of staffName | orderby:'FirstName'" value="{{i.StaffId}}">{{i.FirstName}}
-              {{i.LastName}}</option>
+            <option *ngFor="let i of staffName | orderby:'StaffFullName'" value="{{i.StaffId}}">{{i.StaffFullName}}</option>
           </select>
         </div>
         <div class="col-6">
@@ -48,9 +45,8 @@
             *ngIf='updateForm.get("BuyingPrice").invalid && updateForm.get("BuyingPrice").touched'>required</small>
           <input type="number" class='col-12 t_mf_input' formControlName='BuyingPrice'
             [class.t_mf_error_border]='updateForm.get("BuyingPrice").invalid && updateForm.get("BuyingPrice").touched'>
-          <label class='t_mf_label'>Receipt File (Only Word/PDF/Image):</label>&nbsp;
-          <input type="file" name="ReceiptImg" accept='.doc,.docx,application/pdf,application/msword,image/*' (change)='uploadReceipt($event)'
-            formControlName='ReceiptImg'>
+          <label class='t_mf_label'>Receipt File (Only png/jpg/jpeg):</label>&nbsp;
+          <input type="file" name="ReceiptImg" accept='image/*' (change)='uploadReceipt($event)' formControlName='ReceiptImg'>
         </div>
       </div>
     </form>
@@ -60,5 +56,5 @@
 <div class='modal-footer'>
   <div *ngIf='loadingGifFlag' class="loaderSmall"></div>
   <button type='button' class='btn btn-outline-dark' [disabled]="!this.updateForm.valid"
-    (click)='this.updateForm.valid && onSubmit(this.updateForm)' *ngIf='submitionFlag'>Save</button>
+    (click)='this.updateForm.valid && onSubmit(this.updateForm)'>Save</button>
 </div>
