@@ -10,6 +10,7 @@ import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { reduce } from 'rxjs/operators';
 import { TrialConfirmComponent } from '../trial-confirm/trial-confirm.component';
 import { CoursesService } from 'src/app/services/http/courses.service';
+import { LookUpsService } from 'src/app/services/http/look-ups.service';
 
 
 
@@ -29,6 +30,7 @@ export class TrialModalComponent implements OnInit {
     { "start": "2019-06-12T15:00:00", "end": "2019-06-12T16:00:00", "rendering": 'background', },
     { "start": "2019-06-12T16:30:00", "end": "2019-06-12T17:00:00", "rendering": 'background', }
   ];
+  public teachersLevel;
   //1800000 milliseconds in 30 min
   public timeInterval30Min: number = 1800000;
   public timeInterval45Min: number = 2700000;
@@ -60,7 +62,8 @@ export class TrialModalComponent implements OnInit {
   constructor(public activeModal: NgbActiveModal,
     private modalService: NgbModal,
     private coursesService: CoursesService,
-    private learnerService: LearnersService) { }
+    private learnerService: LearnersService,
+    private lookupsService: LookUpsService) { }
 
   ngOnInit() {
     //assign current day as semester begain day.
@@ -175,11 +178,11 @@ export class TrialModalComponent implements OnInit {
         let that = this;
         modalRef.result.then(
           function () {
-            if(res == true){
+            if (res == true) {
               that.activeModal.close('Cross click')
             }
           },
-          function(){
+          function () {
             return;
           })
       }
@@ -261,6 +264,9 @@ export class TrialModalComponent implements OnInit {
     }
   }
 
+  /*
+    get time that teacher are now having class
+  */
   getTimeSlot() {
     let obj = [];
     for (let i of this.coursesTeachingByWhichTeacher) {
@@ -269,4 +275,5 @@ export class TrialModalComponent implements OnInit {
     }
     return obj;
   }
+
 }

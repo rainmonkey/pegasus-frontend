@@ -2,6 +2,7 @@ import { TrialModalComponent } from './../trial-modal/trial-modal.component';
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { CoursesService } from 'src/app/services/http/courses.service';
+import { LookUpsService } from 'src/app/services/http/look-ups.service';
 
 @Component({
   selector: 'app-trial-search',
@@ -16,11 +17,12 @@ export class TrialSearchComponent implements OnInit {
     "Orgs": { "clicked": false, "display": false, "id": 2 },
     "Teachers": { "clicked": false, "display": false, "id": 3 },
   }
-  public filters: object = { "CategoriesId": null, "OrgsId": null,"OrgsName":null, "CategoriesName":null }
+  public filters: object = { "CategoriesId": null, "OrgsId": null, "OrgsName": null, "CategoriesName": null }
   public previousCloseBtn: any = null;
   public coursesTeachingByCate;
   public termPeriod;
-  public timeSlot:Array<any>=[];
+  public timeSlot: Array<any> = [];
+  public teachersLevel;
 
   @Input() courses;
   @Input() coursesCate;
@@ -33,23 +35,13 @@ export class TrialSearchComponent implements OnInit {
   @Output() childEvent = new EventEmitter();
 
   constructor(private modalService: NgbModal,
-              private coursesService: CoursesService) { }
+    private coursesService: CoursesService,
+    private lookupsService:LookUpsService) { }
 
   ngOnInit() {
     this.getSemesterPeriod();
+    this.getTeachersLevels();
   }
-
-  getSemesterPeriod(){
-    this.coursesService.getoioi().subscribe(
-      (res) => {
-        this.termPeriod = res.Data;
-        //console.log(this.termPeriod)
-      },
-      (err) => {
-        alert('Sorry, something went wrong in server.')
-      }
-    )
-  };
 
   /*
     display courses categories tabs in HTML
@@ -84,7 +76,7 @@ export class TrialSearchComponent implements OnInit {
   */
   displayTeachers() {
     let array: Array<any> = [];
-    //先从teacher api里寻找在指定org教课的老师的课
+    //先从teacher api里寻找在指定org教课的老师
     for (let i of this.teachers) {
       for (let j of i.AvailableDays) {
         if (j.OrgId == this.filters['OrgsId']) {
@@ -92,28 +84,46 @@ export class TrialSearchComponent implements OnInit {
         }
       }
     }
- 
-    //再从teachingcourse里寻找教指定乐器的老师的课
+    //再从teachingcourse里寻找教指定乐器的老师
     let array1: Array<any> = [];
-    for (let i of this.teachingCourses){
-      for(let j of array){
-        if(j.TeacherId == i.TeacherId  && i.Course.CourseCategory.CourseCategoryId == this.filters["CategoriesId"]){
+    for (let i of this.teachingCourses) {
+      for (let j of array) {
+        if (j.TeacherId == i.TeacherId && i.Course.CourseCategory.CourseCategoryId == this.filters["CategoriesId"]) {
           array1.push(j)
         }
       }
     }
-
-    this.coursesTeachingByCate = array1;
-
     let hash = {};
     let result = array1.reduce(function (item, next) {
       hash[next.TeacherId] ? '' : hash[next.TeacherId] = true && item.push(next);
       return item;
     }, [])
 
-    //需要保存一次array
     return result;
+  }
 
+  /*
+    get semester period for each semester
+      -->send request to server, data is used for modal component
+  */
+  getSemesterPeriod() {
+    this.coursesService.getoioi().subscribe(
+      (res) => {
+        this.termPeriod = res.Data;
+        //console.log(this.termPeriod)
+      },
+      (err) => {
+        alert('Sorry, something went wrong in server.')
+      }
+    )
+  };
+
+  getTeachersLevels() {
+    this.lookupsService.getLookUps(1).subscribe(
+      (res) => {
+        this.teachersLevel = res.Data;
+      }
+    )
   }
 
   /*
@@ -191,14 +201,14 @@ export class TrialSearchComponent implements OnInit {
   /*
     pop up FullCalendar modal
   */
- popUpModalReady(whichTeacher,coursesTeachingByWhichTeacher) {
+  popUpModalReady(whichTeacher, coursesTeachingByWhichTeacher) {
     const modalRef = this.modalService.open(TrialModalComponent, { size: 'lg', backdrop: 'static', keyboard: false });
     modalRef.componentInstance.termPeriod = this.termPeriod;
     modalRef.componentInstance.cateName = this.filters['CategoriesName'];
     modalRef.componentInstance.orgName = this.filters['OrgsName'];
     modalRef.componentInstance.whichTeacher = whichTeacher;
     modalRef.componentInstance.cateId = this.filters["CategoriesId"];
-    modalRef.componentInstance.orgId = this.filters[ "OrgsId"];
+    modalRef.componentInstance.orgId = this.filters["OrgsId"];
     modalRef.componentInstance.courses = this.courses;
     modalRef.componentInstance.LearnerId = this.LearnerId;
     modalRef.componentInstance.availableDOW = this.getAvailabelDOW(whichTeacher);
@@ -206,23 +216,37 @@ export class TrialSearchComponent implements OnInit {
     modalRef.componentInstance.coursesTeachingByWhichTeacher = coursesTeachingByWhichTeacher;
   }
 
-  popUpModal(whichTeacher){
-   let teacherId = whichTeacher.TeacherId;
+  popUpModal(whichTeacher) {
+    let teacherId = whichTeacher.TeacherId;
     this.coursesService.getLessonsByTeacherId(teacherId).subscribe(
       (res) => {
-        this.popUpModalReady(whichTeacher,res.Data);
+        this.popUpModalReady(whichTeacher, res.Data);
       }
     )
   }
 
-  getAvailabelDOW(whichTeacher){
-    let array:Array<any>=[];
-    for(let i of whichTeacher.AvailableDays){
-      if(i.OrgId == this.filters["OrgsId"]){
+  /*
+    get teacher availabe day in a week
+  */
+  getAvailabelDOW(whichTeacher) {
+    let array: Array<any> = [];
+    for (let i of whichTeacher.AvailableDays) {
+      if (i.OrgId == this.filters["OrgsId"]) {
         array.push(i.DayOfWeek)
       }
     }
     return array;
+  }
+
+  /*
+    get teacher level name
+  */
+  getLevel(level){
+    for(let i of this.teachersLevel){
+      if(level == i.PropValue){
+        return i.PropName;
+      }
+    }
   }
 
 }
