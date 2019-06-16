@@ -84,7 +84,7 @@
                   </label>
                   <select name='RoleId' class='col-12 t_mf_input' formControlName='RoleId'
                     [class.t_mf_error_border]='updateForm.get("RoleId").invalid && updateForm.get("RoleId").touched'>
-                    <option *ngFor='let i of typeList' value={{i.PropName}}>{{i.PropName}}</option>
+                    <option *ngFor='let i of typeList' value={{i.PropValue}}>{{i.PropName}}</option>
                   </select>
                 </div>
 
