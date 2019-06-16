@@ -49,6 +49,7 @@ export class SessionsCalendarViewTutorComponent implements OnInit {
         }
       },
       eventClick: (info) => {
+        console.log(info)
         Swal.fire({
             type: 'info',
             html: info.event.extendedProps.description
