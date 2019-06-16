@@ -96,7 +96,6 @@ import { StaffPanelComponent } from './components/dashboard/dashboard-components
 import { SimplifyOrgPipe } from './shared/pipes/simplify-org.pipe';
 import { LearnerCreditPanelComponent } from './components/dashboard/dashboard-components/learner-credit/learner-credit-panel/learner-credit-panel.component';
 import { LearnerCreditDetailsComponent } from './components/dashboard/dashboard-components/learner-credit/learner-credit-details/learner-credit-details.component';
-import { TrialTesterComponent } from './components/dashboard/dashboard-components/trial-session/trial-tester/trial-tester.component';
 import { OrderbyPipe } from './shared/pipes/orderby.pipe';
 import { SessionRescheduleModalComponent } from './components/dashboard/dashboard-components/sessions/session-modals/session-reschedule-modal/session-reschedule-modal.component';
 import { MondayDateInWeekByDatePipe } from './shared/pipes/monday-date-in-week-by-date.pipe';
@@ -201,7 +200,6 @@ import { AddHolidayModalComponent } from './components/dashboard/dashboard-compo
     TrialModalComponent,
     LearnerCreditPanelComponent,
     LearnerCreditDetailsComponent,
-    TrialTesterComponent,
     OrderbyPipe,
     SessionRescheduleModalComponent,
     MondayDateInWeekByDatePipe,
@@ -265,7 +263,6 @@ import { AddHolidayModalComponent } from './components/dashboard/dashboard-compo
     LearnerRegistrationConfirmModalComponent,
     LearnerRegistrationDeleteModalComponent,
     TrialModalComponent,
-    TrialTesterComponent,
     TrialConfirmComponent,
     StaffDeleteModalComponent,
     StaffDetailModalComponent,
