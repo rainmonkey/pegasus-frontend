@@ -42,7 +42,6 @@ export class NgbootstraptableService {
     **********************************************/
   searching(listToSearch: Array<any>, searchBy: string, searchStr: string) {
     let temList = [];
-
     for (let i of listToSearch) {
       if (i[searchBy] !== null) {
         if (temList.indexOf(i) == -1) {
