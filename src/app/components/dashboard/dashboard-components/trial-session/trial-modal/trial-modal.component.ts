@@ -275,9 +275,5 @@ export class TrialModalComponent implements OnInit {
     }
     return obj;
   }
-<<<<<<< HEAD
-}
-=======
 
 }
->>>>>>> 3715b368294d53c48422fe8a738771b950aaa01c
