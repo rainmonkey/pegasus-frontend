@@ -97,9 +97,10 @@ export class CourseClassDetailModalComponent implements OnInit {
     this.coursesService.getRooms().subscribe(
       (res) => {
         this.roomName = res.Data;
+        console.log(this.roomName)
         // During editing, run filterrooms() to show Room Num.
         if (this.command == 2) {
-          this.filterrooms(this.whichCourseClass.OrgId);
+          this.filterrooms(this.whichCourseClass.OrgId);          
         }
       },
       (err) => {
@@ -111,6 +112,7 @@ export class CourseClassDetailModalComponent implements OnInit {
   // Filter rooms selecting by Location
   filterrooms(num) {
     this.rooms = this.roomName.filter((item) => item.OrgId == num);
+    console.log(this.rooms)
   }
 
   // Validate EndDate > BeginDate

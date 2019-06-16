@@ -11,6 +11,6 @@
   <div style="text-align:center" *ngIf="errorMessage" class="text-danger">{{errorMessage}}<br></div>
   <!--Image content-->
   <div class="reimg">
-    <img [src]="getPhotoSrc('ReceiptImg')" (error)='setDefaultPhoto($event)' />
+    <img [src]="getPhotoSrc('ReceiptImg')" (error)='setDefaultPhoto($event)' width="100%"/>
   </div>
 </div>
