@@ -1,10 +1,10 @@
 import { Component, OnInit, ViewChild, Input, ViewEncapsulation } from '@angular/core';
 import { CalendarComponent } from 'ng-fullcalendar';
-import interactionPlugin from '@fullcalendar/interaction';
+import interactionPlugin,  { Draggable } from '@fullcalendar/interaction';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import { OptionsInput } from '@fullcalendar/core';
 import { HolidaysService } from 'src/app/services/http/holidays.service';
-import Swal from 'sweetalert2';
+import { Calendar } from '@fullcalendar/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { AddHolidaysModalComponent } from '../add-holidays-modal/add-holidays-modal.component';
 import { View } from '@fullcalendar/core';
@@ -18,7 +18,7 @@ import { DeleteHolidayComponent } from '../delete-holiday/delete-holiday.compone
   encapsulation: ViewEncapsulation.None
 })
 export class HolidayCalendarComponent implements OnInit {
-  public calendar: any
+  public calendar
   eventsModel;
   options: OptionsInput;
   existHoliday: any
@@ -32,6 +32,7 @@ export class HolidayCalendarComponent implements OnInit {
 
   ngOnInit() {
     this.getExitHoliday()
+
     console.log(this.fullcalendar)
     this.initFullCalendar(this)
   }
@@ -40,6 +41,7 @@ export class HolidayCalendarComponent implements OnInit {
   getExitHoliday() {
     this.HolidayServer.getHoliday().subscribe(
       (res) => {
+        console.log('aaaaaaaaaaaaa')
         this.eventsModel = this.putInfo(res.Data)
         console.log(this.eventsModel)
       },
@@ -50,14 +52,16 @@ export class HolidayCalendarComponent implements OnInit {
   }
 
   initFullCalendar(pointer) {
+
+    console.log(this.fullcalendar)
     let that = pointer;
     this.options = {
       plugins: [dayGridPlugin, interactionPlugin],
       selectable: true,
-      // select: function(info) {
-      //   console.log(info)
-      //   that.open(info)
-      // },
+      select: function(info) {
+        console.log(info)
+
+      },
       dateClick: function (info) {
         console.log(info)
         that.addAndEdit(info)
@@ -66,7 +70,11 @@ export class HolidayCalendarComponent implements OnInit {
         console.log(info)
         that.delete(info)
       },
+      droppable: true,
+
     }
+
+
   }
 
 
@@ -104,20 +112,15 @@ export class HolidayCalendarComponent implements OnInit {
     let that =this;
 
     modalRef.componentInstance.date = info;
-    // modalRef.componentInstance.refreshFlag.subscribe(
-    //   (res) => {
-    //     modalRef.result.then(
-    //       function () {
-    //         console.log(res)
-    //         if (res == true) {
-    //           that.ngOnInit();
-    //         }
-    //       },
-    //       function () {
-    //         return;
-    //       })
-    //   }
-    // )
+    modalRef.result.then(
+      (res) => {
+        that.ngOnInit()
+
+      },
+      (err) =>{
+        return
+      }
+    )
   }
 
 }
