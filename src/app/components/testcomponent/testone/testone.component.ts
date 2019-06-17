@@ -5,7 +5,7 @@ import { variable } from '@angular/compiler/src/output/output_ast';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ChangePasswordModalComponent } from '../../dashboard/dashboard-components/support/change-password-modal/change-password-modal.component';
 import { environment } from 'src/environments/environment.prod';
-
+import { forkJoin } from 'rxjs';
 
 @Component({
   selector: 'app-testone',
@@ -47,16 +47,17 @@ export class TestoneComponent implements OnInit {
   }
 
   onSubmit(){
-    this.courseService.postoioi(this.poi.value.TermId).subscribe(
+    let OneToOneService = this.courseService.postoioi(this.poi.value.TermId);
+    let GroupService = this.courseService.postGroupGenerate(this.poi.value.TermId);
+
+    forkJoin([OneToOneService, GroupService]).subscribe(
       (res) => {
-        console.log("successful");
-        console.log(res);
-        alert('Successfully generating ' + res.Data + ' data.')
+        alert('Successfully generating ' + res[0].Data + ' data, and Groupe course'+ res[1].Data + ' data.');
       },
-      (err)=>{
-        console.log(err);
+      (err) => {
+        alert('Sorry, something went wrong.')
       }
-    )
+    );    
   }
 
   changePassword(){

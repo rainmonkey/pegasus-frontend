@@ -39,8 +39,8 @@
               <th *ngFor='let i of columnsToShow1' scope='col' (click)='onSort(i)' counter='0'
               style='width: 110px' class='t_sort_title'>
               {{AddSpaceInString(i)}}</th>
-            <th scope='col' style='width: 100px; padding-right:0px'> Details & Enrolment</th>
-            <th scope='col' style='width: 100px; padding-left: 0px;'>Trial & Change Schedule</th>
+            <th scope='col' style='width: 100px; padding-right:0px'> Profile & Enrollment</th>
+            <th scope='col' style='width: 100px; padding-left: 0px;'>Trial Session& Change Schedule</th>
           </tr>
         </thead>
         <!--table body-->
@@ -52,10 +52,10 @@
             <td *ngFor='let j of columnsToShow' style='width: 60px'>{{i[j]}}</td>
             <td *ngFor='let j of columnsToShow1' style='width: 110px'>{{i[j]}}</td>
             <td  style='width: 100px; padding-right:0px;'>
-              <span class='t_info_table_btn' (click)='popUpModal(1,i)' title='Student Info'><span class='fas fa-info-circle'></span></span>
-              <span class='t_info_table_btn' (click)='popUpModal(2,i)' title='Edit Student Info'><span class='fas fa-pen'></span></span>
-              <span class='t_info_table_btn' (click)='popUpModal(0,i)' title='Enrolment'><span class="fas fa-folder-plus"></span></span>
-              <span class='t_info_table_btn' (click)='popUpModal(4,i)' title='Quit'><span class="fas fa-folder-minus"></span></span>
+              <span class='t_info_table_btn' (click)='popUpModal(1,i)' title='Student Profile'><span class='fa fa-id-card'></span></span>
+              <span class='t_info_table_btn' (click)='popUpModal(2,i)' title='Edit Student Profile'><span class='fas fa-pen'></span></span>
+              <span class='t_info_table_btn' (click)='popUpModal(0,i)' title='Book a Course'><span class="fas fa-folder-plus"></span></span>
+              <span class='t_info_table_btn' (click)='popUpModal(4,i)' title='Quit a Course'><span class="fas fa-folder-minus"></span></span>
 
             </td>
             <td style='width: 100px; padding-left:0px'>
@@ -65,7 +65,7 @@
               <span class='t_info_table_btn' (click)="popUpModal(9,i)" title='Ask for Leave'><span class='fas fa-bed' ></span></span>
               <!--              永久改课时间-->
               <span class='t_info_table_btn' (click)="popUpModal(10,i)" title='Change Schedule
-              '><span class='fas fa-book'></span></span>
+              '><span class='fas fa-calendar'></span></span>
               <span class='t_info_table_btn' (click)='popUpModal(3,i)' title='Delete Student Record'><span class='fas fa-trash-alt'></span></span>
             </td>
           </tr>
