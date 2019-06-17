@@ -235,22 +235,24 @@ public columnsToShow1: Array<string> = ['ContactNum', 'Email'];
   addModal(command, whichLearner) {
     const modalRef = this.modalService.open(LearnerAddModalComponent, { windowClass: 'my-class', backdrop: 'static', keyboard: false });
     // console.log('jewoiajfoiwjfo',modalRef.componentInstance)
-    modalRef.componentInstance.clickConfirm.subscribe(res=>{
-      this.activeSubmitted = res;
-      console.log(this.activeSubmitted);
-      this.activeModalEvent.emit(this.activeSubmitted);
-    })
-    let that = this;
-    modalRef.result.then(
-      (res) => {
-        that.ngOnInit()
-    },
-    (err) =>{
-      return
-    }
-  )
   modalRef.componentInstance.command = command;
   modalRef.componentInstance.whichLearner = whichLearner;
+
+  
+  modalRef.componentInstance.clickConfirm.subscribe(res=>{
+    this.activeSubmitted = res;
+    console.log(this.activeSubmitted);
+    this.activeModalEvent.emit(this.activeSubmitted);
+  })
+  let that = this;
+  modalRef.result.then(
+    (res) => {
+      that.ngOnInit()
+  },
+  (err) =>{
+    return
+  }
+)
 }
 deleteCourseModal(whichLearner){
   const modalRef = this.modalService.open(LearnerDeleteCourseModalComponent,{ windowClass: 'my-class',backdrop: 'static', keyboard: false  });
