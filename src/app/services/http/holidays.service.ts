@@ -14,6 +14,13 @@ getHoliday() {
   return this.http.get<any>(this.baseUrl + 'Holiday' );
 }
 
+addHoliday(data){
+  return this.http.post(this.baseUrl + 'Holiday', data)
+}
+
+deleteHoliday(HolidayId){
+  return this.http.delete(this.baseUrl + 'Holiday/' + HolidayId)
+}
 }
 
 
