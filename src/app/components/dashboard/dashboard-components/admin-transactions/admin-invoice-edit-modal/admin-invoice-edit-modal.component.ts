@@ -4,6 +4,7 @@ import { NgbActiveModal, NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-
 import { FormBuilder, Validator, Validators, RequiredValidator } from '@angular/forms';
 import { TransactionService } from '../../../../../services/http/transaction.service';
 import { InvoiceValidatorsService } from "src/app/services/others/invoice-validators.service"
+import { LookUpsService } from "src/app/services/http/look-ups.service"
 import { restoreView } from '@angular/core/src/render3';
 
 @Component({
@@ -24,8 +25,14 @@ export class AdminInvoiceEditModalComponent implements OnInit {
   itemTempPublic;
   courseData;
   coursePrice;
+  concertData: Array<any>
+  noteData: Array<any>
   originPrice = 0;
   userChosenPrice = 0;
+  concertInUse: boolean
+  noteInUse: boolean
+  tempNote
+  tempConcert
 
   // activated modal tranfer data
   @Input() item;
@@ -37,10 +44,9 @@ export class AdminInvoiceEditModalComponent implements OnInit {
     private router: Router,
     private activatedRoute: ActivatedRoute,
     private transactionService: TransactionService,
-    private invoiceValidator: InvoiceValidatorsService
-  ) {
-
-  }
+    private invoiceValidator: InvoiceValidatorsService,
+    private lookUpsService: LookUpsService
+  ) { }
 
   // invoice list fb
   invoiceEditForm = this.fb.group({
@@ -50,12 +56,14 @@ export class AdminInvoiceEditModalComponent implements OnInit {
     BeginDate: [null],
     LessonFee: [null, Validators.required],
     Concert: this.fb.group({
-      ConcertFeeName: [null],
-      ConcertFee: [null]
+      ConcertFeeName: [{ value: null, disabled: true }],
+      ConcertFee: [{ value: null, disabled: true }],
+      concertCheckBox: [false],
     }, { validator: this.invoiceValidator.matcher }),
     Note: this.fb.group({
-      NoteFeeName: [null],
-      NoteFee: [null]
+      NoteFeeName: [{ value: null, disabled: true }],
+      NoteFee: [{ value: null, disabled: true }],
+      noteCheckBox: [false]
     }, { validator: this.invoiceValidator.matcher }),
     Other1: this.fb.group({
       Other1FeeName: [null],
@@ -79,16 +87,17 @@ export class AdminInvoiceEditModalComponent implements OnInit {
   }
 
   ngOnInit() {
+    console.log(this.invoiceEditForm);
     this.patchToInvoice();
     this.dueDateLocal = this.item.DueDate;
     this.owingFeeLocal = this.item.OwingFee;
     this.getCourse();
+    this.getLooksUpData()
   }
   // get group or 121 course id
   getCourse() {
     let type;
     let courseId = this.item.CourseInstanceId
-    console.log(type, courseId)
     switch (courseId) {
       case null:
         type = 1;
@@ -101,7 +110,7 @@ export class AdminInvoiceEditModalComponent implements OnInit {
         res => {
           this.courseData = res
           this.coursePrice = res.Data.Course.Price
-          console.log(this.courseData)
+          // console.log(this.courseData)
         },
         error => {
           this.errorMsg = JSON.parse(error.error);
@@ -116,29 +125,30 @@ export class AdminInvoiceEditModalComponent implements OnInit {
       CourseName: this.item.CourseName,
       LessonQuantity: this.item.LessonQuantity,
       BeginDate: this.item.BeginDate === null ? null : this.item.BeginDate.slice(0, 10),
-      LessonFee: this.item.LessonFee,
+      LessonFee: this.item.LessonFee || 0,
       Concert: {
-        ConcertFeeName: this.item.ConcertFeeName,
-        ConcertFee: this.item.ConcertFee
+        ConcertFee: 0,
+        ConcertFeeName: ""
       },
       Note: {
-        NoteFeeName: this.item.Note,
-        NoteFee: this.item.NoteFee
+        NoteFee: 0,
+        NoteFeeName: ""
       },
       Other1: {
         Other1FeeName: this.item.Other1FeeName,
-        Other1Fee: this.item.Other1Fee,
+        Other1Fee: this.item.Other1Fee || 0,
       },
       Other2: {
         Other2FeeName: this.item.Other2FeeName,
-        Other2Fee: this.item.Other2Fee,
+        Other2Fee: this.item.Other2Fee || 0,
       },
       Other3: {
         Other3FeeName: this.item.Other3FeeName,
-        Other3Fee: this.item.Other3Fee
+        Other3Fee: this.item.Other3Fee || 0
       },
       PaidFee: this.item.PaidFee
     });
+    // this.invoiceEditForm.get("Concert.ConcertFee").disable()
   }
 
   // moniting user change course quantity
@@ -169,13 +179,13 @@ export class AdminInvoiceEditModalComponent implements OnInit {
     let data = {
       BeginDate: this.invoiceEditForm.value.BeginDate,
       CourseName: this.invoiceEditForm.value.CourseName,
-      DueDate: this.invoiceEditForm.value.DueDate,
-      LessonFee: this.invoiceEditForm.value.LessonFee || 0,
+      DueDate: this.dueDateLocal,
+      LessonFee: this.invoiceEditForm.value.LessonFee,
       LessonQuantity: this.invoiceEditForm.value.LessonQuantity,
       OwingFee: this.invoiceEditForm.value.OwingFee,
       PaidFee: this.invoiceEditForm.value.PaidFee,
-      ...this.invoiceEditForm.value.Concert,
-      ...this.invoiceEditForm.value.Note,
+      ...this.invoiceEditForm.getRawValue().Concert,
+      ...this.invoiceEditForm.getRawValue().Note,
       ...this.invoiceEditForm.value.Other1,
       ...this.invoiceEditForm.value.Other2,
       ...this.invoiceEditForm.value.Other3,
@@ -188,18 +198,11 @@ export class AdminInvoiceEditModalComponent implements OnInit {
       CourseInstanceId: this.item.CourseInstanceId
     }
 
-    data.ConcertFee = data.ConcertFee || 0
-    data.NoteFee = data.NoteFee || 0
-    data.Other1Fee = data.Other1Fee || 0
-    data.Other2Fee = data.Other2Fee || 0
-    data.Other3Fee = data.Other3Fee || 0
-
     data.OwingFee = data.LessonFee + data.ConcertFee + data.NoteFee + data.Other1Fee + data.Other2Fee + data.Other3Fee;
     data.TotalFee = data.OwingFee;
 
     this.itemTempPublic = data
-
-    console.log(data);
+    console.log(this.itemTempPublic);
   }
 
   putInvoiceData() {
@@ -209,7 +212,8 @@ export class AdminInvoiceEditModalComponent implements OnInit {
         (res) => {
           console.log(res);
           this.activeModal.dismiss();
-          this.router.navigate(['/transaction/success']);
+          alert("Save confirmed")
+          // this.router.navigate(['/transaction/success']);
         },
         (error) => {
           console.log(error)
@@ -248,6 +252,68 @@ export class AdminInvoiceEditModalComponent implements OnInit {
     } else {
       return `with: ${reason}`;
     }
+  }
+
+  getLooksUpData() {
+    this.lookUpsService.getLookUps(15).subscribe(
+      res => {
+        this.concertData = res["Data"]
+        this.tempConcert = {
+          Concert: {
+            ConcertFee: this.concertData[1].PropName,
+            ConcertFeeName: this.concertData[0].PropName
+          }
+        }
+      },
+      error => {
+        console.log(error)
+      })
+
+    this.lookUpsService.getLookUps(16).subscribe(
+      res => {
+        this.noteData = res["Data"]
+        this.tempNote = {
+          Note: {
+            NoteFee: this.noteData[1].PropName,
+            NoteFeeName: this.noteData[0].PropName
+          }
+        }
+      },
+      error => {
+        console.log(error)
+      }
+    )
+  }
+
+  onChange(formControlName: string) {
+    if (formControlName == "concertCheckBox") {
+      if (this.concertInUse) {
+        this.invoiceEditForm.get("Concert.ConcertFeeName").disable()
+        this.invoiceEditForm.get("Concert.ConcertFee").disable()
+        this.invoiceEditForm.get("Concert.ConcertFeeName").patchValue("")
+        this.invoiceEditForm.get("Concert.ConcertFee").patchValue(0)
+      }
+      if (!this.concertInUse) {
+        this.invoiceEditForm.get("Concert.ConcertFeeName").enable()
+        this.invoiceEditForm.get("Concert.ConcertFee").enable()
+        this.invoiceEditForm.patchValue(this.tempConcert)
+      }
+      this.concertInUse = !this.concertInUse
+    } else if (formControlName == "noteCheckBox") {
+      if (this.noteInUse) {
+        this.invoiceEditForm.get("Note.NoteFeeName").disable()
+        this.invoiceEditForm.get("Note.NoteFee").disable()
+        this.invoiceEditForm.get("Note.NoteFeeName").patchValue("")
+        this.invoiceEditForm.get("Note.NoteFee").patchValue(0)
+      }
+      if (!this.noteInUse) {
+        this.invoiceEditForm.get("Note.NoteFeeName").enable()
+        this.invoiceEditForm.get("Note.NoteFee").enable()
+        this.invoiceEditForm.patchValue(this.tempNote)
+      }
+      this.noteInUse = !this.noteInUse
+    }
+
   }
 
 }

@@ -45,15 +45,12 @@
         <label class="mt-2">Concert Term and Date</label>
         <input class="form-control" type="text" formControlName="ConcertFeeName" />
         <div class="text-danger" *ngIf="invoiceEditForm.controls.Concert.errors?.fillFeeName">Please fill concert term and date</div>
-        <!-- <small *ngIf="invoiceEditForm.get('CourseName').touched"
-        >(Concert term and date, e.g.,concert for term 1, yyyy-dd-mm)</small
-      > -->
       </div>
       <div class="col-5">
         <label class="mt-2">Concert Fee</label>
+        <input type="checkbox" class="ml-2" id="concertCheckBox" (change)="onChange('concertCheckBox')" formControlName="concertCheckBox">
         <input class="form-control" type="number" min='0' formControlName="ConcertFee" />
         <div class="text-danger" *ngIf="invoiceEditForm.controls.Concert.errors?.fillFee">Please fill fee</div>
-        <!-- <small *ngIf="invoiceEditForm.get('ConcertFee').touched">(Concert Fee)</small> -->
       </div>
     </div>
 
@@ -62,16 +59,12 @@
         <label class="mt-2">Lesson Note Term and Date</label>
         <input class="form-control" type="text" formControlName='NoteFeeName' />
         <div class="text-danger" *ngIf="invoiceEditForm.controls.Note.errors?.fillFeeName">Please fill note term and date</div>
-        <!-- <small *ngIf="invoiceEditForm.get('Note').touched"
-        >(e.g.,Lesson Note term 1, yyyy-dd-mm)</small
-      > -->
       </div>
       <div class="col-5">
         <label class="mt-2">Note Fee</label>
-        <!-- 有错 显示不出来默认值 -->
+        <input type="checkbox" class="ml-2" id="noteCheckBox" (change)="onChange('noteCheckBox')" formControlName="noteCheckBox">
         <input class="form-control" type="number" min='0' formControlName="NoteFee" />
         <div class="text-danger" *ngIf="invoiceEditForm.controls.Note.errors?.fillFee">Please fill fee</div>
-        <!-- <small *ngIf="invoiceEditForm.get('NoteFee').touched">(Note Fee)</small> -->
       </div>
     </div>
 

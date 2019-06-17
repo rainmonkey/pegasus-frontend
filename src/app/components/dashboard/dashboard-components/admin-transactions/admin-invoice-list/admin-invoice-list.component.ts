@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModal, NgbModalConfig } from '@ng-bootstrap/ng-bootstrap';
 import { NgbootstraptableService } from 'src/app/services/others/ngbootstraptable.service';
 import { TransactionService } from '../../../../../services/http/transaction.service';
 import { AdminInvoiceEditModalComponent } from '../admin-invoice-edit-modal/admin-invoice-edit-modal.component';
@@ -39,9 +39,8 @@ export class AdminInvoiceListComponent implements OnInit {
   constructor(
     private modalService: NgbModal,
     private ngTable: NgbootstraptableService,
-    // private learnersservice: LearnersService,
     private transactionService: TransactionService,
-
+    private config: NgbModalConfig
   ) { }
 
   ngOnInit() {
@@ -50,7 +49,7 @@ export class AdminInvoiceListComponent implements OnInit {
 
   // modal method
   open(i) {
-    const modalRef = this.modalService.open(AdminInvoiceEditModalComponent, { size: 'lg' });
+    const modalRef = this.modalService.open(AdminInvoiceEditModalComponent, { size: 'lg', backdrop: "static", keyboard: false });
     let that = this;
     console.log(modalRef)
     //pass parameters to edit modals
@@ -135,6 +134,7 @@ export class AdminInvoiceListComponent implements OnInit {
 
       //If there is a value, do search. If there is no value, return the initial list.
       if (searchingInputObj['value']) {
+        this.myArray = this.temLearnerList.map(data => data.Learner)
         this.myArray = this.ngTable.searching(this.myArray, searchBy, searchString);
         // change length inside pagination
         this.learnerListLength = this.myArray.length;
