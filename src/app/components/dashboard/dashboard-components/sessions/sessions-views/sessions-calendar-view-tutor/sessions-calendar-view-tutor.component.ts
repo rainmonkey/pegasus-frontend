@@ -60,6 +60,7 @@ export class SessionsCalendarViewTutorComponent implements OnInit {
     };
     this.InitialiseEventData();
   }
+
   generateEventData = (data) => {
     data.forEach(s => {
       s.title = s.orgName + ' ( ' + s.title + ' )'

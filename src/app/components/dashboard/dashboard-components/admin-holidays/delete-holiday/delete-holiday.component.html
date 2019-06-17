@@ -1,0 +1,20 @@
+<!--modal header-->
+<div class='modal-header'>
+    <h4>Delete Holiday</h4>
+
+    <button type="button" class='btn btn-sm btn-info t_dm_close_btn' aria-label="Close"
+      (click)="activeModal.close('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+
+  <div class='modal-body'>
+      <div >
+      Date: <span style='font-weight: 700; font-size:20px'>{{date.dateStr}}</span>
+      <br>
+      Holiday: <span style='font-weight: 500; font-size:20px'>{{date.event.title}}</span>
+      </div>
+
+
+
+  </div>
