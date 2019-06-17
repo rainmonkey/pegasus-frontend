@@ -6,7 +6,7 @@ import { MatButtonModule, MatFormFieldModule, MatInputModule } from '@angular/ma
 // Dependencies
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModule, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { FullCalendarModule } from 'ng-fullcalendar';
 import { ChartsModule } from 'ng2-charts';
 import { routing } from '../app/app-routing.module';
@@ -236,7 +236,8 @@ import { DeleteHolidayComponent } from './components/dashboard/dashboard-compone
   ],
   providers: [
     DatePipe,
-    MondayDateInWeekByDatePipe
+    MondayDateInWeekByDatePipe,
+    NgbActiveModal
   ],
   entryComponents:[
     TeacherDeleteModalComponent,

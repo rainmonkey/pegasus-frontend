@@ -213,6 +213,13 @@ export class TrialModalComponent implements OnInit {
           else, drop it.
   */
   checkAvailableDOW(array) {
+    //console.log(this.availableDOW)
+    for(let i in this.availableDOW){
+      //console.log(this.availableDOW[i]);
+      if(this.availableDOW[i] == 7){
+        this.availableDOW[i] = 0;
+      }
+    }
     //  --> the days befor current day are unavailable.
     this.termPeriod[0].BeginDate = this.currentDay;
     //outer for-loop can support multiple semesters
@@ -226,6 +233,7 @@ export class TrialModalComponent implements OnInit {
         }
       }
     }
+    console.log(array)
     return array;
   }
 
