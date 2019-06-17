@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { NgbootstraptableService } from 'src/app/services/others/ngbootstraptable.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { LearnersService } from 'src/app/services/http/learners.service';
@@ -16,8 +16,9 @@ import { LearnerDeleteCourseModalComponent } from '../learner-delete-course-moda
 })
 export class AdminLearnerListComponent implements OnInit {
   //what columns showed in the info page, can get from back-end in the future. must as same as database
-  public columnsToShow: Array<string> = ['FirstName', 'LastName', 'ContactNum', 'Email'];
+  public columnsToShow: Array<string> = ['FirstName', 'LastName'];
 
+public columnsToShow1: Array<string> = ['ContactNum', 'Email'];
   //learners data from servers
   public learnerList: Array<any>;
 
@@ -34,6 +35,10 @@ export class AdminLearnerListComponent implements OnInit {
   public columnsToSearch: string;
   public currentPage: number = 1;
   public pageSize: number = 10;
+
+  // sent active modal confirm satuation to admin learner component;
+  @Output() activeModalEvent: EventEmitter<any> = new EventEmitter;
+  activeSubmitted: boolean = false;
 
   constructor(
     private LearnerListService: LearnersService,
@@ -167,7 +172,7 @@ export class AdminLearnerListComponent implements OnInit {
     const modalRef = this.modalService.open(AdminLearnerLeaveComponent,{size: 'lg'});
     modalRef.componentInstance.learner = whichLearner;
    }
- 
+
    periodCourseChangeModal(cammand, whichlearner) {
      const modalRef = this.modalService.open(AdminLearnerPeriodCourseChangeModalComponent, {size: 'lg'});
      modalRef.componentInstance.learner = whichlearner;
@@ -229,7 +234,12 @@ export class AdminLearnerListComponent implements OnInit {
   */
   addModal(command, whichLearner) {
     const modalRef = this.modalService.open(LearnerAddModalComponent, { windowClass: 'my-class', backdrop: 'static', keyboard: false });
-
+    // console.log('jewoiajfoiwjfo',modalRef.componentInstance)
+    modalRef.componentInstance.clickConfirm.subscribe(res=>{
+      this.activeSubmitted = res;
+      console.log(this.activeSubmitted);
+      this.activeModalEvent.emit(this.activeSubmitted);
+    })
     let that = this;
     modalRef.result.then(
       (res) => {

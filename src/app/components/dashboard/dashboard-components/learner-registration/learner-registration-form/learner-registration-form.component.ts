@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, DoCheck, AfterViewInit } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, DoCheck, AfterViewInit } from '@angular/core';
 import { FormGroup, FormArray, FormBuilder, Validators, FormControl } from '@angular/forms';
 import { LearnerRegistrationService } from '../../../../../services/http/learner-registration.service';
 import { CoursesService } from '../../../../../services/http/courses.service';
@@ -24,7 +24,9 @@ export class LearnerRegistrationFormComponent implements OnInit, DoCheck, AfterV
   // courseIntanceGroup: FormGroup;
   @Input() whichLearner;
   @Input() addCourse;
-
+  // sent active modal confirm satuation to admin learner component;
+  @Output() activeModalEvent: EventEmitter<any> = new EventEmitter;
+  activeSubmitted: boolean = false;
   public time: NgbTimeStruct = { hour: 9, minute: 0, second: 0 };
   public hourStep = 1;
   public minuteStep = 15;
@@ -516,6 +518,8 @@ export class LearnerRegistrationFormComponent implements OnInit, DoCheck, AfterV
   confirmGroupCourse() {
     let tempGroupModal = {};
     console.log('wo yao jia ji tui', this.groupCourseInstance)
+    this.groupCourseForSubmit = [];
+    this.learnerGroupCourse = []
     for (let groupCourse of this.groupCourseInstance) {
       if (groupCourse.isChecked) {
         this.tempGroupCourseObj = {};
@@ -657,6 +661,7 @@ selectLocation(id, i) {
     let cs = this.customCourse.value;
     console.log('custom Course Form value', cs);
     // let tempObj = {};
+    this.oneOnOneCourse = [];
     for (let cc of this.customCourse.value) {
       if (cc.course===''||!cc.course) continue;
       let tempObj = {};
@@ -702,6 +707,7 @@ selectLocation(id, i) {
     this.fdObj['Referrer'] = this.learner.referrer;
     // encapsulate parent form data
     // console.log('submit', this.parentForm.value)
+    this.parent = [];
     for (let parent of this.parentForm.value) {
       let parentTempObj = {};
       parentTempObj['FirstName'] = parent.firstName;
@@ -719,7 +725,9 @@ selectLocation(id, i) {
     }
     this.fdObj['LearnerOthers'] = this.learnerOthers;
     console.log(this.fdObj);
+    this.fd.delete('details');
     this.fd.append('details', JSON.stringify(this.fdObj));
+    console.log(this.fd)
     // console.log('form data', this.fd);
     // active modal waiting for decision
     this.openConfirm();
@@ -806,6 +814,12 @@ selectLocation(id, i) {
     console.log(this.addCourse)
     this.modalRefConfirm = this.modalService.open(LearnerRegistrationConfirmModalComponent);
     this.modalRefConfirm.componentInstance.fdObj = this.fd;
+    console.log(this.modalRefConfirm.componentInstance)
+    this.modalRefConfirm.componentInstance.clickConfirm.subscribe(res=>{
+      this.activeSubmitted = res;
+      console.log(this.activeSubmitted);
+      this.activeModalEvent.emit(this.activeSubmitted);
+    })
     if (this.whichLearner && !this.addCourse){
       this.modalRefConfirm.componentInstance.command = 2;  //edit
       this.modalRefConfirm.componentInstance.learnerId = this.whichLearner.LearnerId;

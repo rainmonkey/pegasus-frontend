@@ -17,7 +17,7 @@ export class CommandFormatPipe implements PipeTransform {
         return 'Delete';
       // '4' has been used in CourseClass, so this does the distinction.
       case 5:
-        return 'Reciept Detail';
+        return 'Receipt Detail';
     }
   }
 

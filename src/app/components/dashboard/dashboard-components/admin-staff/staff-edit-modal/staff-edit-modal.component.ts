@@ -94,7 +94,7 @@ export class StaffEditModalComponent implements OnInit {
   prepareSubmitData(valueToSubmit) {
     valueToSubmit.IdType = Number(valueToSubmit.IdType);
     valueToSubmit.Gender = Number(valueToSubmit.Gender);
-    valueToSubmit.RoleId = this.changeRoleNameToNumber(valueToSubmit);
+    //valueToSubmit.RoleId = this.changeRoleNameToNumber(valueToSubmit);
     valueToSubmit.StaffOrg = this.checkOrgs();
     return valueToSubmit;
   }

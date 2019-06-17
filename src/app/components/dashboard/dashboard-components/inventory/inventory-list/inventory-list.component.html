@@ -50,7 +50,10 @@
               <th scope='col' class='tl_body_table_head sorting_item' style="width:8rem" (click)='onSort("FirstName")'>
                 Staff
               </th>
-              <th scope='col' class='tl_body_table_head' style="width:4rem">
+              <th scope='col' class='tl_body_table_head sorting_item' style="width:7rem" (click)='onSort("CreatedAt")'>
+                Upload Date
+              </th>
+              <th scope='col' class='tl_body_table_head' style="width:5rem">
                 Receipt
               </th>
             </tr>
@@ -67,6 +70,7 @@
               <td>{{i.Quantity}}</td>
               <td>${{i.BuyingPrice}}</td>
               <td>{{i.FirstName}} {{i.LastName}}</td>
+              <td>{{i.CreatedAt | date:'shortDate'}}</td>
               <td>
                 <span (click)='imageModal(5, i)' class='tl_body_table_btn col-4' style="text-align: center;">
                   <i class="fas fa-receipt"></i>

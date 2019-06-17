@@ -7,7 +7,7 @@ import { NgbootstraptableService } from '../../../../../services/others/ngbootst
 
 import { InventoriesService } from '../../../../../services/http/inventories.service';
 import { InventoryDetailModalComponent } from '../inventory-detail-modal/inventory-detail-modal.component';
-import { InventoryRecieptModalComponent } from '../inventory-reciept-modal/inventory-reciept-modal.component';
+import { InventoryReceiptModalComponent } from '../inventory-receipt-modal/inventory-receipt-modal.component';
 
 @Component({
   selector: 'app-inventory-list',
@@ -58,7 +58,6 @@ export class InventoryListComponent implements OnInit {
         this.stockOrdersListLength = res['Data'].length; //length prop is under Data prop
         this.refreshPageControl();
         this.loadingFlag = false;
-        console.log(this.stockOrdersList);
       },
       (err) => {
         this.backendErrorHandler(err);
@@ -91,10 +90,10 @@ export class InventoryListComponent implements OnInit {
   }
 
   /* 
-    Reciept Image
+    Receipt Image
   */
   imageModal(command, whichStockOrder) {
-    const modalRef = this.modalService.open(InventoryRecieptModalComponent);
+    const modalRef = this.modalService.open(InventoryReceiptModalComponent);
     let that = this;
     modalRef.result.then((result) => {
       this.closeResult = `Closed with: ${result}`;
@@ -155,7 +154,7 @@ export class InventoryListComponent implements OnInit {
       let searchingInputObj = document.getElementById('searchingInput');
 
       (initValue == undefined) ? { searchString, searchBy } =
-        { searchString: searchingInputObj['value'], searchBy: 'ProductId' } :
+        { searchString: searchingInputObj['value'], searchBy: 'ProductName' } :
         { searchString, searchBy } = initValue;
 
       this.stockOrdersList = this.ngTable.searching(this.stockOrdersListCopy, searchBy, searchString);

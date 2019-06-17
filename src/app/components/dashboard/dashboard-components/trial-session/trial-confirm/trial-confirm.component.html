@@ -83,5 +83,6 @@
   <div *ngIf='loadingGifFlag' class="loaderSmall"></div>
   <button *ngIf='!successFlag' type="button" class="btn btn-outline-dark" (click)="onSubmit()">Confirm</button>
   <button *ngIf='!successFlag' type="button" class="btn btn-outline-dark" (click)="activeModal.close('Close click')">Cancel</button>
+  <button *ngIf='successFlag' type="button" class="btn btn-outline-dark" (click)="downloadInvoice()">Download Invoice</button>
   <button *ngIf='successFlag' type="button" class="btn btn-outline-dark" (click)="closeModal()" routerLink='/learner/list'>Close</button>
 </div>

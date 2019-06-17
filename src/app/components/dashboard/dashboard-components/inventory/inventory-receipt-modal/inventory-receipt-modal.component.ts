@@ -3,11 +3,11 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { environment } from 'src/environments/environment.prod';
 
 @Component({
-  selector: 'app-inventory-reciept-modal',
-  templateUrl: './inventory-reciept-modal.component.html',
-  styleUrls: ['./inventory-reciept-modal.component.css']
+  selector: 'app-inventory-receipt-modal',
+  templateUrl: './inventory-receipt-modal.component.html',
+  styleUrls: ['./inventory-receipt-modal.component.css']
 })
-export class InventoryRecieptModalComponent implements OnInit {
+export class InventoryReceiptModalComponent implements OnInit {
   @Input() command;
   @Input() whichStockOrder;
 
@@ -19,7 +19,7 @@ export class InventoryRecieptModalComponent implements OnInit {
 
   ngOnInit() {
     this.loadingFlag = true;
-    if (this.getPhotoSrc(this.whichStockOrder.RecieptImg)) {
+    if (this.getPhotoSrc(this.whichStockOrder.ReceiptImg)) {
       this.loadingFlag = false;
     }
   }
@@ -28,12 +28,11 @@ export class InventoryRecieptModalComponent implements OnInit {
    get photo src
  */
   getPhotoSrc(photoObj) {
-    let src = this.whichStockOrder[photoObj];
-    if (src == null) {
+    if (this.whichStockOrder[photoObj] == null) {
       return '../../../../../../assets/images/shared/default-employer-profile.png';
     }
     else {
-      return this.photoUrl + src;
+      return this.photoUrl + this.whichStockOrder[photoObj];
     }
   }
 
@@ -44,5 +43,4 @@ export class InventoryRecieptModalComponent implements OnInit {
     event.target.src = '../../../../../../assets/images/shared/default-employer-profile.png';
     return;
   }
-
 }

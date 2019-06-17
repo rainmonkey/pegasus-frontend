@@ -3,6 +3,7 @@ import { NgbActiveModal, NgbDateAdapter, NgbDateNativeAdapter, NgbDate } from '@
 import { FormBuilder, Validators, FormGroup, FormArray } from '@angular/forms';
 import { CoursesService } from '../../../../../services/http/courses.service';
 import { DatePipe } from '@angular/common';
+import Swal from 'sweetalert2';
 
 @Injectable()
 @Component({
@@ -69,7 +70,12 @@ export class CourseClassDetailModalComponent implements OnInit {
         this.courseNamefilter = this.courseName.filter((item) => item.CourseType == 2);
       },
       (err) => {
-        alert('Server error!')
+        Swal.fire({
+          title: 'Server error!',
+          type: 'error',
+          showConfirmButton: true,
+        });
+        console.log(err.error.ErrorMessage);
       }
     )
   }
@@ -79,7 +85,12 @@ export class CourseClassDetailModalComponent implements OnInit {
         this.tutorName = res.Data;
       },
       (err) => {
-        alert('Serve error!')
+        Swal.fire({
+          title: 'Server error!',
+          type: 'error',
+          showConfirmButton: true,
+        });
+        console.log(err.error.ErrorMessage);
       }
     )
   }
@@ -89,7 +100,12 @@ export class CourseClassDetailModalComponent implements OnInit {
         this.locationName = res.Data;
       },
       (err) => {
-        alert('Serve error!')
+        Swal.fire({
+          title: 'Server error!',
+          type: 'error',
+          showConfirmButton: true,
+        });
+        console.log(err.error.ErrorMessage);
       }
     )
   }
@@ -97,13 +113,19 @@ export class CourseClassDetailModalComponent implements OnInit {
     this.coursesService.getRooms().subscribe(
       (res) => {
         this.roomName = res.Data;
+        console.log(this.roomName)
         // During editing, run filterrooms() to show Room Num.
         if (this.command == 2) {
-          this.filterrooms(this.whichCourseClass.OrgId);
+          this.filterrooms(this.whichCourseClass.OrgId);          
         }
       },
       (err) => {
-        alert('Serve error!')
+        Swal.fire({
+          title: 'Server error!',
+          type: 'error',
+          showConfirmButton: true,
+        });
+        console.log(err.error.ErrorMessage);
       }
     )
   }
@@ -111,19 +133,28 @@ export class CourseClassDetailModalComponent implements OnInit {
   // Filter rooms selecting by Location
   filterrooms(num) {
     this.rooms = this.roomName.filter((item) => item.OrgId == num);
+    console.log(this.rooms)
   }
 
   // Validate EndDate > BeginDate
   onBeginDateSelection(date: NgbDate) {
     if (date.after(this.toDate)) {
-      alert('End Date must be later than Begin Date!');
+      Swal.fire({
+        title: 'End Date must be later than Begin Date!',
+        type: 'error',
+        showConfirmButton: true,
+      });
     } else {
       this.fromDate = date;
     }
   }
   onEndDateSelection(date: NgbDate) {
     if (date.before(this.fromDate)) {
-      alert('End Date must be later than Begin Date!');
+      Swal.fire({
+        title: 'End Date must be later than Begin Date!',
+        type: 'error',
+        showConfirmButton: true,
+      });
     } else {
       this.toDate = date;
     }
@@ -190,7 +221,11 @@ export class CourseClassDetailModalComponent implements OnInit {
     let vailadValue = this.checkInputVailad(valueToSubmit);
     if (vailadValue !== null && this.updateForm.dirty) {
       if (vailadValue.BeginDate > vailadValue.EndDate) {
-        alert('End Date must be later than Begin Date!');
+        Swal.fire({
+          title: 'End Date must be later than Begin Date!',
+          type: 'error',
+          showConfirmButton: true,
+        });
         return;
       } else {
         this.submitionFlag = false;
@@ -239,8 +274,11 @@ export class CourseClassDetailModalComponent implements OnInit {
     if (this.command == 0) {
       this.coursesService.addNewCourseClass(formValue).subscribe(
         (res) => {
-          // console.log(formValue);
-          alert('Submit success!');
+          Swal.fire({
+            title: 'Successfully Add!',
+            type: 'success',
+            showConfirmButton: true,
+          });
           this.activeModal.close();
         },
         (err) => {
@@ -252,7 +290,11 @@ export class CourseClassDetailModalComponent implements OnInit {
     else if (this.command == 2) {
       this.coursesService.updateCourseClass(formValue, this.whichCourseClass.GroupCourseInstanceId).subscribe(
         (res) => {
-          alert('Submit success!');
+          Swal.fire({
+            title: 'Successfully Modify!',
+            type: 'success',
+            showConfirmButton: true,
+          });
           this.activeModal.close();
         },
         (err) => {
