@@ -24,9 +24,7 @@ export class LearnerRegistrationFormComponent implements OnInit, DoCheck, AfterV
   // courseIntanceGroup: FormGroup;
   @Input() whichLearner;
   @Input() addCourse;
-  // sent active modal confirm satuation to admin learner component;
-  @Output() activeModalEvent: EventEmitter<any> = new EventEmitter;
-  activeSubmitted: boolean = false;
+
   public time: NgbTimeStruct = { hour: 9, minute: 0, second: 0 };
   public hourStep = 1;
   public minuteStep = 15;
@@ -814,12 +812,6 @@ selectLocation(id, i) {
     console.log(this.addCourse)
     this.modalRefConfirm = this.modalService.open(LearnerRegistrationConfirmModalComponent);
     this.modalRefConfirm.componentInstance.fdObj = this.fd;
-    console.log(this.modalRefConfirm.componentInstance)
-    this.modalRefConfirm.componentInstance.clickConfirm.subscribe(res=>{
-      this.activeSubmitted = res;
-      console.log(this.activeSubmitted);
-      this.activeModalEvent.emit(this.activeSubmitted);
-    })
     if (this.whichLearner && !this.addCourse){
       this.modalRefConfirm.componentInstance.command = 2;  //edit
       this.modalRefConfirm.componentInstance.learnerId = this.whichLearner.LearnerId;
