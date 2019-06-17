@@ -83,7 +83,9 @@ export class CoursesService {
   postoioi(TermId):any{
     return this.http.post(this.baseUrl + 'payment/'+ TermId, '')
   }
-
+  postGroupGenerate(TermId):any{
+    return this.http.post(this.baseUrl + 'Payment/GenerateGroupInvoice/'+ TermId, '')
+  }
   postTrialLesson(data):any{
     return this.http.post(this.baseUrl +'TrialLesson',data);
   }

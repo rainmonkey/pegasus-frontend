@@ -1,6 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { CoursesService } from '../../../../../services/http/courses.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-course-delete-modal',
@@ -32,7 +33,11 @@ export class CourseDeleteModalComponent implements OnInit {
         (res) => {
           this.isDeleteSuccess = true;
           //successful info
-          alert('Delete success!');
+          Swal.fire({
+            title: 'Successfully Delete!',
+            type: 'success',
+            showConfirmButton: true,
+          });
           this.activeModal.close();
         },
         (err) => {
@@ -47,7 +52,11 @@ export class CourseDeleteModalComponent implements OnInit {
         (res) => {
           this.isDeleteSuccess = true;
           //successful info
-          alert('Delete success!');
+          Swal.fire({
+            title: 'Successfully Delete!',
+            type: 'success',
+            showConfirmButton: true,
+          });
           this.activeModal.close();
         },
         (err) => {

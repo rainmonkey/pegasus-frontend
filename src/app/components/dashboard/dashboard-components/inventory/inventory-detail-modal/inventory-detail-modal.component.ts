@@ -2,7 +2,7 @@ import { Component, OnInit, Input } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { InventoriesService } from '../../../../../services/http/inventories.service';
 import { FormBuilder, Validators, FormGroup, FormArray } from '@angular/forms';
-import { element } from '@angular/core/src/render3';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-inventory-detail-modal',
@@ -45,16 +45,26 @@ export class InventoryDetailModalComponent implements OnInit {
         this.productName = res['Data'];
       },
       (err) => {
-        alert('Server error!')
+        Swal.fire({
+          title: 'Server error!',
+          type: 'error',
+          showConfirmButton: true,
+        });
+        console.log(err.error.ErrorMessage);
       }
     );
     this.inventoriesService.getOrgs().subscribe(
       (res) => {
-        this.orgData = res['Data'];    
+        this.orgData = res['Data'];
         this.filterOrg();
       },
       (err) => {
-        alert('Server error!')
+        Swal.fire({
+          title: 'Server error!',
+          type: 'error',
+          showConfirmButton: true,
+        });
+        console.log(err.error.ErrorMessage);
       }
     );
     this.inventoriesService.getStaff().subscribe(
@@ -66,7 +76,12 @@ export class InventoryDetailModalComponent implements OnInit {
         this.filterStaff();
       },
       (err) => {
-        alert('Server error!')
+        Swal.fire({
+          title: 'Server error!',
+          type: 'error',
+          showConfirmButton: true,
+        });
+        console.log(err.error.ErrorMessage);
       }
     )
   }
@@ -74,10 +89,10 @@ export class InventoryDetailModalComponent implements OnInit {
   filterStaff() {
     this.staffName = this.staffData.filter((item) => item.StaffId == localStorage.getItem('staffId'));
   }
-  filterOrg(){
-    for(let i=0;i<JSON.parse(localStorage.getItem('OrgId')).length;i++){      
+  filterOrg() {
+    for (let i = 0; i < JSON.parse(localStorage.getItem('OrgId')).length; i++) {
       this.orgName[i] = this.orgData.filter((item) => item.OrgId == JSON.parse(localStorage.getItem('OrgId'))[i])[0];
-    }   
+    }
   }
 
   /* Form Group*/
@@ -89,7 +104,7 @@ export class InventoryDetailModalComponent implements OnInit {
         OrgId: [null, Validators.required],
         Quantity: [null, Validators.required],
         BuyingPrice: [null, Validators.required],
-        StaffId: [{value:localStorage.getItem('staffId'), disabled: true}],
+        StaffId: [{ value: localStorage.getItem('staffId'), disabled: true }],
         ReceiptImg: [null, Validators.required]
       }
     }
@@ -140,7 +155,11 @@ export class InventoryDetailModalComponent implements OnInit {
       formData.append('Receipt', this.receiptFile);
       this.submitByMode(formData);
     } else {
-      alert('Format of the uploaded file is only png, jpg or jpeg!');
+      Swal.fire({
+        title: 'Format of the uploaded file is only png, jpg or jpeg!',
+        type: 'error',
+        showConfirmButton: true,
+      });
       this.loadingGifFlag = false;
     }
   }
@@ -149,7 +168,11 @@ export class InventoryDetailModalComponent implements OnInit {
     //while push a stream of new data
     this.inventoriesService.addNew(formValue).subscribe(
       (res) => {
-        alert('Submit success!');
+        Swal.fire({
+          title: 'Successfully Add!',
+          type: 'success',
+          showConfirmButton: true,
+        });
         this.activeModal.close();
       },
       (err) => {
