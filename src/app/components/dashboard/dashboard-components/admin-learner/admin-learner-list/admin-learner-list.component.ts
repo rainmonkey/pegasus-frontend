@@ -241,10 +241,10 @@ public columnsToShow1: Array<string> = ['ContactNum', 'Email'];
   //     return
   //   }
   // )
-    modalRef.componentInstance.toLearnerListEvent.subscribe(res=>{
-      console.log(res)
-      if (res == true){
-      modalRef.componentInstance.toAddLearnerModal = true;}
+    // modalRef.componentInstance.toLearnerListEvent.subscribe(res=>{
+    //   console.log(res)
+    //   if (res == true){
+    //   modalRef.componentInstance.toAddLearnerModal = true;}
       // let that = this;
       //   modalRef.result.then(
       //     function () {
@@ -256,7 +256,7 @@ public columnsToShow1: Array<string> = ['ContactNum', 'Email'];
       //     function () {
       //       return;
       //     })
-    })
+//     })
 }
 deleteCourseModal(whichLearner){
   const modalRef = this.modalService.open(LearnerDeleteCourseModalComponent,{ windowClass: 'my-class',backdrop: 'static', keyboard: false  });
