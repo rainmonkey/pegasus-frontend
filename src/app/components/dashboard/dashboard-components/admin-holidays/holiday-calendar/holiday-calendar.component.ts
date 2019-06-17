@@ -73,7 +73,7 @@ export class HolidayCalendarComponent implements OnInit {
 
   putInfo(h) {
     for (let i of h) {
-      this.holidayArray.push({ "title": i.HolidayName, "date": i.HolidayDate })
+      this.holidayArray.push({'id':i.HolidayId, "title": i.HolidayName, "date": i.HolidayDate })
     }
     return this.holidayArray;
   }

@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { StaffListService } from 'src/app/services/http/staff-list.service';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
@@ -10,9 +10,10 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 export class StaffDeleteModalComponent implements OnInit {
   public isDeleteSuccess = false;
   public isDeleteFail = false;
-
+  public isDeleteFlag:boolean = false;
   @Input() command;
   @Input() whichStaff;
+
   constructor(
     private staffService: StaffListService,
     public activeModal: NgbActiveModal,
@@ -33,6 +34,7 @@ export class StaffDeleteModalComponent implements OnInit {
     }
   );
 }
+
 
 }
 
