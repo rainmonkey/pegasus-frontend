@@ -34,6 +34,8 @@ export class AdminLearnerPaymentInvoiceComponent implements OnInit, OnDestroy {
   closeResult: string;
   // distroy subscribe
   fistNameSubscription
+  // not show invoice data;
+  noInvoice = false;
 
   invoiceForm = this.fb.group({
     owing: ['', Validators.required],
@@ -284,12 +286,15 @@ export class AdminLearnerPaymentInvoiceComponent implements OnInit, OnDestroy {
         this.paymentsListService
         .getInvoice(this.learnerId)
         .subscribe(res => {
+          this.noInvoice = false
           // return console.log(dataInvoice)
           this.dataInvoice = res['Data'];
+          console.log(this.dataInvoice)
           this.incaseDateIsNull();
           this.reSearchPrepare();
         },error=>{
           console.log(error);
+          this.noInvoice = true;
           this.errorMsg =error.error.ErrorMessage;
           this.errorAlert = true;
           //alert(this.errorMsg);
