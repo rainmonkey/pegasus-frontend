@@ -6,6 +6,7 @@ import { TransactionService } from '../../../../../services/http/transaction.ser
 import { InvoiceValidatorsService } from "src/app/services/others/invoice-validators.service"
 import { LookUpsService } from "src/app/services/http/look-ups.service"
 import { restoreView } from '@angular/core/src/render3';
+import swal from "sweetalert2"
 
 @Component({
   selector: 'app-admin-invoice-edit-modal',
@@ -21,7 +22,7 @@ export class AdminInvoiceEditModalComponent implements OnInit {
   public staffId = 3;
   closeResult: string;
   dueDateLocal;
-  owingFeeLocal;
+  owingFeeLocal: number;
   itemTempPublic;
   courseData;
   coursePrice;
@@ -33,6 +34,12 @@ export class AdminInvoiceEditModalComponent implements OnInit {
   noteInUse: boolean
   tempNote
   tempConcert
+  tempOther1Fee: number = 0
+  tempOther2Fee: number = 0
+  tempOther3Fee: number = 0
+  tempLessonFee: number = 0
+  tempConcertFee: number = 20
+  tempNoteFee: number = 10
 
   // activated modal tranfer data
   @Input() item;
@@ -90,7 +97,8 @@ export class AdminInvoiceEditModalComponent implements OnInit {
     console.log(this.invoiceEditForm);
     this.patchToInvoice();
     this.dueDateLocal = this.item.DueDate;
-    this.owingFeeLocal = this.item.OwingFee;
+    this.owingFeeLocal = this.item.LessonFee;
+    this.tempLessonFee = this.item.LessonFee
     this.getCourse();
     this.getLooksUpData()
   }
@@ -98,9 +106,12 @@ export class AdminInvoiceEditModalComponent implements OnInit {
   getCourse() {
     let type;
     let courseId = this.item.CourseInstanceId
+    let groupCourseID = this.item.GroupCourseInstanceId
+    console.log(this.item)
     switch (courseId) {
       case null:
         type = 1;
+        courseId = groupCourseID
         break;
       default:
         type = 0;
@@ -110,7 +121,7 @@ export class AdminInvoiceEditModalComponent implements OnInit {
         res => {
           this.courseData = res
           this.coursePrice = res.Data.Course.Price
-          // console.log(this.courseData)
+          console.log(res.Data)
         },
         error => {
           this.errorMsg = JSON.parse(error.error);
@@ -148,7 +159,6 @@ export class AdminInvoiceEditModalComponent implements OnInit {
       },
       PaidFee: this.item.PaidFee
     });
-    // this.invoiceEditForm.get("Concert.ConcertFee").disable()
   }
 
   // moniting user change course quantity
@@ -156,6 +166,7 @@ export class AdminInvoiceEditModalComponent implements OnInit {
     this.invoiceEditForm.patchValue({
       LessonFee: Number(this.invoiceEditForm.value.LessonQuantity) * Number(this.coursePrice)
     });
+    this.feeOnChange("LessonFee")
   }
 
   closeSucc() {
@@ -212,8 +223,8 @@ export class AdminInvoiceEditModalComponent implements OnInit {
         (res) => {
           console.log(res);
           this.activeModal.dismiss();
-          alert("Save confirmed")
-          // this.router.navigate(['/transaction/success']);
+          swal.fire("Confirmed")
+          this.router.navigate(['/transaction/invoices']);
         },
         (error) => {
           console.log(error)
@@ -285,18 +296,20 @@ export class AdminInvoiceEditModalComponent implements OnInit {
     )
   }
 
-  onChange(formControlName: string) {
+  checkboxOnChange(formControlName: string) {
     if (formControlName == "concertCheckBox") {
       if (this.concertInUse) {
         this.invoiceEditForm.get("Concert.ConcertFeeName").disable()
         this.invoiceEditForm.get("Concert.ConcertFee").disable()
         this.invoiceEditForm.get("Concert.ConcertFeeName").patchValue("")
         this.invoiceEditForm.get("Concert.ConcertFee").patchValue(0)
+        this.owingFeeLocal -= this.tempConcertFee
       }
       if (!this.concertInUse) {
         this.invoiceEditForm.get("Concert.ConcertFeeName").enable()
         this.invoiceEditForm.get("Concert.ConcertFee").enable()
         this.invoiceEditForm.patchValue(this.tempConcert)
+        this.owingFeeLocal += +this.tempConcert.Concert.ConcertFee
       }
       this.concertInUse = !this.concertInUse
     } else if (formControlName == "noteCheckBox") {
@@ -305,15 +318,51 @@ export class AdminInvoiceEditModalComponent implements OnInit {
         this.invoiceEditForm.get("Note.NoteFee").disable()
         this.invoiceEditForm.get("Note.NoteFeeName").patchValue("")
         this.invoiceEditForm.get("Note.NoteFee").patchValue(0)
+        this.owingFeeLocal -= this.tempNoteFee
       }
       if (!this.noteInUse) {
         this.invoiceEditForm.get("Note.NoteFeeName").enable()
         this.invoiceEditForm.get("Note.NoteFee").enable()
         this.invoiceEditForm.patchValue(this.tempNote)
+        this.owingFeeLocal += +this.tempNote.Note.NoteFee
       }
       this.noteInUse = !this.noteInUse
     }
+  }
 
+  feeOnChange(feeControlName: string, groupName?: string, ) {
+    let fee: number = 0
+    if (groupName) {
+      fee = +this.invoiceEditForm.get(groupName).get(feeControlName).value
+    } else {
+      fee = +this.invoiceEditForm.get(feeControlName).value
+    }
+    switch (feeControlName) {
+      case "Other1Fee":
+        this.owingFeeLocal = this.owingFeeLocal + fee - this.tempOther1Fee
+        this.tempOther1Fee = fee
+        break;
+      case "Other2Fee":
+        this.owingFeeLocal = this.owingFeeLocal + fee - this.tempOther2Fee
+        this.tempOther2Fee = fee
+        break;
+      case "Other3Fee":
+        this.owingFeeLocal = this.owingFeeLocal + fee - this.tempOther3Fee
+        this.tempOther3Fee = fee
+        break;
+      case "NoteFee":
+        this.owingFeeLocal = this.owingFeeLocal + fee - this.tempNoteFee
+        this.tempNoteFee = fee
+        break;
+      case "ConcertFee":
+        this.owingFeeLocal = this.owingFeeLocal + fee - this.tempConcertFee
+        this.tempConcertFee = fee
+        break;
+      case "LessonFee":
+        this.owingFeeLocal = this.owingFeeLocal + fee - this.tempLessonFee
+        this.tempLessonFee = fee
+        break;
+    }
   }
 
 }
