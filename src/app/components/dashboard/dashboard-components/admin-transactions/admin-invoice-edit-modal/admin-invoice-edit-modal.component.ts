@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { NgbActiveModal, NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 import { FormBuilder, Validator, Validators, RequiredValidator } from '@angular/forms';
@@ -14,6 +14,7 @@ import swal from "sweetalert2"
   styleUrls: ['./admin-invoice-edit-modal.component.css'],
 })
 export class AdminInvoiceEditModalComponent implements OnInit {
+  @Output() confirmed = new EventEmitter<boolean>()
   public errorMsg;
   public errorAlert = false;
   public errMsgO = false;
@@ -94,7 +95,6 @@ export class AdminInvoiceEditModalComponent implements OnInit {
   }
 
   ngOnInit() {
-    console.log(this.invoiceEditForm);
     this.patchToInvoice();
     this.dueDateLocal = this.item.DueDate;
     this.owingFeeLocal = this.item.LessonFee;
@@ -107,7 +107,6 @@ export class AdminInvoiceEditModalComponent implements OnInit {
     let type;
     let courseId = this.item.CourseInstanceId
     let groupCourseID = this.item.GroupCourseInstanceId
-    console.log(this.item)
     switch (courseId) {
       case null:
         type = 1;
@@ -121,7 +120,6 @@ export class AdminInvoiceEditModalComponent implements OnInit {
         res => {
           this.courseData = res
           this.coursePrice = res.Data.Course.Price
-          console.log(res.Data)
         },
         error => {
           this.errorMsg = JSON.parse(error.error);
@@ -224,7 +222,9 @@ export class AdminInvoiceEditModalComponent implements OnInit {
           console.log(res);
           this.activeModal.dismiss();
           swal.fire("Confirmed")
-          this.router.navigate(['/transaction/invoices']);
+          // this.router.navigate(['/transaction/invoices']);
+          // location.reload()
+          this.confirmed.emit(true)
         },
         (error) => {
           console.log(error)

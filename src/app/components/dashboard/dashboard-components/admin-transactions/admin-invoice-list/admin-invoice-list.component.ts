@@ -3,6 +3,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { NgbootstraptableService } from 'src/app/services/others/ngbootstraptable.service';
 import { TransactionService } from '../../../../../services/http/transaction.service';
 import { AdminInvoiceEditModalComponent } from '../admin-invoice-edit-modal/admin-invoice-edit-modal.component';
+import { Subject } from "rxjs"
 
 interface Learner {
   OwingFee: string | number;
@@ -51,10 +52,19 @@ export class AdminInvoiceListComponent implements OnInit {
 
   // modal method
   open(item) {
-    const modalRef = this.modalService.open(AdminInvoiceEditModalComponent, { size: 'lg', backdrop: "static", keyboard: false });
-    console.log(modalRef)
+    const modalRef = this.modalService.open(AdminInvoiceEditModalComponent,
+      {
+        size: 'lg', backdrop: "static", keyboard: false,
+        beforeDismiss: () => {
+          this.getData()
+          console.log("aaaaa")
+          return true
+        }
+      });
     //pass parameters to edit modals
     modalRef.componentInstance.item = item;
+    // modalRef.componentInstance.testString = "this is a test string"
+    console.log(modalRef)
   }
 
   // get data from server side
@@ -117,6 +127,9 @@ export class AdminInvoiceListComponent implements OnInit {
         this.learnerListLength = this.temLearnerListLength
       }
     }
+  }
+
+  refreshPage() {
 
   }
 }
