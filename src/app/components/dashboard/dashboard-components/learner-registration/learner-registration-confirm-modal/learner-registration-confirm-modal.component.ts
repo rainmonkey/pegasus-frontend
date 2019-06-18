@@ -1,8 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { Router } from '@angular/router';
 import { LearnerRegistrationService } from '../../../../../services/http/learner-registration.service';
-import Swal from 'sweetalert2'
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-learner-registration-confirm-modal',
@@ -11,16 +11,18 @@ import Swal from 'sweetalert2'
 })
 export class LearnerRegistrationConfirmModalComponent implements OnInit {
   fdObj = {};
-  command:number;
-  learnerId:number;
+  command: number;
+  learnerId: number;
   groupCourse = [];
   oneOnOneCourse = [];
   isGroupCourse = false;
   addCourse = false;
   errorMsg;
+
   // loading icon
   isloading = false;
   isConfirmClick = false;
+  @Output() clickConfirm: EventEmitter<any> = new EventEmitter();
   constructor(
     public activeModal: NgbActiveModal,
     private registrationService: LearnerRegistrationService,
@@ -33,13 +35,13 @@ export class LearnerRegistrationConfirmModalComponent implements OnInit {
     // return console.log(this.fdObj)
     this.isloading = true;
     this.isConfirmClick = true;
-    console.log(this.command,this.learnerId);
+    console.log(this.command, this.learnerId);
     let fun;
-    if (this.command === 1){
+    if (this.command === 1) {
       fun= this.registrationService.postStudent(this.fdObj);
-    }else if (this.command === 2){
-      fun= this.registrationService.putStudent(this.learnerId,this.fdObj);
-    }else if (this.command ===3) {
+    }else if (this.command === 2) {
+      fun= this.registrationService.putStudent(this.learnerId, this.fdObj);
+    }else if (this.command === 3) {
       if(this.isGroupCourse){
       let temp = {LearnerGroupCourses: this.groupCourse};
       fun= this.registrationService.addGroupCourse(temp);
@@ -57,14 +59,18 @@ export class LearnerRegistrationConfirmModalComponent implements OnInit {
         this.isGroupCourse = false;
         console.log('Success!', data);
         this.activeModal.dismiss();
-        if(this.addCourse || this.learnerId){
+        // emit submit information to parents components;
+        let submitted: boolean = true;
+        this.clickConfirm.emit(submitted);
+        // show alert;
+        if (this.addCourse || this.learnerId) {
           Swal.fire({
             title: 'Your Work Has Been Saved',
             type: 'success',
             showConfirmButton: false,
           });
-        }else{
-          this.router.navigate(['/learner/success']);}
+        } else {
+          this.router.navigate(['/learner/success']); }
         this.addCourse = false;
       },
       error => {

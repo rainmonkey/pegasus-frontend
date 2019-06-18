@@ -132,7 +132,7 @@ export class AdminLearnerPeriodCourseChangeModalComponent implements OnInit {
   }
 
   IsTemporaryChange = () => {
-    if (this.PeriodCourseChangeForm.value.IsTemporary == 1) {
+    if (this.PeriodCourseChangeForm.value.IsTemporary == 0) {
       this.PeriodCourseChangeForm.get('EndDate').reset();
       this.PeriodCourseChangeForm.get('EndDate').disable();
     } else {

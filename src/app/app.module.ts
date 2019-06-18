@@ -6,7 +6,7 @@ import { MatButtonModule, MatFormFieldModule, MatInputModule } from '@angular/ma
 // Dependencies
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModule, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { FullCalendarModule } from 'ng-fullcalendar';
 import { ChartsModule } from 'ng2-charts';
 import { routing } from '../app/app-routing.module';
@@ -110,7 +110,8 @@ import { StaffModalFormComponent } from './components/dashboard/dashboard-compon
 import { InventoryDetailModalComponent } from './components/dashboard/dashboard-components/inventory/inventory-detail-modal/inventory-detail-modal.component';
 import { InventoryReceiptModalComponent } from './components/dashboard/dashboard-components/inventory/inventory-receipt-modal/inventory-receipt-modal.component';
 import { HolidayCalendarComponent } from './components/dashboard/dashboard-components/admin-holidays/holiday-calendar/holiday-calendar.component';
-import { AddHolidayModalComponent } from './components/dashboard/dashboard-components/admin-holidays/add-holiday-modal/add-holiday-modal.component';
+import { AddHolidaysModalComponent } from './components/dashboard/dashboard-components/admin-holidays/add-holidays-modal/add-holidays-modal.component';
+import { DeleteHolidayComponent } from './components/dashboard/dashboard-components/admin-holidays/delete-holiday/delete-holiday.component';
 
 
 @NgModule({
@@ -215,7 +216,8 @@ import { AddHolidayModalComponent } from './components/dashboard/dashboard-compo
     InventoryDetailModalComponent,
     InventoryReceiptModalComponent,
     HolidayCalendarComponent,
-    AddHolidayModalComponent
+    AddHolidaysModalComponent,
+    DeleteHolidayComponent,
   ],
   imports: [
     NgbModule,
@@ -234,7 +236,8 @@ import { AddHolidayModalComponent } from './components/dashboard/dashboard-compo
   ],
   providers: [
     DatePipe,
-    MondayDateInWeekByDatePipe
+    MondayDateInWeekByDatePipe,
+    NgbActiveModal
   ],
   entryComponents:[
     TeacherDeleteModalComponent,
@@ -269,7 +272,8 @@ import { AddHolidayModalComponent } from './components/dashboard/dashboard-compo
     StaffEditModalComponent,
     InventoryDetailModalComponent,
     InventoryReceiptModalComponent,
-    AddHolidayModalComponent
+    AddHolidaysModalComponent,
+    DeleteHolidayComponent
   ],
   exports: [AppComponent],
   bootstrap: [AppComponent]
