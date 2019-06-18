@@ -158,7 +158,7 @@
               <label>{{learnerPurpose.PropName}}</label>
           </div>
         </div>
-        <small *ngIf="showErrorW && touchNext" class='text-danger'>Please Select At Least One Reason</small>
+        <!-- <small *ngIf="showErrorW && touchNext" class='text-danger'>Please Select At Least One Reason</small> -->
 
         <div class="how know us">
           <span class="text-primary">How do you know about us?</span><br>
@@ -182,7 +182,7 @@
             </div>
           </div> -->
         </div>
-        <small *ngIf="showErrorH && touchNext" class='text-danger'>Please Select At Least One Option</small>
+        <!-- <small *ngIf="showErrorH && touchNext" class='text-danger'>Please Select At Least One Option</small> -->
         <div class="button text-right">
           <button class="btn_next my-3" [disabled]="learnerForm.invalid"
             (click)="next('parentForm')">Next</button>
@@ -257,7 +257,7 @@
             <button class="btn_back mx-3" (click)="next('learnerForm')">Back</button>
             <button *ngIf="!whichLearner" class="btn_next" [disabled]="parentForm.invalid && !this.learnerForm.value.isUnder18"
               (click)="next('courseForm')">Next</button>
-            <button *ngIf="whichLearner" class="btn_next" [disabled]="parentForm.invalid && !this.learnerForm.value.isUnder18" (click)="onSubmit()">Submit</button>
+            <button class="btn_next" [disabled]="parentForm.invalid && !this.learnerForm.value.isUnder18" (click)="onSubmit()">Submit</button>
           </div>
         </div>
       </div>
