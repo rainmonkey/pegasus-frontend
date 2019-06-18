@@ -56,8 +56,9 @@ export class AdminInvoiceListComponent implements OnInit {
       {
         size: 'lg', backdrop: "static", keyboard: false,
         beforeDismiss: () => {
-          this.getData()
-          console.log("aaaaa")
+          console.log(item)
+          item.IsConfirmed = 1
+          console.log(item)
           return true
         }
       });

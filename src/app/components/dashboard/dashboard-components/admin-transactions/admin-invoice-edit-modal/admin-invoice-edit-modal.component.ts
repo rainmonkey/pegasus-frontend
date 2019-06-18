@@ -1,5 +1,4 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { Router, ActivatedRoute } from '@angular/router';
 import { NgbActiveModal, NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 import { FormBuilder, Validator, Validators, RequiredValidator } from '@angular/forms';
 import { TransactionService } from '../../../../../services/http/transaction.service';
@@ -49,8 +48,6 @@ export class AdminInvoiceEditModalComponent implements OnInit {
     public activeModal: NgbActiveModal,
     private fb: FormBuilder,
     public modalService: NgbModal,
-    private router: Router,
-    private activatedRoute: ActivatedRoute,
     private transactionService: TransactionService,
     private invoiceValidator: InvoiceValidatorsService,
     private lookUpsService: LookUpsService
@@ -215,11 +212,9 @@ export class AdminInvoiceEditModalComponent implements OnInit {
   }
 
   putInvoiceData() {
-    console.log(this.itemTempPublic);
     this.transactionService.update(this.itemTempPublic)
       .subscribe(
         (res) => {
-          console.log(res);
           this.activeModal.dismiss();
           swal.fire("Confirmed")
           // this.router.navigate(['/transaction/invoices']);
