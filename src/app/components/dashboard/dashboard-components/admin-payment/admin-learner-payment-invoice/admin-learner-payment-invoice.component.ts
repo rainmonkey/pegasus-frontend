@@ -266,10 +266,10 @@ export class AdminLearnerPaymentInvoiceComponent implements OnInit, OnDestroy {
         element.CourseName === null? element.CourseName = 'Course Name is not available' : element.CourseName = element.CourseName;
         element.LessonFee === null? element.LessonFee = 'Lesson Fee is not available' : element.LessonFee = element.LessonFee;
         element.BeginDate === null? element.BeginDate = 'none' : element.BeginDate = element.BeginDate;
-        element.ConcertFeeName === null? element.ConcertFeeName = 'Concert is not available' : element.ConcertFeeName = element.ConcertFeeName;
-        element.LessonNoteFeeName === null? element.LessonNoteFeeName = 'Note is not available' : element.LessonNoteFeeName = element.LessonNoteFeeName;
-        element.NoteFee === null? element.NoteFee = 'Note fee is not available' : element.NoteFee = element.NoteFee;
-        element.ConcertFee === null? element.ConcertFee = 'Concert Fee is not available' : element.ConcertFee = element.ConcertFee;
+        element.ConcertFeeName === null? element.ConcertFeeName = 'Concert' : element.ConcertFeeName = element.ConcertFeeName;
+        element.LessonNoteFeeName === null? element.LessonNoteFeeName = 'Note' : element.LessonNoteFeeName = element.LessonNoteFeeName;
+        element.NoteFee === null? element.NoteFee = 'Note fee' : element.NoteFee = element.NoteFee;
+        element.ConcertFee === null? element.ConcertFee = 'Concert Fee' : element.ConcertFee = element.ConcertFee;
         console.log(element.CourseName)
       });
     }
