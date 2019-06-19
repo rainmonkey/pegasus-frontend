@@ -204,7 +204,7 @@ export class AdminInvoiceEditModalComponent implements OnInit {
       CourseInstanceId: this.item.CourseInstanceId
     }
 
-    data.OwingFee = data.LessonFee + data.ConcertFee + data.NoteFee + data.Other1Fee + data.Other2Fee + data.Other3Fee;
+    data.OwingFee = +data.LessonFee + +data.ConcertFee + +data.NoteFee + +data.Other1Fee + +data.Other2Fee + +data.Other3Fee;
     data.TotalFee = data.OwingFee;
 
     this.itemTempPublic = data
@@ -265,7 +265,7 @@ export class AdminInvoiceEditModalComponent implements OnInit {
         this.concertData = res["Data"]
         this.tempConcert = {
           Concert: {
-            ConcertFee: this.concertData[1].PropName,
+            ConcertFee: +this.concertData[1].PropName,
             ConcertFeeName: this.concertData[0].PropName
           }
         }
@@ -279,10 +279,11 @@ export class AdminInvoiceEditModalComponent implements OnInit {
         this.noteData = res["Data"]
         this.tempNote = {
           Note: {
-            NoteFee: this.noteData[1].PropName,
+            NoteFee: +this.noteData[1].PropName,
             NoteFeeName: this.noteData[0].PropName
           }
         }
+        console.log(this.tempNote)
       },
       error => {
         console.log(error)

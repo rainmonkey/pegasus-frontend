@@ -73,7 +73,7 @@ export class TrialConfirmComponent implements OnInit {
     let length = allAvaliableRoom.length;
     let randomNum = Math.floor(Math.random() * length) + 1;
     this.avaliableRoom = allAvaliableRoom[randomNum];
-    console.log(this.avaliableRoom)
+    //console.log(this.avaliableRoom)
   }
 
   getExtraFee(extraFee) {

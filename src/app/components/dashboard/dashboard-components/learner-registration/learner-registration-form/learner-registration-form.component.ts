@@ -831,11 +831,12 @@ selectLocation(id, i) {
         if (res == true) {
           this.toLearnerListEvent.emit(true);
         }
+
         // let that = this;
         // this.modalRefConfirm.result.then(
         //     function () {
         //       if (res == true) {
-        //         that.toLearnerListEvent.emit(true);
+        //         that.ngOnInit();
         //       }
         //     },
         //     function () {

@@ -12,6 +12,7 @@ import { DeleteHolidayComponent } from '../delete-holiday/delete-holiday.compone
 import { preserveWhitespacesDefault } from '@angular/compiler';
 
 
+
 @Component({
   selector: 'app-holiday-calendar',
   templateUrl: './holiday-calendar.component.html',
@@ -37,6 +38,7 @@ export class HolidayCalendarComponent implements OnInit {
 
     console.log(this.fullcalendar)
     this.initFullCalendar(this)
+    
   }
 
 
@@ -45,11 +47,8 @@ export class HolidayCalendarComponent implements OnInit {
     this.HolidayServer.getHoliday().subscribe(
       (event) => {
         console.log('aaaaaaaaaaaaa')
-        this.eventData=this.putInfo(event.Data)
-        this.eventsModel = this.eventData
-        console.log(this.eventData)
-
-
+        const eventData = this.putInfo(event.Data)
+        this.eventsModel = eventData
       },
       (err) => {
         alert('something wrong')
@@ -71,16 +70,22 @@ export class HolidayCalendarComponent implements OnInit {
       dateClick: function (info) {
         console.log(info)
         that.addAndEdit(info)
+
       },
       eventClick: (info) => {
         console.log(info)
         that.delete(info)
+
       },
-      eventTextColor:'#ffffff'
+      eventTextColor: '#ffffff',
+
     }
+
+
   }
 
   putInfo(h) {
+    this.holidayArray = [];
     for (let i of h) {
       this.holidayArray.push({ 'id': i.HolidayId, "title": i.HolidayName, "date": i.HolidayDate })
     }
@@ -98,7 +103,10 @@ export class HolidayCalendarComponent implements OnInit {
           function () {
             console.log(res)
             if (res == true) {
-              that.ngOnInit();
+              that.fullcalendar.calendar.removeAllEvents();
+              that.getExitHoliday()
+
+              that.initFullCalendar(this)
             }
           },
           function () {
@@ -115,15 +123,26 @@ export class HolidayCalendarComponent implements OnInit {
     modalRef.componentInstance.date = info;
     modalRef.result.then(
       (res) => {
-        // this.fullcalendar.calendar.removeAllEvents();
-        // that.ngOnInit()
+        //this.fullcalendar.calendar.removeAllEvents();
+        //this.fullcalendar.calendar.destroy();
+        that.ngOnInit()
 
       },
-      (err) => {
-        return
-      }
     )
 
   }
+
+  // refreshData(){
+  //   this.fullcalendar.calendar.removeAllEvents();
+
+  //   this.HolidayServer.getHoliday().subscribe(
+  //     (event) => {
+  //       console.log('aaaaaaaaaaaaa')
+  //       const eventData = this.putInfo(event.Data)
+  //       this.eventsModel = eventData
+  //     }
+  //   )}
+
+
 
 }

@@ -2,7 +2,7 @@ import { CommonModule, DatePipe } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { MatButtonModule, MatFormFieldModule, MatInputModule } from '@angular/material';
+import {MatButtonModule, MatFormFieldModule, MatInputModule, MatSelectModule} from '@angular/material';
 // Dependencies
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -112,6 +112,7 @@ import { InventoryReceiptModalComponent } from './components/dashboard/dashboard
 import { HolidayCalendarComponent } from './components/dashboard/dashboard-components/admin-holidays/holiday-calendar/holiday-calendar.component';
 import { AddHolidaysModalComponent } from './components/dashboard/dashboard-components/admin-holidays/add-holidays-modal/add-holidays-modal.component';
 import { DeleteHolidayComponent } from './components/dashboard/dashboard-components/admin-holidays/delete-holiday/delete-holiday.component';
+import { ChattingComponent } from './components/dashboard/general/chatting/chatting.component';
 
 
 @NgModule({
@@ -218,6 +219,7 @@ import { DeleteHolidayComponent } from './components/dashboard/dashboard-compone
     HolidayCalendarComponent,
     AddHolidaysModalComponent,
     DeleteHolidayComponent,
+    ChattingComponent
   ],
   imports: [
     NgbModule,
@@ -232,7 +234,8 @@ import { DeleteHolidayComponent } from './components/dashboard/dashboard-compone
     routing,
     FullCalendarModule,
     CommonModule,
-    ChartsModule
+    ChartsModule,
+    MatSelectModule
   ],
   providers: [
     DatePipe,
