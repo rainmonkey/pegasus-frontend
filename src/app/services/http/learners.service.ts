@@ -65,4 +65,7 @@ export class LearnersService {
     return this.http.get(this.baseUrl+"Lesson/"+"GetArrangedLessonsByLearner/"+LearnerId)
   }
 
+  getTeachers() {
+    return this.http.get(this.baseUrl + 'teacher');
+  }
 }
