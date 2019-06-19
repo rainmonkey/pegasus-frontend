@@ -37,6 +37,7 @@ export class HolidayCalendarComponent implements OnInit {
 
     console.log(this.fullcalendar)
     this.initFullCalendar(this)
+    
   }
 
 
@@ -44,12 +45,11 @@ export class HolidayCalendarComponent implements OnInit {
 
     this.HolidayServer.getHoliday().subscribe(
       (event) => {
-        console.log('aaaaaaaaaaaaa')
+        console.log('aaaaaaaaaaaaa');
+        //this.fullcalendar.ngAfterViewInit();
         this.eventData=this.putInfo(event.Data)
         this.eventsModel = this.eventData
-        console.log(this.eventData)
-
-
+        console.log(this.eventsModel)
       },
       (err) => {
         alert('something wrong')
@@ -81,6 +81,7 @@ export class HolidayCalendarComponent implements OnInit {
   }
 
   putInfo(h) {
+    this.holidayArray = [];
     for (let i of h) {
       this.holidayArray.push({ 'id': i.HolidayId, "title": i.HolidayName, "date": i.HolidayDate })
     }
@@ -115,8 +116,9 @@ export class HolidayCalendarComponent implements OnInit {
     modalRef.componentInstance.date = info;
     modalRef.result.then(
       (res) => {
-        // this.fullcalendar.calendar.removeAllEvents();
-        // that.ngOnInit()
+        //this.fullcalendar.calendar.removeAllEvents();
+        //this.fullcalendar.calendar.destroy();
+        that.ngOnInit()
 
       },
       (err) => {
