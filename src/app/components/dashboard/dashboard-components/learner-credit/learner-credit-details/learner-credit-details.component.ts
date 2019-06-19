@@ -14,7 +14,7 @@ export class LearnerCreditDetailsComponent implements OnInit {
   public data: any
   public learnerId: any
   public remainingCourseData: any
-  public arrangedCourseData:any
+  public arrangedCourseData: any
 
   constructor(private learnerService: LearnersService,
     private activatedRouter: ActivatedRoute,
@@ -46,20 +46,20 @@ export class LearnerCreditDetailsComponent implements OnInit {
     )
   }
 
-  getArrangedLesson(){
-    this.learnerService.getArrangedLesson(this.learnerId).subscribe(data=>{
-      this.arrangedCourseData= data["Data"]
+  getArrangedLesson() {
+    this.learnerService.getArrangedLesson(this.learnerId).subscribe(data => {
+      this.arrangedCourseData = data["Data"]
       console.log(this.arrangedCourseData)
-    },error=>console.log(error))
+    }, error => console.log(error))
   }
 
-  onSort(tableName:string,orderBy:string) {
-    if(tableName=="arrangedTable"){
+  onSort(tableName: string, orderBy: string) {
+    if (tableName == "arrangedTable") {
       this.ngTableService.sorting(this.arrangedCourseData, orderBy)
-    }else if(tableName == "remaningTable"){
+    } else if (tableName == "remaningTable") {
       this.ngTableService.sorting(this.remainingCourseData, orderBy)
     }
-    
+
     console.log("Aaa")
   }
 

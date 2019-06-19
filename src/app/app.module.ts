@@ -113,6 +113,7 @@ import { HolidayCalendarComponent } from './components/dashboard/dashboard-compo
 import { AddHolidaysModalComponent } from './components/dashboard/dashboard-components/admin-holidays/add-holidays-modal/add-holidays-modal.component';
 import { DeleteHolidayComponent } from './components/dashboard/dashboard-components/admin-holidays/delete-holiday/delete-holiday.component';
 import { ChattingComponent } from './components/dashboard/general/chatting/chatting.component';
+import { LearnerCreditArrangeComponent } from './components/dashboard/dashboard-components/learner-credit/learner-credit-arrange/learner-credit-arrange.component';
 
 
 @NgModule({
@@ -219,7 +220,8 @@ import { ChattingComponent } from './components/dashboard/general/chatting/chatt
     HolidayCalendarComponent,
     AddHolidaysModalComponent,
     DeleteHolidayComponent,
-    ChattingComponent
+    ChattingComponent,
+    LearnerCreditArrangeComponent
   ],
   imports: [
     NgbModule,
