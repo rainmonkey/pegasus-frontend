@@ -46,7 +46,7 @@ export class HeaderbarComponent implements OnInit {
     this.router.navigate(['/login']);
   }
   hideSideBar(){
-    console.log('asd')
+    // console.log('asd')
     this.settingService.sidebarShowStatus.next(!this.settingService.sidebarShowStatus.value)
   }
 
