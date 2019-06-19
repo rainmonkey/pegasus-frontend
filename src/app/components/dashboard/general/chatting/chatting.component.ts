@@ -4,8 +4,7 @@ import { Component, OnInit } from '@angular/core';
 @Component({
   selector: 'app-chatting',
   templateUrl: './chatting.component.html',
-  styleUrls: ['./chatting.component.css',
-              '../../../../../../node_modules/emojionearea/demo/stylesheet.css']
+  styleUrls: ['./chatting.component.css']
 })
 export class ChattingComponent implements OnInit {
   //数组里的顺序和名字要和HTML里的一致
