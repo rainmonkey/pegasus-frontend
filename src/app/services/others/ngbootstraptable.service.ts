@@ -66,7 +66,7 @@ export class NgbootstraptableService {
       }
     }
     if (JSON.stringify(bool).search("false") == -1) {
-      // fail to find 1
+      // fail to find -1
       return true;
     }
   }

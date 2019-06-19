@@ -17,12 +17,10 @@
         <div>
           <label class="mt-2">Course Name</label>
           <input class="form-control" type="text" formControlName="CourseName" />
-          <!-- <small *ngIf="invoiceEditForm.get('CourseName').touched && invoiceEditForm.get('CourseName').invalid">(Course Name)</small> -->
         </div>
         <div>
           <label class="mt-2">Begining at</label>
           <input class="form-control" type="date" formControlName='BeginDate' />
-          <!-- <small *ngIf="invoiceEditForm.get('BeginDate').touched">(Begining Date)</small> -->
         </div>
       </div>
 
@@ -30,12 +28,10 @@
         <div>
           <label class="mt-2">Lesson Quantity (Price: ${{coursePrice}})</label>
           <input class="form-control" type="number" min="0" formControlName="LessonQuantity" (change)='changeQuantity()' />
-          <!-- <small *ngIf="invoiceEditForm.get('LessonQuantity').touched">(Lesson quantity)</small> -->
         </div>
         <div>
           <label class="mt-2">Lesson Fee</label>
-          <input class="form-control" type="number" min="0" formControlName="LessonFee" />
-          <!-- <small *ngIf="invoiceEditForm.get('LessonFee').touched">(Lesson Fee)</small> -->
+          <input class="form-control" type="number" min="0" formControlName="LessonFee" (change)="feeOnChange('LessonFee')" />
         </div>
       </div>
     </div>
@@ -45,15 +41,12 @@
         <label class="mt-2">Concert Term and Date</label>
         <input class="form-control" type="text" formControlName="ConcertFeeName" />
         <div class="text-danger" *ngIf="invoiceEditForm.controls.Concert.errors?.fillFeeName">Please fill concert term and date</div>
-        <!-- <small *ngIf="invoiceEditForm.get('CourseName').touched"
-        >(Concert term and date, e.g.,concert for term 1, yyyy-dd-mm)</small
-      > -->
       </div>
       <div class="col-5">
         <label class="mt-2">Concert Fee</label>
-        <input class="form-control" type="number" min='0' formControlName="ConcertFee" />
+        <input type="checkbox" class="ml-2" id="concertCheckBox" (change)="checkboxOnChange('concertCheckBox')" formControlName="concertCheckBox">
+        <input class="form-control" type="number" min='0' formControlName="ConcertFee" (change)="feeOnChange('ConcertFee','Concert')" />
         <div class="text-danger" *ngIf="invoiceEditForm.controls.Concert.errors?.fillFee">Please fill fee</div>
-        <!-- <small *ngIf="invoiceEditForm.get('ConcertFee').touched">(Concert Fee)</small> -->
       </div>
     </div>
 
@@ -62,16 +55,12 @@
         <label class="mt-2">Lesson Note Term and Date</label>
         <input class="form-control" type="text" formControlName='NoteFeeName' />
         <div class="text-danger" *ngIf="invoiceEditForm.controls.Note.errors?.fillFeeName">Please fill note term and date</div>
-        <!-- <small *ngIf="invoiceEditForm.get('Note').touched"
-        >(e.g.,Lesson Note term 1, yyyy-dd-mm)</small
-      > -->
       </div>
       <div class="col-5">
         <label class="mt-2">Note Fee</label>
-        <!-- 有错 显示不出来默认值 -->
-        <input class="form-control" type="number" min='0' formControlName="NoteFee" />
+        <input type="checkbox" class="ml-2" id="noteCheckBox" (change)="checkboxOnChange('noteCheckBox')" formControlName="noteCheckBox">
+        <input class="form-control" type="number" min='0' formControlName="NoteFee" (change)="feeOnChange('NoteFee','Note')" />
         <div class="text-danger" *ngIf="invoiceEditForm.controls.Note.errors?.fillFee">Please fill fee</div>
-        <!-- <small *ngIf="invoiceEditForm.get('NoteFee').touched">(Note Fee)</small> -->
       </div>
     </div>
 
@@ -83,13 +72,11 @@
           <label class="mt-2">Others 1</label>
           <input class="form-control" type="text" formControlName="Other1FeeName" />
           <div class="text-danger" *ngIf="invoiceEditForm.controls.Other1.errors?.fillFeeName">Please fill fee name</div>
-          <!-- <small *ngIf="invoiceEditForm.get('Other1FeeName').touched">(Other1 Fee title)</small> -->
         </div>
         <div class="col-5">
           <label class="mt-2">Others Fee 1</label>
-          <input class="form-control" type="number" min='0' formControlName="Other1Fee" />
+          <input class="form-control" type="number" min='0' formControlName="Other1Fee" (change)="feeOnChange('Other1Fee','Other1')" />
           <div class="text-danger" *ngIf="invoiceEditForm.controls.Other1.errors?.fillFee">Please fill fee</div>
-          <!-- <small *ngIf="invoiceEditForm.get('Other1Fee').touched">(Other1 Fee)</small> -->
         </div>
       </div>
       <div formGroupName="Other2" class="form-group row justify-content-center">
@@ -97,28 +84,23 @@
           <label class="mt-2">Others 2</label>
           <input class="form-control" type="text" formControlName="Other2FeeName" />
           <div class="text-danger" *ngIf="invoiceEditForm.controls.Other2.errors?.fillFeeName">Please fill fee name</div>
-          <!-- <small *ngIf="invoiceEditForm.get('Other2').get('Other2FeeName').touched && invoiceEditForm.get('Other2').get('Other2FeeName').invalid">(Other2 Fee title)</small> -->
         </div>
         <div class="col-5">
           <label class="mt-2">Others Fee 2</label>
-          <input class="form-control" type="number" onkeypress="return (/[\d]/.test(String.fromCharCode(event.keyCode)))" min='0' formControlName="Other2Fee" />
+          <input class="form-control" type="number" onkeypress="return (/[\d]/.test(String.fromCharCode(event.keyCode)))" min='0' formControlName="Other2Fee" (change)="feeOnChange('Other2Fee','Other2')" />
           <div class="text-danger" *ngIf="invoiceEditForm.controls.Other2.errors?.fillFee">Please fill fee</div>
-          <!-- <small *ngIf="invoiceEditForm.get('Other2').get('Other2Fee').touched">(Other2 Fee)</small> -->
         </div>
       </div>
       <div formGroupName="Other3" class="form-group row justify-content-center">
         <div class="col-5">
           <label class="mt-2">Others 3</label>
           <input class="form-control" type="text" formControlName="Other3FeeName" />
-          <div class="text-danger" *ngIf="invoiceEditForm.controls.Other2.errors?.fillFeeName">Please fill fee name</div>
-          <!-- <small *ngIf="invoiceEditForm.get('Other3FeeName').touched"
-          >(Other3 Fee title)</small -->
+          <div class="text-danger" *ngIf="invoiceEditForm.controls.Other3.errors?.fillFeeName">Please fill fee name</div>
         </div>
         <div class="col-5">
           <label class="mt-2">Other Fee 3</label>
-          <input class="form-control" type="number" min="0" formControlName="Other3Fee" />
-          <div class="text-danger" *ngIf="invoiceEditForm.controls.Other2.errors?.fillFee">Please fill fee</div>
-          <!-- <small *ngIf="invoiceEditForm.get('Other3Fee').touched">(Other3 Fee)</small> -->
+          <input class="form-control" type="number" min="0" formControlName="Other3Fee" (change)="feeOnChange('Other3Fee','Other3')" />
+          <div class="text-danger" *ngIf="invoiceEditForm.controls.Other3.errors?.fillFee">Please fill fee</div>
         </div>
       </div>
     </div>

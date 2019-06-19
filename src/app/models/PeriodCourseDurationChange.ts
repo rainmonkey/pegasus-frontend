@@ -12,8 +12,9 @@ export class PeriodCourseDurationChange {
   RoomId: number;
   IsTemporary: number;
   CourseScheduleId: number;
+  TeacherId: number;
   constructor(UserId, LearnerId, BeginDate, EndDate, Reason, InstanceId, OrgId, DayOfWeek, BeginTime,
-              EndTime, RoomId, IsTemporary, CourseScheduleId) {
+              EndTime, RoomId, IsTemporary, CourseScheduleId, TeacherId) {
     this.UserId = UserId;
     this.LearnerId = LearnerId;
     this.BeginDate = BeginDate;
@@ -27,5 +28,6 @@ export class PeriodCourseDurationChange {
     this.RoomId = RoomId;
     this.IsTemporary = IsTemporary;
     this.CourseScheduleId = CourseScheduleId;
+    this.TeacherId = TeacherId;
   }
 }
