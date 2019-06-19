@@ -1,0 +1,42 @@
+<!--modal header-->
+<div class='modal-header'>
+    <h4>Add/Edit Holiday</h4>
+
+    <button type="button" class='btn btn-sm btn-info t_dm_close_btn' aria-label="Close"
+      (click)="activeModal.close('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+
+  <div class='modal-body'>
+      <form novalidate [formGroup]="myForm">
+      <div >
+      Date: <span style='font-weight: 700; font-size:20px'>{{date.dateStr}}</span>
+      </div>
+
+      <div>Holiday Name:</div>
+      <input class="form-control" type="text" formControlName="HolidayName">
+      <span class="promptmessage"
+        *ngIf="myForm.controls.HolidayName.invalid && myForm.controls.HolidayName.touched ||myForm.controls.HolidayName.dirty">
+        <div *ngIf="myForm.controls.HolidayName.errors?.required">
+          Required
+        </div>
+      </span>
+    </form>
+  </div>
+  <!--modal footer-->
+  <div class='modal-footer'>
+      <span class="promptmessage">
+          <div>
+            <div *ngIf="!success || myForm.invalid">
+              {{errorMessage}}
+            </div>
+            <div *ngIf='success && myForm.valid' style="color:rgb(17, 146, 189)">
+              {{successMessage}}
+            </div>
+          </div>
+        </span>
+      <button type="button" class="btn btn-outline-primary" (click)='OnSubmit()'>Submit</button>
+    <button type="button" class="btn btn-outline-dark" (click)='OnClose()'>Close</button>
+  </div>
+

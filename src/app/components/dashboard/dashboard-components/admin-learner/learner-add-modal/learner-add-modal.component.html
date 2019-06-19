@@ -9,7 +9,7 @@
 </div>
 
 <div class='modal-body'>
-  <app-learner-registration-form [whichLearner]='whichLearner' [addCourse]='addCourse'></app-learner-registration-form>
+  <app-learner-registration-form [whichLearner]='whichLearner' (toLearnerListEvent)='toLearnerListEvent($event)' [addCourse]='addCourse'></app-learner-registration-form>
 </div>
 
 <!--modal footer-->

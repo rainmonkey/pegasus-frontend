@@ -1,6 +1,6 @@
-import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { NgbootstraptableService } from 'src/app/services/others/ngbootstraptable.service';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModal, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { LearnersService } from 'src/app/services/http/learners.service';
 import {LearnerDeleteModalComponent } from '../learner-delete-modal/learner-delete-modal.component';
 import {LearnerDetailModalComponent } from '../learner-detail-modal/learner-detail-modal.component';
@@ -36,25 +36,20 @@ public columnsToShow1: Array<string> = ['ContactNum', 'Email'];
   public currentPage: number = 1;
   public pageSize: number = 10;
 
-  // sent active modal confirm satuation to admin learner component;
-  @Output() activeModalEvent: EventEmitter<any> = new EventEmitter;
-  activeSubmitted: boolean = false;
+  // // sent active modal confirm satuation to admin learner component;
 
+  // @Output() activeModalEvent: EventEmitter<any> = new EventEmitter;
+  // activeSubmitted: boolean = false;
   constructor(
     private LearnerListService: LearnersService,
     private ngTable: NgbootstraptableService,
     private modalService: NgbModal,
+    private activeModal: NgbActiveModal
   ) { }
 
   ngOnInit() {
     this.getDataFromServer()
   }
-
-
-
-
-
-
 
   //get data from server
   getDataFromServer() {
@@ -234,23 +229,34 @@ public columnsToShow1: Array<string> = ['ContactNum', 'Email'];
   */
   addModal(command, whichLearner) {
     const modalRef = this.modalService.open(LearnerAddModalComponent, { windowClass: 'my-class', backdrop: 'static', keyboard: false });
+    modalRef.componentInstance.command = command;
+    modalRef.componentInstance.whichLearner = whichLearner;
     // console.log('jewoiajfoiwjfo',modalRef.componentInstance)
-    modalRef.componentInstance.clickConfirm.subscribe(res=>{
-      this.activeSubmitted = res;
-      console.log(this.activeSubmitted);
-      this.activeModalEvent.emit(this.activeSubmitted);
-    })
-    let that = this;
-    modalRef.result.then(
-      (res) => {
-        that.ngOnInit()
-    },
-    (err) =>{
-      return
-    }
-  )
-  modalRef.componentInstance.command = command;
-  modalRef.componentInstance.whichLearner = whichLearner;
+  //   let that = this;
+  //   modalRef.result.then(
+  //     (res) => {
+  //       that.ngOnInit()
+  //   },
+  //   (err) =>{
+  //     return
+  //   }
+  // )
+    // modalRef.componentInstance.toLearnerListEvent.subscribe(res=>{
+    //   console.log(res)
+    //   if (res == true){
+    //   modalRef.componentInstance.toAddLearnerModal = true;}
+      // let that = this;
+      //   modalRef.result.then(
+      //     function () {
+      //       if (res == true) {
+      //         modalRef.componentInstance.toAddLearnerModal = true;
+      //         // that.activeModal.close('Cross click')
+      //       }
+      //     },
+      //     function () {
+      //       return;
+      //     })
+//     })
 }
 deleteCourseModal(whichLearner){
   const modalRef = this.modalService.open(LearnerDeleteCourseModalComponent,{ windowClass: 'my-class',backdrop: 'static', keyboard: false  });

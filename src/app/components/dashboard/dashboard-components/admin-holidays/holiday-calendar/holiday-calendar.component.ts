@@ -4,9 +4,12 @@ import interactionPlugin from '@fullcalendar/interaction';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import { OptionsInput } from '@fullcalendar/core';
 import { HolidaysService } from 'src/app/services/http/holidays.service';
-import Swal from 'sweetalert2';
+import { Calendar } from '@fullcalendar/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { AddHolidayModalComponent } from '../add-holiday-modal/add-holiday-modal.component';
+import { AddHolidaysModalComponent } from '../add-holidays-modal/add-holidays-modal.component';
+import { View } from '@fullcalendar/core';
+import { DeleteHolidayComponent } from '../delete-holiday/delete-holiday.component';
+import { preserveWhitespacesDefault } from '@angular/compiler';
 
 
 @Component({
@@ -16,11 +19,12 @@ import { AddHolidayModalComponent } from '../add-holiday-modal/add-holiday-modal
   encapsulation: ViewEncapsulation.None
 })
 export class HolidayCalendarComponent implements OnInit {
-  public calendar: any
+  public calendar
   eventsModel;
   options: OptionsInput;
-  existHoliday:any
-  holidayArray =[]
+  existHoliday: any
+  holidayArray = []
+  private eventData = [];
   @ViewChild('fullcalendar') fullcalendar: CalendarComponent;
 
   constructor(
@@ -29,60 +33,97 @@ export class HolidayCalendarComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-  this.getExitHoliday()
-    console.log(this.fullcalendar)
-    this.initFullCalendar()
+    this.getExitHoliday()
 
+    console.log(this.fullcalendar)
+    this.initFullCalendar(this)
   }
 
 
   getExitHoliday() {
+
     this.HolidayServer.getHoliday().subscribe(
-    (res)=>{
-      this.eventsModel=this.putInfo(res.Data)
-      console.log(this.eventsModel)
-    },
-    (err)=>{
-      alert('something wrong')
-    }
+      (event) => {
+        console.log('aaaaaaaaaaaaa')
+        this.eventData=this.putInfo(event.Data)
+        this.eventsModel = this.eventData
+        console.log(this.eventData)
+
+
+      },
+      (err) => {
+        alert('something wrong')
+      }
     )
   }
 
-  initFullCalendar() {
+  initFullCalendar(pointer) {
+
+    console.log(this.fullcalendar)
+    let that = pointer;
     this.options = {
       plugins: [dayGridPlugin, interactionPlugin],
       selectable: true,
-      dateClick:function(info){
-        console.log(info)
-      this.open(info)
-      },
+      // select: function (info) {
+      //   console.log(info)
 
-      // select: function(info) {
-      //   alert("selected " + info.startStr + " to " + info.endStr);
       // },
+      dateClick: function (info) {
+        console.log(info)
+        that.addAndEdit(info)
+      },
       eventClick: (info) => {
-      Swal.fire({
-          type: 'info',
-          html: info.event.extendedProps.description
-        }
-      );
-    },
+        console.log(info)
+        that.delete(info)
+      },
+      eventTextColor:'#ffffff'
     }
   }
 
-
-
-  putInfo(h){
-    for(let i of h){
-      this.holidayArray.push({"title":i.HolidayName,"date":i.HolidayDate})
+  putInfo(h) {
+    for (let i of h) {
+      this.holidayArray.push({ 'id': i.HolidayId, "title": i.HolidayName, "date": i.HolidayDate })
     }
     return this.holidayArray;
   }
 
-open(info){
- const modalRef= this.modalService.open(AddHolidayModalComponent)
-  // modalRef.componentInstance
-}
+  addAndEdit(info) {
+    const modalRef = this.modalService.open(AddHolidaysModalComponent)
+    let that = this;
 
+    modalRef.componentInstance.date = info;
+    modalRef.componentInstance.refreshFlag.subscribe(
+      (res) => {
+        modalRef.result.then(
+          function () {
+            console.log(res)
+            if (res == true) {
+              that.ngOnInit();
+            }
+          },
+          function () {
+            return;
+          })
+      }
+    )
+  }
+
+  delete(info) {
+    const modalRef = this.modalService.open(DeleteHolidayComponent)
+    let that = this;
+
+    modalRef.componentInstance.date = info;
+    modalRef.result.then(
+      (res) => {
+        // this.fullcalendar.calendar.removeAllEvents();
+        // that.ngOnInit()
+
+      },
+      (err) => {
+        return
+      }
+    )
+
+  }
 
 }

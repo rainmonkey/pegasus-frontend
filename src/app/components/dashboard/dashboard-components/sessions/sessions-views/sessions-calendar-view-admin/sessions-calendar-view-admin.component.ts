@@ -70,6 +70,7 @@ export class SessionsCalendarViewAdminComponent implements OnInit {
         },
         ////////
         eventClick: (info) => {
+          console.log(info)
           Swal.fire({
             type: 'info',
             title: 'Student',
