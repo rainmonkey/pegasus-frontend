@@ -166,11 +166,29 @@ public columnsToShow1: Array<string> = ['ContactNum', 'Email'];
   leaverModal(command, whichLearner){
     const modalRef = this.modalService.open(AdminLearnerLeaveComponent,{size: 'lg'});
     modalRef.componentInstance.learner = whichLearner;
+    let that = this;
+    modalRef.result.then(
+      (res) => {
+        that.ngOnInit()
+      },
+      (err) => {
+        return
+      }
+    )
    }
 
    periodCourseChangeModal(cammand, whichlearner) {
      const modalRef = this.modalService.open(AdminLearnerPeriodCourseChangeModalComponent, {size: 'lg'});
      modalRef.componentInstance.learner = whichlearner;
+     let that = this;
+    modalRef.result.then(
+      (res) => {
+        that.ngOnInit()
+      },
+      (err) => {
+        return
+      }
+    )
    }
   /*
     delete modal
@@ -229,6 +247,15 @@ public columnsToShow1: Array<string> = ['ContactNum', 'Email'];
   */
   addModal(command, whichLearner) {
     const modalRef = this.modalService.open(LearnerAddModalComponent, { windowClass: 'my-class', backdrop: 'static', keyboard: false });
+    let that = this;
+    modalRef.result.then(
+      (res) => {
+        this.ngOnInit()
+      },
+      (err) => {
+        return
+      }
+    )
     modalRef.componentInstance.command = command;
     modalRef.componentInstance.whichLearner = whichLearner;
     // console.log('jewoiajfoiwjfo',modalRef.componentInstance)
