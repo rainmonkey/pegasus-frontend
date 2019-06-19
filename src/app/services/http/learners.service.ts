@@ -62,4 +62,7 @@ export class LearnersService {
     return this.http.get(this.baseUrl + "CourseRemaining/" + LearnerId)
   }
 
+  getTeachers() {
+    return this.http.get(this.baseUrl + 'teacher');
+  }
 }
