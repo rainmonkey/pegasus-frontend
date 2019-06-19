@@ -2,7 +2,8 @@ import { CommonModule, DatePipe } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { MatButtonModule, MatFormFieldModule, MatInputModule } from '@angular/material';
+import {MatButtonModule, MatFormFieldModule, MatInputModule, MatSelectModule} from '@angular/material';
+import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 // Dependencies
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -219,6 +220,7 @@ import { AddHolidayModalComponent } from './components/dashboard/dashboard-compo
   ],
   imports: [
     NgbModule,
+    NgxMatSelectSearchModule,
     BrowserModule,
     HttpClientModule,
     FormsModule,
@@ -230,7 +232,8 @@ import { AddHolidayModalComponent } from './components/dashboard/dashboard-compo
     routing,
     FullCalendarModule,
     CommonModule,
-    ChartsModule
+    ChartsModule,
+    MatSelectModule
   ],
   providers: [
     DatePipe,
