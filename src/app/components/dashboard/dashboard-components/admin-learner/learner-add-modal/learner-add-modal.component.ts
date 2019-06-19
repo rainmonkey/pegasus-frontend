@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, DoCheck } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, DoCheck } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
@@ -10,12 +10,14 @@ export class LearnerAddModalComponent implements OnInit, DoCheck {
   addCourse = true;
   toAddLearnerModal = false;
   @Input() whichLearner;
+  @Output() signalForInit: EventEmitter<any> = new EventEmitter;
   constructor(public activeModal: NgbActiveModal ) {
 
   }
   toLearnerListEvent(event){
     if(event == true){
       this.activeModal.dismiss();
+      this.signalForInit.emit(true);
     }
   }
   ngDoCheck(){

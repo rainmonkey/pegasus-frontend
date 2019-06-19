@@ -13,10 +13,10 @@ export class LearnerEditModalComponent implements OnInit, DoCheck {
 
   }
   onActiveModalSubmit(event){
-    console.log(event);
-    if (event.target.value === true){
-      this.activeModal.dismiss();
-    }
+    // console.log('lyri',event);
+    // if (event.target.value === true){
+    //   this.activeModal.dismiss();
+    // }
   }
   ngOnInit() {
   }
