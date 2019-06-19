@@ -61,6 +61,9 @@ export class LearnersService {
   getRemainingCourses(LearnerId: number): Observable<any> {
     return this.http.get(this.baseUrl + "CourseRemaining/" + LearnerId)
   }
+  getArrangedLesson(LearnerId:number):Observable<any>{
+    return this.http.get(this.baseUrl+"Lesson/"+"GetArrangedLessonsByLearner/"+LearnerId)
+  }
 
   getTeachers() {
     return this.http.get(this.baseUrl + 'teacher');

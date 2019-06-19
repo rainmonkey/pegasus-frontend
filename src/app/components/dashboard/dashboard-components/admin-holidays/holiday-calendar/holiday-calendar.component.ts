@@ -38,6 +38,7 @@ export class HolidayCalendarComponent implements OnInit {
 
     console.log(this.fullcalendar)
     this.initFullCalendar(this)
+    
   }
 
 
@@ -84,6 +85,7 @@ export class HolidayCalendarComponent implements OnInit {
   }
 
   putInfo(h) {
+    this.holidayArray = [];
     for (let i of h) {
       this.holidayArray.push({ 'id': i.HolidayId, "title": i.HolidayName, "date": i.HolidayDate })
     }
@@ -121,11 +123,10 @@ export class HolidayCalendarComponent implements OnInit {
     modalRef.componentInstance.date = info;
     modalRef.result.then(
       (res) => {
-        this.fullcalendar.calendar.removeAllEvents();
-        // this.getExitHoliday()
-         // this.fullcalendar.calendar.refetchEvents()
-        // this.initFullCalendar(this)
-        this.ngOnInit()
+        //this.fullcalendar.calendar.removeAllEvents();
+        //this.fullcalendar.calendar.destroy();
+        that.ngOnInit()
+
       },
     )
 
