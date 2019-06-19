@@ -836,7 +836,7 @@ selectLocation(id, i) {
         // this.modalRefConfirm.result.then(
         //     function () {
         //       if (res == true) {
-        //         that.toLearnerListEvent.emit(true);
+        //         that.ngOnInit();
         //       }
         //     },
         //     function () {
