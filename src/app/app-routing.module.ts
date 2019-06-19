@@ -1,5 +1,6 @@
 import { Routes, RouterModule } from '@angular/router';
 import { DashboardRestrictGuard } from './guards/dashboard-restrict.guard';
+import { UserAuthGuard } from './guards/user-auth.guard';
 
 import { LoginComponent } from './components/basic/login/login.component';
 import { DashboardPanelComponent } from './components/dashboard/general/dashboard-panel/dashboard-panel.component';
@@ -42,7 +43,7 @@ import { HolidayCalendarComponent } from './components/dashboard/dashboard-compo
 
 const routes: Routes = [
   {
-    path: '', component: DashboardPanelComponent, canActivate: [DashboardRestrictGuard],
+    path: '', component: DashboardPanelComponent, canActivate: [DashboardRestrictGuard], canActivateChild: [UserAuthGuard],
     children: [
       { path: 'home', component: DashboardHomeComponent },
       // Testing path

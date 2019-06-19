@@ -8,7 +8,7 @@ import { environment } from 'src/environments/environment.prod';
   templateUrl: './learner-detail-modal.component.html',
   styleUrls: ['./learner-detail-modal.component.css']
 })
-export class LearnerDetailModalComponent implements OnInit, AfterViewInit {
+export class LearnerDetailModalComponent implements OnInit{
   @Input() command;
   @Input() whichLearner;
   // PropNameArray:Array<any>
@@ -29,6 +29,7 @@ export class LearnerDetailModalComponent implements OnInit, AfterViewInit {
   public photoUrl: any = environment.photoUrl;
   otherFileUrl = ''
   agreeFileUrl=''
+  learnerList1:any
   constructor(public activeModal: NgbActiveModal, private LearnerListService: LearnersService, ) {
 
   }
@@ -41,6 +42,20 @@ export class LearnerDetailModalComponent implements OnInit, AfterViewInit {
     this.getOthersUrl()
     this.getFormUrl()
     console.log(this.whichLearner)
+    this.getData()
+  }
+
+  getData(){
+    this.LearnerListService.getLearnerList().subscribe(
+      (res) => {
+        console.log(res)
+        //@ts-ignore
+        this.learnerList1 = res.Data;
+      },
+      (err) => {
+        console.log('error')
+      }
+    )
   }
   chooseGroupCourse() {
     this.isGroupCourse = true;
@@ -50,8 +65,7 @@ export class LearnerDetailModalComponent implements OnInit, AfterViewInit {
     this.isCustomCourse = true;
     this.isGroupCourse = false;
   }
-  ngAfterViewInit() {
-  }
+
 
   ////!!!!!!!!!!!!原本
   // lookUpData1(){

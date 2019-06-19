@@ -2,7 +2,8 @@ import { CommonModule, DatePipe } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { MatButtonModule, MatFormFieldModule, MatInputModule } from '@angular/material';
+import {MatButtonModule, MatFormFieldModule, MatInputModule, MatSelectModule} from '@angular/material';
+import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 // Dependencies
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -223,6 +224,7 @@ import { ChattingComponent } from './components/dashboard/general/chatting/chatt
   ],
   imports: [
     NgbModule,
+    NgxMatSelectSearchModule,
     BrowserModule,
     HttpClientModule,
     FormsModule,
@@ -234,7 +236,8 @@ import { ChattingComponent } from './components/dashboard/general/chatting/chatt
     routing,
     FullCalendarModule,
     CommonModule,
-    ChartsModule
+    ChartsModule,
+    MatSelectModule
   ],
   providers: [
     DatePipe,

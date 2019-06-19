@@ -7,7 +7,8 @@ import {HolidaysService} from 'src/app/services/http/holidays.service';
   styleUrls: ['./delete-holiday.component.css']
 })
 export class DeleteHolidayComponent implements OnInit {
-
+  public isDeleteSuccess = false;
+  public isDeleteFail = false;
 @Input() date
   constructor(
     public activeModal: NgbActiveModal,
@@ -18,4 +19,15 @@ export class DeleteHolidayComponent implements OnInit {
     console.log(this.date)
   }
 
+  delete(){
+    this.HolidaysService.deleteHoliday(this.date.event._def.publicId).subscribe(
+      (res) => {
+        this.isDeleteSuccess = true;
+      },
+      (err) => {
+        //失败信息
+        this.isDeleteFail = true;
+      }
+    );
+  }
 }

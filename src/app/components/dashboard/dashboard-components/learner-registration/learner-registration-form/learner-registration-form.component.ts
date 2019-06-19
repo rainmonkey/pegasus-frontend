@@ -831,11 +831,12 @@ selectLocation(id, i) {
         if (res == true) {
           this.toLearnerListEvent.emit(true);
         }
+
         // let that = this;
         // this.modalRefConfirm.result.then(
         //     function () {
         //       if (res == true) {
-        //         that.toLearnerListEvent.emit(true);
+        //         that.ngOnInit();
         //       }
         //     },
         //     function () {
@@ -864,19 +865,19 @@ selectLocation(id, i) {
   }
 
   next(value: string) {
-    this.getErrorW === false ? this.showErrorW = true : this.showErrorW = false;
-    this.getErrorH === false ? this.showErrorH = true : this.showErrorH = false;
+    // this.getErrorW === false ? this.showErrorW = true : this.showErrorW = false;
+    // this.getErrorH === false ? this.showErrorH = true : this.showErrorH = false;
     this.touchNext = true;
     if (value === 'parentForm') { this.confirmLearner(); }
-    if ((this.getErrorH === true) && (this.getErrorW === true)) {
-      this.showErrorW = false;
+    // if ((this.getErrorH === true) && (this.getErrorW === true)) {
+    // }
+    this.showErrorW = false;
       this.showErrorH = false;
       this.touchNext = false;
       document.getElementById('learnerForm').style.display = 'none';
       document.getElementById('parentForm').style.display = 'none';
       document.getElementById('courseForm').style.display = 'none';
       document.getElementById(value).style.display = 'block';
-    }
   }
   setParentForm() {
     if (!this.whichLearner) {

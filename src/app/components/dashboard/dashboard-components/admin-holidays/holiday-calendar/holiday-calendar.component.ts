@@ -4,11 +4,13 @@ import interactionPlugin from '@fullcalendar/interaction';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import { OptionsInput } from '@fullcalendar/core';
 import { HolidaysService } from 'src/app/services/http/holidays.service';
-import Swal from 'sweetalert2';
+import { Calendar } from '@fullcalendar/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { AddHolidaysModalComponent } from '../add-holidays-modal/add-holidays-modal.component';
 import { View } from '@fullcalendar/core';
 import { DeleteHolidayComponent } from '../delete-holiday/delete-holiday.component';
+import { preserveWhitespacesDefault } from '@angular/compiler';
+
 
 
 @Component({
@@ -18,11 +20,12 @@ import { DeleteHolidayComponent } from '../delete-holiday/delete-holiday.compone
   encapsulation: ViewEncapsulation.None
 })
 export class HolidayCalendarComponent implements OnInit {
-  public calendar: any
+  public calendar
   eventsModel;
   options: OptionsInput;
   existHoliday: any
   holidayArray = []
+  private eventData = [];
   @ViewChild('fullcalendar') fullcalendar: CalendarComponent;
 
   constructor(
@@ -32,16 +35,19 @@ export class HolidayCalendarComponent implements OnInit {
 
   ngOnInit() {
     this.getExitHoliday()
+
     console.log(this.fullcalendar)
     this.initFullCalendar(this)
   }
 
 
   getExitHoliday() {
+
     this.HolidayServer.getHoliday().subscribe(
-      (res) => {
-        this.eventsModel = this.putInfo(res.Data)
-        console.log(this.eventsModel)
+      (event) => {
+        console.log('aaaaaaaaaaaaa')
+        const eventData = this.putInfo(event.Data)
+        this.eventsModel = eventData
       },
       (err) => {
         alert('something wrong')
@@ -50,30 +56,36 @@ export class HolidayCalendarComponent implements OnInit {
   }
 
   initFullCalendar(pointer) {
+
+    console.log(this.fullcalendar)
     let that = pointer;
     this.options = {
       plugins: [dayGridPlugin, interactionPlugin],
       selectable: true,
-      // select: function(info) {
+      // select: function (info) {
       //   console.log(info)
-      //   that.open(info)
+
       // },
       dateClick: function (info) {
         console.log(info)
         that.addAndEdit(info)
+
       },
       eventClick: (info) => {
         console.log(info)
         that.delete(info)
+
       },
+      eventTextColor: '#ffffff',
+
     }
+
+
   }
-
-
 
   putInfo(h) {
     for (let i of h) {
-      this.holidayArray.push({ "title": i.HolidayName, "date": i.HolidayDate })
+      this.holidayArray.push({ 'id': i.HolidayId, "title": i.HolidayName, "date": i.HolidayDate })
     }
     return this.holidayArray;
   }
@@ -89,7 +101,10 @@ export class HolidayCalendarComponent implements OnInit {
           function () {
             console.log(res)
             if (res == true) {
-              that.ngOnInit();
+              that.fullcalendar.calendar.removeAllEvents();
+              that.getExitHoliday()
+
+              that.initFullCalendar(this)
             }
           },
           function () {
@@ -101,23 +116,32 @@ export class HolidayCalendarComponent implements OnInit {
 
   delete(info) {
     const modalRef = this.modalService.open(DeleteHolidayComponent)
-    let that =this;
+    let that = this;
 
     modalRef.componentInstance.date = info;
-    // modalRef.componentInstance.refreshFlag.subscribe(
-    //   (res) => {
-    //     modalRef.result.then(
-    //       function () {
-    //         console.log(res)
-    //         if (res == true) {
-    //           that.ngOnInit();
-    //         }
-    //       },
-    //       function () {
-    //         return;
-    //       })
-    //   }
-    // )
+    modalRef.result.then(
+      (res) => {
+        this.fullcalendar.calendar.removeAllEvents();
+        // this.getExitHoliday()
+         // this.fullcalendar.calendar.refetchEvents()
+        // this.initFullCalendar(this)
+        this.ngOnInit()
+      },
+    )
+
   }
+
+  // refreshData(){
+  //   this.fullcalendar.calendar.removeAllEvents();
+
+  //   this.HolidayServer.getHoliday().subscribe(
+  //     (event) => {
+  //       console.log('aaaaaaaaaaaaa')
+  //       const eventData = this.putInfo(event.Data)
+  //       this.eventsModel = eventData
+  //     }
+  //   )}
+
+
 
 }

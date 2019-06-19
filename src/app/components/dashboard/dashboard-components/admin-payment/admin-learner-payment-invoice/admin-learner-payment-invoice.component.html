@@ -6,7 +6,7 @@
                 <hr>
                 <div id="collapseInvoiceProduct">
                     <!-- tabset -->
-                    <ngb-tabset *ngIf="arrayInv.length > 1" (tabChange)="fetchNews($event)">
+                    <ngb-tabset *ngIf="(arrayInv.length > 1) && !noInvoice" (tabChange)="fetchNews($event)">
                         <ngb-tab *ngFor="let item of dataInvoice; let j = index" [title]=j+1>
                               <ng-template ngbTabContent>
                                   <!-- invoice form in tabset -->
@@ -84,7 +84,7 @@
                         </ngb-tab>
                     </ngb-tabset>
                     <!-- invoice form out tabset-->
-                    <div *ngIf="arrayInv.length == 1">
+                    <div *ngIf="arrayInv.length == 1 && !noInvoice">
                         <div class='row justify-content-between' *ngFor="let item of dataInvoice; let j = index" [formGroup]="invoiceForm" #pdf>
                           <div class="col-10" >
                                 <h5>Invoice</h5>
@@ -154,7 +154,7 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
+                      </div>
                 </div>
                 <ngb-alert *ngIf='successAlert' type="success" (close)="closeSucc()">Your Payment Has Been Made</ngb-alert>
                 <ngb-alert *ngIf='errorAlert' type="danger" (close)="closeErro()">{{ errorMsg }}</ngb-alert>
