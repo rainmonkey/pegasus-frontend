@@ -14,6 +14,10 @@ export class GeneralRepoService {
   // search name component
   fisrtName = new BehaviorSubject('Customer Name');
   constructor(private http: HttpClient) { }
+  // get pages authentation
+  getGroupCourse(RoleId): Observable<any> {
+    return this.http.get(this.baseUrl + 'page', RoleId);
+  }
   // get user auth state
   getUser(){
     this.userState = 1;
