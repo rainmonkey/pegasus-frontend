@@ -100,13 +100,11 @@ export class AdminLearnerPeriodCourseChangeModalComponent implements OnInit {
   }
 
   submit = () => {
-    console.log(this.PeriodCourseChangeForm.value)
     if (this.PeriodCourseChangeForm.invalid) {
       this.errorMessage = 'The form is Invalid';
       this.IsformError = true;
       return;
     }
-    return;
     this.IsformError = false;
     this.isloading = true;
     this.isConfirmClick = true;
