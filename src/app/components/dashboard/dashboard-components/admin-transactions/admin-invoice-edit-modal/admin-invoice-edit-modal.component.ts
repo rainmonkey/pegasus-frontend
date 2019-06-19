@@ -217,9 +217,8 @@ export class AdminInvoiceEditModalComponent implements OnInit {
         (res) => {
           this.activeModal.dismiss();
           swal.fire("Confirmed")
-          // this.router.navigate(['/transaction/invoices']);
-          // location.reload()
-          this.confirmed.emit(true)
+          this.item.IsConfirmed = 1
+          console.log(this.itemTempPublic)
         },
         (error) => {
           console.log(error)

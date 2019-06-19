@@ -54,13 +54,7 @@ export class AdminInvoiceListComponent implements OnInit {
   open(item) {
     const modalRef = this.modalService.open(AdminInvoiceEditModalComponent,
       {
-        size: 'lg', backdrop: "static", keyboard: false,
-        beforeDismiss: () => {
-          console.log(item)
-          item.IsConfirmed = 1
-          console.log(item)
-          return true
-        }
+        size: 'lg', backdrop: "static", keyboard: false
       });
     //pass parameters to edit modals
     modalRef.componentInstance.item = item;
