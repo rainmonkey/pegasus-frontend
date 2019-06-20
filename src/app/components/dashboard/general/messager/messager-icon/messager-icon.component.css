@@ -1,0 +1,16 @@
+.m_i_icon{
+    width: 50px;
+    height: 50px;
+    background: rgb(136, 187, 204);
+    border: 3px solid #eef5f9;
+    border-radius: 50%;
+    position: fixed;
+    bottom: 1rem;
+    right: 1rem;
+    text-align: center;
+    font-size:30px;
+    color:white;
+}
+.m_i_icon:hover{
+    cursor: pointer;
+}
