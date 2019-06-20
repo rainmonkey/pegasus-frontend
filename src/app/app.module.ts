@@ -115,7 +115,6 @@ import { AddHolidaysModalComponent } from './components/dashboard/dashboard-comp
 import { DeleteHolidayComponent } from './components/dashboard/dashboard-components/admin-holidays/delete-holiday/delete-holiday.component';
 import { ChattingComponent } from './components/dashboard/general/chatting/chatting.component';
 
-
 @NgModule({
   declarations: [
     AppComponent,

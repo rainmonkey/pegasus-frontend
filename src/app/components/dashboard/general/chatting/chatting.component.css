@@ -1,3 +1,4 @@
+
 .c_icon{
     font: rgb(141, 184, 199);
 }
@@ -72,7 +73,6 @@
 .c_chatting_emoji{
     height:20px;
     width: 100%;
-    background: grey;
     position: absolute;
     bottom: 180px;
 }

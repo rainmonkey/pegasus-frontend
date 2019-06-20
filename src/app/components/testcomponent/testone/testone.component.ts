@@ -28,7 +28,7 @@ export class TestoneComponent implements OnInit {
   ngOnInit() {
     this.poi = this.fb.group(this.formGroupAssemble());
     this.getoiois();
-
+  
   }
 
   formGroupAssemble(){
