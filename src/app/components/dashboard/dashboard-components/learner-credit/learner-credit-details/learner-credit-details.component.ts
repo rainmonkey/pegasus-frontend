@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, ParamMap, Router } from "@angular/router";
+import { ActivatedRoute, ParamMap, Router, RouterStateSnapshot } from "@angular/router";
 import { LearnersService } from "../../../../../services/http/learners.service"
 import { NgbootstraptableService } from "../../../../../services/others/ngbootstraptable.service"
 
@@ -18,7 +18,8 @@ export class LearnerCreditDetailsComponent implements OnInit {
 
   constructor(private learnerService: LearnersService,
     private activatedRouter: ActivatedRoute,
-    private ngTableService: NgbootstraptableService
+    private ngTableService: NgbootstraptableService,
+    private router: Router
   ) { }
 
   ngOnInit() {
@@ -41,7 +42,6 @@ export class LearnerCreditDetailsComponent implements OnInit {
   getRemainingCourses() {
     this.learnerService.getRemainingCourses(this.learnerId).subscribe(data => {
       this.remainingCourseData = data["Data"]
-      console.log(this.remainingCourseData)
     }, error => console.log(error)
     )
   }
@@ -49,7 +49,6 @@ export class LearnerCreditDetailsComponent implements OnInit {
   getArrangedLesson() {
     this.learnerService.getArrangedLesson(this.learnerId).subscribe(data => {
       this.arrangedCourseData = data["Data"]
-      console.log(this.arrangedCourseData)
     }, error => console.log(error))
   }
 
@@ -59,8 +58,12 @@ export class LearnerCreditDetailsComponent implements OnInit {
     } else if (tableName == "remaningTable") {
       this.ngTableService.sorting(this.remainingCourseData, orderBy)
     }
+  }
 
-    console.log("Aaa")
+  navigateToArrange() {
+    let url = this.router.routerState.snapshot.url;
+    url = url.substring(0, url.lastIndexOf("/"))
+    this.router.navigate([url + "/arrange"], { queryParams: { LearnerId: this.learnerId } })
   }
 
 }

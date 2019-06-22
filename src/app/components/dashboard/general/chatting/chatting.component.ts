@@ -14,7 +14,7 @@ export class ChattingComponent implements OnInit {
 
   ngOnInit() {
     let emoji = document.getElementById('emojiArea');
-  
+
   }
 
   selectFunctionalBtn(selectId){

@@ -123,9 +123,13 @@ const routes: Routes = [
           { path: 'registration', component: LearnerRegistrationFormComponent },
           { path: 'trial', component: TrialInfoComponent },
           {
-            path: "credit", component: LearnerCreditPanelComponent,
-            children: [{ path: ":id", component: LearnerCreditDetailsComponent },
-            { path: ":id/arrange", component: LearnerCreditArrangeComponent }]
+            path: "credit", pathMatch: 'prefix', component: LearnerCreditPanelComponent,
+            children: [{
+              path: "arrange", component: TrialInfoComponent
+              //LearnerCreditArrangeComponent
+            }, {
+              path: ":id", component: LearnerCreditDetailsComponent
+            }]
           },
           { path: 'success', component: AdminLearnerPaymentSuccessComponent },
         ]
