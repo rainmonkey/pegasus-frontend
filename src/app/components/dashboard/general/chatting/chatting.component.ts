@@ -36,4 +36,19 @@ export class ChattingComponent implements OnInit {
       }
     }
   }
+
+  showEmojiPicker(){
+    let emojiPickerObj = document.getElementById('c_chatting_emoji_picker');
+    console.log(emojiPickerObj.style.display)
+    if(emojiPickerObj.style.display == 'none' || emojiPickerObj.style.display == ''){
+      emojiPickerObj.style.display = 'block';
+    }
+    else{
+      emojiPickerObj.style.display = 'none';
+    }
+  }
+
+  abc(event){
+    console.log(event)
+  }
 }

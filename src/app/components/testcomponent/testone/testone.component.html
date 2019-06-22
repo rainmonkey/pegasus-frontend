@@ -11,8 +11,11 @@
 <div>
         <button type="button" class="btn btn-outline-primary" (click)='changePassword()'>Change Password</button> 
 </div>
-
+<ngx-emoji [emoji]="{ id: 'grinning', skin: 3 }" size="16"></ngx-emoji>
 <div>
   <a href="" routerLink='/learner/trial' >aaaaa</a>
   <span class='t_info_table_btn' (click)='jump()'></span>
 </div>
+
+<emoji-mart #emoji title="Pick your emoji…" emoji="point_up" (emojiSelect)='a($event)'></emoji-mart>
+
