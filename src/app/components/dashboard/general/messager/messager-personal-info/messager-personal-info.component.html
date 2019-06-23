@@ -1,0 +1,30 @@
+<div class='m_p_person_info'>
+  <div class='m_p_photo_outer'>
+    <div class='m_p_photo_inner'>
+      <img src="../../../../../../assets/images/usersimg/userphoto.jpg" alt="">
+    </div>
+  </div>
+  <div class='m_p_info'>
+    <div class='row'>
+      <!--user name-->
+      <div class='col-10'>
+        <span class='col_p_info_label'>Richard Wang</span>
+      </div>
+      <!--user online level-->
+      <div class='col-2'>
+        <span class='col_p_info_level'>LV10</span>
+      </div>
+    </div>
+    <!--user cate-->
+    <div class='col-12'>
+      <span class='col_p_info_label'>Teacher (City Center)</span>
+    </div>
+    <!--user's personal signature-->
+    <div class='col-12'>
+      <textarea class='col_p_info_label col_p_info_label_last' rows="2" maxlength="50" (focus)='getSignature($event)' (blur)='changeSignature($event)'>奥克兰吴彦祖</textarea>
+    </div>
+  </div>
+
+  <!--online status btn-->
+  <div class='m_p_online_status' (click)='changeOnlineStatus($event)' title='online'></div>
+</div>

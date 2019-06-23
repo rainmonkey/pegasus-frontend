@@ -1,0 +1,146 @@
+<div class='m_s_skeleton'>
+  <!--subscriber group switcher-->
+  <div class='row m_s_group_btn'>
+    <div class='col-4'>
+      <div class='m_s_group_label' [class.m_s_group_label_hover]='groupChatSwitchFlag'
+        (click)='changeChattingGroup($event,0)'>
+        Subscribers
+      </div>
+    </div>
+    <div class='col-4'>
+      <div class='m_s_group_label' [class.m_s_group_label_hover]='!groupChatSwitchFlag'
+        (click)='changeChattingGroup($event,1)'>
+        Group Chat
+      </div>
+    </div>
+  </div>
+
+  <!--subscriber body-->
+  <div *ngIf='groupChatSwitchFlag'>
+    <div class='row'>
+      <div class='col-12 m_s_subscribers_label' (click)='displayGroup($event,"group_teachers")'>
+        Teachers
+      </div>
+      <!--ngif-->
+      <div class='col-12' id='group_teachers' style="display: none">
+        <!--ngfor-->
+        <div class='row m_s_subscribers' (dblclick)='chattingWithHandler()'>
+          <div class='col-3'>
+            <div class='m_s_subscribers_photo'>
+              <img src="../../../../../../assets/images/usersimg/userphoto02.jpg" alt="">
+            </div>
+          </div>
+          <div class='col-9'>
+            <div class='col-12 m_s_subscribers_name'>
+              Winne
+            </div>
+            <div class='col-12 m_s_subscribers_signature'>
+              奥克兰吴彦祖 奥克兰陈冠希 奥克兰王力宏
+            </div>
+          </div>
+        </div>
+
+        <div class='row m_s_subscribers'>
+          <div class='col-3'>
+            <div class='m_s_subscribers_photo'>
+              <img src="../../../../../../assets/images/usersimg/userphoto02.jpg" alt="">
+            </div>
+          </div>
+          <div class='col-9'>
+            <div class='col-12 m_s_subscribers_name'>
+              Oliver
+            </div>
+            <div class='col-12 m_s_subscribers_signature'>
+              奥克兰吴彦祖 奥克兰陈冠希 奥克兰王力宏
+            </div>
+          </div>
+        </div>
+
+
+      </div>
+
+      <div class='col-12 m_s_subscribers_label' (click)='displayGroup($event,"group_students")'>
+        Students
+      </div>
+      <!--ngif-->
+      <div class='col-12' id='group_students' style="display: none">
+        <!--ngfor-->
+        <div class='row m_s_subscribers'>
+          <div class='col-3'>
+            <div class='m_s_subscribers_photo'>
+              <img src="../../../../../../assets/images/usersimg/userphoto02.jpg" alt="">
+            </div>
+          </div>
+          <div class='col-9'>
+            <div class='col-12 m_s_subscribers_name'>
+              Winne
+            </div>
+            <div class='col-12 m_s_subscribers_signature'>
+              奥克兰吴彦祖 奥克兰陈冠希 奥克兰王力宏
+            </div>
+          </div>
+        </div>
+
+        <div class='row m_s_subscribers'>
+          <div class='col-3'>
+            <div class='m_s_subscribers_photo'>
+              <img src="../../../../../../assets/images/usersimg/userphoto02.jpg" alt="">
+            </div>
+          </div>
+          <div class='col-9'>
+            <div class='col-12 m_s_subscribers_name'>
+              Oliver
+            </div>
+            <div class='col-12 m_s_subscribers_signature'>
+              奥克兰吴彦祖 奥克兰陈冠希 奥克兰王力宏
+            </div>
+          </div>
+        </div>
+
+
+      </div>
+
+
+      <div class='col-12 m_s_subscribers_label' (click)='displayGroup($event,"group_staffs")'>
+        Staffs
+      </div>
+      <!--ngif-->
+      <div class='col-12' id='group_staffs' style="display: none">
+        <!--ngfor-->
+        <div class='row m_s_subscribers'>
+          <div class='col-3'>
+            <div class='m_s_subscribers_photo'>
+              <img src="../../../../../../assets/images/usersimg/userphoto02.jpg" alt="">
+            </div>
+          </div>
+          <div class='col-9'>
+            <div class='col-12 m_s_subscribers_name'>
+              Winne
+            </div>
+            <div class='col-12 m_s_subscribers_signature'>
+              奥克兰吴彦祖 奥克兰陈冠希 奥克兰王力宏
+            </div>
+          </div>
+        </div>
+
+        <div class='row m_s_subscribers'>
+          <div class='col-3'>
+            <div class='m_s_subscribers_photo'>
+              <img src="../../../../../../assets/images/usersimg/userphoto02.jpg" alt="">
+            </div>
+          </div>
+          <div class='col-9'>
+            <div class='col-12 m_s_subscribers_name'>
+              Oliver
+            </div>
+            <div class='col-12 m_s_subscribers_signature'>
+              奥克兰吴彦祖 奥克兰陈冠希 奥克兰王力宏
+            </div>
+          </div>
+        </div>
+
+
+      </div>
+    </div>
+  </div>
+</div>
