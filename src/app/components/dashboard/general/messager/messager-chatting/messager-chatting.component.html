@@ -1,0 +1,44 @@
+<div class='m_c_skeleton'>
+  <div class='m_c_person_label'>
+    <!--展示聊天对象的label 
+    数据动态获取-->
+    <div class='col-12'>
+      <div class='row m_c_subscribers'>
+        <div class='col-3'>
+          <div class='m_c_subscribers_photo'>
+            <img src="../../../../../../assets/images/usersimg/userphoto02.jpg" alt="">
+          </div>
+        </div>
+        <div class='col-9'>
+          <div class='col-12 m_c_subscribers_name'>
+            Winne
+          </div>
+          <div class='col-12 m_c_subscribers_signature'>
+            奥克兰吴彦祖 奥克兰陈冠希 奥克兰王力宏
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!--聊天框-->
+  <div class='m_c_chatting_panel'>
+    aaa
+    <!--emoji选择面板-->
+    <emoji-mart title="Pick your emoji…" (emojiSelect)='clickEmoji($event)' id='m_c_emoji_picker_panel'
+      [style]='{width:"100%"}'></emoji-mart>
+  </div>
+
+  <!--emoji框-->
+  <div class='m_c_emoji_panel'>
+    <ngx-emoji emoji='sunglasses' set='apple' size="25" class='m_c_emoji_picker' (click)='showEmojiPicker()'>
+    </ngx-emoji>
+  </div>
+
+  <!--输入框-->
+  <div class='m_c_input_area'>
+    <!-- <textarea id='m_c_text_area'></textarea>   -->
+    <input type="textarea" id='m_c_text_area' />
+  </div>
+
+</div>
