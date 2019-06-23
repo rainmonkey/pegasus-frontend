@@ -40,3 +40,6 @@
   color:lightskyblue;
   cursor:pointer
 }
+.line-trough{
+  text-decoration: line-through;
+}
