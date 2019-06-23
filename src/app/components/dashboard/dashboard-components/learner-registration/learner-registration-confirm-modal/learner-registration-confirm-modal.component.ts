@@ -63,6 +63,7 @@ export class LearnerRegistrationConfirmModalComponent implements OnInit {
         let submitted: boolean = true;
         this.clickConfirm.emit(submitted);
         // show alert;
+        // addCourse for group or onetoone
         if (this.addCourse || this.learnerId) {
           Swal.fire({
             title: 'Your Work Has Been Saved',

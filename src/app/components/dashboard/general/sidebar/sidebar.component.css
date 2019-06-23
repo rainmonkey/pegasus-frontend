@@ -26,6 +26,10 @@ nav.side-navbar a[data-toggle="collapse"]::before {
   right: 20px;
 }
 
+nav.side-navbar a[aria-expanded="true"]::before {
+  content: '\f107';
+}
+
 
 nav.side-navbar.shrinked ul li a[data-toggle="collapse"]::before {
   content: '\f107';

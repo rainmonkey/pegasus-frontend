@@ -22,7 +22,10 @@
         <div class="col-5">
           <div>Begin Time</div>
           <input type="time" class="form-control" formControlName="BeginTime">
-          <small class="text-danger" *ngIf="BeginTime.invalid && BeginTime.touched">Please enter the begin time</small>
+          <div *ngIf="BeginTime.invalid && BeginTime.touched">
+            <small *ngIf="BeginTime.errors?.required" class="text-danger">Begin time is required</small>
+            <small *ngIf="BeginTime.errors?.forbidden" class="text-danger">{{BeginTime.errors?.forbidden.value}}</small>
+          </div>
         </div>
         <div class="col-6">
           <div>Org Name</div>
@@ -33,6 +36,7 @@
             </select>
           </div>
           <small class="text-danger" *ngIf="OrgId.invalid && OrgId.touched">Please select branch</small>
+
         </div>
         <div class="col-5">
           <div>Room Name</div>
@@ -43,6 +47,12 @@
             </select>
           </div>
           <small class="text-danger" *ngIf="RoomId.invalid && RoomId.touched">Please select Room</small>
+        </div>
+        <div class="col-5">
+          <div>Teacher</div>
+          <select formControlName="TeacherId">
+            <option *ngFor="let teacher of Teachers" [value]="teacher.TeacherId">{{teacher.FirstName}}</option>
+          </select>
         </div>
         <div class="col-5">
           <div>Day of week</div>

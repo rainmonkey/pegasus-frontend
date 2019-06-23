@@ -2,11 +2,11 @@ import { CommonModule, DatePipe } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { MatButtonModule, MatFormFieldModule, MatInputModule } from '@angular/material';
+import {MatButtonModule, MatFormFieldModule, MatInputModule, MatSelectModule} from '@angular/material';
 // Dependencies
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModule, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { FullCalendarModule } from 'ng-fullcalendar';
 import { ChartsModule } from 'ng2-charts';
 import { routing } from '../app/app-routing.module';
@@ -112,6 +112,14 @@ import { InventoryReceiptModalComponent } from './components/dashboard/dashboard
 import { HolidayCalendarComponent } from './components/dashboard/dashboard-components/admin-holidays/holiday-calendar/holiday-calendar.component';
 import { AddHolidaysModalComponent } from './components/dashboard/dashboard-components/admin-holidays/add-holidays-modal/add-holidays-modal.component';
 import { DeleteHolidayComponent } from './components/dashboard/dashboard-components/admin-holidays/delete-holiday/delete-holiday.component';
+import { PickerModule } from '@ctrl/ngx-emoji-mart';
+import { EmojiModule } from '@ctrl/ngx-emoji-mart/ngx-emoji';
+import { MessagerIconComponent } from './components/dashboard/general/messager/messager-icon/messager-icon.component';
+import { MessagerModalComponent } from './components/dashboard/general/messager/messager-modal/messager-modal.component';
+import { MessagerSubscribersComponent } from './components/dashboard/general/messager/messager-subscribers/messager-subscribers.component';
+import { MessagerRecentlyComponent } from './components/dashboard/general/messager/messager-recently/messager-recently.component';
+import { MessagerChattingComponent } from './components/dashboard/general/messager/messager-chatting/messager-chatting.component';
+import { MessagerPersonalInfoComponent } from './components/dashboard/general/messager/messager-personal-info/messager-personal-info.component';
 
 
 @NgModule({
@@ -218,6 +226,13 @@ import { DeleteHolidayComponent } from './components/dashboard/dashboard-compone
     HolidayCalendarComponent,
     AddHolidaysModalComponent,
     DeleteHolidayComponent,
+    MessagerIconComponent,
+    MessagerModalComponent,
+    MessagerSubscribersComponent,
+    MessagerRecentlyComponent,
+    MessagerChattingComponent,
+    MessagerPersonalInfoComponent,
+    
   ],
   imports: [
     NgbModule,
@@ -232,11 +247,15 @@ import { DeleteHolidayComponent } from './components/dashboard/dashboard-compone
     routing,
     FullCalendarModule,
     CommonModule,
-    ChartsModule
+    ChartsModule,
+    MatSelectModule,
+    PickerModule,
+    EmojiModule
   ],
   providers: [
     DatePipe,
-    MondayDateInWeekByDatePipe
+    MondayDateInWeekByDatePipe,
+    NgbActiveModal
   ],
   entryComponents:[
     TeacherDeleteModalComponent,

@@ -72,7 +72,7 @@ export class SearchNameModuleComponent implements OnInit {
       phone: this.learners.ContactNum,
       address: this.learners.Address
     });
-    this.onChangePath(this.learners.LearnerId);
+    // this.onChangePath(this.learners.LearnerId);
   }
 
   modalServiceMethod(content) {
@@ -82,6 +82,7 @@ export class SearchNameModuleComponent implements OnInit {
         .result.then(
           result => {
             this.closeResult = `Closed with: ${result}`;
+            this.onChangePath(this.learners.learnerId);
           },
           reason => {
             this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
@@ -92,15 +93,17 @@ export class SearchNameModuleComponent implements OnInit {
 
   open(content) {
     // search learner
+    this.errorAlert = false;
     this.router.navigate([this.payPath]);
     this.learnersListService
       .getLearners(this.searchForm.value.search)
       .subscribe(data => {
-        if (data['Data'].length === 0) {
-          this.registrationFormL.value.learnerId = 0;
-          alert('please enter a correct first name');
-        }
-        else {
+        console.log(data)
+        // if (data['Data'].length === 0) {
+        //   this.registrationFormL.value.learnerId = 0;
+        //   alert('please enter a correct first name');
+        // }
+        // else {
           this.learners = data['Data'][0];
           this.data = data['Data'];
           this.patchRegiFormL();
@@ -108,8 +111,9 @@ export class SearchNameModuleComponent implements OnInit {
           // put learners information to service waiting for other component subscribe
           this.generalRepoService.fisrtName.next(this.learners);
           // change url
-          this.onChangePath(this.learners.LearnerId);
-        }
+          if (this.learners.length === 1 ){
+          this.onChangePath(this.learners.LearnerId);}
+        // }
       },
         (error) => {
           console.log(error)
@@ -132,6 +136,7 @@ export class SearchNameModuleComponent implements OnInit {
   selectChange(dis) {
     const i: number = dis.value;
     if (!isNaN(Number(i))) {
+      console.log(this.data[i])
       this.registrationFormL.patchValue({
         learnerId: this.data[i].LearnerId,
         learnerName: this.data[i].FirstName,
@@ -141,8 +146,7 @@ export class SearchNameModuleComponent implements OnInit {
       });
       this.learners.learnerId = this.data[i].LearnerId;
       this.generalRepoService.fisrtName.next(this.data[i]);
-      console.log(this.generalRepoService)
-      this.onChangePath(this.learners.learnerId);
+      console.log(this.generalRepoService);
     }
   }
 

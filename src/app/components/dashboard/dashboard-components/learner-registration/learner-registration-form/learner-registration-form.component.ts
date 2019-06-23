@@ -2,7 +2,7 @@ import { Component, OnInit, Input, Output, EventEmitter, DoCheck, AfterViewInit 
 import { FormGroup, FormArray, FormBuilder, Validators, FormControl } from '@angular/forms';
 import { LearnerRegistrationService } from '../../../../../services/http/learner-registration.service';
 import { CoursesService } from '../../../../../services/http/courses.service';
-import { NgbTimeStruct, NgbTimeAdapter, NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { NgbTimeStruct, NgbTimeAdapter, NgbModal, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { LearnerRegistrationModalComponent } from '../learner-registration-modal/learner-registration-modal.component';
 import { LearnerRegistrationConfirmModalComponent } from '../learner-registration-confirm-modal/learner-registration-confirm-modal.component';
 import { UniqueSelectionDispatcher } from '@angular/cdk/collections';
@@ -24,9 +24,7 @@ export class LearnerRegistrationFormComponent implements OnInit, DoCheck, AfterV
   // courseIntanceGroup: FormGroup;
   @Input() whichLearner;
   @Input() addCourse;
-  // sent active modal confirm satuation to admin learner component;
-  @Output() activeModalEvent: EventEmitter<any> = new EventEmitter;
-  activeSubmitted: boolean = false;
+  @Output() toLearnerListEvent: EventEmitter<any> = new EventEmitter;
   public time: NgbTimeStruct = { hour: 9, minute: 0, second: 0 };
   public hourStep = 1;
   public minuteStep = 15;
@@ -134,7 +132,8 @@ export class LearnerRegistrationFormComponent implements OnInit, DoCheck, AfterV
     private fb: FormBuilder,
     private registrationService: LearnerRegistrationService,
     private coursesService: CoursesService,
-    private modalService: NgbModal
+    private modalService: NgbModal,
+    private activeModal: NgbActiveModal
   ) { }
   get courseGroup(): FormGroup {
     return this.fb.group({
@@ -814,12 +813,6 @@ selectLocation(id, i) {
     console.log(this.addCourse)
     this.modalRefConfirm = this.modalService.open(LearnerRegistrationConfirmModalComponent);
     this.modalRefConfirm.componentInstance.fdObj = this.fd;
-    console.log(this.modalRefConfirm.componentInstance)
-    this.modalRefConfirm.componentInstance.clickConfirm.subscribe(res=>{
-      this.activeSubmitted = res;
-      console.log(this.activeSubmitted);
-      this.activeModalEvent.emit(this.activeSubmitted);
-    })
     if (this.whichLearner && !this.addCourse){
       this.modalRefConfirm.componentInstance.command = 2;  //edit
       this.modalRefConfirm.componentInstance.learnerId = this.whichLearner.LearnerId;
@@ -833,7 +826,23 @@ selectLocation(id, i) {
     }
     else
       this.modalRefConfirm.componentInstance.command = 1;   //post
+      this.modalRefConfirm.componentInstance.clickConfirm.subscribe(res=>{
+        console.log(res)
+        if (res == true) {
+          this.toLearnerListEvent.emit(true);
+        }
 
+        // let that = this;
+        // this.modalRefConfirm.result.then(
+        //     function () {
+        //       if (res == true) {
+        //         that.ngOnInit();
+        //       }
+        //     },
+        //     function () {
+        //       return;
+        //     })
+      })
 
   }
   // // check changes
@@ -856,19 +865,19 @@ selectLocation(id, i) {
   }
 
   next(value: string) {
-    this.getErrorW === false ? this.showErrorW = true : this.showErrorW = false;
-    this.getErrorH === false ? this.showErrorH = true : this.showErrorH = false;
+    // this.getErrorW === false ? this.showErrorW = true : this.showErrorW = false;
+    // this.getErrorH === false ? this.showErrorH = true : this.showErrorH = false;
     this.touchNext = true;
     if (value === 'parentForm') { this.confirmLearner(); }
-    if ((this.getErrorH === true) && (this.getErrorW === true)) {
-      this.showErrorW = false;
+    // if ((this.getErrorH === true) && (this.getErrorW === true)) {
+    // }
+    this.showErrorW = false;
       this.showErrorH = false;
       this.touchNext = false;
       document.getElementById('learnerForm').style.display = 'none';
       document.getElementById('parentForm').style.display = 'none';
       document.getElementById('courseForm').style.display = 'none';
       document.getElementById(value).style.display = 'block';
-    }
   }
   setParentForm() {
     if (!this.whichLearner) {

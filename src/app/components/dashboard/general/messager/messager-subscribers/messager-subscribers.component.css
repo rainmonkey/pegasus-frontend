@@ -1,0 +1,62 @@
+.m_s_skeleton{
+    overflow: auto;
+}
+.m_s_group_btn{
+    margin-top: 5px!important;
+    margin-bottom: 10px!important;
+    text-align: center;
+}
+.m_s_group_label{
+    margin: 0 2.5px;
+    color:#5d5d5a;
+}
+.m_s_group_label:hover{
+    cursor: pointer;
+    color:rgb(78, 158, 185);
+}
+.m_s_group_label_hover{
+    color:rgb(78, 158, 185);
+    background: rgb(219, 240, 246);
+    border-radius:3px;
+}
+.m_s_subscribers{
+    height: 60px;
+    padding: 1px 0!important;
+}
+.m_s_subscribers:hover{
+    background: rgb(230, 223, 223);
+}
+.m_s_subscribers_label{
+    font-weight: bold;
+    color:#5d5d5a;
+}
+.m_s_subscribers_label:hover{
+    cursor: pointer;
+    background:rgb(230, 223, 223);
+}
+.m_s_subscribers_name_arrow{
+    margin: 0 5px;
+}
+.m_s_subscribers_name{
+    color:#5d5d5a;
+    margin-top:5px!important;
+}
+.m_s_subscribers_signature{
+    height: 24px;
+    font-size:14px;
+    color:#8a8a88;
+    overflow: hidden;
+}
+.m_s_subscribers_photo{
+    height: 50px;
+    width: 50px;
+    border:1px solid rgb(238, 230, 230);
+    border-radius:50%;
+    margin-left: 10px;
+    margin-top:3px;
+}
+.m_s_subscribers_photo img{
+    height: 50px;
+    width: 50px;
+    border-radius: 50%;
+}

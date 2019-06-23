@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
 import {FormBuilder, Validators} from '@angular/forms';
+import {timePickerValidator} from '../../../../../shared/time-picker.validators';
 import {LearnersService} from '../../../../../services/http/learners.service';
 import {PeriodCourseDurationChange} from '../../../../../models/PeriodCourseDurationChange';
 import Swal from 'sweetalert2';
@@ -18,24 +19,27 @@ export class AdminLearnerPeriodCourseChangeModalComponent implements OnInit {
   isConfirmClick = false;
   learner;
   Orgs;
+  Teachers;
   Rooms;
   PeriodCourseChangeForm;
   constructor(private activeModal: NgbActiveModal, private fb: FormBuilder,
               private service: LearnersService) { }
 
   ngOnInit() {
+    this.GetTeachers()
     this.GetOrgRoom();
     this.PeriodCourseChangeForm = this.fb.group({
       BeginDate: ['', Validators.required],
       EndDate: ['', Validators.required],
-      BeginTime: ['', Validators.required],
+      BeginTime: ['', [Validators.required, timePickerValidator]],
       reason: ['', Validators.required],
       instanceId: ['', Validators.required],
       OrgId: ['', Validators.required],
       RoomId: ['', Validators.required],
       DayOfWeek: ['', Validators.required],
       IsTemporary: ['', Validators.required],
-      CourseScheduleId: ['', Validators.required]
+      CourseScheduleId: ['', Validators.required],
+      TeacherId: ['', Validators.required]
     });
   }
 
@@ -71,12 +75,23 @@ export class AdminLearnerPeriodCourseChangeModalComponent implements OnInit {
     return this.PeriodCourseChangeForm.get('instanceId');
   }
 
+  get TeacherId() {
+    return this.PeriodCourseChangeForm.get('TeacherId');
+  }
+
   GetOrgRoom = () => {
     this.service.GetOrgRoom().subscribe(res => {
       // @ts-ignore
       this.Orgs = res.Data;
     }, err => {
       console.log(err);
+    });
+  }
+
+  GetTeachers = () =>{
+    this.service.getTeachers().subscribe(res=>{
+      // @ts-ignore
+      this.Teachers = res.Data;
     });
   }
 
@@ -99,7 +114,7 @@ export class AdminLearnerPeriodCourseChangeModalComponent implements OnInit {
       this.PeriodCourseChangeForm.value.reason, this.PeriodCourseChangeForm.value.instanceId, this.PeriodCourseChangeForm.value.OrgId,
       this.PeriodCourseChangeForm.value.DayOfWeek, this.PeriodCourseChangeForm.value.BeginTime, this.PeriodCourseChangeForm.value.EndTime,
       this.PeriodCourseChangeForm.value.RoomId, this.PeriodCourseChangeForm.value.IsTemporary,
-      this.PeriodCourseChangeForm.value.CourseScheduleId
+      this.PeriodCourseChangeForm.value.CourseScheduleId, this.PeriodCourseChangeForm.value.TeacherId
     )
     this.service.PeriodCourseChange(model).subscribe(res => {
       this.isEditFail = false;
@@ -110,7 +125,6 @@ export class AdminLearnerPeriodCourseChangeModalComponent implements OnInit {
       this.isConfirmClick = false;
       this.isEditFail = true;
       this.isloading = false;
-      console.log(err);
       Swal.fire({
         type: 'error',
         title: 'Oops...',
