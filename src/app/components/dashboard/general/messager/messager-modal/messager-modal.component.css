@@ -15,18 +15,23 @@
     background: rgb(141, 198, 218);
     border-bottom: 1px solid lightgray;
 }
-.m_m_header_close{
+.m_m_header_icon{
     height:20px;
     width:20px;
     margin-top: 2.5px;
-    border-radius:50%;
-    position: absolute;
-    right: 0;
     text-align: center;
     color:grey;
     line-height: 20px;
 }
-.m_m_header_close:hover{
+.m_m_header_close{
+    position: absolute;
+    right: 0;
+}
+.m_m_header_cog{
+    position: absolute;
+    left: 0;
+}
+.m_m_header_icon:hover{
     cursor: pointer;
     color:rgb(236, 157, 157);
 }
