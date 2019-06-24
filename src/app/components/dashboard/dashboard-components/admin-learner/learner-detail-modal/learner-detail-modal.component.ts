@@ -31,7 +31,7 @@ export class LearnerDetailModalComponent implements OnInit {
   agreeFileUrl = ''
   learnerList1: any
   // amendment:number
-  amendmentList: any
+  amendmentList=[]
   constructor(public activeModal: NgbActiveModal, private LearnerListService: LearnersService, ) {
 
   }
@@ -46,7 +46,7 @@ export class LearnerDetailModalComponent implements OnInit {
     console.log(this.whichLearner)
     this.getData()
     // this.getAmendentLength()
-    this.getLatAmendent()
+    this.getAmendmentList()
   }
 
   getData() {
@@ -218,21 +218,33 @@ export class LearnerDetailModalComponent implements OnInit {
   //   }
   // }
 
-  getLatAmendent() {
+  // 拿到修改列表
+  getAmendmentList() {
     for (let i of this.whichLearner.One2oneCourseInstance) {
       if (i.Amendment.length == 1 ) {
-
-        this.amendmentList = i.Amendment[i.Amendment.length - 1]
+        this.amendmentList=i.Amendment
         console.log(this.amendmentList)
-        console.log(this.amendmentList.DayOfWeek)
-        console.log(this.amendmentList.BeginTime)
-        console.log(this.amendmentList.EndTime)
-
+        this.reverseAmendmentList(this.amendmentList)
     }
   }
     return
   }
+
+  // 倒序修改列表
+  reverseAmendmentList(amendmentList){
+    let i =amendmentList.length-1
+    for(i;i>=0; --i){
+      console.log(i)
+      if(amendmentList[i].IsTemporary=0){
+        console.log(amendmentList[i])
+      }
+
+    }
+
+  }
 }
+
+
 
 
 
