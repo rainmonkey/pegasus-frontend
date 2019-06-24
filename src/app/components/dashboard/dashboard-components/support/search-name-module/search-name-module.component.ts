@@ -113,9 +113,9 @@ export class SearchNameModuleComponent implements OnInit {
           // change url
           console.log(this.learners)
           //why  this.learners.length === 1 ? but this.learners is a object
-          //if (this.learners.length === 1 ){
-          this.onChangePath(this.learners.LearnerId);
-          //}
+          if (this.data.length === 1 ){
+            this.onChangePath(this.learners.LearnerId);
+          }
         // }
       },
         (error) => {
