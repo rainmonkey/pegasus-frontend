@@ -1,5 +1,7 @@
-<div class='m_i_icon'>
-  <span (mouseenter)="hoverMessageIcon($event)">
-    <span class='far fa-comment'></span>
+<div *ngIf='!popUpModalFlag' class='m_i_icon'>
+  <span (click)='popUpMessager()'>
+    <span class="fas fa-comment" ></span>
   </span>
 </div>
+
+<app-messager-modal *ngIf='popUpModalFlag' (onCloseChattingModal)='closeMessager($event)'></app-messager-modal>

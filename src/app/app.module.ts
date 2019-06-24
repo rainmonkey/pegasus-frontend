@@ -112,12 +112,14 @@ import { InventoryReceiptModalComponent } from './components/dashboard/dashboard
 import { HolidayCalendarComponent } from './components/dashboard/dashboard-components/admin-holidays/holiday-calendar/holiday-calendar.component';
 import { AddHolidaysModalComponent } from './components/dashboard/dashboard-components/admin-holidays/add-holidays-modal/add-holidays-modal.component';
 import { DeleteHolidayComponent } from './components/dashboard/dashboard-components/admin-holidays/delete-holiday/delete-holiday.component';
-import { ChattingComponent } from './components/dashboard/general/chatting/chatting.component';
 import { PickerModule } from '@ctrl/ngx-emoji-mart';
 import { EmojiModule } from '@ctrl/ngx-emoji-mart/ngx-emoji';
 import { MessagerIconComponent } from './components/dashboard/general/messager/messager-icon/messager-icon.component';
-
-
+import { MessagerModalComponent } from './components/dashboard/general/messager/messager-modal/messager-modal.component';
+import { MessagerSubscribersComponent } from './components/dashboard/general/messager/messager-subscribers/messager-subscribers.component';
+import { MessagerRecentlyComponent } from './components/dashboard/general/messager/messager-recently/messager-recently.component';
+import { MessagerChattingComponent } from './components/dashboard/general/messager/messager-chatting/messager-chatting.component';
+import { MessagerPersonalInfoComponent } from './components/dashboard/general/messager/messager-personal-info/messager-personal-info.component';
 
 @NgModule({
   declarations: [
@@ -223,8 +225,12 @@ import { MessagerIconComponent } from './components/dashboard/general/messager/m
     HolidayCalendarComponent,
     AddHolidaysModalComponent,
     DeleteHolidayComponent,
-    ChattingComponent,
     MessagerIconComponent,
+    MessagerModalComponent,
+    MessagerSubscribersComponent,
+    MessagerRecentlyComponent,
+    MessagerChattingComponent,
+    MessagerPersonalInfoComponent,
 
   ],
   imports: [

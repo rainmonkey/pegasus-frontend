@@ -7,7 +7,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ChangePasswordModalComponent } from '../../dashboard/dashboard-components/support/change-password-modal/change-password-modal.component';
 import { environment } from 'src/environments/environment.prod';
 import { forkJoin } from 'rxjs';
-import { emojis } from '@ctrl/ngx-emoji-mart/ngx-emoji/public_api';
+
 
 @Component({
   selector: 'app-testone',
@@ -32,8 +32,8 @@ export class TestoneComponent implements OnInit {
   ngOnInit() {
     this.poi = this.fb.group(this.formGroupAssemble());
     this.getoiois();
-    console.log(this.emoji)
-    console.log(this.click)
+
+  
   }
 
   formGroupAssemble(){

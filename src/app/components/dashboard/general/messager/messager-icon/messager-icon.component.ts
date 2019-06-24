@@ -6,14 +6,20 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./messager-icon.component.css']
 })
 export class MessagerIconComponent implements OnInit {
-
+  public popUpModalFlag = true;
   constructor() { }
 
   ngOnInit() {
   }
 
-  hoverMessageIcon(event){
-    console.log(event.target.firstChild)
-    console.log('a')
+  popUpMessager(){
+    this.popUpModalFlag = true;
   }
+
+  closeMessager(event){
+    if(event == 'true'){
+      this.popUpModalFlag = false;
+    }
+  }
+
 }
