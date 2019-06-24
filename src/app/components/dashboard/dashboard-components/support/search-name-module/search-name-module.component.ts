@@ -23,6 +23,7 @@ export class SearchNameModuleComponent implements OnInit {
   errorAlert = false;
   // ng-modal variable
   closeResult: string;
+  registrationFormL;
 
 
   constructor(
@@ -36,19 +37,7 @@ export class SearchNameModuleComponent implements OnInit {
 
   // form-builder
   // learners information
-  registrationFormL = this.fb.group({
-    learnerId: [''],
-    learnerName: [{ value: null, disabled: true }],
-    lastName: [{ value: null, disabled: true }],
-    middleName: [{ value: null, disabled: true }],
-    age: [''],
-    email: [{ value: null, disabled: true }],
-    phone: [{ value: null, disabled: true }],
-    payment: [''],
-    schedule: [''],
-    owning: [''],
-    address: ['']
-  });
+
 
   searchForm = this.fb.group({
     search: ['', Validators.required]
@@ -78,35 +67,22 @@ export class SearchNameModuleComponent implements OnInit {
   open(content) {
     // search learner
     this.errorAlert = false;
-    // this.router.navigate([this.payPath]); 不知道做什么用
+    this.router.navigate([this.payPath]);
     this.learnersListService
       .getLearners(this.searchForm.value.search)
       .subscribe(data => {
         this.learners = data['Data'][0];
         this.data = data['Data'];
-        if (this.learners.length === 1) {
+        if (this.data.length === 1) {
           this.patchRegiFormL();
           // change url
-<<<<<<< HEAD
           this.onChangePath(this.learners.LearnerId);
         } else {
           this.modalServiceMethod(content);
         }
         // put learners information to service waiting for other component subscribe
         this.generalRepoService.fisrtName.next(this.learners);
-        console.log(this.learners)
-        //why  this.learners.length === 1 ? but this.learners is a object
-        //if (this.learners.length === 1 ){
-        this.onChangePath(this.learners.LearnerId);
-        //}
-=======
-          console.log(this.learners)
-          //why  this.learners.length === 1 ? but this.learners is a object
-          if (this.data.length === 1 ){
-            this.onChangePath(this.learners.LearnerId);
-          }
->>>>>>> 35378f550bb390a95d989dfe61d8d40a51f87919
-        // }
+        // this.onChangePath(this.learners.LearnerId);
       },
         (error) => {
           console.log(error)
@@ -165,16 +141,37 @@ export class SearchNameModuleComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.registrationFormL = this.fb.group({
+      learnerId: [''],
+      learnerName: [{ value: null, disabled: true }],
+      lastName: [{ value: null, disabled: true }],
+      middleName: [{ value: null, disabled: true }],
+      age: [''],
+      email: [{ value: null, disabled: true }],
+      phone: [{ value: null, disabled: true }],
+      payment: [''],
+      schedule: [''],
+      owning: [''],
+      address: ['']
+    });
     this.payPath = this.router.url
+    console.log(this.payPath)
     let lastRouteNameIsNumber = !Number.isNaN(+this.router.url.slice(this.router.url.lastIndexOf("/") + 1))
-    console.log(lastRouteNameIsNumber)
-    //如果是true，就是刷新进来的
     if (lastRouteNameIsNumber) {
       this.learnerIdByUrl = +this.router.url.slice(this.router.url.lastIndexOf("/") + 1)
       this.learnersListService.getLearnerList().subscribe(
         data => {
           let learnerList = data["Data"]
-          // learnerList.find()
+          let learner = learnerList.find(data => data.LearnerId == this.learnerIdByUrl)
+          this.registrationFormL.patchValue({
+            learnerId: learner.LearnerId,
+            learnerName: learner.FirstName,
+            lastName: learner.LastName,
+            middleName: learner.MiddleName,
+            email: learner.Email,
+            phone: learner.ContactNum
+          })
+          console.log(this.registrationFormL)
         }
       )
     }
