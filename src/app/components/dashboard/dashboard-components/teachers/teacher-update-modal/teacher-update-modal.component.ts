@@ -16,7 +16,7 @@ export class TeacherUpdateModalComponent implements OnInit {
 
   @Input() command;
   @Input() whichTeacher;
-  @Output() refreshFlag: EventEmitter<any> = new EventEmitter(); 
+  @Output() refreshFlag: EventEmitter<any> = new EventEmitter();
   //in order to get the form from child component(TeacherModalFormDComponent)
   @ViewChild('modalUpdateFormComponent') modalUpdateFormComponentObj;
 
@@ -113,6 +113,7 @@ export class TeacherUpdateModalComponent implements OnInit {
     else if (this.command == 2) {
       let obj = this.teachersService.update(submitData, this.whichTeacher.TeacherId);
       this.subscribeHandler(obj);
+      console.log(obj)
     }
   }
 
@@ -157,7 +158,7 @@ export class TeacherUpdateModalComponent implements OnInit {
  */
   checkLanguages() {
     let languageBoxObj = this.modalUpdateFormComponentObj.languagesCheckBox._results;
-    console.log(languageBoxObj)
+    // console.log(languageBoxObj)
     let checkedLanguagesList = [];
     for (let i in languageBoxObj) {
       //whitchever languages is checked, add it to checkedLanguagesList

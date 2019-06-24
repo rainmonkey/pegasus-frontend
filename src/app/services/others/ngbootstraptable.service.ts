@@ -10,7 +10,7 @@ export class NgbootstraptableService {
       if number is odd: sort in asec
       if number is even: sort in dsec 
   **********************************************/
-  public columnOrderControl:number;
+  public columnOrderControl: number;
 
   /*********************************************
     previousOrderBy, stored the previous order that pass to this service
@@ -27,8 +27,8 @@ export class NgbootstraptableService {
       orderBy --> which column to order (eg: FirstName,LastName ....) !!★!! orderBy must as same as the obj name in listToOrder
       orderControls? --> is a optional param, it only exist when router has this param
   **********************************************/
-  sorting(listToOrder: Array<any>, orderBy: string, orderControls?:number) {
-    this.getColumnOrderControl(orderBy,orderControls);
+  sorting(listToOrder: Array<any>, orderBy: string, orderControls?: number) {
+    this.getColumnOrderControl(orderBy, orderControls);
     listToOrder.sort(this.compare(orderBy))
     return this.columnOrderControl;
   }
@@ -42,11 +42,12 @@ export class NgbootstraptableService {
     **********************************************/
   searching(listToSearch: Array<any>, searchBy: string, searchStr: string) {
     let temList = [];
-
     for (let i of listToSearch) {
+      let searchByFilter = i[searchBy].toLowerCase();
+      let searchStrFilter = searchStr.toLowerCase().split(" ");
       if (i[searchBy] !== null) {
         if (temList.indexOf(i) == -1) {
-          if ((i[searchBy].toLowerCase()).search(searchStr.toLowerCase()) !== -1) {
+          if (this.judgesearch(searchStrFilter, searchByFilter)) {
             temList.push(i)
           }
         }
@@ -54,17 +55,32 @@ export class NgbootstraptableService {
     }
     return temList;
   }
+  // Judge all key words selected could be found, return true.
+  judgesearch(StrFilter, ByFilter) {
+    let bool = [];
+    for (var j = 0; j < StrFilter.length; j++) {
+      if (ByFilter.search(StrFilter[j]) !== -1) {
+        bool[j] = true;
+      } else {
+        bool[j] = false;
+      }
+    }
+    if (JSON.stringify(bool).search("false") == -1) {
+      // fail to find -1
+      return true;
+    }
+  }
 
   ///////////////////////////////////////methods that implement sorting and searching/////////////////////////////////////////
   /*
     assign value to columnOrderControl
   */
-  getColumnOrderControl(orderBy,orderControls?) {
-    if(orderControls !== undefined){
+  getColumnOrderControl(orderBy, orderControls?) {
+    if (orderControls !== undefined) {
       this.columnOrderControl = orderControls;
     }
     else if (this.previousOrderBy !== orderBy) {
-   
+
       this.columnOrderControl = 1;
     }
     else {
@@ -85,38 +101,38 @@ export class NgbootstraptableService {
       if (that.columnOrderControl % 2 == 0) {
         //if has null value, put it at the end of list
         if (val1 == null) {
-          return  1;
+          return 1;
         }
         else if (val2 == null) {
-          return  -1;
+          return -1;
         }
         else if (val1 < val2) {
-          return  1;
+          return 1;
         }
         else if (val1 > val2) {
-          return  -1;
+          return -1;
         }
         else {
-          return  0;
+          return 0;
         }
       }
       //else, sort in dsec
       else {
         //if has null value, put it at the end of list
         if (val1 == null) {
-          return  1;
+          return 1;
         }
         else if (val2 == null) {
-          return  -1;
+          return -1;
         }
         else if (val1 > val2) {
-          return  1;
+          return 1;
         }
         else if (val1 < val2) {
-          return  -1;
+          return -1;
         }
         else {
-          return  0;
+          return 0;
         }
       }
     }

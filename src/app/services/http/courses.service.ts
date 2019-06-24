@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient,HttpHeaders } from '@angular/common/http';
 import { environment } from '../../../environments/environment.prod';
 
 @Injectable({
@@ -31,14 +31,6 @@ export class CoursesService {
     return this.http.get(this.baseUrl + 'orgs');
   }
 
-  getOrgs() {
-    return this.http.get(this.baseUrl + 'orgs');
-  }
-
-  getCourses():any{
-    return this.http.get(this.baseUrl +'courses');
-  }
-
   addNew(data):any{
     return this.http.post(this.baseUrl + 'courses',data)
   }
@@ -51,6 +43,12 @@ export class CoursesService {
     return this.http.delete(this.baseUrl + 'courses/' + courseId);
   }
   /* For dropdown options*/
+  getOrgs() {
+    return this.http.get(this.baseUrl + 'orgs');
+  }
+  getCourses():any{
+    return this.http.get(this.baseUrl +'courses');
+  }
   getCourseCategories():any{
     return this.http.get(this.baseUrl + 'coursecategories');
   }
@@ -66,6 +64,8 @@ export class CoursesService {
   getDuration():any{
     return this.http.get(this.baseUrl + 'Lookups/8');
   }
+
+  
   /*-----------------------Course Class-----------------------------------*/
   getCourseClasses(){
     return this.http.get(this.baseUrl +'GroupCourseInstance');
@@ -88,15 +88,30 @@ export class CoursesService {
   getTeachers():any{
     return this.http.get(this.baseUrl + 'teacher');
   }
-  getLocationsRooms():any{
+  getLocations():any{
+    return this.http.get(this.baseUrl + 'orgs');
+  }
+  getRooms():any{
     return this.http.get(this.baseUrl + 'room');
   }
 
-
+  getLessonsByTeacherId(teacherId):any{
+    return this.http.get(this.baseUrl + 'lesson/GetLessonsTeacherId/' + teacherId)
+  }
+/*------------------------ For Edwin testing ----------------------------------*/
   getoioi():any{
     return this.http.get(this.baseUrl+'payment');
   }
   postoioi(TermId):any{
     return this.http.post(this.baseUrl + 'payment/'+ TermId, '')
+  }
+  postGroupGenerate(TermId):any{
+    return this.http.post(this.baseUrl + 'Payment/GenerateGroupInvoice/'+ TermId, '')
+  }
+  postTrialLesson(data):any{
+    return this.http.post(this.baseUrl +'TrialLesson',data);
+  }
+  getAvailableRoom(orgId,startTime,endTime):any{
+    return this.http.get(this.baseUrl + 'RoomAvailableCheck/checkbylesson/' + orgId + '/' + startTime + '/' + endTime);
   }
 }

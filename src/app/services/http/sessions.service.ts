@@ -33,9 +33,9 @@ export class SessionsService {
 
   }
 
-  getTeacherLesson() {
+  getTeacherLesson(beginDate) {
     console.log(this.httpHeaders);
-    return this.http.get<any>(this.baseUrl + 'lesson/GetLessonsForTeacher/1');
+    return this.http.get<any>(this.baseUrl + 'lesson/GetLessonsForTeacher/1/' + beginDate);
   }
 
   getReceptionistLessonBetweenDate(beginDate, endDate) {
@@ -65,5 +65,11 @@ export class SessionsService {
     console.log(this.httpHeaders);
     // @ts-ignore
     return this.http.put<any>(this.baseUrl + 'session/Confirm/' + lessonId + '/' + reason);
+  }
+
+  SessionReSchedule(lessonId, reason) {
+    console.log(this.httpHeaders);
+    // @ts-ignore
+    return this.http.put<any>(this.baseUrl + 'LessonReschedule/' + lessonId + '/' + localStorage.getItem('userID') + '/' + reason);
   }
 }

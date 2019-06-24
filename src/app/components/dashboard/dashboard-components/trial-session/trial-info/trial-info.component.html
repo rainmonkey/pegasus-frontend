@@ -1,5 +1,13 @@
 <div class='container'>
   <!--Title-->
+  <!-- <div class='t_info_back' *ngIf="lastRouteName=='trial'" routerLink='/learner/list'>
+    Return Back
+  </div>
+  <div class='t_info_back' *ngIf="lastRouteName=='arrange'" routerLink=[arrangeUrl]>
+    Return Back
+  </div> -->
+  <div class='t_info_back' (click)="onClick()">Return Back</div>
+
   <div class='row'>
     <div class='col-12 t_info_title'>
       Trial Course Register
@@ -7,8 +15,8 @@
   </div>
 
   <!--Search-->
-  <app-trial-search [courses]='courses' [coursesCate]='coursesCate'></app-trial-search>
+  <app-trial-search [LearnerId]='LearnerId' [courses]='courses' [coursesCate]='coursesCate' [orgs]='orgs' [teachers]='teachers' [groupCoursesInstance]='groupCoursesInstance' [teachingCourses]='teachingCourses' [learners]='learners' (childEvent)='childEvent = $event'></app-trial-search>
 
   <!--Table-->
-  <!-- <app-trial-table [courses]='courses'></app-trial-table> -->
+  <!-- <app-trial-modal></app-trial-modal> -->
 </div>

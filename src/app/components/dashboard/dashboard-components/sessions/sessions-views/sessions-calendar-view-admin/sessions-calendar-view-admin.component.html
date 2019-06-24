@@ -1,3 +1,4 @@
+<!--search modal-->
 <ng-template #content let-modal>
   <div class="modal-header">
     <h4 class="modal-title" id="modal-basic-title">Search lesson by date</h4>
@@ -23,7 +24,75 @@
   </div>
 </ng-template>
 
+<!--session-edit confirm modal-->
+<ng-template #confirmModal let-modal>
+  <div class="modal-header m-2">
+    <h4>Please Confirm</h4>
+    <button
+      type="button"
+      class="close"
+      aria-label="Close"
+      (click)="modal.dismiss('Cross click')"
+    >
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <!-- modal-body -->
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        Reason: <input class="form-control"  type="text" [(ngModel)]="reason">
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <span *ngIf='IsConfirmEditSuccess' class='text-success'>Edit Success </span>
+    <div *ngIf="isloadingSmall" class="loaderSmall"></div>
+    <button [class.d-none]="IsConfirmEditSuccess" type="button" class="btn btn-dark" (click)="ConfirmEdit()">
+      Confirm
+    </button>
+    <button
+      type="button"
+      class="btn btn-outline-dark"
+      (click)="modal.dismiss('Cross click')"
+    >
+      Cancel
+    </button>
+  </div>
+</ng-template>
+
+<ng-template let-modal #methodModal>
+  <div class="modal-header m-2">
+    <h4>Please choose operation method</h4>
+    <button
+      type="button"
+      class="close"
+      aria-label="Close"
+      (click)="modal.dismiss('Cross click')"
+    >
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="container">
+    <div class="row">
+      <div class="col-3">
+        <button (click)="openEdit(eventInfo)" (click)="modal.dismiss('Cross click')" class="btn btn-primary btn-block">Edit </button>
+      </div>
+      <div class="col-3">
+        <button  class="btn btn-success btn-block" (click)="openConfirm(eventInfo)" (click)="modal.dismiss('Cross click')"  >Confirm</button>
+      </div>
+      <div class="col-3">
+        <button (click)="openDelete(eventInfo)" (click)="modal.dismiss('Cross click')"  class="btn btn-danger btn-block" >Cancel</button>
+      </div>
+      <div class="col-3">
+        <button (click)="openReschedule(eventInfo)" (click)="modal.dismiss('Cross click')" class="btn btn-warning btn-block"><div style="color: #ffffff">Split</div></button>
+      </div>
+    </div>
+  </div>
+</ng-template>
+
 <div class="container">
+  <div *ngIf="isloading" class="loaderLarge"></div>
   <div *ngIf="options">
     <ng-fullcalendar
       #fullcalendar

@@ -1,0 +1,107 @@
+<div>
+  <h4>Course</h4>
+  <div>
+    <div class="row lable-pos">
+      <button class="button-margin btn btn-outline-primary" (click)="chooseGroupCourse()">Group Course</button>
+      <button class=' btn btn-outline-primary' (click)="chooseCustomCourse()">One-on-One Course</button>
+    </div>
+
+    <div *ngIf='isGroupCourse'>
+      <div *ngFor='let groupCourse of whichLearner.LearnerGroupCourse '>
+        <br>
+        <div class="card">
+          <div class="card-body">
+            <div class="row">
+              <div class="col-6">
+                <span class="label">Course: </span>
+                <span class='text'>{{groupCourse.GroupCourseInstance.Course.CourseName}}</span>
+              </div>
+
+              <div *ngIf='groupCourse.GroupCourseInstance.Org' class="col-6">
+                <span class="label">Location: </span>
+                <span class='text'>{{groupCourse.GroupCourseInstance.Org.OrgName}}</span>
+              </div>
+
+              <div class="col-6">
+                <div>
+                  <span class="label">Room: </span>
+                  <span class='text'>
+                    {{groupCourse.GroupCourseInstance.Room.RoomName}}
+                  </span>
+                </div>
+              </div>
+
+              <div class="col-6">
+                <span class="label">Teacher: </span>
+                <span class='text'>{{groupCourse.GroupCourseInstance.Teacher.FirstName}}
+                  {{groupCourse.GroupCourseInstance.Teacher.LastName}}
+                </span>
+              </div>
+
+              <div class="col-6">
+                <span class="label">Schedule: </span>
+                <div *ngFor='let time of groupCourse.GroupCourseInstance.CourseSchedule'>
+                  <span class='text'>{{time.DayOfWeek|weekFormat}}
+                    {{time.BeginTime}} -- {{time.EndTime}}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- one2one Course -->
+    <div *ngIf='!isGroupCourse'>
+
+      <div *ngFor="let ele of whichLearner.One2oneCourseInstance">
+        <br>
+        <div class="card">
+          <div class="card-body">
+            <div class="row">
+              <div class="col-6">
+                <span class="label">Course: </span>
+                <span class='text'>{{ele.Course.CourseName}}</span>
+              </div>
+
+              <div class="col-6">
+                <span class="label">Teacher Name: </span>
+                <span class='text'>{{ele.Teacher.FirstName}} {{ele.Teacher.LastName}}</span>
+              </div>
+
+              <div *ngIf='ele.Org' class="col-6">
+                <span class="label">Location: </span>
+                <span class='text'>{{ele.Org.OrgName}}</span>
+              </div>
+
+              <div class="col-6">
+                <div>
+                  <span class="label">Room: </span>
+                  <span class='text'> {{ele.Room.RoomName}}</span>
+                </div>
+              </div>
+
+              <div class="col-6">
+                <span class="label">Course Start Day: </span>
+                <span class='text'>{{ele.BeginDate}}</span>
+              </div>
+
+              <div class="col-6">
+                <span class="label">Course End Day: </span>
+                <span class='text'>{{ele.EndDate}}</span>
+              </div>
+
+              <div class="col-6">
+                <span class="label">Course Sechdule: </span>
+                <div *ngFor='let sechdule of ele.CourseSchedule'>
+                  <span class='text'> {{sechdule.DayOfWeek|weekFormat}}
+                    {{sechdule.BeginTime}} -- {{sechdule.EndTime}} </span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

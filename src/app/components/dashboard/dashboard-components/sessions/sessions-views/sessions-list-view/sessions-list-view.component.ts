@@ -7,6 +7,7 @@ import { SessionDetailEditModalComponent } from '../../session-modals/session-de
 import {SessionCancelModalComponent} from '../../session-modals/session-cancel-modal/session-cancel-modal.component';
 import {SessionCompletedModalComponent} from '../../session-modals/session-completed-modal/session-completed-modal.component';
 import {DatePipe} from '@angular/common';
+import {SessionRescheduleModalComponent} from '../../session-modals/session-reschedule-modal/session-reschedule-modal.component';
 
 @Component({
   selector: 'app-sessions-list-view',
@@ -14,13 +15,14 @@ import {DatePipe} from '@angular/common';
   styleUrls: ['./sessions-list-view.component.css'],
 })
 export class SessionsListViewComponent implements OnInit {
+  InitialSessionList;
+  teacherSearchValue = '';
   isloading = false;
-  searchBeginDate;
-  searchEndDate;
-  public learnerList: any;
-  public learnerListLength: number;
-  public temLearnerList: any; // save the original teacherList
-  public temLearnerListLength: number; // save the original teacherList length
+  searchBeginDate = this.datePipe.
+  transform(new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate() - 6), 'yyyy-MM-dd');
+  searchEndDate = this.datePipe.transform(new Date(), 'yyyy-MM-dd');
+  public SessionList: any;
+  public SessionListLength: number;
   public page = 1;  // pagination current page
   public pageSize = 10;    // [can modify] pagination page size
   // error alert
@@ -48,7 +50,7 @@ export class SessionsListViewComponent implements OnInit {
     ) { }
 
   ngOnInit() {
-    this.getData('2019-01-01', '2020-01-01');
+    this.getData(this.searchBeginDate, this.searchEndDate);
   }
 
   // open confirm modal
@@ -77,6 +79,18 @@ export class SessionsListViewComponent implements OnInit {
       });
   }
 
+  openRescheduleModal(lessonId){
+    const modalRef = this.modalService.open(SessionRescheduleModalComponent);
+    (modalRef.componentInstance as SessionRescheduleModalComponent).lessonid = lessonId;
+    modalRef.result.then(
+      () => {
+        this.ngOnInit();
+      },
+      () => {
+        this.ngOnInit();
+      });
+  }
+
   openSessionCancelModal(lessonId){
     const modalRef = this.modalService.open(SessionCancelModalComponent);
     (modalRef.componentInstance as SessionCancelModalComponent).lessionId = lessonId;
@@ -90,23 +104,23 @@ export class SessionsListViewComponent implements OnInit {
   }
 
   // get data from server side
-  getData(begin, end) {
+   getData(begin, end) {
     this.isloading = true;
     this.sessionsService.getReceptionistLessonBetweenDate(begin, end).subscribe(
       (res) => {
         this.isloading = false;
-        this.learnerList = res.Data;
-        this.learnerListLength = res.Data.length; // length prop is under Data prop
-        this.temLearnerList = res.Data;
-        this.temLearnerListLength = res.Data.length;
+        this.InitialSessionList = res.Data;
+        this.SessionList = res.Data;
+        this.SessionListLength = res.Data.length; // length prop is under Data prop
+        this.teacherSearch();
       },
       error => {
-        alert(error);
+        alert('Server Error')
         this.isloading = false;
       });
   }
 
-  search = () => {
+  searchByDate = () => {
     const beginDate = this.searchBeginDate == null ? alert('please enter begin date') :
       this.datePipe.transform(this.searchBeginDate, 'yyyy-MM-dd');
     const endDate = this.searchEndDate == null ? alert('please enter end date') :
@@ -115,5 +129,12 @@ export class SessionsListViewComponent implements OnInit {
       return;
     }
     this.getData(beginDate, endDate);
+  }
+
+  teacherSearch = () => {
+    this.SessionList = this.InitialSessionList;
+    this.SessionList = this.SessionList.filter(s =>
+      s.TeacherFirstName.toString().toUpperCase().includes(this.teacherSearchValue.toString().toUpperCase()));
+    this.SessionListLength = this.SessionList.length;
   }
 }

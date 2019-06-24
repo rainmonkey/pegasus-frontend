@@ -15,49 +15,81 @@
     <form [formGroup]="updateForm">
       <div class="row">
         <div class="col-6">
-          <label class='t_mf_label'>Course Name:</label>
-          <select type="text" class='col-12 t_mf_input' formControlName="CourseId">
-            <option *ngFor='let i of courseName' value="{{i.CourseId}}">{{i.CourseName}}</option>
+          <label class='t_mf_label'>Course Name:</label>&nbsp;
+          <small class='text-danger errorfontsmall' style='text-align: center'
+            *ngIf='updateForm.get("CourseId").invalid && updateForm.get("CourseId").touched'>required</small>
+          <select type="text" class='col-12 t_mf_input' formControlName="CourseId"
+            [class.t_mf_error_border]='updateForm.get("CourseId").invalid && updateForm.get("CourseId").touched'>
+            <option *ngFor='let i of courseNamefilter' value="{{i.CourseId}}">{{i.CourseName}}</option>
           </select>
-          <label class='t_mf_label'>Tutor Name:</label>
-          <select type="text" class='col-12 t_mf_input' formControlName="TeacherId">
-            <option *ngFor='let i of tutorName' value="{{i.TeacherId}}">{{i.FirstName}} {{i.LastName}}</option>
+          <label class='t_mf_label'>Tutor Name:</label>&nbsp;
+          <small class='text-danger col-12 errorfontsmall' style='text-align: center'
+            *ngIf='updateForm.get("TeacherId").invalid && updateForm.get("TeacherId").touched'>required</small>
+          <select type="text" class='col-12 t_mf_input' formControlName="TeacherId"
+            [class.t_mf_error_border]='updateForm.get("TeacherId").invalid && updateForm.get("TeacherId").touched'>
+            <option *ngFor="let i of tutorName | orderby:'FirstName'" value="{{i.TeacherId}}">{{i.FirstName}}
+              {{i.LastName}}</option>
           </select>
-          <label class='t_mf_label'>Start Date:</label>
+          <label class='t_mf_label'>Start Date:</label>&nbsp;
+          <small class='text-danger col-12 errorfontsmall' style='text-align: center'
+            *ngIf='updateForm.get("BeginDate").invalid && updateForm.get("BeginDate").touched'>required</small>
           <div class="input-group">
-            <input class="form-control" placeholder="yyyy-mm-dd" name="startDate" formControlName="BeginDate"
-              ngbDatepicker #startDate="ngbDatepicker">
+            <input class="form-control" formControlName="BeginDate" placeholder='yyyy-mm-dd' ngbDatepicker
+              #startDate="ngbDatepicker" (dateSelect)="onBeginDateSelection($event)"
+              [class.t_mf_error_border]='updateForm.get("BeginDate").invalid && updateForm.get("BeginDate").touched'>
             <div class="input-group-append">
-              <button class="btn btn-outline-secondary calendar" (click)="startDate.toggle()" type="button"></button>
+              <button class="btn btn-outline-secondary" (click)="startDate.toggle()" type="button">
+                <i class="far fa-calendar-alt"></i>
+              </button>
             </div>
           </div>
-          <label class='t_mf_label'>End Date:</label>
+          <label class='t_mf_label'>End Date:</label>&nbsp;
+          <small class='text-danger col-12 errorfontsmall' style='text-align: center'
+            *ngIf='updateForm.get("EndDate").invalid && updateForm.get("EndDate").touched'>required</small>
           <div class="input-group">
-            <input class="form-control" placeholder="yyyy-mm-dd" name="endDate" formControlName="EndDate"
-              ngbDatepicker #endDate="ngbDatepicker">
+            <input class="form-control" placeholder="yyyy-mm-dd" formControlName="EndDate" ngbDatepicker
+              #endDate="ngbDatepicker" (dateSelect)="onEndDateSelection($event)"
+              [class.t_mf_error_border]='updateForm.get("EndDate").invalid && updateForm.get("EndDate").touched'>
             <div class="input-group-append">
-              <button class="btn btn-outline-secondary calendar" (click)="endDate.toggle()" type="button"></button>
+              <button class="btn btn-outline-secondary calendar" (click)="endDate.toggle()" type="button"><i
+                  class="far fa-calendar-alt"></i></button>
             </div>
           </div>
-          <label class='t_mf_label'>Location:</label>
-          <select type="text" class='col-12 t_mf_input' formControlName="OrgId">
-            <option *ngFor='let i of locationRoomName' value="{{i.OrgId}}">{{i.OrgName}}</option>
+          <label class='t_mf_label'>Location:</label>&nbsp;
+          <small class='text-danger errorfontsmall' style='text-align: center'
+            *ngIf='updateForm.get("OrgId").invalid && updateForm.get("OrgId").touched'>required</small>
+          <select type="text" class='col-12 t_mf_input' formControlName="OrgId"
+            (change)="filterrooms($event.target.value)"
+            [class.t_mf_error_border]='updateForm.get("OrgId").invalid && updateForm.get("OrgId").touched'>
+            <option *ngFor='let i of locationName |  orderby:"OrgName"' value="{{i.OrgId}}">{{i.OrgName}}</option>
           </select>
-          <label class='t_mf_label'>Room:</label>
-          <select type="text" class='col-12 t_mf_input' formControlName="RoomId">
-            <option *ngFor='let i of locationRoomName' value="{{i.RoomId}}">{{i.RoomName}}</option>
+          <label class='t_mf_label'>Room:</label>&nbsp;
+          <small class='text-danger errorfontsmall' style='text-align: center'
+            *ngIf='updateForm.get("RoomId").invalid && updateForm.get("RoomId").touched'>required</small>
+          <select type="text" class='col-12 t_mf_input' formControlName="RoomId"
+            [class.t_mf_error_border]='updateForm.get("RoomId").invalid && updateForm.get("RoomId").touched'>
+            <option *ngFor='let i of rooms' value="{{i.RoomId}}">{{i.RoomName}}</option>
           </select>
         </div>
         <div class="col-6">
-          <div class="t_mf_form">
-            <div class="row" formGroupName="updateArray">
-              <div class="col-6" style="margin-right: -1rem;">
-                <label class='t_mf_label'>Begin Time 1 :</label>
-                <input class="form-control" type="time" step="60" formControlName="BeginTime" />
-              </div>
-              <div class="col-6">
-                <label class='t_mf_label'>End Time 1 :</label>
-                <input class="form-control" type="time" formControlName="EndTime" />
+          <div class="t_mf_form" formArrayName="CourseSchedule">
+            <div class="row">
+              <div class="col-6" style="margin-right: -1rem;"
+                *ngFor="let sches of updateForm.get('CourseSchedule').controls; let i = index" [formGroupName]="i">
+                <label class='t_mf_label'>Begin Time {{i+1}} :</label>
+                <small class='text-danger errorfontsmall' style='text-align: center'
+                  *ngIf='updateForm.get("CourseSchedule").controls[i].get("DayOfWeek").invalid && updateForm.get("CourseSchedule").controls[i].get("DayOfWeek").touched'>required</small>
+                <small class='text-danger errorfontsmall' style='text-align: center'
+                  *ngIf='updateForm.get("CourseSchedule").controls[i].get("BeginTime").invalid && updateForm.get("CourseSchedule").controls[i].get("BeginTime").touched'>required</small>
+                <span style="float:right;" (click)="deleteTime(i)">
+                  <i class="far fa-calendar-times" style="cursor:hand;"></i>
+                </span>
+                <select type="text" class='col-12 t_mf_input' formControlName="DayOfWeek"
+                  [class.t_mf_error_border]='updateForm.get("CourseSchedule").controls[i].get("DayOfWeek").invalid && updateForm.get("CourseSchedule").controls[i].get("DayOfWeek").touched'>
+                  <option *ngFor="let j of weeks" [value]=j>{{j | weekFormat}}</option>
+                </select>
+                <input class="form-control" type="time" name="time" step="900" formControlName="BeginTime"
+                  [class.t_mf_error_border]='updateForm.get("CourseSchedule").controls[i].get("BeginTime").invalid && updateForm.get("CourseSchedule").controls[i].get("BeginTime").touched' />
               </div>
             </div>
           </div>
@@ -68,7 +100,9 @@
 </div>
 <!--modal footer-->
 <div class='modal-footer'>
-  <button type='button' class='btn btn-outline-dark' style="margin-right: 9rem;" *ngIf="command == 0">+ Add New
+  <button type='button' class='btn btn-outline-dark' style="margin-right: 9rem;" (click)="newTime()">+ Add New
     Time</button>
-  <button type='button' class='btn btn-outline-dark' (click)='onSubmit(this.updateForm)'>Save</button>
+  <div *ngIf='loadingGifFlag' class="loaderSmall"></div>
+  <button type='button' class='btn btn-outline-dark' [disabled]="!this.updateForm.valid"
+    (click)='this.updateForm.valid && onSubmit(this.updateForm)' *ngIf='submitionFlag'>Save</button>
 </div>

@@ -41,6 +41,9 @@
               <th *ngFor='let i of columnsToShow' scope='col' (click)='onSort(i)' counter='0' style='width: 110px'
                 class='t_sort_title'>
                 {{i | columnTitleFormat}}</th>
+                <th scope='col' (click)='onSort("Email")' counter='0' style='width: 110px'
+                class='t_sort_title'>
+                Email</th>
               <th scope='col' style='width: 150px'></th>
             </tr>
           </thead>
@@ -51,6 +54,7 @@
               *ngFor='let i of teachersList | slice: (currentPage-1)* pageSize : (currentPage-1) * pageSize + pageSize; let index = index'>
               <th scope="row">{{index + 1}}</th>
               <td *ngFor='let j of columnsToShow'>{{i[j]}}</td>
+              <td><a href="mailto:i.Email">{{i.Email}}</a></td>
               <td>
                 <span class='t_info_table_btn' (click)='detailModal(1, i)' title="Tutor Info"><span class='fas fa-info-circle'></span></span>
                 <span class='t_info_table_btn' (click)='updateModal(2, i)' title="Edit"><span class='fas fa-pen'></span></span>

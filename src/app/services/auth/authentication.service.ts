@@ -26,7 +26,7 @@ export class AuthenticationService {
 
     // Check tokens expire time
     checkTokenExpiry(){
-        let tokenExpireTime = Number(localStorage.getItem('TokenExpiry')) 
+        let tokenExpireTime = Number(localStorage.getItem('TokenExpiry'))
         let now = Number((new Date()).getTime()/1000);
         if(tokenExpireTime > now ){
             return true
@@ -61,7 +61,9 @@ export class AuthenticationService {
         localStorage.setItem('organisations', res.Data.userdetails.OrgName);
         localStorage.setItem('userID', res.Data.userid);
         localStorage.setItem('userName', res.Data.username);
-        localStorage.setItem('OrgId',JSON.stringify(res.Data.userdetails.OrgId))
+        localStorage.setItem('OrgId',JSON.stringify(res.Data.userdetails.OrgId));
+        if (res.Data.photo)  localStorage.setItem('photo',res.Data.photo);
+        if (res.Data.userdetails.staffId) localStorage.setItem('staffId', res.Data.staffId);
 
     }
 
@@ -74,5 +76,10 @@ export class AuthenticationService {
     //change password
     changePassword(info){
         return this.http.put<any>( this.baseUrl+'changepassword', info )
+    }
+
+    userState(){
+      let user = 1
+      return user;
     }
 }

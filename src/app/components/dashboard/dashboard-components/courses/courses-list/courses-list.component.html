@@ -1,80 +1,92 @@
-<div class='container tl_body'>
-  <div class="row">
-    <!--body head-->
-    <div class="col-12 row">
-      <!--body tittle-->
+<div *ngIf='loadingFlag'>
+  <div class="loaderLarge"></div>
+</div>
+<div *ngIf='!loadingFlag'>
+  <div class='container tl_body'>
+    <div class="row">
+      <!--body head-->
       <div class='col-12 t_info_title'>
         Courses List
       </div>
       <!--body search-->
-      <div class="col-12">
-        <div class='t_info_search'>
-          <input id='searchingInput' type="text" placeholder="Search by Course" (keydown)='onSearch($event)'>
+      <div class="col-12 row">
+        <div class="col-6">
+          <div class='t_info_search_bar'>
+            <input id='searchingInput' type="text" placeholder="Search by Course" (keydown)='onSearch($event)'>
+          </div>
+          <div class='t_info_search_icon'>
+            <span (click)="onSearch(null)">
+              <i class='fas fa-search'></i>
+            </span>
+          </div>
         </div>
-        <div class='t_info_search_by'>
-          <span (click)="onSearch(null)">
-            <span class='fas fa-search'></span>
-          </span>
-        </div>            
         <!--add more btn-->
-        <span class='btn btn-info t_info_addnew_btn' (click)="detailModal(0, null)">+ Add More</span>
-      </div>      
-    </div>
-    <br>
-    <!--Error Message-->
-    <div style="margin-left: auto;margin-right: auto;" *ngIf="errorMessage" class="text-danger">{{errorMessage}} <br> </div>
-   
-    <!--body main-->
-    <div class='col-12'>
-      <table class='table table-striped' style="text-align: center;">
-        <thead>
-          <tr>
-            <th scope='col' class='tl_body_table_head' style="width:1rem;">#</th>
-            <th scope='col' class='tl_body_table_head sorting_item' style="width:16rem;" (click)='onSort("CourseName")'>
-              Course Name</th>
-            <th scope='col' class='tl_body_table_head sorting_item' style="width:5rem;" (click)='onSort("CourseType")'>
-              Type</th>
-            <th scope='col' class='tl_body_table_head sorting_item' style="width:9rem;" (click)='onSort("Level")'>
-              Learner Level</th>
-            <th scope='col' class='tl_body_table_head sorting_item' style="width:9rem;"
-              (click)='onSort("TeacherLevel")'>Teacher Level</th>
-            <th scope='col' class='tl_body_table_head sorting_item' style="width:6rem;" (click)='onSort("Duration")'>
-              Duration</th>
-            <th scope='col' class='tl_body_table_head sorting_item' style="width:6rem;" (click)='onSort("Price")'>Price
-            </th>
-            <th scope='col' class='tl_body_table_head sorting_item' style="width:7rem;"
-              (click)='onSort("CourseCategoryId")'>Category</th>
-            <th scope='col' class='tl_body_table_head' style="width:8rem;">Edit & Delete</th>
-          </tr>
-        </thead>
-        <tbody>
+        <div class="col-6">
+          <span class='btn btn-info t_info_addmore_btn' (click)="detailModal(0, null)">+ Add More</span>
+        </div>
+      </div>
+      <!--Error Message-->
+      <div class="col-12" style="margin-left: auto;margin-right: auto;" *ngIf="errorMessage" class="text-danger">
+        {{errorMessage}}<br>
+      </div>
+      <!--body main-->
+      <div class='col-12'>
+        <table class='table table-striped' style="text-align: center;">
+          <thead>
+            <tr>
+              <th scope='col' class='tl_body_table_head' style="width:1rem;">#</th>
+              <th scope='col' class='tl_body_table_head sorting_item' style="width:16rem;"
+                (click)='onSort("CourseName")'>
+                Course Name</th>
+              <th scope='col' class='tl_body_table_head sorting_item' style="width:5rem;"
+                (click)='onSort("CourseType")'>
+                Type</th>
+              <th scope='col' class='tl_body_table_head sorting_item' style="width:9rem;" (click)='onSort("Level")'>
+                Learner Level</th>
+              <th scope='col' class='tl_body_table_head sorting_item' style="width:9rem;"
+                (click)='onSort("TeacherLevel")'>Teacher Level</th>
+              <th scope='col' class='tl_body_table_head sorting_item' style="width:6rem;" (click)='onSort("Duration")'>
+                Duration</th>
+              <th scope='col' class='tl_body_table_head sorting_item' style="width:6rem;" (click)='onSort("Price")'>
+                Price
+              </th>
+              <th scope='col' class='tl_body_table_head sorting_item' style="width:7rem;"
+                (click)='onSort("CourseCategoryId")'>Category</th>
+              <th scope='col' class='tl_body_table_head' style="width:8rem;">Edit & Delete</th>
+            </tr>
+          </thead>
+          <tbody>
             <!-- dataTable-->
-          <tr *ngFor='let i of coursesList | slice: (page-1)* pageSize : (page-1) * pageSize + pageSize;let j = index'>
-            <th scope="row">{{j+1}}</th>
-            <td>
-              <ngb-highlight [result]="i.CourseName" [term]="filter.value"></ngb-highlight>
-            </td>
-            <td>{{i.CourseTypeName}}</td>
-            <td>{{i.LevelName}}</td>
-            <td>{{i.TeacherLevelName}}</td>
-            <td>{{i.DurationName}}</td>
-            <td>${{i.Price}}</td>
-            <td>{{i.CourseCategory.CourseCategoryName}}</td>
-            <td class='tl_body_table_btns'>
-              <span (click)='detailModal(2, i)' class='tl_body_table_btn' style="margin-right: 2rem;">
-                <i class='fas fa-pen'></i>
-              </span>
-              <span (click)='deleteModal(3, i)' class='tl_body_table_btn'><i class='fas fa-trash-alt'></i></span>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
+            <tr
+              *ngFor='let i of coursesList | slice: (page-1)* pageSize : (page-1) * pageSize + pageSize;let j = index'>
+              <th scope="row">{{j+1}}</th>
+              <td>
+                <ngb-highlight [result]="i.CourseName" [term]="filter.value"></ngb-highlight>
+              </td>
+              <td>{{i.CourseTypeName}}</td>
+              <td>{{i.LevelName}}</td>
+              <td>{{i.TeacherLevelName}}</td>
+              <td>{{i.DurationName}}</td>
+              <td>${{i.Price}}</td>
+              <td>{{i.CourseCategory.CourseCategoryName}}</td>
+              <td>
+                <span (click)='detailModal(2, i)' class='tl_body_table_btn' style="margin-right: 2rem;">
+                  <i class='fas fa-pen'></i>
+                </span>
+                <span (click)='deleteModal(3, i)' class='tl_body_table_btn'>
+                  <i class='fas fa-trash-alt'></i>
+                </span>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
 
-    <!--body pagination-->
-    <div class='col-12'>
-      <ngb-pagination [collectionSize]='coursesListLength' [(page)]='page' [pageSize]='pageSize'></ngb-pagination>
-    </div>
+      <!--body pagination-->
+      <div class='col-12'>
+        <ngb-pagination [collectionSize]='coursesListLength' [(page)]='page' [pageSize]='pageSize'></ngb-pagination>
+      </div>
 
+    </div>
   </div>
 </div>

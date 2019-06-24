@@ -1,4 +1,4 @@
-import { Component, OnInit} from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { PaymentService } from '../../../../../services/http/payment.service';
 import { FormBuilder, Validators } from '@angular/forms';
 import { NgbModal, ModalDismissReasons, NgbTab, NgbTabTitle, } from '@ng-bootstrap/ng-bootstrap';
@@ -14,7 +14,7 @@ import { getLocaleDateFormat } from '@angular/common';
   templateUrl: './admin-learner-payment-invoice.component.html',
   styleUrls: ['./admin-learner-payment-invoice.component.css']
 })
-export class AdminLearnerPaymentInvoiceComponent implements OnInit {
+export class AdminLearnerPaymentInvoiceComponent implements OnInit, OnDestroy {
   // invoice
   public dataInvoice: any;
   public learnerId: any;
@@ -32,6 +32,10 @@ export class AdminLearnerPaymentInvoiceComponent implements OnInit {
   public dateCurrent;
   // ng-modal variable
   closeResult: string;
+  // distroy subscribe
+  fistNameSubscription
+  // not show invoice data;
+  noInvoice = false;
 
   invoiceForm = this.fb.group({
     owing: ['', Validators.required],
@@ -73,24 +77,29 @@ export class AdminLearnerPaymentInvoiceComponent implements OnInit {
   // In case learner have two invoice at ng-bootstrap tab
   fetchNews(event){
     console.log(event)
-    if (this.dataInvoice.length > 3) {
-      this.invoiceForm.patchValue({
-        owing : 0
-      });
-    } else {
-    const id = Number(event.activeId.slice(8));
-    switch (id) {
-      case 0:
-      this.invoiceForm.patchValue({
-        owing : Math.abs(this.dataInvoice[1].OwingFee)
-      });
-      break;
-      case 1:
-      this.invoiceForm.patchValue({
-        owing : Math.abs(this.dataInvoice[0].OwingFee)
-      });
-    }
-  }
+    let activeId = event.nextId;
+    this.invoiceForm.patchValue({
+      owing : Math.abs(this.dataInvoice[activeId].OwingFee)
+    });
+  //need confirm , why need process this condition?
+  //   if (this.dataInvoice.length > 3) {
+  //     this.invoiceForm.patchValue({
+  //       owing : 0
+  //     });
+  //   } else {
+  //   const id = Number(event.activeId.slice(8));
+  //   switch (id) {
+  //     case 0:
+  //     this.invoiceForm.patchValue({
+  //       owing : Math.abs(this.dataInvoice[1].OwingFee)
+  //     });
+  //     break;
+  //     case 1:
+  //     this.invoiceForm.patchValue({
+  //       owing : Math.abs(this.dataInvoice[0].OwingFee)
+  //     });
+  //   }
+  // }
   }
 
     // create post obj
@@ -242,10 +251,16 @@ export class AdminLearnerPaymentInvoiceComponent implements OnInit {
     // get FirstName
     nameSubejct(){
       console.log('a')
-      this.generalRepoService.fisrtName.subscribe(res=>
+      this.fistNameSubscription = this.generalRepoService.fisrtName.subscribe(res=>
         {
         this.learner = res;
         console.log(this.learner)
+        }
+        ,error=>{
+          console.log(error);
+          this.errorMsg = JSON.parse(error.error);
+          this.errorAlert = true;
+          //alert(this.errorMsg);
         })
     }
     // make sure the data allignment
@@ -256,10 +271,10 @@ export class AdminLearnerPaymentInvoiceComponent implements OnInit {
         element.CourseName === null? element.CourseName = 'Course Name is not available' : element.CourseName = element.CourseName;
         element.LessonFee === null? element.LessonFee = 'Lesson Fee is not available' : element.LessonFee = element.LessonFee;
         element.BeginDate === null? element.BeginDate = 'none' : element.BeginDate = element.BeginDate;
-        element.ConcertFeeName === null? element.ConcertFeeName = 'Concert is not available' : element.ConcertFeeName = element.ConcertFeeName;
-        element.LessonNoteFeeName === null? element.LessonNoteFeeName = 'Note is not available' : element.LessonNoteFeeName = element.LessonNoteFeeName;
-        element.NoteFee === null? element.NoteFee = 'Note fee is not available' : element.NoteFee = element.NoteFee;
-        element.ConcertFee === null? element.ConcertFee = 'Concert Fee is not available' : element.ConcertFee = element.ConcertFee;
+        element.ConcertFeeName === null? element.ConcertFeeName = 'Concert' : element.ConcertFeeName = element.ConcertFeeName;
+        element.LessonNoteFeeName === null? element.LessonNoteFeeName = 'Note' : element.LessonNoteFeeName = element.LessonNoteFeeName;
+        element.NoteFee === null? element.NoteFee = 'Note fee' : element.NoteFee = element.NoteFee;
+        element.ConcertFee === null? element.ConcertFee = 'Concert Fee' : element.ConcertFee = element.ConcertFee;
         console.log(element.CourseName)
       });
     }
@@ -267,18 +282,32 @@ export class AdminLearnerPaymentInvoiceComponent implements OnInit {
     ngOnInit() {
       // put to service
       this.activatedRouter.paramMap.subscribe((obs:ParamMap) => {
+      //  this.learnerId = this.activatedRouter.snapshot.paramMap.get("id")
         this.learnerId = parseInt(obs.get('id'));
+        this.errorAlert = false;
+        this.errorMsg ='';
         this.errMsgM = false;
         this.errMsgO = false;
         this.paymentsListService
         .getInvoice(this.learnerId)
-        .subscribe(dataInvoice => {
+        .subscribe(res => {
+          this.noInvoice = false
           // return console.log(dataInvoice)
-          this.dataInvoice = dataInvoice;
+          this.dataInvoice = res['Data'];
+          console.log(this.dataInvoice)
           this.incaseDateIsNull();
           this.reSearchPrepare();
+        },error=>{
+          console.log(error);
+          this.noInvoice = true;
+          this.errorMsg =error.error.ErrorMessage;
+          this.errorAlert = true;
+          //alert(this.errorMsg);
         });
       });
       this.nameSubejct();
     }
+  ngOnDestroy(){
+    this.fistNameSubscription.unsubscribe();
+  }
 }

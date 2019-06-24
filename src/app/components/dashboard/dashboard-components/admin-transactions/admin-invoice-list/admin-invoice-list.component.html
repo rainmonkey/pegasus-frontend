@@ -3,11 +3,11 @@
     <!--body head-->
     <div class='col-12 tl_body_title'>
       <h2>Invoice Edit & Email</h2>
-  </div>
+    </div>
     <!--body search-->
     <div class='col-12 tl_body_search'>
-        <span class='fas fa-search'></span>&nbsp;
-      <input type="text" (keydown)='onSearch($event)' placeholder="Search by name">
+      <span class='fas fa-search'></span>&nbsp;
+      <input type="text" id='searchingInput' (keydown)='onSearch($event)' placeholder="Search by name">
     </div>
 
     <!--body main-->
@@ -16,18 +16,19 @@
         <thead>
           <tr>
             <th scope='col' class='tl_body_table_head' style='width: 50px'>#</th>
-            <th scope='col' class='tl_body_table_head' style='width: 150px' (click)='onSort("FirstName")' counter = '0' class='sorting_item' style="cursor: pointer;">First Name</th>
-            <th scope='col' class="tl_body_table_head" style='width: 150px'>Middle Name</th>
-            <th scope='col' class="tl_body_table_head" style='width: 150px' (click)='onSort("LastName")' counter = '0' id='lastName' class='sorting_item' style="cursor: pointer;">Last Name</th>
+            <th scope='col' class='tl_body_table_head' style='width: 150px' (click)='onSort("FirstName")' counter='0' class='sorting_item' style="cursor: pointer;">First Name</th>
+            <th scope='col' class="tl_body_table_head" style='width: 150px' (click)='onSort("MiddleName")' style="cursor: pointer;">Middle Name</th>
+            <th scope='col' class="tl_body_table_head" style='width: 150px' (click)='onSort("LastName")' counter='0' id='lastName' class='sorting_item' style="cursor: pointer;">Last Name</th>
             <th scope='col' class='tl_body_table_head' style='width: 150px' (click)='onSort("OwingFee")' style="cursor: pointer;">Owing Fee</th>
-            <th scope='col' class='tl_body_table_head' style='width: 300px'>Email</th>
-            <th scope='col' class='tl_body_table_head' style='width: 300px' (click)='onSort("Status")' style="cursor: pointer;">Reminder Status</th>
+            <th scope='col' class='tl_body_table_head' style='width: 300px' (click)='onSort("Email")' style="cursor: pointer;">Email</th>
+            <th scope='col' class='tl_body_table_head' style='width: 300px' (click)='onSort("IsEmailSent")' style="cursor: pointer;">Reminder Status</th>
+            <th scope='col' class='tl_body_table_head' style='width: 300px' (click)='onSort("IsConfirmed")' style="cursor: pointer;">Confirm Status</th>
             <th scope='col' class='tl_body_table_head'></th>
           </tr>
         </thead>
         <tbody>
           <!-- dataTable-->
-          <tr *ngFor = 'let item of myArray | slice: (page-1)* pageSize : (page-1) * pageSize + pageSize; let j = index'>
+          <tr *ngFor='let item of myArray | slice: (page-1)* pageSize : (page-1) * pageSize + pageSize; let j = index'>
             <th scope="row">{{j+1}}</th>
             <td>{{item.FirstName}}</td>
             <td>{{item.MiddleName}}</td>
@@ -35,6 +36,8 @@
             <td>{{item.OwingFee}}</td>
             <td>{{item.IsUnder18===1?item.Parent[0].Email:item.Email}}</td>
             <td>{{item.IsEmailSent|MyType:'status'}}</td>
+            <td *ngIf='item.IsConfirmed==0'>Waiting Confirm</td>
+            <td *ngIf='item.IsConfirmed==1'>Confirmed</td>
             <td>
               <a (click)='open(item)' style="cursor: pointer;"><span class='fas fa-pen'></span>&nbsp;Edit</a>
             </td>
@@ -45,7 +48,7 @@
 
     <!--body pagination-->
     <div class='col-12'>
-      <ngb-pagination [collectionSize] = 'learnerListLength' [(page)] ='page' [pageSize]='pageSize'></ngb-pagination>
+      <ngb-pagination [collectionSize]='learnerListLength' [(page)]='page' [pageSize]='pageSize'></ngb-pagination>
     </div>
 
 

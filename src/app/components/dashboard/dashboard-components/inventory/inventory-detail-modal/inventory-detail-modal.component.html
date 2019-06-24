@@ -1,0 +1,60 @@
+<!--modal header-->
+<div class='modal-header'>
+  <h4 *ngIf='command == 0' class='modal-title'>{{command | commandFormat}}</h4>
+  <button type="button" class='btn btn-sm btn-info tl_um_close_btn' aria-label="Close"
+    (click)="activeModal.close('Cross click')">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+
+<!--modal body-->
+<div style="text-align:center" *ngIf="errorMessage" class="text-danger">{{errorMessage}} <br> </div>
+<div class='modal-body'>
+  <div class='t_mf_form'>
+    <form [formGroup]="updateForm">
+      <div class="row">
+        <div class="col-6">
+          <label class='t_mf_label'>Product Name:</label>&nbsp;
+          <small class='text-danger errorfontsmall' style='text-align: center'
+            *ngIf='updateForm.get("ProductId").invalid && updateForm.get("ProductId").touched'>required</small>
+          <select type="text" class='col-12 t_mf_input' formControlName="ProductId"
+            [class.t_mf_error_border]='updateForm.get("ProductId").invalid && updateForm.get("ProductId").touched'>
+            <option *ngFor='let i of productName' value="{{i.ProductId}}">{{i.ProductName}}</option>
+          </select>
+          <label class='t_mf_label'>Location:</label>&nbsp;
+          <small class='text-danger errorfontsmall' style='text-align: center'
+            *ngIf='updateForm.get("OrgId").invalid && updateForm.get("OrgId").touched'>required</small>
+          <select type="text" class='col-12 t_mf_input' formControlName="OrgId"
+            [class.t_mf_error_border]='updateForm.get("OrgId").invalid && updateForm.get("OrgId").touched'>
+            <option *ngFor='let i of orgName | orderby:"OrgName"' value="{{i.OrgId}}">{{i.OrgName}}</option>
+          </select>
+          <label class='t_mf_label'>Staff Name:</label>&nbsp;
+          <select type="text" class='col-12 t_mf_input' formControlName="StaffId"
+            [class.t_mf_error_border]='updateForm.get("StaffId").invalid && updateForm.get("StaffId").touched'>
+            <option *ngFor="let i of staffName | orderby:'StaffFullName'" value="{{i.StaffId}}">{{i.StaffFullName}}</option>
+          </select>
+        </div>
+        <div class="col-6">
+          <label class='t_mf_label'>Quantity:</label>&nbsp;
+          <small class='text-danger errorfontsmall' style='text-align: center'
+            *ngIf='updateForm.get("Quantity").invalid && updateForm.get("Quantity").touched'>required</small>
+          <input type="number" class='col-12 t_mf_input' formControlName='Quantity'
+            [class.t_mf_error_border]='updateForm.get("Quantity").invalid && updateForm.get("Quantity").touched'>
+          <label class='t_mf_label'>Amount:</label>&nbsp;
+          <small class='text-danger errorfontsmall' style='text-align: center'
+            *ngIf='updateForm.get("BuyingPrice").invalid && updateForm.get("BuyingPrice").touched'>required</small>
+          <input type="number" class='col-12 t_mf_input' formControlName='BuyingPrice'
+            [class.t_mf_error_border]='updateForm.get("BuyingPrice").invalid && updateForm.get("BuyingPrice").touched'>
+          <label class='t_mf_label'>Receipt File (Only png/jpg/jpeg):</label>&nbsp;
+          <input type="file" name="ReceiptImg" accept='image/*' (change)='uploadReceipt($event)' formControlName='ReceiptImg'>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+<!--modal footer-->
+<div class='modal-footer'>
+  <div *ngIf='loadingGifFlag' class="loaderSmall"></div>
+  <button type='button' class='btn btn-outline-dark' [disabled]="!this.updateForm.valid"
+    (click)='this.updateForm.valid && onSubmit(this.updateForm)'>Save</button>
+</div>

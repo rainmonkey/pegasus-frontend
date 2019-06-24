@@ -1,9 +1,9 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { DecimalPipe } from '@angular/common';
 import { FormControl } from '@angular/forms';
 import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 import { Router, ActivatedRoute } from '@angular/router';
-import { NgbootstraptableService } from 'src/app/services/others/ngbootstraptable.service';
+import { NgbootstraptableService } from '../../../../../services/others/ngbootstraptable.service';
 
 import { CoursesService } from '../../../../../services/http/courses.service';
 import { CourseDetailModalComponent } from '../course-detail-modal/course-detail-modal.component';
@@ -26,10 +26,9 @@ export class CoursesListComponent implements OnInit {
   public errorMessage: string;
   //search by which columns, determine by users
   public queryParams: object = {};
-  public filter = new FormControl('');
-
-  @ViewChild('pagination') pagination;
-
+  public filter = new FormControl('');  
+  //loading
+  public loadingFlag: boolean = false;
 
   constructor(
     private coursesService: CoursesService,
@@ -40,6 +39,7 @@ export class CoursesListComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    this.loadingFlag = true;
     this.getData();
   }
 
@@ -53,10 +53,10 @@ export class CoursesListComponent implements OnInit {
         this.coursesListCopy = this.coursesList;
         this.coursesListLength = res.Data.length; //length prop is under Data prop
         this.refreshPageControl();
-        console.log(this.coursesList);
+        this.loadingFlag = false;
         // console.log(this.coursesList);
       },
-      (err) => { 
+      (err) => {
         this.backendErrorHandler(err);
       })
   }
@@ -74,21 +74,21 @@ export class CoursesListComponent implements OnInit {
   /*
     set the default params when after page refresh
   */
- refreshPageControl(){
-  this.activatedRoute.queryParams.subscribe(res => {
-    let {searchString,searchBy,orderBy,orderControl,currentPage} = res;
-    if(searchString !==undefined && searchBy !==undefined){
-      this.onSearch(null, {'searchString':searchString,'searchBy':searchBy})
-    }
-    if(orderBy !==undefined && orderControl !== undefined){
-      this.onSort(orderBy,orderControl)
-    }
-    if(currentPage !== undefined){
-      this.currentPage = currentPage;
-    }
-  })
-  return;
-}
+  refreshPageControl() {
+    this.activatedRoute.queryParams.subscribe(res => {
+      let { searchString, searchBy, orderBy, orderControl, currentPage } = res;
+      if (searchString !== undefined && searchBy !== undefined) {
+        this.onSearch(null, { 'searchString': searchString, 'searchBy': searchBy })
+      }
+      if (orderBy !== undefined && orderControl !== undefined) {
+        this.onSort(orderBy, orderControl)
+      }
+      if (currentPage !== undefined) {
+        this.currentPage = currentPage;
+      }
+    })
+    return;
+  }
 
 
   /*
@@ -117,7 +117,7 @@ export class CoursesListComponent implements OnInit {
     } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
       return 'by clicking on a backdrop';
     } else {
-      return  `with: ${reason}`;
+      return `with: ${reason}`;
     }
   }
 
@@ -172,24 +172,19 @@ export class CoursesListComponent implements OnInit {
     else {
       let searchString: string;
       let searchBy: string;
-      
+
       let searchingInputObj = document.getElementById('searchingInput');
 
-      (initValue == undefined) ? { searchString, searchBy } = 
-      { searchString: searchingInputObj['value'], searchBy: 'CourseName'} :
+      (initValue == undefined) ? { searchString, searchBy } =
+        { searchString: searchingInputObj['value'], searchBy: 'CourseName' } :
         { searchString, searchBy } = initValue;
 
       this.coursesList = this.ngTable.searching(this.coursesListCopy, searchBy, searchString);
       this.coursesListLength = this.coursesList.length;
 
-      this.setQueryParams('searchBy',searchBy);
+      this.setQueryParams('searchBy', searchBy);
       this.setQueryParams('searchString', searchString);
     }
 
-  }
-
-  getCurrentPage(){
-    let currentPage = this.pagination.page;
-    this.setQueryParams('currentPage',currentPage)
   }
 }

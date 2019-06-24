@@ -1,17 +1,60 @@
 <div class='row'>
+  <!--categories-->
   <div class='col-12 t_s_class_title'>
     Categories:
   </div>
 
   <div class='col-12'>
     <div class='row'>
-      <div *ngFor='let i of coursesCate.slice(0,-1)' class='col-2'>
-        <div class='t_s_tabs'>
-            <span class='t_s_tabs_title col-12'>{{i.CourseCategoryName}}</span>
-            <span class='t_s_tabs_img col-12'><img src="../../../../../../assets/images/shared/piano.svg" alt=""></span>
+      <div *ngFor='let i of displayCoursesCateTabs(); let index = index' class='col-2 Categories' id={{index}}>
+        <div class='t_s_tabs' (click)="selectTab($event,'Categories','Orgs',index,i.CourseCategoryId,i.CourseCategoryName)">
+          <span class='t_s_tabs_close' (click)="unSelectTab($event,'Categories')" style="display: none"><span
+              class='far fa-times-circle'></span></span>
+          <span class='t_s_tabs_title col-12'>{{i.CourseCategoryName}}</span>
+          <span class='t_s_tabs_img col-12'><img [src]="displayInstrumentsIcon(index)" alt=""></span>
         </div>
       </div>
     </div>
   </div>
 
+  <!--orgs-->
+  <div *ngIf='styleFlowControl.Orgs.display' class='col-12'>
+    <div class='col-12 t_s_class_title'>
+      Orgnazations:
+    </div>
+
+    <div class='col-12'>
+      <div class='row'>
+        <div *ngFor='let i of displayOrgTabs(); let index = index' class='col-2 Orgs' id={{index}}>
+          <div class='t_s_tabs' (click)="selectTab($event,'Orgs','Teachers',index,i.OrgId,i.OrgName)">
+            <span class='t_s_tabs_close' (click)="unSelectTab($event,'Orgs')" style="display: none"><span
+                class='far fa-times-circle'></span></span>
+            <span class='t_s_tabs_title col-12' style="font-size: 25px">{{i.Abbr}}</span>
+            <div class='t_s_tabs_content col-12'>{{i.OrgName.toLowerCase()}}</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+   <!--Teachers-->
+   <div *ngIf='styleFlowControl.Teachers.display' class='col-12'>
+    <div class='col-12 t_s_class_title'>
+      Teachers:
+    </div>
+
+    <div class='col-12'>
+      <div class='row'>
+        <div *ngFor='let i of displayTeachers(); let index = index' class='col-2 Teachers' id={{index}}>
+          <div class='t_s_tabs' (click)="popUpModal(i)">
+            <span class='t_s_tabs_close' (click)="unSelectTab($event,'Teachers')" style="display: none"><span
+                class='far fa-times-circle'></span></span>
+            <div class='t_s_tabs_title col-12' style="font-size: 25px">{{i.FirstName}}</div>
+            <div class='t_s_tabs_title col-12' style="font-size: 25px">{{i.LastName}}</div>
+            <div class='t_s_tabs_content col-12'>{{getLevel(i.Level)}}</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>

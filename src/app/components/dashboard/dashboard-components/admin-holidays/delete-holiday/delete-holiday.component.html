@@ -1,0 +1,13 @@
+  <div class='modal-body'>
+      <div >
+        Delete Holiday: <span style='font-weight: 700; font-size:20px'>{{date.event.title}}</span>
+   </div>
+   </div>
+
+   <div class='modal-footer'>
+      <span *ngIf='isDeleteSuccess' class='text-success'>Delete Success </span>
+      <span *ngIf='isDeleteFail' class='text-danger'>Delete Fail </span>
+      <button *ngIf='!isDeleteSuccess' type='button' class='btn btn-outline-dark' (click)='delete()'>Delete</button>
+      <button *ngIf='!isDeleteSuccess && !isDeleteFail' type="button" class="btn btn-outline-dark" (click)="activeModal.close('Close click')">Cancel</button>
+      <button *ngIf='isDeleteSuccess || isDeleteFail' type="button" class="btn btn-outline-dark" (click)="activeModal.close('Close click')">Close</button>
+   </div>
