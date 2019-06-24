@@ -121,7 +121,6 @@ import { MessagerRecentlyComponent } from './components/dashboard/general/messag
 import { MessagerChattingComponent } from './components/dashboard/general/messager/messager-chatting/messager-chatting.component';
 import { MessagerPersonalInfoComponent } from './components/dashboard/general/messager/messager-personal-info/messager-personal-info.component';
 
-
 @NgModule({
   declarations: [
     AppComponent,

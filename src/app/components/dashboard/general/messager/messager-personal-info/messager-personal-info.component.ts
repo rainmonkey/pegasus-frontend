@@ -13,7 +13,7 @@ export class MessagerPersonalInfoComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
-    console.log('a')
+    // console.log('a')
     //登陆的时候就给后台发送在线状态变更 这个要在项目登陆界面实现  （未实现）
 
     //初始化在线状态 要从数据库拿数据 或者从localStorage里 （未实现）
