@@ -1,11 +1,11 @@
-<div class='m_m_skeleton' draggable="true">
+<div class='m_m_skeleton'>
   <!--header-->
   <div class='m_m_header'>
-    <span>
-      <span></span>
+    <span class='m_m_header_icon m_m_header_cog'>
+      <span class='fas fa-cog'></span>
     </span>
     chatting with...    
-    <span class='m_m_header_close' (click)='closeChattingModal()'>
+    <span class='m_m_header_icon m_m_header_close' (click)='closeChattingModal()'>
       <span class='fas fa-times'></span>
     </span>
   </div>
@@ -25,7 +25,7 @@
 
   <!--chatting ui-->
   <div class='m_m_chatting' id='chatting'>
-    <app-messager-chatting></app-messager-chatting>
+    <app-messager-chatting [userId]='userId' (onStartChatting)='startChattingWith()'></app-messager-chatting>
   </div>
 
   <div class='m_m_selection_btns'>

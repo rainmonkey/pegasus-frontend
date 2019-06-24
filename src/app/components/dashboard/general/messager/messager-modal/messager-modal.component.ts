@@ -10,9 +10,10 @@ export class MessagerModalComponent implements OnInit {
   public functionalBtnNames: Array<string> = ['subscribers', 'recently', 'chatting'];
   public currentBtnIndex: number = 0;
   public personalLabelDisplayFlag: boolean = true;
-  public preBtnSelectedObj:any = null;
-  
-  
+  public preBtnSelectedObj: any = null;
+  public userId = null;
+
+
   @Output() onCloseChattingModal = new EventEmitter();
   constructor() { }
 
@@ -20,8 +21,8 @@ export class MessagerModalComponent implements OnInit {
     this.preBtnSelectedObj = document.getElementById('initSelected');
   }
 
-  a(){
-    return {"height":"300px"}
+  a() {
+    return { "height": "300px" }
   }
   selectFunctionalBtn(selectId) {
     //如果点击的是当前页的btn 则不发生任何事情
@@ -49,11 +50,21 @@ export class MessagerModalComponent implements OnInit {
     }
   }
 
-  startChattingWith(event){
-    console.log(event);
-    //如果双击跟某人聊天 接收到指令
-    if(event.status == true){
-      this.selectFunctionalBtn(2);
+  /*
+    选择聊天对象后 跳转到聊天界面
+  */
+  startChattingWith(event?) {
+    console.log(event)
+    if (event !== undefined) {
+      //如果双击跟某人聊天 接收到指令
+      if (event.status == true) {
+        this.selectFunctionalBtn(2);
+      }
+      this.userId = event.userId;
+    }
+    else{
+      console.log('a')
+      this.selectFunctionalBtn(0);
     }
   }
 

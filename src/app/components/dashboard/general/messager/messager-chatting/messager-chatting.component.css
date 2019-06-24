@@ -1,3 +1,6 @@
+.m_c_skeleton{
+    height: 580px; /********************************************************/
+}
 .m_c_subscribers{
     height: 60px;
     padding: 1px 0!important;
@@ -40,6 +43,10 @@
     background: #e6dfdf;
     border-bottom: 1px solid rgb(223, 220, 220);
 }
+.m_c_emoji_panel_info{
+    font-size: 14px;
+    color:#5d5d5a;
+}
 .m_c_emoji_picker{
     float: right;
     margin-right: 5px;
@@ -63,3 +70,16 @@
 #m_c_emoji_picker_panel{
     display: none;
 }
+
+.m_c_start_chatting{
+    height: 100%;
+    width: 100%;
+    text-align: center;
+    line-height: 580px; /********************************************************/
+    font-weight: bold;
+    color:#5d5d5a;
+}
+.m_c_start_chatting span:hover{
+    cursor: pointer;
+}
+

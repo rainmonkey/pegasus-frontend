@@ -2,7 +2,7 @@ import { CommonModule, DatePipe } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import {MatButtonModule, MatFormFieldModule, MatInputModule, MatSelectModule} from '@angular/material';
+import { MatButtonModule, MatFormFieldModule, MatInputModule, MatSelectModule } from '@angular/material';
 // Dependencies
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -231,7 +231,7 @@ import { MessagerPersonalInfoComponent } from './components/dashboard/general/me
     MessagerRecentlyComponent,
     MessagerChattingComponent,
     MessagerPersonalInfoComponent,
-    
+
   ],
   imports: [
     NgbModule,
@@ -256,7 +256,7 @@ import { MessagerPersonalInfoComponent } from './components/dashboard/general/me
     MondayDateInWeekByDatePipe,
     NgbActiveModal
   ],
-  entryComponents:[
+  entryComponents: [
     TeacherDeleteModalComponent,
     TeacherDetailModalComponent,
     TeacherUpdateModalComponent,
