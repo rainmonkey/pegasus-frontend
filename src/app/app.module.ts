@@ -113,14 +113,10 @@ import { HolidayCalendarComponent } from './components/dashboard/dashboard-compo
 import { AddHolidaysModalComponent } from './components/dashboard/dashboard-components/admin-holidays/add-holidays-modal/add-holidays-modal.component';
 import { DeleteHolidayComponent } from './components/dashboard/dashboard-components/admin-holidays/delete-holiday/delete-holiday.component';
 import { ChattingComponent } from './components/dashboard/general/chatting/chatting.component';
-<<<<<<< HEAD
-import { LearnerCreditArrangeComponent } from './components/dashboard/dashboard-components/learner-credit/learner-credit-arrange/learner-credit-arrange.component';
-=======
 import { PickerModule } from '@ctrl/ngx-emoji-mart';
 import { EmojiModule } from '@ctrl/ngx-emoji-mart/ngx-emoji';
 import { MessagerIconComponent } from './components/dashboard/general/messager/messager-icon/messager-icon.component';
 
->>>>>>> cc0e7fcff3163a21dd864a7ca3487d66c9ae6174
 
 
 @NgModule({
@@ -228,12 +224,8 @@ import { MessagerIconComponent } from './components/dashboard/general/messager/m
     AddHolidaysModalComponent,
     DeleteHolidayComponent,
     ChattingComponent,
-<<<<<<< HEAD
-    LearnerCreditArrangeComponent
-=======
     MessagerIconComponent,
-    
->>>>>>> cc0e7fcff3163a21dd864a7ca3487d66c9ae6174
+
   ],
   imports: [
     NgbModule,
