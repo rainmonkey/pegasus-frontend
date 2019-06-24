@@ -10,6 +10,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { FullCalendarModule } from 'ng-fullcalendar';
 import { ChartsModule } from 'ng2-charts';
 import { routing } from '../app/app-routing.module';
+import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 // Components
 import { AppComponent } from './app.component';
 import { FooterComponent } from './components/basic/footer/footer.component';
@@ -87,10 +88,9 @@ import { WeekFormatPipe } from './shared/pipes/week-format.pipe';
 import { PaymentPeriodPipe } from './shared/pipes/paymentPeriod.pipe';
 import { IsUnder18Pipe } from './shared/pipes/isUnder18.pipe';
 import { confirmEqualValidatorDirectie } from './shared/confirm-equal-validator.directive';
-
-
-
-
+import { RemindModalComponent } from './components/dashboard/dashboard-components/remind/remind-modal/remind-modal.component';
+import { RemindListComponent } from './components/dashboard/dashboard-components/remind/remind-list/remind-list.component';
+import { RemindPanelComponent } from './components/dashboard/dashboard-components/remind/remind-panel/remind-panel.component';
 
 
 
@@ -170,7 +170,10 @@ import { confirmEqualValidatorDirectie } from './shared/confirm-equal-validator.
     TrialTableComponent,
     PaymentPeriodPipe,
     IsUnder18Pipe,
-    confirmEqualValidatorDirectie
+    confirmEqualValidatorDirectie,
+    RemindModalComponent,
+    RemindListComponent,
+    RemindPanelComponent,
   ],
   imports: [
     NgbModule,
@@ -185,7 +188,8 @@ import { confirmEqualValidatorDirectie } from './shared/confirm-equal-validator.
     routing,
     FullCalendarModule,
     CommonModule,
-    ChartsModule
+    ChartsModule,
+    NgMultiSelectDropDownModule.forRoot()
   ],
   providers: [
     DatePipe,
@@ -207,7 +211,8 @@ import { confirmEqualValidatorDirectie } from './shared/confirm-equal-validator.
     SessionCompletedModalComponent,
     RatingModalComponent,
     ForgotPasswordModalComponent,
-    ChangePasswordModalComponent
+    ChangePasswordModalComponent,
+    RemindModalComponent,
   ],
   exports: [AppComponent],
   bootstrap: [AppComponent]

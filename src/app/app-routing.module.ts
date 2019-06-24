@@ -34,6 +34,9 @@ import { TestoneComponent } from './components/testcomponent/testone/testone.com
 import { CourseClassListComponent } from './components/dashboard/dashboard-components/courses/course-class-list/course-class-list.component';
 import { DashboardHomeComponent } from './components/dashboard/dashboard-components/dashboard-home/dashboard-home.component';
 import { TrialInfoComponent } from './components/dashboard/dashboard-components/trial-session/trial-info/trial-info.component';
+import { RemindListComponent } from './components/dashboard/dashboard-components/remind/remind-list/remind-list.component';
+import { RemindPanelComponent } from './components/dashboard/dashboard-components/remind/remind-panel/remind-panel.component';
+
 
 
 const routes: Routes = [
@@ -109,6 +112,13 @@ const routes: Routes = [
       { path: 'payroll' , component: PayrollPanelComponent,
         children:[
           {path:'list', component:PayrollListComponent}
+        ]
+      },
+      // Remind Area
+      {
+        path: 'remind', component: RemindPanelComponent,
+        children:[
+          {path:'list', component:RemindListComponent}
         ]
       },
       // Below to be rearranged

@@ -7,8 +7,30 @@ import { environment } from '../../../environments/environment.prod';
 })
 export class CoursesService {
   private baseUrl: any = environment.baseUrl;
+  httpHeaders: HttpHeaders;
+  token: string;
 
   constructor(private http:HttpClient) { }
+  prepareHeaders(){
+    this.token = localStorage.getItem('Token')
+    this.httpHeaders = new HttpHeaders({'Authorization': ""+ localStorage.getItem('Token')})
+  }
+  getRemindList(beginDate, endDate) {
+    return this.http.get<any>(this.baseUrl + 'RemindLog/' + beginDate + '/' + endDate);
+  }
+
+  getRemindMessage():any{
+    return this.http.get(this.baseUrl + 'remindmessage'); 
+  }
+
+  deleteRemind(remind):any{
+    return this.http.delete(this.baseUrl + 'RemindLog/' + remind);
+  }
+
+  classesList(){
+    return this.http.get(this.baseUrl + 'orgs');
+  }
+
   getOrgs() {
     return this.http.get(this.baseUrl + 'orgs');
   }

@@ -1,0 +1,45 @@
+<!--modal head-->
+<div class="modal-head row col-12 mt-3 " style="justify-content: space-between;">
+  <h5 class="ml-4">Remind</h5>
+  <button type="button" class='btn btn-sm btn-info t_rm_close_btn' aria-label="Close"
+    (click)="activeModal.close('Cross click')">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+
+<!--modal body-->
+<div class="modal-body">
+  <div class="row">
+    <form> 
+      <!--title-->
+      <div class="form-group col-12" >
+       <span ><h4>Title: <strong>{{ whichRemind.RemindTitle }}</strong> </h4></span>
+      </div>
+      <div class="form-row col-12">
+        <div class="form-group col-8">
+          <label class="mr-3">To:</label>
+          <span *ngIf="whichRemind.Teacher" class="text "><strong>{{ whichRemind.Teacher.FirstName }}</strong> </span>
+          <span *ngIf="whichRemind.Learner" class="text"> <strong>{{ whichRemind.Learner.FirstName }}</strong> </span>
+        </div>
+        <div class="form-group col-4">
+         <span>{{ whichRemind.CreatedAt | date }}</span>
+        </div>
+      </div>
+      <div class="form-row col-12">
+        <!-- <div class="form-group col-4">
+          <span>{{ whichRemind.RemindType }}</span>
+        </div> -->
+      </div>
+      <div class="form-row col-12">
+        <label class="mr-3">Course:</label>
+        <span><strong>{{ whichRemind.CourseName }}</strong> </span>
+      </div>
+      <div class="form-row col-12">
+        <label>Message:</label>
+        <span class="remindContent"
+        ><p>{{ whichRemind.RemindContent }}</p></span>
+      </div>
+      
+    </form>
+  </div>
+</div>

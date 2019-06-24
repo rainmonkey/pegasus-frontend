@@ -1,0 +1,48 @@
+<div class="container">
+  <div class="row mt-3">
+    <div class='col-12 mb-3'>
+    <!--body head-->
+      <h2>
+        Remind
+      </h2>
+     </div> 
+    <!--Date-->
+    <div class="col-12 mb-3">
+      <span class="mr-3">Begin date:&nbsp;<input type="date" [(ngModel)]="searchBeginDate"/></span>
+      <span class="mr-3">End date:&nbsp;<input type="date" [(ngModel)]="searchEndDate"/></span>
+      <button (click)="search()"><span class="fas fa-search"></span></button>
+    </div>
+    
+    <br>
+    <!--body main-->
+    <div class="col-12">
+      <table class="table table-striped" style="text-align: center;">
+        <thead> 
+          <tr>
+              <th *ngFor="let item of columnsToShow, let i = index" scope="col" class="alert-warning" style="color: #333;">{{item}}</th>
+          </tr>
+        </thead>
+        <!--table body-->
+        <tbody>
+          <!--pagination is here-->
+          <tr 
+          *ngFor='let i of remindsList | slice: (currentPage-1)* pageSize : (currentPage-1) * pageSize + pageSize; let j = index'> 
+            <th scope="row">{{j + 1}}</th>
+            <td>{{i.RemindTitle}}</td>
+            <td *ngIf="i.Teacher">{{i.Teacher.FirstName}}</td>
+            <td *ngIf="i.Learner">{{i.Learner.FirstName}}</td>
+            <td>
+              <a (click)="remindModal(i)" class="mr-3" style="cursor:pointer;"><i class="fas fa-eye"></i></a>
+            </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class='col-12'>
+        <!--pagination is here-->
+        <ngb-pagination #pagination [collectionSize]='remindsListLengh' [(page)]='currentPage' [pageSize]='pageSize'
+          (click)='getCurrentPage()'>
+        </ngb-pagination>
+      </div>
+  </div>
+</div>
