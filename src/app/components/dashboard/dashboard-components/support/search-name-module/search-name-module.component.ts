@@ -111,8 +111,11 @@ export class SearchNameModuleComponent implements OnInit {
           // put learners information to service waiting for other component subscribe
           this.generalRepoService.fisrtName.next(this.learners);
           // change url
-          if (this.learners.length === 1 ){
-          this.onChangePath(this.learners.LearnerId);}
+          console.log(this.learners)
+          //why  this.learners.length === 1 ? but this.learners is a object
+          //if (this.learners.length === 1 ){
+          this.onChangePath(this.learners.LearnerId);
+          //}
         // }
       },
         (error) => {

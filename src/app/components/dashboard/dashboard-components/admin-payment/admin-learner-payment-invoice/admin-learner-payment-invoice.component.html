@@ -7,7 +7,7 @@
                 <div id="collapseInvoiceProduct">
                     <!-- tabset -->
                     <ngb-tabset *ngIf="(arrayInv.length > 1) && !noInvoice" (tabChange)="fetchNews($event)">
-                        <ngb-tab *ngFor="let item of dataInvoice; let j = index" [title]=j+1>
+                        <ngb-tab *ngFor="let item of dataInvoice; let j = index" [title]=j+1 [id]=j>
                               <ng-template ngbTabContent>
                                   <!-- invoice form in tabset -->
                                   <div class='row justify-content-between'>

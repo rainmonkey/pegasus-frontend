@@ -1,5 +1,5 @@
 export const environment = {
-  production: true,
+  production: false,
    baseUrl: 'http://45.76.123.59:5000/api/',
    photoUrl: 'http://gradspace.org:5000/',  
   // baseUrl: 'http://localhost:5000/api/',
