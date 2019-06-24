@@ -132,7 +132,12 @@
                       {{sechdule.BeginTime}} -- {{sechdule.EndTime}} </span>
                   </label>
                   <div *ngFor="let amendment of ele.Amendment">
-                    <small>这里是要写的字段</small>
+                    <small *ngIf="amendment.IsTemporary==0" class="text-secondary">
+                      The course begins at {{amendment.BeginTime}} from {{amendment.BeginDate| date:'yyyy-MM-dd'}}
+                    </small>
+                    <small *ngIf="amendment.IsTemporary==1" class="text-secondary">
+                      The course begins at {{amendment.BeginTime}} from {{amendment.BeginDate| date:'yyyy-MM-dd'}} to {{amendment.EndDate| date:'yyyy-MM-dd'}}
+                    </small>
                   </div>
                 </fieldset>
               </div>
