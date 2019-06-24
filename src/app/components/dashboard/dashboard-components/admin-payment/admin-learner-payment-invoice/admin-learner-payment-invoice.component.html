@@ -7,7 +7,7 @@
                 <div id="collapseInvoiceProduct">
                     <!-- tabset -->
                     <ngb-tabset *ngIf="(arrayInv.length > 1) && !noInvoice" (tabChange)="fetchNews($event)">
-                        <ngb-tab *ngFor="let item of dataInvoice; let j = index" [title]=j+1>
+                        <ngb-tab *ngFor="let item of dataInvoice; let j = index" [title]=j+1 [id]=j>
                               <ng-template ngbTabContent>
                                   <!-- invoice form in tabset -->
                                   <div class='row justify-content-between'>
@@ -16,8 +16,8 @@
                                           <h5>Invoice</h5>
                                           <p *ngIf="item.BeginDate !== 'none'">{{item.LessonQuantity}} Lessons of {{item.CourseName}} from the Date {{item.BeginDate|date}}</p>
                                           <p *ngIf="item.BeginDate === 'none'">{{item.LessonQuantity}} Lessons of {{item.CourseName}} from the Date: Not Available</p>
-                                          <p>{{item.ConcertFeeName}}</p>
-                                          <p>{{item.LessonNoteFeeName}}</p>
+                                          <p *ngIf="item.ConcertFee!=0">{{item.ConcertFeeName}}</p>
+                                          <p *ngIf="item.NoteFee!=0">{{item.LessonNoteFeeName}}</p>
 
                                           <p *ngIf="item.other1FeeName">{{item.Other1FeeName}}: ${{item.Other1Fee}}</p>
                                           <p *ngIf="item.other2FeeName">{{item.Other2FeeName}}: ${{item.Other2Fee}}</p>
@@ -49,8 +49,8 @@
                                           <p></p>
                                           <h6>Invoice No.{{item.InvoiceNum}}</h6>
                                           <p>${{item.LessonFee}}</p>
-                                          <p>${{item.ConcertFee}}</p>
-                                          <p>${{item.NoteFee}}</p>
+                                          <p *ngIf="item.ConcertFee!=0">${{item.ConcertFee}}</p>
+                                          <p *ngIf="item.NoteFee!=0">${{item.NoteFee}}</p>
                                           <p *ngIf="item.DueDate === 'none'">Due Date: Not available</p>
                                           <p *ngIf="item.DueDate !== 'none'">Due Date: {{item.DueDate|date:'medium'}}</p>
                                           <h6>All Subject in Total: ${{item.TotalFee}}</h6>
@@ -90,8 +90,8 @@
                                 <h5>Invoice</h5>
                                 <p *ngIf="item.BeginDate !== 'none'">{{item.LessonQuantity}} Lessons of {{item.CourseName}} from the Date {{item.BeginDate|date}}</p>
                                 <p *ngIf="item.BeginDate === 'none'">{{item.LessonQuantity}} Lessons of {{item.CourseName}} from the Date: Not Available</p>
-                                <p>{{item.ConcertFeeName}}</p>
-                                <p>{{item.LessonNoteFeeName}}</p>
+                                <p *ngIf="item.ConcertFee!=0">{{item.ConcertFeeName}}</p>
+                                <p *ngIf="item.NoteFee!=0">{{item.LessonNoteFeeName}}</p>
 
                                 <p *ngIf="item.other1FeeName">{{item.Other1FeeName}}: ${{item.Other1Fee}}</p>
                                 <p *ngIf="item.other2FeeName">{{item.Other2FeeName}}: ${{item.Other2Fee}}</p>
@@ -123,8 +123,8 @@
                             <div class="col-2">
                                 <h6>Invoice No.{{item.InvoiceNum}}</h6>
                                 <p>${{item.LessonFee}}</p>
-                                <p>${{item.ConcertFee}}</p>
-                                <p>${{item.NoteFee}}</p>
+                                <p *ngIf="item.ConcertFee!=0">${{item.ConcertFee}}</p>
+                                <p *ngIf="item.NoteFee!=0">${{item.NoteFee}}</p>
                                 <p *ngIf="item.DueDate === 'none'">Due Date: Not available</p>
                                 <p *ngIf="item.DueDate !== 'none'">Due Date: {{item.DueDate|date:'medium'}}</p>
                                 <h6>All Subject in Total: ${{item.TotalFee}}</h6>

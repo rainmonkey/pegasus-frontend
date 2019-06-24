@@ -131,6 +131,9 @@
                     <span class='text'> {{sechdule.DayOfWeek|weekFormat}}
                       {{sechdule.BeginTime}} -- {{sechdule.EndTime}} </span>
                   </label>
+                  <div *ngFor="let amendment of ele.Amendment">
+                    <small>这里是要写的字段</small>
+                  </div>
                 </fieldset>
               </div>
             </div>
