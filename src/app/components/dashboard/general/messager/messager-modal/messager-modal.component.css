@@ -1,9 +1,10 @@
 .m_m_skeleton{
-    width: 350px;
-    height: 750px;
+    width: 330px;
+    height: 650px;
     background: white;
     border:2px solid lightgrey;
     position: fixed;
+    z-index: 200;
     right: 1rem;
     bottom: 1rem;
 }
@@ -30,17 +31,17 @@
     color:rgb(236, 157, 157);
 }
 .m_m_subscribers{
-    height: 580px;
+    height: 480px;
     width: 100%;
     display: block;
 }
 .m_m_recently{
-    height: 580px;
+    height: 480px;
     width: 100%;
     display: none;
 }
 .m_m_chatting{
-    height: 680px;
+    height: 580px;
     width: 100%;
     display: none;
 }
