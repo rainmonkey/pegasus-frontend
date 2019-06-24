@@ -12,7 +12,7 @@ import { DeleteHolidayComponent } from '../delete-holiday/delete-holiday.compone
 import { preserveWhitespacesDefault } from '@angular/compiler';
 import { TestBed } from '@angular/core/testing';
 import { dateToLocalArray } from '@fullcalendar/core/datelib/marker';
-
+import * as moment from 'moment/moment.js'
 
 
 @Component({
@@ -83,14 +83,18 @@ export class HolidayCalendarComponent implements OnInit {
   test(info) {
     this.selectDate = []
     console.log(info)
-    const beginDate = info.start
-    const endDate = info.end
-    if (beginDate < endDate) {
-      beginDate.setDate(beginDate.getDate() + 1)
-      console.log(beginDate)
-      this.selectDate.push(beginDate)
-       console.log(this.selectDate)
+    let beginDate = info.start
+    const endDate = (info.end).setDate((info.end).getDate()-1)
+  //  while (moment(beginDate).isBefore(endDate))
+  for (beginDate; moment(beginDate).isBefore(endDate)||moment(beginDate).isSame(endDate);) {
+    console.log(beginDate)
+    this.selectDate.push(beginDate)
+    beginDate.setDate(beginDate.getDate() + 1)
+
+
     }
+
+    console.log(this.selectDate)
     return
   }
 

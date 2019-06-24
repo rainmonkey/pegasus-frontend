@@ -150,10 +150,10 @@
                 </div>
 
 
-                  <div *ngIf='groupCourse.GroupCourseInstance.Org' class="col-6">
-                    <span class="label">Location: </span>
-                    <span class='text'>{{groupCourse.GroupCourseInstance.Org.OrgName}}</span>
-                  </div>
+                <div *ngIf='groupCourse.GroupCourseInstance.Org' class="col-6">
+                  <span class="label">Location: </span>
+                  <span class='text'>{{groupCourse.GroupCourseInstance.Org.OrgName}}</span>
+                </div>
 
 
 
@@ -228,13 +228,35 @@
                   <span class='text'>{{ele.EndDate}}</span>
                 </div>
 
-                <div class="col-6">
-                  <span class="label">Course Sechdule: </span>
-                  <div *ngFor='let sechdule of ele.CourseSchedule'>
-                    <span class='text'> {{sechdule.DayOfWeek|weekFormat}}
-                      {{sechdule.BeginTime}} -- {{sechdule.EndTime}} </span>
+                <div *ngIf='ele.Amendment.length == 0'>
+                  <div class="col-12">
+                    <div *ngFor='let sechdule of ele.CourseSchedule'>
+                      <span class="label">Course Sechdule: </span>
+                      <span class='text'> {{sechdule.DayOfWeek|weekFormat}}
+                        {{sechdule.BeginTime}} -- {{sechdule.EndTime}} </span>
+                    </div>
                   </div>
                 </div>
+
+
+                <div *ngIf='ele.Amendment.length == 1'>
+                  <div class="col-12">
+                    <span class="label">Course Sechdule: </span>
+                    <div *ngFor='let sechdule of ele.CourseSchedule' class='text line-trough'>
+                      <span> {{sechdule.DayOfWeek|weekFormat}}</span> ==>
+                      <span> {{sechdule.BeginTime}}</span>
+                      -- <span>{{sechdule.EndTime}} </span>
+                    </div>
+                    Change to:
+                    <div *ngIf='amendmentList.IsTemporary == 0'>
+                      <span class='text'>{{amendmentList.DayOfWeek|weekFormat}}</span> ==>
+                      <span class='text'>{{amendmentList.BeginTime}}</span> --
+                       <span class='text'>{{amendmentList.EndTime}}</span>
+                    </div>
+                  </div>
+                </div>
+
+
               </div>
             </div>
           </div>

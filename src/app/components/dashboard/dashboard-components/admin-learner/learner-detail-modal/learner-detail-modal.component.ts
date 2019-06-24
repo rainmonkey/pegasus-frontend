@@ -8,7 +8,7 @@ import { environment } from 'src/environments/environment.prod';
   templateUrl: './learner-detail-modal.component.html',
   styleUrls: ['./learner-detail-modal.component.css']
 })
-export class LearnerDetailModalComponent implements OnInit{
+export class LearnerDetailModalComponent implements OnInit {
   @Input() command;
   @Input() whichLearner;
   // PropNameArray:Array<any>
@@ -23,13 +23,15 @@ export class LearnerDetailModalComponent implements OnInit{
   howKnowList = [];
   learnerLevelList = []
   othersmsg = '';
-  agreeFormMsg='';
+  agreeFormMsg = '';
   howKnow: any
   reasonList: any
   public photoUrl: any = environment.photoUrl;
   otherFileUrl = ''
-  agreeFileUrl=''
-  learnerList1:any
+  agreeFileUrl = ''
+  learnerList1: any
+  // amendment:number
+  amendmentList: any
   constructor(public activeModal: NgbActiveModal, private LearnerListService: LearnersService, ) {
 
   }
@@ -43,9 +45,11 @@ export class LearnerDetailModalComponent implements OnInit{
     this.getFormUrl()
     console.log(this.whichLearner)
     this.getData()
+    // this.getAmendentLength()
+    this.getLatAmendent()
   }
 
-  getData(){
+  getData() {
     this.LearnerListService.getLearnerList().subscribe(
       (res) => {
         console.log(res)
@@ -108,7 +112,6 @@ export class LearnerDetailModalComponent implements OnInit{
 
   getLearnerValue(displayData1) {
     displayData1.forEach(element => {
-      console.log(element)
       if (this.whichLearner.LearnerLevel == element['PropValue']) {
         this.learnerLevelList.push(element['PropName'])
       }
@@ -117,14 +120,13 @@ export class LearnerDetailModalComponent implements OnInit{
   }
 
   getPurposeValue(displayDatas) {
-    console.log(displayDatas)
     this.whichLearner.LearnerOthers.forEach(learnerOther => {
-      console.log(learnerOther)
+      // console.log(learnerOther)
       if (learnerOther.OthersType == "2") {
         displayDatas.forEach(displayData => {
-          console.log(displayData)
+          // console.log(displayData)
           if (learnerOther.OthersValue == displayData['PropValue']) {
-            console.log(displayData)
+            // console.log(displayData)
             this.otherValueList.push(displayData['PropName'])
           }
         })
@@ -151,13 +153,13 @@ export class LearnerDetailModalComponent implements OnInit{
   }
 
   getHowKnowValue(displayData) {
-    console.log(displayData)
+    // console.log(displayData)
     this.whichLearner.LearnerOthers.forEach(learnerOther => {
       if (learnerOther.OthersType == "3") {
         displayData.forEach(displayData => {
-          console.log(displayData)
+          // console.log(displayData)
           if (learnerOther.OthersValue == displayData['PropValue']) {
-            console.log(displayData)
+            // console.log(displayData)
             this.howKnowList.push(displayData['PropName'])
           }
         })
@@ -185,28 +187,50 @@ export class LearnerDetailModalComponent implements OnInit{
   }
 
   // other files
-  getOthersUrl(){
+  getOthersUrl() {
     console.log(this.whichLearner.OtherfileUrl)
-    if(this.whichLearner.OtherfileUrl !== null){
+    if (this.whichLearner.OtherfileUrl !== null) {
       this.othersmsg = 'Download Other Files'
-      return this.otherFileUrl=this.photoUrl + this.whichLearner.OtherfileUrl;
+      return this.otherFileUrl = this.photoUrl + this.whichLearner.OtherfileUrl;
     }
   }
 
-  clickOtherFileUrl(){
+  clickOtherFileUrl() {
     return window.open(this.otherFileUrl)
   }
 
   // agreeement Form
-  getFormUrl(){
-    if(this.whichLearner.FormUrl !== null){
+  getFormUrl() {
+    if (this.whichLearner.FormUrl !== null) {
       this.agreeFormMsg = 'Download Enrollment Agreement Form'
-      return this.agreeFileUrl=this.photoUrl + this.whichLearner.FormUrl;
+      return this.agreeFileUrl = this.photoUrl + this.whichLearner.FormUrl;
     }
   }
 
-  clickFormUrl(){
+  clickFormUrl() {
     return window.open(this.agreeFileUrl)
+  }
+
+  // getAmendentLength(){
+  //   for(let ele of this.whichLearner.One2oneCourseInstance){
+  //       this.amendment=ele.Amendment.length
+  //       console.log(this.amendment)
+  //   }
+  // }
+
+  getLatAmendent() {
+    for (let i of this.whichLearner.One2oneCourseInstance) {
+      if (i.Amendment.length == 1 ) {
+
+        this.amendmentList = i.Amendment[i.Amendment.length - 1]
+        console.log(this.amendmentList)
+        console.log(this.amendmentList.DayOfWeek)
+        console.log(this.amendmentList.BeginTime)
+        console.log(this.amendmentList.EndTime)
+
+    }
+  }
+    return
   }
 }
 
