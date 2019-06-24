@@ -1,17 +1,17 @@
 import { Component, OnInit } from '@angular/core';
 import { PickerModule } from '@ctrl/ngx-emoji-mart';
 import { EmojiModule } from '@ctrl/ngx-emoji-mart/ngx-emoji';
-
+import * as Emoji from 'node-emoji/'
 @Component({
   selector: 'app-messager-chatting',
   templateUrl: './messager-chatting.component.html',
   styleUrls: ['./messager-chatting.component.css',
               '../../../dashboard-components/teachers/teacher-panel/teacher-panel.component.css']})
 export class MessagerChattingComponent implements OnInit {
-
   constructor() { }
 
   ngOnInit() {
+
   }
 
   showEmojiPicker(){
@@ -29,9 +29,10 @@ export class MessagerChattingComponent implements OnInit {
     when user click emoji, add it to input area
   */
   clickEmoji(event){
-    console.log(event)
     let obj = document.getElementById('m_c_text_area');
-    obj['value'] +='<span>ssss</span>'
+ 
+    let emoji = Emoji.get(event.emoji.colons)
+    obj['value'] += emoji;
     console.log(obj['value'])
   }
 

@@ -11,7 +11,8 @@ export class MessagerModalComponent implements OnInit {
   public currentBtnIndex: number = 0;
   public personalLabelDisplayFlag: boolean = true;
   public preBtnSelectedObj:any = null;
-
+  
+  
   @Output() onCloseChattingModal = new EventEmitter();
   constructor() { }
 
@@ -19,6 +20,9 @@ export class MessagerModalComponent implements OnInit {
     this.preBtnSelectedObj = document.getElementById('initSelected');
   }
 
+  a(){
+    return {"height":"300px"}
+  }
   selectFunctionalBtn(selectId) {
     //如果点击的是当前页的btn 则不发生任何事情
     if (selectId == this.currentBtnIndex) {

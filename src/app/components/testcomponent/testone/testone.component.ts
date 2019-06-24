@@ -8,6 +8,7 @@ import { ChangePasswordModalComponent } from '../../dashboard/dashboard-componen
 import { environment } from 'src/environments/environment.prod';
 import { forkJoin } from 'rxjs';
 
+
 @Component({
   selector: 'app-testone',
   templateUrl: './testone.component.html',
@@ -31,6 +32,7 @@ export class TestoneComponent implements OnInit {
   ngOnInit() {
     this.poi = this.fb.group(this.formGroupAssemble());
     this.getoiois();
+
   
   }
 
