@@ -43,11 +43,12 @@ export class LearnersService {
     return this.http.delete(this.baseUrl + 'learner/' + LearnerId);
   }
 
-    //get learn form data
-    getLookups(typeId: number): Observable<any> {
-      return this.http.get(this.baseUrl + 'lookups/'+ typeId);
-    }
-  learnerDayOff(dayOffModel){
+  //get learn form data
+  getLookups(typeId: number): Observable<any> {
+    return this.http.get(this.baseUrl + 'lookups/' + typeId);
+  }
+
+  learnerDayOff(dayOffModel) {
     return this.http.post(this.baseUrl + 'LearnerDayOff', dayOffModel);
   }
 
@@ -58,11 +59,13 @@ export class LearnersService {
   PeriodCourseChange(model) {
     return this.http.post(this.baseUrl + 'PeriodCourseChange', model);
   }
+
   getRemainingCourses(LearnerId: number): Observable<any> {
     return this.http.get(this.baseUrl + "CourseRemaining/" + LearnerId)
   }
-  getArrangedLesson(LearnerId:number):Observable<any>{
-    return this.http.get(this.baseUrl+"Lesson/"+"GetArrangedLessonsByLearner/"+LearnerId)
+
+  getArrangedLesson(LearnerId: number): Observable<any> {
+    return this.http.get(this.baseUrl + "Lesson/" + "GetArrangedLessonsByLearner/" + LearnerId)
   }
 
   getTeachers() {

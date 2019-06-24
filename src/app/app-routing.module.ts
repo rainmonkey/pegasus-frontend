@@ -39,6 +39,7 @@ import { StaffListComponent } from './components/dashboard/dashboard-components/
 import { LearnerCreditPanelComponent } from "./components/dashboard/dashboard-components/learner-credit/learner-credit-panel/learner-credit-panel.component";
 import { LearnerCreditDetailsComponent } from "./components/dashboard/dashboard-components/learner-credit/learner-credit-details/learner-credit-details.component"
 import { HolidayCalendarComponent } from './components/dashboard/dashboard-components/admin-holidays/holiday-calendar/holiday-calendar.component';
+import { LearnerCreditArrangeComponent } from './components/dashboard/dashboard-components/learner-credit/learner-credit-arrange/learner-credit-arrange.component';
 
 
 const routes: Routes = [
@@ -116,14 +117,19 @@ const routes: Routes = [
         children: [
           {
             path: 'list', component: AdminLearnerListComponent,
-            children: [{path: 'success', component: AdminLearnerPaymentSuccessComponent}]
+            children: [{ path: 'success', component: AdminLearnerPaymentSuccessComponent }]
           },
           { path: 'registration/edit', component: LearnerRegistrationModalComponent },
           { path: 'registration', component: LearnerRegistrationFormComponent },
           { path: 'trial', component: TrialInfoComponent },
           {
-            path: "credit", component: LearnerCreditPanelComponent,
-            children: [{ path: ":id", component: LearnerCreditDetailsComponent }]
+            path: "credit", pathMatch: 'prefix', component: LearnerCreditPanelComponent,
+            children: [{
+              path: "arrange", component: TrialInfoComponent
+              //LearnerCreditArrangeComponent
+            }, {
+              path: ":id", component: LearnerCreditDetailsComponent
+            }]
           },
           { path: 'success', component: AdminLearnerPaymentSuccessComponent },
         ]
@@ -146,7 +152,7 @@ const routes: Routes = [
       { path: 'staff/list', component: StaffListComponent },
       // Below to be rearranged
       { path: 'time/picker', component: TimePickerComponent },
-      {path: 'holidays', component:HolidayCalendarComponent}
+      { path: 'holidays', component: HolidayCalendarComponent }
     ]
   },
   { path: 'login', component: LoginComponent },
