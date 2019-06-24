@@ -25,8 +25,8 @@
   <div class='m_c_chatting_panel'>
     aaa
     <!--emoji选择面板-->
-    <emoji-mart title="Pick your emoji…" (emojiSelect)='clickEmoji($event)' id='m_c_emoji_picker_panel'
-      [style]='{width:"100%"}'></emoji-mart>
+    <emoji-mart (emojiSelect)='clickEmoji($event)' id='m_c_emoji_picker_panel'
+      [style]='{width:"100%"}' isNative = true></emoji-mart>
   </div>
 
   <!--emoji框-->
@@ -34,11 +34,11 @@
     <ngx-emoji emoji='sunglasses' set='apple' size="25" class='m_c_emoji_picker' (click)='showEmojiPicker()'>
     </ngx-emoji>
   </div>
+  
 
   <!--输入框-->
   <div class='m_c_input_area'>
-    <!-- <textarea id='m_c_text_area'></textarea>   -->
-    <input type="textarea" id='m_c_text_area' />
+    <textarea id='m_c_text_area'></textarea>    
   </div>
 
 </div>

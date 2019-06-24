@@ -1,6 +1,9 @@
 <div class='m_m_skeleton' draggable="true">
   <!--header-->
   <div class='m_m_header'>
+    <span>
+      <span></span>
+    </span>
     chatting with...    
     <span class='m_m_header_close' (click)='closeChattingModal()'>
       <span class='fas fa-times'></span>
@@ -11,7 +14,7 @@
   <app-messager-personal-info *ngIf='personalLabelDisplayFlag'></app-messager-personal-info>
 
   <!--subscribers ui-->
-  <div class='m_m_subscribers' id='subscribers'>
+  <div class='m_m_subscribers' id='subscribers'> 
     <app-messager-subscribers (onChattingWith)='startChattingWith($event)'></app-messager-subscribers>
   </div>
 
