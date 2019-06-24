@@ -2,11 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { NgbootstraptableService } from 'src/app/services/others/ngbootstraptable.service';
 import { NgbModal, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { LearnersService } from 'src/app/services/http/learners.service';
-import {LearnerDeleteModalComponent } from '../learner-delete-modal/learner-delete-modal.component';
-import {LearnerDetailModalComponent } from '../learner-detail-modal/learner-detail-modal.component';
-import {LearnerEditModalComponent } from '../learner-edit-modal/learner-edit-modal.component';
-import {AdminLearnerLeaveComponent} from '../admin-learner-leave/admin-learner-leave.component';
-import {AdminLearnerPeriodCourseChangeModalComponent} from '../admin-learner-period-course-change-modal/admin-learner-period-course-change-modal.component';
+import { LearnerDeleteModalComponent } from '../learner-delete-modal/learner-delete-modal.component';
+import { LearnerDetailModalComponent } from '../learner-detail-modal/learner-detail-modal.component';
+import { LearnerEditModalComponent } from '../learner-edit-modal/learner-edit-modal.component';
+import { AdminLearnerLeaveComponent } from '../admin-learner-leave/admin-learner-leave.component';
+import { AdminLearnerPeriodCourseChangeModalComponent } from '../admin-learner-period-course-change-modal/admin-learner-period-course-change-modal.component';
 import { LearnerAddModalComponent } from '../learner-add-modal/learner-add-modal.component';
 import { LearnerDeleteCourseModalComponent } from '../learner-delete-course-modal/learner-delete-course-modal.component';
 @Component({
@@ -18,7 +18,7 @@ export class AdminLearnerListComponent implements OnInit {
   //what columns showed in the info page, can get from back-end in the future. must as same as database
   public columnsToShow: Array<string> = ['FirstName', 'LastName'];
 
-public columnsToShow1: Array<string> = ['ContactNum', 'Email'];
+  public columnsToShow1: Array<string> = ['ContactNum', 'Email'];
   //learners data from servers
   public learnerList: Array<any>;
 
@@ -55,8 +55,6 @@ public columnsToShow1: Array<string> = ['ContactNum', 'Email'];
   getDataFromServer() {
     this.LearnerListService.getLearnerList().subscribe(
       (res) => {
-        console.log('a')
-        console.log(res)
         //@ts-ignore
         this.learnerList = res.Data;
         //@ts-ignore
@@ -163,8 +161,8 @@ public columnsToShow1: Array<string> = ['ContactNum', 'Email'];
     }
   }
 
-  leaverModal(command, whichLearner){
-    const modalRef = this.modalService.open(AdminLearnerLeaveComponent,{size: 'lg'});
+  leaverModal(command, whichLearner) {
+    const modalRef = this.modalService.open(AdminLearnerLeaveComponent, { size: 'lg' });
     modalRef.componentInstance.learner = whichLearner;
     let that = this;
     modalRef.result.then(
@@ -175,12 +173,12 @@ public columnsToShow1: Array<string> = ['ContactNum', 'Email'];
         return
       }
     )
-   }
+  }
 
-   periodCourseChangeModal(cammand, whichlearner) {
-     const modalRef = this.modalService.open(AdminLearnerPeriodCourseChangeModalComponent, {size: 'lg'});
-     modalRef.componentInstance.learner = whichlearner;
-     let that = this;
+  periodCourseChangeModal(cammand, whichlearner) {
+    const modalRef = this.modalService.open(AdminLearnerPeriodCourseChangeModalComponent, { size: 'lg' });
+    modalRef.componentInstance.learner = whichlearner;
+    let that = this;
     modalRef.result.then(
       (res) => {
         that.ngOnInit()
@@ -189,7 +187,7 @@ public columnsToShow1: Array<string> = ['ContactNum', 'Email'];
         return
       }
     )
-   }
+  }
   /*
     delete modal
   */
@@ -258,52 +256,52 @@ public columnsToShow1: Array<string> = ['ContactNum', 'Email'];
     )
     modalRef.componentInstance.command = command;
     modalRef.componentInstance.whichLearner = whichLearner;
-    modalRef.componentInstance.signalForInit.subscribe(res=>{
+    modalRef.componentInstance.signalForInit.subscribe(res => {
       console.log('lyric')
-      if(res == true){
+      if (res == true) {
         console.log('lyric')
         that.ngOnInit();
       }
     })
     // console.log('jewoiajfoiwjfo',modalRef.componentInstance)
-  //   let that = this;
-  //   modalRef.result.then(
-  //     (res) => {
-  //       that.ngOnInit()
-  //   },
-  //   (err) =>{
-  //     return
-  //   }
-  // )
+    //   let that = this;
+    //   modalRef.result.then(
+    //     (res) => {
+    //       that.ngOnInit()
+    //   },
+    //   (err) =>{
+    //     return
+    //   }
+    // )
     // modalRef.componentInstance.toLearnerListEvent.subscribe(res=>{
     //   console.log(res)
     //   if (res == true){
     //   modalRef.componentInstance.toAddLearnerModal = true;}
-      // let that = this;
-      //   modalRef.result.then(
-      //     function () {
-      //       if (res == true) {
-      //         modalRef.componentInstance.toAddLearnerModal = true;
-      //         // that.activeModal.close('Cross click')
-      //       }
-      //     },
-      //     function () {
-      //       return;
-      //     })
-//     })
-}
-deleteCourseModal(whichLearner){
-  const modalRef = this.modalService.open(LearnerDeleteCourseModalComponent,{ windowClass: 'my-class',backdrop: 'static', keyboard: false  });
+    // let that = this;
+    //   modalRef.result.then(
+    //     function () {
+    //       if (res == true) {
+    //         modalRef.componentInstance.toAddLearnerModal = true;
+    //         // that.activeModal.close('Cross click')
+    //       }
+    //     },
+    //     function () {
+    //       return;
+    //     })
+    //     })
+  }
+  deleteCourseModal(whichLearner) {
+    const modalRef = this.modalService.open(LearnerDeleteCourseModalComponent, { windowClass: 'my-class', backdrop: 'static', keyboard: false });
 
-  let that = this;
-  modalRef.result.then(
-    (res) => {
+    let that = this;
+    modalRef.result.then(
+      (res) => {
         that.ngOnInit()
-    },
-    (err) =>{
-      return
-    }
-  )
-  modalRef.componentInstance.whichLearner = whichLearner;
-}
+      },
+      (err) => {
+        return
+      }
+    )
+    modalRef.componentInstance.whichLearner = whichLearner;
+  }
 }
