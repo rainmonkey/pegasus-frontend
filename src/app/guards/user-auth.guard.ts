@@ -16,7 +16,6 @@ export class UserAuthGuard implements CanActivate {
   canActivate(childRoute: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean | UrlTree | Observable<boolean | UrlTree> | Promise<boolean | UrlTree> {
     // throw new Error("Method not implemented.");
       let url: string = state.url;
-<<<<<<< HEAD
       let urlS = url.substring(1,url.length-0);
       return this.checkUser(urlS);
       // console.log(urlS);
@@ -46,9 +45,6 @@ export class UserAuthGuard implements CanActivate {
   checkUser(url){
     console.log(this.pathArray,url)
     if (this.authService.giveAuthToGuard(url) == true){
-=======
-      // console.log(url);
->>>>>>> 9ff365e02d8c793156760a94970e8bef7ff85533
       return true;
     }else{
     this.router.navigate(['/login'])
