@@ -10,7 +10,6 @@ import { NgbModule, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { FullCalendarModule } from 'ng-fullcalendar';
 import { ChartsModule } from 'ng2-charts';
 import { routing } from '../app/app-routing.module';
-import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 // Components
 import { AppComponent } from './app.component';
 import { FooterComponent } from './components/basic/footer/footer.component';
@@ -256,7 +255,6 @@ import { MessagerPersonalInfoComponent } from './components/dashboard/general/me
     FullCalendarModule,
     CommonModule,
     ChartsModule,
-    NgMultiSelectDropDownModule.forRoot(),
     MatSelectModule,
     PickerModule,
     EmojiModule

@@ -14,10 +14,10 @@ export class MessagerModalComponent implements OnInit {
   public userId = null;
   public bgUrl:string = null;
   public styleList:Array<object>=[
-                                  {url:'../../../../../../assets/images/shared/background01.jpg',background:'linear-gradient(135deg, grey, pink)'},
+                                  {url:'../../../../../../assets/images/shared/background01.jpg',background:'linear-gradient(135deg, pink, white)'},
                                   {url:'../../../../../../assets/images/shared/background02.jpg',background:'linear-gradient(135deg, purple, lightblue)'},
-                                  {url:'../../../../../../assets/images/shared/background03.jpg',background:'linear-gradient(135deg, lightblue, white)'},
-                                  {url:'../../../../../../assets/images/shared/background04.jpg',background:'linear-gradient(135deg, lightgrey, lightblue)'},
+                                  {url:'../../../../../../assets/images/shared/background03.jpg',background:'linear-gradient(135deg, lightgreen, lightblue)'},
+                                  {url:'../../../../../../assets/images/shared/background04.jpg',background:'linear-gradient(135deg, black, white)'},
                                   {url:'../../../../../../assets/images/shared/background05.jpg',background:'linear-gradient(135deg, red, lightblue)'},
                                   {url:'../../../../../../assets/images/shared/background06.jpg',background:'linear-gradient(135deg, lightblue, pink)'}];
 
