@@ -5,6 +5,8 @@ import { FormGroup, FormBuilder } from '@angular/forms';
 import { AuthenticationService } from 'src/app/services/auth/authentication.service';
 import { CoursesService } from 'src/app/services/http/courses.service';
 import { Remind } from '../../../../../models/remind';
+import Swal from 'sweetalert2';
+
 
 @Component({
   selector: 'app-remind-modal',

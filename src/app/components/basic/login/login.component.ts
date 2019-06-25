@@ -7,6 +7,7 @@ import { Title } from '@angular/platform-browser';
 import { MessagesLibrary } from 'src/app/shared/libraries/messages-library';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ForgotPasswordModalComponent } from '../forgot-password-modal/forgot-password-modal.component';
+import { GeneralRepoService } from '../../../services/repositories/general-repo.service';
 
 @Component({
   selector: 'app-login',
@@ -30,19 +31,20 @@ export class LoginComponent implements OnInit {
     private authenticationService: AuthenticationService,
     private messageService: MessagesLibrary,
     private modalService: NgbModal,
+    private generalRepoService: GeneralRepoService,
   ) {
-    
   }
 
   ngOnInit() {
   	this.titleService.setTitle('Login');
-
     this.loginForm = this.fb.group({
       username: ['', Validators.required],
       password: ['', Validators.required]
     });
     // get return url from route parameters or default to '/'
     this.returnUrl = this.route.snapshot.queryParams.returnUrl || '/home';
+
+
   }
 
   // convenience getter for easy access to form fields
@@ -57,7 +59,11 @@ export class LoginComponent implements OnInit {
     }
     this.loading = true;
     this.authenticationService.login(this.f.username.value, this.f.password.value).subscribe(
-      (data) => {this.onLoginSuccess()},
+      (data) => {
+        // this.getPath();
+        this.onLoginSuccess();
+        this.generalRepoService.pathAllowed();
+      },
       (err) => {
         this.loading = false,
         this.errorMessage = this.messageService.apiErrorMessageProcessing(err)
@@ -72,5 +78,14 @@ export class LoginComponent implements OnInit {
   forgotPassword(){
     const modalRef = this.modalService.open(ForgotPasswordModalComponent,{size:'lg'})
   }
-
+  // GET ROLE ID AND PATH
+  // getPath(){
+  //   let userState = localStorage.getItem('Role');
+  //   this.generalRepoService.getPathById(userState).subscribe(
+  //   res=>{
+  //      let pathAllowedTemp = res.Data;
+  //      let pathArray = pathAllowedTemp.map(ele=>ele.Url);
+  //      this.generalRepoService.pathArraySubject.next(pathArray);
+  //     })
+  // }
 }

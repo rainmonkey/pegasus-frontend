@@ -47,71 +47,71 @@ import { LearnerCreditArrangeComponent } from './components/dashboard/dashboard-
 
 const routes: Routes = [
   {
-    path: '', component: DashboardPanelComponent, canActivate: [DashboardRestrictGuard], canActivateChild: [UserAuthGuard],
+    path: '', component: DashboardPanelComponent, canActivate: [DashboardRestrictGuard],
     children: [
       { path: 'home', component: DashboardHomeComponent },
       // Testing path
       { path: 'testone', component: TestoneComponent },
       // Payment Area
       {
-        path: 'payment/invoice', pathMatch: 'prefix', component: AdminLearnerPaymentPanelComponent,
+        path: 'payment/invoice', pathMatch: 'prefix', component: AdminLearnerPaymentPanelComponent, canActivate: [UserAuthGuard],
         children: [
-          { path: ':id', component: AdminLearnerPaymentInvoiceComponent },
-          { path: 'success', component: AdminLearnerPaymentSuccessComponent },
+          { path: ':id', component: AdminLearnerPaymentInvoiceComponent, },
+          { path: 'success', component: AdminLearnerPaymentSuccessComponent, },
         ]
       },
       {
-        path: 'payment/product', pathMatch: 'prefix', component: AdminLearnerPaymentPanelComponent,
+        path: 'payment/product', pathMatch: 'prefix', component: AdminLearnerPaymentPanelComponent, canActivate: [UserAuthGuard],
         children: [
-          { path: 'success', component: AdminLearnerPaymentSuccessComponent },
-          { path: ':id', component: AdminLearnerPaymentProductsComponent },
+          { path: 'success', component: AdminLearnerPaymentSuccessComponent, },
+          { path: ':id', component: AdminLearnerPaymentProductsComponent, },
         ]
       },
       {
-        path: 'payment/registration', pathMatch: 'prefix', component: AdminLearnerPaymentPanelComponent,
+        path: 'payment/registration', pathMatch: 'prefix', component: AdminLearnerPaymentPanelComponent,canActivate: [UserAuthGuard],
         children: [
-          { path: 'success', component: AdminLearnerPaymentSuccessComponent },
-          { path: ':id', component: AdminLearnerPaymentRegistrationComponent },
+          { path: 'success', component: AdminLearnerPaymentSuccessComponent, },
+          { path: ':id', component: AdminLearnerPaymentRegistrationComponent, },
         ]
       },
       {
-        path: 'payment/other', pathMatch: 'prefix', component: AdminLearnerPaymentOtherComponent,
+        path: 'payment/other', pathMatch: 'prefix', component: AdminLearnerPaymentOtherComponent, canActivate: [UserAuthGuard],
         children: [
-          { path: 'success', component: AdminLearnerPaymentSuccessComponent },
+          { path: 'success', component: AdminLearnerPaymentSuccessComponent, },
         ]
       },
       // Transaction Area
       {
         path: 'transaction', component: TransactionsPanelComponent,
         children: [
-          { path: 'invoices', component: AdminInvoiceListComponent },
-          { path: 'success', component: AdminLearnerPaymentSuccessComponent },
-          { path: 'payments', component: AdminPaymentListComponent },
-          { path: 'sales', component: AdminSalesListComponent }
+          { path: 'invoices', component: AdminInvoiceListComponent, canActivate: [UserAuthGuard], },
+          { path: 'success', component: AdminLearnerPaymentSuccessComponent, canActivate: [UserAuthGuard], },
+          { path: 'payments', component: AdminPaymentListComponent, canActivate: [UserAuthGuard], },
+          { path: 'sales', component: AdminSalesListComponent, canActivate: [UserAuthGuard], }
         ]
       },
       // Teacher Area
       {
         path: 'tutors', component: TeacherPanelComponent,
         children: [
-          { path: 'list', component: TeacherInfoComponent }
+          { path: 'list', component: TeacherInfoComponent, canActivate: [UserAuthGuard], }
         ]
       },
       // Sessions Area
       {
         path: 'sessions', component: SessionsPanelComponent,
         children: [
-          { path: 'list', component: SessionsListViewComponent },
-          { path: 'calendar/admin', component: SessionsCalendarViewAdminComponent },
-          { path: 'calendar/tutor', component: SessionsCalendarViewTutorComponent }
+          { path: 'list', component: SessionsListViewComponent, canActivate: [UserAuthGuard], },
+          { path: 'calendar/admin', component: SessionsCalendarViewAdminComponent, canActivate: [UserAuthGuard], },
+          { path: 'calendar/tutor', component: SessionsCalendarViewTutorComponent, canActivate: [UserAuthGuard], }
         ]
       },
       // Courses Area
       {
         path: 'courses', component: CoursesPanelComponent,
         children: [
-          { path: 'list', component: CoursesListComponent },
-          { path: 'class/list', component: CourseClassListComponent }
+          { path: 'list', component: CoursesListComponent, canActivate: [UserAuthGuard], },
+          { path: 'class/list', component: CourseClassListComponent, }
         ]
       },
       // Learner Area
@@ -119,14 +119,14 @@ const routes: Routes = [
         path: 'learner', component: AdminLearnerPanelComponent,
         children: [
           {
-            path: 'list', component: AdminLearnerListComponent,
-            children: [{ path: 'success', component: AdminLearnerPaymentSuccessComponent }]
+            path: 'list', component: AdminLearnerListComponent, canActivate: [UserAuthGuard],
+            children: [{path: 'success', component: AdminLearnerPaymentSuccessComponent, }]
           },
-          { path: 'registration/edit', component: LearnerRegistrationModalComponent },
-          { path: 'registration', component: LearnerRegistrationFormComponent },
-          { path: 'trial', component: TrialInfoComponent },
+          { path: 'registration/edit', component: LearnerRegistrationModalComponent, },
+          { path: 'registration', component: LearnerRegistrationFormComponent, canActivate: [UserAuthGuard], },
+          { path: 'trial', component: TrialInfoComponent, },
           {
-            path: "credit", pathMatch: 'prefix', component: LearnerCreditPanelComponent,
+            path: "credit", pathMatch: 'prefix', component: LearnerCreditPanelComponent, canActivate: [UserAuthGuard],
             children: [{
               path: "arrange", component: TrialInfoComponent
               //LearnerCreditArrangeComponent

@@ -37,7 +37,7 @@ export class AuthenticationService {
 
 
     // login response
-    login(username: string, password: string): Observable<any> {
+     login(username: string, password: string): Observable<any> {
         return this.http.post<any>(this.baseUrl + 'login', { username, password })
         .pipe(map(res => {
             // login successful if there's a jwt token in the response

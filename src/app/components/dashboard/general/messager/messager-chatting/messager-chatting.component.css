@@ -36,6 +36,7 @@
     height:380px;
     width: 100%;
     border-bottom: 1px solid rgb(223, 220, 220);
+    position: relative;
 }
 .m_c_emoji_panel{
     height: 25px;
@@ -69,6 +70,9 @@
 }
 #m_c_emoji_picker_panel{
     display: none;
+    position: absolute;
+    bottom: 0;
+    z-index: 100;
 }
 
 .m_c_start_chatting{
@@ -83,3 +87,36 @@
     cursor: pointer;
 }
 
+.m_c_chatting_messagers{
+    margin: 0 5px;
+    margin-top: 10px;
+
+}
+.m_c_chatting_messagers img{
+    height: 40px;
+    width: 40px;
+    border-radius: 50%;
+}
+.m_c_chatting_text{
+    color:#5d5d5a;
+    word-break:break-all;
+    border-radius:4px;
+    padding: 0 5px;
+    max-width:200px;
+    margin:0 5px;
+}
+.m_c_chatting_text_left{
+    text-align: left;
+    border:1px solid lightgray;
+}
+.m_c_chatting_text_right{
+    text-align: right;
+    border: 1px solid rgb(99, 168, 99);
+    background: #9ee84d;
+}
+.m_c_chatting_messagers_left{
+    float: left;
+}
+.m_c_chatting_messagers_right{
+    float: right;
+}

@@ -136,6 +136,8 @@
         <button class=' btn btn-outline-primary' (click)="chooseCustomCourse()">One-on-One Course</button>
       </div>
 
+      <!-- Group Course -->
+
       <div *ngIf='isGroupCourse'>
         <div *ngFor='let groupCourse of whichLearner.LearnerGroupCourse '>
           <br>
@@ -147,10 +149,13 @@
                   <span class='text'>{{groupCourse.GroupCourseInstance.Course.CourseName}}</span>
                 </div>
 
+
                 <div *ngIf='groupCourse.GroupCourseInstance.Org' class="col-6">
                   <span class="label">Location: </span>
                   <span class='text'>{{groupCourse.GroupCourseInstance.Org.OrgName}}</span>
                 </div>
+
+
 
                 <div class="col-6">
                   <div>
@@ -180,6 +185,8 @@
           </div>
         </div>
       </div>
+
+
 
       <!-- one2one Course -->
       <div *ngIf='isCustomCourse'>
@@ -221,13 +228,35 @@
                   <span class='text'>{{ele.EndDate}}</span>
                 </div>
 
-                <div class="col-6">
-                  <span class="label">Course Sechdule: </span>
-                  <div *ngFor='let sechdule of ele.CourseSchedule'>
-                    <span class='text'> {{sechdule.DayOfWeek|weekFormat}}
-                      {{sechdule.BeginTime}} -- {{sechdule.EndTime}} </span>
+                <div *ngIf='ele.Amendment.length == 0'>
+                  <div class="col-12">
+                    <div *ngFor='let sechdule of ele.CourseSchedule'>
+                      <span class="label">Course Sechdule: </span>
+                      <span class='text'> {{sechdule.DayOfWeek|weekFormat}}
+                        {{sechdule.BeginTime}} -- {{sechdule.EndTime}} </span>
+                    </div>
                   </div>
                 </div>
+
+
+                <div *ngIf='ele.Amendment.length == 1'>
+                  <div class="col-12">
+                    <span class="label">Course Sechdule: </span>
+                    <div *ngFor='let sechdule of ele.CourseSchedule' class='text line-trough'>
+                      <span> {{sechdule.DayOfWeek|weekFormat}}</span> ==>
+                      <span> {{sechdule.BeginTime}}</span>
+                      -- <span>{{sechdule.EndTime}} </span>
+                    </div>
+                    Change to:
+                    <div >
+                      <span class='text'>{{ele.permanent.DayOfWeek|weekFormat}}</span> ==>
+                      <span class='text'>{{ele.permanent.BeginTime}}</span> --
+                      <span class='text'>{{ele.permanent.EndTime}}</span>
+                    </div>
+                  </div>
+                </div>
+
+
               </div>
             </div>
           </div>

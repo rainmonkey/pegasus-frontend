@@ -4,7 +4,7 @@ import { NgbModal, NgbModalRef, NgbPagination } from '@ng-bootstrap/ng-bootstrap
 import { RemindModalComponent } from '../../remind/remind-modal/remind-modal.component';
 import { CoursesService } from 'src/app/services/http/courses.service';
 import { DatePipe } from '@angular/common';
-
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-remind-list',
@@ -19,10 +19,11 @@ export class RemindListComponent implements OnInit {
   public remindsListLengh:number;
  // Pagination
   public currentPage:number = 1;
-  public pageSize:number = 10;
+  public pageSize:number = 20;
 // Search
-  public searchBeginDate;
-  public searchEndDate;
+  public searchBeginDate = this.datePipe.
+  transform(new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate() - 1), 'yyyy-MM-dd');
+  public  searchEndDate = this.datePipe.transform(new Date(), 'yyyy-MM-dd');
 
   public isloading = false;
   public detail:Array<string> = [
@@ -60,19 +61,20 @@ export class RemindListComponent implements OnInit {
         console.log(this.remindsListLengh);
       },
       (err) => {
-        alert('Sorry, there\'s something wrong with server.')
         console.log(err);
-        this.isloading = false;
+        Swal.fire({
+          title: 'Error!',
+          text: 'Sorry! ',
+          type: 'error',
+        });
       });
   }
 
 
   search() {
     // console.warn('asdfasdf')
-    const beginDate = this.searchBeginDate == null ? alert('Please enter begin date') :
-      this.datePipe.transform(this.searchBeginDate, 'yyyy-MM-dd');
-    const endDate = this.searchEndDate == null ? alert('Please enter end date') :
-      this.datePipe.transform(this.searchEndDate, 'yyyy-MM-dd');
+    var beginDate = this.searchBeginDate;
+    var endDate = this.searchEndDate;
     this.getRemindData(beginDate, endDate);
   }
  
