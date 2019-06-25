@@ -1,0 +1,22 @@
+.tl_dm_btn {
+  background: white;
+  border: 1px solid black;
+  color: black;
+}
+
+.tl_dm_btn:hover {
+  background: #343A40;
+  border: 1px solid #343a40;
+  color: white;
+}
+
+.reimg {
+  text-align: center;
+  background-size: contain;
+}
+
+.loaderLarge {
+  position: fixed;
+  top: 40%;
+  left: 50%;
+}

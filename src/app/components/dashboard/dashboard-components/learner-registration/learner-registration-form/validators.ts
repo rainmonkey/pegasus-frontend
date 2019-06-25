@@ -1,7 +1,6 @@
 import { AbstractControl } from '@angular/forms';
 
 export function ngtimepickerValidator(control: AbstractControl) {
-  console.log('hahaha',control.value)
   if (control && (control.value !=null || control.value != undefined)) {
     const minute = [0, 15, 30, 45];
     const hour = Number(control.value.hour);

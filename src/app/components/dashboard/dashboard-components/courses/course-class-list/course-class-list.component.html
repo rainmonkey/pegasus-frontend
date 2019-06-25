@@ -1,90 +1,98 @@
-<div class='container tl_body'>
-  <div class='row'>
-    <!--body head-->
-    <div class="col-12 row">
-      <!--body tittle-->
+<div *ngIf='loadingFlag'>
+  <div class="loaderLarge"></div>
+</div>
+<div *ngIf='!loadingFlag'>
+  <div class='container tl_body'>
+    <div class='row'>
+      <!--body head-->
       <div class='col-12 t_info_title'>
         Classes Info
       </div>
       <!--body search-->
-      <div class="col-12">
-        <div class='t_info_search'>
-          <input id='searchingInput' type="text" placeholder="Search by Course" (keydown)='onSearch($event)'>
-        </div>
-        <div class='t_info_search_by'>
-          <span (click)="onSearch(null)">
-            <span class='fas fa-search'></span>
-          </span>
+      <div class="col-12 row">
+        <div class="col-6">
+          <div class='t_info_search_bar'>
+            <input id='searchingInput' type="text" placeholder="Search by Course" (keydown)='onSearch($event)'>
+          </div>
+          <div class='t_info_search_icon'>
+            <span (click)="onSearch(null)">
+              <i class='fas fa-search'></i>
+            </span>
+          </div>
         </div>
         <!--add more btn-->
-        <span class='btn btn-info t_info_addnew_btn' (click)="detailModal(0, null)">+ Add More</span>
+        <div class="col-6">
+          <span class='btn btn-info t_info_addmore_btn' (click)="detailModal(0, null)">+ Add More</span>
+        </div>
       </div>
-    </div>
-    <br>
-    <!--Error Message-->
-    <div style="margin-left: auto;margin-right: auto;" *ngIf="errorMessage" class="text-danger">{{errorMessage}}<br>
-    </div>
+      <!--Error Message-->
+      <div class="col-12" style="margin-left: auto;margin-right: auto;" *ngIf="errorMessage" class="text-danger">
+        {{errorMessage}}<br>
+      </div>
+      <!--info page table-->
+      <div class='col-12'>
+        <table class='table table-striped' style="text-align: center;">
+          <!--table header-->
+          <thead>
+            <tr>
+              <th scope='col' class='tl_body_table_head' style="width:1rem;">#</th>
+              <th scope='col' class='tl_body_table_head sorting_item' style="width:16rem;"
+                (click)='onSort("CourseName")'>
+                Course Name</th>
+              <th scope='col' class='tl_body_table_head sorting_item' style="width:8rem;"
+                (click)='onSort("TeacherName")'>
+                Tutor</th>
+              <!--sort-->
+              <th scope='col' class='tl_body_table_head sorting_item' style="width:9rem;" (click)='onSort("BeginDate")'>
+                Start & End Dates</th>
+              <th scope='col' class='tl_body_table_head sorting_item' style="width:6rem;" (click)='onSort("OrgName")'>
+                Location</th>
+              <th scope='col' class='tl_body_table_head sorting_item' style="width:4rem;" (click)='onSort("RoomName")'>
+                Room</th>
+              <!--sort-->
+              <th scope='col' class='tl_body_table_head' style="width:7rem;">
+                Time</th>
+              <th scope='col' class='tl_body_table_head' style="width:7rem;">Edit & Delete</th>
+            </tr>
+          </thead>
+          <!--table body-->
+          <tbody>
+            <!--pagination is here-->
+            <tr
+              *ngFor='let i of courseClassLists | slice: (page-1)* pageSize : (page-1) * pageSize + pageSize; let j = index'>
+              <th scope="row">{{j+1}}</th>
+              <td>
+                <ngb-highlight [result]="i.CourseName" [term]="filter.value"></ngb-highlight>
+              </td>
+              <td>{{i.TeacherName}}</td>
+              <td>{{i.BeginDate | date:'shortDate'}} - {{i.EndDate | date:'shortDate'}}</td>
+              <td>{{i.OrgName}}</td>
+              <td>{{i.RoomName}}</td>
+              <td>
+                <span *ngFor="let k of i.schedule;">
+                  <span>{{k.DayOfWeek | weekFormat}}</span><br>
+                  <span>{{k.BeginTime | slice:0:5}} - {{k.EndTime | slice:0:5}}</span><br>
+                </span>
+              </td>
+              <td>
+                <span (click)='detailModal(2,i)' class='tl_body_table_btn' style="margin-right: 2rem;">
+                  <i class='fas  fa-pen'></i>
+                </span>
+                <span (click)='deleteModal(4, i)' class='tl_body_table_btn'>
+                  <i class='fas fa-trash-alt'></i>
+                </span>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
 
-    <!--info page table-->
-    <div class='col-12'>
-      <table class='table table-striped' style="text-align: center;">
-        <!--table header-->
-        <thead>
-          <tr>
-            <th scope='col' class='tl_body_table_head' style="width:1rem;">#</th>
-            <th scope='col' class='tl_body_table_head sorting_item' style="width:16rem;" (click)='onSort("CourseName")'>
-              Course Name</th>
-            <th scope='col' class='tl_body_table_head sorting_item' style="width:8rem;" (click)='onSort("TeacherName")'>
-              Tutor</th>
-            <!--sort-->
-            <th scope='col' class='tl_body_table_head sorting_item' style="width:9rem;" (click)='onSort("BeginDate")'>
-              Start & End Dates</th>
-            <th scope='col' class='tl_body_table_head sorting_item' style="width:6rem;" (click)='onSort("OrgName")'>
-              Location</th>
-            <th scope='col' class='tl_body_table_head sorting_item' style="width:4rem;" (click)='onSort("RoomName")'>
-              Room</th>
-            <!--sort-->
-            <th scope='col' class='tl_body_table_head' style="width:7rem;">
-              Time</th>
-            <th scope='col' class='tl_body_table_head' style="width:7rem;">Edit & Delete</th>
-          </tr>
-        </thead>
-        <!--table body-->
-        <tbody>
-          <!--pagination is here-->
-          <tr
-            *ngFor='let i of courseClassLists | slice: (page-1)* pageSize : (page-1) * pageSize + pageSize; let j = index'>
-            <th scope="row">{{j+1}}</th>
-            <td>
-              <ngb-highlight [result]="i.CourseName" [term]="filter.value"></ngb-highlight>
-            </td>
-            <td>{{i.TeacherName}}</td>
-            <td>{{i.BeginDate | date:'shortDate'}} - {{i.EndDate | date:'shortDate'}}</td>
-            <td>{{i.OrgName}}</td>
-            <td>{{i.RoomName}}</td>
-            <td>
-              <span *ngFor="let k of i.schedule;">     
-                <span>{{k.DayOfWeek | weekFormat}}</span><br>        
-                <span>{{k.BeginTime | slice:0:5}} - {{k.EndTime | slice:0:5}}</span><br>
-              </span>
-            </td>
-            <td class='tl_body_table_btns'>
-              <span (click)='detailModal(2,i)' class='tl_body_table_btn' style="margin-right: 2rem;">
-                <i class='fas  fa-pen'></i>
-              </span>
-              <span (click)='deleteModal(4, i)' class='tl_body_table_btn'>
-                <i class='fas fa-trash-alt'></i>
-              </span>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
+      <!--info page pagination-->
+      <div class='col-12'>
+        <ngb-pagination [collectionSize]='coursesClassListLength' [(page)]='page' [pageSize]='pageSize'>
+        </ngb-pagination>
+      </div>
 
-    <!--info page pagination-->
-    <div class='col-12'>
-      <ngb-pagination [collectionSize]='coursesClassListLength' [(page)]='page' [pageSize]='pageSize'></ngb-pagination>
     </div>
-
   </div>
 </div>

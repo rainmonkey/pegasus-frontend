@@ -1,5 +1,6 @@
 import { Routes, RouterModule } from '@angular/router';
 import { DashboardRestrictGuard } from './guards/dashboard-restrict.guard';
+import { UserAuthGuard } from './guards/user-auth.guard';
 
 import { LoginComponent } from './components/basic/login/login.component';
 import { DashboardPanelComponent } from './components/dashboard/general/dashboard-panel/dashboard-panel.component';
@@ -34,9 +35,14 @@ import { TestoneComponent } from './components/testcomponent/testone/testone.com
 import { CourseClassListComponent } from './components/dashboard/dashboard-components/courses/course-class-list/course-class-list.component';
 import { DashboardHomeComponent } from './components/dashboard/dashboard-components/dashboard-home/dashboard-home.component';
 import { TrialInfoComponent } from './components/dashboard/dashboard-components/trial-session/trial-info/trial-info.component';
+import { RemindListComponent } from './components/dashboard/dashboard-components/remind/remind-list/remind-list.component';
+import { RemindPanelComponent } from './components/dashboard/dashboard-components/remind/remind-panel/remind-panel.component';
+
 import { StaffListComponent } from './components/dashboard/dashboard-components/admin-staff/Staff-list/Staff-list.component';
 import { LearnerCreditPanelComponent } from "./components/dashboard/dashboard-components/learner-credit/learner-credit-panel/learner-credit-panel.component";
 import { LearnerCreditDetailsComponent } from "./components/dashboard/dashboard-components/learner-credit/learner-credit-details/learner-credit-details.component"
+import { HolidayCalendarComponent } from './components/dashboard/dashboard-components/admin-holidays/holiday-calendar/holiday-calendar.component';
+import { LearnerCreditArrangeComponent } from './components/dashboard/dashboard-components/learner-credit/learner-credit-arrange/learner-credit-arrange.component';
 
 
 const routes: Routes = [
@@ -48,64 +54,64 @@ const routes: Routes = [
       { path: 'testone', component: TestoneComponent },
       // Payment Area
       {
-        path: 'payment/invoice', pathMatch: 'prefix', component: AdminLearnerPaymentPanelComponent,
+        path: 'payment/invoice', pathMatch: 'prefix', component: AdminLearnerPaymentPanelComponent, canActivate: [UserAuthGuard],
         children: [
-          { path: ':id', component: AdminLearnerPaymentInvoiceComponent },
-          { path: 'success', component: AdminLearnerPaymentSuccessComponent },
+          { path: ':id', component: AdminLearnerPaymentInvoiceComponent, },
+          { path: 'success', component: AdminLearnerPaymentSuccessComponent, },
         ]
       },
       {
-        path: 'payment/product', pathMatch: 'prefix', component: AdminLearnerPaymentPanelComponent,
+        path: 'payment/product', pathMatch: 'prefix', component: AdminLearnerPaymentPanelComponent, canActivate: [UserAuthGuard],
         children: [
-          { path: 'success', component: AdminLearnerPaymentSuccessComponent },
-          { path: ':id', component: AdminLearnerPaymentProductsComponent },
+          { path: 'success', component: AdminLearnerPaymentSuccessComponent, },
+          { path: ':id', component: AdminLearnerPaymentProductsComponent, },
         ]
       },
       {
-        path: 'payment/registration', pathMatch: 'prefix', component: AdminLearnerPaymentPanelComponent,
+        path: 'payment/registration', pathMatch: 'prefix', component: AdminLearnerPaymentPanelComponent,canActivate: [UserAuthGuard],
         children: [
-          { path: 'success', component: AdminLearnerPaymentSuccessComponent },
-          { path: ':id', component: AdminLearnerPaymentRegistrationComponent },
+          { path: 'success', component: AdminLearnerPaymentSuccessComponent, },
+          { path: ':id', component: AdminLearnerPaymentRegistrationComponent, },
         ]
       },
       {
-        path: 'payment/other', pathMatch: 'prefix', component: AdminLearnerPaymentOtherComponent,
+        path: 'payment/other', pathMatch: 'prefix', component: AdminLearnerPaymentOtherComponent, canActivate: [UserAuthGuard],
         children: [
-          { path: 'success', component: AdminLearnerPaymentSuccessComponent },
+          { path: 'success', component: AdminLearnerPaymentSuccessComponent, },
         ]
       },
       // Transaction Area
       {
         path: 'transaction', component: TransactionsPanelComponent,
         children: [
-          { path: 'invoices', component: AdminInvoiceListComponent },
-          { path: 'success', component: AdminLearnerPaymentSuccessComponent },
-          { path: 'payments', component: AdminPaymentListComponent },
-          { path: 'sales', component: AdminSalesListComponent }
+          { path: 'invoices', component: AdminInvoiceListComponent, canActivate: [UserAuthGuard], },
+          { path: 'success', component: AdminLearnerPaymentSuccessComponent, canActivate: [UserAuthGuard], },
+          { path: 'payments', component: AdminPaymentListComponent, canActivate: [UserAuthGuard], },
+          { path: 'sales', component: AdminSalesListComponent, canActivate: [UserAuthGuard], }
         ]
       },
       // Teacher Area
       {
         path: 'tutors', component: TeacherPanelComponent,
         children: [
-          { path: 'list', component: TeacherInfoComponent }
+          { path: 'list', component: TeacherInfoComponent, canActivate: [UserAuthGuard], }
         ]
       },
       // Sessions Area
       {
         path: 'sessions', component: SessionsPanelComponent,
         children: [
-          { path: 'list', component: SessionsListViewComponent },
-          { path: 'calendar/admin', component: SessionsCalendarViewAdminComponent },
-          { path: 'calendar/tutor', component: SessionsCalendarViewTutorComponent }
+          { path: 'list', component: SessionsListViewComponent, canActivate: [UserAuthGuard], },
+          { path: 'calendar/admin', component: SessionsCalendarViewAdminComponent, canActivate: [UserAuthGuard], },
+          { path: 'calendar/tutor', component: SessionsCalendarViewTutorComponent, canActivate: [UserAuthGuard], }
         ]
       },
       // Courses Area
       {
         path: 'courses', component: CoursesPanelComponent,
         children: [
-          { path: 'list', component: CoursesListComponent },
-          { path: 'class/list', component: CourseClassListComponent }
+          { path: 'list', component: CoursesListComponent, canActivate: [UserAuthGuard], },
+          { path: 'class/list', component: CourseClassListComponent, }
         ]
       },
       // Learner Area
@@ -113,15 +119,20 @@ const routes: Routes = [
         path: 'learner', component: AdminLearnerPanelComponent,
         children: [
           {
-            path: 'list', component: AdminLearnerListComponent,
-            children: [{path: 'success', component: AdminLearnerPaymentSuccessComponent}]
+            path: 'list', component: AdminLearnerListComponent, canActivate: [UserAuthGuard],
+            children: [{path: 'success', component: AdminLearnerPaymentSuccessComponent, }]
           },
-          { path: 'registration/edit', component: LearnerRegistrationModalComponent },
-          { path: 'registration', component: LearnerRegistrationFormComponent },
-          { path: 'trial', component: TrialInfoComponent },
+          { path: 'registration/edit', component: LearnerRegistrationModalComponent, },
+          { path: 'registration', component: LearnerRegistrationFormComponent, canActivate: [UserAuthGuard], },
+          { path: 'trial', component: TrialInfoComponent, },
           {
-            path: "credit", component: LearnerCreditPanelComponent,
-            children: [{ path: ":id", component: LearnerCreditDetailsComponent }]
+            path: "credit", pathMatch: 'prefix', component: LearnerCreditPanelComponent, canActivate: [UserAuthGuard],
+            children: [{
+              path: "arrange", component: TrialInfoComponent
+              //LearnerCreditArrangeComponent
+            }, {
+              path: ":id", component: LearnerCreditDetailsComponent
+            }]
           },
           { path: 'success', component: AdminLearnerPaymentSuccessComponent },
         ]
@@ -140,10 +151,18 @@ const routes: Routes = [
           { path: 'list', component: PayrollListComponent }
         ]
       },
+      // Remind Area
+      {
+        path: 'remind', component: RemindPanelComponent,
+        children:[
+          {path:'list', component:RemindListComponent}
+        ]
+      },
       //Staff Area
       { path: 'staff/list', component: StaffListComponent },
       // Below to be rearranged
       { path: 'time/picker', component: TimePickerComponent },
+      { path: 'holidays', component: HolidayCalendarComponent }
     ]
   },
   { path: 'login', component: LoginComponent },

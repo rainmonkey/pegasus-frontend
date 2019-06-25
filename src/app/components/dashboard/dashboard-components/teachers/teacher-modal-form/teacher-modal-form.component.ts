@@ -67,7 +67,7 @@ export class TeacherModalFormComponent implements OnInit {
 
       this.getDropdownOptions();
       this.getTeacherLevel();
-    this.getInitTextAreaLength()
+    this.getInitTextAreaLength();
   }
   ngAfterViewInit(){
     this.loadingFlag = false;
@@ -293,7 +293,7 @@ export class TeacherModalFormComponent implements OnInit {
   }
 
   getOthersUrl(){
-    console.log(this.whichTeacher.OtherFile)
+    // console.log(this.whichTeacher.OtherFile)
     if(this.whichTeacher.OtherFile !== null){
       this.othersmsg = 'Download Other Files'
       return this.photoUrl + this.whichTeacher.OtherFile;

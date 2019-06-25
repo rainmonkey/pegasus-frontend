@@ -1,0 +1,16 @@
+<div *ngIf='loadingFlag' class="loaderLarge"></div>
+<div *ngIf='!loadingFlag' class='t_mf_form'>
+  <!--modal header-->
+  <div class="modal-header">
+    <h4 class="modal-title">{{command | commandFormat}}</h4>
+    <button type="button" class='btn btn-sm btn-info tl_dm_btn' aria-label="Close"
+      (click)="activeModal.close('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div style="text-align:center" *ngIf="errorMessage" class="text-danger">{{errorMessage}}<br></div>
+  <!--Image content-->
+  <div class="reimg">
+    <img [src]="getPhotoSrc('ReceiptImg')" (error)='setDefaultPhoto($event)' width="100%"/>
+  </div>
+</div>

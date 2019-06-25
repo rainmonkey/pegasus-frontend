@@ -25,13 +25,16 @@
             "styles": [
               "node_modules/bootstrap/dist/css/bootstrap.css",
               "src/styles.css",
-              "node_modules/font-awesome/css/font-awesome.css"
+              "node_modules/font-awesome/css/font-awesome.css",
+              "node_modules/sweetalert2/dist/sweetalert2.min.css" ,
+              "node_modules/@ctrl/ngx-emoji-mart/picker.css"
             ],
             "scripts": [
               "node_modules/jquery/dist/jquery.min.js",
               "node_modules/popper.js/dist/umd/popper.min.js",
               "node_modules/bootstrap/dist/js/bootstrap.js",
-              "node_modules/jspdf/dist/jspdf.min.js"
+              "node_modules/jspdf/dist/jspdf.min.js",
+              "node_modules/sweetalert2/dist/sweetalert2.min.js"
             ]
           },
           "configurations": {

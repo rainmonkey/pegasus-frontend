@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, AfterViewInit } from '@angular/core';
+import { Component, OnInit, Input, AfterViewInit, DoCheck } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { LearnersService } from 'src/app/services/http/learners.service';
 
@@ -7,14 +7,20 @@ import { LearnersService } from 'src/app/services/http/learners.service';
   templateUrl: './learner-edit-modal.component.html',
   styleUrls: ['./learner-edit-modal.component.css']
 })
-export class LearnerEditModalComponent implements OnInit {
+export class LearnerEditModalComponent implements OnInit, DoCheck {
   @Input() whichLearner;
   constructor(public activeModal: NgbActiveModal, private LearnerListService: LearnersService, ) {
 
   }
-
+  onActiveModalSubmit(event){
+    // console.log('lyri',event);
+    // if (event.target.value === true){
+    //   this.activeModal.dismiss();
+    // }
+  }
   ngOnInit() {
-    
+  }
+  ngDoCheck(){
   }
 }
 

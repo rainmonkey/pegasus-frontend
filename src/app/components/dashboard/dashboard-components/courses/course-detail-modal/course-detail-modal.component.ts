@@ -2,6 +2,7 @@ import { Component, OnInit, Input } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { CoursesService } from '../../../../../services/http/courses.service';
 import { FormBuilder, Validators, FormGroup } from '@angular/forms';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-course-detail-modal',
@@ -50,7 +51,12 @@ export class CourseDetailModalComponent implements OnInit {
         // console.log(this.courseCategories);
       },
       (err) => {
-        alert('Server error!')
+        Swal.fire({
+          title: 'Server error!',
+          type: 'error',
+          showConfirmButton: true,
+        });
+        console.log(err.error.ErrorMessage);
       }
     )
   }
@@ -61,7 +67,12 @@ export class CourseDetailModalComponent implements OnInit {
         // console.log(this.teachersLevels);
       },
       (err) => {
-        alert('Server error!')
+        Swal.fire({
+          title: 'Server error!',
+          type: 'error',
+          showConfirmButton: true,
+        });
+        console.log(err.error.ErrorMessage);
       }
     )
   }
@@ -72,7 +83,12 @@ export class CourseDetailModalComponent implements OnInit {
         // console.log(this.levels);
       },
       (err) => {
-        alert('Server error!')
+        Swal.fire({
+          title: 'Server error!',
+          type: 'error',
+          showConfirmButton: true,
+        });
+        console.log(err.error.ErrorMessage);
       }
     )
   }
@@ -83,7 +99,12 @@ export class CourseDetailModalComponent implements OnInit {
         // console.log(this.courseTypes);
       },
       (err) => {
-        alert('Server error!')
+        Swal.fire({
+          title: 'Server error!',
+          type: 'error',
+          showConfirmButton: true,
+        });
+        console.log(err.error.ErrorMessage);
       }
     )
   }
@@ -94,7 +115,12 @@ export class CourseDetailModalComponent implements OnInit {
         // console.log(this.durations);
       },
       (err) => {
-        alert('Server error!')
+        Swal.fire({
+          title: 'Server error!',
+          type: 'error',
+          showConfirmButton: true,
+        });
+        console.log(err.error.ErrorMessage);
       }
     )
   }
@@ -173,7 +199,11 @@ export class CourseDetailModalComponent implements OnInit {
     if (this.command == 0) {
       this.coursesService.addNew(formValue).subscribe(
         (res) => {
-          alert('Submit success!');
+          Swal.fire({
+            title: 'Successfully Add!',
+            type: 'success',
+            showConfirmButton: true,
+          });
           this.activeModal.close();
         },
         (err) => {
@@ -186,7 +216,11 @@ export class CourseDetailModalComponent implements OnInit {
     else if (this.command == 2) {
       this.coursesService.update(formValue, this.whichCourse.CourseId).subscribe(
         (res) => {
-          alert('Submit success!');
+          Swal.fire({
+            title: 'Successfully Modify!',
+            type: 'success',
+            showConfirmButton: true,
+          });
           this.activeModal.close();
         },
         (err) => {

@@ -139,3 +139,7 @@ small,
   max-width: 900px;
   margin: 40px auto;
 }
+.emoji-mart-preview{
+  display: none!important;
+  background:red;
+}

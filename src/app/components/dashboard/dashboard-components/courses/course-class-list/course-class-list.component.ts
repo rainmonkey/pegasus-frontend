@@ -27,7 +27,9 @@ export class CourseClassListComponent implements OnInit {
   public courseClassListsfilter: Array<any>;
     //search by which columns, determine by users
   public queryParams: object = {};
-  public filter = new FormControl('');
+  public filter = new FormControl('');  
+  //loading
+  public loadingFlag: boolean = false;
   
   @ViewChild('pagination') pagination;
 
@@ -41,6 +43,7 @@ export class CourseClassListComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    this.loadingFlag = true;
     this.getDataService();
   }
 
@@ -51,6 +54,7 @@ export class CourseClassListComponent implements OnInit {
         this.coursesClassListCopy = this.courseClassLists;
         this.coursesClassListLength = res['Data'].length; //length prop is under Data prop
         this.refreshPageControl();
+        this.loadingFlag = false;
         this.courseClassLists.forEach(element => {
           element.CourseName = element.Course.CourseName;
           element.CourseType = element.Course.CourseType;
@@ -61,7 +65,6 @@ export class CourseClassListComponent implements OnInit {
           element.TeacherId = element.Teacher.TeacherId;
           element.TeacherName = element.Teacher.FirstName + ' ' + element.Teacher.LastName;
         });
-        // console.log(this.courseClassLists);
         // filter course type = 2
         this.courseClassListsfilter = this.courseClassLists.filter((item)=> item.CourseType == 2);
         
@@ -125,7 +128,6 @@ export class CourseClassListComponent implements OnInit {
   private getDismissReason(reason: any): string {
     if (reason === ModalDismissReasons.ESC) {
       return 'by pressing ESC';
-      alert('qewqwe')
     } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
       return 'by clicking on a backdrop';
     } else {

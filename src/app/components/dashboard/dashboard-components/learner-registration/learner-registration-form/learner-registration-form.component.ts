@@ -1,8 +1,8 @@
-import { Component, OnInit, Input, DoCheck } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, DoCheck, AfterViewInit } from '@angular/core';
 import { FormGroup, FormArray, FormBuilder, Validators, FormControl } from '@angular/forms';
 import { LearnerRegistrationService } from '../../../../../services/http/learner-registration.service';
 import { CoursesService } from '../../../../../services/http/courses.service';
-import { NgbTimeStruct, NgbTimeAdapter, NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { NgbTimeStruct, NgbTimeAdapter, NgbModal, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { LearnerRegistrationModalComponent } from '../learner-registration-modal/learner-registration-modal.component';
 import { LearnerRegistrationConfirmModalComponent } from '../learner-registration-confirm-modal/learner-registration-confirm-modal.component';
 import { UniqueSelectionDispatcher } from '@angular/cdk/collections';
@@ -11,18 +11,20 @@ import { element } from '@angular/core/src/render3';
 import { forkJoin } from 'rxjs';
 import { TimePickerComponent } from '../../time-picker/time-picker.component';
 import { ngtimepickerValidator } from './validators';
+import { FindValueSubscriber } from 'rxjs/internal/operators/find';
 
 @Component({
   selector: 'app-learner-registration-form',
   templateUrl: './learner-registration-form.component.html',
   styleUrls: ['./learner-registration-form.component.css']
 })
-export class LearnerRegistrationFormComponent implements OnInit, DoCheck {
+export class LearnerRegistrationFormComponent implements OnInit, DoCheck, AfterViewInit {
   // @Input() receivedParentMessage: any;
   // receivedChildMessage: any;
   // courseIntanceGroup: FormGroup;
   @Input() whichLearner;
-
+  @Input() addCourse;
+  @Output() toLearnerListEvent: EventEmitter<any> = new EventEmitter;
   public time: NgbTimeStruct = { hour: 9, minute: 0, second: 0 };
   public hourStep = 1;
   public minuteStep = 15;
@@ -65,7 +67,7 @@ export class LearnerRegistrationFormComponent implements OnInit, DoCheck {
   public learnerOthers: any[] = [];
   public learnerlevelType = 1;
   public duration: Array<any>;
-  public selectlearnerLevel: number;
+  public selectLearnerLevel: number;
   public pureCourses: any[];
   notPiano;
   notPianoTeaArray = [];
@@ -112,6 +114,10 @@ export class LearnerRegistrationFormComponent implements OnInit, DoCheck {
   timePickArrayNumber;
   modalRefConfirm;
   // needSubmit = false;
+  // for edit component;
+  assignValue = false;
+  // for addcourse modal
+  groupCourseForSubmit = [];
 
   // getter method: simplify the way to capture form controls
   get firstName() { return this.registrationForm.get('learnerForm').get('firstName'); }
@@ -126,7 +132,8 @@ export class LearnerRegistrationFormComponent implements OnInit, DoCheck {
     private fb: FormBuilder,
     private registrationService: LearnerRegistrationService,
     private coursesService: CoursesService,
-    private modalService: NgbModal
+    private modalService: NgbModal,
+    private activeModal: NgbActiveModal
   ) { }
   get courseGroup(): FormGroup {
     return this.fb.group({
@@ -157,7 +164,10 @@ export class LearnerRegistrationFormComponent implements OnInit, DoCheck {
     // get orgId
     this.orgId = JSON.parse(localStorage.getItem('OrgId'))[0];
     this.getDate();
-    if (this.whichLearner != null) console.log(this.whichLearner);
+    if (this.whichLearner != null) { //set LevelType
+      console.log(this.whichLearner);
+      this.learnerlevelType  = this.whichLearner.LevelType;
+    }
     this.registrationForm = this.fb.group({
       learnerForm: this.fb.group({
         firstName: [this.whichLearner ? this.whichLearner.FirstName : '', Validators.required],
@@ -175,10 +185,10 @@ export class LearnerRegistrationFormComponent implements OnInit, DoCheck {
         grade: [''],
         //learnPurpose: [this.whichLearner?this.whichLearner.learnPurpose:''],
         //infoFrom: [this.whichLearner?this.whichLearner.infoFrom:''],
-        learnerLevel: [this.whichLearner ? this.whichLearner.LearnerLevel : this.selectlearnerLevel, Validators.required],
+        learnerLevel: [this.whichLearner ? this.whichLearner.LearnerLevel : this.selectLearnerLevel, Validators.required],
         location: [this.whichLearner ? this.whichLearner.OrgId : this.orgId, Validators.required],
         levelType: [this.whichLearner ? this.whichLearner.LevelType : '0'],
-        levelTypeRadio: [1],
+        levelTypeRadio: [this.whichLearner ? this.whichLearner.LevelType: 1],
         paymentPeriod: [this.whichLearner ? this.whichLearner.PaymentPeriod : '1'],
         referrer: [this.whichLearner ? this.whichLearner.Referrer : ''],
         isUnder18: [this.whichLearner ? this.whichLearner.isUnder18 : 0],
@@ -188,27 +198,40 @@ export class LearnerRegistrationFormComponent implements OnInit, DoCheck {
       customCourse: this.fb.array([]),
     });
 
+
     this.setParentForm();
-    this.setOneToOneForm();
-
-
+    if (this.addCourse == undefined){
+    this.setOneToOneForm();}
+    else{
+      this.customCourse.push(this.courseIntanceGroup);
+    }
     //@ts-ignore
     // let abc = this.customCourse.controls[0].controls.roomArray;
+    if (!this.whichLearner || this.addCourse) {
+      this.getGroupCourseFromServer();
+    }
 
-    // initialize card display
-    document.getElementById('learnerForm').style.display = 'block';
-    document.getElementById('parentForm').style.display = 'none';
-    document.getElementById('courseForm').style.display = 'none';
-
-    if (!this.whichLearner) this.getGroupCourseFromServer();
     this.getLookups(1);
     this.toModel(this.time);
     this.getLocationFromServer();
     // init array
     this.initArrays()
+    // get data if input
+    if (this.addCourse){
+    this.selectLearnerLevelFun(this.whichLearner.learnerLevel);
+    }
+  }
 
-    //
-    console.log(this.registrationForm);
+  ngAfterViewInit(){
+        // initialize card display
+        if(this.addCourse == undefined){
+          document.getElementById('learnerForm').style.display = 'block';
+          document.getElementById('parentForm').style.display = 'none';
+          document.getElementById('courseForm').style.display = 'none';
+        }
+          else{
+            document.getElementById('courseForm').style.display='block'
+          }
   }
 
   getDate() {
@@ -280,11 +303,12 @@ export class LearnerRegistrationFormComponent implements OnInit, DoCheck {
         // get one to one courses
         this.courses121 = res.Data.filter(item => item.CourseType === 1);
         // apply learner level filter
-        console.log(this.selectlearnerLevel)
+        console.log(this.selectLearnerLevel)
+        this.selectLearnerLevel = this.whichLearner?this.whichLearner.LearnerLevel:this.selectLearnerLevel;
 
         let coursePiano = this.courses121.filter(item => item.CourseCategory.CourseCategoryId === 1)
-          .filter((item) => item.Level == this.selectlearnerLevel);
-        console.log(this.selectlearnerLevel, coursePiano);
+          .filter((item) => item.Level == this.selectLearnerLevel);
+        console.log(this.selectLearnerLevel, coursePiano);
         // if not piano, do not filter the learner level
         let courseOther = this.courses121.filter(item => item.CourseCategory.CourseCategoryId !== 1);
         this.catItemArray = coursePiano.concat(courseOther);
@@ -298,18 +322,17 @@ export class LearnerRegistrationFormComponent implements OnInit, DoCheck {
         let catArray = [];
         // let catNameArray = [];
         // let setUniName = [];
-        let temp;
-        let tempArray = [];
         this.catItemArray.forEach(cat => {
           // cat.CourseCategory.CourseCategoryId =
           // catArray.push(cat.CourseCategory.CourseCategoryId);
           // catNameArray.push(cat.CourseCategory.CourseCategoryName);
           catArray.push(JSON.stringify(cat.CourseCategory));
         });
+        // use set to find unique values of the stringify array
         let uniCat = arr => Array.from(new Set(arr));
         this.setUniCat = [];
         uniCat(catArray).forEach(ele => {
-          //@ts-ignore
+          // @ts-ignore
           this.setUniCat.push(JSON.parse(ele));
         });
         // setUniName = uniCat(catNameArray);
@@ -322,10 +345,8 @@ export class LearnerRegistrationFormComponent implements OnInit, DoCheck {
         //   tempArray.push(temp)
         // })
         // this.setUniCat = tempArray;
-        console.log(this.setUniCat);
         this.setUniCatListArray = [];
         this.setUniCatListArray.push(this.setUniCat);
-        console.log(this.setUniCatListArray)
       });
   }
   getLocationFromServer() {
@@ -404,17 +425,20 @@ export class LearnerRegistrationFormComponent implements OnInit, DoCheck {
         }
       );
   }
-  selectLearnerLevel(value) {
-    if (this.whichLearner) return 
+  selectLearnerLevelFun(value) {
+    // console.log(value);
+    // if (this.whichLearner && this.assignValue && this.addCourse) {
+    //   this.assignValue = true;
+    // }
     this.customCourse.reset();
     this.customCourse.controls.forEach((item, index) => {
       this.customCourse.removeAt(index);
     });
-    this.customCourse.push(this.courseIntanceGroup)
+    this.customCourse.push(this.courseIntanceGroup);
     this.isSelectedLevel = true;
-    this.selectlearnerLevel = value;
+    this.selectLearnerLevel = value;
     this.getCoursesFromServer();
-    // let a = this.courses.filter((e) =>  this.selectlearnerLevel == e.Level);
+    // let a = this.courses.filter((e) =>  this.selectLearnerLevel == e.Level);
 
   }
   // check lists
@@ -491,7 +515,10 @@ export class LearnerRegistrationFormComponent implements OnInit, DoCheck {
     this.groupCourseInstance[i].isChecked = event.target.checked;
   }
   confirmGroupCourse() {
+    let tempGroupModal = {};
     console.log('wo yao jia ji tui', this.groupCourseInstance)
+    this.groupCourseForSubmit = [];
+    this.learnerGroupCourse = []
     for (let groupCourse of this.groupCourseInstance) {
       if (groupCourse.isChecked) {
         this.tempGroupCourseObj = {};
@@ -499,14 +526,20 @@ export class LearnerRegistrationFormComponent implements OnInit, DoCheck {
         this.tempGroupCourseObj['Comment'] = groupCourse.comments;
         this.tempGroupCourseObj['BeginDate'] = groupCourse.beginDate;
         this.learnerGroupCourse.push(this.tempGroupCourseObj);
+        tempGroupModal = {...this.tempGroupCourseObj};
+        if (this.whichLearner)
+          tempGroupModal['LearnerId'] = this.whichLearner.LearnerId;
+        this.groupCourseForSubmit.push(tempGroupModal);
       }
     }
   }
 
   // 121 course section
   selectLevelType(value) {
-    console.log(this.levelType)
+    console.log(value)
     this.learnerlevelType = Number(value);
+    console.log(value)
+    console.log(this.learnerlevelType)
   }
   emptySelectionCat(i) {
 
@@ -616,25 +649,35 @@ selectLocation(id, i) {
     this.prepareTeaNameInLevObjListArray.push(this.prepareTeaNameInLevObjItemArray);
     this.prepareTeaNameListArray.push(this.prepareTeaNameItemArray);
   }
+  // give 0 for time if less than 10
+  transformTime(n:number){
+    if (n<10)
+      return '0'+n;
+    else
+      return n;
+  }
   confirmCustomCourse() {
     let cs = this.customCourse.value;
     console.log('custom Course Form value', cs);
     // let tempObj = {};
+    this.oneOnOneCourse = [];
     for (let cc of this.customCourse.value) {
       if (cc.course===''||!cc.course) continue;
       let tempObj = {};
-      tempObj['CourseId'] = parseInt(cc.course);
-      tempObj['OrgId'] = cc.location;
-      tempObj['TeacherId'] = parseInt(cc.teacherName);
-      tempObj['RoomId'] = parseInt(cc.room);
+      tempObj['OrgId'] = Number(cc.location);
+      this.whichLearner?tempObj['CourseId'] = Number(cc.course):tempObj['CourseId'] = parseInt(cc.course);
+      this.whichLearner?tempObj['TeacherId'] = Number(cc.teacherName):tempObj['TeacherId'] = parseInt(cc.teacherName);
+      this.whichLearner?tempObj['RoomId'] = Number(cc.room):tempObj['RoomId'] = parseInt(cc.room);
       tempObj['BeginDate'] = cc.beginDate;
       let tempScheduleObj = {};
       tempScheduleObj['DayOfWeek'] = parseInt(cc.schedule.dayOfWeek);
-      tempScheduleObj['BeginTime'] = cc.schedule.beginTime.hour + ':' + cc.schedule.beginTime.minute + ':' + cc.schedule.beginTime.second;//this.courseTime;
-      tempScheduleObj['DurationType'] = parseInt(cc.course);
+      tempScheduleObj['BeginTime'] = this.transformTime(cc.schedule.beginTime.hour) + ':' + this.transformTime(cc.schedule.beginTime.minute) + ':' + this.transformTime(cc.schedule.beginTime.second);//this.courseTime;
+      // tempScheduleObj['DurationType'] = parseInt(cc.course);
+      console.log('edwin',cc.schedule.beginTime)
       tempObj['Schedule'] = tempScheduleObj;
+      if(this.whichLearner){
+        tempObj['LearnerId'] = Number(this.whichLearner.LearnerId)};
       this.oneOnOneCourse.push(tempObj);
-      console.log('oneOnOne', this.oneOnOneCourse);
     };
   }
 
@@ -656,13 +699,14 @@ selectLocation(id, i) {
     this.fdObj['Email'] = this.learner.email;
     this.fdObj['Address'] = this.learner.address;
     this.fdObj['OrgId'] = this.learner.location;
-    this.fdObj['LearnerLevel'] = this.selectlearnerLevel;
+    this.fdObj['LearnerLevel'] = this.learner.learnerLevel;
     this.fdObj['LevelType'] = this.learnerlevelType;
     this.fdObj['IsUnder18'] = this.learner.isUnder18 ? 1 : 0;;
     this.fdObj['PaymentPeriod'] = parseInt(this.learner.paymentPeriod);
     this.fdObj['Referrer'] = this.learner.referrer;
     // encapsulate parent form data
     // console.log('submit', this.parentForm.value)
+    this.parent = [];
     for (let parent of this.parentForm.value) {
       let parentTempObj = {};
       parentTempObj['FirstName'] = parent.firstName;
@@ -674,11 +718,15 @@ selectLocation(id, i) {
       // console.log('parent',this.parent);
     }
     this.fdObj['Parent'] = this.parent;
-    this.fdObj['LearnerGroupCourse'] = this.learnerGroupCourse;
-    this.fdObj['One2oneCourseInstance'] = this.oneOnOneCourse;
+    if (!this.whichLearner){
+      this.fdObj['LearnerGroupCourse'] = this.learnerGroupCourse;
+      this.fdObj['One2oneCourseInstance'] = this.oneOnOneCourse;
+    }
     this.fdObj['LearnerOthers'] = this.learnerOthers;
     console.log(this.fdObj);
+    this.fd.delete('details');
     this.fd.append('details', JSON.stringify(this.fdObj));
+    console.log(this.fd)
     // console.log('form data', this.fd);
     // active modal waiting for decision
     this.openConfirm();
@@ -762,19 +810,44 @@ selectLocation(id, i) {
 
   // // ng-activeModal for confirm submit
   openConfirm() {
+    console.log(this.addCourse)
     this.modalRefConfirm = this.modalService.open(LearnerRegistrationConfirmModalComponent);
     this.modalRefConfirm.componentInstance.fdObj = this.fd;
-    if (this.whichLearner){
-      this.modalRefConfirm.componentInstance.command = 2;  //add
+    if (this.whichLearner && !this.addCourse){
+      this.modalRefConfirm.componentInstance.command = 2;  //edit
       this.modalRefConfirm.componentInstance.learnerId = this.whichLearner.LearnerId;
+    } else if (this.addCourse){
+      this.modalRefConfirm.componentInstance.command = 3; //add
+      this.modalRefConfirm.componentInstance.groupCourse = this.groupCourseForSubmit;
+      this.modalRefConfirm.componentInstance.isGroupCourse = this.isGroupCourse;
+      this.modalRefConfirm.componentInstance.oneOnOneCourse = this.oneOnOneCourse;
+      this.modalRefConfirm.componentInstance.learnerId = this.whichLearner.LearnerId;
+      this.modalRefConfirm.componentInstance.addCourse = this.addCourse;
     }
     else
       this.modalRefConfirm.componentInstance.command = 1;   //post
+      this.modalRefConfirm.componentInstance.clickConfirm.subscribe(res=>{
+        console.log(res)
+        if (res == true) {
+          this.toLearnerListEvent.emit(true);
+        }
+
+        // let that = this;
+        // this.modalRefConfirm.result.then(
+        //     function () {
+        //       if (res == true) {
+        //         that.ngOnInit();
+        //       }
+        //     },
+        //     function () {
+        //       return;
+        //     })
+      })
 
   }
   // // check changes
   ngDoCheck() {
-     console.log(this.selectlearnerLevel)
+    //  console.log(this.selectLearnerLevel)
     // console.log(this.customCourse.controls[0].get('schedule').get('beginTime').invalid)
     // console.log(this.modalRefTimePicker);
     // this.modalRefConfirm?this.needSubmit = this.modalRefConfirm.componentInstance.submitClicked:this.needSubmit = false;
@@ -792,19 +865,19 @@ selectLocation(id, i) {
   }
 
   next(value: string) {
-    this.getErrorW === false ? this.showErrorW = true : this.showErrorW = false;
-    this.getErrorH === false ? this.showErrorH = true : this.showErrorH = false;
+    // this.getErrorW === false ? this.showErrorW = true : this.showErrorW = false;
+    // this.getErrorH === false ? this.showErrorH = true : this.showErrorH = false;
     this.touchNext = true;
     if (value === 'parentForm') { this.confirmLearner(); }
-    if ((this.getErrorH === true) && (this.getErrorW === true)) {
-      this.showErrorW = false;
+    // if ((this.getErrorH === true) && (this.getErrorW === true)) {
+    // }
+    this.showErrorW = false;
       this.showErrorH = false;
       this.touchNext = false;
       document.getElementById('learnerForm').style.display = 'none';
       document.getElementById('parentForm').style.display = 'none';
       document.getElementById('courseForm').style.display = 'none';
       document.getElementById(value).style.display = 'block';
-    }
   }
   setParentForm() {
     if (!this.whichLearner) {
@@ -827,7 +900,6 @@ selectLocation(id, i) {
             relationship: [p.Relationship, Validators.required],
             contactPhone: [p.ContactNum, Validators.required],
             email: [p.Email, [Validators.required, Validators.email]]
-
           }))
       })
     };
@@ -844,7 +916,7 @@ selectLocation(id, i) {
       }
 
       this.isSelectedLevel = true;
-      this.selectlearnerLevel = this.whichLearner.LearnerLevel;
+      this.selectLearnerLevel = this.whichLearner.LearnerLevel;
 
       let allData,teacherFilter,pureCourses;
       let CatList=[];
@@ -908,7 +980,7 @@ selectLocation(id, i) {
             console.log(courseItemArray1);
             let courseItemArray = courseItemArray1
               .filter(ele =>
-                ((o.Course.CourseCategoryId == 1 && ele.Level == this.selectlearnerLevel)
+                ((o.Course.CourseCategoryId == 1 && ele.Level == this.selectLearnerLevel)
                   || o.Course.CourseCategoryId != 1)
               );
             console.log(courseItemArray);

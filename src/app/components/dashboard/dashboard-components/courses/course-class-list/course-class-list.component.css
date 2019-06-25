@@ -8,10 +8,10 @@ table {
 }
 
 .tl_body_title {
-  height: 80px;
+  height: 55px;
   font-size: 30px;
   font-weight: 330;
-  line-height: 80px;
+  line-height: 60px;
   color: grey;
   text-align: center;
 }
@@ -25,20 +25,16 @@ table {
   cursor: pointer;
 }
 
-.tl_body_search {
+.tl_body_search_bar {
   margin-bottom: 10px;
 }
 
-.tl_body_search input {
+.tl_body_search_bar input {
   height: 40px;
   border: 0;
   border: 1px solid #17a2b8;
   border-radius: 5px;
   font-size: 18px;
-}
-
-.tl_body_table_btns {
-  padding-right: 0;
 }
 
 .tl_body_table_btn {
@@ -66,52 +62,45 @@ table {
   cursor: pointer;
 }
 
-.t_info_search_by {
+.t_info_search_bar {
   float: left;
-  margin-left: 10px;
-  height: 31px;
-  position: relative;
-  top: 0;
-  left: 1rem;
+  width: 230px;
 }
 
-.t_info_search_by span {
-  line-height: 31px;
-  cursor: pointer;
-}
-
-.t_info_addnew_btn {
-  position: absolute;
-  top: -1rem;
-  right: 0;
-}
-
-.t_info_addnew_btn:hover {
-  cursor: pointer;
-}
-
-.t_info_search {
-  float: left;
-  height: 25px;
-}
-
-.t_info_search input {
-  width: 250px;
-  height: 25px;
-  border: 0;
+.t_info_search_bar input {
+  height: 30px;
   border: 1px solid lightgrey;
-  border-bottom: none;
-  border-top-left-radius: 5px;
-  border-top-right-radius: 5px;
+  border-radius: 5px;
   font-size: 18px;
   text-align: center;
 }
 
+.t_info_search_icon {
+  float: left;
+  line-height: 33px;
+  margin-left: 5px;
+  cursor: pointer;
+}
+
+.t_info_addmore_btn {
+  height: 30px;
+  width: 120px;
+  line-height: 17px;
+  float: right;
+  margin-right: -30px;
+  cursor: pointer;
+}
+
 .t_info_title {
-  height: 80px;
+  height: 60px;
   font-size: 30px;
   font-weight: 330;
-  line-height: 80px;
+  line-height: 60px;
   color: grey;
   text-align: center;
+}
+.loaderLarge{
+  position: fixed;
+  top:40%;
+  left: 50%;
 }

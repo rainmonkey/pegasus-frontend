@@ -70,6 +70,7 @@ export class SessionsCalendarViewAdminComponent implements OnInit {
         },
         ////////
         eventClick: (info) => {
+          console.log(info)
           Swal.fire({
             type: 'info',
             title: 'Student',
@@ -192,7 +193,11 @@ export class SessionsCalendarViewAdminComponent implements OnInit {
       this.isloadingSmall = false;
     }, err => {
       this.isloadingSmall = false;
-      alert('Change time for this event is not allowed');
+      Swal.fire({
+        type: 'error',
+        title: 'Oops...',
+        text: err.error.ErrorMessage
+      });
     });
   }
 

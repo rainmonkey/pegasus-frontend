@@ -236,7 +236,7 @@ export class StaffModalFormComponent implements OnInit {
         MobilePhone: [{ value: this.whichStaff.MobilePhone, disabled: this.readOnlyFlag }, Validators.required],
         Email: [{ value: this.whichStaff.Email, disabled: this.readOnlyFlag }, Validators.required],
         Photo: [null],
-        RoleId: [{ value: this.whichStaff.RoleName, disabled: this.readOnlyFlag }, Validators.required],
+        RoleId: [{ value: this.whichStaff.RoleId, disabled: this.readOnlyFlag }, Validators.required],
         StaffOrg: [{ value: this.whichStaff.StaffOrg, disabled: this.readOnlyFlag }]
       }
     }

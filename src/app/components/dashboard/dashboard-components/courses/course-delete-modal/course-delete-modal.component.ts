@@ -1,6 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { CoursesService } from '../../../../../services/http/courses.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-course-delete-modal',
@@ -19,34 +20,43 @@ export class CourseDeleteModalComponent implements OnInit {
 
   constructor(
     public activeModal: NgbActiveModal,
-    public coursesService:CoursesService
+    public coursesService: CoursesService
   ) { }
 
   ngOnInit() {
   }
- // Delete click event
-  delete(){  
-    if(this.command == 3){
+  // Delete click event
+  delete() {
+    if (this.command == 3) {
       let courseId = this.whichCourse.CourseId;
-    this.coursesService.deleteCourse(courseId).subscribe(
-      (res) => {
-        this.isDeleteSuccess = true;
-        //successful info
-        alert('Delete success!');
-        this.activeModal.close();
-      },
-      (err) => {
-        //fail info
-        this.isDeleteFail = true;
-        this.backendErrorHandler(err);
-      }
-    )}else if(this.command == 4){
+      this.coursesService.deleteCourse(courseId).subscribe(
+        (res) => {
+          this.isDeleteSuccess = true;
+          //successful info
+          Swal.fire({
+            title: 'Successfully Delete!',
+            type: 'success',
+            showConfirmButton: true,
+          });
+          this.activeModal.close();
+        },
+        (err) => {
+          //fail info
+          this.isDeleteFail = true;
+          this.backendErrorHandler(err);
+        }
+      )
+    } else if (this.command == 4) {
       let groupcourseinstanceId = this.whichCourseClass.GroupCourseInstanceId;
       this.coursesService.deleteCourseClass(groupcourseinstanceId).subscribe(
         (res) => {
           this.isDeleteSuccess = true;
           //successful info
-          alert('Delete success!');
+          Swal.fire({
+            title: 'Successfully Delete!',
+            type: 'success',
+            showConfirmButton: true,
+          });
           this.activeModal.close();
         },
         (err) => {

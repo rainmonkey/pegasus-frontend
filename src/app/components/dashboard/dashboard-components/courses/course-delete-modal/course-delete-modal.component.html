@@ -1,12 +1,12 @@
 <!--modal header-->
 <div class="modal-header">
   <h4 class="modal-title">{{command | commandFormat}}</h4>
-  <button type="button" class='btn btn-sm btn-info tl_dm_btn' aria-label="Close" (click)="activeModal.close('Cross click')">
+  <button type="button" class='btn btn-sm btn-info tl_dm_btn' aria-label="Close"
+    (click)="activeModal.close('Cross click')">
     <span aria-hidden="true">&times;</span>
   </button>
 </div>
-<div style="text-align:center"  *ngIf="errorMessage" class="text-danger">{{errorMessage}} <br> </div>
-
+<div style="text-align:center" *ngIf="errorMessage" class="text-danger">{{errorMessage}} <br> </div>
 
 <!--modal body-->
 <div class='modal-body tl_md_body' *ngIf="command == 3">

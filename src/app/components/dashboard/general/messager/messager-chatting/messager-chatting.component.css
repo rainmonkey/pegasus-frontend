@@ -1,0 +1,122 @@
+.m_c_skeleton{
+    height: 580px; /********************************************************/
+}
+.m_c_subscribers{
+    height: 60px;
+    padding: 1px 0!important;
+    background:rgb(230, 223, 223);
+}
+.m_c_subscribers:hover{
+    background: rgb(230, 223, 223);
+}
+.m_c_subscribers_name{
+    color:#5d5d5a;
+    margin-top:5px!important;
+}
+.m_c_subscribers_signature{
+    height: 24px;
+    font-size:14px;
+    color:#8a8a88;
+    overflow: hidden;
+}
+.m_c_subscribers_photo{
+    height: 51px;
+    width: 51px;
+    border-radius:50%;
+    margin-left: 10px;
+    margin-top:3px;
+}
+.m_c_subscribers_photo img{
+    height: 50px;
+    width: 50px;
+    border-radius: 50%;
+    border:2px solid white;
+}
+.m_c_chatting_panel{
+    height:380px;
+    width: 100%;
+    border-bottom: 1px solid rgb(223, 220, 220);
+    position: relative;
+}
+.m_c_emoji_panel{
+    height: 25px;
+    width: 100%;
+    background: #e6dfdf;
+    border-bottom: 1px solid rgb(223, 220, 220);
+}
+.m_c_emoji_panel_info{
+    font-size: 14px;
+    color:#5d5d5a;
+}
+.m_c_emoji_picker{
+    float: right;
+    margin-right: 5px;
+}
+.m_c_input_area{
+    width: 100%;
+    height:115px;
+    border-bottom: 1px solid lightgray;
+    position: relative;
+}
+.m_c_input_area textarea{
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top:0;
+    resize: none;
+    border:none;
+    overflow: auto;
+    outline: none;
+}
+#m_c_emoji_picker_panel{
+    display: none;
+    position: absolute;
+    bottom: 0;
+    z-index: 100;
+}
+
+.m_c_start_chatting{
+    height: 100%;
+    width: 100%;
+    text-align: center;
+    line-height: 580px; /********************************************************/
+    font-weight: bold;
+    color:#5d5d5a;
+}
+.m_c_start_chatting span:hover{
+    cursor: pointer;
+}
+
+.m_c_chatting_messagers{
+    margin: 0 5px;
+    margin-top: 10px;
+
+}
+.m_c_chatting_messagers img{
+    height: 40px;
+    width: 40px;
+    border-radius: 50%;
+}
+.m_c_chatting_text{
+    color:#5d5d5a;
+    word-break:break-all;
+    border-radius:4px;
+    padding: 0 5px;
+    max-width:200px;
+    margin:0 5px;
+}
+.m_c_chatting_text_left{
+    text-align: left;
+    border:1px solid lightgray;
+}
+.m_c_chatting_text_right{
+    text-align: right;
+    border: 1px solid rgb(99, 168, 99);
+    background: #9ee84d;
+}
+.m_c_chatting_messagers_left{
+    float: left;
+}
+.m_c_chatting_messagers_right{
+    float: right;
+}

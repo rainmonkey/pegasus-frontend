@@ -1,10 +1,12 @@
-import { Component, OnInit, ViewChildren } from '@angular/core';
+
+import { Component, OnInit, ViewChildren, ViewChild, Input } from '@angular/core';
 import { CoursesService } from '../../../services/http/courses.service';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { variable } from '@angular/compiler/src/output/output_ast';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ChangePasswordModalComponent } from '../../dashboard/dashboard-components/support/change-password-modal/change-password-modal.component';
-
+import { environment } from 'src/environments/environment.prod';
+import { forkJoin } from 'rxjs';
 
 
 @Component({
@@ -18,16 +20,20 @@ import { ChangePasswordModalComponent } from '../../dashboard/dashboard-componen
 export class TestoneComponent implements OnInit {
   public qweqwe: Object;
   public poi: FormGroup;
+  public url:any = environment.baseUrl + 'trial';
+  @ViewChild('emoji') emoji;
+  @Input('emojiClick') click;
   constructor(
     private courseService: CoursesService,
     private fb: FormBuilder,
-    private modalService: NgbModal,
+    private modalService: NgbModal
     ) { }
 
   ngOnInit() {
     this.poi = this.fb.group(this.formGroupAssemble());
     this.getoiois();
 
+  
   }
 
   formGroupAssemble(){
@@ -46,22 +52,26 @@ export class TestoneComponent implements OnInit {
   }
 
   onSubmit(){
-    this.courseService.postoioi(this.poi.value.TermId).subscribe(
+    let OneToOneService = this.courseService.postoioi(this.poi.value.TermId);
+    let GroupService = this.courseService.postGroupGenerate(this.poi.value.TermId);
+
+    forkJoin([OneToOneService, GroupService]).subscribe(
       (res) => {
-        console.log("successful");
-        console.log(res);
-        alert('Successfully generating ' + res.Data + ' data.')
+        alert('Successfully generating ' + res[0].Data + ' data, and Groupe course'+ res[1].Data + ' data.');
       },
-      (err)=>{
-        console.log(err);
+      (err) => {
+        alert('Sorry, something went wrong.')
       }
-    )
+    );    
   }
 
   changePassword(){
     const modalRef=this.modalService.open(ChangePasswordModalComponent,{size:'lg'})
   }
 
-
+  a(event){
+    console.log(event)
+  }
+  
 }
 

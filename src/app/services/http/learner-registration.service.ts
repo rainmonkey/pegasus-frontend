@@ -42,15 +42,33 @@ export class LearnerRegistrationService {
   }
 // post student's data to server and catch error from server
   putStudent(learnerId:number,student: any): Observable<any> {
-  return this.http.put<any>(this.baseUrl + 'learner/'+learnerId, student)
+  return this.http.put<any>(this.baseUrl + 'learner/' + learnerId, student)
              .pipe(
                catchError(this.errorHandler)
              );
 }
+// add 121 course to exit learner
+  add121Course(course){
+    return this.http.post(this.baseUrl + 'OnetoOneCourseInstance', course);
+  }
+// add group course to exit learner
+  addGroupCourse(group){
+    return this.http.post(this.baseUrl + 'learnerGroupCourse', group);
+  }
 
   // throw error to component
   errorHandler(error: HttpErrorResponse) {
     return throwError(error);
+  }
+  // set end date for group course
+  endGroupCourse(id,endDate){
+    // @ts-ignore
+    return this.http.put(this.baseUrl + 'LearnerGroupCourse/' + id + '/' + endDate);
+  }
+  // set end date for 121 course
+  end121Course(id,endDate){
+    // @ts-ignore
+    return this.http.put(this.baseUrl + 'OnetoOneCourseInstance/' + id + '/' + endDate);
   }
 
 }

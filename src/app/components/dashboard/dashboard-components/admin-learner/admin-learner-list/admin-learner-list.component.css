@@ -86,7 +86,7 @@ table{
 }
 .t_info_table_btn{
     font-size: 20px;
-    margin-left: 18px;
+    margin-left: 8px;
     color:#55554f;
 }
 .t_info_table_btn:hover{
@@ -101,6 +101,10 @@ table{
 .t_info_table_btn:nth-child(3):hover{
     color:#dc3545;
 }
+.t_info_table_btn:nth-child(4):hover{
+  color:green
+}
+
 
 .t_selected{
     background: #17a2b8;

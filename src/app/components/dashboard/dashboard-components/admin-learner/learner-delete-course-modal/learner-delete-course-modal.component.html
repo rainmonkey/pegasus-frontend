@@ -1,0 +1,134 @@
+<!--modal header-->
+<div class='modal-header'>
+  <h4 class='modal-title'>delete of <span class='t_dm_title'>{{whichLearner.FirstName}}
+      {{whichLearner.LastName}}</span></h4>
+  <button type="button" class='btn btn-sm btn-info t_dm_close_btn' aria-label="Close"
+    (click)="activeModal.close('Cross click')">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+
+<!--modal body-->
+<div class='container'>
+  <h4>Course</h4>
+  <div>
+    <div class="row lable-pos">
+      <button class="button-margin btn btn-outline-primary pl-2" (click)="chooseCourse()">Group/One-on-One Course</button>
+    </div>
+
+    <div *ngIf='isGroupCourse' class='m-2'>
+      <div *ngFor='let groupCourse of whichLearner.LearnerGroupCourse '>
+        <br>
+        <div class="card">
+          <div class="card-body">
+            <div class="row">
+              <div class="col-6">
+                <span class="label">Group Course: </span>
+                <span class='text'>{{groupCourse.GroupCourseInstance.Course.CourseName}}</span>
+              </div>
+
+              <div *ngIf='groupCourse.GroupCourseInstance.Org' class="col-6">
+                <span class="label">Location: </span>
+                <span class='text'>{{groupCourse.GroupCourseInstance.Org.OrgName}}</span>
+              </div>
+
+              <div class="col-6">
+                <div>
+                  <span class="label">Room: </span>
+                  <span class='text'>
+                    {{groupCourse.GroupCourseInstance.Room.RoomName}}
+                  </span>
+                </div>
+              </div>
+
+              <div class="col-6">
+                <span class="label">Teacher: </span>
+                <span class='text'>{{groupCourse.GroupCourseInstance.Teacher.FirstName}}
+                  {{groupCourse.GroupCourseInstance.Teacher.LastName}}
+                </span>
+                <p class='text'>Edit End Day:</p>
+                <input type="date" [(ngModel)]="groupEndDate" required>
+              </div>
+
+              <div class="col-6">
+                <span class="label">Schedule: </span>
+                <div *ngFor='let time of groupCourse.GroupCourseInstance.CourseSchedule'>
+                  <span class='text'>{{time.DayOfWeek|weekFormat}}
+                    {{time.BeginTime}} -- {{time.EndTime}}</span>
+                </div>
+              </div>
+              <div class='col-6'>
+                <button (click)='onSubmit(groupCourse)'>Submit End Date</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- one2one Course -->
+    <div *ngIf='!isGroupCourse'>
+
+      <div *ngFor="let ele of whichLearner.One2oneCourseInstance" class='m-2'>
+        <br>
+        <div class="card">
+          <div class="card-body">
+            <div class="row">
+              <div class="col-6">
+                <span class="label">One-on-One Course: </span>
+                <span class='text'>{{ele.Course.CourseName}}</span>
+              </div>
+
+              <div class="col-6">
+                <span class="label">Teacher Name: </span>
+                <span class='text'>{{ele.Teacher.FirstName}} {{ele.Teacher.LastName}}</span>
+              </div>
+
+              <div *ngIf='ele.Org' class="col-6">
+                <span class="label">Location: </span>
+                <span class='text'>{{ele.Org.OrgName}}</span>
+              </div>
+
+              <div class="col-6">
+                <div>
+                  <span class="label">Room: </span>
+                  <span class='text'> {{ele.Room.RoomName}}</span>
+                </div>
+              </div>
+
+              <div class="col-6">
+                <span class="label">Course Start Day: </span>
+                <span class='text'>{{ele.BeginDate}}</span>
+              </div>
+
+              <div class="col-6">
+                <span class="label">Course End Day: </span>
+                <span class='text'>{{ele.EndDate}}</span>
+                <p class='text'>Edit End Day:</p>
+                <input type="date" [(ngModel)]="one2OneEndDate">
+              </div>
+              <div class='col-6'>
+                <button (click)='onSubmit(ele)'>Submit End Date</button>
+              </div>
+
+              <div class="col-6">
+                <span class="label">Course Sechdule: </span>
+                <div *ngFor='let sechdule of ele.CourseSchedule'>
+                  <span class='text'> {{sechdule.DayOfWeek|weekFormat}}
+                    {{sechdule.BeginTime}} -- {{sechdule.EndTime}} </span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!--modal footer-->
+<div class='modal-footer'>
+  <button type="button" class="btn btn-outline-dark" (click)="activeModal.close('Close click')">Close</button>
+</div>
+
