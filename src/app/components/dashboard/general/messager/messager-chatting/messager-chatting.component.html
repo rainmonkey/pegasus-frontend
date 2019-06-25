@@ -24,7 +24,21 @@
 
   <!--聊天框-->
   <div class='m_c_chatting_panel'>
-    aaa
+    <!--ng for-->
+    <div class='m_c_chatting_messagers m_c_chatting_messagers_left'>
+      <img src="../../../../../../assets/images/usersimg/userphoto02.jpg" alt="" class='m_c_chatting_messagers_left'>
+      <div class='m_c_chatting_text m_c_chatting_text_left m_c_chatting_messagers_left'>
+        我是奥克兰吴彦祖fdsssssssssssssffffffffffffffffffff
+      </div>
+    </div>
+
+    <div class='m_c_chatting_messagers m_c_chatting_messagers_right'>
+      <img src="../../../../../../assets/images/usersimg/userphoto.jpg" alt="" class='m_c_chatting_messagers_right'>
+      <div class='m_c_chatting_text m_c_chatting_text_right m_c_chatting_messagers_right'>
+        我也是奥克兰吴彦祖fdsssssssssssssffffffffffffffffffff
+      </div>
+    </div>
+
     <!--emoji选择面板-->
     <emoji-mart (emojiSelect)='clickEmoji($event)' id='m_c_emoji_picker_panel' [style]='{width:"100%"}' isNative=true>
     </emoji-mart>
@@ -33,7 +47,7 @@
   <!--emoji框-->
   <div class='m_c_emoji_panel'>
     <span class='m_c_emoji_panel_info'>crtl + enter to send</span>
-    <ngx-emoji emoji='sunglasses' set='apple' size="25" class='m_c_emoji_picker' (click)='showEmojiPicker()'>
+    <ngx-emoji emoji='sunglasses' size="25" class='m_c_emoji_picker' (click)='showEmojiPicker()'>
     </ngx-emoji>
   </div>
 
