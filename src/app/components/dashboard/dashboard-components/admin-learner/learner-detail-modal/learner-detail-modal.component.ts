@@ -224,21 +224,25 @@ export class LearnerDetailModalComponent implements OnInit {
 
     for (let i of this.whichLearner.One2oneCourseInstance) {
       console.log(i)
-
       if (i.Amendment) {
+        i.Amendment.sort((a, b) => a.CreatedAt.replace(/-/gi,'').slice(0,8)- b.CreatedAt.replace(/-/gi,'').slice(0,8))
+        console.log(i.Amendment.sort((a, b) => a.CreatedAt.replace(/-/gi,'').slice(0,8)- b.CreatedAt.replace(/-/gi,'').slice(0,8)))
         i.Amendment.forEach(element => {
           if (element.IsTemporary == 0) {
-            console.log('aaaaaaaaa',)
-            i.permanent=element;
+            i.permanent = element;
             return;
+          }else if(element.IsTemporary == 1){
+            i.temporary=element;
+            return
           }
         });
       }
     }
-console.log(this.whichLearner.One2oneCourseInstance)
+    console.log(this.whichLearner.One2oneCourseInstance)
   }
 
 }
+
 
 
 
