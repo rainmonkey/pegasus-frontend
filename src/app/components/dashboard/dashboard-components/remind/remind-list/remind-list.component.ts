@@ -21,8 +21,9 @@ export class RemindListComponent implements OnInit {
   public currentPage:number = 1;
   public pageSize:number = 10;
 // Search
-  public searchBeginDate;
-  public searchEndDate;
+  public searchBeginDate = this.datePipe.
+  transform(new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate() - 1), 'yyyy-MM-dd');
+  public  searchEndDate = this.datePipe.transform(new Date(), 'yyyy-MM-dd');
 
   public isloading = false;
   public detail:Array<string> = [
@@ -60,7 +61,7 @@ export class RemindListComponent implements OnInit {
         console.log(this.remindsListLengh);
       },
       (err) => {
-        alert('Sorry, there\'s something wrong with server.')
+       //  alert('Sorry, there\'s something wrong with server.')
         console.log(err);
         this.isloading = false;
       });
@@ -69,10 +70,8 @@ export class RemindListComponent implements OnInit {
 
   search() {
     // console.warn('asdfasdf')
-    const beginDate = this.searchBeginDate == null ? alert('Please enter begin date') :
-      this.datePipe.transform(this.searchBeginDate, 'yyyy-MM-dd');
-    const endDate = this.searchEndDate == null ? alert('Please enter end date') :
-      this.datePipe.transform(this.searchEndDate, 'yyyy-MM-dd');
+    const beginDate = this.searchBeginDate;
+    const endDate = this.searchEndDate;
     this.getRemindData(beginDate, endDate);
   }
  
