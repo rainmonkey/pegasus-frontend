@@ -38,10 +38,9 @@
         </tbody>
       </table>
     </div>
-    <div class='col-12'>
+    <div class='col-8'>
         <!--pagination is here-->
-        <ngb-pagination #pagination [collectionSize]='remindsListLengh' [(page)]='currentPage' [pageSize]='pageSize'
-          (click)='getCurrentPage()'>
+        <ngb-pagination [collectionSize]='remindsListLengh' [(page)]='currentPage' [pageSize]='pageSize'>
         </ngb-pagination>
       </div>
   </div>

@@ -19,7 +19,7 @@ export class RemindListComponent implements OnInit {
   public remindsListLengh:number;
  // Pagination
   public currentPage:number = 1;
-  public pageSize:number = 10;
+  public pageSize:number = 20;
 // Search
   public searchBeginDate = this.datePipe.
   transform(new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate() - 1), 'yyyy-MM-dd');
