@@ -2,8 +2,7 @@ import { CommonModule, DatePipe } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import {MatButtonModule, MatFormFieldModule, MatInputModule, MatSelectModule} from '@angular/material';
-import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
+import { MatButtonModule, MatFormFieldModule, MatInputModule, MatSelectModule } from '@angular/material';
 // Dependencies
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -92,6 +91,11 @@ import { WeekFormatPipe } from './shared/pipes/week-format.pipe';
 import { PaymentPeriodPipe } from './shared/pipes/paymentPeriod.pipe';
 import { IsUnder18Pipe } from './shared/pipes/isUnder18.pipe';
 import { confirmEqualValidatorDirectie } from './shared/confirm-equal-validator.directive';
+import { RemindModalComponent } from './components/dashboard/dashboard-components/remind/remind-modal/remind-modal.component';
+import { RemindListComponent } from './components/dashboard/dashboard-components/remind/remind-list/remind-list.component';
+import { RemindPanelComponent } from './components/dashboard/dashboard-components/remind/remind-panel/remind-panel.component';
+
+
 import { StaffListComponent } from './components/dashboard/dashboard-components/admin-staff/Staff-list/Staff-list.component';
 import { StaffPanelComponent } from './components/dashboard/dashboard-components/admin-staff/staff-panel/staff-panel.component';
 import { SimplifyOrgPipe } from './shared/pipes/simplify-org.pipe';
@@ -113,8 +117,14 @@ import { InventoryReceiptModalComponent } from './components/dashboard/dashboard
 import { HolidayCalendarComponent } from './components/dashboard/dashboard-components/admin-holidays/holiday-calendar/holiday-calendar.component';
 import { AddHolidaysModalComponent } from './components/dashboard/dashboard-components/admin-holidays/add-holidays-modal/add-holidays-modal.component';
 import { DeleteHolidayComponent } from './components/dashboard/dashboard-components/admin-holidays/delete-holiday/delete-holiday.component';
-import { ChattingComponent } from './components/dashboard/general/chatting/chatting.component';
-
+import { PickerModule } from '@ctrl/ngx-emoji-mart';
+import { EmojiModule } from '@ctrl/ngx-emoji-mart/ngx-emoji';
+import { MessagerIconComponent } from './components/dashboard/general/messager/messager-icon/messager-icon.component';
+import { MessagerModalComponent } from './components/dashboard/general/messager/messager-modal/messager-modal.component';
+import { MessagerSubscribersComponent } from './components/dashboard/general/messager/messager-subscribers/messager-subscribers.component';
+import { MessagerRecentlyComponent } from './components/dashboard/general/messager/messager-recently/messager-recently.component';
+import { MessagerChattingComponent } from './components/dashboard/general/messager/messager-chatting/messager-chatting.component';
+import { MessagerPersonalInfoComponent } from './components/dashboard/general/messager/messager-personal-info/messager-personal-info.component';
 
 @NgModule({
   declarations: [
@@ -197,6 +207,9 @@ import { ChattingComponent } from './components/dashboard/general/chatting/chatt
     PaymentPeriodPipe,
     IsUnder18Pipe,
     confirmEqualValidatorDirectie,
+    RemindModalComponent,
+    RemindListComponent,
+    RemindPanelComponent,
     StaffListComponent,
     StaffPanelComponent,
     SimplifyOrgPipe,
@@ -220,11 +233,16 @@ import { ChattingComponent } from './components/dashboard/general/chatting/chatt
     HolidayCalendarComponent,
     AddHolidaysModalComponent,
     DeleteHolidayComponent,
-    ChattingComponent
+    MessagerIconComponent,
+    MessagerModalComponent,
+    MessagerSubscribersComponent,
+    MessagerRecentlyComponent,
+    MessagerChattingComponent,
+    MessagerPersonalInfoComponent,
+
   ],
   imports: [
     NgbModule,
-    NgxMatSelectSearchModule,
     BrowserModule,
     HttpClientModule,
     FormsModule,
@@ -237,14 +255,16 @@ import { ChattingComponent } from './components/dashboard/general/chatting/chatt
     FullCalendarModule,
     CommonModule,
     ChartsModule,
-    MatSelectModule
+    MatSelectModule,
+    PickerModule,
+    EmojiModule
   ],
   providers: [
     DatePipe,
     MondayDateInWeekByDatePipe,
     NgbActiveModal,
   ],
-  entryComponents:[
+  entryComponents: [
     TeacherDeleteModalComponent,
     TeacherDetailModalComponent,
     TeacherUpdateModalComponent,
@@ -265,6 +285,8 @@ import { ChattingComponent } from './components/dashboard/general/chatting/chatt
     RatingModalComponent,
     AdminLearnerPeriodCourseChangeModalComponent,
     ForgotPasswordModalComponent,
+    ChangePasswordModalComponent,
+    RemindModalComponent,
     AdminLearnerLeaveComponent,
     ChangePasswordModalComponent,
     LearnerRegistrationModalComponent,

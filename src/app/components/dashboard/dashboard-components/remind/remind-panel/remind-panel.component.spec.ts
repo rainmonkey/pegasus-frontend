@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ChattingComponent } from './chatting.component';
+import { RemindPanelComponent } from './remind-panel.component';
 
-describe('ChattingComponent', () => {
-  let component: ChattingComponent;
-  let fixture: ComponentFixture<ChattingComponent>;
+describe('RemindPanelComponent', () => {
+  let component: RemindPanelComponent;
+  let fixture: ComponentFixture<RemindPanelComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ ChattingComponent ]
+      declarations: [ RemindPanelComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(ChattingComponent);
+    fixture = TestBed.createComponent(RemindPanelComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

@@ -63,7 +63,7 @@ export class AuthenticationService {
         localStorage.setItem('userName', res.Data.username);
         localStorage.setItem('OrgId',JSON.stringify(res.Data.userdetails.OrgId));
         if (res.Data.photo)  localStorage.setItem('photo',res.Data.photo);
-        if (res.Data.staffId) localStorage.setItem('staffId', res.Data.staffId);
+        if (res.Data.userdetails.staffId) localStorage.setItem('staffId', res.Data.staffId);
 
     }
 

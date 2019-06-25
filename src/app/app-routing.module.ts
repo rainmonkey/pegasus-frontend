@@ -35,10 +35,14 @@ import { TestoneComponent } from './components/testcomponent/testone/testone.com
 import { CourseClassListComponent } from './components/dashboard/dashboard-components/courses/course-class-list/course-class-list.component';
 import { DashboardHomeComponent } from './components/dashboard/dashboard-components/dashboard-home/dashboard-home.component';
 import { TrialInfoComponent } from './components/dashboard/dashboard-components/trial-session/trial-info/trial-info.component';
+import { RemindListComponent } from './components/dashboard/dashboard-components/remind/remind-list/remind-list.component';
+import { RemindPanelComponent } from './components/dashboard/dashboard-components/remind/remind-panel/remind-panel.component';
+
 import { StaffListComponent } from './components/dashboard/dashboard-components/admin-staff/Staff-list/Staff-list.component';
 import { LearnerCreditPanelComponent } from "./components/dashboard/dashboard-components/learner-credit/learner-credit-panel/learner-credit-panel.component";
 import { LearnerCreditDetailsComponent } from "./components/dashboard/dashboard-components/learner-credit/learner-credit-details/learner-credit-details.component"
 import { HolidayCalendarComponent } from './components/dashboard/dashboard-components/admin-holidays/holiday-calendar/holiday-calendar.component';
+import { LearnerCreditArrangeComponent } from './components/dashboard/dashboard-components/learner-credit/learner-credit-arrange/learner-credit-arrange.component';
 
 
 const routes: Routes = [
@@ -122,8 +126,13 @@ const routes: Routes = [
           { path: 'registration', component: LearnerRegistrationFormComponent, canActivate: [UserAuthGuard], },
           { path: 'trial', component: TrialInfoComponent, },
           {
-            path: "credit", component: LearnerCreditPanelComponent, canActivate: [UserAuthGuard],
-            children: [{ path: ":id", component: LearnerCreditDetailsComponent, }]
+            path: "credit", pathMatch: 'prefix', component: LearnerCreditPanelComponent, canActivate: [UserAuthGuard],
+            children: [{
+              path: "arrange", component: TrialInfoComponent
+              //LearnerCreditArrangeComponent
+            }, {
+              path: ":id", component: LearnerCreditDetailsComponent
+            }]
           },
           { path: 'success', component: AdminLearnerPaymentSuccessComponent },
         ]
@@ -142,11 +151,18 @@ const routes: Routes = [
           { path: 'list', component: PayrollListComponent }
         ]
       },
+      // Remind Area
+      {
+        path: 'remind', component: RemindPanelComponent,
+        children:[
+          {path:'list', component:RemindListComponent}
+        ]
+      },
       //Staff Area
       { path: 'staff/list', component: StaffListComponent },
       // Below to be rearranged
       { path: 'time/picker', component: TimePickerComponent },
-      {path: 'holidays', component:HolidayCalendarComponent}
+      { path: 'holidays', component: HolidayCalendarComponent }
     ]
   },
   { path: 'login', component: LoginComponent },

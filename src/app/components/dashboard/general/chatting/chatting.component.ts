@@ -4,8 +4,7 @@ import { Component, OnInit } from '@angular/core';
 @Component({
   selector: 'app-chatting',
   templateUrl: './chatting.component.html',
-  styleUrls: ['./chatting.component.css',
-              '../../../../../../node_modules/emojionearea/demo/stylesheet.css']
+  styleUrls: ['./chatting.component.css']
 })
 export class ChattingComponent implements OnInit {
   //数组里的顺序和名字要和HTML里的一致
@@ -15,7 +14,7 @@ export class ChattingComponent implements OnInit {
 
   ngOnInit() {
     let emoji = document.getElementById('emojiArea');
-  
+
   }
 
   selectFunctionalBtn(selectId){
@@ -36,5 +35,20 @@ export class ChattingComponent implements OnInit {
         }
       }
     }
+  }
+
+  showEmojiPicker(){
+    let emojiPickerObj = document.getElementById('c_chatting_emoji_picker');
+    console.log(emojiPickerObj.style.display)
+    if(emojiPickerObj.style.display == 'none' || emojiPickerObj.style.display == ''){
+      emojiPickerObj.style.display = 'block';
+    }
+    else{
+      emojiPickerObj.style.display = 'none';
+    }
+  }
+
+  abc(event){
+    console.log(event)
   }
 }

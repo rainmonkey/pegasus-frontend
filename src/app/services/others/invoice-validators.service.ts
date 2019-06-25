@@ -23,7 +23,7 @@ export class InvoiceValidatorsService {
       fee = control.get(['Other3Fee']);
     }
     if (control["controls"].hasOwnProperty("NoteFee")) {
-      name = control.get(['NoteFeeName']);
+      name = control.get(['LessonNoteFeeName']);
       fee = control.get(['NoteFee']);
     }
     if (control["controls"].hasOwnProperty("ConcertFee")) {

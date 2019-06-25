@@ -1,4 +1,5 @@
-import { Component, OnInit, ViewChildren } from '@angular/core';
+
+import { Component, OnInit, ViewChildren, ViewChild, Input } from '@angular/core';
 import { CoursesService } from '../../../services/http/courses.service';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { variable } from '@angular/compiler/src/output/output_ast';
@@ -6,6 +7,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ChangePasswordModalComponent } from '../../dashboard/dashboard-components/support/change-password-modal/change-password-modal.component';
 import { environment } from 'src/environments/environment.prod';
 import { forkJoin } from 'rxjs';
+
 
 @Component({
   selector: 'app-testone',
@@ -18,17 +20,20 @@ import { forkJoin } from 'rxjs';
 export class TestoneComponent implements OnInit {
   public qweqwe: Object;
   public poi: FormGroup;
-  public url:any = environment.baseUrl + 'trial'
+  public url:any = environment.baseUrl + 'trial';
+  @ViewChild('emoji') emoji;
+  @Input('emojiClick') click;
   constructor(
     private courseService: CoursesService,
     private fb: FormBuilder,
-    private modalService: NgbModal,
+    private modalService: NgbModal
     ) { }
 
   ngOnInit() {
     this.poi = this.fb.group(this.formGroupAssemble());
     this.getoiois();
 
+  
   }
 
   formGroupAssemble(){
@@ -64,6 +69,9 @@ export class TestoneComponent implements OnInit {
     const modalRef=this.modalService.open(ChangePasswordModalComponent,{size:'lg'})
   }
 
-
+  a(event){
+    console.log(event)
+  }
+  
 }
 
