@@ -15,6 +15,7 @@ export class UserAuthGuard implements CanActivate {
 
   canActivate(childRoute: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean | UrlTree | Observable<boolean | UrlTree> | Promise<boolean | UrlTree> {
     // throw new Error("Method not implemented.");
+    return true;
       let url: string = state.url;
       let urlS = url.substring(1,url.length-0);
       return this.checkUser(urlS);
