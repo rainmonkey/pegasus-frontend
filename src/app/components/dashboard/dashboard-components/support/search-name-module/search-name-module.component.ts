@@ -15,6 +15,7 @@ export class SearchNameModuleComponent implements OnInit {
   // learners
   public name: any = 'type..';
   public learners: any;
+  public learnerIdByUrl: number
   public data: any;
   public errorMsg;
   public show: boolean;
@@ -22,8 +23,8 @@ export class SearchNameModuleComponent implements OnInit {
   errorAlert = false;
   // ng-modal variable
   closeResult: string;
+  registrationFormL;
 
-  // @ViewChildren('FirstNameValue') firstNameValue;
 
   constructor(
     private modalService: NgbModal,
@@ -31,24 +32,12 @@ export class SearchNameModuleComponent implements OnInit {
     private fb: FormBuilder,
     private router: Router,
     private activatedRouter: ActivatedRoute,
-    private generalRepoService: GeneralRepoService
+    private generalRepoService: GeneralRepoService,
   ) { }
 
   // form-builder
   // learners information
-  registrationFormL = this.fb.group({
-    learnerId: [''],
-    learnerName: [{ value: null, disabled: true }],
-    lastName: [{ value: null, disabled: true }],
-    middleName: [{ value: null, disabled: true }],
-    age: [''],
-    email: [{ value: null, disabled: true }],
-    phone: [{ value: null, disabled: true }],
-    payment: [''],
-    schedule: [''],
-    owning: [''],
-    address: ['']
-  });
+
 
   searchForm = this.fb.group({
     search: ['', Validators.required]
@@ -58,29 +47,13 @@ export class SearchNameModuleComponent implements OnInit {
     return this.searchForm.get('search');
   }
 
-  // searchEnter(event, content) {
-  //   if (event.key === '') {
-  //     open(content);
-  //   }
-  // }
-  patchRegiFormL() {
-    this.registrationFormL.patchValue({
-      learnerId: this.learners.LearnerId,
-      learnerName: this.learners.FirstName,
-      lastName: this.learners.LastName,
-      email: this.learners.Email,
-      phone: this.learners.ContactNum,
-      address: this.learners.Address
-    });
-    // this.onChangePath(this.learners.LearnerId);
-  }
-
   modalServiceMethod(content) {
     if (this.data.length > 1) {
       this.modalService
-        .open(content, { ariaLabelledBy: 'modal-basic-title' })
+        .open(content, { ariaLabelledBy: 'modal-basic-title', backdrop: "static", keyboard: false })
         .result.then(
           result => {
+            console.log(content, result)
             this.closeResult = `Closed with: ${result}`;
             this.onChangePath(this.learners.learnerId);
           },
@@ -98,24 +71,27 @@ export class SearchNameModuleComponent implements OnInit {
     this.learnersListService
       .getLearners(this.searchForm.value.search)
       .subscribe(data => {
-        console.log(data)
-        // if (data['Data'].length === 0) {
-        //   this.registrationFormL.value.learnerId = 0;
-        //   alert('please enter a correct first name');
-        // }
-        // else {
-          this.learners = data['Data'][0];
-          this.data = data['Data'];
+        this.learners = data['Data'][0];
+        this.data = data['Data'];
+        if (this.data.length === 1) {
           this.patchRegiFormL();
-          this.modalServiceMethod(content);
-          // put learners information to service waiting for other component subscribe
-          this.generalRepoService.fisrtName.next(this.learners);
           // change url
+          this.onChangePath(this.learners.LearnerId);
+        } else {
+          this.modalServiceMethod(content);
+        }
+        // put learners information to service waiting for other component subscribe
+        this.generalRepoService.fisrtName.next(this.learners);
+        //console.log(this.learners)
+        //why  this.learners.length === 1 ? but this.learners is a object
+        //if (this.learners.length === 1 ){
+        //this.onChangePath(this.learners.LearnerId);
+        //}
           console.log(this.learners)
           //why  this.learners.length === 1 ? but this.learners is a object
-          //if (this.learners.length === 1 ){
-          this.onChangePath(this.learners.LearnerId);
-          //}
+          if (this.data.length === 1 ){
+            this.onChangePath(this.learners.LearnerId);
+          }
         // }
       },
         (error) => {
@@ -124,6 +100,17 @@ export class SearchNameModuleComponent implements OnInit {
           this.errorMsg = error.error;
         }
       );
+  }
+
+  patchRegiFormL() {
+    this.registrationFormL.patchValue({
+      learnerId: this.learners.LearnerId,
+      learnerName: this.learners.FirstName,
+      lastName: this.learners.LastName,
+      email: this.learners.Email,
+      phone: this.learners.ContactNum,
+      address: this.learners.Address
+    });
   }
 
   // close alert
@@ -144,12 +131,12 @@ export class SearchNameModuleComponent implements OnInit {
         learnerId: this.data[i].LearnerId,
         learnerName: this.data[i].FirstName,
         lastName: this.data[i].LastName,
+        middleName: this.data[i].MiddleName,
         email: this.data[i].Email,
         phone: this.data[i].ContactNum
       });
       this.learners.learnerId = this.data[i].LearnerId;
       this.generalRepoService.fisrtName.next(this.data[i]);
-      console.log(this.generalRepoService);
     }
   }
 
@@ -164,20 +151,40 @@ export class SearchNameModuleComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.activatedRouter.url.subscribe(url => {
-      const path1 = url[0].path;
-      if (path1 === "credit") {
-        this.payPath = "learner/" + path1
-      } else {
-        let path2 = url[1].path;
-        if (path2 === 'invoice') {
-          path2 = 'invoice';
-          this.payPath = `/${path1}/${path2}/`;
-        } else {
-          this.payPath = `/${path1}/${path2}/`;
-        }
-      }
+    this.registrationFormL = this.fb.group({
+      learnerId: [''],
+      learnerName: [{ value: null, disabled: true }],
+      lastName: [{ value: null, disabled: true }],
+      middleName: [{ value: null, disabled: true }],
+      age: [''],
+      email: [{ value: null, disabled: true }],
+      phone: [{ value: null, disabled: true }],
+      payment: [''],
+      schedule: [''],
+      owning: [''],
+      address: ['']
     });
+    this.payPath = this.router.url
+    console.log(this.payPath)
+    let lastRouteNameIsNumber = !Number.isNaN(+this.router.url.slice(this.router.url.lastIndexOf("/") + 1))
+    if (lastRouteNameIsNumber) {
+      this.learnerIdByUrl = +this.router.url.slice(this.router.url.lastIndexOf("/") + 1)
+      this.learnersListService.getLearnerList().subscribe(
+        data => {
+          let learnerList = data["Data"]
+          let learner = learnerList.find(data => data.LearnerId == this.learnerIdByUrl)
+          this.registrationFormL.patchValue({
+            learnerId: learner.LearnerId,
+            learnerName: learner.FirstName,
+            lastName: learner.LastName,
+            middleName: learner.MiddleName,
+            email: learner.Email,
+            phone: learner.ContactNum
+          })
+          console.log(this.registrationFormL)
+        }
+      )
+    }
   }
 
 }

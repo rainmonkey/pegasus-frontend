@@ -43,6 +43,7 @@
     "jspdf": "^1.5.3",
     "layui-src": "^2.5.4",
     "ng-fullcalendar": "^2.0.3",
+    "ng-multiselect-dropdown": "^0.2.3",
     "ng2-charts": "^2.2.3",
     "node-emoji": "^1.10.0",
     "popper.js": "^1.15.0",

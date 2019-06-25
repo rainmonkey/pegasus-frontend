@@ -2,7 +2,7 @@ import { CommonModule, DatePipe } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import {MatButtonModule, MatFormFieldModule, MatInputModule, MatSelectModule} from '@angular/material';
+import { MatButtonModule, MatFormFieldModule, MatInputModule, MatSelectModule } from '@angular/material';
 // Dependencies
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -10,6 +10,7 @@ import { NgbModule, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { FullCalendarModule } from 'ng-fullcalendar';
 import { ChartsModule } from 'ng2-charts';
 import { routing } from '../app/app-routing.module';
+import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 // Components
 import { AppComponent } from './app.component';
 import { FooterComponent } from './components/basic/footer/footer.component';
@@ -91,6 +92,11 @@ import { WeekFormatPipe } from './shared/pipes/week-format.pipe';
 import { PaymentPeriodPipe } from './shared/pipes/paymentPeriod.pipe';
 import { IsUnder18Pipe } from './shared/pipes/isUnder18.pipe';
 import { confirmEqualValidatorDirectie } from './shared/confirm-equal-validator.directive';
+import { RemindModalComponent } from './components/dashboard/dashboard-components/remind/remind-modal/remind-modal.component';
+import { RemindListComponent } from './components/dashboard/dashboard-components/remind/remind-list/remind-list.component';
+import { RemindPanelComponent } from './components/dashboard/dashboard-components/remind/remind-panel/remind-panel.component';
+
+
 import { StaffListComponent } from './components/dashboard/dashboard-components/admin-staff/Staff-list/Staff-list.component';
 import { StaffPanelComponent } from './components/dashboard/dashboard-components/admin-staff/staff-panel/staff-panel.component';
 import { SimplifyOrgPipe } from './shared/pipes/simplify-org.pipe';
@@ -202,6 +208,9 @@ import { MessagerPersonalInfoComponent } from './components/dashboard/general/me
     PaymentPeriodPipe,
     IsUnder18Pipe,
     confirmEqualValidatorDirectie,
+    RemindModalComponent,
+    RemindListComponent,
+    RemindPanelComponent,
     StaffListComponent,
     StaffPanelComponent,
     SimplifyOrgPipe,
@@ -231,7 +240,7 @@ import { MessagerPersonalInfoComponent } from './components/dashboard/general/me
     MessagerRecentlyComponent,
     MessagerChattingComponent,
     MessagerPersonalInfoComponent,
-    
+
   ],
   imports: [
     NgbModule,
@@ -247,6 +256,7 @@ import { MessagerPersonalInfoComponent } from './components/dashboard/general/me
     FullCalendarModule,
     CommonModule,
     ChartsModule,
+    NgMultiSelectDropDownModule.forRoot(),
     MatSelectModule,
     PickerModule,
     EmojiModule
@@ -256,7 +266,7 @@ import { MessagerPersonalInfoComponent } from './components/dashboard/general/me
     MondayDateInWeekByDatePipe,
     NgbActiveModal
   ],
-  entryComponents:[
+  entryComponents: [
     TeacherDeleteModalComponent,
     TeacherDetailModalComponent,
     TeacherUpdateModalComponent,
@@ -277,6 +287,8 @@ import { MessagerPersonalInfoComponent } from './components/dashboard/general/me
     RatingModalComponent,
     AdminLearnerPeriodCourseChangeModalComponent,
     ForgotPasswordModalComponent,
+    ChangePasswordModalComponent,
+    RemindModalComponent,
     AdminLearnerLeaveComponent,
     ChangePasswordModalComponent,
     LearnerRegistrationModalComponent,
