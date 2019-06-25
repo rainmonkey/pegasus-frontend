@@ -87,7 +87,6 @@ export class SearchNameModuleComponent implements OnInit {
         if (this.learners.length === 1) {
           this.patchRegiFormL();
           // change url
-<<<<<<< HEAD
           this.onChangePath(this.learners.LearnerId);
         } else {
           this.modalServiceMethod(content);
@@ -99,13 +98,6 @@ export class SearchNameModuleComponent implements OnInit {
         //if (this.learners.length === 1 ){
         this.onChangePath(this.learners.LearnerId);
         //}
-=======
-          console.log(this.learners)
-          //why  this.learners.length === 1 ? but this.learners is a object
-          if (this.data.length === 1 ){
-            this.onChangePath(this.learners.LearnerId);
-          }
->>>>>>> 35378f550bb390a95d989dfe61d8d40a51f87919
         // }
       },
         (error) => {

@@ -30,8 +30,10 @@ export class LearnerDetailModalComponent implements OnInit {
   otherFileUrl = ''
   agreeFileUrl = ''
   learnerList1: any
-  // amendment:number
-  amendmentList=[]
+  //amendment列表
+  amendmentList = []
+  tempraryList = []
+  permanentList = []
   constructor(public activeModal: NgbActiveModal, private LearnerListService: LearnersService, ) {
 
   }
@@ -52,7 +54,7 @@ export class LearnerDetailModalComponent implements OnInit {
   getData() {
     this.LearnerListService.getLearnerList().subscribe(
       (res) => {
-        console.log(res)
+        // console.log(res)
         //@ts-ignore
         this.learnerList1 = res.Data;
       },
@@ -149,7 +151,7 @@ export class LearnerDetailModalComponent implements OnInit {
     //         })
     //     }
     //   })
-    console.log(this.otherValueList)
+    // console.log(this.otherValueList)
   }
 
   getHowKnowValue(displayData) {
@@ -164,7 +166,7 @@ export class LearnerDetailModalComponent implements OnInit {
           }
         })
       }
-      console.log(this.howKnowList)
+      // console.log(this.howKnowList)
     })
   }
 
@@ -188,7 +190,7 @@ export class LearnerDetailModalComponent implements OnInit {
 
   // other files
   getOthersUrl() {
-    console.log(this.whichLearner.OtherfileUrl)
+    // console.log(this.whichLearner.OtherfileUrl)
     if (this.whichLearner.OtherfileUrl !== null) {
       this.othersmsg = 'Download Other Files'
       return this.otherFileUrl = this.photoUrl + this.whichLearner.OtherfileUrl;
@@ -218,32 +220,25 @@ export class LearnerDetailModalComponent implements OnInit {
   //   }
   // }
 
-  // 拿到修改列表
   getAmendmentList() {
+
     for (let i of this.whichLearner.One2oneCourseInstance) {
-      if (i.Amendment.length == 1 ) {
-        this.amendmentList=i.Amendment
-        console.log(this.amendmentList)
-        this.reverseAmendmentList(this.amendmentList)
-    }
-  }
-    return
-  }
-
-  // 倒序修改列表
-  reverseAmendmentList(amendmentList){
-    let i =amendmentList.length-1
-    for(i;i>=0; --i){
       console.log(i)
-      if(amendmentList[i].IsTemporary=0){
-        console.log(amendmentList[i])
+
+      if (i.Amendment) {
+        i.Amendment.forEach(element => {
+          if (element.IsTemporary == 0) {
+            console.log('aaaaaaaaa',)
+            i.permanent=element;
+            return;
+          }
+        });
       }
-
     }
-
+console.log(this.whichLearner.One2oneCourseInstance)
   }
-}
 
+}
 
 
 
