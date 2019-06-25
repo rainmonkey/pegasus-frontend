@@ -4,7 +4,7 @@ import { NgbModal, NgbModalRef, NgbPagination } from '@ng-bootstrap/ng-bootstrap
 import { RemindModalComponent } from '../../remind/remind-modal/remind-modal.component';
 import { CoursesService } from 'src/app/services/http/courses.service';
 import { DatePipe } from '@angular/common';
-
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-remind-list',
@@ -61,17 +61,20 @@ export class RemindListComponent implements OnInit {
         console.log(this.remindsListLengh);
       },
       (err) => {
-       //  alert('Sorry, there\'s something wrong with server.')
         console.log(err);
-        this.isloading = false;
+        Swal.fire({
+          title: 'Error!',
+          text: 'Sorry! ',
+          type: 'error',
+        });
       });
   }
 
 
   search() {
     // console.warn('asdfasdf')
-    const beginDate = this.searchBeginDate;
-    const endDate = this.searchEndDate;
+    var beginDate = this.searchBeginDate;
+    var endDate = this.searchEndDate;
     this.getRemindData(beginDate, endDate);
   }
  
