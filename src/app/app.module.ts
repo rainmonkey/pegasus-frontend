@@ -242,7 +242,7 @@ import { ChattingComponent } from './components/dashboard/general/chatting/chatt
   providers: [
     DatePipe,
     MondayDateInWeekByDatePipe,
-    NgbActiveModal
+    NgbActiveModal,
   ],
   entryComponents:[
     TeacherDeleteModalComponent,

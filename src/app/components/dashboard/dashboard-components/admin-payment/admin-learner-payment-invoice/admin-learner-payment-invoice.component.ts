@@ -245,7 +245,6 @@ export class AdminLearnerPaymentInvoiceComponent implements OnInit, OnDestroy {
 
     // get FirstName
     nameSubejct(){
-      console.log('a')
       this.fistNameSubscription = this.generalRepoService.fisrtName.subscribe(res=>
         {
         this.learner = res;
