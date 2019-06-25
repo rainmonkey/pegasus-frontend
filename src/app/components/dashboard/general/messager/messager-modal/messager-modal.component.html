@@ -1,7 +1,7 @@
 <div class='m_m_skeleton'>
   <!--header-->
   <div class='m_m_header'>
-    <span class='m_m_header_icon m_m_header_cog'>
+    <span class='m_m_header_icon m_m_header_cog' (click)='showConfigPanel()'>
       <span class='fas fa-cog'></span>
     </span>
     chatting with...    
@@ -10,8 +10,16 @@
     </span>
   </div>
 
+  <!--style selection ui-->
+  <div class='m_m_style'> 
+    <div class='m_m_style_label'>
+      Styles:
+    </div>
+    <div *ngFor='let i of styleList;let index=index' class='m_m_style_color' [ngStyle]="{'background': i.background}" (click)='changeStyle(index)'></div>
+  </div>
+
   <!--personal label ui-->
-  <app-messager-personal-info *ngIf='personalLabelDisplayFlag'></app-messager-personal-info>
+  <app-messager-personal-info *ngIf='personalLabelDisplayFlag' [bgUrl]='bgUrl'></app-messager-personal-info>
 
   <!--subscribers ui-->
   <div class='m_m_subscribers' id='subscribers'> 

@@ -12,18 +12,44 @@ export class MessagerModalComponent implements OnInit {
   public personalLabelDisplayFlag: boolean = true;
   public preBtnSelectedObj: any = null;
   public userId = null;
+  public bgUrl:string = null;
+  public styleList:Array<object>=[
+                                  {url:'../../../../../../assets/images/shared/background01.jpg',background:'linear-gradient(135deg, pink, white)'},
+                                  {url:'../../../../../../assets/images/shared/background02.jpg',background:'linear-gradient(135deg, purple, lightblue)'},
+                                  {url:'../../../../../../assets/images/shared/background03.jpg',background:'linear-gradient(135deg, lightgreen, lightblue)'},
+                                  {url:'../../../../../../assets/images/shared/background04.jpg',background:'linear-gradient(135deg, black, white)'},
+                                  {url:'../../../../../../assets/images/shared/background05.jpg',background:'linear-gradient(135deg, red, lightblue)'},
+                                  {url:'../../../../../../assets/images/shared/background06.jpg',background:'linear-gradient(135deg, lightblue, pink)'}];
 
 
   @Output() onCloseChattingModal = new EventEmitter();
   constructor() { }
 
   ngOnInit() {
+    //各种初始化 未完成
     this.preBtnSelectedObj = document.getElementById('initSelected');
   }
 
   a() {
     return { "height": "300px" }
   }
+
+  //点击设置按钮
+  showConfigPanel(){
+    let obj = document.getElementsByClassName('m_m_style')[0];
+    if(obj['style'].display == '' || obj['style'].display == 'none'){
+      obj['style'].display = 'block';
+    }
+    else{
+      obj['style'].display = 'none';
+    }
+  }
+
+  changeStyle(index){
+    this.bgUrl = this.styleList[index]['url'];
+    //向后台发送更新的数据 未完成
+  }
+
   selectFunctionalBtn(selectId) {
     //如果点击的是当前页的btn 则不发生任何事情
     if (selectId == this.currentBtnIndex) {

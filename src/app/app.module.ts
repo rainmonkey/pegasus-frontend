@@ -91,6 +91,11 @@ import { WeekFormatPipe } from './shared/pipes/week-format.pipe';
 import { PaymentPeriodPipe } from './shared/pipes/paymentPeriod.pipe';
 import { IsUnder18Pipe } from './shared/pipes/isUnder18.pipe';
 import { confirmEqualValidatorDirectie } from './shared/confirm-equal-validator.directive';
+import { RemindModalComponent } from './components/dashboard/dashboard-components/remind/remind-modal/remind-modal.component';
+import { RemindListComponent } from './components/dashboard/dashboard-components/remind/remind-list/remind-list.component';
+import { RemindPanelComponent } from './components/dashboard/dashboard-components/remind/remind-panel/remind-panel.component';
+
+
 import { StaffListComponent } from './components/dashboard/dashboard-components/admin-staff/Staff-list/Staff-list.component';
 import { StaffPanelComponent } from './components/dashboard/dashboard-components/admin-staff/staff-panel/staff-panel.component';
 import { SimplifyOrgPipe } from './shared/pipes/simplify-org.pipe';
@@ -202,6 +207,9 @@ import { MessagerPersonalInfoComponent } from './components/dashboard/general/me
     PaymentPeriodPipe,
     IsUnder18Pipe,
     confirmEqualValidatorDirectie,
+    RemindModalComponent,
+    RemindListComponent,
+    RemindPanelComponent,
     StaffListComponent,
     StaffPanelComponent,
     SimplifyOrgPipe,
@@ -254,7 +262,7 @@ import { MessagerPersonalInfoComponent } from './components/dashboard/general/me
   providers: [
     DatePipe,
     MondayDateInWeekByDatePipe,
-    NgbActiveModal
+    NgbActiveModal,
   ],
   entryComponents: [
     TeacherDeleteModalComponent,
@@ -277,6 +285,8 @@ import { MessagerPersonalInfoComponent } from './components/dashboard/general/me
     RatingModalComponent,
     AdminLearnerPeriodCourseChangeModalComponent,
     ForgotPasswordModalComponent,
+    ChangePasswordModalComponent,
+    RemindModalComponent,
     AdminLearnerLeaveComponent,
     ChangePasswordModalComponent,
     LearnerRegistrationModalComponent,
