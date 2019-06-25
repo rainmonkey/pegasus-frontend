@@ -233,15 +233,15 @@ export class TimePickerComponent implements OnInit {
     }; 
     return true;
   }
-  triggerPopover(p) {
-    if(this.isTrigger) {
-      p.close();
-    } else {
-      setTimeout(() => {
-        p.close();
-      }, 2000)
-    }
-  }
+  // triggerPopover(p) {
+  //   if(this.isTrigger) {
+  //     p.close();
+  //   } else {
+  //     // setTimeout(() => {
+  //     //   p.close();
+  //     // }, 2000)
+  //   }
+  // }
   openPopover(p,x,y) {
     p.open();
     // this.isTrigger = false;
@@ -249,7 +249,7 @@ export class TimePickerComponent implements OnInit {
     // this.triggerPopover(p);
   }
   closePopover(p,x,y) {
-    // p.close();
+    p.close();
     // // this.isTrigger = true;
     // this.triggerPopover(p);
     // setTimeout(()=>{x
