@@ -20,11 +20,10 @@ export class SearchNameModuleComponent implements OnInit {
   public errorMsg;
   public show: boolean;
   public payPath;
+  learnerUrlWithoutId;
   errorAlert = false;
   // ng-modal variable
   closeResult: string;
-  registrationFormL;
-
 
   constructor(
     private modalService: NgbModal,
@@ -33,15 +32,30 @@ export class SearchNameModuleComponent implements OnInit {
     private router: Router,
     private activatedRouter: ActivatedRoute,
     private generalRepoService: GeneralRepoService,
-  ) { }
+  ) {
+    // router.events.subscribe(e=>co)
+  }
 
   // form-builder
   // learners information
-
-
+  registrationFormL = this.fb.group({
+    learnerId: [''],
+    learnerName: [{ value: null, disabled: true }],
+    lastName: [{ value: null, disabled: true }],
+    middleName: [{ value: null, disabled: true }],
+    age: [''],
+    email: [{ value: null, disabled: true }],
+    phone: [{ value: null, disabled: true }],
+    payment: [''],
+    schedule: [''],
+    owning: [''],
+    address: ['']
+  });
   searchForm = this.fb.group({
     search: ['', Validators.required]
   });
+
+
 
   get search() {
     return this.searchForm.get('search');
@@ -82,16 +96,9 @@ export class SearchNameModuleComponent implements OnInit {
         }
         // put learners information to service waiting for other component subscribe
         this.generalRepoService.fisrtName.next(this.learners);
-        //console.log(this.learners)
-        //why  this.learners.length === 1 ? but this.learners is a object
-        //if (this.learners.length === 1 ){
-        //this.onChangePath(this.learners.LearnerId);
-        //}
-          console.log(this.learners)
-          //why  this.learners.length === 1 ? but this.learners is a object
-          if (this.data.length === 1 ){
-            this.onChangePath(this.learners.LearnerId);
-          }
+        console.log(this.learners)
+        // if (this.data.length === 1) {
+        //   this.onChangePath(this.learners.LearnerId);
         // }
       },
         (error) => {
@@ -151,24 +158,11 @@ export class SearchNameModuleComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.registrationFormL = this.fb.group({
-      learnerId: [''],
-      learnerName: [{ value: null, disabled: true }],
-      lastName: [{ value: null, disabled: true }],
-      middleName: [{ value: null, disabled: true }],
-      age: [''],
-      email: [{ value: null, disabled: true }],
-      phone: [{ value: null, disabled: true }],
-      payment: [''],
-      schedule: [''],
-      owning: [''],
-      address: ['']
-    });
     this.payPath = this.router.url
-    console.log(this.payPath)
     let lastRouteNameIsNumber = !Number.isNaN(+this.router.url.slice(this.router.url.lastIndexOf("/") + 1))
     if (lastRouteNameIsNumber) {
       this.learnerIdByUrl = +this.router.url.slice(this.router.url.lastIndexOf("/") + 1)
+      this.learnerUrlWithoutId = this.router.url.slice(0, this.router.url.lastIndexOf("/") + 1)
       this.learnersListService.getLearnerList().subscribe(
         data => {
           let learnerList = data["Data"]
@@ -184,7 +178,9 @@ export class SearchNameModuleComponent implements OnInit {
           console.log(this.registrationFormL)
         }
       )
+    } else {
+      this.learnerUrlWithoutId = this.router.url
     }
+    console.log(this.learnerUrlWithoutId)
   }
-
 }

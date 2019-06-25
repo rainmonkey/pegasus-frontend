@@ -66,4 +66,8 @@ export class LearnerCreditDetailsComponent implements OnInit {
     this.router.navigate([url + "/arrange"], { queryParams: { LearnerId: this.learnerId } })
   }
 
+  ngOnDestroy() {
+    console.log("destroy")
+  }
+
 }
