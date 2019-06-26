@@ -165,17 +165,16 @@
 
                 <div class="col-6">
                   <span class="label">Schedule: </span>
-                  <div *ngFor='let time of groupCourse.GroupCourseInstance.CourseSchedule'>
+                  <div  *ngFor='let time of groupCourse.GroupCourseInstance.CourseSchedule'>
                     <span class='text'>{{time.DayOfWeek|weekFormat}}
                       {{time.BeginTime}} -- {{time.EndTime}}</span>
-                  </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
       </div>
-
+</div>
 
 
       <!-- one2one Course -->
