@@ -1,0 +1,53 @@
+<div class='modal-header'>
+  Course Amendment History
+</div>
+
+<div class='modal-body'>
+  <div *ngIf='whichCourse.Amendment.length==0'>
+    This course has not to be amendment
+  </div>
+
+  <div *ngIf='whichCourse.Amendment.length !== 0'>
+    <div *ngFor='let i of whichCourse.Amendment'>
+      <div class='card'>
+        <div class='card-body'>
+          <div class='row'>
+            <div class='col-6'>
+              <span>Amendment at: </span> <span class='text'>{{i.CreatedAt.replace('T',' ')}}</span>
+            </div>
+
+            <div class='col-6'>
+              <span>Is Temporary: </span> <span class='text'>{{i.IsTemporary|IsTemporary}}</span>
+            </div>
+
+            <div class='col-6'>
+              <span>Location: </span> <span class='text'>{{i.OrgId|orgFormat}} {{i.Room.RoomName}}</span>
+            </div>
+
+            <div class='col-6'>
+                <span>Teacher: </span> <span class='text'>{{i.Teacher.FirstName}} {{i.Teacher.LastName}}</span>
+            </div>
+
+            <div class='col-6' *ngIf='i.EndDate == null'>
+              <span>Begin Date: </span> <span class='text'>{{i.BeginDate.slice(0,10)}}</span>
+            </div>
+
+            <div class='col-6' *ngIf='i.EndDate'>
+                <span>Period: </span> <span class='text'>{{i.BeginDate.slice(0,10)}} -- {{i.EndDate.slice(0,10)}}</span>
+            </div>
+
+            <div class='col-6'>
+                <span>Course time: </span> <span class='text'>{{i.DayOfWeek|weekFormat}} {{i.BeginTime}} -- {{i.EndTime}}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <br>
+    </div>
+  </div>
+</div>
+
+<!--modal footer-->
+<div class='modal-footer'>
+  <button type="button" class="btn btn-outline-dark" (click)="activeModal.close('Close click')">Close</button>
+</div>
