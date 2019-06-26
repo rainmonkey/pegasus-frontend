@@ -241,16 +241,9 @@ export class LearnerDetailModalComponent implements OnInit {
 
   openHistory(ele) {
     const modalRef = this.modalService.open(AmendmentHistoryModalComponent, { size: 'lg', backdrop: 'static', keyboard: false });
-    let that = this;
+
     modalRef.componentInstance.whichCourse=ele
-    modalRef.result.then(
-      (res) => {
-          that.ngOnInit()
-      },
-      (err) =>{
-        return
-      }
-    )
+
   }
 
 }
