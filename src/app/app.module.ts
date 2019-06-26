@@ -125,6 +125,8 @@ import { MessagerSubscribersComponent } from './components/dashboard/general/mes
 import { MessagerRecentlyComponent } from './components/dashboard/general/messager/messager-recently/messager-recently.component';
 import { MessagerChattingComponent } from './components/dashboard/general/messager/messager-chatting/messager-chatting.component';
 import { MessagerPersonalInfoComponent } from './components/dashboard/general/messager/messager-personal-info/messager-personal-info.component';
+import { AmendmentHistoryModalComponent } from './components/dashboard/dashboard-components/admin-learner/amendment-History-modal/amendment-History-modal.component';
+import { IsTemporaryPipe } from './shared/pipes/IsTemporary.pipe';
 
 @NgModule({
   declarations: [
@@ -184,6 +186,8 @@ import { MessagerPersonalInfoComponent } from './components/dashboard/general/me
     LearnerEditModalComponent,
     LearnerAddModalComponent,
     LearnerDeleteCourseModalComponent,
+    AmendmentHistoryModalComponent,
+    IsTemporaryPipe,
 
     SessionCancelModalComponent,
     SessionTutorReportModalComponent,
@@ -300,7 +304,8 @@ import { MessagerPersonalInfoComponent } from './components/dashboard/general/me
     InventoryDetailModalComponent,
     InventoryReceiptModalComponent,
     AddHolidaysModalComponent,
-    DeleteHolidayComponent
+    DeleteHolidayComponent,
+    AmendmentHistoryModalComponent
   ],
   exports: [AppComponent],
   bootstrap: [AppComponent]

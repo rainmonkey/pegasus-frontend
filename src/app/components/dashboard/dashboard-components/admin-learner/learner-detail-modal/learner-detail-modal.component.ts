@@ -1,7 +1,8 @@
 import { Component, OnInit, Input, AfterViewInit } from '@angular/core';
-import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { LearnersService } from 'src/app/services/http/learners.service';
 import { environment } from 'src/environments/environment.prod';
+import { AmendmentHistoryModalComponent } from '../amendment-History-modal/amendment-History-modal.component';
 
 @Component({
   selector: 'app-learner-detail-modal',
@@ -34,7 +35,7 @@ export class LearnerDetailModalComponent implements OnInit {
   amendmentList = []
   tempraryList = []
   permanentList = []
-  constructor(public activeModal: NgbActiveModal, private LearnerListService: LearnersService, ) {
+  constructor(public activeModal: NgbActiveModal, private LearnerListService: LearnersService,   private modalService: NgbModal,) {
 
   }
 
@@ -59,7 +60,7 @@ export class LearnerDetailModalComponent implements OnInit {
         this.learnerList1 = res.Data;
       },
       (err) => {
-        console.log('error')
+       alert("Something wrong in server")
       }
     )
   }
@@ -223,22 +224,33 @@ export class LearnerDetailModalComponent implements OnInit {
   getAmendmentList() {
 
     for (let i of this.whichLearner.One2oneCourseInstance) {
-      console.log(i)
+      // console.log(i)
       if (i.Amendment) {
-        i.Amendment.sort((a, b) => a.CreatedAt.replace(/-/gi,'').slice(0,8)- b.CreatedAt.replace(/-/gi,'').slice(0,8))
-        console.log(i.Amendment.sort((a, b) => a.CreatedAt.replace(/-/gi,'').slice(0,8)- b.CreatedAt.replace(/-/gi,'').slice(0,8)))
-        i.Amendment.forEach(element => {
-          if (element.IsTemporary == 0) {
-            i.permanent = element;
-            return;
-          }else if(element.IsTemporary == 1){
-            i.temporary=element;
-            return
+        i.Amendment.sort((b, a) => a.CreatedAt.replace(/-/gi, '').slice(0, 8) - b.CreatedAt.replace(/-/gi, '').slice(0, 8))
+        console.log(i.Amendment.sort((b, a) => a.CreatedAt.replace(/-/gi, '').slice(0, 8) - b.CreatedAt.replace(/-/gi, '').slice(0, 8)))
+         for(let j of i.Amendment){
+           if (j.IsTemporary == 0) {
+            i.permanent = j;
+            break;
           }
-        });
+         }
       }
     }
     console.log(this.whichLearner.One2oneCourseInstance)
+  }
+
+  openHistory(ele) {
+    const modalRef = this.modalService.open(AmendmentHistoryModalComponent, { size: 'lg', backdrop: 'static', keyboard: false });
+    let that = this;
+    modalRef.componentInstance.whichCourse=ele
+    modalRef.result.then(
+      (res) => {
+          that.ngOnInit()
+      },
+      (err) =>{
+        return
+      }
+    )
   }
 
 }
