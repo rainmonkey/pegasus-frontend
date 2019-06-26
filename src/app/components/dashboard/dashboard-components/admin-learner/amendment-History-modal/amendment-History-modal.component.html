@@ -1,0 +1,34 @@
+<div class='modal-header'>
+  Course Amendment History
+</div>
+
+<div class='modal-body'>
+  <div *ngIf='whichCourse.Amendment.length==0'>
+    This course has not to be amendment
+  </div>
+
+  <div *ngIf='whichCourse.Amendment.length !== 0'>
+    <div *ngFor='let i of whichCourse.Amendment'>
+      <div class='card'>
+        <div class='card-body'>
+          <div class='row'>
+            <div class='col-6'>
+              <span>Amendment at: </span> <span class='text'>{{i.CreatedAt.replace('T',' ')}}</span>
+            </div>
+
+            <div class='col-6'>
+              <span>Is Temporary: </span> <span class='text'>{{i.IsTemporary|IsTemporary}}</span>
+            </div>
+
+          </div>
+        </div>
+      </div>
+      <br>
+    </div>
+  </div>
+</div>
+
+<!--modal footer-->
+<div class='modal-footer'>
+  <button type="button" class="btn btn-outline-dark" (click)="activeModal.close('Close click')">Close</button>
+</div>
