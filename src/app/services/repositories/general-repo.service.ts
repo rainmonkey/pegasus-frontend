@@ -40,7 +40,6 @@ export class GeneralRepoService {
       res=>{
          let pathAllowed = res.Data;
          this.pathArray = pathAllowed.map(ele=>ele.Url);
-         console.log('ajfeo',this.pathArray)
          this.pathArraySubject.next(this.pathArray);
       },
       error=>{

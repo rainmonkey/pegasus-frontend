@@ -122,6 +122,7 @@ export class AdminLearnerPaymentInvoiceComponent implements OnInit, OnDestroy {
           result => {
             this.closeResult = `Closed with: ${result}`;
             this.postPaymentMethod(item);
+            console.log('!!!!!',this.postPayment)
             this.paymentsListService.addFund(this.postPayment).subscribe(
               response => {
                 console.log('Success!', response);

@@ -14,7 +14,6 @@ export class UserAuthOtherGuard implements CanActivate {
     return this.checkLoginIn();
   }
   checkLoginIn(){
-    console.log('abc',this.authService.pathArray);
     if (this.authService.pathArray){
       return true;
     }
