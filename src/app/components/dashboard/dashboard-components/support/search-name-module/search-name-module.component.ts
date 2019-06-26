@@ -2,7 +2,7 @@ import { Component, OnInit, ViewChildren } from '@angular/core';
 import { LearnersService } from '../../../../../services/http/learners.service';
 import { FormBuilder, Validators } from '@angular/forms';
 import { NgbModal, ModalDismissReasons, } from '@ng-bootstrap/ng-bootstrap';
-import { Router, ActivatedRoute, ParamMap } from '@angular/router';
+import { Router, ActivatedRoute, NavigationEnd } from '@angular/router';
 import { GeneralRepoService } from '../../../../../services/repositories/general-repo.service';
 
 @Component({
@@ -10,7 +10,9 @@ import { GeneralRepoService } from '../../../../../services/repositories/general
   templateUrl: './search-name-module.component.html',
   styleUrls: ['./search-name-module.component.css']
 })
+
 export class SearchNameModuleComponent implements OnInit {
+  navigationSubscription;
   a = false;
   // learners
   public name: any = 'type..';
@@ -20,7 +22,6 @@ export class SearchNameModuleComponent implements OnInit {
   public errorMsg;
   public show: boolean;
   public payPath;
-  learnerUrlWithoutId;
   errorAlert = false;
   // ng-modal variable
   closeResult: string;
@@ -32,9 +33,7 @@ export class SearchNameModuleComponent implements OnInit {
     private router: Router,
     private activatedRouter: ActivatedRoute,
     private generalRepoService: GeneralRepoService,
-  ) {
-    // router.events.subscribe(e=>co)
-  }
+  ) { }
 
   // form-builder
   // learners information
@@ -67,7 +66,6 @@ export class SearchNameModuleComponent implements OnInit {
         .open(content, { ariaLabelledBy: 'modal-basic-title', backdrop: "static", keyboard: false })
         .result.then(
           result => {
-            console.log(content, result)
             this.closeResult = `Closed with: ${result}`;
             this.onChangePath(this.learners.learnerId);
           },
@@ -107,6 +105,15 @@ export class SearchNameModuleComponent implements OnInit {
           this.errorMsg = error.error;
         }
       );
+  }
+
+  clear() {
+    if (this.registrationFormL.value.learnerId) {
+      this.registrationFormL.value.learnerId = null
+      // console.log(this.searchForm.get("search"))
+      this.searchForm.get("search").setValue("")
+      this.router.navigate([this.payPath])
+    }
   }
 
   patchRegiFormL() {
@@ -158,11 +165,10 @@ export class SearchNameModuleComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.payPath = this.router.url
-    let lastRouteNameIsNumber = !Number.isNaN(+this.router.url.slice(this.router.url.lastIndexOf("/") + 1))
+    let lastRouteNameIsNumber = !Number.isNaN(+this.router.url.charAt(this.router.url.length - 1))
     if (lastRouteNameIsNumber) {
+      this.payPath = this.router.url.slice(0, this.router.url.lastIndexOf("/") + 1)
       this.learnerIdByUrl = +this.router.url.slice(this.router.url.lastIndexOf("/") + 1)
-      this.learnerUrlWithoutId = this.router.url.slice(0, this.router.url.lastIndexOf("/") + 1)
       this.learnersListService.getLearnerList().subscribe(
         data => {
           let learnerList = data["Data"]
@@ -175,12 +181,10 @@ export class SearchNameModuleComponent implements OnInit {
             email: learner.Email,
             phone: learner.ContactNum
           })
-          console.log(this.registrationFormL)
         }
       )
     } else {
-      this.learnerUrlWithoutId = this.router.url
+      this.payPath = this.router.url
     }
-    console.log(this.learnerUrlWithoutId)
   }
 }

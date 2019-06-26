@@ -42,8 +42,6 @@ import { StaffListComponent } from './components/dashboard/dashboard-components/
 import { LearnerCreditPanelComponent } from "./components/dashboard/dashboard-components/learner-credit/learner-credit-panel/learner-credit-panel.component";
 import { LearnerCreditDetailsComponent } from "./components/dashboard/dashboard-components/learner-credit/learner-credit-details/learner-credit-details.component"
 import { HolidayCalendarComponent } from './components/dashboard/dashboard-components/admin-holidays/holiday-calendar/holiday-calendar.component';
-import { LearnerCreditArrangeComponent } from './components/dashboard/dashboard-components/learner-credit/learner-credit-arrange/learner-credit-arrange.component';
-
 
 const routes: Routes = [
   {
@@ -68,7 +66,7 @@ const routes: Routes = [
         ]
       },
       {
-        path: 'payment/registration', pathMatch: 'prefix', component: AdminLearnerPaymentPanelComponent,canActivate: [UserAuthGuard],
+        path: 'payment/registration', pathMatch: 'prefix', component: AdminLearnerPaymentPanelComponent, canActivate: [UserAuthGuard],
         children: [
           { path: 'success', component: AdminLearnerPaymentSuccessComponent, },
           { path: ':id', component: AdminLearnerPaymentRegistrationComponent, },
@@ -120,7 +118,7 @@ const routes: Routes = [
         children: [
           {
             path: 'list', component: AdminLearnerListComponent, canActivate: [UserAuthGuard],
-            children: [{path: 'success', component: AdminLearnerPaymentSuccessComponent, }]
+            children: [{ path: 'success', component: AdminLearnerPaymentSuccessComponent, }]
           },
           { path: 'registration/edit', component: LearnerRegistrationModalComponent, },
           { path: 'registration', component: LearnerRegistrationFormComponent, canActivate: [UserAuthGuard], },
@@ -154,8 +152,8 @@ const routes: Routes = [
       // Remind Area
       {
         path: 'remind', component: RemindPanelComponent,
-        children:[
-          {path:'list', component:RemindListComponent}
+        children: [
+          { path: 'list', component: RemindListComponent }
         ]
       },
       //Staff Area
@@ -168,5 +166,6 @@ const routes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: '**', redirectTo: 'home' }
 ];
+
 
 export const routing = RouterModule.forRoot(routes);
