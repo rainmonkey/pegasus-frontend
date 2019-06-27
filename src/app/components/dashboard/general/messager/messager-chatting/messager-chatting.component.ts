@@ -1,7 +1,7 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { PickerModule } from '@ctrl/ngx-emoji-mart';
 import { EmojiModule } from '@ctrl/ngx-emoji-mart/ngx-emoji';
-import * as Emoji from 'node-emoji/'
+//import * as Emoji from 'node-emoji/'
 
 @Component({
   selector: 'app-messager-chatting',
@@ -11,14 +11,12 @@ import * as Emoji from 'node-emoji/'
 })
 export class MessagerChattingComponent implements OnInit {
   public chattingDisplayFlag: boolean = false;
-
   @Input() userId;
   @Output() onStartChatting = new EventEmitter();
 
   constructor() { }
-
   ngOnInit() {
-
+    console.log('a')
   }
 
   ngOnChanges() {
@@ -39,6 +37,7 @@ export class MessagerChattingComponent implements OnInit {
     else {
       emojiPickerObj.style.display = 'none';
     }
+    
   }
 
   /*
@@ -46,18 +45,18 @@ export class MessagerChattingComponent implements OnInit {
   */
   clickEmoji(event) {
     //获取所选择的emoji表情
-    let emoji = Emoji.get(event.emoji.colons);
-    //获取emoji所占的字符数
-    let emojiLength = emoji.length;
-    //获取textarea对象
-    let obj = document.getElementById('m_c_text_area');
-    //获取光标位置
-    let cursorStartIndex = obj['selectionStart'];
-    //向指定光标位置添加表情
-    obj['value'] = this.insertStr(obj['value'], cursorStartIndex, emoji);
-    //获取新的光标位置
-    this.setCursorPosition(obj, cursorStartIndex + emojiLength);
-
+    // let emoji = Emoji.get(event.emoji.colons);
+    // //获取emoji所占的字符数
+    // let emojiLength = emoji.length;
+    // //获取textarea对象
+    // let obj = document.getElementById('m_c_text_area');
+    // //获取光标位置
+    // let cursorStartIndex = obj['selectionStart'];
+    // //向指定光标位置添加表情
+    // obj['value'] = this.insertStr(obj['value'], cursorStartIndex, emoji);
+    // //获取新的光标位置
+    // this.setCursorPosition(obj, cursorStartIndex + emojiLength);
+    console.log('a')
 
   }
 

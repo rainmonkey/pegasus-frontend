@@ -56,6 +56,7 @@
         <span class='text'>{{whichLearner.EnrollDate}}</span>
       </div>
 
+
       <div *ngIf='whichLearner.Org' class="col-6">
         <span class="label">Location: </span>
         <span class='text'>{{whichLearner.Org.OrgName}}</span>
@@ -137,55 +138,43 @@
       </div>
 
       <!-- Group Course -->
-
       <div *ngIf='isGroupCourse'>
         <div *ngFor='let groupCourse of whichLearner.LearnerGroupCourse '>
           <br>
           <div class="card">
             <div class="card-body">
               <div class="row">
-                <div class="col-6">
+                <div class="col-7">
                   <span class="label">Course: </span>
                   <span class='text'>{{groupCourse.GroupCourseInstance.Course.CourseName}}</span>
                 </div>
 
-
-                <div *ngIf='groupCourse.GroupCourseInstance.Org' class="col-6">
-                  <span class="label">Location: </span>
-                  <span class='text'>{{groupCourse.GroupCourseInstance.Org.OrgName}}</span>
-                </div>
-
-
-
-                <div class="col-6">
-                  <div>
-                    <span class="label">Room: </span>
-                    <span class='text'>
-                      {{groupCourse.GroupCourseInstance.Room.RoomName}}
-                    </span>
-                  </div>
-                </div>
-
-                <div class="col-6">
+                <div class="col-5">
                   <span class="label">Teacher: </span>
                   <span class='text'>{{groupCourse.GroupCourseInstance.Teacher.FirstName}}
                     {{groupCourse.GroupCourseInstance.Teacher.LastName}}
                   </span>
                 </div>
 
+                <div class="col-12">
+                  <span class="label">Location: </span>
+                  <span class='text'>
+                  {{groupCourse.GroupCourseInstance.OrgId|orgFormat}} {{groupCourse.GroupCourseInstance.Room.RoomName}}
+                  </span>
+                </div>
+
                 <div class="col-6">
                   <span class="label">Schedule: </span>
-                  <div *ngFor='let time of groupCourse.GroupCourseInstance.CourseSchedule'>
+                  <div  *ngFor='let time of groupCourse.GroupCourseInstance.CourseSchedule'>
                     <span class='text'>{{time.DayOfWeek|weekFormat}}
                       {{time.BeginTime}} -- {{time.EndTime}}</span>
-                  </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
       </div>
-
+</div>
 
 
       <!-- one2one Course -->
@@ -196,66 +185,102 @@
           <div class="card">
             <div class="card-body">
               <div class="row">
-                <div class="col-6">
+                <div class="col-9">
                   <span class="label">Course: </span>
                   <span class='text'>{{ele.Course.CourseName}}</span>
                 </div>
 
-                <div class="col-6">
+                <!-- Amendent History Button-->
+                <div class='col-3'>
+                  <button type="button" class="btn btn-outline-info btn-sm" (click)='openHistory(ele)'>Amendment History</button>
+                </div>
+
+                <!-- teacher无编辑 -->
+                <div class="col-12"  *ngIf='ele.Amendment.length == 0'>
                   <span class="label">Teacher Name: </span>
                   <span class='text'>{{ele.Teacher.FirstName}} {{ele.Teacher.LastName}}</span>
                 </div>
 
-                <div *ngIf='ele.Org' class="col-6">
-                  <span class="label">Location: </span>
-                  <span class='text'>{{ele.Org.OrgName}}</span>
+                <!-- teacher有编辑 -->
+                <div class='col-12' *ngIf='ele.Amendment.length !== 0'>
+                  <span class="label">Teacher Name: </span>
+                  <span class='text line-trough'>{{ele.Teacher.FirstName}} {{ele.Teacher.LastName}}</span>
+                ===>
+                  <span class='text'>{{ele.permanent.Teacher.FirstName}} {{ele.permanent.Teacher.LastName}}</span>
+
                 </div>
 
-                <div class="col-6">
-                  <div>
-                    <span class="label">Room: </span>
-                    <span class='text'> {{ele.Room.RoomName}}</span>
+                <!-- Org无编辑 -->
+                <div *ngIf='ele.Amendment.length == 0' class="col-12">
+                  <div *ngIf='ele.Org'>
+                    <span class="label">Location: </span>
+                    <span class='text'>{{ele.Org.OrgName}} {{ele.Room.RoomName}}</span>
                   </div>
                 </div>
 
-                <div class="col-6">
+                <!-- Org有编辑 -->
+                <div *ngIf='ele.Amendment.length !== 0' class="col-12">
+                  <div *ngIf='ele.Org'>
+                    <span class="label">Location: </span>
+                    <span class='text line-trough'>{{ele.Org.OrgName}} {{ele.Room.RoomName}}</span>
+                    ===>
+                    <span class='text'>{{ele.permanent.OrgId|orgFormat}} {{ele.permanent.Room.RoomName}}</span>
+                  </div>
+                </div>
+
+                <!-- startDay有编辑 -->
+                <div class="col-12" *ngIf='ele.Amendment.length ==0'>
                   <span class="label">Course Start Day: </span>
-                  <span class='text'>{{ele.BeginDate}}</span>
+                  <span class='text'>{{ele.BeginDate.replace('T',' ')}}</span>
                 </div>
 
-                <div class="col-6">
+                <div class='col-12' *ngIf='ele.Amendment.length!==0'>
+                  <span class="label">Course Start Day: </span>
+                  <span class='text line-trough'>{{ele.BeginDate.replace('T',' ')}}</span>
+                  ===>
+                  <span class='text'>{{ele.permanent.BeginDate.replace('T',' ')}}</span>
+                </div>
+
+                <!-- End date 无编辑 -->
+                <div class="col-12" *ngIf='ele.EndDate && ele.Amendment.length == 0'>
                   <span class="label">Course End Day: </span>
-                  <span class='text'>{{ele.EndDate}}</span>
+                  <span class='text'>{{ele.EndDate.replace('T',' ')}}</span>
                 </div>
 
-                <div *ngIf='ele.Amendment.length == 0'>
-                  <div class="col-12">
-                    <div *ngFor='let sechdule of ele.CourseSchedule'>
-                      <span class="label">Course Sechdule: </span>
-                      <span class='text'> {{sechdule.DayOfWeek|weekFormat}}
-                        {{sechdule.BeginTime}} -- {{sechdule.EndTime}} </span>
-                    </div>
-                  </div>
+                <!-- end date有编辑 -->
+                <div class='col-12' *ngIf='ele.Amendment.length !== 0 && ele.permanent.EndDate'>
+                  <span class="label">Course End Day: </span>
+                  <span class='text line-trough'>{{ele.EndDate.replace('T',' ')}}</span>
+                  ===>
+                  <span class='text'>{{ele.permanent.EndDate.replace('T', ' ')}}</span>
                 </div>
 
-
-                <div *ngIf='ele.Amendment.length == 1'>
-                  <div class="col-12">
+                <div *ngIf='ele.Amendment.length == 0' class="col-12">
+                  <div *ngFor='let sechdule of ele.CourseSchedule'>
                     <span class="label">Course Sechdule: </span>
-                    <div *ngFor='let sechdule of ele.CourseSchedule' class='text line-trough'>
-                      <span> {{sechdule.DayOfWeek|weekFormat}}</span> ==>
-                      <span> {{sechdule.BeginTime}}</span>
-                      -- <span>{{sechdule.EndTime}} </span>
-                    </div>
-                    Change to:
-                    <div >
-                      <span class='text'>{{ele.permanent.DayOfWeek|weekFormat}}</span> ==>
-                      <span class='text'>{{ele.permanent.BeginTime}}</span> --
-                      <span class='text'>{{ele.permanent.EndTime}}</span>
-                    </div>
+                    <span class='text'> {{sechdule.DayOfWeek|weekFormat}}
+                      {{sechdule.BeginTime.replace('T',' ')}} -- {{sechdule.EndTime.replace('T',' ')}} </span>
                   </div>
                 </div>
 
+                <div *ngIf='ele.Amendment.length!==0' class="col-12">
+                  <span class="label">Course Sechdule: </span>
+                  <div *ngFor='let sechdule of ele.CourseSchedule'>
+                    <span class='text line-trough'> {{sechdule.DayOfWeek|weekFormat}} </span>
+                    <span class='text line-trough'> {{sechdule.BeginTime.replace('T',' ')}} -- </span>
+                    <span class='text line-trough'>{{sechdule.EndTime.replace('T',' ')}} </span>
+                    ===>
+                    <span class='text'>{{ele.permanent.DayOfWeek|weekFormat}} </span>
+                    <span class='text'>{{ele.permanent.BeginTime.replace('T',' ')}}</span> --
+                    <span class='text'>{{ele.permanent.EndTime.replace('T',' ')}}</span>
+                  </div>
+                </div>
+
+                <!-- Amendment Reason -->
+                <div *ngIf='ele.Amendment.length !== 0' class='col-12'>
+                  <span class='label'>Amendment Reason: </span>
+                  <span class='text'>{{ele.permanent.Reason}}</span>
+                </div>
 
               </div>
             </div>

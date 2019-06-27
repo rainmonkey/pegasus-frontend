@@ -1,6 +1,7 @@
 import { Routes, RouterModule } from '@angular/router';
 import { DashboardRestrictGuard } from './guards/dashboard-restrict.guard';
 import { UserAuthGuard } from './guards/user-auth.guard';
+import { UserAuthOtherGuard } from './guards/user-auth-other.guard';
 
 import { LoginComponent } from './components/basic/login/login.component';
 import { DashboardPanelComponent } from './components/dashboard/general/dashboard-panel/dashboard-panel.component';
@@ -44,12 +45,12 @@ import { LearnerCreditDetailsComponent } from "./components/dashboard/dashboard-
 import { HolidayCalendarComponent } from './components/dashboard/dashboard-components/admin-holidays/holiday-calendar/holiday-calendar.component';
 import { LearnerCreditArrangeComponent } from './components/dashboard/dashboard-components/learner-credit/learner-credit-arrange/learner-credit-arrange.component';
 
-
+//canActivate: [DashboardRestrictGuard],
 const routes: Routes = [
   {
-    path: '', component: DashboardPanelComponent, canActivate: [DashboardRestrictGuard],
+    path: '', component: DashboardPanelComponent,canActivate: [DashboardRestrictGuard],
     children: [
-      { path: 'home', component: DashboardHomeComponent },
+      { path: 'home', component: DashboardHomeComponent, canActivate: [UserAuthOtherGuard], },
       // Testing path
       { path: 'testone', component: TestoneComponent },
       // Payment Area
