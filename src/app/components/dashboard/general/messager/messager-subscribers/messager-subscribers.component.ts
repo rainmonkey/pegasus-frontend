@@ -39,7 +39,8 @@ export class MessagerSubscribersComponent implements OnInit {
     }
   }
 
-  chattingWithHandler(){
+  chattingWithHandler(event){
+    event.preventDefault();
     this.onChattingWith.emit({"status":true,"userId":123})
     console.log('aaa')
   }

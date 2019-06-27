@@ -26,8 +26,11 @@ export class MessagerModalComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
+    console.log('aaaaaaa')
     //各种初始化 未完成
     this.preBtnSelectedObj = document.getElementById('initSelected');
+    console.log(sessionStorage)
+    console.log(sessionStorage.name)//undefined
   }
 
   a() {
