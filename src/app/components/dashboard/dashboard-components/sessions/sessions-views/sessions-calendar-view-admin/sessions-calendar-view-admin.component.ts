@@ -97,7 +97,7 @@ export class SessionsCalendarViewAdminComponent implements OnInit {
           const RoomId = info['newResource'] == null ? info.event.extendedProps.info.RoomId : parseInt(info['newResource'].id);
           this.sessionEditModel = new SessionEdit(info.event.extendedProps.info.LessonId,
             info.event.extendedProps.info.LearnerId, RoomId, info.event.extendedProps.info.TeacherId,
-          info.event.extendedProps.info.OrgId, null, newStartTime, newEndTime);
+          info.event.extendedProps.info.OrgId, null, newStartTime);
           const modalRef = this.modalService.open(this.confirmModal);
           modalRef.result.then(() => {
             this.getEventByDate(Date);
@@ -139,7 +139,11 @@ export class SessionsCalendarViewAdminComponent implements OnInit {
     }
   }
   generateEventData = (data) => {
+
     data.forEach(s => {
+      if (s.isOwnAfterLesson == 1){
+        s.color = 'red'
+      }
       const type = '(' + s.title + ')';
       s.title = '';
       s.title += 'Tutor: ' + s.teacher + ' ' + type;

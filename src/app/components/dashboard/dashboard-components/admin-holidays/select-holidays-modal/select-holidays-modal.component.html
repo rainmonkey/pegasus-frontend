@@ -11,7 +11,7 @@
   <div class='modal-body'>
       <form novalidate [formGroup]="myForm">
       <div >
-      Date: <span style='font-weight: 700; font-size:20px'>{{date.dateStr}}</span>
+      Date: <span style='font-weight: 500; font-size:18px'>Create an holiday from {{date.startStr}} to {{date.endStr}}(excl).</span>
       </div>
 
       <div>Holiday Name:</div>
@@ -36,7 +36,6 @@
             </div>
           </div>
         </span>
-      <button type="button" class="btn btn-outline-primary" (click)='OnSubmit()'>Submit</button>
+      <button type="button" class="btn btn-outline-primary" (click)='getSelectDate()'>Submit</button>
     <button type="button" class="btn btn-outline-dark" (click)='OnClose()'>Close</button>
   </div>
-

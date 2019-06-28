@@ -5,6 +5,8 @@ import { FormBuilder, Validator, Validators, RequiredValidator } from '@angular/
 import { TransactionService } from '../../../../../../services/http/transaction.service';
 import {SessionsService} from '../../../../../../services/http/sessions.service';
 import {SessionEdit} from '../../../../../../models/SessionEdit';
+import swal from 'sweetalert2';
+import Swal from "sweetalert2";
 
 @Component({
   selector: 'app-session-detail-edit-modal',
@@ -58,7 +60,6 @@ export class SessionDetailEditModalComponent implements OnInit {
       BeginTime: [this.LessonModel.BeginTime],
       Teacher: ['', [Validators.required]],
       Branch: ['', [Validators.required]],
-      EndTime: [this.LessonModel.EndTime],
       Reason: ['', [Validators.required]]
     });
     this.getBranchs();
@@ -99,13 +100,19 @@ export class SessionDetailEditModalComponent implements OnInit {
     const sessionEdit = new SessionEdit(this.LessonModel.LessonId,
       this.LessonModel.LearnerId, parseInt(this.SessionForm.value.Room),
       parseInt(this.SessionForm.value.Teacher), parseInt(this.SessionForm.value.Branch), this.SessionForm.value.Reason,
-      this.SessionForm.value.BeginTime,this.SessionForm.value.EndTime);
+      this.SessionForm.value.BeginTime);
 
     this.sessionsService.SessionEdit(sessionEdit).subscribe(res => {
       this.isEditSuccess = true;
       this.isloading = false;
     }, err => {
       this.isEditFail = true;
+      this.isloading = false;
+      Swal.fire({
+        type: 'error',
+        title: 'Oops...',
+        text: err.error.ErrorMessage,
+      });
     });
   }
 }
