@@ -65,17 +65,14 @@
 .m_m_subscribers{
     height: 480px;
     width: 100%;
-    display: block;
 }
 .m_m_recently{
     height: 480px;
     width: 100%;
-    display: none;
 }
 .m_m_chatting{
     height: 580px;
     width: 100%;
-    display: none;
 }
 
 

@@ -22,17 +22,17 @@
   <app-messager-personal-info *ngIf='personalLabelDisplayFlag' [bgUrl]='bgUrl'></app-messager-personal-info>
 
   <!--subscribers ui-->
-  <div class='m_m_subscribers' id='subscribers'> 
+  <div *ngIf='subscribersDisplayFlag' class='m_m_subscribers' id='subscribers'> 
     <app-messager-subscribers (onChattingWith)='startChattingWith($event)'></app-messager-subscribers>
   </div>
 
   <!--recently chatting ui-->
-  <div class='m_m_recently' id='recently'>
+  <div *ngIf='recentlyDisplayFlag' class='m_m_recently' id='recently'>
     <app-messager-recently></app-messager-recently>
   </div>
 
   <!--chatting ui-->
-  <div class='m_m_chatting' id='chatting'>
+  <div *ngIf='chattingDisplayFlag' class='m_m_chatting' id='chatting'>
     <app-messager-chatting [userId]='userId' (onStartChatting)='startChattingWith()'></app-messager-chatting>
   </div>
 
