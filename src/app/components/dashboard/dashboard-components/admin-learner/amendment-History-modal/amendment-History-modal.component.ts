@@ -8,7 +8,8 @@ import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 })
 export class AmendmentHistoryModalComponent implements OnInit {
 @Input() whichCourse;
-
+  leave=[]
+  amend=[]
   constructor(
     public activeModal: NgbActiveModal,
 
@@ -16,6 +17,25 @@ export class AmendmentHistoryModalComponent implements OnInit {
 
   ngOnInit() {
     console.log(this.whichCourse)
+    this.courseAmend()
+    this.leave1()
   }
 
+  courseAmend(){
+    for(let i of this.whichCourse.Amendment){
+      if(i.AmendType == 2){
+        this.amend.push(i)
+
+      }
+      console.log(this.amend)
+    }
+  }
+
+  leave1(){
+    for (let i of this.whichCourse.Amendment){
+      if(i.AmendType == 1){
+        this.leave.push(i)
+      }
+    }
+  }
 }

@@ -228,13 +228,14 @@
                   </div>
                 </div>
 
-                <!-- startDay有编辑 -->
-                <div class="col-12" *ngIf='ele.Amendment.length ==0'>
+                <!-- startDay无编辑 -->
+                <div class="col-12" *ngIf='ele.Amendment.length ==0 && ele.BeginDate'>
                   <span class="label">Course Start Day: </span>
                   <span class='text'>{{ele.BeginDate.replace('T',' ')}}</span>
                 </div>
 
-                <div class='col-12' *ngIf='ele.Amendment.length!==0'>
+                <!-- startDay有编辑 -->
+                <div class='col-12' *ngIf='ele.Amendment.length!==0 && ele.BeginDate'>
                   <span class="label">Course Start Day: </span>
                   <span class='text line-trough'>{{ele.BeginDate.replace('T',' ')}}</span>
                   ===>
@@ -242,15 +243,16 @@
                 </div>
 
                 <!-- End date 无编辑 -->
-                <div class="col-12" *ngIf='ele.EndDate && ele.Amendment.length == 0'>
-                  <span class="label">Course End Day: </span>
-                  <span class='text'>{{ele.EndDate.replace('T',' ')}}</span>
+                <div class="col-12" *ngIf='ele.Amendment.length == 0'>
+                  <span class="label" >Course End Day: {{ele|json}}</span>
+                  <!-- <span class='text' *ngIf='ele.EndDate'>{{ele.EndDate.replace('T',' ')}}</span> -->
                 </div>
+
 
                 <!-- end date有编辑 -->
                 <div class='col-12' *ngIf='ele.Amendment.length !== 0 && ele.permanent.EndDate'>
                   <span class="label">Course End Day: </span>
-                  <span class='text line-trough'>{{ele.EndDate.replace('T',' ')}}</span>
+                  <span class='text line-trough' *ngIf='ele.EndDate'>{{ele.EndDate.replace('T',' ')}}</span>
                   ===>
                   <span class='text'>{{ele.permanent.EndDate.replace('T', ' ')}}</span>
                 </div>
