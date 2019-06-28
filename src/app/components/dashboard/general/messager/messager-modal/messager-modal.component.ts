@@ -13,13 +13,13 @@ export class MessagerModalComponent implements OnInit {
   public preBtnSelectedObj: any = null;
   public userId = null;
   public bgUrl:string = null;
+  public bgColor:string = null;
   public styleList:Array<object>=[
-                                  {url:'../../../../../../assets/images/shared/background01.jpg',background:'linear-gradient(135deg, pink, white)'},
-                                  {url:'../../../../../../assets/images/shared/background02.jpg',background:'linear-gradient(135deg, purple, lightblue)'},
-                                  {url:'../../../../../../assets/images/shared/background03.jpg',background:'linear-gradient(135deg, lightgreen, lightblue)'},
-                                  {url:'../../../../../../assets/images/shared/background04.jpg',background:'linear-gradient(135deg, black, white)'},
-                                  {url:'../../../../../../assets/images/shared/background05.jpg',background:'linear-gradient(135deg, red, lightblue)'},
-                                  {url:'../../../../../../assets/images/shared/background06.jpg',background:'linear-gradient(135deg, lightblue, pink)'}];
+                                  {url:'../../../../../../assets/images/shared/background01.jpg',background:'linear-gradient(135deg, pink, white)',bgcolor:'#fadbe3'},
+                                  {url:'../../../../../../assets/images/shared/background03.jpg',background:'linear-gradient(135deg, lightgreen, lightblue)',bgcolor:'#a6ddd3'},
+                                  {url:'../../../../../../assets/images/shared/background04.jpg',background:'linear-gradient(135deg, black, white)',bgcolor:'#2a2a2a'},
+                                  {url:'../../../../../../assets/images/shared/background05.jpg',background:'linear-gradient(135deg, red, lightblue)',bgcolor:'#a2bcb9'},
+                                  {url:'../../../../../../assets/images/shared/background06.jpg',background:'linear-gradient(135deg, lightblue, pink)',bgcolor:'#add8e6'}];
 
 
   @Output() onCloseChattingModal = new EventEmitter();
@@ -47,6 +47,7 @@ export class MessagerModalComponent implements OnInit {
 
   changeStyle(index){
     this.bgUrl = this.styleList[index]['url'];
+    this.bgColor = this.styleList[index]['bgcolor'];
     //向后台发送更新的数据 未完成
   }
 

@@ -64,7 +64,6 @@ export class AuthenticationService {
         localStorage.setItem('OrgId',JSON.stringify(res.Data.userdetails.OrgId));
         if (res.Data.photo)  localStorage.setItem('photo',res.Data.photo);
         if (res.Data.userdetails.staffId) localStorage.setItem('staffId', res.Data.staffId);
-
     }
 
     // remove user from local storage to log user out

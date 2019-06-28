@@ -99,6 +99,7 @@
 }
 .m_c_chatting_text{
     color:#5d5d5a;
+    text-align: left;
     word-break:break-all;
     border-radius:4px;
     padding: 0 5px;
@@ -106,11 +107,9 @@
     margin:0 5px;
 }
 .m_c_chatting_text_left{
-    text-align: left;
     border:1px solid lightgray;
 }
 .m_c_chatting_text_right{
-    text-align: right;
     border: 1px solid rgb(99, 168, 99);
     background: #9ee84d;
 }

@@ -105,7 +105,7 @@ export class AdminLearnerPaymentInvoiceComponent implements OnInit, OnDestroy {
     // create post obj
     postPaymentMethod(item) {
       this.postPayment = {
-        UserId: Number(localStorage.getItem('userID')),
+        StaffId: Number(localStorage.getItem('staffID')),
         LearnerId: item.LearnerId,
         InvoiceId: item.InvoiceId,
         PaymentMethod: this.paymentMethodI.value,
@@ -122,6 +122,7 @@ export class AdminLearnerPaymentInvoiceComponent implements OnInit, OnDestroy {
           result => {
             this.closeResult = `Closed with: ${result}`;
             this.postPaymentMethod(item);
+            console.log('!!!!!',this.postPayment)
             this.paymentsListService.addFund(this.postPayment).subscribe(
               response => {
                 console.log('Success!', response);

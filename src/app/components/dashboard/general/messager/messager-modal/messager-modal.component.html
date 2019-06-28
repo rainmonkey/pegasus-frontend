@@ -1,6 +1,6 @@
 <div class='m_m_skeleton'>
   <!--header-->
-  <div class='m_m_header'>
+  <div class='m_m_header' [ngStyle]="{'background':bgColor}">
     <span class='m_m_header_icon m_m_header_cog' (click)='showConfigPanel()'>
       <span class='fas fa-cog'></span>
     </span>
@@ -36,7 +36,7 @@
     <app-messager-chatting [userId]='userId' (onStartChatting)='startChattingWith()'></app-messager-chatting>
   </div>
 
-  <div class='m_m_selection_btns'>
+  <div class='m_m_selection_btns' [ngStyle]="{'background':bgColor}">
     <div class='row'>
       <div class='col-4 m_m_selection_btn_a'>
           <span class='m_m_selection_btn'><span class='far fa-user unlock'></span></span>

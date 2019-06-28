@@ -126,7 +126,7 @@ import { MessagerRecentlyComponent } from './components/dashboard/general/messag
 import { MessagerChattingComponent } from './components/dashboard/general/messager/messager-chatting/messager-chatting.component';
 import { MessagerPersonalInfoComponent } from './components/dashboard/general/messager/messager-personal-info/messager-personal-info.component';
 import { AmendmentHistoryModalComponent } from './components/dashboard/dashboard-components/admin-learner/amendment-History-modal/amendment-History-modal.component';
-import { IsTemporaryPipe } from './shared/pipes/IsTemporary.pipe';
+import { IsTemporaryPipe } from './shared/pipes/IsTemporary.pipe'
 
 @NgModule({
   declarations: [
