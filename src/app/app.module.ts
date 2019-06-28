@@ -127,6 +127,7 @@ import { MessagerChattingComponent } from './components/dashboard/general/messag
 import { MessagerPersonalInfoComponent } from './components/dashboard/general/messager/messager-personal-info/messager-personal-info.component';
 import { AmendmentHistoryModalComponent } from './components/dashboard/dashboard-components/admin-learner/amendment-History-modal/amendment-History-modal.component';
 import { IsTemporaryPipe } from './shared/pipes/IsTemporary.pipe'
+import { SelectHolidaysModalComponent } from './components/dashboard/dashboard-components/admin-holidays/select-holidays-modal/select-holidays-modal.component';
 
 @NgModule({
   declarations: [
@@ -243,7 +244,7 @@ import { IsTemporaryPipe } from './shared/pipes/IsTemporary.pipe'
     MessagerRecentlyComponent,
     MessagerChattingComponent,
     MessagerPersonalInfoComponent,
-
+    SelectHolidaysModalComponent,
   ],
   imports: [
     NgbModule,
@@ -305,7 +306,8 @@ import { IsTemporaryPipe } from './shared/pipes/IsTemporary.pipe'
     InventoryReceiptModalComponent,
     AddHolidaysModalComponent,
     DeleteHolidayComponent,
-    AmendmentHistoryModalComponent
+    AmendmentHistoryModalComponent,
+    SelectHolidaysModalComponent
   ],
   exports: [AppComponent],
   bootstrap: [AppComponent]

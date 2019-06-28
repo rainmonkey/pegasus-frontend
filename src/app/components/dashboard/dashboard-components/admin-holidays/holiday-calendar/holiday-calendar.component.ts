@@ -13,6 +13,7 @@ import { preserveWhitespacesDefault } from '@angular/compiler';
 import { TestBed } from '@angular/core/testing';
 import { dateToLocalArray } from '@fullcalendar/core/datelib/marker';
 import * as moment from 'moment/moment.js'
+import { SelectHolidaysModalComponent } from '../select-holidays-modal/select-holidays-modal.component';
 
 
 @Component({
@@ -48,7 +49,6 @@ export class HolidayCalendarComponent implements OnInit {
   getExitHoliday() {
     this.HolidayServer.getHoliday().subscribe(
       (event) => {
-        console.log('aaaaaaaaaaaaa')
         const eventData = this.putInfo(event.Data)
         this.eventsModel = eventData
       },
@@ -59,7 +59,6 @@ export class HolidayCalendarComponent implements OnInit {
   }
 
   initFullCalendar(pointer) {
-
     console.log(this.fullcalendar)
     let that = pointer;
     this.options = {
@@ -73,7 +72,7 @@ export class HolidayCalendarComponent implements OnInit {
       //   that.addAndEdit(info)
       // },
       eventClick: (info) => {
-        console.log(info)
+        // console.log(info)
         that.delete(info)
       },
       eventTextColor: '#ffffff',
@@ -81,21 +80,41 @@ export class HolidayCalendarComponent implements OnInit {
   }
 
   test(info) {
-    this.selectDate = []
-    console.log(info)
-    let beginDate = info.start
-    const endDate = (info.end).setDate((info.end).getDate()-1)
-  //  while (moment(beginDate).isBefore(endDate))
-  for (beginDate; moment(beginDate).isBefore(endDate)||moment(beginDate).isSame(endDate);) {
-    console.log(beginDate)
-    this.selectDate.push(beginDate)
-    beginDate.setDate(beginDate.getDate() + 1)
+  //   this.selectDate = []
+  //   console.log(info)
+  //   let beginDate = info.start
+  //   const endDate = (info.end).setDate((info.end).getDate()-1)
+  // //  while (moment(beginDate).isBefore(endDate))
+  // for (beginDate; moment(beginDate).isBefore(endDate)||moment(beginDate).isSame(endDate);) {
+  //   console.log(beginDate)
+  //   this.selectDate.push(beginDate)
+  //   beginDate.setDate(beginDate.getDate() + 1)
 
 
-    }
+  //   }
 
-    console.log(this.selectDate)
-    return
+  //   console.log(this.selectDate)
+  //   return
+  const modalRef = this.modalService.open(SelectHolidaysModalComponent)
+    let that = this;
+    modalRef.componentInstance.date = info;
+    modalRef.componentInstance.refreshFlag.subscribe(
+      (res) => {
+        modalRef.result.then(
+          function () {
+            // console.log(res)
+            if (res == true) {
+              that.fullcalendar.calendar.removeAllEvents();
+              that.getExitHoliday()
+              that.initFullCalendar(this)
+            }
+          },
+          function () {
+            return;
+          })
+      }
+    )
+
   }
 
   putInfo(h) {
@@ -114,7 +133,7 @@ export class HolidayCalendarComponent implements OnInit {
       (res) => {
         modalRef.result.then(
           function () {
-            console.log(res)
+            // console.log(res)
             if (res == true) {
               that.fullcalendar.calendar.removeAllEvents();
               that.getExitHoliday()
