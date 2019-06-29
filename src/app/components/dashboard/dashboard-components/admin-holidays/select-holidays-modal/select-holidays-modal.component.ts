@@ -42,11 +42,12 @@ export class SelectHolidaysModalComponent implements OnInit {
   }
 
   getSelectDate() {
+    const beginDate1= (this.date.start).setDate(this.date.start.getDate() + 1)
     let beginDate = this.date.start
-    const endDate = (this.date.end).setDate((this.date.end).getDate() - 1)
+    const endDate = this.date.end
     console.log()
     //  while (moment(beginDate).isBefore(endDate))
-    for (beginDate; moment(beginDate).isBefore(endDate) || moment(beginDate).isSame(endDate); beginDate.setDate(beginDate.getDate() + 1)) {
+    for (beginDate1; moment(beginDate).isBefore(endDate) || moment(beginDate).isSame(endDate); beginDate.setDate(beginDate.getDate() + 1)) {
 
       // this.selectDate.push(beginDate)
       this.newInfo.HolidayDate = beginDate

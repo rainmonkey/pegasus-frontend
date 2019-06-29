@@ -10,6 +10,8 @@ export class MessagerIconComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
+    //从后台获取数据
+    console.log('????????????????')
   }
 
   popUpMessager(){

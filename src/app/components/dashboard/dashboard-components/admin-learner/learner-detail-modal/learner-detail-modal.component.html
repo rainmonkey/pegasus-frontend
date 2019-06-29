@@ -205,8 +205,8 @@
                 <div class='col-12' *ngIf='ele.Amendment.length !== 0'>
                   <span class="label">Teacher Name: </span>
                   <span class='text line-trough'>{{ele.Teacher.FirstName}} {{ele.Teacher.LastName}}</span>
-                ===>
-                  <span class='text'>{{ele.permanent.Teacher.FirstName}} {{ele.permanent.Teacher.LastName}}</span>
+
+                  <span class='text' *ngIf='ele.permanent'>===> {{ele.permanent.Teacher.FirstName}} {{ele.permanent.Teacher.LastName}}</span>
 
                 </div>
 
@@ -223,8 +223,8 @@
                   <div *ngIf='ele.Org'>
                     <span class="label">Location: </span>
                     <span class='text line-trough'>{{ele.Org.OrgName}} {{ele.Room.RoomName}}</span>
-                    ===>
-                    <span class='text'>{{ele.permanent.OrgId|orgFormat}} {{ele.permanent.Room.RoomName}}</span>
+
+                    <span class='text' *ngIf='ele.permanent'>  ===> {{ele.permanent.OrgId|orgFormat}} {{ele.permanent.Room.RoomName}}</span>
                   </div>
                 </div>
 
@@ -238,23 +238,21 @@
                 <div class='col-12' *ngIf='ele.Amendment.length!==0 && ele.BeginDate'>
                   <span class="label">Course Start Day: </span>
                   <span class='text line-trough'>{{ele.BeginDate.replace('T',' ')}}</span>
-                  ===>
-                  <span class='text'>{{ele.permanent.BeginDate.replace('T',' ')}}</span>
+
+                  <span class='text' *ngIf='ele.permanent'>  ===> {{ele.permanent.BeginDate.replace('T',' ')}}</span>
                 </div>
 
                 <!-- End date 无编辑 -->
                 <div class="col-12" *ngIf='ele.Amendment.length == 0'>
-                  <span class="label" >Course End Day: {{ele|json}}</span>
-                  <!-- <span class='text' *ngIf='ele.EndDate'>{{ele.EndDate.replace('T',' ')}}</span> -->
+                  <span class="label"  *ngIf='ele.EndDate'>Course End Day:</span>
+                  <span class='text' *ngIf='ele.EndDate'>{{ele.EndDate.replace('T',' ')}}</span>
                 </div>
 
 
                 <!-- end date有编辑 -->
-                <div class='col-12' *ngIf='ele.Amendment.length !== 0 && ele.permanent.EndDate'>
+                <div class='col-12' *ngIf='ele.Amendment.length !== 0 && ele.permanet' >
                   <span class="label">Course End Day: </span>
-                  <span class='text line-trough' *ngIf='ele.EndDate'>{{ele.EndDate.replace('T',' ')}}</span>
-                  ===>
-                  <span class='text'>{{ele.permanent.EndDate.replace('T', ' ')}}</span>
+                  <span class='text' >{{ele.permanent.EndDate.replace('T', ' ')}}</span>
                 </div>
 
                 <div *ngIf='ele.Amendment.length == 0' class="col-12">
@@ -271,17 +269,17 @@
                     <span class='text line-trough'> {{sechdule.DayOfWeek|weekFormat}} </span>
                     <span class='text line-trough'> {{sechdule.BeginTime.replace('T',' ')}} -- </span>
                     <span class='text line-trough'>{{sechdule.EndTime.replace('T',' ')}} </span>
-                    ===>
-                    <span class='text'>{{ele.permanent.DayOfWeek|weekFormat}} </span>
-                    <span class='text'>{{ele.permanent.BeginTime.replace('T',' ')}}</span> --
-                    <span class='text'>{{ele.permanent.EndTime.replace('T',' ')}}</span>
+
+                    <span class='text' *ngIf='ele.permanent'> ===> {{ele.permanent.DayOfWeek|weekFormat}} </span>
+                    <span class='text' *ngIf='ele.permanent'>{{ele.permanent.BeginTime.replace('T',' ')}}</span> --
+                    <span class='text' *ngIf='ele.permanent'>{{ele.permanent.EndTime.replace('T',' ')}}</span>
                   </div>
                 </div>
 
                 <!-- Amendment Reason -->
                 <div *ngIf='ele.Amendment.length !== 0' class='col-12'>
                   <span class='label'>Amendment Reason: </span>
-                  <span class='text'>{{ele.permanent.Reason}}</span>
+                  <span class='text' *ngIf='ele.permanent'>{{ele.permanent.Reason}}</span>
                 </div>
 
               </div>

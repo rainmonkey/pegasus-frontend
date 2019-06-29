@@ -24,7 +24,7 @@
       <!--ngif-->
       <div class='col-12' id='group_teachers' style="display: none">
         <!--ngfor-->
-        <div class='row m_s_subscribers' (dblclick)='chattingWithHandler()'>
+        <div class='row m_s_subscribers' (dblclick)='chattingWithHandler($event)'>
           <div class='col-3'>
             <div class='m_s_subscribers_photo'>
               <img src="../../../../../../assets/images/usersimg/userphoto02.jpg" alt="">
@@ -40,7 +40,7 @@
           </div>
         </div>
 
-        <div class='row m_s_subscribers'>
+        <div class='row m_s_subscribers' (dblclick)='chattingWithHandler($event)'>
           <div class='col-3'>
             <div class='m_s_subscribers_photo'>
               <img src="../../../../../../assets/images/usersimg/userphoto02.jpg" alt="">
