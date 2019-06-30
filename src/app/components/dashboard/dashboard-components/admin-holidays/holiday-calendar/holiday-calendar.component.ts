@@ -1,17 +1,11 @@
-import { Component, OnInit, ViewChild, Input, ViewEncapsulation } from '@angular/core';
+import { Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { CalendarComponent } from 'ng-fullcalendar';
 import interactionPlugin from '@fullcalendar/interaction';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import { OptionsInput } from '@fullcalendar/core';
 import { HolidaysService } from 'src/app/services/http/holidays.service';
-import { Calendar } from '@fullcalendar/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { View } from '@fullcalendar/core';
 import { DeleteHolidayComponent } from '../delete-holiday/delete-holiday.component';
-import { preserveWhitespacesDefault } from '@angular/compiler';
-import { TestBed } from '@angular/core/testing';
-import { dateToLocalArray } from '@fullcalendar/core/datelib/marker';
-import * as moment from 'moment/moment.js'
 import { SelectHolidaysModalComponent } from '../select-holidays-modal/select-holidays-modal.component';
 
 

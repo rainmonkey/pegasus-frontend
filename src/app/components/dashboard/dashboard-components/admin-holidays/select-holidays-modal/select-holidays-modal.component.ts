@@ -3,7 +3,7 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { HolidaysService } from 'src/app/services/http/holidays.service';
 import * as moment from 'moment/moment.js'
-import { CompilePipeMetadata } from '@angular/compiler';
+
 @Component({
   selector: 'app-select-holidays-modal',
   templateUrl: './select-holidays-modal.component.html',

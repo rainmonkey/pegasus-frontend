@@ -33,8 +33,8 @@ export class LearnerDetailModalComponent implements OnInit {
   learnerList1: any
   //amendment列表
   amendmentList = []
-  tempraryList = []
-  permanentList = []
+
+
   constructor(public activeModal: NgbActiveModal, private LearnerListService: LearnersService,   private modalService: NgbModal,) {
 
   }
@@ -214,12 +214,6 @@ export class LearnerDetailModalComponent implements OnInit {
     return window.open(this.agreeFileUrl)
   }
 
-  // getAmendentLength(){
-  //   for(let ele of this.whichLearner.One2oneCourseInstance){
-  //       this.amendment=ele.Amendment.length
-  //       console.log(this.amendment)
-  //   }
-  // }
 
   getAmendmentList() {
 
