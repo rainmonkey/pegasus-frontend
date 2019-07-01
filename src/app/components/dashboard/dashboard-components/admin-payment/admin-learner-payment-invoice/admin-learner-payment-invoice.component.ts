@@ -105,7 +105,7 @@ export class AdminLearnerPaymentInvoiceComponent implements OnInit, OnDestroy {
     // create post obj
     postPaymentMethod(item) {
       this.postPayment = {
-        StaffId: Number(localStorage.getItem('staffID')),
+        StaffId: Number(localStorage.getItem('staffId')),
         LearnerId: item.LearnerId,
         InvoiceId: item.InvoiceId,
         PaymentMethod: this.paymentMethodI.value,
