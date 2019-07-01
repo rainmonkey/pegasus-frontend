@@ -11,21 +11,23 @@ import * as Emoji from 'node-emoji/'
 })
 export class MessagerChattingComponent implements OnInit {
   public chattingDisplayFlag: boolean = false;
-
-  @Input() userId;
+  public keysCombination: object = { "Enter": false, "Control": false };
+  public localMsgHistroy: Array<object> = [{ "msg": null ,'leftOrRight':'left'}];
+  public subscriber:object;
+  @Input() user;
   @Output() onStartChatting = new EventEmitter();
 
   constructor() { }
-
   ngOnInit() {
-
+    this.subscriber = JSON.parse(this.user);
   }
 
   ngOnChanges() {
     //console.log(this.userId);
-    if (this.userId !== null) {
+    if (this.user !== null && this.user !== undefined) {
       this.chattingDisplayFlag = true;
     }
+    console.log(this.user)
   }
   /*
     显示emoji选择框
@@ -39,6 +41,7 @@ export class MessagerChattingComponent implements OnInit {
     else {
       emojiPickerObj.style.display = 'none';
     }
+
   }
 
   /*
@@ -57,8 +60,6 @@ export class MessagerChattingComponent implements OnInit {
     obj['value'] = this.insertStr(obj['value'], cursorStartIndex, emoji);
     //获取新的光标位置
     this.setCursorPosition(obj, cursorStartIndex + emojiLength);
-
-
   }
 
   /*
@@ -85,11 +86,34 @@ export class MessagerChattingComponent implements OnInit {
     return soure.slice(0, start) + newStr + soure.slice(start)
   }
 
-  clickMessageSendBtn(event) {
-    console.log(event)
+  /*
+    键盘组合键发送消息
+  */
+  keydown(event) {
+    this.keysCombination[event.key] = true;
+    //当ctrl和enter同时按下的时候发送消息
+    if (this.keysCombination['Enter'] == true && this.keysCombination['Control'] == true) {
+      console.log('yes')
+      //成功 进行下一步操作
+      console.log(event.target.value)
+      this.pushMessageToView(event.target.value);
+    }
   }
 
-  startChatting(){
+  /*
+
+  */
+  keyup(event) {
+    this.keysCombination[event.key] = false;
+  }
+
+  pushMessageToView(message) {
+    this.localMsgHistroy.push({'msg':message,'leftOrRight':'right'})
+  }
+  /*
+    选择新联系人
+  */
+  startNewChatting() {
     this.onStartChatting.emit(true)
   }
 

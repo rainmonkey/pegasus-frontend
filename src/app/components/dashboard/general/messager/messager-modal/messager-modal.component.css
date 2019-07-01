@@ -12,7 +12,7 @@
     width: 100%;
     height: 25px;
     text-align: center;
-    background: rgb(141, 198, 218);
+    background:rgb(141, 198, 218);
     border-bottom: 1px solid lightgray;
 }
 .m_m_header_icon{
@@ -65,17 +65,15 @@
 .m_m_subscribers{
     height: 480px;
     width: 100%;
-    display: block;
+    overflow: auto;
 }
 .m_m_recently{
     height: 480px;
     width: 100%;
-    display: none;
 }
 .m_m_chatting{
     height: 580px;
     width: 100%;
-    display: none;
 }
 
 

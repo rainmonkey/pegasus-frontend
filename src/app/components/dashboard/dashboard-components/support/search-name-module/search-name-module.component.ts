@@ -87,11 +87,6 @@ export class SearchNameModuleComponent implements OnInit {
         //if (this.learners.length === 1 ){
         //this.onChangePath(this.learners.LearnerId);
         //}
-          console.log(this.learners)
-          //why  this.learners.length === 1 ? but this.learners is a object
-          if (this.data.length === 1 ){
-            this.onChangePath(this.learners.LearnerId);
-          }
         // }
       },
         (error) => {

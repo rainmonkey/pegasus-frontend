@@ -21,6 +21,7 @@ export class LoginComponent implements OnInit {
   submitted = false;
   returnUrl: string;
   errorMessage: string;
+  pathArray;
 
   constructor(
     public titleService: Title,
@@ -61,14 +62,24 @@ export class LoginComponent implements OnInit {
     this.authenticationService.login(this.f.username.value, this.f.password.value).subscribe(
       (data) => {
         // this.getPath();
-        this.onLoginSuccess();
-        this.generalRepoService.pathAllowed();
+        this.initAuthPath();
       },
       (err) => {
         this.loading = false,
         this.errorMessage = this.messageService.apiErrorMessageProcessing(err)
       }
     );
+  }
+  initAuthPath(){
+    this.generalRepoService.pathAllowed();
+    this.generalRepoService.pathArraySubject
+    .subscribe(
+      res=>{
+      if(res !==[]){this.onLoginSuccess();}
+      },
+      error=>{
+      }
+    )
   }
 
   onLoginSuccess() : void{

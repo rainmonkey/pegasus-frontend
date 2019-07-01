@@ -12,7 +12,7 @@
         </div>
         <div class='col-9'>
           <div class='col-12 m_c_subscribers_name'>
-            Winne
+            {{subscriber.FirstName}} {{subscriber.LastName}}
           </div>
           <div class='col-12 m_c_subscribers_signature'>
             奥克兰吴彦祖 奥克兰陈冠希 奥克兰王力宏
@@ -23,24 +23,27 @@
   </div>
 
   <!--聊天框-->
-  <div class='m_c_chatting_panel'>
-    <!--ng for-->
-    <div class='m_c_chatting_messagers m_c_chatting_messagers_left'>
-      <img src="../../../../../../assets/images/usersimg/userphoto02.jpg" alt="" class='m_c_chatting_messagers_left'>
-      <div class='m_c_chatting_text m_c_chatting_text_left m_c_chatting_messagers_left'>
-        我是奥克兰吴彦祖fdsssssssssssssffffffffffffffffffff
+  <div style="position: relative">
+    <div class='m_c_chatting_panel'>
+      <!--聊天内容-->
+      <div *ngFor='let i of localMsgHistroy' class='clearfix' style="margin-bottom: 5px">
+        <div class='m_c_chatting_messagers' [class.m_c_chatting_messagers_left] = 'i.leftOrRight == "left"' [class.m_c_chatting_messagers_right] = 'i.leftOrRight == "right"'>
+          <img src="../../../../../../assets/images/usersimg/userphoto02.jpg" alt="" [class.m_c_chatting_messagers_left] = 'i.leftOrRight == "left"' [class.m_c_chatting_messagers_right] = 'i.leftOrRight == "right"'>
+          <div [class.m_c_chatting_messagers_left] = 'i.leftOrRight == "left"' [class.m_c_chatting_messagers_right] = 'i.leftOrRight == "right"'>
+            <div class='m_c_time_stamp' [class.m_c_time_stamp_left]= 'i.leftOrRight == "left"' [class.m_c_time_stamp_right]= 'i.leftOrRight == "right"'>namenamename</div>
+            <div class='m_c_chatting_text' [class.m_c_chatting_messagers_left]='i.leftOrRight == "left"' [class.m_c_chatting_text_left] = 'i.leftOrRight == "left"' [class.m_c_chatting_messagers_right] = 'i.leftOrRight == "right"' [class.m_c_chatting_text_left] = 'i.leftOrRight == "right"'>
+              {{i.msg}}
+            </div>
+          </div>
+        </div>
       </div>
-    </div>
+  </div>
 
-    <div class='m_c_chatting_messagers m_c_chatting_messagers_right'>
-      <img src="../../../../../../assets/images/usersimg/userphoto.jpg" alt="" class='m_c_chatting_messagers_right'>
-      <div class='m_c_chatting_text m_c_chatting_text_right m_c_chatting_messagers_right'>
-        我也是奥克兰吴彦祖fdsssssssssssssffffffffffffffffffff
-      </div>
-    </div>
+    
 
     <!--emoji选择面板-->
-    <emoji-mart (emojiSelect)='clickEmoji($event)' id='m_c_emoji_picker_panel' [style]='{width:"100%"}' isNative=true>
+    <emoji-mart emoji='point_up' (emojiSelect)='clickEmoji($event)' id='m_c_emoji_picker_panel' [style]='{width:"100%"}'
+      isNative=true>
     </emoji-mart>
   </div>
 
@@ -54,7 +57,7 @@
 
   <!--输入框-->
   <div class='m_c_input_area'>
-    <textarea id='m_c_text_area' spellcheck="false" (keydown)='clickMessageSendBtn($event)'></textarea>
+    <textarea id='m_c_text_area' spellcheck="false" (keydown)='keydown($event)' (keyup)='keyup($event)'></textarea>
   </div>
 
 </div>
@@ -62,6 +65,6 @@
 <!--没有选择聊天对象时-->
 <div *ngIf='!chattingDisplayFlag' class='m_c_skeleton'>
   <div class='m_c_start_chatting'>
-    <span (click)='startChatting()'>start chatting now...</span>
+    <span (click)='startNewChatting()'>start chatting now...</span>
   </div>
 </div>
