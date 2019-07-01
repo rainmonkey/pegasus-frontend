@@ -23,7 +23,8 @@ export class GeneralRepoService {
     return this.http.get(this.baseUrl + 'page', RoleId);
   }
   giveAuthToGuard(urlS){
-        return this.pathArray.includes(urlS);
+    let localPath = localStorage.getItem('pathAuth');
+        return localPath.includes(urlS);
   }
 
     // let url: string = this.state.url;
@@ -40,6 +41,7 @@ export class GeneralRepoService {
       res=>{
          let pathAllowed = res.Data;
          this.pathArray = pathAllowed.map(ele=>ele.Url);
+         localStorage.setItem('pathAuth',this.pathArray);
          this.pathArraySubject.next(this.pathArray);
       },
       error=>{
