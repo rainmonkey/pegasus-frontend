@@ -17,7 +17,7 @@ export class ChartingComponent implements OnInit {
     { data: [65, 59, 80, 81, 56, 55, 40], label: 'Pakuranga' },
     { data: [28, 48, 40, 19, 86, 27, 90], label: 'Epsom' }
   ];
-  public chartLabels: Label[] = ['January', 'February', 'March', 'April', 'May', 'June', 'July'];
+  public chartLabels: Label[] = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14"];
   public lineChartOptions: (ChartOptions & { annotation: any }) = {
     responsive: true,
     legend:{
