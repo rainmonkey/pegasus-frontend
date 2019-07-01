@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ChattingService } from 'src/app/services/repositories/chatting.service';
 
 @Component({
   selector: 'app-messager-icon',
@@ -7,18 +8,30 @@ import { Component, OnInit } from '@angular/core';
 })
 export class MessagerIconComponent implements OnInit {
   public popUpModalFlag = true;
-  constructor() { }
+  constructor(private chattingService:ChattingService) { }
 
   ngOnInit() {
     //从后台获取数据
-    console.log('????????????????')
+    // this.chattingService.getChatListFronServer().subscribe(
+    //   (res) =>{
+
+    //   }
+    // )
   }
 
-  popUpMessager(){
+  /*
+    display messager chatting component
+      --> when user click messager icon, display component 
+  */
+  displayMessager(){
     this.popUpModalFlag = true;
   }
 
-  closeMessager(event){
+  /*
+    hide messager chatting component
+      --> when user click close sign, hide component 
+  */
+  hideMessager(event){
     if(event == 'true'){
       this.popUpModalFlag = false;
     }

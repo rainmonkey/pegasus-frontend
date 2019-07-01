@@ -101,7 +101,6 @@ export class MessagerModalComponent implements OnInit {
     event !== none： 目前有聊天对象
   */
   startChattingWith(event?) {
-    console.log(event)
     if (event !== undefined) {
       //如果双击跟某人聊天 接收到指令
       if (event.status == true) {

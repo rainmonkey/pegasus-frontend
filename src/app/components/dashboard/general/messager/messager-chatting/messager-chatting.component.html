@@ -30,8 +30,9 @@
         <div class='m_c_chatting_messagers' [class.m_c_chatting_messagers_left] = 'i.leftOrRight == "left"' [class.m_c_chatting_messagers_right] = 'i.leftOrRight == "right"'>
           <img src="../../../../../../assets/images/usersimg/userphoto02.jpg" alt="" [class.m_c_chatting_messagers_left] = 'i.leftOrRight == "left"' [class.m_c_chatting_messagers_right] = 'i.leftOrRight == "right"'>
           <div [class.m_c_chatting_messagers_left] = 'i.leftOrRight == "left"' [class.m_c_chatting_messagers_right] = 'i.leftOrRight == "right"'>
-            <div class='m_c_time_stamp' [class.m_c_time_stamp_left]= 'i.leftOrRight == "left"' [class.m_c_time_stamp_right]= 'i.leftOrRight == "right"'>namenamename</div>
-            <div class='m_c_chatting_text' [class.m_c_chatting_messagers_left]='i.leftOrRight == "left"' [class.m_c_chatting_text_left] = 'i.leftOrRight == "left"' [class.m_c_chatting_messagers_right] = 'i.leftOrRight == "right"' [class.m_c_chatting_text_left] = 'i.leftOrRight == "right"'>
+            <div class='m_c_time_stamp' [class.m_c_time_stamp_left]= 'i.leftOrRight == "left"' [class.m_c_time_stamp_right]= 'i.leftOrRight == "right"'>{{i.timeStamp}}</div>
+            <div class='m_c_chatting_text' [class.m_c_chatting_messagers_left]='i.leftOrRight == "left"' [class.m_c_chatting_text_left] = 'i.leftOrRight == "left"' [class.m_c_chatting_messagers_right] = 'i.leftOrRight == "right"' 
+              [class.m_c_chatting_text_left] = 'i.leftOrRight == "left"' [class.m_c_chatting_text_right]='i.leftOrRight == "right"'>
               {{i.msg}}
             </div>
           </div>

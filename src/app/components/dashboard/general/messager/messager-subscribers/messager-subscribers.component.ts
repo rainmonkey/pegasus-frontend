@@ -1,4 +1,5 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { ChattingService } from 'src/app/services/repositories/chatting.service';
 
 @Component({
   selector: 'app-messager-subscribers',
@@ -8,10 +9,14 @@ import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 })
 export class MessagerSubscribersComponent implements OnInit {
   public groupChatSwitchFlag: boolean = true;
+  public subscribersOfTeacher;
   @Output() onChattingWith = new EventEmitter();
-  constructor() { }
+
+  constructor(private chattingService:ChattingService) { }
 
   ngOnInit() {
+    this.subscribersOfTeacher =  this.chattingService.getChatListOfTeacher();
+    console.log(this.subscribersOfTeacher)
   }
 
   /*
@@ -45,6 +50,8 @@ export class MessagerSubscribersComponent implements OnInit {
   chattingWithHandler(event){
     //在sessionStorage里面保存 正在聊天的人
     sessionStorage.setItem('userId','123');
+    //console.log(sessionStorage.recentlySubscribers)
+    //sessionStorage.setItem('recentlySubscribers', )
     this.onChattingWith.emit({"status":true,"userId":123})
   }
 

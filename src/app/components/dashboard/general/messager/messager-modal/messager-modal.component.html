@@ -28,7 +28,7 @@
 
   <!--recently chatting ui-->
   <div *ngIf='recentlyDisplayFlag' class='m_m_recently' id='recently'>
-    <app-messager-recently></app-messager-recently>
+    <app-messager-recently (onChattingWith)='startChattingWith($event)'></app-messager-recently>
   </div>
 
   <!--chatting ui-->
