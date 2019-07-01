@@ -23,6 +23,7 @@ export class LearnerDetailModalComponent implements OnInit {
   otherValueList = [];
   howKnowList = [];
   learnerLevelList = []
+  levelTypeList=[]
   othersmsg = '';
   agreeFormMsg = '';
   howKnow: any
@@ -44,6 +45,7 @@ export class LearnerDetailModalComponent implements OnInit {
     this.lookUpData1()
     this.lookUpData2()
     this.lookUpData4()
+    this.lookUpData5()
     this.getOthersUrl()
     this.getFormUrl()
     console.log(this.whichLearner)
@@ -112,6 +114,22 @@ export class LearnerDetailModalComponent implements OnInit {
     )
   }
 
+  lookUpData5(){
+    this.LearnerListService.getLookups(5).subscribe(
+      (res) => { console.log(res), this.getLevelType(res.Data) },
+      (err) => { console.warn(err) }
+    )
+  }
+
+
+  getLevelType(data){
+  data.forEach(element => {
+    if (this.whichLearner.LevelType == element['PropValue']) {
+      this.levelTypeList.push(element['PropName'])
+    }
+  });
+  console.log(this.levelTypeList)
+}
 
   getLearnerValue(displayData1) {
     displayData1.forEach(element => {

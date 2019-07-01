@@ -6,10 +6,11 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./coporate-order-application.component.css']
 })
 export class CoporateOrderApplicationComponent implements OnInit {
-
+  public loadingFlag: boolean = false;
   constructor() { }
 
   ngOnInit() {
+    this.loadingFlag = true;
   }
 
 }
