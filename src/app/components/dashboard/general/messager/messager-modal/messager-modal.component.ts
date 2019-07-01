@@ -1,3 +1,4 @@
+import { ChattingService } from './../../../../../services/repositories/chatting.service';
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 
 @Component({
@@ -14,8 +15,10 @@ export class MessagerModalComponent implements OnInit {
   public subscribersDisplayFlag: boolean = true;
   public recentlyDisplayFlag: boolean = false;
   public chattingDisplayFlag: boolean = false;
+  public isErrorFlag: boolean = false;
   public preBtnSelectedObj: any = null;
-  public userId = null;
+  public user:object;
+  public userId;
   public bgUrl: string = null;
   public bgColor: string = null;
   public styleList: Array<object> = [
@@ -27,13 +30,16 @@ export class MessagerModalComponent implements OnInit {
 
 
   @Output() onCloseChattingModal = new EventEmitter();
-  constructor() { }
+  constructor(private chattingService:ChattingService) { }
 
   ngOnInit() {
-    console.log('aaaaaaa')
+    //if can not get data from server
+    if(this.chattingService.errorFlag == true){
+      this.isErrorFlag = true;
+    }
     //各种初始化 未完成
-    //1、获取正在跟跟谁聊天 uerId  (subscriber component set数据)
-    this.userId = sessionStorage.userId == undefined ? null : sessionStorage.userId;
+    //1、获取正在跟跟谁聊天  (subscriber component set数据)
+    this.user = sessionStorage.user == undefined ? null : sessionStorage.user;
 
     //2、获取目前选用的主题 (project项目初始化的时候从后台获取数据) 未完成
     this.preBtnSelectedObj = document.getElementById('initSelected');
@@ -88,7 +94,7 @@ export class MessagerModalComponent implements OnInit {
     }
   }
 
-  modalDisplayHandler(selectId){
+  modalDisplayHandler(selectId) {
     let currentflag = this.functionalBtnNames[selectId] + 'DisplayFlag';
     let previousFlag = this.previousBtnName + 'DisplayFlag';
     this[previousFlag] = false;
@@ -101,13 +107,12 @@ export class MessagerModalComponent implements OnInit {
     event !== none： 目前有聊天对象
   */
   startChattingWith(event?) {
-    console.log(event)
     if (event !== undefined) {
       //如果双击跟某人聊天 接收到指令
       if (event.status == true) {
+        this.user = event.user;
         this.selectFunctionalBtn(2);
       }
-      this.userId = event.userId;
     }
     else {
       console.log('a')
