@@ -7,7 +7,7 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./messager-icon.component.css']
 })
 export class MessagerIconComponent implements OnInit {
-  public popUpModalFlag = true;
+  public popUpModalFlag = false;
   constructor(private chattingSerice:ChattingService) { }
 
   ngOnInit() {

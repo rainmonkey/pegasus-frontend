@@ -13,19 +13,21 @@ export class MessagerChattingComponent implements OnInit {
   public chattingDisplayFlag: boolean = false;
   public keysCombination: object = { "Enter": false, "Control": false };
   public localMsgHistroy: Array<object> = [{ "msg": null ,'leftOrRight':'left'}];
-  @Input() userId;
+  public subscriber:object;
+  @Input() user;
   @Output() onStartChatting = new EventEmitter();
 
   constructor() { }
   ngOnInit() {
-    console.log('a')
+    this.subscriber = JSON.parse(this.user);
   }
 
   ngOnChanges() {
     //console.log(this.userId);
-    if (this.userId !== null) {
+    if (this.user !== null && this.user !== undefined) {
       this.chattingDisplayFlag = true;
     }
+    console.log(this.user)
   }
   /*
     显示emoji选择框

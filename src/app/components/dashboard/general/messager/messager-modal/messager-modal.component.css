@@ -65,6 +65,7 @@
 .m_m_subscribers{
     height: 480px;
     width: 100%;
+    overflow: auto;
 }
 .m_m_recently{
     height: 480px;

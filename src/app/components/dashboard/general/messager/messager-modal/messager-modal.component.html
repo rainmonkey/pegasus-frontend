@@ -33,7 +33,7 @@
 
   <!--chatting ui-->
   <div *ngIf='chattingDisplayFlag' class='m_m_chatting' id='chatting'>
-    <app-messager-chatting [userId]='userId' (onStartChatting)='startChattingWith()'></app-messager-chatting>
+    <app-messager-chatting [user]='user' (onStartChatting)='startChattingWith()'></app-messager-chatting>
   </div>
 
   <div class='m_m_selection_btns' [ngStyle]="{'background':bgColor}">

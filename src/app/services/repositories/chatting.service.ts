@@ -10,7 +10,7 @@ export class ChattingService {
   public subsOfStaffs;
   public subsOfTeachers;
   public subsOfStudents;
-  public errorFlag: boolean = false;
+  public errorFlag: boolean;
 
   constructor(private http: HttpClient) { }
 
@@ -23,6 +23,7 @@ export class ChattingService {
         console.log(this.subsOfStaffs)
       },
       (err) => {
+        console.log(err)
         this.errorFlag = true;
       }
     )
