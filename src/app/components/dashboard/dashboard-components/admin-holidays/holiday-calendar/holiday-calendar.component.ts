@@ -69,7 +69,7 @@ export class HolidayCalendarComponent implements OnInit {
   }
 
   test(info) {
-  const modalRef = this.modalService.open(SelectHolidaysModalComponent)
+  const modalRef = this.modalService.open(SelectHolidaysModalComponent,{ backdrop: 'static', keyboard: false })
     let that = this;
     modalRef.componentInstance.date = info;
     modalRef.componentInstance.refreshFlag.subscribe(
@@ -100,7 +100,7 @@ export class HolidayCalendarComponent implements OnInit {
   }
 
   delete(info) {
-    const modalRef = this.modalService.open(DeleteHolidayComponent)
+    const modalRef = this.modalService.open(DeleteHolidayComponent,{ backdrop: 'static', keyboard: false })
     let that = this;
     modalRef.componentInstance.date = info;
     modalRef.result.then(
