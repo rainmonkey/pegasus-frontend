@@ -1,3 +1,4 @@
+import { ChattingService } from './../../../../../services/repositories/chatting.service';
 import { Component, OnInit } from '@angular/core';
 
 @Component({
@@ -7,11 +8,11 @@ import { Component, OnInit } from '@angular/core';
 })
 export class MessagerIconComponent implements OnInit {
   public popUpModalFlag = true;
-  constructor() { }
+  constructor(private chattingSerice:ChattingService) { }
 
   ngOnInit() {
     //从后台获取数据
-    console.log('????????????????')
+    this.chattingSerice.getChattingList(1)
   }
 
   popUpMessager(){

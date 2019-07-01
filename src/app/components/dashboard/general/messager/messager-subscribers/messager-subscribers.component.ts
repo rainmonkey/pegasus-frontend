@@ -1,3 +1,4 @@
+import { ChattingService } from './../../../../../services/repositories/chatting.service';
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 
 @Component({
@@ -8,10 +9,13 @@ import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 })
 export class MessagerSubscribersComponent implements OnInit {
   public groupChatSwitchFlag: boolean = true;
+  public subsOfTeacher:Array<object>;
   @Output() onChattingWith = new EventEmitter();
-  constructor() { }
+
+  constructor(private chattingService:ChattingService) { }
 
   ngOnInit() {
+    this.subsOfTeacher = this.chattingService.subsOfTeachers;
   }
 
   /*

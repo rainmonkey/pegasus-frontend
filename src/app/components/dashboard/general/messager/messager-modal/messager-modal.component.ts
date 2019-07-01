@@ -1,3 +1,4 @@
+import { ChattingService } from './../../../../../services/repositories/chatting.service';
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 
 @Component({
@@ -14,6 +15,7 @@ export class MessagerModalComponent implements OnInit {
   public subscribersDisplayFlag: boolean = true;
   public recentlyDisplayFlag: boolean = false;
   public chattingDisplayFlag: boolean = false;
+  public isErrorFlag: boolean = false;
   public preBtnSelectedObj: any = null;
   public userId = null;
   public bgUrl: string = null;
@@ -27,10 +29,13 @@ export class MessagerModalComponent implements OnInit {
 
 
   @Output() onCloseChattingModal = new EventEmitter();
-  constructor() { }
+  constructor(private chattingService:ChattingService) { }
 
   ngOnInit() {
-    console.log('aaaaaaa')
+    //if can not get data from server
+    if(this.chattingService.errorFlag == true){
+      this.isErrorFlag = true;
+    }
     //各种初始化 未完成
     //1、获取正在跟跟谁聊天 uerId  (subscriber component set数据)
     this.userId = sessionStorage.userId == undefined ? null : sessionStorage.userId;
@@ -88,7 +93,7 @@ export class MessagerModalComponent implements OnInit {
     }
   }
 
-  modalDisplayHandler(selectId){
+  modalDisplayHandler(selectId) {
     let currentflag = this.functionalBtnNames[selectId] + 'DisplayFlag';
     let previousFlag = this.previousBtnName + 'DisplayFlag';
     this[previousFlag] = false;
