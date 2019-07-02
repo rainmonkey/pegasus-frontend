@@ -51,7 +51,6 @@ export class TrialConfirmComponent implements OnInit {
     this.endTimeTem = this.timeFormatting(this.endTime);
     this.whichTeacherFullName = this.whichTeacher.FirstName + ' ' + this.whichTeacher.LastName;
     this.getDataFromServer();
-    console.log(this.activatedRoute)
   }
 
   getDataFromServer() {

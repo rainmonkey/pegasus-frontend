@@ -87,7 +87,7 @@ export class TrialModalComponent implements OnInit {
     this.options = {
       allDaySlot: false,
       height: 700,
-      selectable: !this.arrangeFlag,
+      selectable: true,
       //starting time of a day
       minTime: '09:00',
       //end time of a day
@@ -115,17 +115,29 @@ export class TrialModalComponent implements OnInit {
   selectCallBack(info) {
     let startTimestamp = Date.parse(info.startStr);
     let endTimestamp = Date.parse(info.endStr);
-    if (endTimestamp - startTimestamp < this.timeInterval30Min) {
-      alert('Sorry, course duration can not less than 30 min.')
-    }
-    else if (endTimestamp - startTimestamp > 2 * this.timeInterval30Min) {
-      alert('Sorry, course duration can not more than 1 hour.')
-    }
-    else {
-      let duration = this.durationFormatting(startTimestamp, endTimestamp);
-      if (this.prepareCourse(duration) == true) {
+
+    //arrange
+    if (this.arrangeFlag) {
+      if (endTimestamp - startTimestamp >= this.timeInterval30Min) {
+        alert('Please select one slot only')
+      } else {
+        this.prepareCourse(this.duration)
+        endTimestamp = this.transferEndTime(startTimestamp, this.duration)
         this.popUpConfirmModal(startTimestamp, endTimestamp);
-      };
+      }
+    } else {
+      if (endTimestamp - startTimestamp < this.timeInterval30Min) {
+        alert('Sorry, course duration can not less than 30 min.')
+      }
+      else if (endTimestamp - startTimestamp > 2 * this.timeInterval30Min) {
+        alert('Sorry, course duration can not more than 1 hour.')
+      }
+      else {
+        let duration = this.durationFormatting(startTimestamp, endTimestamp);
+        if (this.prepareCourse(duration) == true) {
+          this.popUpConfirmModal(startTimestamp, endTimestamp);
+        };
+      }
     }
   }
 
@@ -149,6 +161,18 @@ export class TrialModalComponent implements OnInit {
     return true;
   }
 
+  transferEndTime(startTimestamp, duration) {
+    let endTimestamp = startTimestamp
+    if (duration == 1) {
+      endTimestamp += this.timeInterval30Min
+    } else if (duration == 2) {
+      endTimestamp += this.timeInterval45Min
+    } else if (duration == 3) {
+      endTimestamp += this.timeInterval60Min
+    }
+    return endTimestamp
+  }
+
   getStudentLevel() {
     for (let i of this.learners) {
       if (i.LearnerId == this.LearnerId) {
@@ -170,14 +194,11 @@ export class TrialModalComponent implements OnInit {
     }
   }
 
-  popUpConfirmModal(startTimestamp, endTimestamp?) {
+  popUpConfirmModal(startTimestamp, endTimestamp) {
+    console.log(endTimestamp - startTimestamp)
     const modalRef = this.modalService.open(TrialConfirmComponent, { size: 'lg', backdrop: 'static', keyboard: false });
     modalRef.componentInstance.startTime = this.transferTimestampToTime(startTimestamp);
-    if (endTimestamp) {
-      modalRef.componentInstance.endTime = this.transferTimestampToTime(endTimestamp);
-    } else {
-
-    }
+    modalRef.componentInstance.endTime = this.transferTimestampToTime(endTimestamp);
     modalRef.componentInstance.orgName = this.orgName;
     modalRef.componentInstance.cateName = this.cateName;
     modalRef.componentInstance.whichTeacher = this.whichTeacher;
