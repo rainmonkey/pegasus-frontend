@@ -71,7 +71,7 @@
           <small class="text-danger" *ngIf="DayOfWeek.invalid && DayOfWeek.touched">Please select day of week</small>
         </div>
         <div class="col-5">
-          <div>Is Permanent</div>
+          <div>Is Temporary</div>
           <select formControlName="IsTemporary" (change)="IsTemporaryChange()">
             <option value="0">No</option>
             <option value="1">Yes</option>
@@ -131,6 +131,14 @@
                     <span class='text'> {{sechdule.DayOfWeek|weekFormat}}
                       {{sechdule.BeginTime}} -- {{sechdule.EndTime}} </span>
                   </label>
+                  <div *ngFor="let amendment of ele.Amendment">
+                    <small *ngIf="amendment.IsTemporary==0" class="text-secondary">
+                      The course begins at {{amendment.BeginTime}} from {{amendment.BeginDate| date:'yyyy-MM-dd'}}
+                    </small>
+                    <small *ngIf="amendment.IsTemporary==1" class="text-secondary">
+                      The course begins at {{amendment.BeginTime}} from {{amendment.BeginDate| date:'yyyy-MM-dd'}} to {{amendment.EndDate| date:'yyyy-MM-dd'}}
+                    </small>
+                  </div>
                 </fieldset>
               </div>
             </div>

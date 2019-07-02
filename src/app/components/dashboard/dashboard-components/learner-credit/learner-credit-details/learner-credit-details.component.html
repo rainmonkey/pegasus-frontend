@@ -20,7 +20,7 @@
               <td>{{i.ExpiryDate|date:"dd/MM/yyyy"}}</td>
               <td>{{i.Quantity}}</td>
               <td>
-                <span class='t_info_table_btn' (click)='popUpModal(0,i)' title='Book a Course'><span class="fas fa-folder-plus"></span></span>
+                <span class='t_info_table_btn' title='Book a Course' (click)="navigateToArrange()" style="cursor:pointer"><span class="fas fa-folder-plus"></span></span>
               </td>
             </tr>
           </tbody>

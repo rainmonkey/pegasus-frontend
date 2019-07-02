@@ -1,4 +1,5 @@
-<div class='m_c_skeleton'>
+<!--选择聊天对象时-->
+<div *ngIf='chattingDisplayFlag' class='m_c_skeleton'>
   <div class='m_c_person_label'>
     <!--展示聊天对象的label 
     数据动态获取-->
@@ -11,7 +12,7 @@
         </div>
         <div class='col-9'>
           <div class='col-12 m_c_subscribers_name'>
-            Winne
+            {{subscriber.FirstName}} {{subscriber.LastName}}
           </div>
           <div class='col-12 m_c_subscribers_signature'>
             奥克兰吴彦祖 奥克兰陈冠希 奥克兰王力宏
@@ -22,23 +23,50 @@
   </div>
 
   <!--聊天框-->
-  <div class='m_c_chatting_panel'>
-    aaa
+  <div style="position: relative">
+    <div class='m_c_chatting_panel' id='m_c_chatting_panel'>
+      <!--聊天内容-->
+      <div *ngFor='let i of localMsgHistroy' class='clearfix' style="margin-bottom: 5px">
+        <div class='m_c_chatting_messagers' [class.m_c_chatting_messagers_left] = 'i.leftOrRight == "left"' [class.m_c_chatting_messagers_right] = 'i.leftOrRight == "right"'>
+          <img src="../../../../../../assets/images/usersimg/userphoto02.jpg" alt="" [class.m_c_chatting_messagers_left] = 'i.leftOrRight == "left"' [class.m_c_chatting_messagers_right] = 'i.leftOrRight == "right"'>
+          <div [class.m_c_chatting_messagers_left] = 'i.leftOrRight == "left"' [class.m_c_chatting_messagers_right] = 'i.leftOrRight == "right"'>
+            <div class='m_c_time_stamp' [class.m_c_time_stamp_left]= 'i.leftOrRight == "left"' [class.m_c_time_stamp_right]= 'i.leftOrRight == "right"'>{{i.timeStamp}}</div>
+            <div class='m_c_chatting_text' [class.m_c_chatting_messagers_left]='i.leftOrRight == "left"' [class.m_c_chatting_text_left] = 'i.leftOrRight == "left"' [class.m_c_chatting_messagers_right] = 'i.leftOrRight == "right"' 
+              [class.m_c_chatting_text_left] = 'i.leftOrRight == "left"' [class.m_c_chatting_text_right]='i.leftOrRight == "right"'>
+              {{i.msg}}
+            </div>
+          </div>
+        </div>
+      </div>
+      <div id='scroll_anchor'></div>
+  </div>
+
+    
+
     <!--emoji选择面板-->
-    <emoji-mart title="Pick your emoji…" (emojiSelect)='clickEmoji($event)' id='m_c_emoji_picker_panel'
-      [style]='{width:"100%"}'></emoji-mart>
+    <emoji-mart emoji='point_up' (emojiSelect)='clickEmoji($event)' id='m_c_emoji_picker_panel' [style]='{width:"100%"}'
+      isNative=true>
+    </emoji-mart>
   </div>
 
   <!--emoji框-->
   <div class='m_c_emoji_panel'>
-    <ngx-emoji emoji='sunglasses' set='apple' size="25" class='m_c_emoji_picker' (click)='showEmojiPicker()'>
+    <span class='m_c_emoji_panel_info'>crtl + enter to send</span>
+    <ngx-emoji emoji='sunglasses' size="25" class='m_c_emoji_picker' (click)='showEmojiPicker()'>
     </ngx-emoji>
   </div>
 
+
   <!--输入框-->
   <div class='m_c_input_area'>
-    <!-- <textarea id='m_c_text_area'></textarea>   -->
-    <input type="textarea" id='m_c_text_area' />
+    <textarea id='m_c_text_area' spellcheck="false" (keydown)='keydown($event)' (keyup)='keyup($event)'></textarea>
   </div>
 
+</div>
+
+<!--没有选择聊天对象时-->
+<div *ngIf='!chattingDisplayFlag' class='m_c_skeleton'>
+  <div class='m_c_start_chatting'>
+    <span (click)='startNewChatting()'>start chatting now...</span>
+  </div>
 </div>

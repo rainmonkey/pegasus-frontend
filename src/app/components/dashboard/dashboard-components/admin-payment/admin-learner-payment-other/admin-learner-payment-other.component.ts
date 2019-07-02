@@ -39,7 +39,7 @@ export class AdminLearnerPaymentOtherComponent implements OnInit {
     const conf = confirm(`the title of the payment is ${title}, the amount is ${amount}$, Please Confirm`);
     if (conf) {
     this.otherPaymentObj = {
-      StaffId: 1,
+      StaffId: Number(localStorage.getItem('staffId')),
       title: this.otherPayment.value.title,
       amount: this.otherPayment.value.amount
     };

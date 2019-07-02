@@ -1,7 +1,16 @@
 <div class="time-picker">
-  <div *ngFor="let o of teacherAvailableData.Data.AvailableDay">{{o.DayOfWeek | weekFormat}}:&nbsp;
+   <!-- color meanings -->
+   <div class="d-flex flex-column" style="margin-left: 20px; margin-top: 10px;">
+      <div class="d-inline-flex"><span class="dot dot_blue"></span><span>Teacher's available day.</span></div>
+      <div class="d-inline-flex"><span class="dot dot_red"></span><span>These durations are arranged.</span></div>
+      <div class="d-inline-flex"><span class="dot dot_green"></span><span>These durations can be picked.</span></div>
+      <div class="d-inline-flex"><span class="dot dot_yellow"></span><span>Someone change duration temporarily</span></div>
+      <div class="d-inline-flex"><span class="dot dot_gray"></span><span>Someone was off.</span></div>
+      <div class="d-inline-flex"><span class="dot dot_pink"></span><span>One hour around the arranged duration can not be picked because of different location.</span></div>
+    </div>
+  <!-- <div *ngFor="let o of teacherAvailableData.Data.AvailableDay">{{o.DayOfWeek | weekFormat}}:&nbsp;
     <ol *ngFor="let org of o.Orgs">{{org.OrgId}}{{org.OrgId | simplifyOrg}}</ol>
-  </div>
+  </div> -->
   <div class="weekly-schedule">
     <div class="hour-labels">
       <div class="hour-label" *ngFor="let hour of hours">{{hour}}:00</div>
@@ -31,9 +40,11 @@
                     }"
           (mouseover)="mouseoverSlot(x,y)" (mouseout)="mouseoutSlot(x,y)"
           [ngbPopover]="popContent" [popoverTitle]="popTitle" triggers="manual" placement="top"
-          #p="ngbPopover" (mouseenter)="triggerPopover(p,x,y,$event)" (mouseleave)="closePopover(p,x,y)"
+          #p="ngbPopover" (mouseenter)="openPopover(p,x,y,$event)" (mouseleave)="closePopover(p,x,y,$event)"
           >
-          <ng-template #popTitle>{{name}}</ng-template>
+          <ng-template #popTitle>
+            {{name}}
+          </ng-template>
           <ng-template #popContent>
             <p style="margin: 10px"><b>Weekday:</b>&nbsp;{{weekdays[x]}}</p>
             <p style="margin: 10px"><b>Time:</b>&nbsp;{{slotTime[x][y]}}-{{slotTime[x][y+duration+1]}}</p>
@@ -46,5 +57,4 @@
       </div>
     </div>
   </div>
-  <!-- color meanings -->
 </div>

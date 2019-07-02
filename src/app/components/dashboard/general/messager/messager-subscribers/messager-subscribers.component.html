@@ -17,129 +17,77 @@
 
   <!--subscriber body-->
   <div *ngIf='groupChatSwitchFlag'>
+    <!--teachers-->
     <div class='row'>
       <div class='col-12 m_s_subscribers_label' (click)='displayGroup($event,"group_teachers")'>
-        Teachers
+        &nbsp;Teachers
       </div>
       <!--ngif-->
       <div class='col-12' id='group_teachers' style="display: none">
         <!--ngfor-->
-        <div class='row m_s_subscribers' (dblclick)='chattingWithHandler()'>
+        <div *ngFor='let i of subsOfTeacher' class='row m_s_subscribers' (dblclick)='chattingWithHandler($event,i)'>
           <div class='col-3'>
             <div class='m_s_subscribers_photo'>
-              <img src="../../../../../../assets/images/usersimg/userphoto02.jpg" alt="">
+              <img [src]="i.Photo" alt="">
             </div>
           </div>
           <div class='col-9'>
             <div class='col-12 m_s_subscribers_name'>
-              Winne
+              {{i.FirstName}} {{i.LastName}}
             </div>
             <div class='col-12 m_s_subscribers_signature'>
-              奥克兰吴彦祖 奥克兰陈冠希 奥克兰王力宏
+              个性签名
             </div>
           </div>
         </div>
-
-        <div class='row m_s_subscribers'>
-          <div class='col-3'>
-            <div class='m_s_subscribers_photo'>
-              <img src="../../../../../../assets/images/usersimg/userphoto02.jpg" alt="">
-            </div>
-          </div>
-          <div class='col-9'>
-            <div class='col-12 m_s_subscribers_name'>
-              Oliver
-            </div>
-            <div class='col-12 m_s_subscribers_signature'>
-              奥克兰吴彦祖 奥克兰陈冠希 奥克兰王力宏
-            </div>
-          </div>
-        </div>
-
-
       </div>
 
+      <!--students-->
       <div class='col-12 m_s_subscribers_label' (click)='displayGroup($event,"group_students")'>
-        Students
+          &nbsp;Students
       </div>
       <!--ngif-->
       <div class='col-12' id='group_students' style="display: none">
         <!--ngfor-->
-        <div class='row m_s_subscribers'>
+        <div *ngFor='let i of subsOfStudents' class='row m_s_subscribers' (dblclick)='chattingWithHandler($event,i)'>
           <div class='col-3'>
             <div class='m_s_subscribers_photo'>
-              <img src="../../../../../../assets/images/usersimg/userphoto02.jpg" alt="">
+              <img [src]='i.Photo' alt="">
             </div>
           </div>
           <div class='col-9'>
             <div class='col-12 m_s_subscribers_name'>
-              Winne
+              {{i.FirstName}} {{i.LastName}}
             </div>
             <div class='col-12 m_s_subscribers_signature'>
               奥克兰吴彦祖 奥克兰陈冠希 奥克兰王力宏
             </div>
           </div>
         </div>
-
-        <div class='row m_s_subscribers'>
-          <div class='col-3'>
-            <div class='m_s_subscribers_photo'>
-              <img src="../../../../../../assets/images/usersimg/userphoto02.jpg" alt="">
-            </div>
-          </div>
-          <div class='col-9'>
-            <div class='col-12 m_s_subscribers_name'>
-              Oliver
-            </div>
-            <div class='col-12 m_s_subscribers_signature'>
-              奥克兰吴彦祖 奥克兰陈冠希 奥克兰王力宏
-            </div>
-          </div>
-        </div>
-
-
       </div>
 
-
+      <!--staffs-->
       <div class='col-12 m_s_subscribers_label' (click)='displayGroup($event,"group_staffs")'>
-        Staffs
+          &nbsp;Staffs
       </div>
       <!--ngif-->
       <div class='col-12' id='group_staffs' style="display: none">
         <!--ngfor-->
-        <div class='row m_s_subscribers'>
+        <div *ngFor='let i of subsOfStaffs' class='row m_s_subscribers' (dblclick)='chattingWithHandler($event,i)'>
           <div class='col-3'>
             <div class='m_s_subscribers_photo'>
-              <img src="../../../../../../assets/images/usersimg/userphoto02.jpg" alt="">
+              <img [src]="i.Photo" alt="">
             </div>
           </div>
           <div class='col-9'>
             <div class='col-12 m_s_subscribers_name'>
-              Winne
+              {{i.FirstName}} {{i.LastName}}
             </div>
             <div class='col-12 m_s_subscribers_signature'>
               奥克兰吴彦祖 奥克兰陈冠希 奥克兰王力宏
             </div>
           </div>
         </div>
-
-        <div class='row m_s_subscribers'>
-          <div class='col-3'>
-            <div class='m_s_subscribers_photo'>
-              <img src="../../../../../../assets/images/usersimg/userphoto02.jpg" alt="">
-            </div>
-          </div>
-          <div class='col-9'>
-            <div class='col-12 m_s_subscribers_name'>
-              Oliver
-            </div>
-            <div class='col-12 m_s_subscribers_signature'>
-              奥克兰吴彦祖 奥克兰陈冠希 奥克兰王力宏
-            </div>
-          </div>
-        </div>
-
-
       </div>
     </div>
   </div>

@@ -1,4 +1,4 @@
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Component, OnInit, Input } from '@angular/core';
 import { CoursesService } from 'src/app/services/http/courses.service';
 import { forkJoin } from 'rxjs'; //卧槽他妈的成功了！ rxjs 6 直接import forkJoin就行 不用再import Observable
@@ -11,7 +11,7 @@ import { LearnersService } from 'src/app/services/http/learners.service';
   selector: 'app-trial-info',
   templateUrl: './trial-info.component.html',
   styleUrls: ['./trial-info.component.css',
-              '../../teachers/teacher-panel/teacher-panel.component.css']
+    '../../teachers/teacher-panel/teacher-panel.component.css']
 })
 export class TrialInfoComponent implements OnInit {
   public courses;
@@ -20,21 +20,34 @@ export class TrialInfoComponent implements OnInit {
   public teachers;
   public groupCoursesInstance;
   public teachingCourses;
-  public popUpFlag:boolean = false;
+  public popUpFlag: boolean = false;
   public LearnerId;
   public learners;
+  public lastRouteName: string
+  public arrangeUrl;
 
   @Input() childEvent;
-  
+
   constructor(private coursesService: CoursesService,
-              private teachersService: TeachersService,
-              private modalService: NgbModal,
-              private routerInfo:ActivatedRoute,
-              private learnersService:LearnersService) { }
+    private teachersService: TeachersService,
+    private modalService: NgbModal,
+    private routerInfo: ActivatedRoute,
+    private learnersService: LearnersService,
+    private router: Router) { }
 
   ngOnInit() {
     this.getDataFromServer();
     this.LearnerId = this.routerInfo.snapshot.queryParams.LearnerId;
+  }
+
+  onClick() {
+    this.lastRouteName = this.routerInfo.snapshot.routeConfig.path
+    this.arrangeUrl = "/learner/credit/" + this.LearnerId
+    if (this.lastRouteName == "trial") {
+      this.router.navigateByUrl("/learner/list")
+    } else if (this.lastRouteName == "arrange") {
+      this.router.navigateByUrl(this.arrangeUrl)
+    }
   }
 
   //并发获取所有数据
@@ -47,7 +60,7 @@ export class TrialInfoComponent implements OnInit {
     let teachingCourseService = this.teachersService.getTeachingCourse();
     let learnersService = this.learnersService.getLearnerList();
 
-    forkJoin([coursesService, coursesCategories,orgsService,teachersService,groupCourseInstance,teachingCourseService,learnersService]).subscribe(
+    forkJoin([coursesService, coursesCategories, orgsService, teachersService, groupCourseInstance, teachingCourseService, learnersService]).subscribe(
       (res) => {
         this.courses = res[0]['Data'];
         this.coursesCate = res[1]['Data'];

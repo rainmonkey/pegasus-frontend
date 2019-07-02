@@ -2,7 +2,7 @@ import { CommonModule, DatePipe } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import {MatButtonModule, MatFormFieldModule, MatInputModule, MatSelectModule} from '@angular/material';
+import { MatButtonModule, MatFormFieldModule, MatInputModule, MatSelectModule } from '@angular/material';
 // Dependencies
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -91,6 +91,11 @@ import { WeekFormatPipe } from './shared/pipes/week-format.pipe';
 import { PaymentPeriodPipe } from './shared/pipes/paymentPeriod.pipe';
 import { IsUnder18Pipe } from './shared/pipes/isUnder18.pipe';
 import { confirmEqualValidatorDirectie } from './shared/confirm-equal-validator.directive';
+import { RemindModalComponent } from './components/dashboard/dashboard-components/remind/remind-modal/remind-modal.component';
+import { RemindListComponent } from './components/dashboard/dashboard-components/remind/remind-list/remind-list.component';
+import { RemindPanelComponent } from './components/dashboard/dashboard-components/remind/remind-panel/remind-panel.component';
+
+
 import { StaffListComponent } from './components/dashboard/dashboard-components/admin-staff/Staff-list/Staff-list.component';
 import { StaffPanelComponent } from './components/dashboard/dashboard-components/admin-staff/staff-panel/staff-panel.component';
 import { SimplifyOrgPipe } from './shared/pipes/simplify-org.pipe';
@@ -110,7 +115,7 @@ import { StaffModalFormComponent } from './components/dashboard/dashboard-compon
 import { InventoryDetailModalComponent } from './components/dashboard/dashboard-components/inventory/inventory-detail-modal/inventory-detail-modal.component';
 import { InventoryReceiptModalComponent } from './components/dashboard/dashboard-components/inventory/inventory-receipt-modal/inventory-receipt-modal.component';
 import { HolidayCalendarComponent } from './components/dashboard/dashboard-components/admin-holidays/holiday-calendar/holiday-calendar.component';
-import { AddHolidaysModalComponent } from './components/dashboard/dashboard-components/admin-holidays/add-holidays-modal/add-holidays-modal.component';
+
 import { DeleteHolidayComponent } from './components/dashboard/dashboard-components/admin-holidays/delete-holiday/delete-holiday.component';
 import { PickerModule } from '@ctrl/ngx-emoji-mart';
 import { EmojiModule } from '@ctrl/ngx-emoji-mart/ngx-emoji';
@@ -120,7 +125,10 @@ import { MessagerSubscribersComponent } from './components/dashboard/general/mes
 import { MessagerRecentlyComponent } from './components/dashboard/general/messager/messager-recently/messager-recently.component';
 import { MessagerChattingComponent } from './components/dashboard/general/messager/messager-chatting/messager-chatting.component';
 import { MessagerPersonalInfoComponent } from './components/dashboard/general/messager/messager-personal-info/messager-personal-info.component';
-
+import { AmendmentHistoryModalComponent } from './components/dashboard/dashboard-components/admin-learner/amendment-History-modal/amendment-History-modal.component';
+import { IsTemporaryPipe } from './shared/pipes/IsTemporary.pipe'
+import { SelectHolidaysModalComponent } from './components/dashboard/dashboard-components/admin-holidays/select-holidays-modal/select-holidays-modal.component';
+import { CoporateOrderApplicationComponent } from './components/dashboard/dashboard-components/admin-inventory-application-dispatch/coporate-order-application/coporate-order-application.component';
 
 @NgModule({
   declarations: [
@@ -180,6 +188,8 @@ import { MessagerPersonalInfoComponent } from './components/dashboard/general/me
     LearnerEditModalComponent,
     LearnerAddModalComponent,
     LearnerDeleteCourseModalComponent,
+    AmendmentHistoryModalComponent,
+    IsTemporaryPipe,
 
     SessionCancelModalComponent,
     SessionTutorReportModalComponent,
@@ -203,6 +213,9 @@ import { MessagerPersonalInfoComponent } from './components/dashboard/general/me
     PaymentPeriodPipe,
     IsUnder18Pipe,
     confirmEqualValidatorDirectie,
+    RemindModalComponent,
+    RemindListComponent,
+    RemindPanelComponent,
     StaffListComponent,
     StaffPanelComponent,
     SimplifyOrgPipe,
@@ -224,7 +237,6 @@ import { MessagerPersonalInfoComponent } from './components/dashboard/general/me
     InventoryDetailModalComponent,
     InventoryReceiptModalComponent,
     HolidayCalendarComponent,
-    AddHolidaysModalComponent,
     DeleteHolidayComponent,
     MessagerIconComponent,
     MessagerModalComponent,
@@ -232,7 +244,9 @@ import { MessagerPersonalInfoComponent } from './components/dashboard/general/me
     MessagerRecentlyComponent,
     MessagerChattingComponent,
     MessagerPersonalInfoComponent,
-    
+    SelectHolidaysModalComponent,
+
+    CoporateOrderApplicationComponent
   ],
   imports: [
     NgbModule,
@@ -255,9 +269,9 @@ import { MessagerPersonalInfoComponent } from './components/dashboard/general/me
   providers: [
     DatePipe,
     MondayDateInWeekByDatePipe,
-    NgbActiveModal
+    NgbActiveModal,
   ],
-  entryComponents:[
+  entryComponents: [
     TeacherDeleteModalComponent,
     TeacherDetailModalComponent,
     TeacherUpdateModalComponent,
@@ -278,6 +292,8 @@ import { MessagerPersonalInfoComponent } from './components/dashboard/general/me
     RatingModalComponent,
     AdminLearnerPeriodCourseChangeModalComponent,
     ForgotPasswordModalComponent,
+    ChangePasswordModalComponent,
+    RemindModalComponent,
     AdminLearnerLeaveComponent,
     ChangePasswordModalComponent,
     LearnerRegistrationModalComponent,
@@ -290,8 +306,9 @@ import { MessagerPersonalInfoComponent } from './components/dashboard/general/me
     StaffEditModalComponent,
     InventoryDetailModalComponent,
     InventoryReceiptModalComponent,
-    AddHolidaysModalComponent,
-    DeleteHolidayComponent
+    DeleteHolidayComponent,
+    AmendmentHistoryModalComponent,
+    SelectHolidaysModalComponent
   ],
   exports: [AppComponent],
   bootstrap: [AppComponent]

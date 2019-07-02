@@ -1,5 +1,15 @@
-<div>
-  <div>
-    rrrrrrr
+<div *ngFor='let i of recentlySubscribers' class='row m_s_subscribers' (dblclick)='chattingWithHandler()'>
+    <div class='col-3'>
+      <div class='m_s_subscribers_photo'>
+        <img src="../../../../../../assets/images/usersimg/userphoto02.jpg" alt="">
+      </div>
+    </div>
+    <div class='col-9'>
+      <div class='col-12 m_s_subscribers_name'>
+        Winne
+      </div>
+      <div class='col-12 m_s_subscribers_signature'>
+        奥克兰吴彦祖 奥克兰陈冠希 奥克兰王力宏
+      </div>
+    </div>
   </div>
-</div>

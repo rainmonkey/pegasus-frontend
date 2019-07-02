@@ -37,7 +37,7 @@ export class AuthenticationService {
 
 
     // login response
-    login(username: string, password: string): Observable<any> {
+     login(username: string, password: string): Observable<any> {
         return this.http.post<any>(this.baseUrl + 'login', { username, password })
         .pipe(map(res => {
             // login successful if there's a jwt token in the response
@@ -63,8 +63,7 @@ export class AuthenticationService {
         localStorage.setItem('userName', res.Data.username);
         localStorage.setItem('OrgId',JSON.stringify(res.Data.userdetails.OrgId));
         if (res.Data.photo)  localStorage.setItem('photo',res.Data.photo);
-        if (res.Data.staffId) localStorage.setItem('staffId', res.Data.staffId);
-
+        if (res.Data.userdetails.StaffId) localStorage.setItem('staffId', res.Data.userdetails.StaffId);
     }
 
     // remove user from local storage to log user out

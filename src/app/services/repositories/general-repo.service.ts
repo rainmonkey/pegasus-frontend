@@ -8,23 +8,44 @@ import { environment } from '../../../environments/environment.prod';
 })
 export class GeneralRepoService {
   public errorMessage: string;
+  // set path subject
+  pathArraySubject = new BehaviorSubject([]);
+  pathArray;
+  pathAuth;
   // Gets Base URL
   baseUrl = environment.baseUrl;
-  userState
   // search name component
   fisrtName = new BehaviorSubject('Customer Name');
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, ) {
+  }
   // get pages authentation
-  getGroupCourse(RoleId): Observable<any> {
+  getPathById(RoleId): Observable<any> {
     return this.http.get(this.baseUrl + 'page', RoleId);
   }
-  // get user auth state
-  getUser(){
-    this.userState = 1;
-    return
+  giveAuthToGuard(urlS){
+    let localPath = localStorage.getItem('pathAuth');
+        return localPath.includes(urlS);
   }
-  // check User auth
-  checkUser(url){
 
+    // let url: string = this.state.url;
+    // let urlS = url.substring(1,url.length-0);
+    // this.pathArraySubject.subscribe(
+    //   res=>{
+    //     let pathArrayTemp = res;
+
+  // // check User auth
+  pathAllowed(){
+    let userState = localStorage.getItem('Role');
+    this.getPathById(userState)
+    .subscribe(
+      res=>{
+         let pathAllowed = res.Data;
+         this.pathArray = pathAllowed.map(ele=>ele.Url);
+         localStorage.setItem('pathAuth',this.pathArray);
+         this.pathArraySubject.next(this.pathArray);
+      },
+      error=>{
+      }
+    )
   }
 }

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 
 @Component({
   selector: 'app-messager-personal-info',
@@ -9,16 +9,22 @@ import { Component, OnInit } from '@angular/core';
 export class MessagerPersonalInfoComponent implements OnInit {
   //应该把onlineStatus写在localStorage里面
   public onlineStatus: boolean = true;
-  public personalSignature:string;
+  public personalSignature: string;
+
+  @Input() bgUrl;
   constructor() { }
 
   ngOnInit() {
-    console.log('a')
+    // console.log('a')
     //登陆的时候就给后台发送在线状态变更 这个要在项目登陆界面实现  （未实现）
 
     //初始化在线状态 要从数据库拿数据 或者从localStorage里 （未实现）
   }
 
+
+  ngOnChanges() {
+    this.changeStyle();
+  }
   /*
     改变用户的在线状态
   */
@@ -44,22 +50,33 @@ export class MessagerPersonalInfoComponent implements OnInit {
   /*
     保存用户原始的个性签名
   */
-  getSignature(event){
+  getSignature(event) {
     this.personalSignature = event.target.value;
-    console.log('a',this.personalSignature)
+    console.log('a', this.personalSignature)
+  }
+
+  /*
+    改变主题
+  */
+  changeStyle() {
+    if (this.bgUrl !== undefined && this.bgUrl !== null) {
+      console.log('haha')
+      let obj = document.getElementsByClassName('m_p_person_info')[0];
+      obj['style']['background-image'] = 'url(' + this.bgUrl + ')';
+    }
   }
 
   /*
     改变用户个性签名
   */
-  changeSignature(event){
-    if(event.target.value == this.personalSignature){
+  changeSignature(event) {
+    if (event.target.value == this.personalSignature) {
       return;
     }
-    else{
-      
+    else {
+
     }
-    console.log('b',event.target.value)
+    console.log('b', event.target.value)
   }
 
 }

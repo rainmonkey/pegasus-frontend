@@ -77,30 +77,35 @@ export class AdminLearnerPaymentInvoiceComponent implements OnInit, OnDestroy {
   // In case learner have two invoice at ng-bootstrap tab
   fetchNews(event){
     console.log(event)
-    if (this.dataInvoice.length > 3) {
-      this.invoiceForm.patchValue({
-        owing : 0
-      });
-    } else {
-    const id = Number(event.activeId.slice(8));
-    switch (id) {
-      case 0:
-      this.invoiceForm.patchValue({
-        owing : Math.abs(this.dataInvoice[1].OwingFee)
-      });
-      break;
-      case 1:
-      this.invoiceForm.patchValue({
-        owing : Math.abs(this.dataInvoice[0].OwingFee)
-      });
-    }
-  }
+    let activeId = event.nextId;
+    this.invoiceForm.patchValue({
+      owing : Math.abs(this.dataInvoice[activeId].OwingFee)
+    });
+  //need confirm , why need process this condition?
+  //   if (this.dataInvoice.length > 3) {
+  //     this.invoiceForm.patchValue({
+  //       owing : 0
+  //     });
+  //   } else {
+  //   const id = Number(event.activeId.slice(8));
+  //   switch (id) {
+  //     case 0:
+  //     this.invoiceForm.patchValue({
+  //       owing : Math.abs(this.dataInvoice[1].OwingFee)
+  //     });
+  //     break;
+  //     case 1:
+  //     this.invoiceForm.patchValue({
+  //       owing : Math.abs(this.dataInvoice[0].OwingFee)
+  //     });
+  //   }
+  // }
   }
 
     // create post obj
     postPaymentMethod(item) {
       this.postPayment = {
-        UserId: Number(localStorage.getItem('userID')),
+        StaffId: Number(localStorage.getItem('staffId')),
         LearnerId: item.LearnerId,
         InvoiceId: item.InvoiceId,
         PaymentMethod: this.paymentMethodI.value,
@@ -117,6 +122,7 @@ export class AdminLearnerPaymentInvoiceComponent implements OnInit, OnDestroy {
           result => {
             this.closeResult = `Closed with: ${result}`;
             this.postPaymentMethod(item);
+            console.log('!!!!!',this.postPayment)
             this.paymentsListService.addFund(this.postPayment).subscribe(
               response => {
                 console.log('Success!', response);
@@ -245,7 +251,6 @@ export class AdminLearnerPaymentInvoiceComponent implements OnInit, OnDestroy {
 
     // get FirstName
     nameSubejct(){
-      console.log('a')
       this.fistNameSubscription = this.generalRepoService.fisrtName.subscribe(res=>
         {
         this.learner = res;

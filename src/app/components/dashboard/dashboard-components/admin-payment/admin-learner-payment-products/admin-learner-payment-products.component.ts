@@ -83,8 +83,8 @@ export class AdminLearnerPaymentProductsComponent implements OnInit {
   postPordPayObjMethod() {
     this.postProdPayObj = {
       PaymentMethod: this.productListForm.value.paymentMethod,
-      StaffId: 1,
-      OrgId: 1,
+      StaffId: Number(localStorage.getItem('staffId')),
+      OrgId: Number(localStorage.getItem('organisations')),
       Amount: this.sellPrice,
       LearnerId: this.learnerId,
       SoldTransaction: this.postProdsIdArray
