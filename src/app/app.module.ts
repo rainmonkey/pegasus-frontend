@@ -128,6 +128,7 @@ import { MessagerPersonalInfoComponent } from './components/dashboard/general/me
 import { AmendmentHistoryModalComponent } from './components/dashboard/dashboard-components/admin-learner/amendment-History-modal/amendment-History-modal.component';
 import { IsTemporaryPipe } from './shared/pipes/IsTemporary.pipe'
 import { SelectHolidaysModalComponent } from './components/dashboard/dashboard-components/admin-holidays/select-holidays-modal/select-holidays-modal.component';
+import { CoporateOrderApplicationComponent } from './components/dashboard/dashboard-components/admin-inventory-application-dispatch/coporate-order-application/coporate-order-application.component';
 
 @NgModule({
   declarations: [
@@ -244,6 +245,8 @@ import { SelectHolidaysModalComponent } from './components/dashboard/dashboard-c
     MessagerChattingComponent,
     MessagerPersonalInfoComponent,
     SelectHolidaysModalComponent,
+
+    CoporateOrderApplicationComponent
   ],
   imports: [
     NgbModule,

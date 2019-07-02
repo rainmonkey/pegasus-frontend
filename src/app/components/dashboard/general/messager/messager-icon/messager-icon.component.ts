@@ -7,16 +7,16 @@ import { ChattingService } from 'src/app/services/repositories/chatting.service'
   styleUrls: ['./messager-icon.component.css']
 })
 export class MessagerIconComponent implements OnInit {
-  public popUpModalFlag = true;
-  constructor(private chattingService:ChattingService) { }
+  public popUpModalFlag = false;
+  public initiateFlag = false;
+
+  constructor(private chattingSerice:ChattingService) { }
 
   ngOnInit() {
-    //从后台获取数据
-    // this.chattingService.getChatListFronServer().subscribe(
-    //   (res) =>{
+    //sent get subscribers request
+    this.chattingSerice.getSubscribersList(1);
 
-    //   }
-    // )
+    
   }
 
   /*

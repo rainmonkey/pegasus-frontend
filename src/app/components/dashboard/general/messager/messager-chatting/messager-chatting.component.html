@@ -12,7 +12,7 @@
         </div>
         <div class='col-9'>
           <div class='col-12 m_c_subscribers_name'>
-            Winne
+            {{subscriber.FirstName}} {{subscriber.LastName}}
           </div>
           <div class='col-12 m_c_subscribers_signature'>
             奥克兰吴彦祖 奥克兰陈冠希 奥克兰王力宏
@@ -24,7 +24,7 @@
 
   <!--聊天框-->
   <div style="position: relative">
-    <div class='m_c_chatting_panel'>
+    <div class='m_c_chatting_panel' id='m_c_chatting_panel'>
       <!--聊天内容-->
       <div *ngFor='let i of localMsgHistroy' class='clearfix' style="margin-bottom: 5px">
         <div class='m_c_chatting_messagers' [class.m_c_chatting_messagers_left] = 'i.leftOrRight == "left"' [class.m_c_chatting_messagers_right] = 'i.leftOrRight == "right"'>
@@ -38,6 +38,7 @@
           </div>
         </div>
       </div>
+      <div id='scroll_anchor'></div>
   </div>
 
     

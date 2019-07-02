@@ -9,14 +9,19 @@ import { ChattingService } from 'src/app/services/repositories/chatting.service'
 })
 export class MessagerSubscribersComponent implements OnInit {
   public groupChatSwitchFlag: boolean = true;
-  public subscribersOfTeacher;
+  public subsOfTeacher:Array<object>;
+  public subsOfStudents: Array<object>;
+  public subsOfStaffs:Array<object>;
+
   @Output() onChattingWith = new EventEmitter();
 
   constructor(private chattingService:ChattingService) { }
 
   ngOnInit() {
-    this.subscribersOfTeacher =  this.chattingService.getChatListOfTeacher();
-    console.log(this.subscribersOfTeacher)
+    this.subsOfTeacher = this.chattingService.subsOfTeachers;
+    this.subsOfStudents = this.chattingService.subsOfStudents;
+    this.subsOfStaffs = this.chattingService.subsOfStaffs;
+    console.log(this.subsOfTeacher)
   }
 
   /*
@@ -47,12 +52,12 @@ export class MessagerSubscribersComponent implements OnInit {
   /*
     点击选择和谁聊天
   */
-  chattingWithHandler(event){
+  chattingWithHandler(event,subscriber){
+    
     //在sessionStorage里面保存 正在聊天的人
-    sessionStorage.setItem('userId','123');
-    //console.log(sessionStorage.recentlySubscribers)
-    //sessionStorage.setItem('recentlySubscribers', )
-    this.onChattingWith.emit({"status":true,"userId":123})
+    let subscribersStr = JSON.stringify(subscriber);
+    sessionStorage.setItem('user',subscribersStr);
+    this.onChattingWith.emit({"status":true,"user":subscribersStr})
   }
 
 }

@@ -84,6 +84,13 @@
         </span>
       </div>
 
+      <div class="col-6" *ngFor='let i of levelTypeList'>
+        <span class="label">Level Type: </span>
+        <span class='text'>
+          {{i}}
+        </span>
+      </div>
+
       <div class="col-6">
         <span class="label">Payment Period: </span>
         <span class='text'>{{whichLearner.PaymentPeriod | paymentPeriod}}</span>

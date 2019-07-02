@@ -1,4 +1,4 @@
-<div class='m_m_skeleton'>
+<div *ngIf='!isErrorFlag' class='m_m_skeleton'>
   <!--header-->
   <div class='m_m_header' [ngStyle]="{'background':bgColor}">
     <span class='m_m_header_icon m_m_header_cog' (click)='showConfigPanel()'>
@@ -33,7 +33,7 @@
 
   <!--chatting ui-->
   <div *ngIf='chattingDisplayFlag' class='m_m_chatting' id='chatting'>
-    <app-messager-chatting [userId]='userId' (onStartChatting)='startChattingWith()'></app-messager-chatting>
+    <app-messager-chatting [user]='user' (onStartChatting)='startChattingWith()'></app-messager-chatting>
   </div>
 
   <div class='m_m_selection_btns' [ngStyle]="{'background':bgColor}">
@@ -58,4 +58,10 @@
       </div>
     </div>
   </div>
+</div>
+
+<div *ngIf='isErrorFlag' class='m_m_skeleton'>
+  <div style='margin: 0 auto'>Sorry, something went wrong...</div>
+  <div style='margin: 0 auto'>Please try it later...</div>
+  <div style='margin: 0 auto'>close</div>
 </div>
