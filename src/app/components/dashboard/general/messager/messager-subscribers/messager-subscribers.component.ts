@@ -18,10 +18,19 @@ export class MessagerSubscribersComponent implements OnInit {
   constructor(private chattingService:ChattingService) { }
 
   ngOnInit() {
-    this.subsOfTeacher = this.chattingService.subsOfTeachers;
-    this.subsOfStudents = this.chattingService.subsOfStudents;
-    this.subsOfStaffs = this.chattingService.subsOfStaffs;
-    console.log(this.subsOfTeacher)
+   this.getSubscribers();
+  }
+
+  /*
+    get subscribers from storage
+      -->in order to read, still pull the storage data getting in service.
+  */
+  getSubscribers(){
+    let subscribers = this.chattingService.getSubscribers();
+    console.log(subscribers)
+    this.subsOfStaffs = subscribers.Item1;
+    this.subsOfTeacher = subscribers.Item2;
+    this.subsOfStudents = subscribers.Item3;
   }
 
   /*

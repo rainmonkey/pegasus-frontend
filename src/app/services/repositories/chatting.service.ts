@@ -24,10 +24,9 @@ export class ChattingService {
     else{ 
       this.http.get(this.baseUrl + 'Chat/GetStaffChattingList/' + userId).subscribe(
         (res) => {
-          this.subsOfStaffs = res['Data'].Item1;
-          this.subsOfTeachers = res['Data'].Item2;
-          this.subsOfStudents = res['Data'].Item3;
-          //console.log(this.subsOfStaffs);
+          let subsStr =  JSON.stringify(res['Data']);
+          //store the subscirbers list in session storage
+          sessionStorage.setItem('subscribers',subsStr);
           //set 'true' as a sign
           sessionStorage.setItem('chattingInit', 'true');
         },
@@ -37,5 +36,13 @@ export class ChattingService {
         }
       ) 
     }
+  }
+
+  /*
+    return the subscribers stored in local session storage,
+      -->为了代码整洁 把从sessionStorage里面获取数据放在了service里面
+  */
+  getSubscribers(){
+    return JSON.parse(sessionStorage.getItem('subscribers'));
   }
 }
