@@ -70,7 +70,7 @@ const routes: Routes = [
         ]
       },
       {
-        path: 'payment/registration', pathMatch: 'prefix', component: AdminLearnerPaymentPanelComponent,canActivate: [UserAuthGuard],
+        path: 'payment/registration', pathMatch: 'prefix', component: AdminLearnerPaymentPanelComponent, canActivate: [UserAuthGuard],
         children: [
           { path: 'success', component: AdminLearnerPaymentSuccessComponent, },
           { path: ':id', component: AdminLearnerPaymentRegistrationComponent, },
@@ -122,7 +122,7 @@ const routes: Routes = [
         children: [
           {
             path: 'list', component: AdminLearnerListComponent, canActivate: [UserAuthGuard],
-            children: [{path: 'success', component: AdminLearnerPaymentSuccessComponent, }]
+            children: [{ path: 'success', component: AdminLearnerPaymentSuccessComponent, }]
           },
           { path: 'registration/edit', component: LearnerRegistrationModalComponent, },
           { path: 'registration', component: LearnerRegistrationFormComponent, canActivate: [UserAuthGuard], },
@@ -130,11 +130,11 @@ const routes: Routes = [
           {
             path: "credit", pathMatch: 'prefix', component: LearnerCreditPanelComponent, canActivate: [UserAuthGuard],
             children: [{
-              path: "arrange", component: TrialInfoComponent
-              //LearnerCreditArrangeComponent
-            }, {
               path: ":id", component: LearnerCreditDetailsComponent
             }]
+          },
+          {
+            path: "arrange/:learnerId/:courseId", component: TrialInfoComponent
           },
           { path: 'success', component: AdminLearnerPaymentSuccessComponent },
         ]
@@ -156,8 +156,8 @@ const routes: Routes = [
       // Remind Area
       {
         path: 'remind', component: RemindPanelComponent,
-        children:[
-          {path:'list', component:RemindListComponent}
+        children: [
+          { path: 'list', component: RemindListComponent }
         ]
       },
       //Staff Area
@@ -171,5 +171,6 @@ const routes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: '**', redirectTo: 'home' }
 ];
+
 
 export const routing = RouterModule.forRoot(routes);
