@@ -1,5 +1,5 @@
 <!--选择聊天对象时-->
-<div *ngIf='chattingDisplayFlag' class='m_c_skeleton'>
+<div *ngIf='chattingDisplayFlag'>
   <div class='m_c_person_label'>
     <!--展示聊天对象的label 
     数据动态获取-->
@@ -12,7 +12,7 @@
         </div>
         <div class='col-9'>
           <div class='col-12 m_c_subscribers_name'>
-            Winne
+            {{subscriber.FirstName}} {{subscriber.LastName}}
           </div>
           <div class='col-12 m_c_subscribers_signature'>
             奥克兰吴彦祖 奥克兰陈冠希 奥克兰王力宏
@@ -24,19 +24,21 @@
 
   <!--聊天框-->
   <div style="position: relative">
-    <div class='m_c_chatting_panel'>
+    <div [ngStyle]="{'height': modalHeight - 200 + 'px'}" class='m_c_chatting_panel' id='m_c_chatting_panel'>
       <!--聊天内容-->
       <div *ngFor='let i of localMsgHistroy' class='clearfix' style="margin-bottom: 5px">
         <div class='m_c_chatting_messagers' [class.m_c_chatting_messagers_left] = 'i.leftOrRight == "left"' [class.m_c_chatting_messagers_right] = 'i.leftOrRight == "right"'>
           <img src="../../../../../../assets/images/usersimg/userphoto02.jpg" alt="" [class.m_c_chatting_messagers_left] = 'i.leftOrRight == "left"' [class.m_c_chatting_messagers_right] = 'i.leftOrRight == "right"'>
           <div [class.m_c_chatting_messagers_left] = 'i.leftOrRight == "left"' [class.m_c_chatting_messagers_right] = 'i.leftOrRight == "right"'>
-            <div class='m_c_time_stamp' [class.m_c_time_stamp_left]= 'i.leftOrRight == "left"' [class.m_c_time_stamp_right]= 'i.leftOrRight == "right"'>namenamename</div>
-            <div class='m_c_chatting_text' [class.m_c_chatting_messagers_left]='i.leftOrRight == "left"' [class.m_c_chatting_text_left] = 'i.leftOrRight == "left"' [class.m_c_chatting_messagers_right] = 'i.leftOrRight == "right"' [class.m_c_chatting_text_left] = 'i.leftOrRight == "right"'>
+            <div class='m_c_time_stamp' [class.m_c_time_stamp_left]= 'i.leftOrRight == "left"' [class.m_c_time_stamp_right]= 'i.leftOrRight == "right"'>{{i.timeStamp}}</div>
+            <div class='m_c_chatting_text' [class.m_c_chatting_messagers_left]='i.leftOrRight == "left"' [class.m_c_chatting_text_left] = 'i.leftOrRight == "left"' [class.m_c_chatting_messagers_right] = 'i.leftOrRight == "right"' 
+              [class.m_c_chatting_text_left] = 'i.leftOrRight == "left"' [class.m_c_chatting_text_right]='i.leftOrRight == "right"'>
               {{i.msg}}
             </div>
           </div>
         </div>
       </div>
+      <div id='scroll_anchor'></div>
   </div>
 
     
@@ -63,7 +65,7 @@
 </div>
 
 <!--没有选择聊天对象时-->
-<div *ngIf='!chattingDisplayFlag' class='m_c_skeleton'>
+<div *ngIf='!chattingDisplayFlag'>
   <div class='m_c_start_chatting'>
     <span (click)='startNewChatting()'>start chatting now...</span>
   </div>

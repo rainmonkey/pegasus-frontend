@@ -32,8 +32,8 @@ export class AdminInvoiceListComponent implements OnInit {
   public errorAlert = false;
   public errMsgM;
   public errMsgO;
-  public staffId = 3;
-
+  public userId;
+  isLoad = true;
   // learner name and
   learner: Learner;
   myArray = [];
@@ -48,6 +48,8 @@ export class AdminInvoiceListComponent implements OnInit {
 
   ngOnInit() {
     this.getData();
+    this.userId = localStorage.getItem("userID");
+    this.isLoad = true;
   }
 
   // modal method
@@ -64,12 +66,14 @@ export class AdminInvoiceListComponent implements OnInit {
 
   // get data from server side
   getData() {
-    this.transactionService.getLearnerInvo(this.staffId).subscribe(
+    this.transactionService.getLearnerInvo(this.userId).subscribe(
       (res) => {
         this.learnerList = res.Data;
         this.learnerListLength = res.Data.length; //length prop is under Data prop
         this.temLearnerList = res.Data;
         this.temLearnerListLength = res.Data.length;
+        //isload = false
+        this.isLoad = false;
         //this.learnerList[0].Learner.Parent.Email
         // make array for sort
         this.makeArray();

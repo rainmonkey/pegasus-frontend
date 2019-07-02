@@ -1,0 +1,48 @@
+import { trigger, state, style, transition, animate } from '@angular/animations';
+
+export const Animations = {
+    unReadMessage: trigger('unReadTrigger', [
+        state('on', style({
+            color: 'orange',
+        })),
+        state('off', style({
+            color: 'white',   
+        })),
+    ]),
+
+    changeThemeImg: trigger('themeImgTrigger',[
+        state('theme0',style({
+            "background-image": "url('../assets/images/shared/background01.jpg')",
+        })),
+        state('theme1',style({
+            "background-image": "url('../assets/images/shared/background03.jpg')",
+        })),
+        state('theme2',style({
+            "background-image": "url('../assets/images/shared/background04.jpg')",
+        })),
+        state('theme3',style({
+            "background-image": "url('../assets/images/shared/background05.jpg')",
+        })),
+        state('theme4',style({
+            "background-image": "url('../assets/images/shared/background06.jpg')",
+        })),
+    ]),
+
+    changeThemeColor: trigger('themeColorTrigger',[
+        state('theme0',style({
+            background: '#fadbe3'
+        })),
+        state('theme1',style({
+            background: '#a6ddd3'
+        })),
+        state('theme2',style({
+            background: '#2a2a2a'
+        })),
+        state('theme3',style({
+            background: '#a2bcb9'
+        })),
+        state('theme4',style({
+            background: '#add8e6'
+        }))
+    ])
+}

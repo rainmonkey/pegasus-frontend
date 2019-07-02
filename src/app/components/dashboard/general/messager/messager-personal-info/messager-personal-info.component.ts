@@ -1,30 +1,31 @@
 import { Component, OnInit, Input } from '@angular/core';
+import { Animations } from '../../../../../../animation/chatting-animation'
 
 @Component({
   selector: 'app-messager-personal-info',
   templateUrl: './messager-personal-info.component.html',
   styleUrls: ['./messager-personal-info.component.css',
-    '../../../dashboard-components/teachers/teacher-panel/teacher-panel.component.css']
+    '../../../dashboard-components/teachers/teacher-panel/teacher-panel.component.css'],
+  //theme background img changing animations
+  animations: [Animations.changeThemeImg]
 })
 export class MessagerPersonalInfoComponent implements OnInit {
   //应该把onlineStatus写在localStorage里面
   public onlineStatus: boolean = true;
   public personalSignature: string;
 
-  @Input() bgUrl;
+  @Input() themeChangeFlag;
   constructor() { }
 
   ngOnInit() {
+    //获取用户信息
+    console.log(localStorage)
     // console.log('a')
     //登陆的时候就给后台发送在线状态变更 这个要在项目登陆界面实现  （未实现）
 
     //初始化在线状态 要从数据库拿数据 或者从localStorage里 （未实现）
   }
 
-
-  ngOnChanges() {
-    this.changeStyle();
-  }
   /*
     改变用户的在线状态
   */
@@ -53,17 +54,6 @@ export class MessagerPersonalInfoComponent implements OnInit {
   getSignature(event) {
     this.personalSignature = event.target.value;
     console.log('a', this.personalSignature)
-  }
-
-  /*
-    改变主题
-  */
-  changeStyle() {
-    if (this.bgUrl !== undefined && this.bgUrl !== null) {
-      console.log('haha')
-      let obj = document.getElementsByClassName('m_p_person_info')[0];
-      obj['style']['background-image'] = 'url(' + this.bgUrl + ')';
-    }
   }
 
   /*
