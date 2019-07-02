@@ -176,7 +176,8 @@ export class TimePickerComponent implements OnInit {
   public learnerName: any[] = [];
   
   public slotPopover: any[] = [];
-  public isTrigger: boolean = false;
+  public isPopover: boolean = false;
+
   constructor(private timePickerService: TimePickerService) {
   }
 
@@ -233,28 +234,19 @@ export class TimePickerComponent implements OnInit {
     }; 
     return true;
   }
-  // triggerPopover(p) {
-  //   if(this.isTrigger) {
-  //     p.close();
-  //   } else {
-  //     // setTimeout(() => {
-  //     //   p.close();
-  //     // }, 2000)
-  //   }
-  // }
+
   openPopover(p,x,y) {
-    p.open();
-    // this.isTrigger = false;
-    // this.isTrigger = true;
-    // this.triggerPopover(p);
+    this.isPopover = true;
+    if(!this.isPopover) {
+      p.open()
+    } 
   }
   closePopover(p,x,y) {
-    p.close();
-    // // this.isTrigger = true;
-    // this.triggerPopover(p);
-    // setTimeout(()=>{x
-    //   p.close()
-    // },20000)
+    this.isPopover = false;
+    console.log('aa',this.isPopover)
+    // setTimeout(()=>{
+    //   this.isPopover = false;
+    // },200);
   }
 
 ///////////////////////////////////// Here are reusable functions////////////////////////////////////////
