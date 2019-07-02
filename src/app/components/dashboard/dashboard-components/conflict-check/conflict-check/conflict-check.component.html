@@ -1,0 +1,41 @@
+<div *ngIf='loadingFlag'>
+  <div class="loaderLarge"></div>
+</div>
+
+<div class='col-12 t_info_title'>
+  Conflict Records
+</div>
+
+<div *ngIf='!loadingFlag'>
+  <div class="container">
+    <div class='my-4'>
+      <button type="button" class="btn btn-outline-primary" (click)='roomConflict()'>Room Conflict</button>
+      &nbsp;
+      <button type="button" class="btn btn-outline-primary" (click)='teacherConflict()'>Teacher Conflict</button>
+    </div>
+
+    <div *ngIf='roomConflictShow'>
+      <div *ngFor='let i of roomConflictData'>
+          <div class='card'>
+            <div class="card-body">
+              <div *ngFor='let j of i'>
+              {{j.LessonId}}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div *ngIf='teacherConflictShow'>
+      <div *ngFor='let i of teacherConflictData'>
+        <div class="card">
+          <div class="card-body">
+            <div *ngFor='let j of i'>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

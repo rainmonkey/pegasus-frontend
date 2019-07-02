@@ -45,6 +45,7 @@ import { LearnerCreditDetailsComponent } from "./components/dashboard/dashboard-
 import { HolidayCalendarComponent } from './components/dashboard/dashboard-components/admin-holidays/holiday-calendar/holiday-calendar.component';
 import { LearnerCreditArrangeComponent } from './components/dashboard/dashboard-components/learner-credit/learner-credit-arrange/learner-credit-arrange.component';
 import { CoporateOrderApplicationComponent } from './components/dashboard/dashboard-components/admin-inventory-application-dispatch/coporate-order-application/coporate-order-application.component';
+import { ConflictCheckComponent } from './components/dashboard/dashboard-components/conflict-check/conflict-check/conflict-check.component';
 
 //canActivate: [DashboardRestrictGuard],
 const routes: Routes = [
@@ -165,7 +166,8 @@ const routes: Routes = [
       // Below to be rearranged
       { path: 'time/picker', component: TimePickerComponent },
       { path: 'holidays', component: HolidayCalendarComponent },
-      {path:'corporate-order-application', component:CoporateOrderApplicationComponent}
+      {path:'corporate-order-application', component:CoporateOrderApplicationComponent},
+      {path:'conflict-Check', component:ConflictCheckComponent}
     ]
   },
   { path: 'login', component: LoginComponent },
