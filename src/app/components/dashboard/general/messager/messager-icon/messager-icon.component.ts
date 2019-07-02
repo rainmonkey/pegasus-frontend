@@ -13,6 +13,7 @@ export class MessagerIconComponent implements OnInit {
   public initiateFlag = false;
   public browserHeight:number;
   public unReadAnimationStatus:boolean = false;
+  public msgNotificationTimer;
 
   constructor(private chattingSerice:ChattingService) { }
 
@@ -23,14 +24,14 @@ export class MessagerIconComponent implements OnInit {
     this.chattingSerice.getSubscribersList(1);
     //发送请求 看看有没有未读消息 把未读消息存到数据库 【未完成】
     //if(sessionStorage.getItem('chattingInit'))
-    //如果有未读消息
+    //如果有未读消息或者有新消息 但是聊天框最小化了
     this.unreadMsgHandler();
 
   }
   
   unreadMsgHandler(){
     let that = this;
-    setInterval(function(that){
+    this.msgNotificationTimer = setInterval(function(that){
       that.unReadAnimationStatus = !that.unReadAnimationStatus;
     },500,that)
   }
@@ -40,6 +41,7 @@ export class MessagerIconComponent implements OnInit {
       --> when user click messager icon, display component 
   */
   displayMessager(){
+    clearInterval(this.msgNotificationTimer);
     this.popUpModalFlag = true;
   }
 

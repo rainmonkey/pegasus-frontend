@@ -1,6 +1,6 @@
 <div *ngIf='!isErrorFlag' [ngStyle]="{'height': modalHeight+'px'}" class='m_m_skeleton'>
   <!--header-->
-  <div class='m_m_header' [ngStyle]="{'background':bgColor}">
+  <div class='m_m_header' [@themeColorTrigger]='themeChangeFlag'>
     <span class='m_m_header_icon m_m_header_cog' (click)='showConfigPanel()'>
       <span class='fas fa-cog'></span>
     </span>
@@ -19,7 +19,7 @@
   </div>
 
   <!--personal label ui-->
-  <app-messager-personal-info *ngIf='personalLabelDisplayFlag' [bgUrl]='bgUrl'></app-messager-personal-info>
+  <app-messager-personal-info *ngIf='personalLabelDisplayFlag' [themeChangeFlag]='themeChangeFlag'></app-messager-personal-info>
 
   <!--subscribers ui-->
   <div *ngIf='subscribersDisplayFlag' [ngStyle]="{'height': modalHeight -170 + 'px'}" class='m_m_subscribers' id='subscribers'> 
@@ -36,7 +36,7 @@
     <app-messager-chatting [user]='user' [modalHeight]='modalHeight-70' (onStartChatting)='startChattingWith()'></app-messager-chatting>
   </div>
 
-  <div class='m_m_selection_btns' [ngStyle]="{'background':bgColor}">
+  <div class='m_m_selection_btns' [@themeColorTrigger]="themeChangeFlag">
     <div class='row'>
       <div class='col-4 m_m_selection_btn_a'>
           <span class='m_m_selection_btn'><span class='far fa-user unlock'></span></span>
