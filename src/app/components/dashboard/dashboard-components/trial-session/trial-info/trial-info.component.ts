@@ -6,6 +6,8 @@ import { TeachersService } from 'src/app/services/http/teachers.service';
 import { NgbModal, NgbModalRef, NgbPagination } from '@ng-bootstrap/ng-bootstrap';
 import { TrialModalComponent } from '../trial-modal/trial-modal.component';
 import { LearnersService } from 'src/app/services/http/learners.service';
+import { TransactionService } from '../../../../../services/http/transaction.service';
+
 
 @Component({
   selector: 'app-trial-info',
@@ -26,6 +28,12 @@ export class TrialInfoComponent implements OnInit {
   public lastRouteName: string
   public arrangeUrl;
 
+  public courseId;
+  public courseInstance
+  public courseDetails
+  public courseCategory
+  public courseDuration
+
   @Input() childEvent;
 
   constructor(private coursesService: CoursesService,
@@ -33,21 +41,40 @@ export class TrialInfoComponent implements OnInit {
     private modalService: NgbModal,
     private routerInfo: ActivatedRoute,
     private learnersService: LearnersService,
-    private router: Router) { }
+    private router: Router,
+    private transactionService: TransactionService) { }
 
   ngOnInit() {
     this.getDataFromServer();
-    this.LearnerId = this.routerInfo.snapshot.queryParams.LearnerId;
+    this.LearnerId = this.routerInfo.snapshot.queryParams.LearnerId || this.routerInfo.snapshot.params.learnerId;
+    this.courseId = this.routerInfo.snapshot.params.courseId;
+    this.getCourseData()
   }
 
-  onClick() {
+  returnOnClick() {
     this.lastRouteName = this.routerInfo.snapshot.routeConfig.path
     this.arrangeUrl = "/learner/credit/" + this.LearnerId
-    if (this.lastRouteName == "trial") {
+    if (this.lastRouteName.includes("trial")) {
       this.router.navigateByUrl("/learner/list")
-    } else if (this.lastRouteName == "arrange") {
+    } else if (this.lastRouteName.includes("arrange")) {
       this.router.navigateByUrl(this.arrangeUrl)
     }
+  }
+
+  getCourseData() {
+    this.transactionService.GroupOr121(this.courseId, 0).subscribe(data => {
+      this.courseInstance = data.Data
+      this.courseDetails = this.courseInstance.Course
+      this.coursesService.getCourseCategoriesById(this.courseDetails.CourseCategoryId).subscribe(data => {
+        this.courseCategory = data["Data"]
+        // console.log(this.courseCategory)
+      })
+      this.coursesService.getDuration().subscribe(data => {
+        this.courseDuration = data.Data.find(data => data.PropValue == this.courseDetails.Duration).PropName
+        // console.log(this.courseDuration)
+      })
+      console.log("getCourseData finished")
+    })
   }
 
   //并发获取所有数据
@@ -69,6 +96,7 @@ export class TrialInfoComponent implements OnInit {
         this.groupCoursesInstance = res[4]['Data'];
         this.teachingCourses = res[5]['Data'];
         this.learners = res[6]['Data'];
+        console.log("getDataFromServer finished")
       },
       (err) => {
         alert('Sorry, something went wrong.')

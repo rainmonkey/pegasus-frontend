@@ -32,15 +32,17 @@ export class TrialSearchComponent implements OnInit {
   @Input() teachingCourses;
   @Input() LearnerId;
   @Input() learners;
+  @Input() courseCategory;
   @Output() childEvent = new EventEmitter();
 
   constructor(private modalService: NgbModal,
     private coursesService: CoursesService,
-    private lookupsService:LookUpsService) { }
+    private lookupsService: LookUpsService) { }
 
   ngOnInit() {
     this.getSemesterPeriod();
     this.getTeachersLevels();
+    console.log("on init")
   }
 
   /*
@@ -94,7 +96,7 @@ export class TrialSearchComponent implements OnInit {
       }
     }
     let hash = {};
-    let result = array1.reduce(function (item, next) {
+    let result = array1.reduce(function(item, next) {
       hash[next.TeacherId] ? '' : hash[next.TeacherId] = true && item.push(next);
       return item;
     }, [])
@@ -131,6 +133,7 @@ export class TrialSearchComponent implements OnInit {
       --> when user click a tab, select this tab and show some animations
   */
   selectTab(event, className, nextClass, index, filterId, filterName) {
+    console.log(event, className, nextClass, index, filterId, filterName)
     //only no tab select, mouse click event work.
     if (this.styleFlowControl[className].clicked == false) {
       //set true flag means that this tab has already selected. if continue cliking on this tab, no click event occur, nothing happend.
@@ -167,6 +170,7 @@ export class TrialSearchComponent implements OnInit {
     else {
       return;
     }
+    console.log("select finished")
   }
 
   /*
@@ -241,9 +245,9 @@ export class TrialSearchComponent implements OnInit {
   /*
     get teacher level name
   */
-  getLevel(level){
-    for(let i of this.teachersLevel){
-      if(level == i.PropValue){
+  getLevel(level) {
+    for (let i of this.teachersLevel) {
+      if (level == i.PropValue) {
         return i.PropName;
       }
     }

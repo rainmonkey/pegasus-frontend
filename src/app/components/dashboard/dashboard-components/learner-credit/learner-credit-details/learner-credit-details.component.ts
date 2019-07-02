@@ -16,6 +16,9 @@ export class LearnerCreditDetailsComponent implements OnInit {
   public learnerId: number
   public remainingCourseData: any
   public arrangedCourseData: any
+  public remainingDataWaitingFlag: boolean = false
+  public arrangeDataWaitingFlag: boolean = false
+  public courseId: number
 
   constructor(private learnerService: LearnersService,
     private activatedRouter: ActivatedRoute,
@@ -40,15 +43,20 @@ export class LearnerCreditDetailsComponent implements OnInit {
   }
 
   getRemainingCourses() {
+    this.remainingDataWaitingFlag = true
     this.learnerService.getRemainingCourses(this.learnerId).subscribe(data => {
       this.remainingCourseData = data["Data"]
+      this.remainingDataWaitingFlag = false
+      console.log(this.remainingCourseData)
     }, error => console.log(error)
     )
   }
 
   getArrangedLesson() {
+    this.arrangeDataWaitingFlag = true
     this.learnerService.getArrangedLesson(this.learnerId).subscribe(data => {
       this.arrangedCourseData = data["Data"]
+      this.arrangeDataWaitingFlag = false
     }, error => console.log(error))
   }
 
@@ -60,10 +68,13 @@ export class LearnerCreditDetailsComponent implements OnInit {
     }
   }
 
-  navigateToArrange() {
+  navigateToArrange(index) {
+    this.courseId = this.remainingCourseData[index].CourseInstanceId || this.remainingCourseData[index].GroupCourseInstanceId
+    console.log(this.courseId)
+
     let url = this.router.routerState.snapshot.url;
-    url = url.substring(0, url.lastIndexOf("/"))
-    this.router.navigate([url + "/arrange"], { queryParams: { LearnerId: this.learnerId } })
+    url = url.substring(0, url.indexOf("/", 1))
+    this.router.navigate([url + "/arrange/" + this.learnerId + "/" + this.courseId])
   }
 
 }

@@ -233,7 +233,7 @@ export class TrialModalComponent implements OnInit {
         }
       }
     }
-    console.log(array)
+    // console.log(array)
     return array;
   }
 
@@ -278,7 +278,7 @@ export class TrialModalComponent implements OnInit {
   getTimeSlot() {
     let obj = [];
     for (let i of this.coursesTeachingByWhichTeacher) {
-      console.log(i)
+      // console.log(i)
       obj.push({ "start": i.start, "end": i.end, "rendering": 'background', })
     }
     return obj;

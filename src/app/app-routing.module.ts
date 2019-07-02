@@ -126,11 +126,11 @@ const routes: Routes = [
           {
             path: "credit", pathMatch: 'prefix', component: LearnerCreditPanelComponent, canActivate: [UserAuthGuard],
             children: [{
-              path: "arrange", component: TrialInfoComponent
-              //LearnerCreditArrangeComponent
-            }, {
               path: ":id", component: LearnerCreditDetailsComponent
             }]
+          },
+          {
+            path: "arrange/:learnerId/:courseId", component: TrialInfoComponent
           },
           { path: 'success', component: AdminLearnerPaymentSuccessComponent },
         ]
