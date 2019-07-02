@@ -25,6 +25,8 @@ export class TrialConfirmComponent implements OnInit {
   @Input() learnerId;
   @Input() courseId;
   @Input() studentFullName;
+  //arrange
+  @Input() arrangeFlag
   @ViewChildren('radios') radios;
   @Output() closeModalFlag: EventEmitter<any> = new EventEmitter();
 
@@ -98,7 +100,7 @@ export class TrialConfirmComponent implements OnInit {
   }
 
   onSubmit() {
-    if (this.paymentMethodValue == null) {
+    if (this.paymentMethodValue == null && !this.arrangeFlag) {
       this.error = true;
       return
     }

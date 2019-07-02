@@ -57,6 +57,7 @@ export class LearnerCreditDetailsComponent implements OnInit {
     this.learnerService.getArrangedLesson(this.learnerId).subscribe(data => {
       this.arrangedCourseData = data["Data"]
       this.arrangeDataWaitingFlag = false
+      console.log(this.arrangedCourseData)
     }, error => console.log(error))
   }
 

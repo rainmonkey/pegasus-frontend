@@ -43,6 +43,8 @@ export class TrialModalComponent implements OnInit {
   public studentFullName: string;
   public studentLevel: number;
   public courseId: number;
+  //arrange
+  public arrangeFlag: boolean = false
 
   @Input() termPeriod: Array<any>;
   @Input() courses;
@@ -55,6 +57,9 @@ export class TrialModalComponent implements OnInit {
   @Input() availableDOW;
   @Input() learners;
   @Input() coursesTeachingByWhichTeacher;
+  //arrange
+  @Input() duration
+
   @ViewChild('fullcalendar') fullcalendar: CalendarComponent;
   options: OptionsInput;
   //eventsModel: any;
@@ -66,6 +71,9 @@ export class TrialModalComponent implements OnInit {
     private lookupsService: LookUpsService) { }
 
   ngOnInit() {
+    if (this.duration) {
+      this.arrangeFlag = true
+    }
     //assign current day as semester begain day.
     this.currentDay = this.transferTimestampToTime(new Date().getTime(), 1);
     this.initFullCalendar(this);
@@ -79,7 +87,7 @@ export class TrialModalComponent implements OnInit {
     this.options = {
       allDaySlot: false,
       height: 700,
-      selectable: true,
+      selectable: !this.arrangeFlag,
       //starting time of a day
       minTime: '09:00',
       //end time of a day
@@ -88,7 +96,8 @@ export class TrialModalComponent implements OnInit {
       slotDuration: '00:15',
       events: this.getAvailableTime(),
       selectConstraint: this.getAvailableTime(),
-      select: function (info) {
+      select: function(info) {
+        console.log(info)
         that.selectCallBack(info);
       },
       header: {
@@ -161,10 +170,14 @@ export class TrialModalComponent implements OnInit {
     }
   }
 
-  popUpConfirmModal(startTimestamp, endTimestamp) {
+  popUpConfirmModal(startTimestamp, endTimestamp?) {
     const modalRef = this.modalService.open(TrialConfirmComponent, { size: 'lg', backdrop: 'static', keyboard: false });
     modalRef.componentInstance.startTime = this.transferTimestampToTime(startTimestamp);
-    modalRef.componentInstance.endTime = this.transferTimestampToTime(endTimestamp);
+    if (endTimestamp) {
+      modalRef.componentInstance.endTime = this.transferTimestampToTime(endTimestamp);
+    } else {
+
+    }
     modalRef.componentInstance.orgName = this.orgName;
     modalRef.componentInstance.cateName = this.cateName;
     modalRef.componentInstance.whichTeacher = this.whichTeacher;
@@ -173,20 +186,22 @@ export class TrialModalComponent implements OnInit {
     modalRef.componentInstance.learnerId = this.LearnerId;
     modalRef.componentInstance.courseId = this.courseId;
     modalRef.componentInstance.orgId = this.orgId;
+    modalRef.componentInstance.arrangeFlag = this.arrangeFlag;
     modalRef.componentInstance.closeModalFlag.subscribe(
       (res) => {
         let that = this;
         modalRef.result.then(
-          function () {
+          function() {
             if (res == true) {
               that.activeModal.close('Cross click')
             }
           },
-          function () {
+          function() {
             return;
           })
       }
     )
+    console.log(modalRef)
   }
   /*
     get teacher's available time.
@@ -214,9 +229,9 @@ export class TrialModalComponent implements OnInit {
   */
   checkAvailableDOW(array) {
     //console.log(this.availableDOW)
-    for(let i in this.availableDOW){
+    for (let i in this.availableDOW) {
       //console.log(this.availableDOW[i]);
-      if(this.availableDOW[i] == 7){
+      if (this.availableDOW[i] == 7) {
         this.availableDOW[i] = 0;
       }
     }

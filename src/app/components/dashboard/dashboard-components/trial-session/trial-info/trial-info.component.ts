@@ -27,12 +27,11 @@ export class TrialInfoComponent implements OnInit {
   public learners;
   public lastRouteName: string
   public arrangeUrl;
-
-  public courseId;
-  public courseInstance
-  public courseDetails
-  public courseCategory
-  public courseDuration
+  //arrange
+  public arrangeCourseId;
+  public arrangeCourseInstance
+  public arrangeCourseDetails
+  public arrangeCourseCategory
 
   @Input() childEvent;
 
@@ -47,8 +46,11 @@ export class TrialInfoComponent implements OnInit {
   ngOnInit() {
     this.getDataFromServer();
     this.LearnerId = this.routerInfo.snapshot.queryParams.LearnerId || this.routerInfo.snapshot.params.learnerId;
-    this.courseId = this.routerInfo.snapshot.params.courseId;
-    this.getCourseData()
+    if (this.routerInfo.snapshot.params.courseId) {
+      this.arrangeCourseId = this.routerInfo.snapshot.params.courseId
+      this.getCourseData()
+    }
+
   }
 
   returnOnClick() {
@@ -62,18 +64,12 @@ export class TrialInfoComponent implements OnInit {
   }
 
   getCourseData() {
-    this.transactionService.GroupOr121(this.courseId, 0).subscribe(data => {
-      this.courseInstance = data.Data
-      this.courseDetails = this.courseInstance.Course
-      this.coursesService.getCourseCategoriesById(this.courseDetails.CourseCategoryId).subscribe(data => {
-        this.courseCategory = data["Data"]
-        // console.log(this.courseCategory)
+    this.transactionService.GroupOr121(this.arrangeCourseId, 0).subscribe(data => {
+      this.arrangeCourseInstance = data.Data
+      this.arrangeCourseDetails = this.arrangeCourseInstance.Course
+      this.coursesService.getCourseCategoriesById(this.arrangeCourseDetails.CourseCategoryId).subscribe(data => {
+        this.arrangeCourseCategory = data["Data"]
       })
-      this.coursesService.getDuration().subscribe(data => {
-        this.courseDuration = data.Data.find(data => data.PropValue == this.courseDetails.Duration).PropName
-        // console.log(this.courseDuration)
-      })
-      console.log("getCourseData finished")
     })
   }
 
@@ -96,7 +92,6 @@ export class TrialInfoComponent implements OnInit {
         this.groupCoursesInstance = res[4]['Data'];
         this.teachingCourses = res[5]['Data'];
         this.learners = res[6]['Data'];
-        console.log("getDataFromServer finished")
       },
       (err) => {
         alert('Sorry, something went wrong.')

@@ -19,7 +19,7 @@
             <tr *ngFor="let i of remainingCourseData;let j = index">
               <th scope="row">{{j+1}}</th>
               <td>{{i.TermId}}</td>
-              <td>{{i.CourseInstance.Course.CourseName}}</td>
+              <td>{{i.CourseName}}</td>
               <td>{{i.ExpiryDate|date:"dd/MM/yyyy"}}</td>
               <td>{{i.Quantity}}</td>
               <td>
