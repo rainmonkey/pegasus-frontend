@@ -16,13 +16,14 @@
 
     <div *ngIf='roomConflictShow'>
       <div *ngFor='let i of roomConflictData'>
-          <div class='card'>
-            <div class="card-body">
-              <div *ngFor='let j of i'>
+        <div class='card'>
+          <div class="card-body">
+            <div *ngFor='let j of i'>
               {{j.LessonId}}
             </div>
           </div>
         </div>
+        <br>
       </div>
     </div>
 
@@ -35,6 +36,7 @@
             </div>
           </div>
         </div>
+        <br>
       </div>
     </div>
   </div>
