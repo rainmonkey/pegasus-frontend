@@ -1,5 +1,5 @@
-import { ChattingService } from './../../../../../services/repositories/chatting.service';
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { ChattingService } from 'src/app/services/repositories/chatting.service';
 
 @Component({
   selector: 'app-messager-subscribers',
@@ -40,6 +40,7 @@ export class MessagerSubscribersComponent implements OnInit {
     When user click group label, show subscribers in this group
   */
   displayGroup(event,whichGroup){
+    console.log('aaa')
     let groupObj = document.getElementById(whichGroup);
     if(groupObj.style.display == '' || groupObj.style.display == 'none'){
       groupObj.style.display = 'block';

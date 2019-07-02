@@ -1,5 +1,5 @@
 import { ChattingService } from './../../../../../services/repositories/chatting.service';
-import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Output, Input, EventEmitter } from '@angular/core';
 
 @Component({
   selector: 'app-messager-modal',
@@ -21,6 +21,7 @@ export class MessagerModalComponent implements OnInit {
   public userId;
   public bgUrl: string = null;
   public bgColor: string = null;
+  public modalHeight;
   public styleList: Array<object> = [
     { url: '../../../../../../assets/images/shared/background01.jpg', background: 'linear-gradient(135deg, pink, white)', bgcolor: '#fadbe3' },
     { url: '../../../../../../assets/images/shared/background03.jpg', background: 'linear-gradient(135deg, lightgreen, lightblue)', bgcolor: '#a6ddd3' },
@@ -29,10 +30,12 @@ export class MessagerModalComponent implements OnInit {
     { url: '../../../../../../assets/images/shared/background06.jpg', background: 'linear-gradient(135deg, lightblue, pink)', bgcolor: '#add8e6' }];
 
 
+  @Input() browserHeight;
   @Output() onCloseChattingModal = new EventEmitter();
   constructor(private chattingService:ChattingService) { }
 
   ngOnInit() {
+    this.getModalHeight();
     //if can not get data from server
     if(this.chattingService.errorFlag == true){
       this.isErrorFlag = true;
@@ -47,8 +50,10 @@ export class MessagerModalComponent implements OnInit {
     console.log(sessionStorage.userId)//undefined
   }
 
-  a() {
-    return { "height": "300px" }
+  getModalHeight() {
+    if(this.browserHeight <= 750){
+      this.modalHeight = 550;
+    }
   }
 
   //点击设置按钮

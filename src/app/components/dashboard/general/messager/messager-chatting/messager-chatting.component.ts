@@ -2,6 +2,7 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { PickerModule } from '@ctrl/ngx-emoji-mart';
 import { EmojiModule } from '@ctrl/ngx-emoji-mart/ngx-emoji';
 import * as Emoji from 'node-emoji/'
+import { ChattingService } from 'src/app/services/repositories/chatting.service';
 
 @Component({
   selector: 'app-messager-chatting',
@@ -12,14 +13,16 @@ import * as Emoji from 'node-emoji/'
 export class MessagerChattingComponent implements OnInit {
   public chattingDisplayFlag: boolean = false;
   public keysCombination: object = { "Enter": false, "Control": false };
-  public localMsgHistroy: Array<object> = [{ "msg": null ,'leftOrRight':'left'}];
+  public localMsgHistroy: Array<object>=[];
   public subscriber:object;
   @Input() user;
+  @Input() modalHeight;
   @Output() onStartChatting = new EventEmitter();
 
-  constructor() { }
+  constructor(private chattingService:ChattingService) { }
   ngOnInit() {
     this.subscriber = JSON.parse(this.user);
+    console.log(this.modalHeight)
   }
 
   ngOnChanges() {
@@ -95,7 +98,7 @@ export class MessagerChattingComponent implements OnInit {
     if (this.keysCombination['Enter'] == true && this.keysCombination['Control'] == true) {
       console.log('yes')
       //成功 进行下一步操作
-      console.log(event.target.value)
+      //console.log(event.target.value)
       this.pushMessageToView(event.target.value);
     }
   }
@@ -108,7 +111,31 @@ export class MessagerChattingComponent implements OnInit {
   }
 
   pushMessageToView(message) {
-    this.localMsgHistroy.push({'msg':message,'leftOrRight':'right'})
+    console.log(message)
+    if(message !== ''){
+      let timeStamp = (new Date()).toLocaleString();
+      console.log(timeStamp)
+      this.localMsgHistroy.push({'msg':message,'leftOrRight':'right','timeStamp':timeStamp});
+      //测试左侧
+      this.localMsgHistroy.push({'msg':'Hello World','leftOrRight':'left','timeStamp':timeStamp});
+      this.clearInputArea();
+      this.scroll();
+    }
+  }
+
+  /*
+    把输入区清空  
+  */
+  clearInputArea(){
+    let obj = document.getElementById('m_c_text_area');  
+    obj['value']= null;
+  }
+
+  scroll(){
+    
+    setTimeout(function(){
+      document.getElementById('scroll_anchor').scrollIntoView(); 
+    },10) 
   }
   /*
     选择新联系人
