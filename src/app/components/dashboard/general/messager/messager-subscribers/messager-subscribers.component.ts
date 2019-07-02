@@ -40,6 +40,7 @@ export class MessagerSubscribersComponent implements OnInit {
     When user click group label, show subscribers in this group
   */
   displayGroup(event,whichGroup){
+    console.log('aaa')
     let groupObj = document.getElementById(whichGroup);
     if(groupObj.style.display == '' || groupObj.style.display == 'none'){
       groupObj.style.display = 'block';

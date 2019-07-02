@@ -1,6 +1,6 @@
-<div *ngIf='!popUpModalFlag' class='m_i_icon'>
+<div *ngIf='!popUpModalFlag' class='m_i_icon' [@unReadTrigger]='unReadAnimationStatus?"on":"off"'>
   <span (click)='displayMessager()'>
-    <span class="fas fa-comment" ></span>
+    <span class="fas fa-comment"></span>
   </span>
 </div>
 
