@@ -16,11 +16,13 @@ export class MessagerChattingComponent implements OnInit {
   public localMsgHistroy: Array<object>=[];
   public subscriber:object;
   @Input() user;
+  @Input() modalHeight;
   @Output() onStartChatting = new EventEmitter();
 
   constructor(private chattingService:ChattingService) { }
   ngOnInit() {
     this.subscriber = JSON.parse(this.user);
+    console.log(this.modalHeight)
   }
 
   ngOnChanges() {

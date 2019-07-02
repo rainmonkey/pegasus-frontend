@@ -14,6 +14,9 @@ export class MessagerIconComponent implements OnInit {
   constructor(private chattingSerice:ChattingService) { }
 
   ngOnInit() {
+    //获得浏览器高度
+    this.browserHeight = window.outerHeight;
+
     //sent get subscribers request
     this.chattingSerice.getSubscribersList(1);
     //发送请求 看看有没有未读消息 【未完成】

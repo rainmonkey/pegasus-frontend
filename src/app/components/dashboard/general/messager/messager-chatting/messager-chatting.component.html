@@ -1,5 +1,5 @@
 <!--选择聊天对象时-->
-<div *ngIf='chattingDisplayFlag' class='m_c_skeleton'>
+<div *ngIf='chattingDisplayFlag'>
   <div class='m_c_person_label'>
     <!--展示聊天对象的label 
     数据动态获取-->
@@ -24,7 +24,7 @@
 
   <!--聊天框-->
   <div style="position: relative">
-    <div class='m_c_chatting_panel' id='m_c_chatting_panel'>
+    <div [ngStyle]="{'height': modalHeight - 200 + 'px'}" class='m_c_chatting_panel' id='m_c_chatting_panel'>
       <!--聊天内容-->
       <div *ngFor='let i of localMsgHistroy' class='clearfix' style="margin-bottom: 5px">
         <div class='m_c_chatting_messagers' [class.m_c_chatting_messagers_left] = 'i.leftOrRight == "left"' [class.m_c_chatting_messagers_right] = 'i.leftOrRight == "right"'>
@@ -65,7 +65,7 @@
 </div>
 
 <!--没有选择聊天对象时-->
-<div *ngIf='!chattingDisplayFlag' class='m_c_skeleton'>
+<div *ngIf='!chattingDisplayFlag'>
   <div class='m_c_start_chatting'>
     <span (click)='startNewChatting()'>start chatting now...</span>
   </div>

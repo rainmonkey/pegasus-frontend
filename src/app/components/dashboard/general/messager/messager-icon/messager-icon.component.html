@@ -5,4 +5,4 @@
 </div>
 
 <!--messager modal skeleton-->
-<app-messager-modal *ngIf='popUpModalFlag' (onCloseChattingModal)='hideMessager($event)'></app-messager-modal>
+<app-messager-modal *ngIf='popUpModalFlag' [browserHeight]='browserHeight' (onCloseChattingModal)='hideMessager($event)'></app-messager-modal>

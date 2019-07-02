@@ -21,6 +21,7 @@ export class MessagerModalComponent implements OnInit {
   public userId;
   public bgUrl: string = null;
   public bgColor: string = null;
+  public modalHeight;
   public styleList: Array<object> = [
     { url: '../../../../../../assets/images/shared/background01.jpg', background: 'linear-gradient(135deg, pink, white)', bgcolor: '#fadbe3' },
     { url: '../../../../../../assets/images/shared/background03.jpg', background: 'linear-gradient(135deg, lightgreen, lightblue)', bgcolor: '#a6ddd3' },
@@ -34,6 +35,7 @@ export class MessagerModalComponent implements OnInit {
   constructor(private chattingService:ChattingService) { }
 
   ngOnInit() {
+    this.getModalHeight();
     //if can not get data from server
     if(this.chattingService.errorFlag == true){
       this.isErrorFlag = true;
@@ -46,13 +48,12 @@ export class MessagerModalComponent implements OnInit {
     this.preBtnSelectedObj = document.getElementById('initSelected');
     console.log(sessionStorage)
     console.log(sessionStorage.userId)//undefined
-
-    this.a();
   }
 
-  a() {
-    console.log(window.outerHeight)
-    return { "height": "300px" }
+  getModalHeight() {
+    if(this.browserHeight <= 750){
+      this.modalHeight = 550;
+    }
   }
 
   //点击设置按钮
