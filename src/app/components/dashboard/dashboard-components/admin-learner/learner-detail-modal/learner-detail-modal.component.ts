@@ -23,6 +23,7 @@ export class LearnerDetailModalComponent implements OnInit {
   otherValueList = [];
   howKnowList = [];
   learnerLevelList = []
+  levelTypeList=[]
   othersmsg = '';
   agreeFormMsg = '';
   howKnow: any
@@ -33,8 +34,8 @@ export class LearnerDetailModalComponent implements OnInit {
   learnerList1: any
   //amendment列表
   amendmentList = []
-  tempraryList = []
-  permanentList = []
+
+
   constructor(public activeModal: NgbActiveModal, private LearnerListService: LearnersService,   private modalService: NgbModal,) {
 
   }
@@ -44,6 +45,7 @@ export class LearnerDetailModalComponent implements OnInit {
     this.lookUpData1()
     this.lookUpData2()
     this.lookUpData4()
+    this.lookUpData5()
     this.getOthersUrl()
     this.getFormUrl()
     console.log(this.whichLearner)
@@ -112,6 +114,22 @@ export class LearnerDetailModalComponent implements OnInit {
     )
   }
 
+  lookUpData5(){
+    this.LearnerListService.getLookups(5).subscribe(
+      (res) => { console.log(res), this.getLevelType(res.Data) },
+      (err) => { console.warn(err) }
+    )
+  }
+
+
+  getLevelType(data){
+  data.forEach(element => {
+    if (this.whichLearner.LevelType == element['PropValue']) {
+      this.levelTypeList.push(element['PropName'])
+    }
+  });
+  console.log(this.levelTypeList)
+}
 
   getLearnerValue(displayData1) {
     displayData1.forEach(element => {
@@ -214,12 +232,6 @@ export class LearnerDetailModalComponent implements OnInit {
     return window.open(this.agreeFileUrl)
   }
 
-  // getAmendentLength(){
-  //   for(let ele of this.whichLearner.One2oneCourseInstance){
-  //       this.amendment=ele.Amendment.length
-  //       console.log(this.amendment)
-  //   }
-  // }
 
   getAmendmentList() {
 
@@ -241,16 +253,9 @@ export class LearnerDetailModalComponent implements OnInit {
 
   openHistory(ele) {
     const modalRef = this.modalService.open(AmendmentHistoryModalComponent, { size: 'lg', backdrop: 'static', keyboard: false });
-    let that = this;
+
     modalRef.componentInstance.whichCourse=ele
-    modalRef.result.then(
-      (res) => {
-          that.ngOnInit()
-      },
-      (err) =>{
-        return
-      }
-    )
+
   }
 
 }

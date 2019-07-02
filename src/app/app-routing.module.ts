@@ -1,6 +1,7 @@
 import { Routes, RouterModule } from '@angular/router';
 import { DashboardRestrictGuard } from './guards/dashboard-restrict.guard';
 import { UserAuthGuard } from './guards/user-auth.guard';
+import { UserAuthOtherGuard } from './guards/user-auth-other.guard';
 
 import { LoginComponent } from './components/basic/login/login.component';
 import { DashboardPanelComponent } from './components/dashboard/general/dashboard-panel/dashboard-panel.component';
@@ -42,12 +43,19 @@ import { StaffListComponent } from './components/dashboard/dashboard-components/
 import { LearnerCreditPanelComponent } from "./components/dashboard/dashboard-components/learner-credit/learner-credit-panel/learner-credit-panel.component";
 import { LearnerCreditDetailsComponent } from "./components/dashboard/dashboard-components/learner-credit/learner-credit-details/learner-credit-details.component"
 import { HolidayCalendarComponent } from './components/dashboard/dashboard-components/admin-holidays/holiday-calendar/holiday-calendar.component';
+<<<<<<< HEAD
 
+=======
+import { LearnerCreditArrangeComponent } from './components/dashboard/dashboard-components/learner-credit/learner-credit-arrange/learner-credit-arrange.component';
+import { CoporateOrderApplicationComponent } from './components/dashboard/dashboard-components/admin-inventory-application-dispatch/coporate-order-application/coporate-order-application.component';
+
+//canActivate: [DashboardRestrictGuard],
+>>>>>>> 0f7259262d367a90cf5a7f8b480775d73d0ef2eb
 const routes: Routes = [
   {
-    path: '', component: DashboardPanelComponent, canActivate: [DashboardRestrictGuard],
+    path: '', component: DashboardPanelComponent,canActivate: [DashboardRestrictGuard],
     children: [
-      { path: 'home', component: DashboardHomeComponent },
+      { path: 'home', component: DashboardHomeComponent, canActivate: [UserAuthOtherGuard], },
       // Testing path
       { path: 'testone', component: TestoneComponent },
       // Payment Area
@@ -160,7 +168,8 @@ const routes: Routes = [
       { path: 'staff/list', component: StaffListComponent },
       // Below to be rearranged
       { path: 'time/picker', component: TimePickerComponent },
-      { path: 'holidays', component: HolidayCalendarComponent }
+      { path: 'holidays', component: HolidayCalendarComponent },
+      {path:'corporate-order-application', component:CoporateOrderApplicationComponent}
     ]
   },
   { path: 'login', component: LoginComponent },

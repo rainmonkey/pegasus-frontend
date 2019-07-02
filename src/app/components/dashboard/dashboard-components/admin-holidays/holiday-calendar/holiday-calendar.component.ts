@@ -1,18 +1,12 @@
-import { Component, OnInit, ViewChild, Input, ViewEncapsulation } from '@angular/core';
+import { Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { CalendarComponent } from 'ng-fullcalendar';
 import interactionPlugin from '@fullcalendar/interaction';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import { OptionsInput } from '@fullcalendar/core';
 import { HolidaysService } from 'src/app/services/http/holidays.service';
-import { Calendar } from '@fullcalendar/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { AddHolidaysModalComponent } from '../add-holidays-modal/add-holidays-modal.component';
-import { View } from '@fullcalendar/core';
 import { DeleteHolidayComponent } from '../delete-holiday/delete-holiday.component';
-import { preserveWhitespacesDefault } from '@angular/compiler';
-import { TestBed } from '@angular/core/testing';
-import { dateToLocalArray } from '@fullcalendar/core/datelib/marker';
-import * as moment from 'moment/moment.js'
+import { SelectHolidaysModalComponent } from '../select-holidays-modal/select-holidays-modal.component';
 
 
 @Component({
@@ -48,7 +42,6 @@ export class HolidayCalendarComponent implements OnInit {
   getExitHoliday() {
     this.HolidayServer.getHoliday().subscribe(
       (event) => {
-        console.log('aaaaaaaaaaaaa')
         const eventData = this.putInfo(event.Data)
         this.eventsModel = eventData
       },
@@ -59,7 +52,6 @@ export class HolidayCalendarComponent implements OnInit {
   }
 
   initFullCalendar(pointer) {
-
     console.log(this.fullcalendar)
     let that = pointer;
     this.options = {
@@ -68,12 +60,8 @@ export class HolidayCalendarComponent implements OnInit {
       select: function (info) {
         that.test(info)
       },
-      // dateClick: function (info) {
-      //   console.log(info)
-      //   that.addAndEdit(info)
-      // },
       eventClick: (info) => {
-        console.log(info)
+        // console.log(info)
         that.delete(info)
       },
       eventTextColor: '#ffffff',
@@ -81,40 +69,14 @@ export class HolidayCalendarComponent implements OnInit {
   }
 
   test(info) {
-    this.selectDate = []
-    console.log(info)
-    let beginDate = info.start
-    const endDate = (info.end).setDate((info.end).getDate()-1)
-  //  while (moment(beginDate).isBefore(endDate))
-  for (beginDate; moment(beginDate).isBefore(endDate)||moment(beginDate).isSame(endDate);) {
-    console.log(beginDate)
-    this.selectDate.push(beginDate)
-    beginDate.setDate(beginDate.getDate() + 1)
-
-
-    }
-
-    console.log(this.selectDate)
-    return
-  }
-
-  putInfo(h) {
-    this.holidayArray = [];
-    for (let i of h) {
-      this.holidayArray.push({ 'id': i.HolidayId, "title": i.HolidayName, "date": i.HolidayDate })
-    }
-    return this.holidayArray;
-  }
-
-  addAndEdit(info) {
-    const modalRef = this.modalService.open(AddHolidaysModalComponent)
+  const modalRef = this.modalService.open(SelectHolidaysModalComponent,{ backdrop: 'static', keyboard: false })
     let that = this;
     modalRef.componentInstance.date = info;
     modalRef.componentInstance.refreshFlag.subscribe(
       (res) => {
         modalRef.result.then(
           function () {
-            console.log(res)
+            // console.log(res)
             if (res == true) {
               that.fullcalendar.calendar.removeAllEvents();
               that.getExitHoliday()
@@ -126,10 +88,19 @@ export class HolidayCalendarComponent implements OnInit {
           })
       }
     )
+
+  }
+
+  putInfo(h) {
+    this.holidayArray = [];
+    for (let i of h) {
+      this.holidayArray.push({ 'id': i.HolidayId, "title": i.HolidayName, "date": i.HolidayDate })
+    }
+    return this.holidayArray;
   }
 
   delete(info) {
-    const modalRef = this.modalService.open(DeleteHolidayComponent)
+    const modalRef = this.modalService.open(DeleteHolidayComponent,{ backdrop: 'static', keyboard: false })
     let that = this;
     modalRef.componentInstance.date = info;
     modalRef.result.then(

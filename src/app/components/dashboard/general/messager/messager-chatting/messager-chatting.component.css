@@ -1,6 +1,4 @@
-.m_c_skeleton{
-    height: 580px; /********************************************************/
-}
+
 .m_c_subscribers{
     height: 60px;
     padding: 1px 0!important;
@@ -36,7 +34,7 @@
     height:380px;
     width: 100%;
     border-bottom: 1px solid rgb(223, 220, 220);
-    position: relative;
+    overflow: auto;
 }
 .m_c_emoji_panel{
     height: 25px;
@@ -99,18 +97,18 @@
 }
 .m_c_chatting_text{
     color:#5d5d5a;
-    word-break:break-all;
+    text-align: left;
+    /*可以让文字自动换行且可以解析换行符*/
+    white-space: pre-line;
     border-radius:4px;
     padding: 0 5px;
     max-width:200px;
     margin:0 5px;
 }
 .m_c_chatting_text_left{
-    text-align: left;
     border:1px solid lightgray;
 }
 .m_c_chatting_text_right{
-    text-align: right;
     border: 1px solid rgb(99, 168, 99);
     background: #9ee84d;
 }
@@ -119,4 +117,24 @@
 }
 .m_c_chatting_messagers_right{
     float: right;
+}
+.m_c_time_stamp{
+    line-height: 12px;
+    font-size: 12px;
+    color:#5d5d5a;
+    margin-bottom: 5px;
+}
+.m_c_time_stamp_left{
+    text-align: left;
+    margin-left: 5px;
+}
+.m_c_time_stamp_right{
+    text-align: right;
+    margin-right: 5px;
+}
+.clearfix{
+    clear:both;
+}
+pre{
+    margin:0;
 }

@@ -1,6 +1,6 @@
-<div class='m_m_skeleton'>
+<div *ngIf='!isErrorFlag' [ngStyle]="{'height': modalHeight+'px'}" class='m_m_skeleton'>
   <!--header-->
-  <div class='m_m_header'>
+  <div class='m_m_header' [ngStyle]="{'background':bgColor}">
     <span class='m_m_header_icon m_m_header_cog' (click)='showConfigPanel()'>
       <span class='fas fa-cog'></span>
     </span>
@@ -22,21 +22,21 @@
   <app-messager-personal-info *ngIf='personalLabelDisplayFlag' [bgUrl]='bgUrl'></app-messager-personal-info>
 
   <!--subscribers ui-->
-  <div class='m_m_subscribers' id='subscribers'> 
+  <div *ngIf='subscribersDisplayFlag' [ngStyle]="{'height': modalHeight -170 + 'px'}" class='m_m_subscribers' id='subscribers'> 
     <app-messager-subscribers (onChattingWith)='startChattingWith($event)'></app-messager-subscribers>
   </div>
 
   <!--recently chatting ui-->
-  <div class='m_m_recently' id='recently'>
-    <app-messager-recently></app-messager-recently>
+  <div *ngIf='recentlyDisplayFlag' [ngStyle]="{'height': modalHeight -170 + 'px'}" class='m_m_recently' id='recently'>
+    <app-messager-recently (onChattingWith)='startChattingWith($event)'></app-messager-recently>
   </div>
 
   <!--chatting ui-->
-  <div class='m_m_chatting' id='chatting'>
-    <app-messager-chatting [userId]='userId' (onStartChatting)='startChattingWith()'></app-messager-chatting>
+  <div *ngIf='chattingDisplayFlag' [ngStyle]="{'height': modalHeight -70 + 'px'}" class='m_m_chatting' id='chatting'>
+    <app-messager-chatting [user]='user' [modalHeight]='modalHeight-70' (onStartChatting)='startChattingWith()'></app-messager-chatting>
   </div>
 
-  <div class='m_m_selection_btns'>
+  <div class='m_m_selection_btns' [ngStyle]="{'background':bgColor}">
     <div class='row'>
       <div class='col-4 m_m_selection_btn_a'>
           <span class='m_m_selection_btn'><span class='far fa-user unlock'></span></span>
@@ -58,4 +58,10 @@
       </div>
     </div>
   </div>
+</div>
+
+<div *ngIf='isErrorFlag' class='m_m_skeleton'>
+  <div style='margin: 0 auto'>Sorry, something went wrong...</div>
+  <div style='margin: 0 auto'>Please try it later...</div>
+  <div style='margin: 0 auto'>close</div>
 </div>

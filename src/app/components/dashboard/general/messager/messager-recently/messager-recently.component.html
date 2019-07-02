@@ -1,4 +1,4 @@
-<div class='row m_s_subscribers' (dblclick)='chattingWithHandler()'>
+<div *ngFor='let i of recentlySubscribers' class='row m_s_subscribers' (dblclick)='chattingWithHandler()'>
     <div class='col-3'>
       <div class='m_s_subscribers_photo'>
         <img src="../../../../../../assets/images/usersimg/userphoto02.jpg" alt="">

@@ -35,6 +35,7 @@ export class AdminLearnerListComponent implements OnInit {
   public columnsToSearch: string;
   public currentPage: number = 1;
   public pageSize: number = 10;
+  public loadingFlag: boolean = false;
 
   // // sent active modal confirm satuation to admin learner component;
 
@@ -48,6 +49,7 @@ export class AdminLearnerListComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    this.loadingFlag = true;
     this.getDataFromServer()
   }
 
@@ -61,7 +63,7 @@ export class AdminLearnerListComponent implements OnInit {
         this.learnerListCopy = this.learnerList;
         //@ts-ignore
         this.learnerListLength = res.Data.length;
-
+        this.loadingFlag = false;
       },
       (err) => {
         console.log('b')

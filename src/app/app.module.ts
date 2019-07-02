@@ -115,7 +115,7 @@ import { StaffModalFormComponent } from './components/dashboard/dashboard-compon
 import { InventoryDetailModalComponent } from './components/dashboard/dashboard-components/inventory/inventory-detail-modal/inventory-detail-modal.component';
 import { InventoryReceiptModalComponent } from './components/dashboard/dashboard-components/inventory/inventory-receipt-modal/inventory-receipt-modal.component';
 import { HolidayCalendarComponent } from './components/dashboard/dashboard-components/admin-holidays/holiday-calendar/holiday-calendar.component';
-import { AddHolidaysModalComponent } from './components/dashboard/dashboard-components/admin-holidays/add-holidays-modal/add-holidays-modal.component';
+
 import { DeleteHolidayComponent } from './components/dashboard/dashboard-components/admin-holidays/delete-holiday/delete-holiday.component';
 import { PickerModule } from '@ctrl/ngx-emoji-mart';
 import { EmojiModule } from '@ctrl/ngx-emoji-mart/ngx-emoji';
@@ -126,7 +126,9 @@ import { MessagerRecentlyComponent } from './components/dashboard/general/messag
 import { MessagerChattingComponent } from './components/dashboard/general/messager/messager-chatting/messager-chatting.component';
 import { MessagerPersonalInfoComponent } from './components/dashboard/general/messager/messager-personal-info/messager-personal-info.component';
 import { AmendmentHistoryModalComponent } from './components/dashboard/dashboard-components/admin-learner/amendment-History-modal/amendment-History-modal.component';
-import { IsTemporaryPipe } from './shared/pipes/IsTemporary.pipe';
+import { IsTemporaryPipe } from './shared/pipes/IsTemporary.pipe'
+import { SelectHolidaysModalComponent } from './components/dashboard/dashboard-components/admin-holidays/select-holidays-modal/select-holidays-modal.component';
+import { CoporateOrderApplicationComponent } from './components/dashboard/dashboard-components/admin-inventory-application-dispatch/coporate-order-application/coporate-order-application.component';
 
 @NgModule({
   declarations: [
@@ -235,7 +237,6 @@ import { IsTemporaryPipe } from './shared/pipes/IsTemporary.pipe';
     InventoryDetailModalComponent,
     InventoryReceiptModalComponent,
     HolidayCalendarComponent,
-    AddHolidaysModalComponent,
     DeleteHolidayComponent,
     MessagerIconComponent,
     MessagerModalComponent,
@@ -243,7 +244,9 @@ import { IsTemporaryPipe } from './shared/pipes/IsTemporary.pipe';
     MessagerRecentlyComponent,
     MessagerChattingComponent,
     MessagerPersonalInfoComponent,
+    SelectHolidaysModalComponent,
 
+    CoporateOrderApplicationComponent
   ],
   imports: [
     NgbModule,
@@ -303,9 +306,9 @@ import { IsTemporaryPipe } from './shared/pipes/IsTemporary.pipe';
     StaffEditModalComponent,
     InventoryDetailModalComponent,
     InventoryReceiptModalComponent,
-    AddHolidaysModalComponent,
     DeleteHolidayComponent,
-    AmendmentHistoryModalComponent
+    AmendmentHistoryModalComponent,
+    SelectHolidaysModalComponent
   ],
   exports: [AppComponent],
   bootstrap: [AppComponent]

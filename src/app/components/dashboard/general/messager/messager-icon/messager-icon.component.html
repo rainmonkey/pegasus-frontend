@@ -1,7 +1,8 @@
 <div *ngIf='!popUpModalFlag' class='m_i_icon'>
-  <span (click)='popUpMessager()'>
+  <span (click)='displayMessager()'>
     <span class="fas fa-comment" ></span>
   </span>
 </div>
 
-<app-messager-modal *ngIf='popUpModalFlag' (onCloseChattingModal)='closeMessager($event)'></app-messager-modal>
+<!--messager modal skeleton-->
+<app-messager-modal *ngIf='popUpModalFlag' [browserHeight]='browserHeight' (onCloseChattingModal)='hideMessager($event)'></app-messager-modal>

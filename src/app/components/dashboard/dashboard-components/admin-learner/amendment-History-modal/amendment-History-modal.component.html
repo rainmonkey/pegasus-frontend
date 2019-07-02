@@ -8,7 +8,8 @@
   </div>
 
   <div *ngIf='whichCourse.Amendment.length !== 0'>
-    <div *ngFor='let i of whichCourse.Amendment'>
+    <div *ngFor='let i of amend'>
+      <span>Amendment Record</span>
       <div class='card'>
         <div class='card-body'>
           <div class='row'>
@@ -20,10 +21,61 @@
               <span>Is Temporary: </span> <span class='text'>{{i.IsTemporary|IsTemporary}}</span>
             </div>
 
+            <div class='col-6'>
+              <span>Location: </span> <span class='text'>{{i.OrgId|orgFormat}} {{i.Room.RoomName}}</span>
+            </div>
+
+            <div class='col-6'>
+              <span>Teacher: </span> <span class='text'>{{i.Teacher.FirstName}} {{i.Teacher.LastName}}</span>
+            </div>
+
+            <div class='col-6' *ngIf='i.BeginDate'>
+              <span>Begin Date: </span> <span class='text'>{{i.BeginDate.slice(0,10)}}</span>
+            </div>
+
+            <div class='col-6' *ngIf='i.EndDate'>
+              <span>Period: </span> <span class='text'>{{i.BeginDate.slice(0,10)}} -- {{i.EndDate.slice(0,10)}}</span>
+            </div>
+
+            <div class='col-6'>
+              <span>Course time: </span> <span class='text'>{{i.DayOfWeek|weekFormat}} {{i.BeginTime}} --
+                {{i.EndTime}}</span>
+            </div>
+
+            <div class='col-12'>
+              <span>Reason: </span> <span class='text'>{{i.Reason}}</span>
+            </div>
           </div>
         </div>
       </div>
       <br>
+    </div>
+
+    <div *ngFor='let i of leave'>
+      <span>Leave Record:</span>
+      <div class='card'>
+        <div class='card-body'>
+          <div class='row'>
+            <div class='col-6'>
+              <span>Amendment at: </span> <span class='text'>{{i.CreatedAt.replace('T',' ')}}</span>
+            </div>
+
+            <div class='col-6'>
+              <span>Location: </span> <span class='text'>{{i.OrgId|orgFormat}} {{i.Room.RoomName}}</span>
+            </div>
+
+            <div class='col-6' *ngIf='i.EndDate'>
+              <span>Period: </span> <span class='text'>{{i.BeginDate.slice(0,10)}} -- {{i.EndDate.slice(0,10)}}</span>
+            </div>
+
+
+            <div class='col-12'>
+              <span>Reason: </span> <span class='text'>{{i.Reason}}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
     </div>
   </div>
 </div>
