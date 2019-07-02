@@ -10,3 +10,15 @@
         </div>
     </div>
 </div>
+<div class="card">
+  <div *ngIf="chart" class="card-body">
+      <div class="font4">{{chart.title}}</div>
+      <div class="font5">{{chart.subTitle}}</div>
+
+      <div style="margin-top: 20px; display: block;">
+          <canvas baseChart width="400" height="200" [datasets]="chartData" [labels]="chartLabels" [options]="lineChartOptions"
+              [colors]="lineChartColors" [legend]="lineChartLegend" [chartType]="lineChartType" [plugins]="lineChartPlugins">
+          </canvas>
+      </div>
+  </div>
+</div>
