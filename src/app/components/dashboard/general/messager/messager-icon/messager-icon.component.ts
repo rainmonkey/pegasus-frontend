@@ -15,7 +15,14 @@ export class MessagerIconComponent implements OnInit {
   ngOnInit() {
     //sent get subscribers request
     this.chattingSerice.getSubscribersList(1);
+    //发送请求 看看有没有未读消息 【未完成】
 
+    //如果有未读消息
+    this.unreadMsgHandler();
+
+  }
+  
+  unreadMsgHandler(){
     
   }
 
