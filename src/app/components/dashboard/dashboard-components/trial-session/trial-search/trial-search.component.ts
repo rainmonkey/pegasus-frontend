@@ -36,6 +36,7 @@ export class TrialSearchComponent implements OnInit {
   //arrange
   @Input() arrangeCourseCategory;
   @Input() arrangeCourseDetails
+  @Input() arrangeCourseInstance;
 
   @Output() childEvent = new EventEmitter();
 
@@ -233,6 +234,7 @@ export class TrialSearchComponent implements OnInit {
     modalRef.componentInstance.learners = this.learners;
     modalRef.componentInstance.coursesTeachingByWhichTeacher = coursesTeachingByWhichTeacher;
     if (this.arrangeCourseDetails) {
+      modalRef.componentInstance.arrangeCourseInstance = this.arrangeCourseInstance
       modalRef.componentInstance.duration = this.arrangeCourseDetails.Duration
     }
   }

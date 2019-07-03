@@ -59,6 +59,7 @@ export class TrialModalComponent implements OnInit {
   @Input() coursesTeachingByWhichTeacher;
   //arrange
   @Input() duration
+  @Input() arrangeCourseInstance
 
   @ViewChild('fullcalendar') fullcalendar: CalendarComponent;
   options: OptionsInput;
@@ -206,6 +207,9 @@ export class TrialModalComponent implements OnInit {
     modalRef.componentInstance.courseId = this.courseId;
     modalRef.componentInstance.orgId = this.orgId;
     modalRef.componentInstance.arrangeFlag = this.arrangeFlag;
+    if (this.arrangeFlag) {
+      modalRef.componentInstance.arrangeCourseInstance = this.arrangeCourseInstance
+    }
     modalRef.componentInstance.closeModalFlag.subscribe(
       (res) => {
         let that = this;

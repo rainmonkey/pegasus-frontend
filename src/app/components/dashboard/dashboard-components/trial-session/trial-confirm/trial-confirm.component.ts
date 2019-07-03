@@ -27,6 +27,8 @@ export class TrialConfirmComponent implements OnInit {
   @Input() studentFullName;
   //arrange
   @Input() arrangeFlag
+  @Input() arrangeCourseInstance;
+
   @ViewChildren('radios') radios;
   @Output() closeModalFlag: EventEmitter<any> = new EventEmitter();
 
@@ -114,8 +116,8 @@ export class TrialConfirmComponent implements OnInit {
       console.log(dataToSubmit)
       this.CoursesService.arrangeCourse(localStorage.userID, dataToSubmit).subscribe(
         res => {
-          console.log(res)
           this.loadingGifFlag = false
+          this.successFlag = true;
         },
         err => {
           console.log(localStorage.userID, dataToSubmit, err)
@@ -147,6 +149,7 @@ export class TrialConfirmComponent implements OnInit {
       "OrgId": this.orgId,
       "BeginTime": this.startTime,
       "Reason": "arrange course",
+      "CourseInstanceId": this.arrangeCourseInstance.CourseInstanceId
     }
     return data
   }
