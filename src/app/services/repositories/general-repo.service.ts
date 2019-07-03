@@ -24,7 +24,19 @@ export class GeneralRepoService {
   }
   giveAuthToGuard(urlS){
     let localPath = localStorage.getItem('pathAuth');
-        return localPath.includes(urlS);
+    let pathArray = localPath.split(',');
+    let pass = false;
+    for (let i of pathArray) {
+      console.log(i);
+      if (urlS.indexOf(i) !== -1) {
+        pass = true
+      }
+      break
+    }
+    if (pass = true){
+      return true;
+    } else return false;
+        // return localPath.indexOf(urlS);
   }
 
     // let url: string = this.state.url;

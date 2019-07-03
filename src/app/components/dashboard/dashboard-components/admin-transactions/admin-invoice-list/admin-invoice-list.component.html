@@ -1,6 +1,7 @@
 <div *ngIf="isLoad">
 <div class='loaderLarge'></div>
-<div class='container tl_body'>
+</div>
+<div class='container tl_body' *ngIf="!isLoad">
   <div class='row'>
     <!--body head-->
     <div class='col-12 tl_body_title'>
@@ -14,7 +15,7 @@
 
     <!--body main-->
 
-    <div class='col-12' *ngIf="!isLoad">
+    <div class='col-12'>
       <table class='table table-striped'>
         <thead>
           <tr>
@@ -56,5 +57,4 @@
 
 
   </div>
-</div>
 </div>
