@@ -10,12 +10,13 @@ import { Animations } from '../../../../../../animation/chatting-animation';
 })
 export class MessagerIconComponent implements OnInit {
   public popUpModalFlag = false;
-  public initiateFlag = false;
-  public browserHeight:number;
-  public unReadAnimationStatus:boolean = false;
+  //animation state
+  public unReadAnimationStatus: boolean = false;
+  //pass to child component, browser's height
+  public browserHeight: number;
   public msgNotificationTimer;
 
-  constructor(private chattingSerice:ChattingService) { }
+  constructor(private chattingSerice: ChattingService) { }
 
   ngOnInit() {
     //get browser's height, chatting modal can resize in diffrent browsers
@@ -25,33 +26,36 @@ export class MessagerIconComponent implements OnInit {
     //发送请求 看看有没有未读消息 把未读消息存到数据库 【未完成】
     //if(sessionStorage.getItem('chattingInit'))
     //如果有未读消息或者有新消息 但是聊天框最小化了
-    this.unreadMsgHandler();
+    this.setMessageNoticeAnimationState();
 
   }
-  
-  unreadMsgHandler(){
+
+  /*
+    set message notice animation state.
+  */
+  setMessageNoticeAnimationState() {
     let that = this;
-    this.msgNotificationTimer = setInterval(function(that){
+    this.msgNotificationTimer = setInterval(function (that) {
       that.unReadAnimationStatus = !that.unReadAnimationStatus;
-    },500,that)
+    }, 500, that)
   }
 
   /*
     display messager chatting component
       --> when user click messager icon, display component 
   */
-  displayMessager(){
+  displayMessager() {
     this.unReadAnimationStatus = false;
     clearInterval(this.msgNotificationTimer);
     this.popUpModalFlag = true;
   }
 
   /*
-    hide messager chatting component
+    close messager chatting component
       --> when user click close sign, hide component 
   */
-  hideMessager(event){
-    if(event == 'true'){
+  hideMessager(event) {
+    if (event == 'true') {
       this.popUpModalFlag = false;
     }
   }

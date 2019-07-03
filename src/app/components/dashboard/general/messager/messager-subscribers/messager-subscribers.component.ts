@@ -66,14 +66,13 @@ export class MessagerSubscribersComponent implements OnInit {
   }
 
   /*
-    点击选择和谁聊天
+    双击选择和谁聊天
   */
   chattingWithHandler(event,subscriber){
-    
-    //在sessionStorage里面保存 正在聊天的人
-    let subscribersStr = JSON.stringify(subscriber);
-    sessionStorage.setItem('user',subscribersStr);
-    this.onChattingWith.emit({"status":true,"user":subscribersStr})
+    //save the subscriber now chatting with.
+    this.chattingService.saveSubscriberChattingWith(subscriber);
+    //fire emit to parent component to notice need view switch
+    this.onChattingWith.emit(true);
   }
 
 }
