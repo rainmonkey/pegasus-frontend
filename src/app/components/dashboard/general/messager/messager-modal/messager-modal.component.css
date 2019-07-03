@@ -102,3 +102,7 @@
 .m_m_selection_btn_c:hover .lock {
     display: inline;
 }
+
+.m_m_header_chatting_with{
+    font-size: 14px;
+}

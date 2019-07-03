@@ -12,7 +12,6 @@ export class ChattingService {
   public subsOfStudents;
   public errorFlag: boolean;
 
-
   constructor(private http: HttpClient) { }
 
   //目前不同的权限调用的api不同 后台在改 到时候可以直接调用同一个api 后台进行判断 未完成

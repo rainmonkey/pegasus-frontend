@@ -40,6 +40,7 @@
 .m_s_subscribers_name{
     color:#5d5d5a;
     margin-top:5px!important;
+    float: left;
 }
 .m_s_subscribers_signature{
     height: 24px;
