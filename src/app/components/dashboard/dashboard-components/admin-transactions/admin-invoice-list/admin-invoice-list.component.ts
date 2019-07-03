@@ -47,8 +47,8 @@ export class AdminInvoiceListComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.getData();
     this.userId = localStorage.getItem("userID");
+    this.getData();
     this.isLoad = true;
   }
 
