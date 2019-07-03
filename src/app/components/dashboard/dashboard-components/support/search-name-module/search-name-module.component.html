@@ -35,10 +35,11 @@
 
           <div class="col-md-3">
             <input type="text" formControlName="search" placeholder="Please enter.." name="firstName" class="form-control" [class.is-invalid]="search.invalid && search.touched">
-            <small [class.d-none]="search.valid || search.untouched " class="text-danger">Learner's name is required</small>
+            <small [hidden]="search.valid || search.untouched" class="text-danger">Learner's name is required</small>
           </div>
           <div class="col-md-1"></div>
           <button [disabled]="search.invalid" class="btn btn-outline-primary" (click)="open(content)">Search</button>
+          <button class="btn btn-danger ml-3" (click)="clear()">Clear</button>
         </div>
       </form>
     </div>

@@ -6,7 +6,7 @@ import { NgbootstraptableService } from 'src/app/services/others/ngbootstraptabl
 import { AppSettingsService } from 'src/app/settings/app-settings.service';
 import { Subscription } from 'rxjs';
 import { UsersService } from 'src/app/services/http/users.service';
-
+import { DashboardService } from '../../../../services/http/dashboard.service';
 
 @Component({
   selector: 'app-dashboard-home',
@@ -17,7 +17,7 @@ import { UsersService } from 'src/app/services/http/users.service';
 
 export class DashboardHomeComponent implements OnInit, AfterViewInit {
   notices: { notice: string; origin: string; }[];
-
+  messages;
   // toDoForm: FormGroup;
   noticeForm: FormGroup;
   userName:string;
@@ -33,9 +33,10 @@ export class DashboardHomeComponent implements OnInit, AfterViewInit {
     private formBuilder: FormBuilder,
     public tableService: NgbootstraptableService,
     private settingService: AppSettingsService,
-    private userService: UsersService
+    private userService: UsersService,
+    private dashboardService: DashboardService
   ) {
-    
+
     this.title.setTitle('Home');
     this.notices=[
       {
@@ -65,17 +66,23 @@ export class DashboardHomeComponent implements OnInit, AfterViewInit {
   ngOnInit(): void {
     // Subscribe for all the to dos
     this.getToDoList();
-
+    let orgString = localStorage.getItem('OrgId').slice(1,-1);
+    this.dashboardService.getStatistic(orgString).subscribe(
+      res=>{
+        console.log('exit',res, orgString)
+        this.messages = res.Data;
+      }
+    )
 
 
     this.userName = localStorage.getItem('userFirstName')
     this.pageloading=false
-    
+
     // this.tableService.sorting(this.toDoList, 'priority')
 
     // Get Lookup list
 
-  
+
   }
 
   getToDoList(){

@@ -1,27 +1,27 @@
 <div style="margin-top:10px;" class="container-fluid">
     <div class="font4">Dashboard</div>
-    <div style="" class="text-info">Welcome &nbsp; Bienvenido &nbsp;  Willkommen  &nbsp; добро  &nbsp; пожаловать &nbsp;  欢迎  &nbsp; Manaakitia &nbsp;  Bienvenue</div> 
+    <div style="" class="text-info">Welcome &nbsp; Bienvenido &nbsp;  Willkommen  &nbsp; добро  &nbsp; пожаловать &nbsp;  欢迎  &nbsp; Manaakitia &nbsp;  Bienvenue</div>
     <br>
     <div *ngIf="pageloading" class="loaderLarge"></div>
     <div class="row">
         <div class="col-12 col-md-6 col-lg-3">
             <div class="card">
-                <div class="card-body">
-                    120 Sessions this week
+                <div *ngIf="messages" class="card-body">
+                   {{messages.newStudentsForToday}} New Students for Today
                 </div>
             </div>
         </div>
         <div class="col-12 col-md-6 col-lg-3">
             <div class="card">
-                <div class="card-body">
-                    109 Learners enrolled
+                <div *ngIf="messages" class="card-body">
+                    {{messages.rearrangedLessonsForToday}} Rearranged Lessons For Today
                 </div>
             </div>
         </div>
         <div class="col-12 col-md-6 col-lg-3">
             <div class="card">
-                <div class="card-body">
-                    59 New Invoices
+                <div *ngIf="messages" class="card-body">
+                    {{messages.waitingInvoices}} Waiting Invoices
                 </div>
             </div>
         </div>

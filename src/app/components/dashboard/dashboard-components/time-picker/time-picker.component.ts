@@ -11,6 +11,7 @@ import { listLazyRoutes } from '@angular/compiler/src/aot/lazy_routes';
 export class TimePickerComponent implements OnInit {
   // get data form registration component
   @Input() customCourse;
+  @Input() teaList;
   // data will from server, now just hard core for testing
   public teacherAvailableData: any = {
     "IsSuccess": true,
@@ -174,7 +175,7 @@ export class TimePickerComponent implements OnInit {
   public tempChangeArr: any[] = [];
   // define learner name for rendering in HTML
   public learnerName: any[] = [];
-  
+
   public slotPopover: any[] = [];
   public isPopover: boolean = false;
 
@@ -182,7 +183,7 @@ export class TimePickerComponent implements OnInit {
   }
 
   ngOnInit() {
-    console.log('customCourse', this.customCourse);
+    console.log('customCourse', this.customCourse,'teacherArray',this.teaList);
 
     // define yIndex
     for(let i = 0; i < 48; i++) {
@@ -215,7 +216,7 @@ export class TimePickerComponent implements OnInit {
       if(this.slot[x][y+i] != "ableToPick") {
         return false;
       }
-    }; 
+    };
     return true;
   }
   getUnableToPickYindex(x,y) {
@@ -231,7 +232,7 @@ export class TimePickerComponent implements OnInit {
       if(this.slot[x][bottomY-i] != "ableToPick") {
         return false;
       }
-    }; 
+    };
     return true;
   }
 
@@ -239,7 +240,7 @@ export class TimePickerComponent implements OnInit {
     this.isPopover = true;
     if(!this.isPopover) {
       p.open()
-    } 
+    }
   }
   closePopover(p,x,y) {
     this.isPopover = false;
@@ -340,7 +341,7 @@ export class TimePickerComponent implements OnInit {
       for(let i of [0,1,2,3]) {
         this.slot[x][bottomY-i] = prop2;
       };
-    } 
+    }
   }
   /* check if temp change >= duration */
   tempChangeInculdesDuration(x,y) {
@@ -362,7 +363,7 @@ export class TimePickerComponent implements OnInit {
         this.setDuration('isTempChange','ableToPick',x,y);
       }
     })
-  
+
   }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -475,7 +476,7 @@ export class TimePickerComponent implements OnInit {
           this.slot[x][i] = "isTempChange"
         }
       }
-    })  
+    })
   }
 
 }
