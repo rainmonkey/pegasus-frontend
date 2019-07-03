@@ -44,5 +44,14 @@ export const Animations = {
         state('theme4',style({
             background: '#add8e6'
         }))
+    ]),
+
+    changeOnlineStatus: trigger('onlineStatusTrigger',[
+        state('online',style({
+            background: 'rgb(125, 194, 22)'
+        })),
+        state('offline',style({
+            background: 'rgb(175, 56, 56)'
+        }))
     ])
 }

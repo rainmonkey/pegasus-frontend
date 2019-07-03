@@ -12,12 +12,18 @@ export class MessagerSubscribersComponent implements OnInit {
   public subsOfTeacher:Array<object>;
   public subsOfStudents: Array<object>;
   public subsOfStaffs:Array<object>;
+  public notiNum = 0;
 
   @Output() onChattingWith = new EventEmitter();
 
   constructor(private chattingService:ChattingService) { }
 
   ngOnInit() {
+    let that = this;
+    // setInterval((that)=>{
+    //   that.notiNum ++;
+    //   console.log(that.notiNum)
+    // },1000,that)
    this.getSubscribers();
   }
 
@@ -60,14 +66,13 @@ export class MessagerSubscribersComponent implements OnInit {
   }
 
   /*
-    点击选择和谁聊天
+    双击选择和谁聊天
   */
   chattingWithHandler(event,subscriber){
-    
-    //在sessionStorage里面保存 正在聊天的人
-    let subscribersStr = JSON.stringify(subscriber);
-    sessionStorage.setItem('user',subscribersStr);
-    this.onChattingWith.emit({"status":true,"user":subscribersStr})
+    //save the subscriber now chatting with.
+    this.chattingService.saveSubscriberChattingWith(subscriber);
+    //fire emit to parent component to notice need view switch
+    this.onChattingWith.emit(true);
   }
 
 }

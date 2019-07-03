@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, ViewChildren } from '@angular/core';
 import { PickerModule } from '@ctrl/ngx-emoji-mart';
 import { EmojiModule } from '@ctrl/ngx-emoji-mart/ngx-emoji';
 import * as Emoji from 'node-emoji/'
@@ -15,23 +15,25 @@ export class MessagerChattingComponent implements OnInit {
   public keysCombination: object = { "Enter": false, "Control": false };
   public localMsgHistroy: Array<object>=[];
   public subscriber:object;
-  @Input() user;
   @Input() modalHeight;
   @Output() onStartChatting = new EventEmitter();
-
   constructor(private chattingService:ChattingService) { }
   ngOnInit() {
-    this.subscriber = JSON.parse(this.user);
+    this.getSubscriberChattingWith();
     console.log(this.modalHeight)
   }
 
-  ngOnChanges() {
-    //console.log(this.userId);
-    if (this.user !== null && this.user !== undefined) {
+  getSubscriberChattingWith(){
+    let subObj = this.chattingService.getSubscriberChattingWith();
+    if(subObj){
       this.chattingDisplayFlag = true;
+      this.subscriber = subObj;
     }
-    console.log(this.user)
+    else{
+      this.chattingDisplayFlag = false;
+    }
   }
+
   /*
     显示emoji选择框
   */
@@ -131,17 +133,18 @@ export class MessagerChattingComponent implements OnInit {
     obj['value']= null;
   }
 
-  scroll(){
-    
-    setTimeout(function(){
-      document.getElementById('scroll_anchor').scrollIntoView(); 
-    },10) 
+  scroll(){   
+    document.getElementById('scroll_anchor').scrollIntoView(); 
+    // setTimeout(function(){
+    //   document.getElementById('scroll_anchor').scrollIntoView(); 
+    // },10) 
   }
+  
   /*
     选择新联系人
   */
   startNewChatting() {
-    this.onStartChatting.emit(true)
+    this.onStartChatting.emit(false)
   }
 
 }

@@ -13,7 +13,7 @@ export class ChartingComponent implements OnInit {
   //--------------------------------lessons For Recent 14 Days--------------------------------
   chart={
     title:'Lessions Graph',
-    subTitle:'Number of lessions in schools'
+    subTitle:'Number of lessions'
   }
   assignChartData = [];
   public chartData: ChartDataSets[] = [
@@ -95,7 +95,7 @@ export class ChartingComponent implements OnInit {
   //------------------------------------------newEnrolledStudentsForRecent8Weeks-----------------------------
   barChart={
     title:'Students Graph',
-    subTitle:'Number of new students in schools'
+    subTitle:'Number of new students'
   }
   public barChartOptions: ChartOptions = {
     responsive:true,
@@ -162,19 +162,22 @@ export class ChartingComponent implements OnInit {
     let brunch = localStorage.getItem('OrgId').slice(1,-1);
     this.dashBoardService.getStatistic(brunch).subscribe(
       res=>{
-        console.log(res)
         this.recentCourse = res.Data.lessonsForRecent14Days;
-        this.chartLabels = Object.keys(this.recentCourse);
+        this.transformLabelDate();
         this.assignChartData = Object.values(this.recentCourse);
         this.chartData[0].data = this.assignChartData;
         let barValue = res.Data.newEnrolledStudentsForRecent8Weeks;
         //@ts-ignore
         this.barChartData[0].data = Object.values(barValue);
-
-        console.log(this.assignChartData)
-        console.log(this.recentCourse)
       }
     )
+  }
+  transformLabelDate(){
+    let fullDateArray = Object.keys(this.recentCourse);
+    let simpleDateArray = fullDateArray.map(date =>{
+      return date.substring(0,date.length-5)
+    });
+    this.chartLabels = simpleDateArray;
   }
   //
   ngOnInit() {

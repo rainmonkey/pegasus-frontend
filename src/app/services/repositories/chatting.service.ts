@@ -12,7 +12,6 @@ export class ChattingService {
   public subsOfStudents;
   public errorFlag: boolean;
 
-
   constructor(private http: HttpClient) { }
 
   //目前不同的权限调用的api不同 后台在改 到时候可以直接调用同一个api 后台进行判断 未完成
@@ -44,5 +43,21 @@ export class ChattingService {
   */
   getSubscribers(){
     return JSON.parse(sessionStorage.getItem('subscribers'));
+  }
+
+  /*
+    save the subscriber's object now chatting in session storage 
+  */
+  saveSubscriberChattingWith(subscriber){
+    let subscriberStr = JSON.stringify(subscriber);
+    sessionStorage.setItem('subscriberChattingWith',subscriberStr);
+  }
+
+  /*
+    get the subscriber's object now chatting from session storage
+  */
+  getSubscriberChattingWith(){
+    let subscriberObj = sessionStorage.getItem('subscriberChattingWith')? JSON.parse(sessionStorage.getItem('subscriberChattingWith')):null;
+    return subscriberObj;
   }
 }
