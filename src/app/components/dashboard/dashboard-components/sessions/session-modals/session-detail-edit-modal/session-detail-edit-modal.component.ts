@@ -54,6 +54,7 @@ export class SessionDetailEditModalComponent implements OnInit {
   }
 
   ngOnInit() {
+    console.log(this.LessonModel)
     this.SessionForm = this.fb.group({
       CourseName: [this.LessonModel.CourseName],
       Room: ['', [Validators.required]],
@@ -105,7 +106,8 @@ export class SessionDetailEditModalComponent implements OnInit {
     this.sessionsService.SessionEdit(sessionEdit).subscribe(res => {
       this.isEditSuccess = true;
       this.isloading = false;
-    }, err => {
+    },
+    err => {
       this.isEditFail = true;
       this.isloading = false;
       Swal.fire({
@@ -113,6 +115,8 @@ export class SessionDetailEditModalComponent implements OnInit {
         title: 'Oops...',
         text: err.error.ErrorMessage,
       });
+
     });
+
   }
 }

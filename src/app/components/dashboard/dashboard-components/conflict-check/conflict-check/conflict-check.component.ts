@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ConflictCheckService } from 'src/app/services/http/conflict-check.service';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { SessionDetailEditModalComponent } from '../../sessions/session-modals/session-detail-edit-modal/session-detail-edit-modal.component';
 
 @Component({
   selector: 'app-conflict-check',
@@ -13,7 +15,8 @@ export class ConflictCheckComponent implements OnInit {
   roomConflictData:any
   teacherConflictData:any
   constructor(
-    private conflictCheckService:ConflictCheckService
+    private conflictCheckService:ConflictCheckService,
+    private modalService: NgbModal,
   ) { }
 
   ngOnInit() {
@@ -38,6 +41,21 @@ export class ConflictCheckComponent implements OnInit {
         console.log(this.roomConflictData)
         this.teacherConflictData=res.Data.TeacherConflict;
         console.log(this.teacherConflictData)
+      }
+    )
+  }
+
+  openSessionEdit(j){
+    const modalRef= this.modalService.open(SessionDetailEditModalComponent,  { size: 'lg', backdrop: 'static', keyboard: false })
+    modalRef.componentInstance.LessonModel=j
+    modalRef.componentInstance.LessonModel.courseId=j.CourseId
+    let that =this
+    modalRef.result.then(
+      (res) => {
+          that.ngOnInit()
+      },
+      (err) =>{
+        return
       }
     )
   }
