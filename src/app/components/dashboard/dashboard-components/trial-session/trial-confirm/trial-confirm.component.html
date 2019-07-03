@@ -1,6 +1,7 @@
 <!--modal header-->
 <div class='modal-header'>
-  <h4 class='modal-title'>Trial Course Confirmation</h4>
+  <h4 *ngIf="!arrangeFlag" class='modal-title'>Trial Course Confirmation</h4>
+  <h4 *ngIf="arrangeFlag" class='modal-title'>Course Confirmation</h4>
   <button type="button" class='btn btn-sm btn-info t_dm_close_btn' aria-label="Close" (click)="activeModal.close('Cross click')">
     <span aria-hidden="true">&times;</span>
   </button>

@@ -106,24 +106,52 @@ export class TrialConfirmComponent implements OnInit {
     else {
       this.error = false;
     }
+    console.log(this.arrangeFlag)
 
     this.loadingGifFlag = true;
-    let dataToSubmit = this.prepareData();
-    //console.log(this.radios)
-    this.CoursesService.postTrialLesson(dataToSubmit).subscribe(
-      (res) => {
-        this.loadingGifFlag = false;
-        this.successFlag = true;
-      },
-      (err) => {
-        console.log(err);
-        this.loadingGifFlag = false;
-        alert('Sorry,something went wrong in server.');
-      }
-    )
+    if (this.arrangeFlag) {
+      let dataToSubmit = this.prepareArrangeData()
+      console.log(dataToSubmit)
+      this.CoursesService.arrangeCourse(localStorage.userID, dataToSubmit).subscribe(
+        res => {
+          console.log(res)
+          this.loadingGifFlag = false
+        },
+        err => {
+          console.log(localStorage.userID, dataToSubmit, err)
+          this.loadingGifFlag = false
+        },
+      )
+
+    } else {
+      let dataToSubmit = this.prepareTrialData();
+      this.CoursesService.postTrialLesson(dataToSubmit).subscribe(
+        (res) => {
+          this.loadingGifFlag = false;
+          this.successFlag = true;
+        },
+        (err) => {
+          console.log(err);
+          this.loadingGifFlag = false;
+          alert('Sorry,something went wrong in server.');
+        }
+      )
+    }
   }
 
-  prepareData() {
+  prepareArrangeData() {
+    let data = {
+      "LearnerId": Number(this.learnerId),
+      "RoomId": this.avaliableRoom.RoomId,
+      "TeacherId": this.whichTeacher.TeacherId,
+      "OrgId": this.orgId,
+      "BeginTime": this.startTime,
+      "Reason": "arrange course",
+    }
+    return data
+  }
+
+  prepareTrialData() {
     let obj = {
       "LearnerId": Number(this.learnerId),
       "RoomId": this.avaliableRoom.RoomId,
