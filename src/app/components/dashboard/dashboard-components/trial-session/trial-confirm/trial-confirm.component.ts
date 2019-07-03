@@ -2,7 +2,7 @@ import { LookUpsService } from 'src/app/services/http/look-ups.service';
 import { CoursesService } from 'src/app/services/http/courses.service';
 import { Component, OnInit, Input, Output, ViewChildren, EventEmitter } from '@angular/core';
 import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { ActivatedRoute } from "@angular/router"
+import { ActivatedRoute, Router } from "@angular/router"
 import { forkJoin } from 'rxjs';
 import * as jsPDF from 'jspdf';
 
@@ -46,7 +46,8 @@ export class TrialConfirmComponent implements OnInit {
     private modalService: NgbModal,
     private lookupsService: LookUpsService,
     private CoursesService: CoursesService,
-    private activatedRoute: ActivatedRoute) { }
+    private activatedRoute: ActivatedRoute,
+    private router: Router) { }
 
   ngOnInit() {
     this.startTimeTem = this.timeFormatting(this.startTime);
@@ -108,7 +109,6 @@ export class TrialConfirmComponent implements OnInit {
     else {
       this.error = false;
     }
-    console.log(this.arrangeFlag)
 
     this.loadingGifFlag = true;
     if (this.arrangeFlag) {
@@ -142,6 +142,7 @@ export class TrialConfirmComponent implements OnInit {
   }
 
   prepareArrangeData() {
+    console.log(Number(this.learnerId))
     let data = {
       "LearnerId": Number(this.learnerId),
       "RoomId": this.avaliableRoom.RoomId,
@@ -173,6 +174,11 @@ export class TrialConfirmComponent implements OnInit {
   closeModal() {
     this.closeModalFlag.emit(true);
     this.activeModal.close('Cross click')
+    if (!this.arrangeFlag) {
+      this.router.navigate(["/learner/list"])
+    } else if (this.arrangeFlag) {
+      this.router.navigate(["/learner/credit/", this.learnerId])
+    }
   }
 
   downloadInvoice() {

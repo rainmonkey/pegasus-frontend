@@ -49,7 +49,7 @@ import { CoporateOrderApplicationComponent } from './components/dashboard/dashbo
 //canActivate: [DashboardRestrictGuard],
 const routes: Routes = [
   {
-    path: '', component: DashboardPanelComponent,canActivate: [DashboardRestrictGuard],
+    path: '', component: DashboardPanelComponent, canActivate: [DashboardRestrictGuard],
     children: [
       { path: 'home', component: DashboardHomeComponent, canActivate: [UserAuthOtherGuard], },
       // Testing path
@@ -121,14 +121,19 @@ const routes: Routes = [
         path: 'learner', component: AdminLearnerPanelComponent,
         children: [
           {
-            path: 'list', component: AdminLearnerListComponent, canActivate: [UserAuthGuard],
+            path: 'list', component: AdminLearnerListComponent,
+            canActivate: [UserAuthGuard],
             children: [{ path: 'success', component: AdminLearnerPaymentSuccessComponent, }]
           },
           { path: 'registration/edit', component: LearnerRegistrationModalComponent, },
-          { path: 'registration', component: LearnerRegistrationFormComponent, canActivate: [UserAuthGuard], },
+          {
+            path: 'registration', component: LearnerRegistrationFormComponent,
+            canActivate: [UserAuthGuard],
+          },
           { path: 'trial', component: TrialInfoComponent, },
           {
-            path: "credit", pathMatch: 'prefix', component: LearnerCreditPanelComponent, canActivate: [UserAuthGuard],
+            path: "credit", component: LearnerCreditPanelComponent,
+            canActivate: [UserAuthGuard],
             children: [{
               path: ":id", component: LearnerCreditDetailsComponent
             }]
@@ -165,7 +170,7 @@ const routes: Routes = [
       // Below to be rearranged
       { path: 'time/picker', component: TimePickerComponent },
       { path: 'holidays', component: HolidayCalendarComponent },
-      {path:'corporate-order-application', component:CoporateOrderApplicationComponent}
+      { path: 'corporate-order-application', component: CoporateOrderApplicationComponent }
     ]
   },
   { path: 'login', component: LoginComponent },
