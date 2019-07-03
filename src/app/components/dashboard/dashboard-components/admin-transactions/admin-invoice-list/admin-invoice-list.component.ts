@@ -25,7 +25,7 @@ export class AdminInvoiceListComponent implements OnInit {
   public temLearnerList: any; //save the original List
   public temLearnerListLength: number; //save the original List length
   public page: number = 1;  //pagination current page
-  public pageSize: number = 10;    //[can modify] pagination page size
+  public pageSize: number = 15;    //[can modify] pagination page size
 
   //error alert
   public errorMsg;
@@ -33,7 +33,9 @@ export class AdminInvoiceListComponent implements OnInit {
   public errMsgM;
   public errMsgO;
   public userId;
-  isLoad = true;
+  isLoad: boolean = true
+
+  public isSearchingFlag: boolean = false
   // learner name and
   learner: Learner;
   myArray = [];
@@ -49,7 +51,6 @@ export class AdminInvoiceListComponent implements OnInit {
   ngOnInit() {
     this.userId = localStorage.getItem("userID");
     this.getData();
-    this.isLoad = true;
   }
 
   // modal method
@@ -72,7 +73,6 @@ export class AdminInvoiceListComponent implements OnInit {
         this.learnerListLength = res.Data.length; //length prop is under Data prop
         this.temLearnerList = res.Data;
         this.temLearnerListLength = res.Data.length;
-        //isload = false
         this.isLoad = false;
         //this.learnerList[0].Learner.Parent.Email
         // make array for sort
@@ -116,19 +116,17 @@ export class AdminInvoiceListComponent implements OnInit {
 
       //If there is a value, do search. If there is no value, return the initial list.
       if (searchingInputObj['value']) {
+        this.isSearchingFlag = true
         this.myArray = this.temLearnerList.map(data => data.Learner)
         this.myArray = this.ngTable.searching(this.myArray, searchBy, searchString);
         // change length inside pagination
         this.learnerListLength = this.myArray.length;
       } else {
+        this.isSearchingFlag = false
         this.myArray = this.temLearnerList.map(data => data.Learner)
         // change length inside pagination
         this.learnerListLength = this.temLearnerListLength
       }
     }
-  }
-
-  refreshPage() {
-
   }
 }

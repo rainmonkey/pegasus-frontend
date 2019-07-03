@@ -117,4 +117,9 @@ export class CoursesService {
   getAvailableRoom(orgId, startTime, endTime): any {
     return this.http.get(this.baseUrl + 'RoomAvailableCheck/checkbylesson/' + orgId + '/' + startTime + '/' + endTime);
   }
+
+  //arrange
+  arrangeCourse(id, data) {
+    return this.http.post(this.baseUrl + "Session/" + id, data)
+  }
 }

@@ -59,6 +59,7 @@ export class TrialModalComponent implements OnInit {
   @Input() coursesTeachingByWhichTeacher;
   //arrange
   @Input() duration
+  @Input() arrangeCourseInstance
 
   @ViewChild('fullcalendar') fullcalendar: CalendarComponent;
   options: OptionsInput;
@@ -97,7 +98,6 @@ export class TrialModalComponent implements OnInit {
       events: this.getAvailableTime(),
       selectConstraint: this.getAvailableTime(),
       select: function(info) {
-        console.log(info)
         that.selectCallBack(info);
       },
       header: {
@@ -119,7 +119,7 @@ export class TrialModalComponent implements OnInit {
     //arrange
     if (this.arrangeFlag) {
       if (endTimestamp - startTimestamp >= this.timeInterval30Min) {
-        alert('Please select one slot only')
+        alert('Please select a start time')
       } else {
         this.prepareCourse(this.duration)
         endTimestamp = this.transferEndTime(startTimestamp, this.duration)
@@ -195,7 +195,6 @@ export class TrialModalComponent implements OnInit {
   }
 
   popUpConfirmModal(startTimestamp, endTimestamp) {
-    console.log(endTimestamp - startTimestamp)
     const modalRef = this.modalService.open(TrialConfirmComponent, { size: 'lg', backdrop: 'static', keyboard: false });
     modalRef.componentInstance.startTime = this.transferTimestampToTime(startTimestamp);
     modalRef.componentInstance.endTime = this.transferTimestampToTime(endTimestamp);
@@ -208,6 +207,9 @@ export class TrialModalComponent implements OnInit {
     modalRef.componentInstance.courseId = this.courseId;
     modalRef.componentInstance.orgId = this.orgId;
     modalRef.componentInstance.arrangeFlag = this.arrangeFlag;
+    if (this.arrangeFlag) {
+      modalRef.componentInstance.arrangeCourseInstance = this.arrangeCourseInstance
+    }
     modalRef.componentInstance.closeModalFlag.subscribe(
       (res) => {
         let that = this;
@@ -222,7 +224,7 @@ export class TrialModalComponent implements OnInit {
           })
       }
     )
-    console.log(modalRef)
+    // console.log(modalRef)
   }
   /*
     get teacher's available time.
