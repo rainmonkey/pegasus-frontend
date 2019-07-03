@@ -12,12 +12,18 @@ export class MessagerSubscribersComponent implements OnInit {
   public subsOfTeacher:Array<object>;
   public subsOfStudents: Array<object>;
   public subsOfStaffs:Array<object>;
+  public notiNum = 0;
 
   @Output() onChattingWith = new EventEmitter();
 
   constructor(private chattingService:ChattingService) { }
 
   ngOnInit() {
+    let that = this;
+    // setInterval((that)=>{
+    //   that.notiNum ++;
+    //   console.log(that.notiNum)
+    // },1000,that)
    this.getSubscribers();
   }
 

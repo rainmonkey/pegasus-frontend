@@ -41,6 +41,7 @@ export class MessagerIconComponent implements OnInit {
       --> when user click messager icon, display component 
   */
   displayMessager(){
+    this.unReadAnimationStatus = false;
     clearInterval(this.msgNotificationTimer);
     this.popUpModalFlag = true;
   }

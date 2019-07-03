@@ -23,7 +23,8 @@ export class MessagerModalComponent implements OnInit {
   public isErrorFlag: boolean = false;
   public themeChangeFlag: string = 'theme1';
   public preBtnSelectedObj: any = null;
-  public user:object;
+  public chattingWith:string = '';
+  public user:string;
   public modalHeight;
   public styleList: Array<object> = [ {background: 'linear-gradient(135deg, pink, white)'},
                                       {background: 'linear-gradient(135deg, lightgreen, lightblue)'},
@@ -42,14 +43,12 @@ export class MessagerModalComponent implements OnInit {
     if(this.chattingService.errorFlag == true){
       this.isErrorFlag = true;
     }
-    //各种初始化 未完成
-    //1、获取正在跟跟谁聊天  (subscriber component set数据)
-    this.user = sessionStorage.user == undefined ? null : sessionStorage.user;
-
-    //2、获取目前选用的主题 (project项目初始化的时候从后台获取数据) 未完成
-
+    //get the subscriber whom is chatting with
+    this.getSubscriberChattingWith();
+    //get custom theme.
+    this.getCustomTheme();
+    //get init preBtnSelectOnj
     this.preBtnSelectedObj = document.getElementById('initSelected');
-   
   }
 
   /*
@@ -61,6 +60,16 @@ export class MessagerModalComponent implements OnInit {
     if(this.browserHeight <= 750){
       this.modalHeight = 550;
     }
+  }
+
+  getSubscriberChattingWith(){
+    this.user = sessionStorage.user == undefined ? null : sessionStorage.user;
+    let userObj = JSON.parse(this.user);
+    this.chattingWith = 'Chatting with ' + userObj.FirstName + ' ' + userObj.LastName;
+  }
+
+  getCustomTheme(){
+    this.themeChangeFlag = localStorage.getItem('themeIndex')? localStorage.getItem('themeIndex') : 'theme1';
   }
 
   /*
@@ -81,7 +90,8 @@ export class MessagerModalComponent implements OnInit {
   */
   changeStyle(index) {
     this.themeChangeFlag = 'theme' + index;
-    //向后台发送更新的数据 未完成
+    //save custom theme in local storage.
+    localStorage.setItem('themeIndex', this.themeChangeFlag);
   }
 
   /*
@@ -113,6 +123,7 @@ export class MessagerModalComponent implements OnInit {
     this[currentflag] = true;
     this.previousBtnName = this.functionalBtnNames[selectId];
   }
+  
   /*
     选择聊天对象后 跳转到聊天界面
     event == none: 目前没有聊天对象
@@ -123,6 +134,8 @@ export class MessagerModalComponent implements OnInit {
       //如果双击跟某人聊天 接收到指令
       if (event.status == true) {
         this.user = event.user;
+        let subscriber = JSON.parse(event.user);
+        this.chattingWith = 'Chatting with ' + subscriber.FirstName + ' ' + subscriber.LastName;
         this.selectFunctionalBtn(2);
       }
     }
