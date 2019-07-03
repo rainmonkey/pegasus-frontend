@@ -10,3 +10,6 @@
   font-size:19px;
   font-weight:400;
 }
+.hand:hover{
+  cursor: pointer;
+}

@@ -92,6 +92,7 @@ export class SessionDetailEditModalComponent implements OnInit {
     } else {
       this.hasError = false;
       this.modalService.open(confirmModal);
+
     }
   }
 
