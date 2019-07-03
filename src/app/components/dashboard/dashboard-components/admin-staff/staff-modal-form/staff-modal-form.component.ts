@@ -73,7 +73,7 @@ export class StaffModalFormComponent implements OnInit {
   getPhotoSrc(photoObj) {
     if (this.command !== 0) {
       let src = this.whichStaff[photoObj];
-      console.log(src)
+
       if (src == null) {
         return '../../../../../../assets/images/shared/default-employer-profile.png';
       }

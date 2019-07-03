@@ -69,11 +69,9 @@ export class DashboardHomeComponent implements OnInit, AfterViewInit {
     let orgString = localStorage.getItem('OrgId').slice(1,-1);
     this.dashboardService.getStatistic(orgString).subscribe(
       res=>{
-        console.log('exit',res, orgString)
         this.messages = res.Data;
       }
     )
-
 
     this.userName = localStorage.getItem('userFirstName')
     this.pageloading=false

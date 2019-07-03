@@ -42,6 +42,7 @@ export class UserAuthGuard implements CanActivate {
   }
 
   checkUser(url){
+    console.log('ojweiof',this.authService.giveAuthToGuard(url))
     if (this.authService.giveAuthToGuard(url) == true){
       return true;
     }else{
