@@ -15,22 +15,25 @@ export class MessagerChattingComponent implements OnInit {
   public keysCombination: object = { "Enter": false, "Control": false };
   public localMsgHistroy: Array<object>=[];
   public subscriber:object;
-  @Input() user;
   @Input() modalHeight;
   @Output() onStartChatting = new EventEmitter();
   constructor(private chattingService:ChattingService) { }
   ngOnInit() {
-    this.subscriber = JSON.parse(this.user);
+    this.getSubscriberChattingWith();
     console.log(this.modalHeight)
   }
 
-  ngOnChanges() {
-    //console.log(this.userId);
-    if (this.user !== null && this.user !== undefined) {
+  getSubscriberChattingWith(){
+    let subObj = this.chattingService.getSubscriberChattingWith();
+    if(subObj){
       this.chattingDisplayFlag = true;
+      this.subscriber = subObj;
     }
-    console.log(this.user)
+    else{
+      this.chattingDisplayFlag = false;
+    }
   }
+
   /*
     显示emoji选择框
   */
@@ -141,7 +144,7 @@ export class MessagerChattingComponent implements OnInit {
     选择新联系人
   */
   startNewChatting() {
-    this.onStartChatting.emit(true)
+    this.onStartChatting.emit(false)
   }
 
 }
