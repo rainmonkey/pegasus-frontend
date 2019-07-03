@@ -805,6 +805,7 @@ selectLocation(id, i) {
   open(i) {
     this.modalRefTimePicker = this.modalService.open(LearnerRegistrationModalComponent, { windowClass: 'my-class' });
     this.modalRefTimePicker.componentInstance.customCourse = this.customCourse.value[i];
+    this.modalRefTimePicker.componentInstance.teaList = this.prepareTeaNameListArray[i];
     this.timePickArrayNumber = i;
   }
 
