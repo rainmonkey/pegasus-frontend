@@ -2,7 +2,7 @@ import { Component, OnInit, ViewChildren } from '@angular/core';
 import { LearnersService } from '../../../../../services/http/learners.service';
 import { FormBuilder, Validators } from '@angular/forms';
 import { NgbModal, ModalDismissReasons, } from '@ng-bootstrap/ng-bootstrap';
-import { Router, ActivatedRoute, ParamMap } from '@angular/router';
+import { Router, ActivatedRoute, NavigationEnd } from '@angular/router';
 import { GeneralRepoService } from '../../../../../services/repositories/general-repo.service';
 
 @Component({
@@ -10,7 +10,9 @@ import { GeneralRepoService } from '../../../../../services/repositories/general
   templateUrl: './search-name-module.component.html',
   styleUrls: ['./search-name-module.component.css']
 })
+
 export class SearchNameModuleComponent implements OnInit {
+  navigationSubscription;
   a = false;
   // learners
   public name: any = 'type..';
@@ -23,8 +25,6 @@ export class SearchNameModuleComponent implements OnInit {
   errorAlert = false;
   // ng-modal variable
   closeResult: string;
-  registrationFormL;
-
 
   constructor(
     private modalService: NgbModal,
@@ -37,11 +37,24 @@ export class SearchNameModuleComponent implements OnInit {
 
   // form-builder
   // learners information
-
-
+  registrationFormL = this.fb.group({
+    learnerId: [''],
+    learnerName: [{ value: null, disabled: true }],
+    lastName: [{ value: null, disabled: true }],
+    middleName: [{ value: null, disabled: true }],
+    age: [''],
+    email: [{ value: null, disabled: true }],
+    phone: [{ value: null, disabled: true }],
+    payment: [''],
+    schedule: [''],
+    owning: [''],
+    address: ['']
+  });
   searchForm = this.fb.group({
     search: ['', Validators.required]
   });
+
+
 
   get search() {
     return this.searchForm.get('search');
@@ -53,7 +66,6 @@ export class SearchNameModuleComponent implements OnInit {
         .open(content, { ariaLabelledBy: 'modal-basic-title', backdrop: "static", keyboard: false })
         .result.then(
           result => {
-            console.log(content, result)
             this.closeResult = `Closed with: ${result}`;
             this.onChangePath(this.learners.learnerId);
           },
@@ -82,11 +94,9 @@ export class SearchNameModuleComponent implements OnInit {
         }
         // put learners information to service waiting for other component subscribe
         this.generalRepoService.fisrtName.next(this.learners);
-        //console.log(this.learners)
-        //why  this.learners.length === 1 ? but this.learners is a object
-        //if (this.learners.length === 1 ){
-        //this.onChangePath(this.learners.LearnerId);
-        //}
+        console.log(this.learners)
+        // if (this.data.length === 1) {
+        //   this.onChangePath(this.learners.LearnerId);
         // }
       },
         (error) => {
@@ -95,6 +105,15 @@ export class SearchNameModuleComponent implements OnInit {
           this.errorMsg = error.error;
         }
       );
+  }
+
+  clear() {
+    if (this.registrationFormL.value.learnerId) {
+      this.registrationFormL.value.learnerId = null
+      // console.log(this.searchForm.get("search"))
+      this.searchForm.get("search").setValue("")
+      this.router.navigate([this.payPath])
+    }
   }
 
   patchRegiFormL() {
@@ -146,23 +165,9 @@ export class SearchNameModuleComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.registrationFormL = this.fb.group({
-      learnerId: [''],
-      learnerName: [{ value: null, disabled: true }],
-      lastName: [{ value: null, disabled: true }],
-      middleName: [{ value: null, disabled: true }],
-      age: [''],
-      email: [{ value: null, disabled: true }],
-      phone: [{ value: null, disabled: true }],
-      payment: [''],
-      schedule: [''],
-      owning: [''],
-      address: ['']
-    });
-    this.payPath = this.router.url
-    console.log(this.payPath)
-    let lastRouteNameIsNumber = !Number.isNaN(+this.router.url.slice(this.router.url.lastIndexOf("/") + 1))
+    let lastRouteNameIsNumber = !Number.isNaN(+this.router.url.charAt(this.router.url.length - 1))
     if (lastRouteNameIsNumber) {
+      this.payPath = this.router.url.slice(0, this.router.url.lastIndexOf("/") + 1)
       this.learnerIdByUrl = +this.router.url.slice(this.router.url.lastIndexOf("/") + 1)
       this.learnersListService.getLearnerList().subscribe(
         data => {
@@ -176,10 +181,10 @@ export class SearchNameModuleComponent implements OnInit {
             email: learner.Email,
             phone: learner.ContactNum
           })
-          console.log(this.registrationFormL)
         }
       )
+    } else {
+      this.payPath = this.router.url
     }
   }
-
 }

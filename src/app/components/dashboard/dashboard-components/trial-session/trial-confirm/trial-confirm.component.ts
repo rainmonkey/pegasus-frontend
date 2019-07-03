@@ -2,6 +2,7 @@ import { LookUpsService } from 'src/app/services/http/look-ups.service';
 import { CoursesService } from 'src/app/services/http/courses.service';
 import { Component, OnInit, Input, Output, ViewChildren, EventEmitter } from '@angular/core';
 import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { ActivatedRoute } from "@angular/router"
 import { forkJoin } from 'rxjs';
 import * as jsPDF from 'jspdf';
 
@@ -24,6 +25,8 @@ export class TrialConfirmComponent implements OnInit {
   @Input() learnerId;
   @Input() courseId;
   @Input() studentFullName;
+  //arrange
+  @Input() arrangeFlag
   @ViewChildren('radios') radios;
   @Output() closeModalFlag: EventEmitter<any> = new EventEmitter();
 
@@ -40,14 +43,14 @@ export class TrialConfirmComponent implements OnInit {
   constructor(public activeModal: NgbActiveModal,
     private modalService: NgbModal,
     private lookupsService: LookUpsService,
-    private CoursesService: CoursesService) { }
+    private CoursesService: CoursesService,
+    private activatedRoute: ActivatedRoute) { }
 
   ngOnInit() {
     this.startTimeTem = this.timeFormatting(this.startTime);
     this.endTimeTem = this.timeFormatting(this.endTime);
     this.whichTeacherFullName = this.whichTeacher.FirstName + ' ' + this.whichTeacher.LastName;
     this.getDataFromServer();
-
   }
 
   getDataFromServer() {
@@ -96,7 +99,7 @@ export class TrialConfirmComponent implements OnInit {
   }
 
   onSubmit() {
-    if (this.paymentMethodValue == null) {
+    if (this.paymentMethodValue == null && !this.arrangeFlag) {
       this.error = true;
       return
     }
@@ -154,9 +157,9 @@ export class TrialConfirmComponent implements OnInit {
     doc.text(`Invoice To:  ${this.studentFullName}`, 30, 100);
     doc.text(`For`, 30, 120);
     doc.text(`1 Lesson of ${this.cateName} trial course,`, 40, 140);
-    doc.text(`by ${this.whichTeacher.FirstName}  ${this.whichTeacher.LastName},`,40,160);
-    doc.text(`from ${this.startTime} to ${this.endTime},`,40,180);
-    doc.text(`at ${this.orgName} ${this.avaliableRoom.RoomName}.`,40, 200);
+    doc.text(`by ${this.whichTeacher.FirstName}  ${this.whichTeacher.LastName},`, 40, 160);
+    doc.text(`from ${this.startTime} to ${this.endTime},`, 40, 180);
+    doc.text(`at ${this.orgName} ${this.avaliableRoom.RoomName}.`, 40, 200);
     doc.text(`Price:`, 30, 250);
     doc.text(`$ ${this.coursePrice + this.extraFee}`, 220, 250);
     //Total
