@@ -78,4 +78,8 @@ export class LearnerCreditDetailsComponent implements OnInit {
     this.router.navigate([url + "/arrange/" + this.learnerId + "/" + this.courseId])
   }
 
+  alertForNoRemainingCourse() {
+    alert("You don't have remaining course")
+  }
+
 }

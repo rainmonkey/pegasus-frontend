@@ -23,6 +23,8 @@
               <td>{{i.ExpiryDate|date:"dd/MM/yyyy"}}</td>
               <td>{{i.Quantity}}</td>
               <td>
+                <!-- <span *ngIf="i.Quantity>0" class='t_info_table_btn' title='Book a Course' (click)="navigateToArrange(j)" style="cursor:pointer"><span class="fas fa-folder-plus"></span></span>
+                <span *ngIf="!i.Quantity>0" class='t_info_table_btn' title='Book a Course' (click)="alertForNoRemainingCourse()" style="cursor:pointer"><span class="fas fa-folder-plus"></span></span> -->
                 <span class='t_info_table_btn' title='Book a Course' (click)="navigateToArrange(j)" style="cursor:pointer"><span class="fas fa-folder-plus"></span></span>
               </td>
             </tr>
