@@ -1,27 +1,27 @@
-<div class='row justify-content-between'>
-<div class="col-4 chart">
-    <div *ngIf="chart" class="card-body">
+<div class='row mt-2' style= 'padding: 15px 5px;
+margin: 0;'>
+
+    <div *ngIf="chart" class="card-body chart col-4 has-shadow" style='background: #fff; '>
         <!-- <div class="font4">{{chart.title}}</div>
         <div class="font5">{{chart.subTitle}}</div> -->
 
-        <div class='has-shadow' style="position: relative; height:35vh; width:35vw; background: #fff">
-            <canvas baseChart [datasets]="chartData" [labels]="chartLabels" [options]="lineChartOptions"
-                [colors]="lineChartColors" [legend]="lineChartLegend" [chartType]="lineChartType" [plugins]="lineChartPlugins">
-            </canvas>
-        </div>
+        <canvas baseChart [datasets]="chartData" [labels]="chartLabels" [options]="lineChartOptions"
+            [colors]="lineChartColors" [legend]="lineChartLegend" [chartType]="lineChartType" [plugins]="lineChartPlugins">
+        </canvas>
+        <!-- <div class='has-shadow p-4' style="position: relative; height:35vh; width:35vw; background: #fff;">
+        </div> -->
     </div>
-</div>
-<div class='col-3'></div>
-<div class="ml-4 col-4">
-  <div *ngIf="chart" class="card-body">
+
+
+  <div *ngIf="chart" class="card-body chart col-4 has-shadow" style='background: #fff; '>
       <!-- <div class="font4">{{barChart.title}}</div>
       <div class="font5">{{barChart.subTitle}}</div> -->
 
-      <div class='has-shadow ml-4' style="position: relative; height:35vh; width:35vw; background: #fff">
+
         <canvas baseChart [datasets]="barChartData" [labels]="barChartLabels" [options]="barChartOptions"
        [legend]="barChartLegend" [chartType]="barChartType" [plugins]="barChartPlugins">
     </canvas>
-      </div>
+
   </div>
-</div>
+
 </div>

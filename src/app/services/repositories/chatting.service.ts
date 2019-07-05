@@ -51,13 +51,19 @@ export class ChattingService {
   saveSubscriberChattingWith(subscriber){
     let subscriberStr = JSON.stringify(subscriber);
     sessionStorage.setItem('subscriberChattingWith',subscriberStr);
+    this.saveRecentSubscribers(subscriber);
   }
 
   /*
-    get the subscriber's object now chatting from session storage
+    get the subscriber's now chatting Object from session storage
   */
   getSubscriberChattingWith(){
     let subscriberObj = sessionStorage.getItem('subscriberChattingWith')? JSON.parse(sessionStorage.getItem('subscriberChattingWith')):null;
     return subscriberObj;
+  }
+
+  saveRecentSubscribers(subscriberObj){
+    console.log(subscriberObj)
+    sessionStorage.setItem
   }
 }
