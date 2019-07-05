@@ -1,4 +1,4 @@
-import { ChattingService } from './../../../../../services/repositories/chatting.service';
+import { MessagerService } from '../../../../../services/repositories/messager.service';
 import { Component, OnInit, Output, Input, EventEmitter } from '@angular/core';
 import { Animations } from '../../../../../../animation/chatting-animation'
 
@@ -35,11 +35,11 @@ export class MessagerModalComponent implements OnInit {
 
   @Input() browserHeight;
   @Output() onCloseChattingModal = new EventEmitter();
-  constructor(private chattingService: ChattingService) { }
+  constructor(private messagerService: MessagerService) { }
 
   ngOnInit() {
     //if failed read data.
-    this.isErrorFlag = this.chattingService.errorFlag;
+    this.isErrorFlag = this.messagerService.errorFlag;
     //set init modal title
     this.setChattingModalTitle();
     //get custom theme.
@@ -61,7 +61,7 @@ export class MessagerModalComponent implements OnInit {
     set modal title.
   */
   setChattingModalTitle() {
-    let subObj = this.chattingService.getSubscriberChattingWith();
+    let subObj = this.messagerService.getSubscriberChattingWith();
     if (subObj) {
       this.chattingWithStr = 'Chatting with ' + subObj.FirstName + ' ' + subObj.LastName;
     }
@@ -71,7 +71,7 @@ export class MessagerModalComponent implements OnInit {
     get custom theme setting.
   */
   getCustomTheme() {
-    this.themeChangeFlag = localStorage.getItem('themeIndex') ? localStorage.getItem('themeIndex') : 'theme1';
+    this.themeChangeFlag = localStorage.getItem('themeIndex') ? this.messagerService.getCustomizedTheme() : 'theme1';
   }
 
   /*
@@ -87,7 +87,7 @@ export class MessagerModalComponent implements OnInit {
   customizeTheme(index) {
     this.themeChangeFlag = 'theme' + index;
     //save custom theme in local storage.
-    localStorage.setItem('themeIndex', this.themeChangeFlag);
+    this.messagerService.saveCustomizedTheme(this.themeChangeFlag);
   }
 
   /*

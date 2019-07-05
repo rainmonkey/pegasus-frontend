@@ -81,4 +81,13 @@ export const Animations = {
             display: 'none'
         }))
     ]),
+
+    emojiPickerPanelDisplayAnimation: trigger('displayPickerPanelTrigger',[
+        state('display', style({
+            display: 'block'
+        })),
+        state('hide', style({
+            display: 'none'
+        }))
+    ])
 }

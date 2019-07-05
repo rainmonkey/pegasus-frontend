@@ -5,14 +5,16 @@ import { environment } from '../../../environments/environment.prod';
 @Injectable({
   providedIn: 'root'
 })
-export class ChattingService {
+export class MessagerService {
   public baseUrl: any = environment.baseUrl;
   public subsOfStaffs;
   public subsOfTeachers;
   public subsOfStudents;
   public errorFlag: boolean;
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) { 
+    console.log('service')
+  }
 
   //目前不同的权限调用的api不同 后台在改 到时候可以直接调用同一个api 后台进行判断 未完成
   getSubscribersList(userId) {
@@ -62,8 +64,28 @@ export class ChattingService {
     return subscriberObj;
   }
 
+  /*
+    save the recent subscribers in session storage
+  */
   saveRecentSubscribers(subscriberObj){
     console.log(subscriberObj)
-    sessionStorage.setItem
+    //sessionStorage.setItem
+    let obj:object = {};
+    obj[subscriberObj.userId] = subscriberObj;
+    console.log(obj)
+  }
+
+  /*
+    save custom personl theme in local storage
+  */
+  saveCustomizedTheme(theme){
+    localStorage.setItem('themeIndex', theme);
+  }
+
+  /*
+    get custom personl theme in local storage
+  */
+  getCustomizedTheme(){
+    return localStorage.getItem('themeIndex');
   }
 }

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ChattingService } from 'src/app/services/repositories/chatting.service';
+import { MessagerService } from 'src/app/services/repositories/messager.service';
 import { Animations } from '../../../../../../animation/chatting-animation';
 
 @Component({
@@ -16,13 +16,13 @@ export class MessagerIconComponent implements OnInit {
   public browserHeight: number;
   public msgNotificationTimer;
 
-  constructor(private chattingSerice: ChattingService) { }
+  constructor(private messagerService: MessagerService) { }
 
   ngOnInit() {
     //get browser's height, chatting modal can resize in diffrent browsers
     this.browserHeight = window.outerHeight;
     //sent get subscribers request
-    this.chattingSerice.getSubscribersList(1);
+    this.messagerService.getSubscribersList(1);
     //发送请求 看看有没有未读消息 把未读消息存到数据库 【未完成】
     //if(sessionStorage.getItem('chattingInit'))
     //如果有未读消息或者有新消息 但是聊天框最小化了
