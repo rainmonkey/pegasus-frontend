@@ -6,7 +6,8 @@ import { Animations } from '../../../../../../animation/chatting-animation'
   selector: 'app-messager-modal',
   templateUrl: './messager-modal.component.html',
   styleUrls: ['./messager-modal.component.css'],
-  animations: [Animations.changeThemeColor]
+  animations: [Animations.changeThemeColor,
+               Animations.personalPanelAnimation]
 })
 export class MessagerModalComponent implements OnInit {
   //数组里的顺序和名字要和HTML里的一致

@@ -19,7 +19,6 @@ export class MessagerRecentlyComponent implements OnInit {
   点击选择和谁聊天
   */
   chattingWithHandler() {
-    console.log('aaaa')
     //在sessionStorage里面保存 正在聊天的人
     sessionStorage.setItem('userId', '123');
     this.onChattingWith.emit({ "status": true, "userId": 123 })
