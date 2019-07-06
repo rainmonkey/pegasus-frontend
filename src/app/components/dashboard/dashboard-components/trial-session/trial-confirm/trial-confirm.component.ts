@@ -2,7 +2,7 @@ import { LookUpsService } from 'src/app/services/http/look-ups.service';
 import { CoursesService } from 'src/app/services/http/courses.service';
 import { Component, OnInit, Input, Output, ViewChildren, EventEmitter } from '@angular/core';
 import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { ActivatedRoute } from "@angular/router"
+import { ActivatedRoute, Router } from "@angular/router"
 import { forkJoin } from 'rxjs';
 import * as jsPDF from 'jspdf';
 
@@ -27,6 +27,8 @@ export class TrialConfirmComponent implements OnInit {
   @Input() studentFullName;
   //arrange
   @Input() arrangeFlag
+  @Input() arrangeCourseInstance;
+
   @ViewChildren('radios') radios;
   @Output() closeModalFlag: EventEmitter<any> = new EventEmitter();
 
@@ -45,7 +47,8 @@ export class TrialConfirmComponent implements OnInit {
     private modalService: NgbModal,
     private lookupsService: LookUpsService,
     private CoursesService: CoursesService,
-    private activatedRoute: ActivatedRoute) { }
+    private activatedRoute: ActivatedRoute,
+    private router: Router) { }
 
   ngOnInit() {
     this.startTimeTem = this.timeFormatting(this.startTime);
@@ -109,22 +112,51 @@ export class TrialConfirmComponent implements OnInit {
     }
 
     this.loadingGifFlag = true;
-    let dataToSubmit = this.prepareData();
-    //console.log(this.radios)
-    this.CoursesService.postTrialLesson(dataToSubmit).subscribe(
-      (res) => {
-        this.loadingGifFlag = false;
-        this.successFlag = true;
-      },
-      (err) => {
-        console.log(err);
-        this.loadingGifFlag = false;
-        alert('Sorry,something went wrong in server.');
-      }
-    )
+    if (this.arrangeFlag) {
+      let dataToSubmit = this.prepareArrangeData()
+      console.log(dataToSubmit)
+      this.CoursesService.arrangeCourse(localStorage.userID, dataToSubmit).subscribe(
+        res => {
+          this.loadingGifFlag = false
+          this.successFlag = true;
+        },
+        err => {
+          console.log(localStorage.userID, dataToSubmit, err)
+          this.loadingGifFlag = false
+        },
+      )
+
+    } else {
+      let dataToSubmit = this.prepareTrialData();
+      this.CoursesService.postTrialLesson(dataToSubmit).subscribe(
+        (res) => {
+          this.loadingGifFlag = false;
+          this.successFlag = true;
+        },
+        (err) => {
+          console.log(err);
+          this.loadingGifFlag = false;
+          alert('Sorry,something went wrong in server.');
+        }
+      )
+    }
   }
 
-  prepareData() {
+  prepareArrangeData() {
+    console.log(Number(this.learnerId))
+    let data = {
+      "LearnerId": Number(this.learnerId),
+      "RoomId": this.avaliableRoom.RoomId,
+      "TeacherId": this.whichTeacher.TeacherId,
+      "OrgId": this.orgId,
+      "BeginTime": this.startTime,
+      "Reason": "arrange course",
+      "CourseInstanceId": this.arrangeCourseInstance.CourseInstanceId
+    }
+    return data
+  }
+
+  prepareTrialData() {
     let obj = {
       "LearnerId": Number(this.learnerId),
       "RoomId": this.avaliableRoom.RoomId,
@@ -144,6 +176,11 @@ export class TrialConfirmComponent implements OnInit {
   closeModal() {
     this.closeModalFlag.emit(true);
     this.activeModal.close('Cross click')
+    if (!this.arrangeFlag) {
+      this.router.navigate(["/learner/list"])
+    } else if (this.arrangeFlag) {
+      this.router.navigate(["/learner/credit/", this.learnerId])
+    }
   }
   
   downloadInvoice() {

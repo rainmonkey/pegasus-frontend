@@ -1,10 +1,12 @@
 <div style="margin-top:10px;" class="container-fluid">
-    <div class="font4">Dashboard</div>
+    <div class="page-header"><h5 style='font-weight: bold'>Dashboard</h5>
     <div style="" class="text-info">Welcome &nbsp; Bienvenido &nbsp;  Willkommen  &nbsp; добро  &nbsp; пожаловать &nbsp;  欢迎  &nbsp; Manaakitia &nbsp;  Bienvenue</div>
+    </div>
     <br>
     <div *ngIf="pageloading" class="loaderLarge"></div>
               <!-- Dashboard Counts Section-->
-              <section class="dashboard-counts no-padding-bottom">
+              <section class="dashboard-counts no-padding-bottom" style= 'padding: 5px 5px;
+              margin: 0;'>
                 <div class="container-fluid">
                   <div class="row bg-white has-shadow">
                     <!-- Item -->
@@ -46,12 +48,13 @@
                   </div>
                 </div>
               </section>
-
+    <div class='container-fluid'>
     <div class="row">
-        <div style="margin-bottom: 20px;" class="col-12 col-md-6 col-lg-8">
+        <div style="margin-bottom: 20px;" class="col-12">
             <app-charting></app-charting>
         </div>
     </div>
+  </div>
     <div class='row'>
         <div class="col-12 col-md-6 col-lg-4">
             <div *ngIf="toDoList" class="card">
