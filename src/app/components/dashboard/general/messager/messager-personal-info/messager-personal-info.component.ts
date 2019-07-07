@@ -55,7 +55,6 @@ export class MessagerPersonalInfoComponent implements OnInit {
   */
   getSignature(event) {
     this.personalSignature = event.target.value;
-    console.log('a', this.personalSignature)
   }
 
   /*

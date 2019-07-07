@@ -41,6 +41,7 @@ export class TrialConfirmComponent implements OnInit {
   public loadingGifFlag = false;
   public successFlag = false;
   public extraFee;
+  private  isPayNow: boolean  = true;
 
   constructor(public activeModal: NgbActiveModal,
     private modalService: NgbModal,
@@ -102,7 +103,7 @@ export class TrialConfirmComponent implements OnInit {
   }
 
   onSubmit() {
-    if (this.paymentMethodValue == null && !this.arrangeFlag) {
+    if ((this.paymentMethodValue == null && this.isPayNow )&& !this.arrangeFlag) {
       this.error = true;
       return
     }
@@ -167,6 +168,7 @@ export class TrialConfirmComponent implements OnInit {
       "Amount": this.coursePrice + this.extraFee,
       "StaffId": Number(localStorage.userID),
       "TrialCourseId": this.courseId,
+      "IsPayNow": this.isPayNow,
     }
     return obj
   }
@@ -180,7 +182,7 @@ export class TrialConfirmComponent implements OnInit {
       this.router.navigate(["/learner/credit/", this.learnerId])
     }
   }
-
+  
   downloadInvoice() {
     let doc = new jsPDF('p', 'pt', 'a4');
 

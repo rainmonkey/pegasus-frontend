@@ -33,7 +33,7 @@ import { PayrollListComponent } from './components/dashboard/dashboard-component
 import { PayrollPanelComponent } from './components/dashboard/dashboard-components/admin-payroll/payroll-panel/payroll-panel.component';
 import { AdminInvoiceEditModalComponent } from './components/dashboard/dashboard-components/admin-transactions/admin-invoice-edit-modal/admin-invoice-edit-modal.component';
 import { AdminInvoiceListComponent } from './components/dashboard/dashboard-components/admin-transactions/admin-invoice-list/admin-invoice-list.component';
-import { AdminPaymentListComponent } from './components/dashboard/dashboard-components/admin-transactions/admin-payment-list/admin-payment-list.component';
+import { AdminPaymentListComponent } from './components/dashboard/dashboard-components/admin-transactions/admin-payment/admin-payment-list/admin-payment-list.component';
 import { AdminSalesListComponent } from './components/dashboard/dashboard-components/admin-transactions/admin-sales-list/admin-sales-list.component';
 import { TransactionsPanelComponent } from './components/dashboard/dashboard-components/admin-transactions/transactions-panel/transactions-panel.component';
 import { CourseClassDetailModalComponent } from './components/dashboard/dashboard-components/courses/course-class-detail-modal/course-class-detail-modal.component';
@@ -126,6 +126,8 @@ import { MessagerSubscribersComponent } from './components/dashboard/general/mes
 import { MessagerRecentlyComponent } from './components/dashboard/general/messager/messager-recently/messager-recently.component';
 import { MessagerChattingComponent } from './components/dashboard/general/messager/messager-chatting/messager-chatting.component';
 import { MessagerPersonalInfoComponent } from './components/dashboard/general/messager/messager-personal-info/messager-personal-info.component';
+import { AdminPaymentProductModalComponent } from './components/dashboard/dashboard-components/admin-transactions/admin-payment/admin-payment-product-modal/admin-payment-product-modal.component';
+import { AdminPaymentConfirmModalComponent } from './components/dashboard/dashboard-components/admin-transactions/admin-payment/admin-payment-confirm-modal/admin-payment-confirm-modal.component';
 import { AmendmentHistoryModalComponent } from './components/dashboard/dashboard-components/admin-learner/amendment-History-modal/amendment-History-modal.component';
 import { IsTemporaryPipe } from './shared/pipes/IsTemporary.pipe'
 import { SelectHolidaysModalComponent } from './components/dashboard/dashboard-components/admin-holidays/select-holidays-modal/select-holidays-modal.component';
@@ -248,6 +250,9 @@ import { ConflictCheckComponent } from './components/dashboard/dashboard-compone
     MessagerRecentlyComponent,
     MessagerChattingComponent,
     MessagerPersonalInfoComponent,
+    AdminPaymentProductModalComponent,
+    AdminPaymentConfirmModalComponent,
+    
     SelectHolidaysModalComponent,
 
     CoporateOrderApplicationComponent,
@@ -313,9 +318,13 @@ import { ConflictCheckComponent } from './components/dashboard/dashboard-compone
     StaffEditModalComponent,
     InventoryDetailModalComponent,
     InventoryReceiptModalComponent,
+    // AddHolidaysModalComponent,
     DeleteHolidayComponent,
-    AmendmentHistoryModalComponent,
-    SelectHolidaysModalComponent
+    AdminPaymentProductModalComponent,
+    AdminPaymentConfirmModalComponent
+    // DeleteHolidayComponent,
+    // AmendmentHistoryModalComponent,
+    // SelectHolidaysModalComponent
   ],
   exports: [AppComponent],
   bootstrap: [AppComponent]

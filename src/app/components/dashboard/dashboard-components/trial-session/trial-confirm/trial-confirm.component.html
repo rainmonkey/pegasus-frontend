@@ -67,11 +67,14 @@
   </div>
   <div class='row' [class.error_border]='error' *ngIf="!arrangeFlag">
     <div class='col-2'>
+      <input #checkbox [checked]="isPayNow"  (change)="isPayNow=!isPayNow"  type="checkbox">
       Payment:
     </div>
-    <div *ngFor='let i of paymentMethods' class='col-3'>
-      <label for={{i.PropName}} style="margin-right:1.5rem">{{i.PropName}}</label>
-      <input #radios type="radio" name="payment" id={{i.PropName}} value={{i.PropValue}} (click)='getRadioValue(i.PropValue)'>
+    <div *ngIf='isPayNow'>
+      <span  *ngFor='let i of paymentMethods' class='col-3'>
+        <label for={{i.PropName}} style="margin-right:1.5rem">{{i.PropName}}</label>
+        <input #radios type="radio" name="payment" id={{i.PropName}} value={{i.PropValue}} (click)='getRadioValue(i.PropValue)'>
+      </span>
     </div>
   </div>
 </div>

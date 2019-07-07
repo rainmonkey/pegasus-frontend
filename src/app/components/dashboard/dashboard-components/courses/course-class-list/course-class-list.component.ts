@@ -50,7 +50,7 @@ export class CourseClassListComponent implements OnInit {
   getDataService() {
     this.courseService.getCourseClasses().subscribe(
       (res) => {
-        this.courseClassLists = res['Data'];        
+        this.courseClassLists = res['Data'];       
         this.coursesClassListCopy = this.courseClassLists;
         this.coursesClassListLength = res['Data'].length; //length prop is under Data prop
         this.refreshPageControl();
