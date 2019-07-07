@@ -1,6 +1,6 @@
 .t_s_class_title{
   font-weight: bold;
-  font-size: 10px;
+  font-size: 20px;
 }
 .t_s_tabs{
   height: 200px;
@@ -49,40 +49,46 @@
 }
 .t_s_tabs:hover{
   cursor: pointer;
-  font-size: 12px;
+  font-size: 20px;
 }
 .t_s_tabs_disable_hover{
   cursor: none!important;
-  font-size: 10px;
+  font-size: 20px;
 }
 
 .t_s_tabs_title{
-  font-size:14px;
+  font-size:20px;
   font-weight: bold;
 }
 .t_s_tabs_close{
   position: absolute;
   top:5px;
   right: 5px;
-  font-size:10px;
+  font-size:20px;
 }
 .t_s_tabs_close:hover{
   cursor: pointer;
   color:white;
-  font-size:11px;
+  font-size:20px;
 }
 .t_s_tabs_img{
   position: absolute;
-  bottom: 30px;
+  bottom: 50px;
   right: 0px;
+  font-size: 50px;
 }
+
+/* .t_s_tabs_img svg {
+  zoom:2.5;
+} */
+
 .t_s_tabs_img img{
   width: 50px;
   height: 50px;
 }
 .t_s_tabs_content{
   /*important可以阻止父元素hover*/
-  font-size:8px!important;
+  font-size:20px!important;
   text-transform:capitalize;
   position: absolute;
   top: 125px;

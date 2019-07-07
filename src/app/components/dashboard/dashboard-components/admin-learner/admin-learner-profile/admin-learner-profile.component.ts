@@ -69,7 +69,7 @@ export class AdminLearnerProfileComponent implements OnInit {
     parameter: 3,
     class: 'fas fa-trash-alt'
   },
-]
+  ];
   // @Output() activeModalEvent: EventEmitter<any> = new EventEmitter;
   // activeSubmitted: boolean = false;
   constructor(
@@ -109,6 +109,7 @@ export class AdminLearnerProfileComponent implements OnInit {
   */
   popUpModal(command) {
     let whichLearner = this.learnerList[0];
+    console.log(whichLearner)
     switch (command) {
       case 0:
         this.addModal(command, whichLearner)
