@@ -25,7 +25,7 @@ import { PayrollPanelComponent } from './components/dashboard/dashboard-componen
 import { PayrollListComponent } from './components/dashboard/dashboard-components/admin-payroll/payroll-list/payroll-list.component';
 import { AdminInvoiceListComponent } from './components/dashboard/dashboard-components/admin-transactions/admin-invoice-list/admin-invoice-list.component';
 import { TransactionsPanelComponent } from './components/dashboard/dashboard-components/admin-transactions/transactions-panel/transactions-panel.component';
-import { AdminPaymentListComponent } from './components/dashboard/dashboard-components/admin-transactions/admin-payment-list/admin-payment-list.component';
+import { AdminPaymentListComponent } from './components/dashboard/dashboard-components/admin-transactions/admin-payment/admin-payment-list/admin-payment-list.component';
 import { AdminSalesListComponent } from './components/dashboard/dashboard-components/admin-transactions/admin-sales-list/admin-sales-list.component';
 import { SessionsCalendarViewAdminComponent } from './components/dashboard/dashboard-components/sessions/sessions-views/sessions-calendar-view-admin/sessions-calendar-view-admin.component';
 import { SessionsCalendarViewTutorComponent } from './components/dashboard/dashboard-components/sessions/sessions-views/sessions-calendar-view-tutor/sessions-calendar-view-tutor.component';

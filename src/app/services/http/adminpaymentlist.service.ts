@@ -11,6 +11,15 @@ export class AdminpaymentlistService {
 
   /* For dropdown options*/
   getPaymentViews(beginDate, endDate) {
-    return this.http.get(this.baseUrl + 'PaymentView/paymentBetweenDesc/' + beginDate + "&" + endDate);
+    return this.http.get(this.baseUrl + 'Payment/PaymentByDate/' + localStorage.getItem("staffId") + '/' + beginDate + '/' + endDate);
+  }
+  getPaymentMethod() {
+    return this.http.get(this.baseUrl + 'lookups/7');
+  }
+  getPaymentType() {
+    return this.http.get(this.baseUrl + 'lookups/14');
+  }
+  updateConfirm(data, paymentId):any{
+    return this.http.put(this.baseUrl + 'Payment/'+ paymentId, data);
   }
 }
