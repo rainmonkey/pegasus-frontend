@@ -28,6 +28,7 @@ import { AdminLearnerPaymentPanelComponent } from './components/dashboard/dashbo
 import { AdminLearnerPaymentProductsComponent } from './components/dashboard/dashboard-components/admin-payment/admin-learner-payment-products/admin-learner-payment-products.component';
 import { AdminLearnerPaymentRegistrationComponent } from './components/dashboard/dashboard-components/admin-payment/admin-learner-payment-registration/admin-learner-payment-registration.component';
 import { AdminLearnerPaymentSuccessComponent } from './components/dashboard/dashboard-components/admin-payment/admin-learner-payment-success/admin-learner-payment-success.component';
+import { AdminLearnerProfileComponent } from './components/dashboard/dashboard-components/admin-learner/admin-learner-profile/admin-learner-profile.component';
 import { PayrollListComponent } from './components/dashboard/dashboard-components/admin-payroll/payroll-list/payroll-list.component';
 import { PayrollPanelComponent } from './components/dashboard/dashboard-components/admin-payroll/payroll-panel/payroll-panel.component';
 import { AdminInvoiceEditModalComponent } from './components/dashboard/dashboard-components/admin-transactions/admin-invoice-edit-modal/admin-invoice-edit-modal.component';
@@ -146,6 +147,7 @@ import { ConflictCheckComponent } from './components/dashboard/dashboard-compone
     AdminLearnerPaymentRegistrationComponent,
     AdminLearnerPaymentOtherComponent,
     AdminLearnerPaymentSuccessComponent,
+    AdminLearnerProfileComponent,
     TimePickerComponent,
     FooterComponent,
     CoursesPanelComponent,
