@@ -1,14 +1,15 @@
-<div class='m_p_person_info'>
+<div class='m_p_person_info' [@themeImgTrigger] = 'themeChangeFlag'>
   <div class='m_p_photo_outer'>
     <div class='m_p_photo_inner'>
-      <img src="../../../../../../assets/images/usersimg/userphoto.jpg" alt="">
+      <!-- <img src="../../../../../../assets/images/usersimg/userphoto.jpg" alt=""> -->
+      <img [src]="userPhoto" alt=""  onerror="this.src='../../../../../../assets/images/shared/default-employer-profile.png'">
     </div>
   </div>
   <div class='m_p_info'>
     <div class='row'>
       <!--user name-->
       <div class='col-10'>
-        <span class='col_p_info_label'>Richard Wang</span>
+        <span class='col_p_info_label'>{{userFirstName}} {{userLastName}}</span>
       </div>
       <!--user online level-->
       <div class='col-2'>
@@ -17,7 +18,7 @@
     </div>
     <!--user cate-->
     <div class='col-12'>
-      <span class='col_p_info_label'>Teacher (City Center)</span>
+      <span class='col_p_info_label'>{{userPosition}} ({{organisation|orgFormat:'abbr'}})</span>
     </div>
     <!--user's personal signature-->
     <div class='col-12'>
@@ -25,6 +26,6 @@
     </div>
   </div>
 
-  <!--online status btn-->
-  <div class='m_p_online_status' (click)='changeOnlineStatus($event)' title='online'></div>
+  <!--online status btn--> 
+  <div class='m_p_online_status' (click)='changeOnlineStatus($event)' title='onlineStatus' [@onlineStatusTrigger]='onlineStatus'></div>
 </div>

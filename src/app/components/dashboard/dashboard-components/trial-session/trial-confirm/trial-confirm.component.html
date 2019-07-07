@@ -1,8 +1,8 @@
 <!--modal header-->
 <div class='modal-header'>
-  <h4 class='modal-title'>Trial Course Confirmation</h4>
-  <button type="button" class='btn btn-sm btn-info t_dm_close_btn' aria-label="Close"
-    (click)="activeModal.close('Cross click')">
+  <h4 *ngIf="!arrangeFlag" class='modal-title'>Trial Course Confirmation</h4>
+  <h4 *ngIf="arrangeFlag" class='modal-title'>Course Confirmation</h4>
+  <button type="button" class='btn btn-sm btn-info t_dm_close_btn' aria-label="Close" (click)="activeModal.close('Cross click')">
     <span aria-hidden="true">&times;</span>
   </button>
 </div>
@@ -56,7 +56,7 @@
       Class Room:
     </div>
     <div class='col-4'>
-      <input type="text" disabled class='col-12 t_c_inputs' value={{avaliableRoom.RoomName}}>
+      <input type="text" disabled class='col-12 t_c_inputs' value={{avaliableRoom?.RoomName}}>
     </div>
     <div class='col-2'>
       Price:
@@ -65,13 +65,16 @@
       <input type="text" disabled class='col-12 t_c_inputs' value={{trialCoursePrice}}>
     </div>
   </div>
-  <div class='row' [class.error_border]='error'>
+  <div class='row' [class.error_border]='error' *ngIf="!arrangeFlag">
     <div class='col-2'>
+      <input #checkbox [checked]="isPayNow"  (change)="isPayNow=!isPayNow"  type="checkbox">
       Payment:
     </div>
-    <div *ngFor='let i of paymentMethods' class='col-3'>
-      <label for={{i.PropName}} style="margin-right:1.5rem">{{i.PropName}}</label>
-      <input #radios type="radio" name="payment" id={{i.PropName}} value={{i.PropValue}} (click)='getRadioValue(i.PropValue)'>
+    <div *ngIf='isPayNow'>
+      <span  *ngFor='let i of paymentMethods' class='col-3'>
+        <label for={{i.PropName}} style="margin-right:1.5rem">{{i.PropName}}</label>
+        <input #radios type="radio" name="payment" id={{i.PropName}} value={{i.PropValue}} (click)='getRadioValue(i.PropValue)'>
+      </span>
     </div>
   </div>
 </div>
@@ -83,6 +86,7 @@
   <div *ngIf='loadingGifFlag' class="loaderSmall"></div>
   <button *ngIf='!successFlag' type="button" class="btn btn-outline-dark" (click)="onSubmit()">Confirm</button>
   <button *ngIf='!successFlag' type="button" class="btn btn-outline-dark" (click)="activeModal.close('Close click')">Cancel</button>
-  <button *ngIf='successFlag' type="button" class="btn btn-outline-dark" (click)="downloadInvoice()">Download Invoice</button>
-  <button *ngIf='successFlag' type="button" class="btn btn-outline-dark" (click)="closeModal()" routerLink='/learner/list'>Close</button>
+  <button *ngIf='successFlag && !arrangeFlag' type="button" class="btn btn-outline-dark" (click)="downloadInvoice()">Download Invoice</button>
+  <button *ngIf='successFlag && !arrangeFlag' type="button" class="btn btn-outline-dark" (click)="closeModal()">Close</button>
+  <button type="button" class="btn btn-outline-dark" (click)="closeModal()">Close xxxxx</button>
 </div>

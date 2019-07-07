@@ -1,16 +1,12 @@
-import { Component, OnInit, ViewChild, Input, ViewEncapsulation } from '@angular/core';
+import { Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { CalendarComponent } from 'ng-fullcalendar';
 import interactionPlugin from '@fullcalendar/interaction';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import { OptionsInput } from '@fullcalendar/core';
 import { HolidaysService } from 'src/app/services/http/holidays.service';
-import { Calendar } from '@fullcalendar/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { AddHolidaysModalComponent } from '../add-holidays-modal/add-holidays-modal.component';
-import { View } from '@fullcalendar/core';
 import { DeleteHolidayComponent } from '../delete-holiday/delete-holiday.component';
-import { preserveWhitespacesDefault } from '@angular/compiler';
-
+import { SelectHolidaysModalComponent } from '../select-holidays-modal/select-holidays-modal.component';
 
 
 @Component({
@@ -26,6 +22,8 @@ export class HolidayCalendarComponent implements OnInit {
   existHoliday: any
   holidayArray = []
   private eventData = [];
+  selectDate = []
+
   @ViewChild('fullcalendar') fullcalendar: CalendarComponent;
 
   constructor(
@@ -35,18 +33,15 @@ export class HolidayCalendarComponent implements OnInit {
 
   ngOnInit() {
     this.getExitHoliday()
-
     console.log(this.fullcalendar)
     this.initFullCalendar(this)
-    
+
   }
 
 
   getExitHoliday() {
-
     this.HolidayServer.getHoliday().subscribe(
       (event) => {
-        console.log('aaaaaaaaaaaaa')
         const eventData = this.putInfo(event.Data)
         this.eventsModel = eventData
       },
@@ -57,30 +52,42 @@ export class HolidayCalendarComponent implements OnInit {
   }
 
   initFullCalendar(pointer) {
-
     console.log(this.fullcalendar)
     let that = pointer;
     this.options = {
       plugins: [dayGridPlugin, interactionPlugin],
       selectable: true,
-      // select: function (info) {
-      //   console.log(info)
-
-      // },
-      dateClick: function (info) {
-        console.log(info)
-        that.addAndEdit(info)
-
+      select: function (info) {
+        that.test(info)
       },
       eventClick: (info) => {
-        console.log(info)
+        // console.log(info)
         that.delete(info)
-
       },
       eventTextColor: '#ffffff',
-
     }
+  }
 
+  test(info) {
+  const modalRef = this.modalService.open(SelectHolidaysModalComponent,{ backdrop: 'static', keyboard: false })
+    let that = this;
+    modalRef.componentInstance.date = info;
+    modalRef.componentInstance.refreshFlag.subscribe(
+      (res) => {
+        modalRef.result.then(
+          function () {
+            // console.log(res)
+            if (res == true) {
+              that.fullcalendar.calendar.removeAllEvents();
+              that.getExitHoliday()
+              that.initFullCalendar(this)
+            }
+          },
+          function () {
+            return;
+          })
+      }
+    )
 
   }
 
@@ -92,57 +99,15 @@ export class HolidayCalendarComponent implements OnInit {
     return this.holidayArray;
   }
 
-  addAndEdit(info) {
-    const modalRef = this.modalService.open(AddHolidaysModalComponent)
-    let that = this;
-
-    modalRef.componentInstance.date = info;
-    modalRef.componentInstance.refreshFlag.subscribe(
-      (res) => {
-        modalRef.result.then(
-          function () {
-            console.log(res)
-            if (res == true) {
-              that.fullcalendar.calendar.removeAllEvents();
-              that.getExitHoliday()
-
-              that.initFullCalendar(this)
-            }
-          },
-          function () {
-            return;
-          })
-      }
-    )
-  }
-
   delete(info) {
-    const modalRef = this.modalService.open(DeleteHolidayComponent)
+    const modalRef = this.modalService.open(DeleteHolidayComponent,{ backdrop: 'static', keyboard: false })
     let that = this;
-
     modalRef.componentInstance.date = info;
     modalRef.result.then(
       (res) => {
-        //this.fullcalendar.calendar.removeAllEvents();
-        //this.fullcalendar.calendar.destroy();
         that.ngOnInit()
-
       },
     )
 
   }
-
-  // refreshData(){
-  //   this.fullcalendar.calendar.removeAllEvents();
-
-  //   this.HolidayServer.getHoliday().subscribe(
-  //     (event) => {
-  //       console.log('aaaaaaaaaaaaa')
-  //       const eventData = this.putInfo(event.Data)
-  //       this.eventsModel = eventData
-  //     }
-  //   )}
-
-
-
 }

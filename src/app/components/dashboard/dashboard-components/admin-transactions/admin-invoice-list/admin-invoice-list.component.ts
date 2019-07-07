@@ -25,15 +25,17 @@ export class AdminInvoiceListComponent implements OnInit {
   public temLearnerList: any; //save the original List
   public temLearnerListLength: number; //save the original List length
   public page: number = 1;  //pagination current page
-  public pageSize: number = 10;    //[can modify] pagination page size
+  public pageSize: number = 15;    //[can modify] pagination page size
 
   //error alert
   public errorMsg;
   public errorAlert = false;
   public errMsgM;
   public errMsgO;
-  public staffId = 3;
+  public userId;
+  isLoad: boolean = true
 
+  public isSearchingFlag: boolean = false
   // learner name and
   learner: Learner;
   myArray = [];
@@ -47,6 +49,7 @@ export class AdminInvoiceListComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    this.userId = localStorage.getItem("userID");
     this.getData();
   }
 
@@ -64,12 +67,13 @@ export class AdminInvoiceListComponent implements OnInit {
 
   // get data from server side
   getData() {
-    this.transactionService.getLearnerInvo(this.staffId).subscribe(
+    this.transactionService.getLearnerInvo(this.userId).subscribe(
       (res) => {
         this.learnerList = res.Data;
         this.learnerListLength = res.Data.length; //length prop is under Data prop
         this.temLearnerList = res.Data;
         this.temLearnerListLength = res.Data.length;
+        this.isLoad = false;
         //this.learnerList[0].Learner.Parent.Email
         // make array for sort
         this.makeArray();
@@ -112,19 +116,17 @@ export class AdminInvoiceListComponent implements OnInit {
 
       //If there is a value, do search. If there is no value, return the initial list.
       if (searchingInputObj['value']) {
+        this.isSearchingFlag = true
         this.myArray = this.temLearnerList.map(data => data.Learner)
         this.myArray = this.ngTable.searching(this.myArray, searchBy, searchString);
         // change length inside pagination
         this.learnerListLength = this.myArray.length;
       } else {
+        this.isSearchingFlag = false
         this.myArray = this.temLearnerList.map(data => data.Learner)
         // change length inside pagination
         this.learnerListLength = this.temLearnerListLength
       }
     }
-  }
-
-  refreshPage() {
-
   }
 }

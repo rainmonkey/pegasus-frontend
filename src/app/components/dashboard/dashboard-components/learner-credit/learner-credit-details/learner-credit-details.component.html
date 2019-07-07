@@ -3,13 +3,15 @@
     <ngb-panel id="1" title="Remaning Course">
       <ng-template ngbPanelContent>
         <!-- First name: {{this.data.FirstName}} -->
-        <table class="table table-striped" name="remaningTable">
+        <span *ngIf="remainingDataWaitingFlag">Loading...</span>
+        <table *ngIf="!remainingDataWaitingFlag" class="table table-striped" name="remaningTable">
           <thead>
             <tr>
               <th scope="col">#</th>
-              <th scope="col" sortable="TermId" (click)="onSort('remaningTable','TermId')" style="cursor:pointer">TermId</th>
-              <th scope="col" sortable="ExpiryDate" (click)="onSort('remaningTable','ExpiryDate')" style="cursor:pointer">Expiry Date</th>
-              <th scope="col" sortable="Quantity" (click)="onSort('remaningTable','Quantity')" style="cursor:pointer">Quantity</th>
+              <th scope="col">TermId</th>
+              <th scope="col">CourseName</th>
+              <th scope="col">Expiry Date</th>
+              <th scope="col">Quantity</th>
               <th scope="col">edit</th>
             </tr>
           </thead>
@@ -17,10 +19,13 @@
             <tr *ngFor="let i of remainingCourseData;let j = index">
               <th scope="row">{{j+1}}</th>
               <td>{{i.TermId}}</td>
+              <td>{{i.CourseName}}</td>
               <td>{{i.ExpiryDate|date:"dd/MM/yyyy"}}</td>
               <td>{{i.Quantity}}</td>
               <td>
-                <span class='t_info_table_btn' (click)='popUpModal(0,i)' title='Book a Course'><span class="fas fa-folder-plus"></span></span>
+                <!-- <span *ngIf="i.Quantity>0" class='t_info_table_btn' title='Book a Course' (click)="navigateToArrange(j)" style="cursor:pointer"><span class="fas fa-folder-plus"></span></span>
+                <span *ngIf="!i.Quantity>0" class='t_info_table_btn' title='Book a Course' (click)="alertForNoRemainingCourse()" style="cursor:pointer"><span class="fas fa-folder-plus"></span></span> -->
+                <span class='t_info_table_btn' title='Book a Course' (click)="navigateToArrange(j)" style="cursor:pointer"><span class="fas fa-folder-plus"></span></span>
               </td>
             </tr>
           </tbody>
@@ -30,19 +35,20 @@
     <ngb-panel id="2" title="Arranged Course">
       <ng-template ngbPanelContent>
         <!-- Last name: {{this.data.LastName}} -->
-        <table class="table table-striped" name="arrangedTable">
+        <span *ngIf="arrangeDataWaitingFlag">Loading...</span>
+        <table *ngIf="!arrangeDataWaitingFlag" class="table table-striped" name="arrangedTable">
           <thead>
             <tr>
               <th scope="col">#</th>
-              <th scope="col" sortable="teacherFirstName" (click)="onSort('arrangedTable','teacherFirstName')" style="cursor:pointer">Teacher Level</th>
-              <th scope="col" sortable="TeacherLastName" (click)="onSort('arrangedTable','TeacherLastName')" style="cursor:pointer">Category</th>
+              <th scope="col" sortable="teacherFirstName" (click)="onSort('arrangedTable','teacherFirstName')" style="cursor:pointer">Teacher FirstName</th>
+              <th scope="col" sortable="TeacherLastName" (click)="onSort('arrangedTable','TeacherLastName')" style="cursor:pointer">LastName</th>
               <th scope="col" sortable="learnerFirstName" (click)="onSort('arrangedTable','learnerFirstName')" style="cursor:pointer">First Name</th>
               <th scope="col" sortable="learnerLastName" (click)="onSort('arrangedTable','learnerLastName')" style="cursor:pointer">Last Name</th>
-              <th scope="col" sortable="courseName" (click)="onSort('arrangedTable','courseName')" style="cursor:pointer">courseName</th>
-              <th scope="col" sortable="orgName" (click)="onSort('arrangedTable','orgName')" style="cursor:pointer">orgName</th>
-              <th scope="col" sortable="roomName" (click)="onSort('arrangedTable','roomName')" style="cursor:pointer">roomName</th>
-              <th scope="col" sortable="start" (click)="onSort('arrangedTable','start')" style="cursor:pointer">start date</th>
-              <th scope="col" sortable="end" (click)="onSort('arrangedTable','end')" style="cursor:pointer">end date</th>
+              <th scope="col" sortable="courseName" (click)="onSort('arrangedTable','courseName')" style="cursor:pointer">Course Name</th>
+              <th scope="col" sortable="orgName" (click)="onSort('arrangedTable','orgName')" style="cursor:pointer">Branch</th>
+              <th scope="col" sortable="roomName" (click)="onSort('arrangedTable','roomName')" style="cursor:pointer">Room</th>
+              <th scope="col" sortable="start" (click)="onSort('arrangedTable','start')" style="cursor:pointer">Start Date</th>
+              <th scope="col" sortable="end" (click)="onSort('arrangedTable','end')" style="cursor:pointer">End Date</th>
             </tr>
           </thead>
           <tbody>

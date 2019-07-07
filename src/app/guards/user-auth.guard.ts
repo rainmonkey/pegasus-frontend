@@ -1,36 +1,55 @@
 import { Injectable } from '@angular/core';
-import { CanActivateChild, Router, ActivatedRouteSnapshot, RouterStateSnapshot, UrlTree } from '@angular/router';
+import { CanActivate, Router, ActivatedRouteSnapshot, RouterStateSnapshot, UrlTree } from '@angular/router';
 import { Observable } from 'rxjs';
 import { AuthenticationService } from '../services/auth/authentication.service';
-
+import { GeneralRepoService } from '../services/repositories/general-repo.service';
 @Injectable({
   providedIn: 'root'
 })
-export class UserAuthGuard implements CanActivateChild {
+export class UserAuthGuard implements CanActivate {
   constructor(
-    private authService: AuthenticationService,
+    private authService: GeneralRepoService,
     private router: Router
     ){}
 
-  canActivateChild(childRoute: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean | UrlTree | Observable<boolean | UrlTree> | Promise<boolean | UrlTree> {
+  canActivate(childRoute: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean | UrlTree | Observable<boolean | UrlTree> | Promise<boolean | UrlTree> {
     // throw new Error("Method not implemented.");
       let url: string = state.url;
-      // console.log(url);
-      return true;
-      //   return this.checkUser(url);
+      let urlS = url.substring(1,url.length-0);
+      return this.checkUser(urlS);
+      // console.log(urlS);
+      // console.log(this.authService.giveAuthToGuard(urlS))
+      // return this.authService.giveAuthToGuard(urlS);
+
+      //get Role Id
+      // let userState = localStorage.getItem('Role');
+      // get Path allowed
+      // this.authService.getPathById(userState).subscribe(
+      //   res=>{
+      //      let pathAllowed = res.Data;
+      //      this.pathArray = pathAllowed.map(ele=>ele.Url);
+      //      console.log(this.pathArray);
+      //      return this.checkUser(urlS);
+      //     },
+      //     error=>{
+      //       return false
+      //     }
+      //     )
+      // return this.checkUser(url);
+      // console.log(this.authService.giveAuthToGuard(urlS));
+      // //@ts-ignore;
+      // return this.authService.giveAuthToGuard(urlS);
   }
-  // canActivate(
-  //   next: ActivatedRouteSnapshot,
-  //   state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
-  //   let url: string = state.url;
-  //   console.log(url);
-  //   return true;
 
-  // }
-  // checkUser(url){
-  //   if(this.authService.userState > 1){return true;}
-  //   this.router.navigate(['/login'])
-  //   return false;
-  // }
-
+  checkUser(url){
+    console.log('ojweiof',this.authService.giveAuthToGuard(url))
+    if (this.authService.giveAuthToGuard(url) == true){
+      return true;
+    }else{
+    this.router.navigate(['/login'])
+      return false;
+    }
+  }
 }
+
+

@@ -3,21 +3,21 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { DebugElement } from '@angular/core';
 
-import { AddHolidaysModalComponent } from './add-holidays-modal.component';
+import { ConflictCheckComponent } from './conflict-check.component';
 
-describe('AddHolidaysModalComponent', () => {
-  let component: AddHolidaysModalComponent;
-  let fixture: ComponentFixture<AddHolidaysModalComponent>;
+describe('ConflictCheckComponent', () => {
+  let component: ConflictCheckComponent;
+  let fixture: ComponentFixture<ConflictCheckComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ AddHolidaysModalComponent ]
+      declarations: [ ConflictCheckComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(AddHolidaysModalComponent);
+    fixture = TestBed.createComponent(ConflictCheckComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

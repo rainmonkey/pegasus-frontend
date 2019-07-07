@@ -1,12 +1,27 @@
-<div class="card">
-    <div *ngIf="chart" class="card-body">
-        <div class="font4">{{chart.title}}</div>
-        <div class="font5">{{chart.subTitle}}</div>
+<div class='row mt-2' style= 'padding: 15px 5px;
+margin: 0;'>
 
-        <div style="margin-top: 20px; display: block;">
-            <canvas baseChart width="400" height="200" [datasets]="chartData" [labels]="chartLabels" [options]="lineChartOptions"
-                [colors]="lineChartColors" [legend]="lineChartLegend" [chartType]="lineChartType" [plugins]="lineChartPlugins">
-            </canvas>
-        </div>
+    <div *ngIf="chart" class="card-body chart col-4 has-shadow" style='background: #fff; '>
+        <!-- <div class="font4">{{chart.title}}</div>
+        <div class="font5">{{chart.subTitle}}</div> -->
+
+        <canvas baseChart [datasets]="chartData" [labels]="chartLabels" [options]="lineChartOptions"
+            [colors]="lineChartColors" [legend]="lineChartLegend" [chartType]="lineChartType" [plugins]="lineChartPlugins">
+        </canvas>
+        <!-- <div class='has-shadow p-4' style="position: relative; height:35vh; width:35vw; background: #fff;">
+        </div> -->
     </div>
+
+
+  <div *ngIf="chart" class="card-body chart col-4 has-shadow" style='background: #fff; '>
+      <!-- <div class="font4">{{barChart.title}}</div>
+      <div class="font5">{{barChart.subTitle}}</div> -->
+
+
+        <canvas baseChart [datasets]="barChartData" [labels]="barChartLabels" [options]="barChartOptions"
+       [legend]="barChartLegend" [chartType]="barChartType" [plugins]="barChartPlugins">
+    </canvas>
+
+  </div>
+
 </div>

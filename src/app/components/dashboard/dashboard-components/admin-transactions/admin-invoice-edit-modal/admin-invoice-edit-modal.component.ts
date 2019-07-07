@@ -66,7 +66,7 @@ export class AdminInvoiceEditModalComponent implements OnInit {
       concertCheckBox: [false],
     }, { validator: this.invoiceValidator.matcher }),
     Note: this.fb.group({
-      NoteFeeName: [{ value: null, disabled: true }],
+      LessonNoteFeeName: [{ value: null, disabled: true }],
       NoteFee: [{ value: null, disabled: true }],
       noteCheckBox: [false]
     }, { validator: this.invoiceValidator.matcher }),
@@ -138,7 +138,7 @@ export class AdminInvoiceEditModalComponent implements OnInit {
       },
       Note: {
         NoteFee: 0,
-        NoteFeeName: ""
+        LessonNoteFeeName: ""
       },
       Other1: {
         Other1FeeName: this.item.Other1FeeName,
@@ -280,10 +280,9 @@ export class AdminInvoiceEditModalComponent implements OnInit {
         this.tempNote = {
           Note: {
             NoteFee: +this.noteData[1].PropName,
-            NoteFeeName: this.noteData[0].PropName
+            LessonNoteFeeName: this.noteData[0].PropName
           }
         }
-        console.log(this.tempNote)
       },
       error => {
         console.log(error)
@@ -309,14 +308,14 @@ export class AdminInvoiceEditModalComponent implements OnInit {
       this.concertInUse = !this.concertInUse
     } else if (formControlName == "noteCheckBox") {
       if (this.noteInUse) {
-        this.invoiceEditForm.get("Note.NoteFeeName").disable()
+        this.invoiceEditForm.get("Note.LessonNoteFeeName").disable()
         this.invoiceEditForm.get("Note.NoteFee").disable()
-        this.invoiceEditForm.get("Note.NoteFeeName").patchValue("")
+        this.invoiceEditForm.get("Note.LessonNoteFeeName").patchValue("")
         this.invoiceEditForm.get("Note.NoteFee").patchValue(0)
         this.owingFeeLocal -= this.tempNoteFee
       }
       if (!this.noteInUse) {
-        this.invoiceEditForm.get("Note.NoteFeeName").enable()
+        this.invoiceEditForm.get("Note.LessonNoteFeeName").enable()
         this.invoiceEditForm.get("Note.NoteFee").enable()
         this.invoiceEditForm.patchValue(this.tempNote)
         this.owingFeeLocal += +this.tempNote.Note.NoteFee

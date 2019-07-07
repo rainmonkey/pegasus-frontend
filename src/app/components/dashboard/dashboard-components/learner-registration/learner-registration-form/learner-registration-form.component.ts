@@ -192,6 +192,7 @@ export class LearnerRegistrationFormComponent implements OnInit, DoCheck, AfterV
         paymentPeriod: [this.whichLearner ? this.whichLearner.PaymentPeriod : '1'],
         referrer: [this.whichLearner ? this.whichLearner.Referrer : ''],
         isUnder18: [this.whichLearner ? this.whichLearner.isUnder18 : 0],
+        Comment: [this.whichLearner ? this.whichLearner.Comment : ''],        
       }),
       parentForm: this.fb.array([]),
       groupCourse: this.fb.array([]),
@@ -704,6 +705,7 @@ selectLocation(id, i) {
     this.fdObj['IsUnder18'] = this.learner.isUnder18 ? 1 : 0;;
     this.fdObj['PaymentPeriod'] = parseInt(this.learner.paymentPeriod);
     this.fdObj['Referrer'] = this.learner.referrer;
+    this.fdObj['Comment'] = this.learner.Comment;
     // encapsulate parent form data
     // console.log('submit', this.parentForm.value)
     this.parent = [];
@@ -805,6 +807,7 @@ selectLocation(id, i) {
   open(i) {
     this.modalRefTimePicker = this.modalService.open(LearnerRegistrationModalComponent, { windowClass: 'my-class' });
     this.modalRefTimePicker.componentInstance.customCourse = this.customCourse.value[i];
+    this.modalRefTimePicker.componentInstance.teaList = this.prepareTeaNameListArray[i];
     this.timePickArrayNumber = i;
   }
 
@@ -904,6 +907,14 @@ selectLocation(id, i) {
       })
     };
 
+  }
+  handleEmailChange(value){
+    if (!this.whichLearner)
+      this.parentForm.at(0).get("Email").patchValue(value);
+  }
+  handleNumChange(value){
+    if (!this.whichLearner)    
+      this.parentForm.at(0).get("contactPhone").patchValue(value);
   }
   setOneToOneForm(){
     if  (!this.whichLearner){
