@@ -177,8 +177,7 @@ export class TimePickerComponent implements OnInit {
   public learnerName: any[] = [];
 
   public slotPopover: any[] = [];
-  public isPopover: boolean = false;
-
+  public startTimeToEndTime: string;
   constructor(private timePickerService: TimePickerService) {
   }
 
@@ -210,45 +209,6 @@ export class TimePickerComponent implements OnInit {
     this.renderSlotProp();
   }
 
-  ////////////////// pop over ///////////////////////////
-  hasNextAbleToPick(x,y){
-    for(let i of [0,1,2,3]) {
-      if(this.slot[x][y+i] != "ableToPick") {
-        return false;
-      }
-    };
-    return true;
-  }
-  getUnableToPickYindex(x,y) {
-    for(let i of [0,1,2,3]) {
-      if(this.slot[x][y+i] != "ableToPick") {
-        return y+i-1;
-      }
-    }
-  }
-  hasFormerAbleToPick(x,y) {
-    let bottomY = this.getUnableToPickYindex(x,y);
-    for(let i of [0,1,2,3]) {
-      if(this.slot[x][bottomY-i] != "ableToPick") {
-        return false;
-      }
-    };
-    return true;
-  }
-
-  openPopover(p,x,y) {
-    this.isPopover = true;
-    if(!this.isPopover) {
-      p.open()
-    }
-  }
-  closePopover(p,x,y) {
-    this.isPopover = false;
-    console.log('aa',this.isPopover)
-    // setTimeout(()=>{
-    //   this.isPopover = false;
-    // },200);
-  }
 
 ///////////////////////////////////// Here are reusable functions////////////////////////////////////////
   /*
@@ -277,24 +237,37 @@ export class TimePickerComponent implements OnInit {
     };
     return arr;
   }
-  teacherOrgNotIncludesLearnerOrg(x) {
-    for(let i = 0; i < 48; i++) {
-      if(this.slot[x][i] == "isAvailable") {
-        this.slot[x][i] = "tOrgNotIncludesLorg";
-      }
-    }
-  }
-  /* whether one-on-one course org is in teacher available org*/
-  orgIsAvailable(originalArr: any[]) {
-    originalArr.map((obj) => {
-      // console.log('weekday', obj.DayOfWeek);
-      let orgIdArr = obj.Orgs.map((o) => o.OrgId);
-      console.log('orgIdArr', orgIdArr)
-      // if(orgIdArr.includes(this.learnerOrg.OrgId)) {
-      //   console.log('weekday', obj.DayOfWeek);
-      // }
-    });
-  }
+  /*
+    call back transferTime function
+    convert original array to new array for handy to manipulate
+  */
+//  TODO:this.teacherAvailableData.Data WILL get from database
+setSpecificTime() {
+  this.arrangedArr = this.transferTime(this.teacherAvailableData.Data.Arranged);
+  this.dayOffArr = this.transferTime(this.teacherAvailableData.Data.Dayoff);
+  this.tempChangeArr = this.transferTime(this.teacherAvailableData.Data.TempChange);
+  // will delete
+  console.log('arrangedArr', this.arrangedArr);
+  console.log('dayOffArr', this.dayOffArr);
+  console.log('tempChangeArr', this.tempChangeArr);
+}
+//////////////////////////////////////////////////////////////////////////////////////////
+ /* define slot property value for ngClass in HTML */
+ renderAvailableDay() {
+  // this.findTeahcerAvailableOrg(this.teacherAvailableData.Data.AvailableDay);
+  this.teacherAvailableData.Data.AvailableDay.map((o) => {
+    let xIndex = o['DayOfWeek']-1;
+    // if(this.findTeahcerAvailableOrg) {
+      for(let i = 0; i < 48; i++) {
+        this.slot[xIndex][i] = 'isAvailable';
+      };
+    // } else {
+    //   for(let i = 0; i < 48; i++) {
+    //     this.slot[xIndex][i] = 'isAvailableButUnableToPick';
+    //   }
+    // }
+  });
+}
   /* define every slot's property value for rendering in HTML */
   defineSlotProp(originalArr: any[], prop: string) {
     for(let o of originalArr) {
@@ -304,7 +277,25 @@ export class TimePickerComponent implements OnInit {
         this.slot[xIndex][i] = prop;
       }
     };
-    return this.learnerName, this.slot;
+    return this.slot;
+  }
+   /* call back defineSlotProp function for ngClass in HTML */
+   renderSlotProp() {
+    this.defineSlotProp(this.arrangedArr, 'isArranged');
+    this.defineSlotProp(this.dayOffArr, 'isDayOff');
+    this.defineSlotProp(this.tempChangeArr, 'isTempChange');
+  }
+////////////////////////////////////////////////////////////////////////////////////////////////
+  /* 
+     teacher's available day's orgId not inclueds learner's orgId
+     so all teacher's available day can not be picked
+   */
+  teacherOrgNotIncludesLearnerOrg(x) {
+    for(let i = 0; i < 48; i++) {
+      if(this.slot[x][i] == "ableToPick") {
+        this.slot[x][i] = "tOrgNotIncludesLOrg";
+      }
+    }
   }
   /* estimate if next duration and former duration is able to pick */
   hasNextDuration(prop1,x: number, y: number) {
@@ -335,6 +326,7 @@ export class TimePickerComponent implements OnInit {
     if(this.hasNextDuration(prop1,x,y)) {
       for(let i of [0,1,2,3]) {
         this.slot[x][y+i] = prop2;
+        this.startTimeToEndTime = `${this.slotTime[x][y]}-${this.slotTime[x][y+3]}`;
       };
     } else if(this.hasFormerDuration(prop1,prop2,x,y)) {
       let bottomY=this.getBottomYindex(prop1,prop2,x,y);
@@ -344,7 +336,7 @@ export class TimePickerComponent implements OnInit {
     }
   }
   /* check if temp change >= duration */
-  tempChangeInculdesDuration(x,y) {
+  judgeTempChangeDuration(x,y) {
   this.tempChangeArr.map((o) => {
     let gap = o.EndY - o.BeginY;
     if(gap < this.duration) {
@@ -359,50 +351,13 @@ export class TimePickerComponent implements OnInit {
     this.tempChangeArr.map((o) => {
       let gap = o.EndY - o.BeginY;
       xIndex = o.DayOfWeek-1
-      if(this.tempChangeInculdesDuration(x,y) && x == xIndex && this.slot[x][y] == "isTempChange") {
+      if(this.judgeTempChangeDuration(x,y) && x == xIndex && this.slot[x][y] == "isTempChange") {
         this.setDuration('isTempChange','ableToPick',x,y);
       }
     })
 
   }
 
-//////////////////////////////////////////////////////////////////////////////////////////////////////
-  /*
-    call back transferTime function
-    convert original array to new array handy to manipulate
-  */
-  setSpecificTime() {
-    this.arrangedArr = this.transferTime(this.teacherAvailableData.Data.Arranged);
-    this.dayOffArr = this.transferTime(this.teacherAvailableData.Data.Dayoff);
-    this.tempChangeArr = this.transferTime(this.teacherAvailableData.Data.TempChange);
-    // will delete
-    console.log('arrangedArr', this.arrangedArr);
-    console.log('dayOffArr', this.dayOffArr);
-    console.log('tempChangeArr', this.tempChangeArr);
-  }
-  /* define slot property value for ngClass in HTML */
-  renderAvailableDay() {
-    this.orgIsAvailable(this.teacherAvailableData.Data.AvailableDay);
-    this.teacherAvailableData.Data.AvailableDay.map((o) => {
-      let xIndex = o['DayOfWeek']-1;
-      if(this.orgIsAvailable) {
-        for(let i = 0; i < 48; i++) {
-          this.slot[xIndex][i] = 'isAvailable';
-        };
-      } else {
-        for(let i = 0; i < 48; i++) {
-          this.slot[xIndex][i] = 'isAvailableButUnableToPick';
-        }
-      }
-    });
-  }
-  /* call back defineSlotProp function for ngClass in HTML */
-  renderSlotProp() {
-    this.defineSlotProp(this.arrangedArr, 'isArranged');
-    this.defineSlotProp(this.dayOffArr, 'isDayOff');
-    this.defineSlotProp(this.tempChangeArr, 'isTempChange');
-    // console.log('slot', this.slot);
-  }
   oneHourUnableToPick(o, x, y) {
     for(let i = o['BeginY']-4; i < o['EndY']+5; i++) {
       if(this.slot[x][i] != "isArranged") {
