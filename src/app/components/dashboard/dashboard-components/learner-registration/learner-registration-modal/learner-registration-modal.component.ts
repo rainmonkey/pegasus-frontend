@@ -13,7 +13,8 @@ export class LearnerRegistrationModalComponent implements OnInit, AfterViewCheck
 
   // edwin add
   @Input() whichLearner;
-
+  public beginTime:any;
+  public modalopen: boolean = true;
    constructor(public activeModal: NgbActiveModal) {}
 
    ngAfterViewChecked(){
@@ -21,4 +22,11 @@ export class LearnerRegistrationModalComponent implements OnInit, AfterViewCheck
    }
    ngOnInit() {
    }
+
+   beginTimeFromChild(event) {
+     this.beginTime = event;
+     console.log('BeginTimeFromTimePicker', event);
+     this.activeModal.dismiss();
+   }
+   
 }
