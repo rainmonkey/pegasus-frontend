@@ -27,7 +27,6 @@ export class GeneralRepoService {
     let pathArray = localPath.split(',');
     let pass = false;
     for (let i of pathArray) {
-      console.log(i);
       if (urlS.indexOf(i) !== -1) {
         pass = true
       }
