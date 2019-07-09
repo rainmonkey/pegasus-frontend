@@ -118,7 +118,9 @@ export class LearnerRegistrationFormComponent implements OnInit, DoCheck, AfterV
   assignValue = false;
   // for addcourse modal
   groupCourseForSubmit = [];
-
+  // to date pick
+  toDatePickCourseDuration = {};
+  teaList;
   // getter method: simplify the way to capture form controls
   get firstName() { return this.registrationForm.get('learnerForm').get('firstName'); }
   get lastName() { return this.registrationForm.get('learnerForm').get('lastName'); }
@@ -192,7 +194,7 @@ export class LearnerRegistrationFormComponent implements OnInit, DoCheck, AfterV
         paymentPeriod: [this.whichLearner ? this.whichLearner.PaymentPeriod : '1'],
         referrer: [this.whichLearner ? this.whichLearner.Referrer : ''],
         isUnder18: [this.whichLearner ? this.whichLearner.isUnder18 : 0],
-        Comment: [this.whichLearner ? this.whichLearner.Comment : ''],        
+        Comment: [this.whichLearner ? this.whichLearner.Comment : ''],
       }),
       parentForm: this.fb.array([]),
       groupCourse: this.fb.array([]),
@@ -581,7 +583,12 @@ export class LearnerRegistrationFormComponent implements OnInit, DoCheck, AfterV
     console.log("this.courseListArray", this.courseListArray);
   }
 
-  selectCourse(value, i) {
+  selectCourse(value, i, target) {
+    // to date pick
+    this.toDatePickCourseDuration = {}
+    this.toDatePickCourseDuration = this.courseListArray[i].courseItemArray.filter(item => item.CourseId === Number(value));
+    console.log(this.toDatePickCourseDuration)
+    // empty selection
     this.emptySelectionCour(i)
     this.locListArray[i].locItemArray = [];
     return this.registrationService.getTeacherFilter(value).subscribe(
@@ -628,8 +635,22 @@ selectLocation(id, i) {
     let teaList = this.prepareTeaLevListArray[i].prepareTeaLevItemArray.filter((item) => item.levelId == id);
     this.selectedprepareTeaLevInOrgObjListArray[i].selectedprepareTeaLevInOrgObjItemArray = teaList;
     this.prepareTeaNameListArray[i].prepareTeaNameItemArray = teaList[0].teacher;
+    this.teaList = this.prepareTeaNameListArray[i].prepareTeaNameItemArray;
+
+
     console.log(this.selectedprepareTeaLevInOrgObjListArray[i].selectedprepareTeaLevInOrgObjItemArray)
   }
+
+  //select a particular teacher
+  selectTeacher(id, i){
+    this.teaList = this.teaList.filter((item)=> item.TeacherId == Number(id));
+
+    console.log('a',this.teaList, this.toDatePickCourseDuration)
+    this.teaList = this.teaList.concat(this.toDatePickCourseDuration)
+    this.teaList.push(i);
+    console.log(this.teaList)
+  }
+
   // init Array
   initArrays() {
     this.courseItemArray = [];
@@ -807,7 +828,8 @@ selectLocation(id, i) {
   open(i) {
     this.modalRefTimePicker = this.modalService.open(LearnerRegistrationModalComponent, { windowClass: 'my-class' });
     this.modalRefTimePicker.componentInstance.customCourse = this.customCourse.value[i];
-    this.modalRefTimePicker.componentInstance.teaList = this.prepareTeaNameListArray[i];
+    this.modalRefTimePicker.componentInstance.teaList = this.teaList;
+
     this.timePickArrayNumber = i;
   }
 
@@ -913,7 +935,7 @@ selectLocation(id, i) {
       this.parentForm.at(0).get("Email").patchValue(value);
   }
   handleNumChange(value){
-    if (!this.whichLearner)    
+    if (!this.whichLearner)
       this.parentForm.at(0).get("contactPhone").patchValue(value);
   }
   setOneToOneForm(){
