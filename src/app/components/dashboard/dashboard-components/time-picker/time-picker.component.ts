@@ -72,11 +72,12 @@ export class TimePickerComponent implements OnInit {
     // console.log('start date', startDate);
     this.timePickerService.getTeacherAvailableCheck(Number(teacherId),startDate).subscribe(
       (res) => {
-        console.log('TeacherData', res.Data)
-        this.learnerOrgId = Number(this.customCourse.location);
-        console.log('location', this.learnerOrgId)
-        this.teacherName = this.customCourse.teacherName;
-        this.duration = 3;
+        this.setSpecificTime(res.Data);
+        // console.log('TeacherData', res.Data)
+        // this.learnerOrgId = Number(this.customCourse.location);
+        // console.log('location', this.learnerOrgId)
+        // this.teacherName = this.customCourse.teacherName;
+        // this.duration = 3;
         // this.loadingFlag = false;
         this.setSpecificTime(res.Data);
         this.renderAvailableDay();
@@ -95,23 +96,25 @@ export class TimePickerComponent implements OnInit {
       this.errorMessage = "Error! Can't catch Data."
     }
   }
-///////////////////////////////////// Here are reusable functions////////////////////////////////////////
+
+
+///////////////////////////////////// get data and reconstruct them from server//////////////////////////////////
   /*
-    convert begin time and end time to yIndex
-    and then refactor a new arr
+    convert begin time and end time to the number of y
+    and then reconstruct a new arr from TeacherAvailableCheck API 
   */
   transferTime(originalArr: any[]) {
     let arr = [];
     for(let data of originalArr) {
-      // convert begin time to yIndex
+      // convert begin time to the number of y
       let TimeBeginToArr = data.TimeBegin.split(':');
       let TimeBeginToMinutes = (+TimeBeginToArr[0]) * 60 + (+TimeBeginToArr[1]);
       let beginMinutesToY = (+TimeBeginToMinutes-480)/15;
-      // convert end time to yIndex
+      // convert end time to the number of y
       let TimeEndToArr = data.TimeEnd.split(':');
       let TimeEndToMinutes = (+TimeEndToArr[0]) * 60 + (+TimeEndToArr[1]);
       let endMinutesToY = (TimeEndToMinutes-480)/15;
-      // refactor a new arr
+      // reconstruct a new arr
       let obj = {};
       obj['DayOfWeek'] = data.DayOfWeek;
       obj['BeginY'] = beginMinutesToY;
@@ -123,29 +126,32 @@ export class TimePickerComponent implements OnInit {
     return arr;
   }
   /*
-    call back transferTime function
-    convert original array to new array for handy to manipulate
+    callback transferTime function
+    convert original data of array to new array for handy to manipulate
+    and get teacher available day from server
   */
-//  TODO:teacherData.Data WILL get from database
-setSpecificTime(teacherData: any) {
-  this.arrangedArr = this.transferTime(teacherData.Arranged);
-  this.dayOffArr = this.transferTime(teacherData.Dayoff);
-  this.tempChangeArr = this.transferTime(teacherData.TempChange);
-  this.availableArr = teacherData.AvailableDay;
-  console.log('teacher available day', this.availableArr)
-}
-//////////////////////////////////////////////////////////////////////////////////////////
- /* define slot property value for ngClass in HTML */
- renderAvailableDay() {
-  this.availableArr.map((o) => {
-    let xIndex = o['DayOfWeek']-1;
-    // if(this.findTeahcerAvailableOrg) {
-      for(let i = 0; i < 48; i++) {
-        this.slot[xIndex][i] = 'isAvailable';
-      };
-  });
-}
-  /* define every slot's property value for rendering in HTML */
+  setSpecificTime(teacherData: any) {
+    this.arrangedArr = this.transferTime(teacherData.Arranged);
+    this.dayOffArr = this.transferTime(teacherData.Dayoff);
+    this.tempChangeArr = this.transferTime(teacherData.TempChange);
+    this.availableArr = teacherData.AvailableDay;
+  }
+
+/////////////////////////////////// render data in HTML/////////////////////////////////////////////////////////
+  /* 
+    define teacher's Available day for rendering in HTML 
+  */
+  renderAvailableDay() {
+    this.availableArr.map((o) => {
+      let xIndex = o['DayOfWeek']-1;
+        for(let i = 0; i < 48; i++) {
+          this.slot[xIndex][i] = 'isAvailable';
+        };
+    });
+  }
+  /* 
+    define teacher's other data (Arranged,Dayoff,TempChange) from server for rendering in HTML 
+  */
   defineSlotProp(originalArr: any[], prop: string) {
     for(let o of originalArr) {
       let xIndex = o['DayOfWeek']-1;
@@ -156,13 +162,45 @@ setSpecificTime(teacherData: any) {
     };
     return this.slot;
   }
-   /* call back defineSlotProp function for ngClass in HTML */
-   renderSlotProp() {
+  /* 
+    callback defineSlotProp function for ngClass in HTML 
+  */
+  renderSlotProp() {
     this.defineSlotProp(this.arrangedArr, 'isArranged');
     this.defineSlotProp(this.dayOffArr, 'isDayOff');
     this.defineSlotProp(this.tempChangeArr, 'isTempChange');
   }
-////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////// event trigger in HTML /////////////////////////////////////////////////////////////
+  mouseover(x: number, y: number) {
+    this.tempChangeIsAbleToPick(x,y);
+    this.availableArr.map((o) => {
+      let xIndex = o.DayOfWeek-1;
+      let filterOrgId = o.Orgs.map((o) => o.OrgId);
+      if(x == xIndex && filterOrgId.length == 1) {
+        this.teacherHasOneOrg(filterOrgId, x, y);
+      } else if(x == xIndex && filterOrgId.length !=1) {
+        this.teacherHasManyOrgs(filterOrgId, x, y);
+      }
+    });
+  }
+  mouseout(x: number, y: number) {
+    let xIndex: number;
+    this.availableArr.map((o) => {
+      xIndex = o.DayOfWeek-1;
+        for(let i = 0; i < 48; i++) {
+          if(this.slot[xIndex][i] == "ableToPick") {
+            this.slot[xIndex][i] = "isAvailable";
+          }
+        }
+    });
+    this.tempChangeArr.map((o) => {
+      for(let i = 0; i < 48; i++) {
+        if(this.slot[x][i] == "ableToPick") {
+          this.slot[x][i] = "isTempChange"
+        }
+      }
+    })
+  }
   /* 
      teacher's available day's orgId not inclueds learner's orgId
      so all teacher's available day can not be picked
@@ -287,43 +325,7 @@ setSpecificTime(teacherData: any) {
       } 
     })
   }
-  mouseoverSlot(x: number, y: number) {
-    // console.log('mouse over')
-    let xIndex: number;
-    this.tempChangeIsAbleToPick(x,y);
-    // console.log('mouseouver',x,this.availableArr)
-    this.availableArr.map((o) => {
-      xIndex = o.DayOfWeek-1;
-      let filterOrgId = o.Orgs.map((o) => o.OrgId);
-      // console.log('filerOrg', filterOrgId)
-      if(x == xIndex && filterOrgId.length == 1) {
-        // console.log('teacherHasOneOrg')
-        this.teacherHasOneOrg(filterOrgId, x, y);
-      } else if(x == xIndex && filterOrgId.length !=1) {
-        // console.log('teacherHasManyOrgs')
-        this.teacherHasManyOrgs(filterOrgId, x, y);
-      }
-    });
-  }
-  mouseoutSlot(x: number, y: number) {
-    // console.log('mouse out')
-    let xIndex: number;
-    this.availableArr.map((o) => {
-      xIndex = o.DayOfWeek-1;
-        for(let i = 0; i < 48; i++) {
-          if(this.slot[xIndex][i] == "ableToPick") {
-            this.slot[xIndex][i] = "isAvailable";
-          }
-        }
-    });
-    this.tempChangeArr.map((o) => {
-      for(let i = 0; i < 48; i++) {
-        if(this.slot[x][i] == "ableToPick") {
-          this.slot[x][i] = "isTempChange"
-        }
-      }
-    })
-  }
+  
   confirm() {
     console.log('confirm',this.startTime);
     this.beginTime.emit(this.startTime)

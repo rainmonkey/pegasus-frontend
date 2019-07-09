@@ -41,7 +41,7 @@
                       'oneHourUnableToPick': slot[x][y] == 'oneHourUnableTopick',
                       'isShow': slot[x][y] == 'ableToPick'
                     }"
-          (mouseover)="mouseoverSlot(x,y)" (mouseout)="mouseoutSlot(x,y)"
+          (mouseover)="mouseover(x,y)" (mouseout)="mouseout(x,y)"
           >
           <div class="popover__content">
             <div class="popover__header"><span>{{teacherName}}</span></div>
