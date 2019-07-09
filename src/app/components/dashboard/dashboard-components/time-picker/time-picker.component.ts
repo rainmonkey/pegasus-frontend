@@ -44,7 +44,7 @@ export class TimePickerComponent implements OnInit {
   }
 
   ngOnInit() {
-    console.log('customCourse', this.customCourse,'teacherArray',this.teaList);
+    console.log('customCourse', this.customCourse,'teacherList',this.teaList);
     // define yIndex for rendering in HTML
     for(let i = 0; i < 48; i++) {
       this.yIndex.push(i);
@@ -170,7 +170,7 @@ export class TimePickerComponent implements OnInit {
     this.defineSlotProp(this.dayOffArr, 'isDayOff');
     this.defineSlotProp(this.tempChangeArr, 'isTempChange');
   }
-///////////////////////////////// event trigger in HTML /////////////////////////////////////////////////////////////
+///////////////////////////////// event triggered in HTML /////////////////////////////////////////////////////////////
   mouseover(x: number, y: number) {
     this.tempChangeIsAbleToPick(x,y);
     this.availableArr.map((o) => {
