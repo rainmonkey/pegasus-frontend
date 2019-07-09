@@ -25,6 +25,7 @@ export class LearnerRegistrationFormComponent implements OnInit, DoCheck, AfterV
   @Input() whichLearner;
   @Input() addCourse;
   @Output() toLearnerListEvent: EventEmitter<any> = new EventEmitter;
+  public beginTime: any;
   public time: NgbTimeStruct = { hour: 9, minute: 0, second: 0 };
   public hourStep = 1;
   public minuteStep = 15;
