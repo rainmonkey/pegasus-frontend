@@ -8,8 +8,19 @@
       <div class='col-12 tl_body_title'>
         <h2>Invoice Edit & Email</h2>
       </div>
+      <div class='col-6 tl_body_title'>Please Select a Term
+        <select style="width: 360px;" (change)="onChange($event.target.value)">
+          <option *ngFor="let i of terms" value="{{i.TermId}}">{{i.TermName}}:{{i.BeginDate}} - {{i.EndDate}}</option>
+        </select>
+      </div>
+      <div class='col-6 tl_body_title'>
+        <button type="button" class='btn btn-info t_info_addmore_btn' (click)="onSubmit()">
+          <i class='fas fa-search'></i>Search
+        </button>
+      </div>
+
       <!--body search-->
-      <div class='col-12 tl_body_search'>
+      <div class='col-6 tl_body_search'>
         <span class='fas fa-search'></span>&nbsp;
         <input type="text" id='searchingInput' (keydown)='onSearch($event)' placeholder="Search by name">
         <button *ngIf="isSearchingFlag" (click)="clearSearch()" class="btn btn-secondary ml-3">clear</button>
@@ -22,13 +33,13 @@
           <thead>
             <tr>
               <th scope='col' class='tl_body_table_head' style='width: 50px'>#</th>
-              <th scope='col' class='tl_body_table_head' style='width: 150px' (click)='onSort("FirstName")' counter='0' class='sorting_item' style="cursor: pointer;">First Name</th>
-              <th scope='col' class="tl_body_table_head" style='width: 150px' (click)='onSort("MiddleName")' style="cursor: pointer;">Middle Name</th>
-              <th scope='col' class="tl_body_table_head" style='width: 150px' (click)='onSort("LastName")' counter='0' id='lastName' class='sorting_item' style="cursor: pointer;">Last Name</th>
-              <th scope='col' class='tl_body_table_head' style='width: 150px' (click)='onSort("OwingFee")' style="cursor: pointer;">Amount</th>
-              <th scope='col' class='tl_body_table_head' style='width: 300px' (click)='onSort("Email")' style="cursor: pointer;">Email</th>
+              <th scope='col' class='tl_body_table_head' style='width: 150px' (click)='onSort("Name")' counter='0' class='sorting_item' style="cursor: pointer;">First Name</th>
+              <th scope='col' class='tl_body_table_head' style='width: 100px' (click)='onSort("OwingFee")' style="cursor: pointer;">Initial Amt.</th>
+              <th scope='col' class='tl_body_table_head' style='width: 100px' (click)='onSort("InvoiceOwingFee")' style="cursor: pointer;">Amt.</th>
+              <th scope='col' class='tl_body_table_head' style='width: 400px' (click)='onSort("Email")' style="cursor: pointer;">Reason</th>
               <th scope='col' class='tl_body_table_head' style='width: 300px' (click)='onSort("IsEmailSent")' style="cursor: pointer;">Confirm Status</th>
-              <th scope='col' class='tl_body_table_head' style='width: 300px' (click)='onSort("IsConfirmed")' style="cursor: pointer;">Reminder Status</th>
+              <th scope='col' class='tl_body_table_head' style='width: 300px' (click)='onSort("IsConfirmed")' style="cursor: pointer;">Email Status</th>
+              <th scope='col' class='tl_body_table_head' style='width: 300px' (click)='onSort("IsConfirmed")' style="cursor: pointer;">Pay Status</th>
               <th scope='col' class='tl_body_table_head'></th>
             </tr>
           </thead>
@@ -36,14 +47,16 @@
             <!-- dataTable-->
             <tr *ngFor='let item of myArray | slice: (page-1)* pageSize : (page-1) * pageSize + pageSize; let j = index'>
               <th scope="row">{{j+1}}</th>
-              <td>{{item.FirstName}}</td>
-              <td>{{item.MiddleName}}</td>
-              <td>{{item.LastName}}</td>
-              <td>{{item.OwingFee}}</td>
-              <td>{{item.IsUnder18===1&&item.Parent[0]?item.Parent[0].Email:item.Email}}</td>
-              <td *ngIf='item.IsConfirmed==0'>No Confirmed</td>
-              <td *ngIf='item.IsConfirmed==1'>Confirmed</td>
+              <td>{{item.FirstName}} {{item.LastName}} {{item.MiddleName}}</td>
+              <td>{{item.InvoiceWaitingConfirm.OwingFee}}</td>
+              <td>{{item.Invoice.TotalFee}}</td>
+              <!-- <td>{{item.IsUnder18===1&&item.Parent[0]?item.Parent[0].Email:item.Email}}</td> -->
+              <td>{{item.Invoice.Comment}}</td>
+              <td *ngIf='!item.Invoice'>No Confirmed</td>
+              <td *ngIf='item.Invoice'>Confirmed</td>
               <td>{{item.IsEmailSent|MyType:'status'}}</td>
+              <td *ngIf='item.Invoice.IsPaid!=1'>No Pay</td>
+              <td *ngIf='item.Invoice.IsPaid==1'>Paid</td>
               <td>
                 <a (click)='open(item)' style="cursor: pointer;"><span class='fas fa-pen'></span>&nbsp;Edit</a>
               </td>

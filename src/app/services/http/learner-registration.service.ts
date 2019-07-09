@@ -55,7 +55,12 @@ export class LearnerRegistrationService {
   addGroupCourse(group){
     return this.http.post(this.baseUrl + 'learnerGroupCourse', group);
   }
-
+  generateGroupInvoice(termId,instanceId){
+    return this.http.post(this.baseUrl + 'Payment/GenerateGroupInvoice/'+termId +'/'+ instanceId,'');
+  }
+  generateO2OInvoice(termId,instanceId){
+    return this.http.post(this.baseUrl + 'Payment/Generateone2oneInvoice/'+termId +'/'+ instanceId,'');
+  }  
   // throw error to component
   errorHandler(error: HttpErrorResponse) {
     return throwError(error);
