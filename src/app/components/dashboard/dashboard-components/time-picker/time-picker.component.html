@@ -17,13 +17,13 @@
     <div class="hour-labels">
       <div class="hour-label" *ngFor="let hour of hours">{{hour}}:00</div>
     </div>
-    <div class="days" *ngIf="teacherAvailableDay">
+    <div class="days" *ngIf="availableDayArr">
       <div class="day" *ngFor="let x of xIndex; let i = index">
         <div class="day-label">{{weekdays[x]}}
         <div class="location">
-          <div *ngFor="let o of teacherAvailableDay">
-            <div *ngIf="x == o.DayOfWeek-1">
-              <p style="margin:0px; font-size:13px; text-align: center" *ngFor="let org of o.Orgs">{{org.OrgId | simplifyOrg}}</p>
+          <div *ngFor="let availableObj of availableDayArr">
+            <div *ngIf="x == availableObj.DayOfWeek-1">
+              <p style="margin:0px; font-size:13px; text-align: center" *ngFor="let org of availableObj.Orgs">{{org.OrgId | simplifyOrg}}</p>
             </div>
           </div>
         </div>
@@ -49,7 +49,7 @@
             <div class="popover__body">
               <div class="popover__body__item"><span><b>Weekday:</b>&nbsp;{{weekdays[x]}}</span></div>
               <div class="popover__body__item"><span><b>Time:</b>&nbsp;{{startTimeToEndTime}}</span></div>
-              <div class="popover__body__item"><span><b>Location:</b>&nbsp;{{learnerOrg | simplifyOrg}}</span></div>
+              <div class="popover__body__item"><span><b>Location:</b>&nbsp;{{learnerOrgId | simplifyOrg}}</span></div>
               <button class="confirm__btn" (click)="confirm()" style="width:100%">confirm</button>
             </div>
             <div class="triangle"></div>
