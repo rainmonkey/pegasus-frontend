@@ -106,10 +106,10 @@ export class CoursesService {
     return this.http.get(this.baseUrl + 'payment');
   }
   postoioi(TermId): any {
-    return this.http.post(this.baseUrl + 'payment/' + TermId, '')
+    return this.http.post(this.baseUrl + 'payment/Generateone2oneInvoice/' + TermId+'/', '')
   }
   postGroupGenerate(TermId): any {
-    return this.http.post(this.baseUrl + 'Payment/GenerateGroupInvoice/' + TermId, '')
+    return this.http.post(this.baseUrl + 'Payment/GenerateGroupInvoice/' + TermId+'/', '')
   }
   postTrialLesson(data): any {
     return this.http.post(this.baseUrl + 'TrialLesson', data);
