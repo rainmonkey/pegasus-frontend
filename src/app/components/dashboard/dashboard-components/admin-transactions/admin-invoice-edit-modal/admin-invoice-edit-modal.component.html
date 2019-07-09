@@ -103,6 +103,13 @@
           <div class="text-danger" *ngIf="invoiceEditForm.controls.Other3.errors?.fillFee">Please fill fee</div>
         </div>
       </div>
+      <div formGroupName="Comment" class="form-group row justify-content-center">
+        <div class="col-10">
+          <label class="mt-2">Comments</label>
+          <input class="form-control" type="text" formControlName="Comment" />
+          <!-- <div class="text-danger" *ngIf="invoiceEditForm.controls.Comment.errors">Please fill Comment</div> -->
+        </div>
+      </div>      
     </div>
     <hr />
     <div class="form-group row justify-content-center">
