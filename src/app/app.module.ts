@@ -78,6 +78,7 @@ import { DashboardPanelComponent } from './components/dashboard/general/dashboar
 import { HeaderbarComponent } from './components/dashboard/general/headerbar/headerbar.component';
 import { SidebarComponent } from './components/dashboard/general/sidebar/sidebar.component';
 import { TestoneComponent } from './components/testcomponent/testone/testone.component';
+import { LearnerItemComponent } from './shared/components/learner-item/learner-item.component';
 import { ColumnTitleFormatPipe } from './shared/pipes/column-title-format.pipe';
 // Guards
 // Services
@@ -190,7 +191,7 @@ import { ConflictCheckComponent } from './components/dashboard/dashboard-compone
     CourseDetailModalComponent,
     CourseDeleteModalComponent,
     TestoneComponent,
-
+    LearnerItemComponent,
     LearnerDeleteModalComponent,
     LearnerDetailModalComponent,
     LearnerEditModalComponent,
@@ -286,6 +287,7 @@ import { ConflictCheckComponent } from './components/dashboard/dashboard-compone
     NgbActiveModal,
   ],
   entryComponents: [
+    AdminLearnerProfileComponent,
     TeacherDeleteModalComponent,
     TeacherDetailModalComponent,
     TeacherUpdateModalComponent,
@@ -295,6 +297,7 @@ import { ConflictCheckComponent } from './components/dashboard/dashboard-compone
     CourseDetailModalComponent,
     SessionDetailEditModalComponent,
     CourseClassDetailModalComponent,
+    LearnerItemComponent,
     LearnerDeleteModalComponent,
     LearnerDetailModalComponent,
     LearnerEditModalComponent,
