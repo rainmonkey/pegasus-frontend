@@ -11,7 +11,7 @@ export class TransactionService {
   constructor(private http: HttpClient) { }
 
   getLearnerInvo(staffId): any {
-    return this.http.get(this.baseUrl + 'InvoiceWaitingConfirms/' + staffId);
+    return this.http.get(this.baseUrl + 'InvoiceWaitingConfirms/' + staffId+'/1');
   }
   update(data): any {
     return this.http.put(this.baseUrl + 'InvoiceWaitingConfirms/', data);

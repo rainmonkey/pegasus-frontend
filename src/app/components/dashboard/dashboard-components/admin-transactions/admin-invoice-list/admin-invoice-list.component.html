@@ -25,10 +25,10 @@
               <th scope='col' class='tl_body_table_head' style='width: 150px' (click)='onSort("FirstName")' counter='0' class='sorting_item' style="cursor: pointer;">First Name</th>
               <th scope='col' class="tl_body_table_head" style='width: 150px' (click)='onSort("MiddleName")' style="cursor: pointer;">Middle Name</th>
               <th scope='col' class="tl_body_table_head" style='width: 150px' (click)='onSort("LastName")' counter='0' id='lastName' class='sorting_item' style="cursor: pointer;">Last Name</th>
-              <th scope='col' class='tl_body_table_head' style='width: 150px' (click)='onSort("OwingFee")' style="cursor: pointer;">Owing Fee</th>
+              <th scope='col' class='tl_body_table_head' style='width: 150px' (click)='onSort("OwingFee")' style="cursor: pointer;">Amount</th>
               <th scope='col' class='tl_body_table_head' style='width: 300px' (click)='onSort("Email")' style="cursor: pointer;">Email</th>
-              <th scope='col' class='tl_body_table_head' style='width: 300px' (click)='onSort("IsEmailSent")' style="cursor: pointer;">Reminder Status</th>
-              <th scope='col' class='tl_body_table_head' style='width: 300px' (click)='onSort("IsConfirmed")' style="cursor: pointer;">Confirm Status</th>
+              <th scope='col' class='tl_body_table_head' style='width: 300px' (click)='onSort("IsEmailSent")' style="cursor: pointer;">Confirm Status</th>
+              <th scope='col' class='tl_body_table_head' style='width: 300px' (click)='onSort("IsConfirmed")' style="cursor: pointer;">Reminder Status</th>
               <th scope='col' class='tl_body_table_head'></th>
             </tr>
           </thead>
@@ -41,9 +41,9 @@
               <td>{{item.LastName}}</td>
               <td>{{item.OwingFee}}</td>
               <td>{{item.IsUnder18===1&&item.Parent[0]?item.Parent[0].Email:item.Email}}</td>
-              <td>{{item.IsEmailSent|MyType:'status'}}</td>
               <td *ngIf='item.IsConfirmed==0'>No Confirmed</td>
               <td *ngIf='item.IsConfirmed==1'>Confirmed</td>
+              <td>{{item.IsEmailSent|MyType:'status'}}</td>
               <td>
                 <a (click)='open(item)' style="cursor: pointer;"><span class='fas fa-pen'></span>&nbsp;Edit</a>
               </td>
