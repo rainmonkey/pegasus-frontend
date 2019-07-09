@@ -7,49 +7,49 @@ import { TimePickerService } from 'src/app/services/http/time-picker.service';
   styleUrls: ['./time-picker.component.css']
 })
 export class TimePickerComponent implements OnInit {
-  // get data form registration component
+  // get data form one-on-one course of learner-registration-form 
   @Input() customCourse;
   @Input() teaList;
+  // transmit begin time picked by user from time-picker to learner-registration-form
   @Output() beginTime = new EventEmitter<any>();
-    
-  // modal test
-  public learnerOrg: any;
-  public teacherName: string;
-  public duration: number;
-  public errorMessage: string;
-  // define day(x) and slot(y)
+
+  // properties for rendering in HTML
   public weekdays = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
   public hours = [8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20];
   public xIndex: number[]= [0, 1, 2, 3, 4, 5, 6];
   public yIndex: number[] = [];
-  // define slot
-  public slot: any[] = [];
-  public slotTime: any[] = [];
-  // redefine arranged
-  public arrangedArr: any[] = [];
-  // redefine day off
-  public dayOffArr: any[] = [];
-  // redefine temp change
-  public tempChangeArr: any[] = [];
-  // define learner name for rendering in HTML
-  public learnerName: any[] = [];
   public startTimeToEndTime: string;
-  public teacherAvailableDay: any[];
+
+  // define every slot's property
+  public slot: any[] = []; 
+  public slotTime: any[] = [];
+  public learnerName: any[] = [];
+
+   // assign data to local props from @Input
+   public duration: number;
+   public learnerOrgId: number;
+   public teacherName: string;
+
+  // prop will be transmitted to parent component (learner-registration-form)
   public startTime: any;
-    //loading
-    // public loadingFlag: boolean = false;
-  
+
+  // assign data to local props from TeacherAvailableCheck API
+  public arrangedArr: any[] = [];
+  public dayOffArr: any[] = [];
+  public tempChangeArr: any[] = [];
+  public availableArr: any[];
+  public errorMessage: string;
+
   constructor(private timePickerService: TimePickerService) {
   }
 
   ngOnInit() {
     console.log('customCourse', this.customCourse,'teacherArray',this.teaList);
-    // this.loadingFlag = true;
-    // define yIndex
+    // define yIndex for rendering in HTML
     for(let i = 0; i < 48; i++) {
       this.yIndex.push(i);
     }
-    // define type of slots
+    // define property of slot
     for (let i = 0; i < 7; i++) {
       this.slot[i] = [];
       this.learnerName[i] = [];
@@ -60,13 +60,12 @@ export class TimePickerComponent implements OnInit {
         this.slotTime[i][j] = `${Math.floor((480 + j*15)/60)} : ${(480 + j*15)%60 == 0? '00' : (480 + j*15)%60}`;
       }
     }
-    
-    // manipulate by order
-    this.getTeacherAvailableFromServer();
+    // get data from server 
+    this.getTeacherAvailable();
   }
 
-
-  getTeacherAvailableFromServer() {
+  /* get teacher available time from TeacherAvailableCheck API in timePickerService */
+  getTeacherAvailable() {
     let teacherId = this.customCourse.teacherName;
     // console.log('teacher id', teacherId);
     let startDate = this.customCourse.beginDate;
@@ -74,8 +73,8 @@ export class TimePickerComponent implements OnInit {
     this.timePickerService.getTeacherAvailableCheck(Number(teacherId),startDate).subscribe(
       (res) => {
         console.log('TeacherData', res.Data)
-        this.learnerOrg = Number(this.customCourse.location);
-        console.log('location', this.learnerOrg)
+        this.learnerOrgId = Number(this.customCourse.location);
+        console.log('location', this.learnerOrgId)
         this.teacherName = this.customCourse.teacherName;
         this.duration = 3;
         // this.loadingFlag = false;
@@ -132,13 +131,13 @@ setSpecificTime(teacherData: any) {
   this.arrangedArr = this.transferTime(teacherData.Arranged);
   this.dayOffArr = this.transferTime(teacherData.Dayoff);
   this.tempChangeArr = this.transferTime(teacherData.TempChange);
-  this.teacherAvailableDay = teacherData.AvailableDay;
-  console.log('teacher available day', this.teacherAvailableDay)
+  this.availableArr = teacherData.AvailableDay;
+  console.log('teacher available day', this.availableArr)
 }
 //////////////////////////////////////////////////////////////////////////////////////////
  /* define slot property value for ngClass in HTML */
  renderAvailableDay() {
-  this.teacherAvailableDay.map((o) => {
+  this.availableArr.map((o) => {
     let xIndex = o['DayOfWeek']-1;
     // if(this.findTeahcerAvailableOrg) {
       for(let i = 0; i < 48; i++) {
@@ -168,7 +167,7 @@ setSpecificTime(teacherData: any) {
      teacher's available day's orgId not inclueds learner's orgId
      so all teacher's available day can not be picked
    */
-  teacherOrgNotIncludesLearnerOrg(x) {
+  teacherOrgNotIncludeslearnerOrgId(x) {
     for(let i = 0; i < 48; i++) {
       if(this.slot[x][i] == "ableToPick") {
         this.slot[x][i] = "tOrgNotIncludesLOrg";
@@ -246,30 +245,30 @@ setSpecificTime(teacherData: any) {
   }
   teacherHasOneOrg(filterOrgIdArr: any[], x, y) {
     // console.log('teacherHasOneOrg')
-    if(filterOrgIdArr[0] == this.learnerOrg) {
-      this.arrangedOrgEqualToLearnerOrg(this.arrangedArr, x, y);
+    if(filterOrgIdArr[0] == this.learnerOrgId) {
+      this.arrangedOrgEqualTolearnerOrgId(this.arrangedArr, x, y);
     } else {
-      this.teacherOrgNotIncludesLearnerOrg(x);
+      this.teacherOrgNotIncludeslearnerOrgId(x);
     }
   }
   teacherHasManyOrgs(filterOrgIdArr: any[], x, y) {
     // console.log('teacherHasManyOrgs1111', filterOrgIdArr)
-    // console.log('teacher orgs includes learner org', this.learnerOrg,filterOrgIdArr.includes(this.learnerOrg));
-    if(filterOrgIdArr.includes(this.learnerOrg)) {
-      // console.log('teacher orgs includes learner org', filterOrgIdArr.includes(this.learnerOrg));
-      this.arrangedOrgEqualToLearnerOrg(this.arrangedArr, x, y);
-      this.teacherOrgIncludesLearnerOrg(this.teacherAvailableDay, x, y);
+    // console.log('teacher orgs includes learner org', this.learnerOrgId,filterOrgIdArr.includes(this.learnerOrgId));
+    if(filterOrgIdArr.includes(this.learnerOrgId)) {
+      // console.log('teacher orgs includes learner org', filterOrgIdArr.includes(this.learnerOrgId));
+      this.arrangedOrgEqualTolearnerOrgId(this.arrangedArr, x, y);
+      this.teacherOrgIncludeslearnerOrgId(this.availableArr, x, y);
     } else {
-      this.teacherOrgNotIncludesLearnerOrg(x);
+      this.teacherOrgNotIncludeslearnerOrgId(x);
     }
   }
-  arrangedOrgEqualToLearnerOrg(arrangedArr: any[], x, y) {
+  arrangedOrgEqualTolearnerOrgId(arrangedArr: any[], x, y) {
     let xIndex: number;
     arrangedArr.map((o) => {
       // console.log('arrangedarr', arrangedArr)
       xIndex = o.DayOfWeek - 1;
-      //this.learnerOrg.OrgId
-      if(x == xIndex && o.OrgId == this.learnerOrg) {
+      //this.learnerOrgId.OrgId
+      if(x == xIndex && o.OrgId == this.learnerOrgId) {
         this.setDuration('isAvailable','ableToPick',x,y);
         // console.log('aOrg == lOrg')
       } else if(x == xIndex) {
@@ -279,7 +278,7 @@ setSpecificTime(teacherData: any) {
       }
     })
   }
-  teacherOrgIncludesLearnerOrg(teacherArr,x,y) {
+  teacherOrgIncludeslearnerOrgId(teacherArr,x,y) {
     let xIndex: number;
     teacherArr.map((o) => {
       xIndex = o.DayOfWeek - 1;
@@ -292,8 +291,8 @@ setSpecificTime(teacherData: any) {
     // console.log('mouse over')
     let xIndex: number;
     this.tempChangeIsAbleToPick(x,y);
-    // console.log('mouseouver',x,this.teacherAvailableDay)
-    this.teacherAvailableDay.map((o) => {
+    // console.log('mouseouver',x,this.availableArr)
+    this.availableArr.map((o) => {
       xIndex = o.DayOfWeek-1;
       let filterOrgId = o.Orgs.map((o) => o.OrgId);
       // console.log('filerOrg', filterOrgId)
@@ -309,7 +308,7 @@ setSpecificTime(teacherData: any) {
   mouseoutSlot(x: number, y: number) {
     // console.log('mouse out')
     let xIndex: number;
-    this.teacherAvailableDay.map((o) => {
+    this.availableArr.map((o) => {
       xIndex = o.DayOfWeek-1;
         for(let i = 0; i < 48; i++) {
           if(this.slot[xIndex][i] == "ableToPick") {
