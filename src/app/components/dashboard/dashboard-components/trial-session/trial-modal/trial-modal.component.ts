@@ -43,6 +43,8 @@ export class TrialModalComponent implements OnInit {
   public studentFullName: string;
   public studentLevel: number;
   public courseId: number;
+  //arrange
+  public arrangeFlag: boolean = false
 
   @Input() termPeriod: Array<any>;
   @Input() courses;
@@ -55,6 +57,10 @@ export class TrialModalComponent implements OnInit {
   @Input() availableDOW;
   @Input() learners;
   @Input() coursesTeachingByWhichTeacher;
+  //arrange
+  @Input() duration
+  @Input() arrangeCourseInstance
+
   @ViewChild('fullcalendar') fullcalendar: CalendarComponent;
   options: OptionsInput;
   //eventsModel: any;
@@ -66,6 +72,9 @@ export class TrialModalComponent implements OnInit {
     private lookupsService: LookUpsService) { }
 
   ngOnInit() {
+    if (this.duration) {
+      this.arrangeFlag = true
+    }
     //assign current day as semester begain day.
     this.currentDay = this.transferTimestampToTime(new Date().getTime(), 1);
     this.initFullCalendar(this);
@@ -88,7 +97,7 @@ export class TrialModalComponent implements OnInit {
       slotDuration: '00:15',
       events: this.getAvailableTime(),
       selectConstraint: this.getAvailableTime(),
-      select: function (info) {
+      select: function(info) {
         that.selectCallBack(info);
       },
       header: {
@@ -106,17 +115,29 @@ export class TrialModalComponent implements OnInit {
   selectCallBack(info) {
     let startTimestamp = Date.parse(info.startStr);
     let endTimestamp = Date.parse(info.endStr);
-    if (endTimestamp - startTimestamp < this.timeInterval30Min) {
-      alert('Sorry, course duration can not less than 30 min.')
-    }
-    else if (endTimestamp - startTimestamp > 2 * this.timeInterval30Min) {
-      alert('Sorry, course duration can not more than 1 hour.')
-    }
-    else {
-      let duration = this.durationFormatting(startTimestamp, endTimestamp);
-      if (this.prepareCourse(duration) == true) {
+
+    //arrange
+    if (this.arrangeFlag) {
+      if (endTimestamp - startTimestamp >= this.timeInterval30Min) {
+        alert('Please select a start time')
+      } else {
+        this.prepareCourse(this.duration)
+        endTimestamp = this.transferEndTime(startTimestamp, this.duration)
         this.popUpConfirmModal(startTimestamp, endTimestamp);
-      };
+      }
+    } else {
+      if (endTimestamp - startTimestamp < this.timeInterval30Min) {
+        alert('Sorry, course duration can not less than 30 min.')
+      }
+      else if (endTimestamp - startTimestamp > 2 * this.timeInterval30Min) {
+        alert('Sorry, course duration can not more than 1 hour.')
+      }
+      else {
+        let duration = this.durationFormatting(startTimestamp, endTimestamp);
+        if (this.prepareCourse(duration) == true) {
+          this.popUpConfirmModal(startTimestamp, endTimestamp);
+        };
+      }
     }
   }
 
@@ -138,6 +159,18 @@ export class TrialModalComponent implements OnInit {
     }
 
     return true;
+  }
+
+  transferEndTime(startTimestamp, duration) {
+    let endTimestamp = startTimestamp
+    if (duration == 1) {
+      endTimestamp += this.timeInterval30Min
+    } else if (duration == 2) {
+      endTimestamp += this.timeInterval45Min
+    } else if (duration == 3) {
+      endTimestamp += this.timeInterval60Min
+    }
+    return endTimestamp
   }
 
   getStudentLevel() {
@@ -173,20 +206,25 @@ export class TrialModalComponent implements OnInit {
     modalRef.componentInstance.learnerId = this.LearnerId;
     modalRef.componentInstance.courseId = this.courseId;
     modalRef.componentInstance.orgId = this.orgId;
+    modalRef.componentInstance.arrangeFlag = this.arrangeFlag;
+    if (this.arrangeFlag) {
+      modalRef.componentInstance.arrangeCourseInstance = this.arrangeCourseInstance
+    }
     modalRef.componentInstance.closeModalFlag.subscribe(
       (res) => {
         let that = this;
         modalRef.result.then(
-          function () {
+          function() {
             if (res == true) {
               that.activeModal.close('Cross click')
             }
           },
-          function () {
+          function() {
             return;
           })
       }
     )
+    // console.log(modalRef)
   }
   /*
     get teacher's available time.
@@ -214,9 +252,9 @@ export class TrialModalComponent implements OnInit {
   */
   checkAvailableDOW(array) {
     //console.log(this.availableDOW)
-    for(let i in this.availableDOW){
+    for (let i in this.availableDOW) {
       //console.log(this.availableDOW[i]);
-      if(this.availableDOW[i] == 7){
+      if (this.availableDOW[i] == 7) {
         this.availableDOW[i] = 0;
       }
     }
@@ -233,7 +271,7 @@ export class TrialModalComponent implements OnInit {
         }
       }
     }
-    console.log(array)
+    // console.log(array)
     return array;
   }
 
@@ -278,7 +316,7 @@ export class TrialModalComponent implements OnInit {
   getTimeSlot() {
     let obj = [];
     for (let i of this.coursesTeachingByWhichTeacher) {
-      console.log(i)
+      // console.log(i)
       obj.push({ "start": i.start, "end": i.end, "rendering": 'background', })
     }
     return obj;

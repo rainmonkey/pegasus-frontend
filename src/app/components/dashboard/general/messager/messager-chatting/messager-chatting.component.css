@@ -1,6 +1,4 @@
-.m_c_skeleton{
-    height: 580px; /********************************************************/
-}
+
 .m_c_subscribers{
     height: 60px;
     padding: 1px 0!important;
@@ -69,7 +67,6 @@
     outline: none;
 }
 #m_c_emoji_picker_panel{
-    display: none;
     position: absolute;
     bottom: 0;
     z-index: 100;
@@ -100,7 +97,8 @@
 .m_c_chatting_text{
     color:#5d5d5a;
     text-align: left;
-    word-break:break-all;
+    /*可以让文字自动换行且可以解析换行符*/
+    white-space: pre-line;
     border-radius:4px;
     padding: 0 5px;
     max-width:200px;
@@ -135,4 +133,7 @@
 }
 .clearfix{
     clear:both;
+}
+pre{
+    margin:0;
 }

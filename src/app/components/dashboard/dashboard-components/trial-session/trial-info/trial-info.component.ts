@@ -6,6 +6,8 @@ import { TeachersService } from 'src/app/services/http/teachers.service';
 import { NgbModal, NgbModalRef, NgbPagination } from '@ng-bootstrap/ng-bootstrap';
 import { TrialModalComponent } from '../trial-modal/trial-modal.component';
 import { LearnersService } from 'src/app/services/http/learners.service';
+import { TransactionService } from '../../../../../services/http/transaction.service';
+
 
 @Component({
   selector: 'app-trial-info',
@@ -25,6 +27,11 @@ export class TrialInfoComponent implements OnInit {
   public learners;
   public lastRouteName: string
   public arrangeUrl;
+  //arrange
+  public arrangeCourseId;
+  public arrangeCourseInstance
+  public arrangeCourseDetails
+  public arrangeCourseCategory
 
   @Input() childEvent;
 
@@ -33,21 +40,37 @@ export class TrialInfoComponent implements OnInit {
     private modalService: NgbModal,
     private routerInfo: ActivatedRoute,
     private learnersService: LearnersService,
-    private router: Router) { }
+    private router: Router,
+    private transactionService: TransactionService) { }
 
   ngOnInit() {
     this.getDataFromServer();
-    this.LearnerId = this.routerInfo.snapshot.queryParams.LearnerId;
+    this.LearnerId = this.routerInfo.snapshot.queryParams.LearnerId || this.routerInfo.snapshot.params.learnerId;
+    if (this.routerInfo.snapshot.params.courseId) {
+      this.arrangeCourseId = this.routerInfo.snapshot.params.courseId
+      this.getCourseData()
+    }
+
   }
 
-  onClick() {
+  returnOnClick() {
     this.lastRouteName = this.routerInfo.snapshot.routeConfig.path
     this.arrangeUrl = "/learner/credit/" + this.LearnerId
-    if (this.lastRouteName == "trial") {
+    if (this.lastRouteName.includes("trial")) {
       this.router.navigateByUrl("/learner/list")
-    } else if (this.lastRouteName == "arrange") {
+    } else if (this.lastRouteName.includes("arrange")) {
       this.router.navigateByUrl(this.arrangeUrl)
     }
+  }
+
+  getCourseData() {
+    this.transactionService.GroupOr121(this.arrangeCourseId, 0).subscribe(data => {
+      this.arrangeCourseInstance = data.Data
+      this.arrangeCourseDetails = this.arrangeCourseInstance.Course
+      this.coursesService.getCourseCategoriesById(this.arrangeCourseDetails.CourseCategoryId).subscribe(data => {
+        this.arrangeCourseCategory = data["Data"]
+      })
+    })
   }
 
   //并发获取所有数据

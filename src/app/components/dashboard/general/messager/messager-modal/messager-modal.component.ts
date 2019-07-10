@@ -1,83 +1,101 @@
-import { ChattingService } from './../../../../../services/repositories/chatting.service';
-import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { MessagerService } from '../../../../../services/repositories/messager.service';
+import { Component, OnInit, Output, Input, EventEmitter } from '@angular/core';
+import { Animations } from '../../../../../../animation/chatting-animation'
 
 @Component({
   selector: 'app-messager-modal',
   templateUrl: './messager-modal.component.html',
-  styleUrls: ['./messager-modal.component.css']
+  styleUrls: ['./messager-modal.component.css'],
+  animations: [Animations.changeThemeColor,
+               Animations.personalPanelAnimation]
 })
 export class MessagerModalComponent implements OnInit {
   //数组里的顺序和名字要和HTML里的一致
   public functionalBtnNames: Array<string> = ['subscribers', 'recently', 'chatting'];
+  //previoud btn user clicked
   public previousBtnName: string = 'subscribers';
+  //current btn user clicked
   public currentBtnIndex: number = 0;
+  //display personalLabel or not
   public personalLabelDisplayFlag: boolean = true;
   public subscribersDisplayFlag: boolean = true;
   public recentlyDisplayFlag: boolean = false;
   public chattingDisplayFlag: boolean = false;
+  public settingDisaplayFlag: boolean = false;
   public isErrorFlag: boolean = false;
+  public themeChangeFlag: string = 'theme1';
   public preBtnSelectedObj: any = null;
-  public user:object;
-  public userId;
-  public bgUrl: string = null;
-  public bgColor: string = null;
-  public styleList: Array<object> = [
-    { url: '../../../../../../assets/images/shared/background01.jpg', background: 'linear-gradient(135deg, pink, white)', bgcolor: '#fadbe3' },
-    { url: '../../../../../../assets/images/shared/background03.jpg', background: 'linear-gradient(135deg, lightgreen, lightblue)', bgcolor: '#a6ddd3' },
-    { url: '../../../../../../assets/images/shared/background04.jpg', background: 'linear-gradient(135deg, black, white)', bgcolor: '#2a2a2a' },
-    { url: '../../../../../../assets/images/shared/background05.jpg', background: 'linear-gradient(135deg, red, lightblue)', bgcolor: '#a2bcb9' },
-    { url: '../../../../../../assets/images/shared/background06.jpg', background: 'linear-gradient(135deg, lightblue, pink)', bgcolor: '#add8e6' }];
+  public chattingWithStr: string = '';
+  public styleList: Array<object> = [{ background: 'linear-gradient(135deg, pink, white)' },
+  { background: 'linear-gradient(135deg, lightgreen, lightblue)' },
+  { background: 'linear-gradient(135deg, black, white)' },
+  { background: 'linear-gradient(135deg, red, lightblue)' },
+  { background: 'linear-gradient(135deg, lightblue, pink)' }]
 
 
+  @Input() browserHeight;
   @Output() onCloseChattingModal = new EventEmitter();
-  constructor(private chattingService:ChattingService) { }
+  constructor(private messagerService: MessagerService) { }
 
   ngOnInit() {
-    //if can not get data from server
-    if(this.chattingService.errorFlag == true){
-      this.isErrorFlag = true;
-    }
-    //各种初始化 未完成
-    //1、获取正在跟跟谁聊天  (subscriber component set数据)
-    this.user = sessionStorage.user == undefined ? null : sessionStorage.user;
-
-    //2、获取目前选用的主题 (project项目初始化的时候从后台获取数据) 未完成
+    //if failed read data.
+    this.isErrorFlag = this.messagerService.errorFlag;
+    //set init modal title
+    this.setChattingModalTitle();
+    //get custom theme.
+    this.getCustomTheme();
+    //get init preBtnSelectOnj
     this.preBtnSelectedObj = document.getElementById('initSelected');
-    console.log(sessionStorage)
-    console.log(sessionStorage.userId)//undefined
-  }
-
-  a() {
-    return { "height": "300px" }
-  }
-
-  //点击设置按钮
-  showConfigPanel() {
-    let obj = document.getElementsByClassName('m_m_style')[0];
-    if (obj['style'].display == '' || obj['style'].display == 'none') {
-      obj['style'].display = 'block';
-    }
-    else {
-      obj['style'].display = 'none';
-    }
   }
 
   /*
-    用户自定义主题
+    called by template.
+    set browser's height, respose in diffrent size of browsers
   */
-  changeStyle(index) {
-    this.bgUrl = this.styleList[index]['url'];
-    this.bgColor = this.styleList[index]['bgcolor'];
-    //向后台发送更新的数据 未完成
+  setChattingModalHeight() {
+    let modalHeight = (this.browserHeight <= 750) ? 550 : null;
+    return modalHeight;
   }
 
   /*
-  要优化 不能用display切换展示的内容 要用ngif
+    set modal title.
+  */
+  setChattingModalTitle() {
+    let subObj = this.messagerService.getSubscriberChattingWith();
+    if (subObj) {
+      this.chattingWithStr = 'Chatting with ' + subObj.FirstName + ' ' + subObj.LastName;
+    }
+  }
+
+  /*
+    get custom theme setting.
+  */
+  getCustomTheme() {
+    this.themeChangeFlag = localStorage.getItem('themeIndex') ? this.messagerService.getCustomizedTheme() : 'theme1';
+  }
+
+  /*
+    display/hide configration panel
+  */
+  displayConfigPanel() {
+    this.settingDisaplayFlag = !this.settingDisaplayFlag;
+  }
+
+  /*
+    custom personl theme
+  */
+  customizeTheme(index) {
+    this.themeChangeFlag = 'theme' + index;
+    //save custom theme in local storage.
+    this.messagerService.saveCustomizedTheme(this.themeChangeFlag);
+  }
+
+  /*
     0: subscribers
     1: recently
     2: now chatting
   */
-  selectFunctionalBtn(selectId) {
+  switchDisplayView(selectId) {
     //如果点击的是当前页的btn 则不发生任何事情
     if (selectId == this.currentBtnIndex) {
       return;
@@ -90,36 +108,39 @@ export class MessagerModalComponent implements OnInit {
       else {
         this.personalLabelDisplayFlag = true;
       }
-      this.modalDisplayHandler(selectId);
+      this.viewDisplayHandler(selectId);
     }
   }
 
-  modalDisplayHandler(selectId) {
+  /*
+    display/hide views
+  */
+  viewDisplayHandler(selectId) {
     let currentflag = this.functionalBtnNames[selectId] + 'DisplayFlag';
     let previousFlag = this.previousBtnName + 'DisplayFlag';
     this[previousFlag] = false;
     this[currentflag] = true;
     this.previousBtnName = this.functionalBtnNames[selectId];
   }
+
   /*
     选择聊天对象后 跳转到聊天界面
-    event == none: 目前没有聊天对象
-    event !== none： 目前有聊天对象
+    event == true: a subscriber is selected, start chatting now
+    event == false: no subscriber selected
   */
-  startChattingWith(event?) {
-    if (event !== undefined) {
-      //如果双击跟某人聊天 接收到指令
-      if (event.status == true) {
-        this.user = event.user;
-        this.selectFunctionalBtn(2);
-      }
+  startChattingWith(event) {
+    if (event == true) {
+      this.setChattingModalTitle();
+      this.switchDisplayView(2);
     }
     else {
-      console.log('a')
-      this.selectFunctionalBtn(0);
+      this.switchDisplayView(0);
     }
   }
 
+  /*
+    fire emit to parent component to close chatting modal(minimize)
+  */
   closeChattingModal() {
     this.onCloseChattingModal.emit('true');
   }

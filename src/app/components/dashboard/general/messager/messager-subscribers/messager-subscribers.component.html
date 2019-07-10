@@ -16,7 +16,7 @@
   </div>
 
   <!--subscriber body-->
-  <div *ngIf='groupChatSwitchFlag'>
+  <div [@switchGroupTrigger]='groupChatSwitchFlag?"display":"hide"'>
     <!--teachers-->
     <div class='row'>
       <div class='col-12 m_s_subscribers_label' (click)='displayGroup($event,"group_teachers")'>
@@ -32,9 +32,10 @@
             </div>
           </div>
           <div class='col-9'>
-            <div class='col-12 m_s_subscribers_name'>
+            <div class='m_s_subscribers_name'>
               {{i.FirstName}} {{i.LastName}}
             </div>
+            <app-messager-notification [notiNum]="notiNum"></app-messager-notification>
             <div class='col-12 m_s_subscribers_signature'>
               个性签名
             </div>
@@ -91,4 +92,10 @@
       </div>
     </div>
   </div>
+
+  <!--Group chat-->
+  <div [@switchGroupTrigger]='groupChatSwitchFlag?"hide":"display"'>
+    group chat
+  </div>
+
 </div>

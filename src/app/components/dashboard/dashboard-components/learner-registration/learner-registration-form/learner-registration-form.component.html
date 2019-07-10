@@ -77,11 +77,11 @@
         <div class="contactPhone-email row">
           <div class="col-sm-6 col-md-6">
             <label for="contactNum">Contact Phone</label>
-            <input class="form-control" formControlName="contactNum" type="tel" id="contactPhone">
+            <input class="form-control" formControlName="contactNum" type="tel" id="contactPhone" (blur)="handleNumChange($event.target.value)">
           </div>
           <div class="col-sm-6 col-md-6">
             <label for="email">Email</label>
-            <input class="form-control" formControlName="email" type="email" id="email">
+            <input class="form-control" formControlName="email" type="email" id="email"  (blur)="handleEmailChange($event.target.value)">
             <div *ngIf="email.invalid && (email.dirty || email.touched)" class="text-danger">
               <small *ngIf="email.errors.required">Email is required</small>
               <small *ngIf="email.errors.email">Email is invalid</small>
@@ -128,7 +128,12 @@
               <label>Do you have any referer?</label>
               <input class="form-control" type="text"  formControlName="referrer">
             </div>
-      </div>
+            <div class="col-sm-12 col-md-12">
+              <label>Comments:</label>
+              <textarea style='height:150px;' name="Comment" id="Comment" class='col-12 t_mf_input'
+                formControlName='Comment' maxlength="1000"></textarea>
+            </div>
+       </div>
         <div class="grade my-3">
           <label for="grade">If you have ABRSM Theory Grade 5, please upload.</label>
           <img src="" id='certificate' style='height: 64px' alt="Certificate preview...">
@@ -362,7 +367,7 @@
             <div class="courseDay-courseHour row">
                 <div class="col-sm-6 col-md-6">
                     <label for="teacherName">Teacher Name</label>
-                    <select class="form-control" formControlName="teacherName" id="teacherName">
+                    <select class="form-control" formControlName="teacherName" id="teacherName" (change)='selectTeacher($event.target.value, i)'>
                       <option selected>Choose..</option>
                       <option *ngFor="let tName of prepareTeaNameListArray[i].prepareTeaNameItemArray;" [value]="tName.TeacherId">{{tName.TeacherName}}</option>
                     </select>
@@ -424,3 +429,4 @@
   </div>
 </div>
 </form>
+<!-- <app-time-picker (beginTime)="beginTime($event)"></app-time-picker> -->

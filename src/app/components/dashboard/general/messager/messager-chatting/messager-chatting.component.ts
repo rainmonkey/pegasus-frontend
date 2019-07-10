@@ -1,65 +1,78 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, ViewChildren, ViewChild } from '@angular/core';
 import { PickerModule } from '@ctrl/ngx-emoji-mart';
 import { EmojiModule } from '@ctrl/ngx-emoji-mart/ngx-emoji';
 import * as Emoji from 'node-emoji/'
+import { MessagerService } from 'src/app/services/repositories/messager.service';
+import { Animations } from '../../../../../../animation/chatting-animation'
 
 @Component({
   selector: 'app-messager-chatting',
   templateUrl: './messager-chatting.component.html',
   styleUrls: ['./messager-chatting.component.css',
-    '../../../dashboard-components/teachers/teacher-panel/teacher-panel.component.css']
+    '../../../dashboard-components/teachers/teacher-panel/teacher-panel.component.css'],
+  animations: [Animations.emojiPickerPanelDisplayAnimation]
 })
 export class MessagerChattingComponent implements OnInit {
   public chattingDisplayFlag: boolean = false;
+  public emojiPickerDisplayFlag: boolean = false;
   public keysCombination: object = { "Enter": false, "Control": false };
-  public localMsgHistroy: Array<object> = [{ "msg": null ,'leftOrRight':'left'}];
-  public subscriber:object;
-  @Input() user;
+  public localMsgHistroy: Array<object> = [];
+  public subscriber: object;
+  @Input() modalHeight;
   @Output() onStartChatting = new EventEmitter();
-
-  constructor() { }
+  @ViewChild('m_c_text_area') textArea;
+  constructor(private messagerService: MessagerService) { }
   ngOnInit() {
-    this.subscriber = JSON.parse(this.user);
+    this.getSubscriberChattingWith();
   }
 
-  ngOnChanges() {
-    //console.log(this.userId);
-    if (this.user !== null && this.user !== undefined) {
-      this.chattingDisplayFlag = true;
-    }
-    console.log(this.user)
-  }
   /*
-    显示emoji选择框
+    get subscriber now chatting
+      --> subObj:true   chatting with a subscriber
+          subOnj:false  no one selected 
   */
-  showEmojiPicker() {
-    let emojiPickerObj = document.getElementById('m_c_emoji_picker_panel');
-    console.log(emojiPickerObj.style.display)
-    if (emojiPickerObj.style.display == 'none' || emojiPickerObj.style.display == '') {
-      emojiPickerObj.style.display = 'block';
+  getSubscriberChattingWith() {
+    let subObj = this.messagerService.getSubscriberChattingWith();
+    if (subObj) {
+      this.chattingDisplayFlag = true;
+      this.subscriber = subObj;
     }
     else {
-      emojiPickerObj.style.display = 'none';
+      this.chattingDisplayFlag = false;
     }
-
   }
 
   /*
-    when user click emoji, add it to input area's relavent location
+    display/hide emoji picker panel
   */
-  clickEmoji(event) {
-    //获取所选择的emoji表情
+  displayEmojiPicker() {
+    this.emojiPickerDisplayFlag = !this.emojiPickerDisplayFlag;
+  }
+
+  /*
+    emoji click handler
+      -->when user click a specific emoji, add it to text area
+  */
+  emojiClickEventHandler(event) {
+    //get emoji icon selected
     let emoji = Emoji.get(event.emoji.colons);
-    //获取emoji所占的字符数
+    //get emoji icon length in unicode
     let emojiLength = emoji.length;
-    //获取textarea对象
+    //get text area element
     let obj = document.getElementById('m_c_text_area');
-    //获取光标位置
+    //get cursor position index
     let cursorStartIndex = obj['selectionStart'];
-    //向指定光标位置添加表情
-    obj['value'] = this.insertStr(obj['value'], cursorStartIndex, emoji);
-    //获取新的光标位置
+    //add emoji icon after cursor position
+    obj['value'] = this.insertStr(obj['value'], emoji, cursorStartIndex);
+    //set new cursor position
     this.setCursorPosition(obj, cursorStartIndex + emojiLength);
+  }
+
+  /*
+   insert a sub-string to an exist string at a specific position 
+ */
+  insertStr(strToBeInsert, strToInsert, startIndex) {
+    return strToBeInsert.slice(0, startIndex) + strToInsert + strToBeInsert.slice(startIndex);
   }
 
   /*
@@ -80,41 +93,69 @@ export class MessagerChattingComponent implements OnInit {
   }
 
   /*
-    在指定位置插入字符
-  */
-  insertStr(soure, start, newStr) {
-    return soure.slice(0, start) + newStr + soure.slice(start)
-  }
-
-  /*
     键盘组合键发送消息
   */
-  keydown(event) {
-    this.keysCombination[event.key] = true;
+  keysDownEventHandler(event) {
+    if (event.key == 'Enter' || event.key == 'Control') {
+      this.keysCombination[event.key] = true;
+    }
+    else {
+      return
+    }
     //当ctrl和enter同时按下的时候发送消息
     if (this.keysCombination['Enter'] == true && this.keysCombination['Control'] == true) {
-      console.log('yes')
-      //成功 进行下一步操作
-      console.log(event.target.value)
       this.pushMessageToView(event.target.value);
+      this.clearInputArea();
+      this.scrollToBottom();
+      this.sendMessageToServer();
     }
   }
 
   /*
-
+    keys up event handler
   */
-  keyup(event) {
-    this.keysCombination[event.key] = false;
+  keysUpEventHanlder(event) {
+    if (event.key == 'Enter' || event.key == 'Control') {
+      this.keysCombination[event.key] = false;
+    }
   }
 
-  pushMessageToView(message) {
-    this.localMsgHistroy.push({'msg':message,'leftOrRight':'right'})
-  }
   /*
-    选择新联系人
+    push text area's text to view
+  */
+  pushMessageToView(message) {
+    if (message !== '') {
+      let timeStamp = (new Date()).toLocaleString();
+      this.localMsgHistroy.push({ 'msg': message, 'leftOrRight': 'right', 'timeStamp': timeStamp });
+      //测试左侧
+      this.localMsgHistroy.push({ 'msg': 'Hello World', 'leftOrRight': 'left', 'timeStamp': timeStamp });
+    }
+  }
+
+  /*
+    clear input area
+  */
+  clearInputArea() {
+    this.textArea.nativeElement.value = null;
+  }
+
+  /*
+    scroll scroll bar to bottom
+      --> if messages are too many to show the scroll bar, when update a new message, scroll to this new message
+  */
+  scrollToBottom() {
+    document.getElementById('scroll_anchor').scrollIntoView();
+  }
+
+  sendMessageToServer() {
+
+  }
+
+  /*
+    if no subscriber selected and now click chatting icon
   */
   startNewChatting() {
-    this.onStartChatting.emit(true)
+    this.onStartChatting.emit(false)
   }
 
 }

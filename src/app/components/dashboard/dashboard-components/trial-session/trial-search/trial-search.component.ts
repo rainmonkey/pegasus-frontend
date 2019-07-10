@@ -23,6 +23,7 @@ export class TrialSearchComponent implements OnInit {
   public termPeriod;
   public timeSlot: Array<any> = [];
   public teachersLevel;
+  public teacherExistsFlag: boolean = true
 
   @Input() courses;
   @Input() coursesCate;
@@ -32,11 +33,16 @@ export class TrialSearchComponent implements OnInit {
   @Input() teachingCourses;
   @Input() LearnerId;
   @Input() learners;
+  //arrange
+  @Input() arrangeCourseCategory;
+  @Input() arrangeCourseDetails
+  @Input() arrangeCourseInstance;
+
   @Output() childEvent = new EventEmitter();
 
   constructor(private modalService: NgbModal,
     private coursesService: CoursesService,
-    private lookupsService:LookUpsService) { }
+    private lookupsService: LookUpsService) { }
 
   ngOnInit() {
     this.getSemesterPeriod();
@@ -48,6 +54,10 @@ export class TrialSearchComponent implements OnInit {
   */
   displayCoursesCateTabs() {
     if (this.coursesCate !== undefined) {
+      if (this.arrangeCourseDetails) {
+        this.coursesCate = this.coursesCate.filter(data => data.CourseCategoryId == this.arrangeCourseDetails.CourseCategoryId)
+        return this.coursesCate
+      }
       //but don't return the last one, beacuse last one is OtherThings not usefull.
       return this.coursesCate.slice(0, -1);
     }
@@ -94,10 +104,18 @@ export class TrialSearchComponent implements OnInit {
       }
     }
     let hash = {};
-    let result = array1.reduce(function (item, next) {
+    let result = array1.reduce(function(item, next) {
       hash[next.TeacherId] ? '' : hash[next.TeacherId] = true && item.push(next);
       return item;
     }, [])
+
+    if (this.arrangeCourseDetails) {
+      result = result.filter(data => data.Level == this.arrangeCourseDetails.Level)
+    }
+
+    if (result.length == 0) {
+      this.teacherExistsFlag = false
+    }
 
     return result;
   }
@@ -131,6 +149,7 @@ export class TrialSearchComponent implements OnInit {
       --> when user click a tab, select this tab and show some animations
   */
   selectTab(event, className, nextClass, index, filterId, filterName) {
+    // console.log(event, className, nextClass, index, filterId, filterName)
     //only no tab select, mouse click event work.
     if (this.styleFlowControl[className].clicked == false) {
       //set true flag means that this tab has already selected. if continue cliking on this tab, no click event occur, nothing happend.
@@ -214,6 +233,10 @@ export class TrialSearchComponent implements OnInit {
     modalRef.componentInstance.availableDOW = this.getAvailabelDOW(whichTeacher);
     modalRef.componentInstance.learners = this.learners;
     modalRef.componentInstance.coursesTeachingByWhichTeacher = coursesTeachingByWhichTeacher;
+    if (this.arrangeCourseDetails) {
+      modalRef.componentInstance.arrangeCourseInstance = this.arrangeCourseInstance
+      modalRef.componentInstance.duration = this.arrangeCourseDetails.Duration
+    }
   }
 
   popUpModal(whichTeacher) {
@@ -241,9 +264,9 @@ export class TrialSearchComponent implements OnInit {
   /*
     get teacher level name
   */
-  getLevel(level){
-    for(let i of this.teachersLevel){
-      if(level == i.PropValue){
+  getLevel(level) {
+    for (let i of this.teachersLevel) {
+      if (level == i.PropValue) {
         return i.PropName;
       }
     }

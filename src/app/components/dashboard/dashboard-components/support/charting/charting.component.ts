@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { ChartDataSets, ChartOptions } from 'chart.js';
+import { ChartDataSets, ChartOptions, Chart, ChartType, ChartData } from 'chart.js';
 import { Color, BaseChartDirective, Label } from 'ng2-charts';
 import { SessionsService } from 'src/app/services/http/sessions.service';
 import { DashboardService } from '../../../../../services/http/dashboard.service';
@@ -10,9 +10,10 @@ import { DashboardService } from '../../../../../services/http/dashboard.service
   styleUrls: ['./charting.component.css']
 })
 export class ChartingComponent implements OnInit {
+  //--------------------------------lessons For Recent 14 Days--------------------------------
   chart={
-    title:'Sessions Graph',
-    subTitle:'Number of sessions in schools'
+    title:'Lessions Graph',
+    subTitle:'Number of lessions'
   }
   assignChartData = [];
   public chartData: ChartDataSets[] = [
@@ -43,6 +44,7 @@ export class ChartingComponent implements OnInit {
   public chartLabels: Label[] = [];
   public lineChartOptions: (ChartOptions & { annotation: any }) = {
     responsive: true,
+    maintainAspectRatio: true,
     legend:{
       display:true,
       position:'top',
@@ -90,6 +92,67 @@ export class ChartingComponent implements OnInit {
   public lineChartPlugins = [];
   // recent course data
   recentCourse;
+  //------------------------------------------newEnrolledStudentsForRecent8Weeks-----------------------------
+  barChart={
+    title:'Students Graph',
+    subTitle:'Number of new students'
+  }
+  public barChartOptions: ChartOptions = {
+    responsive:true,
+    maintainAspectRatio: true,
+          scales:
+          {
+              xAxes: [{
+                  display: true
+              }],
+              yAxes: [{
+                  display: true
+              }],
+          },
+          legend: {
+              display: true
+          }
+  };
+  public barChartLabels: Label[] = ["week 8", "week 7", "week 6", "week 5", "week 4", "week 3", "week 2", "week 1"];
+  barChartType: ChartType = 'bar';
+  barChartLegend = true;
+  barChartPlugins = [];
+  barChartData: ChartDataSets[] =
+  [
+              {
+                  label: "new Enrolled Students For Recent 8 Weeks",
+                  backgroundColor: [
+                      'rgb(121, 106, 238)',
+                      'rgb(121, 106, 238)',
+                      'rgb(121, 106, 238)',
+                      'rgb(121, 106, 238)',
+                      'rgb(121, 106, 238)',
+                      'rgb(121, 106, 238)',
+                      'rgb(121, 106, 238)',
+                      'rgb(121, 106, 238)',
+                      'rgb(121, 106, 238)',
+                      'rgb(121, 106, 238)',
+                      'rgb(121, 106, 238)',
+                      'rgb(121, 106, 238)'
+                  ],
+                  borderColor: [
+                      'rgb(121, 106, 238)',
+                      'rgb(121, 106, 238)',
+                      'rgb(121, 106, 238)',
+                      'rgb(121, 106, 238)',
+                      'rgb(121, 106, 238)',
+                      'rgb(121, 106, 238)',
+                      'rgb(121, 106, 238)',
+                      'rgb(121, 106, 238)',
+                      'rgb(121, 106, 238)',
+                      'rgb(121, 106, 238)',
+                      'rgb(121, 106, 238)',
+                      'rgb(121, 106, 238)'
+                  ],
+                  data: []
+              }
+    ];
+
 
   constructor(
     public sessionService: SessionsService,
@@ -99,16 +162,24 @@ export class ChartingComponent implements OnInit {
     let brunch = localStorage.getItem('OrgId').slice(1,-1);
     this.dashBoardService.getStatistic(brunch).subscribe(
       res=>{
-        console.log(res)
         this.recentCourse = res.Data.lessonsForRecent14Days;
-        this.chartLabels = Object.keys(this.recentCourse);
+        this.transformLabelDate();
         this.assignChartData = Object.values(this.recentCourse);
         this.chartData[0].data = this.assignChartData;
-        console.log(this.assignChartData)
-        console.log(this.recentCourse)
+        let barValue = res.Data.newEnrolledStudentsForRecent8Weeks;
+        //@ts-ignore
+        this.barChartData[0].data = Object.values(barValue);
       }
     )
   }
+  transformLabelDate(){
+    let fullDateArray = Object.keys(this.recentCourse);
+    let simpleDateArray = fullDateArray.map(date =>{
+      return date.substring(0,date.length-5)
+    });
+    this.chartLabels = simpleDateArray;
+  }
+  //
   ngOnInit() {
     this.getStatistic();
   //   let beginDate = '2019-04-29'

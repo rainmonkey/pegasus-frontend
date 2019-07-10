@@ -1,27 +1,43 @@
-import { ChattingService } from './../../../../../services/repositories/chatting.service';
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { MessagerService } from 'src/app/services/repositories/messager.service';
+import { Animations } from '../../../../../../animation/chatting-animation';
 
 @Component({
   selector: 'app-messager-subscribers',
   templateUrl: './messager-subscribers.component.html',
   styleUrls: ['./messager-subscribers.component.css',
-    '../../../dashboard-components/teachers/teacher-panel/teacher-panel.component.css']
+    '../../../dashboard-components/teachers/teacher-panel/teacher-panel.component.css'],
+  animations:[Animations.switchGroupAnimation]
 })
 export class MessagerSubscribersComponent implements OnInit {
   public groupChatSwitchFlag: boolean = true;
   public subsOfTeacher:Array<object>;
   public subsOfStudents: Array<object>;
   public subsOfStaffs:Array<object>;
+  public notiNum = 0;
 
   @Output() onChattingWith = new EventEmitter();
 
-  constructor(private chattingService:ChattingService) { }
+  constructor(private messagerService:MessagerService) { }
 
   ngOnInit() {
-    this.subsOfTeacher = this.chattingService.subsOfTeachers;
-    this.subsOfStudents = this.chattingService.subsOfStudents;
-    this.subsOfStaffs = this.chattingService.subsOfStaffs;
-    console.log(this.subsOfTeacher)
+    let that = this;
+    // setInterval((that)=>{
+    //   that.notiNum ++;
+    //   console.log(that.notiNum)
+    // },1000,that)
+   this.getSubscribers();
+  }
+
+  /*
+    get subscribers from storage
+      -->in order to read, still put the storage data getting in service.
+  */
+  getSubscribers(){
+    let subscribers = this.messagerService.getSubscribers();
+    this.subsOfStaffs = subscribers.Item1;
+    this.subsOfTeacher = subscribers.Item2;
+    this.subsOfStudents = subscribers.Item3;
   }
 
   /*
@@ -50,14 +66,13 @@ export class MessagerSubscribersComponent implements OnInit {
   }
 
   /*
-    点击选择和谁聊天
+    double click to start a new chatting
   */
   chattingWithHandler(event,subscriber){
-    
-    //在sessionStorage里面保存 正在聊天的人
-    let subscribersStr = JSON.stringify(subscriber);
-    sessionStorage.setItem('user',subscribersStr);
-    this.onChattingWith.emit({"status":true,"user":subscribersStr})
+    //save the subscriber now chatting with.
+    this.messagerService.saveSubscriberChattingWith(subscriber);
+    //fire emit to parent component to notice need view switch
+    this.onChattingWith.emit(true);
   }
 
 }
