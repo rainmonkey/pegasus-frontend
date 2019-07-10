@@ -259,9 +259,7 @@ export class AdminLearnerListComponent implements OnInit {
     modalRef.componentInstance.command = command;
     modalRef.componentInstance.whichLearner = whichLearner;
     modalRef.componentInstance.signalForInit.subscribe(res => {
-      console.log('lyric')
       if (res == true) {
-        console.log('lyric')
         that.ngOnInit();
       }
     })

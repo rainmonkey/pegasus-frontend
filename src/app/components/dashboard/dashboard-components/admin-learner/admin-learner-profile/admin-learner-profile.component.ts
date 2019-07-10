@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { NgbootstraptableService } from 'src/app/services/others/ngbootstraptable.service';
 import { NgbModal, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { LearnersService } from 'src/app/services/http/learners.service';
@@ -31,7 +31,7 @@ export class AdminLearnerProfileComponent implements OnInit {
   public pageSize: number = 10;
   public loadingFlag: boolean = false;
   // // sent active modal confirm satuation to admin learner component;
-
+  @Input() whichLearner;
   // local function parameters
   public localPara = [
   {
@@ -79,6 +79,7 @@ export class AdminLearnerProfileComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    console.log(this.whichLearner)
     this.loadingFlag = true;
     this.getDataFromServer()
   }
@@ -90,6 +91,7 @@ export class AdminLearnerProfileComponent implements OnInit {
         //@ts-ignore
         this.learnerList = res.Data;
         this.loadingFlag = false;
+        console.log(this.learnerList)
       },
       (err) => {
         console.log(err); this.errorMessage = "Wrong"

@@ -21,7 +21,7 @@ export class LearnerItemComponent implements OnInit {
     this.showModal() ;
   }
   showModal() {
-    const modalRef = this.modalService.open(AdminLearnerProfileComponent,{size:'lg'});
+    const modalRef = this.modalService.open(AdminLearnerProfileComponent,{windowClass:'my-class', backdrop: 'static', keyboard: false });
     let that = this;
     modalRef.result.then(
       (res) => {
@@ -31,7 +31,7 @@ export class LearnerItemComponent implements OnInit {
         return
       }
     )
-    //modalRef.componentInstance.whichLearner = whichLearner;
+    modalRef.componentInstance.whichLearner = this.learner;
   }
 
 }
