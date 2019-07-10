@@ -122,6 +122,8 @@ export class LearnerRegistrationFormComponent implements OnInit, DoCheck, AfterV
   // to date pick
   toDatePickCourseDuration = {};
   teaList;
+  teaListOutArray = [];
+  teaListToDatePick = [];
   // getter method: simplify the way to capture form controls
   get firstName() { return this.registrationForm.get('learnerForm').get('firstName'); }
   get lastName() { return this.registrationForm.get('learnerForm').get('lastName'); }
@@ -573,6 +575,8 @@ export class LearnerRegistrationFormComponent implements OnInit, DoCheck, AfterV
     this.prepareTeaLevListArray[i].prepareTeaLevItemArray = [];
     this.prepareRoomListArray[i].prepareRoomItemArray = [];
     this.prepareTeaNameListArray[i].prepareTeaNameItemArray = [];
+    // to date pick
+    this.teaListOutArray[i].teaListToDatePick = [];
   }
 
   // select course category
@@ -584,7 +588,7 @@ export class LearnerRegistrationFormComponent implements OnInit, DoCheck, AfterV
     console.log("this.courseListArray", this.courseListArray);
   }
 
-  selectCourse(value, i, target) {
+  selectCourse(value, i) {
     // to date pick
     this.toDatePickCourseDuration = {}
     this.toDatePickCourseDuration = this.courseListArray[i].courseItemArray.filter(item => item.CourseId === Number(value));
@@ -644,12 +648,12 @@ selectLocation(id, i) {
 
   //select a particular teacher
   selectTeacher(id, i){
-    this.teaList = this.teaList.filter((item)=> item.TeacherId == Number(id));
+    this.teaListOutArray[i].teaListToDatePick = [];
 
-    console.log('a',this.teaList, this.toDatePickCourseDuration)
+    this.teaList = this.teaList.filter((item)=> item.TeacherId == Number(id));
     this.teaList = this.teaList.concat(this.toDatePickCourseDuration)
     this.teaList.push(i);
-    console.log(this.teaList)
+    this.teaListOutArray[i].teaListToDatePick = this.teaList
   }
 
   // init Array
@@ -662,6 +666,9 @@ selectLocation(id, i) {
     this.selectedprepareTeaLevInOrgObjItemArray = [];
     this.prepareTeaNameInLevObjItemArray = [];
     this.prepareTeaNameItemArray = [];
+    // to date pick
+    this.teaListOutArray= []
+    this.teaListOutArray.push(this.teaListToDatePick);
 
     this.courseListArray.push(this.courseItemArray)
     this.locListArray.push(this.locItemArray);
@@ -829,8 +836,7 @@ selectLocation(id, i) {
   open(i) {
     this.modalRefTimePicker = this.modalService.open(LearnerRegistrationModalComponent, { windowClass: 'my-class' });
     this.modalRefTimePicker.componentInstance.customCourse = this.customCourse.value[i];
-    this.modalRefTimePicker.componentInstance.teaList = this.teaList;
-
+    this.modalRefTimePicker.componentInstance.teaList = this.teaListOutArray[i].teaListToDatePick;
     this.timePickArrayNumber = i;
   }
 

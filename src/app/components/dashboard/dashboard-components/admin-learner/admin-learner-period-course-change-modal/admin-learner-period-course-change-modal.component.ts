@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
 import {FormBuilder, Validators} from '@angular/forms';
 import {timePickerValidator} from '../../../../../shared/time-picker.validators';
@@ -22,10 +22,13 @@ export class AdminLearnerPeriodCourseChangeModalComponent implements OnInit {
   Teachers;
   Rooms;
   PeriodCourseChangeForm;
+
+  @Input() whichLearner;
   constructor(private activeModal: NgbActiveModal, private fb: FormBuilder,
               private service: LearnersService) { }
 
   ngOnInit() {
+    console.log('lllll',this.whichLearner)
     this.GetTeachers()
     this.GetOrgRoom();
     this.PeriodCourseChangeForm = this.fb.group({
