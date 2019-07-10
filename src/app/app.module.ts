@@ -97,7 +97,7 @@ import { RemindPanelComponent } from './components/dashboard/dashboard-component
 
 
 import { StaffListComponent } from './components/dashboard/dashboard-components/admin-staff/Staff-list/Staff-list.component';
-import { StaffPanelComponent } from './components/dashboard/dashboard-components/admin-staff/staff-panel/staff-panel.component';
+
 import { SimplifyOrgPipe } from './shared/pipes/simplify-org.pipe';
 import { LearnerCreditPanelComponent } from './components/dashboard/dashboard-components/learner-credit/learner-credit-panel/learner-credit-panel.component';
 import { LearnerCreditDetailsComponent } from './components/dashboard/dashboard-components/learner-credit/learner-credit-details/learner-credit-details.component';
@@ -129,9 +129,18 @@ import { AmendmentHistoryModalComponent } from './components/dashboard/dashboard
 import { IsTemporaryPipe } from './shared/pipes/IsTemporary.pipe'
 import { SelectHolidaysModalComponent } from './components/dashboard/dashboard-components/admin-holidays/select-holidays-modal/select-holidays-modal.component';
 import { CoporateOrderApplicationComponent } from './components/dashboard/dashboard-components/admin-inventory-application-dispatch/coporate-order-application/coporate-order-application.component';
+import { PageGroupDetailsComponent } from './components/dashboard/dashboard-components/admin-pageGroup/pageGroup-details/pageGroup-details.component';
+import { PageGroupDeleteComponent } from './components/dashboard/dashboard-components/admin-pageGroup/pageGroup-delete/pageGroup-delete.component';
+import { PageGroupEditComponent } from './components/dashboard/dashboard-components/admin-pageGroup/pageGroup-edit/pageGroup-edit.component';
+import { PageGroupListComponent } from './components/dashboard/dashboard-components/admin-pageGroup/pageGroup-list/pageGroup-list.component';
+import { PageGroupFormComponent } from './components/dashboard/dashboard-components/admin-pageGroup/pageGroup-form/pageGroup-form.component';
 
 @NgModule({
   declarations: [
+    PageGroupFormComponent,
+    PageGroupListComponent,
+    PageGroupEditComponent,
+    PageGroupDeleteComponent,
     AppComponent,
     LoginComponent,
     DashboardPanelComponent,
@@ -217,7 +226,7 @@ import { CoporateOrderApplicationComponent } from './components/dashboard/dashbo
     RemindListComponent,
     RemindPanelComponent,
     StaffListComponent,
-    StaffPanelComponent,
+    
     SimplifyOrgPipe,
     TrialModalComponent,
     LearnerCreditPanelComponent,
@@ -246,7 +255,8 @@ import { CoporateOrderApplicationComponent } from './components/dashboard/dashbo
     MessagerPersonalInfoComponent,
     SelectHolidaysModalComponent,
 
-    CoporateOrderApplicationComponent
+    CoporateOrderApplicationComponent,
+    PageGroupDetailsComponent
   ],
   imports: [
     NgbModule,
@@ -272,6 +282,10 @@ import { CoporateOrderApplicationComponent } from './components/dashboard/dashbo
     NgbActiveModal,
   ],
   entryComponents: [
+    
+    PageGroupListComponent,
+    PageGroupEditComponent,
+    PageGroupDeleteComponent,
     TeacherDeleteModalComponent,
     TeacherDetailModalComponent,
     TeacherUpdateModalComponent,
