@@ -78,6 +78,10 @@ import { DashboardPanelComponent } from './components/dashboard/general/dashboar
 import { HeaderbarComponent } from './components/dashboard/general/headerbar/headerbar.component';
 import { SidebarComponent } from './components/dashboard/general/sidebar/sidebar.component';
 import { TestoneComponent } from './components/testcomponent/testone/testone.component';
+import { StockApplicationPanelComponent } from './components/dashboard/dashboard-components/stock-application/stock-application-panel/stock-application-panel.component';
+import { StockApplicationListComponent } from './components/dashboard/dashboard-components/stock-application/stock-application-list/stock-application-list.component';
+import { StockApplicationModalComponent } from './components/dashboard/dashboard-components/stock-application/stock-application-modal/stock-application-modal.component';
+
 import { LearnerItemComponent } from './shared/components/learner-item/learner-item.component';
 import { ColumnTitleFormatPipe } from './shared/pipes/column-title-format.pipe';
 // Guards
@@ -261,7 +265,10 @@ import { ConflictCheckComponent } from './components/dashboard/dashboard-compone
     CoporateOrderApplicationComponent,
 
     MessagerNotificationComponent,
-    ConflictCheckComponent
+    ConflictCheckComponent,
+    StockApplicationPanelComponent,
+    StockApplicationListComponent,
+    StockApplicationModalComponent
   ],
   imports: [
     NgbModule,
