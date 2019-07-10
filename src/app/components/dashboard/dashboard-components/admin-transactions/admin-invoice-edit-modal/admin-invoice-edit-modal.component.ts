@@ -84,7 +84,8 @@ export class AdminInvoiceEditModalComponent implements OnInit {
       Other3Fee: [null]
     }, { validator: this.invoiceValidator.matcher }),
     PaidFee: [null],
-    OwingFee: [null]
+    OwingFee: [null],
+    Comment: [null]
   });
 
   // get quantity
@@ -157,7 +158,8 @@ export class AdminInvoiceEditModalComponent implements OnInit {
         Other3FeeName: this.item2.Other3FeeName,
         Other3Fee: this.item2.Other3Fee || 0
       },
-      PaidFee: this.item2.PaidFee
+      PaidFee: this.item2.PaidFee,
+      Comment: this.item2.Comment
     });
   }
 

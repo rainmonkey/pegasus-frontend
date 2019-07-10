@@ -1,18 +1,39 @@
+<div class="modal-header">
+  <h4 class="modal-title col-4">Learner  </h4>
+  <div class="d-flex">
+    <p> Name.</p>
+  </div>
+  <button type="button" class="btn btn-sm btn-info tl_mu_btn" aria-label="Close"
+    (click)="activeModal.dismiss('Cross click')">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
 
-<div class='row'>
-  <div class='col-2' *ngFor="let para of localPara">
-    <div class='t_s_tabs' (click)='popUpModal(para.parameter)' >
-      <span class='t_s_tabs_title col-12'>{{para.title}}</span>
-      <span class='t_s_tabs_img col-12' title=para.title><i class='{{para.class}}'></i></span>
+<!--modal body-->
+<div class="modal-body">
+
+  <div class='row'>
+    <div class='col-2' *ngFor="let para of localPara">
+      <div class='t_s_tabs' (click)='popUpModal(para.parameter)'>
+        <span class='t_s_tabs_title col-12'>{{para.title}}</span>
+        <span class='t_s_tabs_img col-12' title=para.title><i class='{{para.class}}'></i></span>
+      </div>
+    </div>
+
+    <!--calendar icon功能跳转至 trial course 页面-->
+    <div class='col-2' *ngIf="learnerList">
+      <div class='t_s_tabs' (click)='jumpToTrialCoursePage()'>
+        <span class='t_s_tabs_title col-12'>Trial Course</span>
+        <span class='t_s_tabs_img col-12' title='Trial Course' routerLink='/learner/trial'
+          [queryParams]='{LearnerId:[learnerList[1].LearnerId]}'><a class='fas fa-calendar-week'></a></span>
+        <!--              请假-->
+      </div>
     </div>
   </div>
-
-  <!--calendar icon功能跳转至 trial course 页面-->
-  <div class='col-2' *ngIf="learnerList">
-  <div class='t_s_tabs'(click)='jumpToTrialCoursePage()'>
-      <span class='t_s_tabs_title col-12'>Trial Course</span>
-    <span class='t_s_tabs_img col-12'  title='Trial Course' routerLink='/learner/trial' [queryParams] = '{LearnerId:[learnerList[1].LearnerId]}'><a class='fas fa-calendar-week'></a></span>
-    <!--              请假-->
-  </div>
 </div>
+
+<div class="modal-footer">
+  <button type="button" class="btn btn-outline-dark" (click)="activeModal.dismiss('Cross click')">
+    Close
+  </button>
 </div>
