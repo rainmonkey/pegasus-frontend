@@ -37,9 +37,9 @@
               <th scope='col' class='tl_body_table_head' style='width: 100px' (click)='onSort("OwingFee")' style="cursor: pointer;">Initial Amt.</th>
               <th scope='col' class='tl_body_table_head' style='width: 100px' (click)='onSort("InvoiceOwingFee")' style="cursor: pointer;">Amt.</th>
               <th scope='col' class='tl_body_table_head' style='width: 400px' (click)='onSort("Email")' style="cursor: pointer;">Reason</th>
-              <th scope='col' class='tl_body_table_head' style='width: 300px' (click)='onSort("IsEmailSent")' style="cursor: pointer;">Confirm Status</th>
+              <th scope='col' class='tl_body_table_head' style='width: 300px' (click)='onSort("IsEmailSent")' style="cursor: pointer;">Confirmation</th>
               <th scope='col' class='tl_body_table_head' style='width: 300px' (click)='onSort("IsConfirmed")' style="cursor: pointer;">Email Status</th>
-              <th scope='col' class='tl_body_table_head' style='width: 300px' (click)='onSort("IsConfirmed")' style="cursor: pointer;">Pay Status</th>
+              <th scope='col' class='tl_body_table_head' style='width: 300px' (click)='onSort("IsConfirmed")' style="cursor: pointer;">Payment</th>
               <th scope='col' class='tl_body_table_head'></th>
             </tr>
           </thead>
@@ -49,12 +49,20 @@
               <th scope="row">{{j+1}}</th>
               <td>{{item.FirstName}} {{item.LastName}} {{item.MiddleName}}</td>
 
-              <td>{{item.InvoiceWaitingConfirm.OwingFee}}<app-learner-item [learner]='item'></app-learner-item></td>
+              <td>{{item.InvoiceWaitingConfirm.OwingFee}}</td>
               <td>{{item.Invoice.TotalFee}}</td>
               <!-- <td>{{item.IsUnder18===1&&item.Parent[0]?item.Parent[0].Email:item.Email}}</td> -->
               <td>{{item.Invoice.Comment}}</td>
               <td *ngIf='!item.Invoice'>No Confirmed</td>
               <td *ngIf='item.Invoice'>Confirmed</td>
+              <!-- <td *ngIf="item.Invoice">
+                <span class='tl_body_table_btn col-4' style="text-align: center;" (click)="open(1, i)">
+                  <i class="fas fa-times" style="color: red;"></i>
+                </span>
+              </td>
+              <td *ngIf="!item.Invoice">
+                <i class="fas fa-check"></i>
+              </td>               -->
               <td>{{item.IsEmailSent|MyType:'status'}}</td>
               <td *ngIf='item.Invoice.IsPaid!=1'>Non-Payment</td>
               <td *ngIf='item.Invoice.IsPaid==1'>Paid</td>

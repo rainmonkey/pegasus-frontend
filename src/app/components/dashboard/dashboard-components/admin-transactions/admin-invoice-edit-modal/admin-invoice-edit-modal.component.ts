@@ -95,9 +95,9 @@ export class AdminInvoiceEditModalComponent implements OnInit {
 
   ngOnInit() {
     if  (this.item.Invoice.InvoiceId === 0)
-      this.item2 = { ... this.item , ...this.item.Invoice};
-    else
       this.item2 = { ... this.item ,...this.item.InvoiceWaitingConfirm};
+    else
+      this.item2 = { ... this.item , ...this.item.Invoice};
     this.patchToInvoice();
     this.dueDateLocal = this.item2.DueDate;
     this.owingFeeLocal = this.item2.LessonFee;
