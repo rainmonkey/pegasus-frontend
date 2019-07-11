@@ -20,7 +20,7 @@ export class AdminLearnerProfileComponent implements OnInit {
 
   public columnsToShow1: Array<string> = ['ContactNum', 'Email'];
   //learners data from servers
-  //public learnerList: Array<any>;
+  public learnerList: Array<any>;
 
   //errorMessage
   errorMessage: string;
