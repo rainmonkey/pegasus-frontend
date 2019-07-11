@@ -57,7 +57,7 @@ export class AdminInvoiceListComponent implements OnInit {
     this.userId = localStorage.getItem("userID");
     this.getTerm();
    // this.getData();
- 
+
   }
 
   // modal method
@@ -95,7 +95,7 @@ export class AdminInvoiceListComponent implements OnInit {
           title: 'Oops...',
           text: error.error.ErrorMessage,
         });
-  
+
         this.errorAlert = false;
       });
   }
@@ -104,7 +104,7 @@ export class AdminInvoiceListComponent implements OnInit {
     //this.getData();
   }
   onSubmit(){
-    
+
     this.getData();
   }
   getTerm() {
@@ -129,6 +129,7 @@ export class AdminInvoiceListComponent implements OnInit {
   }
   // push to array for sort
   makeArray() {
+    console.log('jiofjoiiowejoajoaiowafioa',this.learnerList)
     this.learnerList.forEach(list => {
       let tempObj = {
         OwingFee: list.OwingFee,

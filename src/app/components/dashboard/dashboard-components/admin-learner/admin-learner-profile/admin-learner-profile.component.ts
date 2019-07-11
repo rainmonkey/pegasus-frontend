@@ -73,9 +73,9 @@ export class AdminLearnerProfileComponent implements OnInit {
   // @Output() activeModalEvent: EventEmitter<any> = new EventEmitter;
   // activeSubmitted: boolean = false;
   constructor(
-    private LearnerListService: LearnersService,
+    private learnersService: LearnersService,
     private modalService: NgbModal,
-    private activeModal: NgbActiveModal
+    private activeModal: NgbActiveModal,
   ) { }
 
   ngOnInit() {
@@ -83,12 +83,12 @@ export class AdminLearnerProfileComponent implements OnInit {
     this.loadingFlag = true;
     this.getDataFromServer()
   }
-
   //get data from server
   getDataFromServer() {
-    this.LearnerListService.getLearnerList().subscribe(
-      (res) => {
-        //@ts-ignore
+    console.log(this.whichLearner)
+    this.learnersService.getLearnerById(Number(this.whichLearner.LearnerId)).subscribe(
+      res => {
+        // @ts-ignore
         this.learnerList = res.Data;
         this.loadingFlag = false;
         console.log(this.learnerList)
@@ -97,6 +97,17 @@ export class AdminLearnerProfileComponent implements OnInit {
         console.log(err); this.errorMessage = "Wrong"
       }
     )
+    // this.LearnerListService.getLearnerList().subscribe(
+    //   (res) => {
+    //     //@ts-ignore
+    //     this.learnerList = res.Data;
+    //     this.loadingFlag = false;
+    //     console.log(this.learnerList)
+    //   },
+    //   (err) => {
+    //     console.log(err); this.errorMessage = "Wrong"
+    //   }
+    // )
   }
 
 
@@ -110,7 +121,7 @@ export class AdminLearnerProfileComponent implements OnInit {
       3 --> delete
   */
   popUpModal(command) {
-    let whichLearner = this.learnerList[0];
+    let whichLearner = this.learnerList;
     console.log(whichLearner)
     switch (command) {
       case 0:

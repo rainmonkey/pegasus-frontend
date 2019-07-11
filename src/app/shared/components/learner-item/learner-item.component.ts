@@ -13,19 +13,18 @@ export class LearnerItemComponent implements OnInit {
 
   @Input() learner;
   @Input() learnerId;
+  @Input() whichName;
   whichLearner:any;
   constructor(
     private modalService: NgbModal,
     private learnersService:LearnersService
   ) {}
    ngOnChanges() {
-    console.log(this.learnerId);
-    console.log(this.learner);
+
     if (!this.learner){
       this.learnersService.getLearnerById(this.learnerId).subscribe(data => {
         this.whichLearner = data["Data"];
-        console.log(this.whichLearner);
-      }, 
+      },
         error => {
           Swal.fire({
             title: 'Server error!',
@@ -36,13 +35,10 @@ export class LearnerItemComponent implements OnInit {
       )
     }
     else{
-      this.whichLearner.FirstName = this.learner.FirstName;
-      this.whichLearner.LastName = this.learner.LastName;
-      this.whichLearner.LearnerId = this.learner.LearnerId;
-    }    
+      this.whichLearner = this.learner.FirstName;
+    }
   }
   ngOnInit() {
-
   }
   onClicked(){
     console.log(this.learner);
