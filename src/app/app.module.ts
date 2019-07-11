@@ -28,6 +28,7 @@ import { AdminLearnerPaymentPanelComponent } from './components/dashboard/dashbo
 import { AdminLearnerPaymentProductsComponent } from './components/dashboard/dashboard-components/admin-payment/admin-learner-payment-products/admin-learner-payment-products.component';
 import { AdminLearnerPaymentRegistrationComponent } from './components/dashboard/dashboard-components/admin-payment/admin-learner-payment-registration/admin-learner-payment-registration.component';
 import { AdminLearnerPaymentSuccessComponent } from './components/dashboard/dashboard-components/admin-payment/admin-learner-payment-success/admin-learner-payment-success.component';
+import { AdminLearnerProfileComponent } from './components/dashboard/dashboard-components/admin-learner/admin-learner-profile/admin-learner-profile.component';
 import { PayrollListComponent } from './components/dashboard/dashboard-components/admin-payroll/payroll-list/payroll-list.component';
 import { PayrollPanelComponent } from './components/dashboard/dashboard-components/admin-payroll/payroll-panel/payroll-panel.component';
 import { AdminInvoiceEditModalComponent } from './components/dashboard/dashboard-components/admin-transactions/admin-invoice-edit-modal/admin-invoice-edit-modal.component';
@@ -77,6 +78,10 @@ import { DashboardPanelComponent } from './components/dashboard/general/dashboar
 import { HeaderbarComponent } from './components/dashboard/general/headerbar/headerbar.component';
 import { SidebarComponent } from './components/dashboard/general/sidebar/sidebar.component';
 import { TestoneComponent } from './components/testcomponent/testone/testone.component';
+import { StockApplicationListComponent } from './components/dashboard/dashboard-components/inventory/inventory-stock-application/stock-application-list/stock-application-list.component';
+import { StockApplicationModalComponent } from './components/dashboard/dashboard-components/inventory/inventory-stock-application/stock-application-modal/stock-application-modal.component';
+
+import { LearnerItemComponent } from './shared/components/learner-item/learner-item.component';
 import { ColumnTitleFormatPipe } from './shared/pipes/column-title-format.pipe';
 // Guards
 // Services
@@ -97,7 +102,7 @@ import { RemindPanelComponent } from './components/dashboard/dashboard-component
 
 
 import { StaffListComponent } from './components/dashboard/dashboard-components/admin-staff/Staff-list/Staff-list.component';
-import { StaffPanelComponent } from './components/dashboard/dashboard-components/admin-staff/staff-panel/staff-panel.component';
+
 import { SimplifyOrgPipe } from './shared/pipes/simplify-org.pipe';
 import { LearnerCreditPanelComponent } from './components/dashboard/dashboard-components/learner-credit/learner-credit-panel/learner-credit-panel.component';
 import { LearnerCreditDetailsComponent } from './components/dashboard/dashboard-components/learner-credit/learner-credit-details/learner-credit-details.component';
@@ -107,6 +112,7 @@ import { MondayDateInWeekByDatePipe } from './shared/pipes/monday-date-in-week-b
 import { AdminLearnerLeaveComponent } from './components/dashboard/dashboard-components/admin-learner/admin-learner-leave/admin-learner-leave.component';
 import { AdminLearnerCourseEditComponent } from './components/dashboard/dashboard-components/admin-learner/admin-learner-course-edit/admin-learner-course-edit.component';
 import { AdminLearnerPeriodCourseChangeModalComponent } from './components/dashboard/dashboard-components/admin-learner/admin-learner-period-course-change-modal/admin-learner-period-course-change-modal.component';
+import { AdminLearnerNameComponent } from './components/dashboard/dashboard-components/admin-learner/admin-learner-name/admin-learner-name.component';
 import { TrialConfirmComponent } from './components/dashboard/dashboard-components/trial-session/trial-confirm/trial-confirm.component';
 import { StaffDeleteModalComponent } from './components/dashboard/dashboard-components/admin-staff/staff-delete-modal/staff-delete-modal.component';
 import { StaffDetailModalComponent } from './components/dashboard/dashboard-components/admin-staff/staff-detail-modal/staff-detail-modal.component';
@@ -131,11 +137,20 @@ import { AmendmentHistoryModalComponent } from './components/dashboard/dashboard
 import { IsTemporaryPipe } from './shared/pipes/IsTemporary.pipe'
 import { SelectHolidaysModalComponent } from './components/dashboard/dashboard-components/admin-holidays/select-holidays-modal/select-holidays-modal.component';
 import { CoporateOrderApplicationComponent } from './components/dashboard/dashboard-components/admin-inventory-application-dispatch/coporate-order-application/coporate-order-application.component';
+import { PageGroupDetailsComponent } from './components/dashboard/dashboard-components/admin-pageGroup/pageGroup-details/pageGroup-details.component';
+import { PageGroupDeleteComponent } from './components/dashboard/dashboard-components/admin-pageGroup/pageGroup-delete/pageGroup-delete.component';
+import { PageGroupEditComponent } from './components/dashboard/dashboard-components/admin-pageGroup/pageGroup-edit/pageGroup-edit.component';
+import { PageGroupListComponent } from './components/dashboard/dashboard-components/admin-pageGroup/pageGroup-list/pageGroup-list.component';
+import { PageGroupFormComponent } from './components/dashboard/dashboard-components/admin-pageGroup/pageGroup-form/pageGroup-form.component';
 import { MessagerNotificationComponent } from './components/dashboard/general/messager/messager-notification/messager-notification.component';
 import { ConflictCheckComponent } from './components/dashboard/dashboard-components/conflict-check/conflict-check/conflict-check.component';
 
 @NgModule({
   declarations: [
+    PageGroupFormComponent,
+    PageGroupListComponent,
+    PageGroupEditComponent,
+    PageGroupDeleteComponent,
     AppComponent,
     LoginComponent,
     DashboardPanelComponent,
@@ -148,6 +163,8 @@ import { ConflictCheckComponent } from './components/dashboard/dashboard-compone
     AdminLearnerPaymentRegistrationComponent,
     AdminLearnerPaymentOtherComponent,
     AdminLearnerPaymentSuccessComponent,
+    AdminLearnerProfileComponent,
+    AdminLearnerNameComponent,
     TimePickerComponent,
     FooterComponent,
     CoursesPanelComponent,
@@ -186,7 +203,7 @@ import { ConflictCheckComponent } from './components/dashboard/dashboard-compone
     CourseDetailModalComponent,
     CourseDeleteModalComponent,
     TestoneComponent,
-
+    LearnerItemComponent,
     LearnerDeleteModalComponent,
     LearnerDetailModalComponent,
     LearnerEditModalComponent,
@@ -221,7 +238,7 @@ import { ConflictCheckComponent } from './components/dashboard/dashboard-compone
     RemindListComponent,
     RemindPanelComponent,
     StaffListComponent,
-    StaffPanelComponent,
+
     SimplifyOrgPipe,
     TrialModalComponent,
     LearnerCreditPanelComponent,
@@ -250,13 +267,16 @@ import { ConflictCheckComponent } from './components/dashboard/dashboard-compone
     MessagerPersonalInfoComponent,
     AdminPaymentProductModalComponent,
     AdminPaymentConfirmModalComponent,
-    
+
     SelectHolidaysModalComponent,
 
     CoporateOrderApplicationComponent,
+    PageGroupDetailsComponent,
 
     MessagerNotificationComponent,
-    ConflictCheckComponent
+    ConflictCheckComponent,
+    StockApplicationListComponent,
+    StockApplicationModalComponent
   ],
   imports: [
     NgbModule,
@@ -282,6 +302,10 @@ import { ConflictCheckComponent } from './components/dashboard/dashboard-compone
     NgbActiveModal,
   ],
   entryComponents: [
+
+    PageGroupListComponent,
+    PageGroupEditComponent,
+    PageGroupDeleteComponent,
     TeacherDeleteModalComponent,
     TeacherDetailModalComponent,
     TeacherUpdateModalComponent,
@@ -291,6 +315,7 @@ import { ConflictCheckComponent } from './components/dashboard/dashboard-compone
     CourseDetailModalComponent,
     SessionDetailEditModalComponent,
     CourseClassDetailModalComponent,
+    LearnerItemComponent,
     LearnerDeleteModalComponent,
     LearnerDetailModalComponent,
     LearnerEditModalComponent,
@@ -301,6 +326,7 @@ import { ConflictCheckComponent } from './components/dashboard/dashboard-compone
     SessionRescheduleModalComponent,
     RatingModalComponent,
     AdminLearnerPeriodCourseChangeModalComponent,
+    AdminLearnerProfileComponent,
     ForgotPasswordModalComponent,
     ChangePasswordModalComponent,
     RemindModalComponent,

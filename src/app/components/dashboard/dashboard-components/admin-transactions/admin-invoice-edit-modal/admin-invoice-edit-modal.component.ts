@@ -39,7 +39,8 @@ export class AdminInvoiceEditModalComponent implements OnInit {
   tempOther3Fee: number = 0
   tempLessonFee: number = 0
   tempConcertFee: number = 20
-  tempNoteFee: number = 10
+  tempNoteFee: number = 10;
+  item2: any;
 
   // activated modal tranfer data
   @Input() item;
@@ -83,7 +84,8 @@ export class AdminInvoiceEditModalComponent implements OnInit {
       Other3Fee: [null]
     }, { validator: this.invoiceValidator.matcher }),
     PaidFee: [null],
-    OwingFee: [null]
+    OwingFee: [null],
+    Comment: [null]
   });
 
   // get quantity
@@ -92,18 +94,22 @@ export class AdminInvoiceEditModalComponent implements OnInit {
   }
 
   ngOnInit() {
+    if  (this.item.Invoice.InvoiceId === 0)
+      this.item2 = { ... this.item ,...this.item.InvoiceWaitingConfirm};
+    else
+      this.item2 = { ... this.item , ...this.item.Invoice};
     this.patchToInvoice();
-    this.dueDateLocal = this.item.DueDate;
-    this.owingFeeLocal = this.item.LessonFee;
-    this.tempLessonFee = this.item.LessonFee
+    this.dueDateLocal = this.item2.DueDate;
+    this.owingFeeLocal = this.item2.LessonFee;
+    this.tempLessonFee = this.item2.LessonFee
     this.getCourse();
     this.getLooksUpData()
   }
   // get group or 121 course id
   getCourse() {
     let type;
-    let courseId = this.item.CourseInstanceId
-    let groupCourseID = this.item.GroupCourseInstanceId
+    let courseId = this.item2.CourseInstanceId
+    let groupCourseID = this.item2.GroupCourseInstanceId
     switch (courseId) {
       case null:
         type = 1;
@@ -128,10 +134,10 @@ export class AdminInvoiceEditModalComponent implements OnInit {
   // patch data to invoiceEditForm
   patchToInvoice() {
     this.invoiceEditForm.patchValue({
-      CourseName: this.item.CourseName,
-      LessonQuantity: this.item.LessonQuantity,
-      BeginDate: this.item.BeginDate === null ? null : this.item.BeginDate.slice(0, 10),
-      LessonFee: this.item.LessonFee || 0,
+      CourseName: this.item2.CourseName,
+      LessonQuantity: this.item2.LessonQuantity,
+      BeginDate: this.item2.BeginDate === null ? null : this.item2.BeginDate.slice(0, 10),
+      LessonFee: this.item2.LessonFee || 0,
       Concert: {
         ConcertFee: 0,
         ConcertFeeName: ""
@@ -141,18 +147,19 @@ export class AdminInvoiceEditModalComponent implements OnInit {
         LessonNoteFeeName: ""
       },
       Other1: {
-        Other1FeeName: this.item.Other1FeeName,
-        Other1Fee: this.item.Other1Fee || 0,
+        Other1FeeName: this.item2.Other1FeeName,
+        Other1Fee: this.item2.Other1Fee || 0,
       },
       Other2: {
-        Other2FeeName: this.item.Other2FeeName,
-        Other2Fee: this.item.Other2Fee || 0,
+        Other2FeeName: this.item2.Other2FeeName,
+        Other2Fee: this.item2.Other2Fee || 0,
       },
       Other3: {
-        Other3FeeName: this.item.Other3FeeName,
-        Other3Fee: this.item.Other3Fee || 0
+        Other3FeeName: this.item2.Other3FeeName,
+        Other3Fee: this.item2.Other3Fee || 0
       },
-      PaidFee: this.item.PaidFee
+      PaidFee: this.item2.PaidFee,
+      Comment: this.item2.Comment
     });
   }
 
@@ -195,13 +202,13 @@ export class AdminInvoiceEditModalComponent implements OnInit {
       ...this.invoiceEditForm.value.Other1,
       ...this.invoiceEditForm.value.Other2,
       ...this.invoiceEditForm.value.Other3,
-      WaitingId: this.item.WaitingId,
-      InvoiceNum: this.item.InvoiceNum,
-      LearnerId: this.item.LearnerId,
-      LearnerName: this.item.LearnerName,
-      TermId: this.item.TermId,
-      GroupCourseInstanceId: this.item.GroupCourseInstanceId,
-      CourseInstanceId: this.item.CourseInstanceId
+      WaitingId: this.item2.WaitingId,
+      InvoiceNum: this.item2.InvoiceNum,
+      LearnerId: this.item2.LearnerId,
+      LearnerName: this.item2.LearnerName,
+      TermId: this.item2.TermId,
+      GroupCourseInstanceId: this.item2.GroupCourseInstanceId,
+      CourseInstanceId: this.item2.CourseInstanceId
     }
 
     data.OwingFee = +data.LessonFee + +data.ConcertFee + +data.NoteFee + +data.Other1Fee + +data.Other2Fee + +data.Other3Fee;
@@ -217,7 +224,7 @@ export class AdminInvoiceEditModalComponent implements OnInit {
         (res) => {
           this.activeModal.dismiss();
           swal.fire("Confirmed")
-          this.item.IsConfirmed = 1
+          this.item2.IsConfirmed = 1
           console.log(this.itemTempPublic)
         },
         (error) => {

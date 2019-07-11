@@ -1,0 +1,9 @@
+<span  *ngIf="learner && whichName == 'FirstName'" (click)="onClicked()">
+  {{learner.FirstName}}
+</span>
+<span  *ngIf="learner && whichName == 'LastName'" (click)="onClicked()">
+  {{learner.LastName}}
+</span>
+<span  *ngIf="learnerInv" (click)="onClicked()">
+  {{learnerInv.FirstName}}
+</span>

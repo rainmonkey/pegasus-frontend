@@ -25,7 +25,7 @@
   </div>
   <div class="modal-footer">
     <span *ngIf='isRescheduleSuccess' class='text-success'>Reschedule Success </span>
-    <span *ngIf='isRescheduleFail' class='text-danger'>Reschedule Fail </span>
+    <span *ngIf='isRescheduleFail' class='text-danger'>Reschedule Fail,{{errReason}} </span>
     <div *ngIf="isloading" class="loaderSmall"></div>
     <button *ngIf="!isConfirmClick" type="button" class="btn btn-dark" (click)="RescheduleConfirm()">
       Confirm

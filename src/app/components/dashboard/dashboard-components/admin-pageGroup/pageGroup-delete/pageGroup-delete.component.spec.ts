@@ -3,21 +3,21 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { DebugElement } from '@angular/core';
 
-import { StaffPanelComponent } from './staff-panel.component';
+import { PageGroupDeleteComponent } from './pageGroup-delete.component';
 
-describe('StaffPanelComponent', () => {
-  let component: StaffPanelComponent;
-  let fixture: ComponentFixture<StaffPanelComponent>;
+describe('PageGroupDeleteComponent', () => {
+  let component: PageGroupDeleteComponent;
+  let fixture: ComponentFixture<PageGroupDeleteComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ StaffPanelComponent ]
+      declarations: [ PageGroupDeleteComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(StaffPanelComponent);
+    fixture = TestBed.createComponent(PageGroupDeleteComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

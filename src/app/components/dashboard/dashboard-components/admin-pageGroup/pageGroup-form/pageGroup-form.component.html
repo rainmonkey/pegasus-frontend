@@ -1,0 +1,70 @@
+<!--loading-->
+<div *ngIf='loadingFlag' class="loaderLarge"></div>
+
+
+<div *ngIf='!loadingFlag' class='t_mf_form'>
+  <form novalidate [formGroup]='updateForm'>
+    <div class='row'>
+      <!--上半部分-->
+      <div class='col-12'>
+        <div class='row'>
+          <!-- input area -->
+          <div class='col-lg-8'>
+            <div style="margin-right:10px">
+              <div class='row'>
+                <!-- PageGroupName -->
+                <div class="col-6">
+                  <label class="t_mf_label">PageGroup Name:
+                    <span class="promptmessage"
+                      *ngIf="updateForm.controls.PageGroupName.invalid && updateForm.controls.PageGroupName.touched || updateForm.controls.PageGroupName.dirty">
+                      <span *ngIf="updateForm.controls.PageGroupName.errors?.required">
+                        required
+                      </span>
+                    </span>
+                  </label>
+                  <input class="t_mf_input col-12" formControlName="PageGroupName" type="text"
+                    [class.t_mf_error_border]='updateForm.get("PageGroupName").invalid && updateForm.get("PageGroupName").touched'>
+                </div>
+               <!-- order -->
+                <div class="col-6">
+                  <label class="t_mf_label">DisplayOrder:
+                    <span class="promptmessage"
+                      *ngIf="updateForm.controls.DisplayOrder.invalid && updateForm.controls.DisplayOrder.touched || updateForm.controls.DisplayOrder.dirty">
+                      <span *ngIf="updateForm.controls.DisplayOrder.errors?.required">
+                        required
+                      </span>
+                    </span>
+                  </label>
+                  <input class="t_mf_input col-12" formControlName="DisplayOrder" type="text"
+                    [class.t_mf_error_border]='updateForm.get("DisplayOrder").invalid && updateForm.get("DisplayOrder").touched'>
+                </div>
+                <!-- Icon -->
+                <div class="col-6">
+                  <label class="t_mf_label">Icon:
+                    <span class="promptmessage"
+                      *ngIf="updateForm.controls.Icon.invalid && updateForm.controls.Icon.touched || updateForm.controls.Icon.dirty">
+                      <span *ngIf="updateForm.controls.Icon.errors?.required">
+                        required
+                      </span>
+                    </span>
+                  </label>
+                  <input class="t_mf_input col-12" formControlName="Icon" type="text"
+                    [class.t_mf_error_border]='updateForm.get("Icon").invalid && updateForm.get("Icon").touched'>
+                </div>
+
+                
+
+
+              </div>
+            </div>
+          </div>
+
+
+
+
+
+        </div>
+      </div>
+    </div>
+  </form>
+</div>

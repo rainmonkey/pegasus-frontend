@@ -8,20 +8,16 @@
           <thead>
             <tr>
               <th scope="col">#</th>
-              <th scope="col">TermId</th>
               <th scope="col">CourseName</th>
               <th scope="col">Expiry Date</th>
-              <th scope="col">Quantity</th>
-              <th scope="col">edit</th>
+              <th scope="col">rescheduling</th>
             </tr>
           </thead>
           <tbody>
             <tr *ngFor="let i of remainingCourseData;let j = index">
               <th scope="row">{{j+1}}</th>
-              <td>{{i.TermId}}</td>
-              <td>{{i.CourseName}}</td>
-              <td>{{i.ExpiryDate|date:"dd/MM/yyyy"}}</td>
-              <td>{{i.Quantity}}</td>
+              <td>{{i.CourseInstance.Course.CourseName}}</td>
+              <td>{{i.ExpiredDate|date:"dd/MM/yyyy"}}</td>
               <td>
                 <!-- <span *ngIf="i.Quantity>0" class='t_info_table_btn' title='Book a Course' (click)="navigateToArrange(j)" style="cursor:pointer"><span class="fas fa-folder-plus"></span></span>
                 <span *ngIf="!i.Quantity>0" class='t_info_table_btn' title='Book a Course' (click)="alertForNoRemainingCourse()" style="cursor:pointer"><span class="fas fa-folder-plus"></span></span> -->

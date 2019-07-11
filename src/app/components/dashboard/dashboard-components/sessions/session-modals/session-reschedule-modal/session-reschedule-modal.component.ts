@@ -14,6 +14,7 @@ export class SessionRescheduleModalComponent implements OnInit {
   isRescheduleFail = false;
   isloading = false;
   isConfirmClick = false;
+  errReason;
   constructor(public activeModal: NgbActiveModal, private sessionsService: SessionsService,
               private router: Router) { }
 
@@ -22,10 +23,12 @@ export class SessionRescheduleModalComponent implements OnInit {
   RescheduleConfirm = () => {
     this.isloading = true;
     this.isConfirmClick = true;
+    this.errReason = '';
     this.sessionsService.SessionReSchedule(this.lessonid, this.reason).subscribe(res => {
       this.isloading = false;
       this.isRescheduleSuccess = true;
     }, err => {
+      //this.errReason = err.error.ErrorMessage
       this.isloading = false;
       this.isRescheduleFail = true;
     });
