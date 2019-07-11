@@ -47,7 +47,7 @@
             <!-- dataTable-->
             <tr *ngFor='let item of myArray | slice: (page-1)* pageSize : (page-1) * pageSize + pageSize; let j = index'>
               <th scope="row">{{j+1}}</th>
-              <td><app-learner-item [learner]=item></app-learner-item></td>
+              <td><app-learner-item [learnerInv]=item></app-learner-item></td>
 
               <td>{{item.InvoiceWaitingConfirm.OwingFee}}</td>
               <td>{{item.Invoice.TotalFee}}</td>

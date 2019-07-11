@@ -129,7 +129,6 @@ export class AdminInvoiceListComponent implements OnInit {
   }
   // push to array for sort
   makeArray() {
-    console.log('jiofjoiiowejoajoaiowafioa',this.learnerList)
     this.learnerList.forEach(list => {
       let tempObj = {
         OwingFee: list.OwingFee,

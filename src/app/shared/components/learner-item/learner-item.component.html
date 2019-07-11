@@ -4,6 +4,6 @@
 <span  *ngIf="learner && whichName == 'LastName'" (click)="onClicked()">
   {{learner.LastName}}
 </span>
-<span  *ngIf="learner && !whichName" (click)="onClicked()">
-  {{learner.FirstName}}
+<span  *ngIf="learnerInv" (click)="onClicked()">
+  {{learnerInv.FirstName}}
 </span>

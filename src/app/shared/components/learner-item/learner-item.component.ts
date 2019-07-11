@@ -10,7 +10,7 @@ import Swal from 'sweetalert2';
   styleUrls: ['./learner-item.component.css']
 })
 export class LearnerItemComponent implements OnInit {
-
+  @Input() learnerInv
   @Input() learner;
   @Input() learnerId;
   @Input() whichName;
@@ -35,7 +35,7 @@ export class LearnerItemComponent implements OnInit {
       )
     }
     else{
-      this.whichLearner = this.learner.FirstName;
+      this.whichLearner = this.learner;
     }
   }
   ngOnInit() {
@@ -56,6 +56,9 @@ export class LearnerItemComponent implements OnInit {
       }
     )
     modalRef.componentInstance.whichLearner = this.learner;
-  }
+    if(this.learnerInv){modalRef.componentInstance.learnerId = this.learnerInv.InvoiceWaitingConfirm.LearnerId;
+      modalRef.componentInstance.whichLearner = this.learnerInv
+    }
+    }
 
 }

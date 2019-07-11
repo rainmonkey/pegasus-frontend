@@ -32,6 +32,9 @@ export class AdminLearnerProfileComponent implements OnInit {
   public loadingFlag: boolean = false;
   // // sent active modal confirm satuation to admin learner component;
   @Input() whichLearner;
+  @Input() learnerId;
+  // get id from other component preparing to check on server
+  getId;
   // local function parameters
   public localPara = [
   {
@@ -79,19 +82,20 @@ export class AdminLearnerProfileComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    console.log(this.whichLearner)
     this.loadingFlag = true;
     this.getDataFromServer()
   }
   //get data from server
   getDataFromServer() {
-    console.log(this.whichLearner)
-    this.learnersService.getLearnerById(Number(this.whichLearner.LearnerId)).subscribe(
+    if (!this.learnerId){this.getId = Number(this.whichLearner.LearnerId);}else {
+      console.log(this.learnerId)
+      this.getId = Number(this.learnerId);
+    }
+    this.learnersService.getLearnerById(Number(this.getId)).subscribe(
       res => {
         // @ts-ignore
         this.learnerList = res.Data;
         this.loadingFlag = false;
-        console.log(this.learnerList)
       },
       (err) => {
         console.log(err); this.errorMessage = "Wrong"
