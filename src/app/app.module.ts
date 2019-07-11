@@ -238,7 +238,7 @@ import { ConflictCheckComponent } from './components/dashboard/dashboard-compone
     RemindListComponent,
     RemindPanelComponent,
     StaffListComponent,
-    
+
     SimplifyOrgPipe,
     TrialModalComponent,
     LearnerCreditPanelComponent,
@@ -304,6 +304,7 @@ import { ConflictCheckComponent } from './components/dashboard/dashboard-compone
   entryComponents: [
     AdminLearnerProfileComponent,
     AmendmentHistoryModalComponent,
+
     PageGroupListComponent,
     PageGroupEditComponent,
     PageGroupDeleteComponent,
@@ -327,6 +328,7 @@ import { ConflictCheckComponent } from './components/dashboard/dashboard-compone
     SessionRescheduleModalComponent,
     RatingModalComponent,
     AdminLearnerPeriodCourseChangeModalComponent,
+    AdminLearnerProfileComponent,
     ForgotPasswordModalComponent,
     ChangePasswordModalComponent,
     RemindModalComponent,

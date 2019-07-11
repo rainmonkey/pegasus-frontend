@@ -10,27 +10,21 @@ import Swal from 'sweetalert2';
   styleUrls: ['./learner-item.component.css']
 })
 export class LearnerItemComponent implements OnInit {
-
+  @Input() learnerInv
   @Input() learner;
   @Input() learnerId;
+  @Input() whichName;
   whichLearner:any;
   constructor(
     private modalService: NgbModal,
     private learnersService:LearnersService
   ) {}
    ngOnChanges() {
-    console.log(this.learnerId);
-    console.log(this.learner);
-    let learnerId =this.learnerId;
-    if (!this.learner)
-      learnerId =this.learnerId;
-    else 
-      learnerId =this.learner.learnerId;
 
-    this.learnersService.getLearnerById(learnerId).subscribe(data => {
-      this.whichLearner = data["Data"];
-      console.log(this.whichLearner);
-    }, 
+    if (!this.learner){
+      this.learnersService.getLearnerById(this.learnerId).subscribe(data => {
+        this.whichLearner = data["Data"];
+      },
         error => {
           Swal.fire({
             title: 'Server error!',
@@ -40,9 +34,11 @@ export class LearnerItemComponent implements OnInit {
         }
       )
     }
-  
+    else{
+      this.whichLearner = this.learner;
+    }
+  }
   ngOnInit() {
-
   }
   onClicked(){
     console.log(this.learner);
@@ -59,7 +55,10 @@ export class LearnerItemComponent implements OnInit {
         return
       }
     )
-    modalRef.componentInstance.whichLearner = this.whichLearner;
-  }
+    modalRef.componentInstance.whichLearner = this.learner;
+    if(this.learnerInv){modalRef.componentInstance.learnerId = this.learnerInv.InvoiceWaitingConfirm.LearnerId;
+      modalRef.componentInstance.whichLearner = this.learnerInv
+    }
+    }
 
 }

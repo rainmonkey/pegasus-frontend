@@ -31,7 +31,10 @@ export class AdminLearnerProfileComponent implements OnInit {
   public pageSize: number = 10;
   public loadingFlag: boolean = false;
   // // sent active modal confirm satuation to admin learner component;
-  whichLearner;
+  @Input() whichLearner;
+  @Input() learnerId;
+  // get id from other component preparing to check on server
+  getId;
   // local function parameters
   public localPara = [
   {
@@ -73,31 +76,43 @@ export class AdminLearnerProfileComponent implements OnInit {
   // @Output() activeModalEvent: EventEmitter<any> = new EventEmitter;
   // activeSubmitted: boolean = false;
   constructor(
-    private LearnerListService: LearnersService,
+    private learnersService: LearnersService,
     private modalService: NgbModal,
-    private activeModal: NgbActiveModal
+    private activeModal: NgbActiveModal,
   ) { }
 
   ngOnInit() {
-    console.log(this.whichLearner)
     this.loadingFlag = true;
     //this.getDataFromServer()
   }
-
   //get data from server
-  // getDataFromServer() {
-  //   this.LearnerListService.getLearnerList().subscribe(
-  //     (res) => {
-  //       //@ts-ignore
-  //       this.learnerList = res.Data;
-  //       this.loadingFlag = false;
-  //       console.log(this.learnerList)
-  //     },
-  //     (err) => {
-  //       console.log(err); this.errorMessage = "Wrong"
-  //     }
-  //   )
-  // }
+  getDataFromServer() {
+    if (!this.learnerId){this.getId = Number(this.whichLearner.LearnerId);}else {
+      console.log(this.learnerId)
+      this.getId = Number(this.learnerId);
+    }
+    this.learnersService.getLearnerById(Number(this.getId)).subscribe(
+      res => {
+        // @ts-ignore
+        this.learnerList = res.Data;
+        this.loadingFlag = false;
+      },
+      (err) => {
+        console.log(err); this.errorMessage = "Wrong"
+      }
+    )
+    // this.LearnerListService.getLearnerList().subscribe(
+    //   (res) => {
+    //     //@ts-ignore
+    //     this.learnerList = res.Data;
+    //     this.loadingFlag = false;
+    //     console.log(this.learnerList)
+    //   },
+    //   (err) => {
+    //     console.log(err); this.errorMessage = "Wrong"
+    //   }
+    // )
+  }
 
 
   ///////////////////////////////////////handler of angular-bootstrap modals/////////////////////////////////////
@@ -110,7 +125,7 @@ export class AdminLearnerProfileComponent implements OnInit {
       3 --> delete
   */
   popUpModal(command) {
-    let whichLearner = this.whichLearner;
+    let whichLearner = this.learnerList;
     console.log(whichLearner)
     switch (command) {
       case 0:

@@ -1,7 +1,7 @@
 <div class="modal-header">
   <h4 class="modal-title col-4">Learner Profile </h4>
   <div class="d-flex">
-    <p>{{whichLearner.FirstName}}</p>
+    <p *ngIf="whichLearner">{{whichLearner.FirstName}}</p>
   </div>
   <button type="button" class="btn btn-sm btn-info tl_mu_btn" aria-label="Close"
     (click)="activeModal.dismiss('Cross click')">
@@ -25,7 +25,7 @@
       <div class='t_s_tabs' (click)='jumpToTrialCoursePage()'>
         <span class='t_s_tabs_title col-12'>Trial Course</span>
         <span class='t_s_tabs_img col-12' title='Trial Course' routerLink='/learner/trial'
-          [queryParams]='{LearnerId:[learnerList[1].LearnerId]}'><a class='fas fa-calendar-week'></a></span>
+          [queryParams]='{LearnerId:[learnerList.LearnerId]}'><a class='fas fa-calendar-week'></a></span>
         <!--              请假-->
       </div>
     </div>

@@ -96,7 +96,7 @@ export class AdminInvoiceListComponent implements OnInit {
           title: 'Oops...',
           text: error.error.ErrorMessage,
         });
-  
+
         this.errorAlert = false;
       });
   }
@@ -105,7 +105,7 @@ export class AdminInvoiceListComponent implements OnInit {
     //this.getData();
   }
   onSubmit(){
-      this.getData();
+    this.getData();
   }
   getTerm() {
     var today = new Date();

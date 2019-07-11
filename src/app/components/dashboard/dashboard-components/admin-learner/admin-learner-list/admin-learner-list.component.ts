@@ -59,6 +59,7 @@ export class AdminLearnerListComponent implements OnInit {
       (res) => {
         //@ts-ignore
         this.learnerList = res.Data;
+        console.log(this.learnerList)
         //@ts-ignore
         this.learnerListCopy = this.learnerList;
         //@ts-ignore
