@@ -33,9 +33,9 @@ export class SessionsService {
 
   }
 
-  getTeacherLesson(beginDate) {
+  getTeacherLesson(teacherId,beginDate) {
     console.log(this.httpHeaders);
-    return this.http.get<any>(this.baseUrl + 'lesson/GetLessonsForTeacher/1/' + beginDate);
+    return this.http.get<any>(this.baseUrl + 'lesson/GetLessonsForTeacher/'+teacherId+'/' + beginDate);
   }
 
   getReceptionistLessonBetweenDate(beginDate, endDate) {

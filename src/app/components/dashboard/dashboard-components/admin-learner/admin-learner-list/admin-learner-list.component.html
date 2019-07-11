@@ -65,12 +65,12 @@
             </td>
             <td style='width: 100px; padding-left:0px'>
                 <!--calendar icon功能跳转至 trial course 页面-->
-                <span class='t_info_table_btn' (click)='jumpToTrialCoursePage()' title='Trial Course' routerLink='/learner/trial' [queryParams] = '{LearnerId:i.LearnerId}'><a class='fas fa-calendar-week'></a></span>
+                <span class='t_info_table_btn' (click)='jumpToTrialCoursePage()' title='Trial Course' routerLink='/learner/trial' [queryParams] = '{LearnerId:i.LearnerId}'><a class="fas fa-vial"></a></span>
               <!--              请假-->
-              <span class='t_info_table_btn' (click)="popUpModal(9,i)" title='Ask for Leave'><span class='fas fa-bed' ></span></span>
+              <span class='t_info_table_btn' (click)="popUpModal(9,i)" title='Ask for Off'><span class='fas fa-plane' ></span></span>
               <!--              永久改课时间-->
               <span class='t_info_table_btn' (click)="popUpModal(10,i)" title='Change Schedule
-              '><span class='fas fa-calendar'></span></span>
+              '><span class='fas fa-calendar-alt'></span></span>
               <span class='t_info_table_btn' (click)='popUpModal(3,i)' title='Delete Student Record'><span class='fas fa-trash-alt'></span></span>
             </td>
           </tr>

@@ -56,10 +56,11 @@ export class AdminInvoiceListComponent implements OnInit {
   ngOnInit() {
     this.userId = localStorage.getItem("userID");
     this.getTerm();
-   // this.getData();
- 
+    
   }
-
+  clearSearch(){
+    this.myArray=[];
+  }
   // modal method
   open(item) {
     const modalRef = this.modalService.open(AdminInvoiceEditModalComponent,
@@ -104,8 +105,7 @@ export class AdminInvoiceListComponent implements OnInit {
     //this.getData();
   }
   onSubmit(){
-    
-    this.getData();
+      this.getData();
   }
   getTerm() {
     var today = new Date();
@@ -129,6 +129,7 @@ export class AdminInvoiceListComponent implements OnInit {
   }
   // push to array for sort
   makeArray() {
+    this.myArray=[];
     this.learnerList.forEach(list => {
       let tempObj = {
         OwingFee: list.OwingFee,

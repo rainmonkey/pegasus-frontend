@@ -53,8 +53,8 @@
               <td>{{item.Invoice.TotalFee}}</td>
               <!-- <td>{{item.IsUnder18===1&&item.Parent[0]?item.Parent[0].Email:item.Email}}</td> -->
               <td>{{item.Invoice.Comment}}</td>
-              <td *ngIf='!item.Invoice'>No Confirmed</td>
-              <td *ngIf='item.Invoice'>Confirmed</td>
+              <td *ngIf='item.Invoice.InvoiceId == 0'>No Confirmed</td>
+              <td *ngIf='item.Invoice.InvoiceId != 0'>Confirmed</td>
               <!-- <td *ngIf="item.Invoice">
                 <span class='tl_body_table_btn col-4' style="text-align: center;" (click)="open(1, i)">
                   <i class="fas fa-times" style="color: red;"></i>
@@ -63,7 +63,7 @@
               <td *ngIf="!item.Invoice">
                 <i class="fas fa-check"></i>
               </td>               -->
-              <td>{{item.IsEmailSent|MyType:'status'}}</td>
+              <td>{{item.InvoiceWaitingConfirm.IsEmailSent|MyType:'status'}}</td>
               <td *ngIf='item.Invoice.IsPaid!=1'>Non-Payment</td>
               <td *ngIf='item.Invoice.IsPaid==1'>Paid</td>
               <td>

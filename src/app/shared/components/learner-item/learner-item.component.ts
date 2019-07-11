@@ -21,11 +21,16 @@ export class LearnerItemComponent implements OnInit {
    ngOnChanges() {
     console.log(this.learnerId);
     console.log(this.learner);
-    if (!this.learner){
-      this.learnersService.getLearnerById(this.learnerId).subscribe(data => {
-        this.whichLearner = data["Data"];
-        console.log(this.whichLearner);
-      }, 
+    let learnerId =this.learnerId;
+    if (!this.learner)
+      learnerId =this.learnerId;
+    else 
+      learnerId =this.learner.learnerId;
+
+    this.learnersService.getLearnerById(learnerId).subscribe(data => {
+      this.whichLearner = data["Data"];
+      console.log(this.whichLearner);
+    }, 
         error => {
           Swal.fire({
             title: 'Server error!',
@@ -35,12 +40,7 @@ export class LearnerItemComponent implements OnInit {
         }
       )
     }
-    else{
-      this.whichLearner.FirstName = this.learner.FirstName;
-      this.whichLearner.LastName = this.learner.LastName;
-      this.whichLearner.LearnerId = this.learner.LearnerId;
-    }    
-  }
+  
   ngOnInit() {
 
   }
@@ -59,7 +59,7 @@ export class LearnerItemComponent implements OnInit {
         return
       }
     )
-    modalRef.componentInstance.whichLearner = this.learner;
+    modalRef.componentInstance.whichLearner = this.whichLearner;
   }
 
 }

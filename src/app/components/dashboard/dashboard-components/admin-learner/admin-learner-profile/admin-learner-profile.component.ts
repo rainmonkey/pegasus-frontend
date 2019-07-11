@@ -20,7 +20,7 @@ export class AdminLearnerProfileComponent implements OnInit {
 
   public columnsToShow1: Array<string> = ['ContactNum', 'Email'];
   //learners data from servers
-  public learnerList: Array<any>;
+  //public learnerList: Array<any>;
 
   //errorMessage
   errorMessage: string;
@@ -31,7 +31,7 @@ export class AdminLearnerProfileComponent implements OnInit {
   public pageSize: number = 10;
   public loadingFlag: boolean = false;
   // // sent active modal confirm satuation to admin learner component;
-  @Input() whichLearner;
+  whichLearner;
   // local function parameters
   public localPara = [
   {
@@ -81,23 +81,23 @@ export class AdminLearnerProfileComponent implements OnInit {
   ngOnInit() {
     console.log(this.whichLearner)
     this.loadingFlag = true;
-    this.getDataFromServer()
+    //this.getDataFromServer()
   }
 
   //get data from server
-  getDataFromServer() {
-    this.LearnerListService.getLearnerList().subscribe(
-      (res) => {
-        //@ts-ignore
-        this.learnerList = res.Data;
-        this.loadingFlag = false;
-        console.log(this.learnerList)
-      },
-      (err) => {
-        console.log(err); this.errorMessage = "Wrong"
-      }
-    )
-  }
+  // getDataFromServer() {
+  //   this.LearnerListService.getLearnerList().subscribe(
+  //     (res) => {
+  //       //@ts-ignore
+  //       this.learnerList = res.Data;
+  //       this.loadingFlag = false;
+  //       console.log(this.learnerList)
+  //     },
+  //     (err) => {
+  //       console.log(err); this.errorMessage = "Wrong"
+  //     }
+  //   )
+  // }
 
 
   ///////////////////////////////////////handler of angular-bootstrap modals/////////////////////////////////////
@@ -110,7 +110,7 @@ export class AdminLearnerProfileComponent implements OnInit {
       3 --> delete
   */
   popUpModal(command) {
-    let whichLearner = this.learnerList[0];
+    let whichLearner = this.whichLearner;
     console.log(whichLearner)
     switch (command) {
       case 0:

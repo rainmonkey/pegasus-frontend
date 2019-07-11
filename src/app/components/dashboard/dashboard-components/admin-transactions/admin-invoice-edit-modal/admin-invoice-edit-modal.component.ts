@@ -208,7 +208,8 @@ export class AdminInvoiceEditModalComponent implements OnInit {
       LearnerName: this.item2.LearnerName,
       TermId: this.item2.TermId,
       GroupCourseInstanceId: this.item2.GroupCourseInstanceId,
-      CourseInstanceId: this.item2.CourseInstanceId
+      CourseInstanceId: this.item2.CourseInstanceId,
+      Comment: this.invoiceEditForm.value.Comment
     }
 
     data.OwingFee = +data.LessonFee + +data.ConcertFee + +data.NoteFee + +data.Other1Fee + +data.Other2Fee + +data.Other3Fee;
