@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { DecimalPipe } from '@angular/common';
 import { FormControl } from '@angular/forms';
 import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
-import { Router, ActivatedRoute } from '@angular/router';
+import { Router } from '@angular/router';
 import { NgbootstraptableService } from '../../../../../services/others/ngbootstraptable.service';
 
 import { InventoriesService } from '../../../../../services/http/inventories.service';
@@ -25,7 +25,7 @@ export class InventoryListComponent implements OnInit {
   public errorMessage: string;
   public closeResult: string;
   public page: number = 1;  //pagination current page
-  public pageSize: number = 10;  
+  public pageSize: number = 10;
   //loading
   public loadingFlag: boolean = false;
 
@@ -38,8 +38,7 @@ export class InventoryListComponent implements OnInit {
     private inventoriesService: InventoriesService,
     private modalService: NgbModal,
     private ngTable: NgbootstraptableService,
-    private router: Router,
-    private activatedRoute: ActivatedRoute
+    private router: Router
   ) { }
 
   ngOnInit() {
@@ -56,7 +55,6 @@ export class InventoryListComponent implements OnInit {
         this.stockOrdersList = res['Data'];
         this.stockOrdersListCopy = this.stockOrdersList;
         this.stockOrdersListLength = res['Data'].length; //length prop is under Data prop
-        this.refreshPageControl();
         this.loadingFlag = false;
       },
       (err) => {
@@ -122,40 +120,22 @@ export class InventoryListComponent implements OnInit {
       3, orderBy
       4, orderControl
   */
-  /*
-    set the default params when after page refresh
-  */
-  refreshPageControl() {
-    this.activatedRoute.queryParams.subscribe(res => {
-      let { searchString, searchBy, orderBy, orderControl, currentPage } = res;
-      if (searchString !== undefined && searchBy !== undefined) {
-        this.onSearch(null, { 'searchString': searchString, 'searchBy': searchBy })
-      }
-      if (orderBy !== undefined && orderControl !== undefined) {
-        this.onSort(orderBy, orderControl)
-      }
-      if (currentPage !== undefined) {
-        this.currentPage = currentPage;
-      }
-    })
-    return;
-  }
+
   /*
     search method
   */
-  onSearch(event, initValue?) {
+  onSearch(event, initValue?) {    
     if (event !== null && !(event.type == 'keydown' && event.key == 'Enter')) {
       return;
-    }
-    else {
+    } else {
       let searchString: string;
       let searchBy: string;
 
       let searchingInputObj = document.getElementById('searchingInput');
 
-      (initValue == undefined) ? { searchString, searchBy } =
-        { searchString: searchingInputObj['value'], searchBy: 'ProductName' } :
-        { searchString, searchBy } = initValue;
+      (initValue == undefined) ?
+        { searchString, searchBy } = { searchString: searchingInputObj['value'], searchBy: 'ProductName' }
+      : { searchString, searchBy } = initValue;
 
       this.stockOrdersList = this.ngTable.searching(this.stockOrdersListCopy, searchBy, searchString);
       this.stockOrdersListLength = this.stockOrdersList.length;
@@ -180,8 +160,6 @@ export class InventoryListComponent implements OnInit {
     else {
       this.queryParams[paraName] = paraValue;
     }
-    this.router.navigate(['inventory/list'], {
-      queryParams: this.queryParams
-    });
+    this.router.navigate(['inventory/list'], {queryParams: this.queryParams});
   }
 }
