@@ -89,7 +89,8 @@ export class AdminLearnerProfileComponent implements OnInit {
 
   ngOnInit() {
     this.loadingFlag = true;
-    //this.getDataFromServer()
+    console.log(this.whichLearner)
+    this.getDataFromServer()
   }
   //get data from server
   getDataFromServer() {
