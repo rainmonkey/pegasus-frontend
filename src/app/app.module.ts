@@ -82,6 +82,7 @@ import { StockApplicationListComponent } from './components/dashboard/dashboard-
 import { StockApplicationModalComponent } from './components/dashboard/dashboard-components/inventory/inventory-stock-application/stock-application-modal/stock-application-modal.component';
 
 import { LearnerItemComponent } from './shared/components/learner-item/learner-item.component';
+import { ModelTemplateComponent } from './shared/components/model-template/model-template.component';
 import { ColumnTitleFormatPipe } from './shared/pipes/column-title-format.pipe';
 // Guards
 // Services
@@ -204,6 +205,7 @@ import { ConflictCheckComponent } from './components/dashboard/dashboard-compone
     CourseDeleteModalComponent,
     TestoneComponent,
     LearnerItemComponent,
+    ModelTemplateComponent,
     LearnerDeleteModalComponent,
     LearnerDetailModalComponent,
     LearnerEditModalComponent,
@@ -316,6 +318,7 @@ import { ConflictCheckComponent } from './components/dashboard/dashboard-compone
     SessionDetailEditModalComponent,
     CourseClassDetailModalComponent,
     LearnerItemComponent,
+    ModelTemplateComponent,
     LearnerDeleteModalComponent,
     LearnerDetailModalComponent,
     LearnerEditModalComponent,
