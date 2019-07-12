@@ -8,7 +8,7 @@ import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 import { GeneralRepoService } from '../../../../../services/repositories/general-repo.service';
 import * as jsPDF from 'jspdf';
 import { getLocaleDateFormat } from '@angular/common';
-
+import Swal from "sweetalert2"
 @Component({
   selector: 'app-admin-learner-payment-invoice',
   templateUrl: './admin-learner-payment-invoice.component.html',
@@ -131,13 +131,23 @@ export class AdminLearnerPaymentInvoiceComponent implements OnInit, OnDestroy {
               response => {
                 console.log('Success!', response);
                 this.successAlert = true;
-                alert('Your Payment Has Been Made');
+                Swal.fire({
+                  title: 'Your Payment Has Been Made!',
+                  type: 'success',
+                  showConfirmButton: true,
+                });
                 this.router.navigate(['../success'], {relativeTo: this.activatedRouter});
               },
               (error) => {
                 this.errorMsg = JSON.parse(error.error);
                 this.errorAlert = true;
-                alert(this.errorMsg.ErrorCode);
+                //alert(this.errorMsg.ErrorCode);
+                Swal.fire({
+                  title: 'Error!',
+                  text: 'Sorry! '+ this.errorMsg.ErrorCode,
+                  type: 'error',
+                });
+        
               }
             );
           },

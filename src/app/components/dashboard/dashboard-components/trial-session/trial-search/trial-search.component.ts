@@ -3,6 +3,7 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { CoursesService } from 'src/app/services/http/courses.service';
 import { LookUpsService } from 'src/app/services/http/look-ups.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-trial-search',
@@ -131,7 +132,8 @@ export class TrialSearchComponent implements OnInit {
         //console.log(this.termPeriod)
       },
       (err) => {
-        alert('Sorry, something went wrong in server.')
+        //alert('Sorry, something went wrong in server.')
+        Swal.fire({  type: 'error',  title: 'Oops...', text: 'Sorry, something went wrong'+err.error.ErrorMessage });
       }
     )
   };

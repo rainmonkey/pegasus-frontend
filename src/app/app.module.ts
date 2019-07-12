@@ -304,6 +304,8 @@ import { ConflictCheckComponent } from './components/dashboard/dashboard-compone
     NgbActiveModal,
   ],
   entryComponents: [
+    AdminLearnerProfileComponent,
+    AmendmentHistoryModalComponent,
 
     PageGroupListComponent,
     PageGroupEditComponent,
