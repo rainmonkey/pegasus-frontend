@@ -10,6 +10,7 @@ import { copyStyles } from '@angular/animations/browser/src/util';
 import {DatePipe} from '@angular/common';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {MondayDateInWeekByDatePipe} from '../../../../../../shared/pipes/monday-date-in-week-by-date.pipe';
+import { CoursesService } from '../../../../../../services/http/courses.service';
 
 @Component({
   selector: 'app-sessions-calendar-view-tutor',
@@ -22,11 +23,16 @@ export class SessionsCalendarViewTutorComponent implements OnInit {
   isloading = false;
   @ViewChild('fullcalendar') fullcalendar: CalendarComponent;
   @ViewChild('content') content;
+  @ViewChild('teacher') teacher;
   dateOfLesson;
+  teachers;
+  teacherId;
   eventsModel: any;
-  constructor(private sessionsService: SessionsService, private datePipe: DatePipe, private modalService: NgbModal,
+  constructor(private sessionsService: SessionsService,private coursesService:CoursesService, private datePipe: DatePipe, private modalService: NgbModal,
               private mondayDatePipe: MondayDateInWeekByDatePipe) { }
   ngOnInit() {
+    this.dateOfLesson = {year:new Date().getFullYear(),month:new Date().getMonth()+1,day:new Date().getDate()};
+    this.getTeachers();
     this.options = {
       editable: true,
       height: 700,
@@ -35,7 +41,7 @@ export class SessionsCalendarViewTutorComponent implements OnInit {
       minTime: '08:00',
       scrollTime: '08:00',
       header: {
-        left: 'prev,next today DayPickerButton',
+        left: 'prev,next today DayPickerButton TutorPickerButton',
         center: 'title',
         right: 'timeGridWeek'
       },
@@ -60,7 +66,11 @@ export class SessionsCalendarViewTutorComponent implements OnInit {
     };
     this.InitialiseEventData();
   }
-
+  getTeachers = () =>{
+    this.coursesService.getTeachers().subscribe(res=>{
+      this.teachers = res.Data;
+    })
+  };
   generateEventData = (data) => {
     data.forEach(s => {
       s.title = s.orgName + ' ( ' + s.title + ' )'
@@ -94,8 +104,9 @@ export class SessionsCalendarViewTutorComponent implements OnInit {
     }
   }
   GetEventData = (beginDate) => {
-    this.isloading = true;
-    this.sessionsService.getTeacherLesson(beginDate).subscribe(data => {
+    if (!this.teacherId) return
+    this.isloading = true;    
+    this.sessionsService.getTeacherLesson(this.teacherId,beginDate).subscribe(data => {
       this.eventsModel = this.generateEventData(data.Data);
       this.isloading = false;
     }, err => {

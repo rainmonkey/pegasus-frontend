@@ -206,6 +206,7 @@ export class SessionsCalendarViewAdminComponent implements OnInit {
   }
 
   openEdit = (info) => {
+    console.log(info);
     const Date = this.datePipe.transform(this.fullcalendar.calendar.getDate(), 'yyyy-MM-dd');
     const modalRef = this.modalService.open(SessionDetailEditModalComponent, { size: 'lg' });
     (modalRef.componentInstance as SessionDetailEditModalComponent).LessonModel = info.event.extendedProps.info;

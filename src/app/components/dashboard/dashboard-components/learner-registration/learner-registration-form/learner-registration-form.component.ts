@@ -939,7 +939,7 @@ selectLocation(id, i) {
   }
   handleEmailChange(value){
     if (!this.whichLearner)
-      this.parentForm.at(0).get("Email").patchValue(value);
+      this.parentForm.at(0).get("email").patchValue(value);
   }
   handleNumChange(value){
     if (!this.whichLearner)

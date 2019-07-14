@@ -1,6 +1,6 @@
 <div class="container">
   <ngb-accordion>
-    <ngb-panel id="1" title="Remaning Course">
+    <ngb-panel id="1" title="Cancelled Sessiones">
       <ng-template ngbPanelContent>
         <!-- First name: {{this.data.FirstName}} -->
         <span *ngIf="remainingDataWaitingFlag">Loading...</span>
@@ -10,7 +10,7 @@
               <th scope="col">#</th>
               <th scope="col">CourseName</th>
               <th scope="col">Expiry Date</th>
-              <th scope="col">rescheduling</th>
+              <th scope="col">Reschedule</th>
             </tr>
           </thead>
           <tbody>
@@ -21,14 +21,14 @@
               <td>
                 <!-- <span *ngIf="i.Quantity>0" class='t_info_table_btn' title='Book a Course' (click)="navigateToArrange(j)" style="cursor:pointer"><span class="fas fa-folder-plus"></span></span>
                 <span *ngIf="!i.Quantity>0" class='t_info_table_btn' title='Book a Course' (click)="alertForNoRemainingCourse()" style="cursor:pointer"><span class="fas fa-folder-plus"></span></span> -->
-                <span class='t_info_table_btn' title='Book a Course' (click)="navigateToArrange(j)" style="cursor:pointer"><span class="fas fa-folder-plus"></span></span>
+                <span class='t_info_table_btn' title='Reschedule a Session' (click)="navigateToArrange(j)" style="cursor:pointer"><span class="fas fa-calendar-week"></span></span>
               </td>
             </tr>
           </tbody>
         </table>
       </ng-template>
     </ngb-panel>
-    <ngb-panel id="2" title="Arranged Course">
+    <ngb-panel id="2" title="Scheduled Sessiones">
       <ng-template ngbPanelContent>
         <!-- Last name: {{this.data.LastName}} -->
         <span *ngIf="arrangeDataWaitingFlag">Loading...</span>

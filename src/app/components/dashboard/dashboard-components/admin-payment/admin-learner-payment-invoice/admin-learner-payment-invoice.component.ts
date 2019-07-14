@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, Input } from '@angular/core';
 import { PaymentService } from '../../../../../services/http/payment.service';
 import { FormBuilder, Validators } from '@angular/forms';
 import { NgbModal, ModalDismissReasons, NgbTab, NgbTabTitle, } from '@ng-bootstrap/ng-bootstrap';
@@ -8,13 +8,15 @@ import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 import { GeneralRepoService } from '../../../../../services/repositories/general-repo.service';
 import * as jsPDF from 'jspdf';
 import { getLocaleDateFormat } from '@angular/common';
-
+import Swal from "sweetalert2"
 @Component({
   selector: 'app-admin-learner-payment-invoice',
   templateUrl: './admin-learner-payment-invoice.component.html',
   styleUrls: ['./admin-learner-payment-invoice.component.css']
 })
 export class AdminLearnerPaymentInvoiceComponent implements OnInit, OnDestroy {
+  // active modal get by model template
+  @Input() whichLearner;
   // invoice
   public dataInvoice: any;
   public learnerId: any;
@@ -36,6 +38,8 @@ export class AdminLearnerPaymentInvoiceComponent implements OnInit, OnDestroy {
   fistNameSubscription
   // not show invoice data;
   noInvoice = false;
+  // id get from admin learner profile
+  // whichLearner;
 
   invoiceForm = this.fb.group({
     owing: ['', Validators.required],
@@ -127,13 +131,23 @@ export class AdminLearnerPaymentInvoiceComponent implements OnInit, OnDestroy {
               response => {
                 console.log('Success!', response);
                 this.successAlert = true;
-                alert('Your Payment Has Been Made');
+                Swal.fire({
+                  title: 'Your Payment Has Been Made!',
+                  type: 'success',
+                  showConfirmButton: true,
+                });
                 this.router.navigate(['../success'], {relativeTo: this.activatedRouter});
               },
               (error) => {
                 this.errorMsg = JSON.parse(error.error);
                 this.errorAlert = true;
-                alert(this.errorMsg.ErrorCode);
+                //alert(this.errorMsg.ErrorCode);
+                Swal.fire({
+                  title: 'Error!',
+                  text: 'Sorry! '+ this.errorMsg.ErrorCode,
+                  type: 'error',
+                });
+        
               }
             );
           },
@@ -280,6 +294,7 @@ export class AdminLearnerPaymentInvoiceComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit() {
+      if (!this.whichLearner){
       // put to service
       this.activatedRouter.paramMap.subscribe((obs:ParamMap) => {
       //  this.learnerId = this.activatedRouter.snapshot.paramMap.get("id")
@@ -304,7 +319,31 @@ export class AdminLearnerPaymentInvoiceComponent implements OnInit, OnDestroy {
           this.errorAlert = true;
           //alert(this.errorMsg);
         });
-      });
+      });} else {
+        this.learnerId = this.whichLearner;
+        console.log(this.whichLearner)
+        this.errorAlert = false;
+        this.errorMsg ='';
+        this.errMsgM = false;
+        this.errMsgO = false;
+        this.paymentsListService
+        .getInvoice(this.whichLearner)
+        .subscribe(res => {
+          this.noInvoice = false
+          // return console.log(dataInvoice)
+          this.dataInvoice = res['Data'];
+          console.log(this.dataInvoice)
+          this.incaseDateIsNull();
+          this.reSearchPrepare();
+        },error=>{
+          console.log(error);
+          this.noInvoice = true;
+          this.errorMsg =error.error.ErrorMessage;
+          this.errorAlert = true;
+          //alert(this.errorMsg);
+        });
+
+      }
       this.nameSubejct();
     }
   ngOnDestroy(){

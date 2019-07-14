@@ -42,6 +42,7 @@ import { LearnerCreditPanelComponent } from "./components/dashboard/dashboard-co
 import { LearnerCreditDetailsComponent } from "./components/dashboard/dashboard-components/learner-credit/learner-credit-details/learner-credit-details.component"
 import { HolidayCalendarComponent } from './components/dashboard/dashboard-components/admin-holidays/holiday-calendar/holiday-calendar.component';
 import { CoporateOrderApplicationComponent } from './components/dashboard/dashboard-components/admin-inventory-application-dispatch/coporate-order-application/coporate-order-application.component';
+import{PageGroupDetailsComponent} from './components/dashboard/dashboard-components/admin-pageGroup/pageGroup-details/pageGroup-details.component'
 import { ConflictCheckComponent } from './components/dashboard/dashboard-components/conflict-check/conflict-check/conflict-check.component';
 import { StockApplicationListComponent } from './components/dashboard/dashboard-components/inventory/inventory-stock-application/stock-application-list/stock-application-list.component';
 
@@ -167,6 +168,10 @@ const routes: Routes = [
       },
       //Staff Area
       { path: 'staff/list', component: StaffListComponent },
+
+      //pagegroup area
+      { path:'pageGroup',component:PageGroupDetailsComponent},
+
       // Below to be rearranged
       { path: 'holidays', component: HolidayCalendarComponent },
       { path: 'corporate-order-application', component: CoporateOrderApplicationComponent },

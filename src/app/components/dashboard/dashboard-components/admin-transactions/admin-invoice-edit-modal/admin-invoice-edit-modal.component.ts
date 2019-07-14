@@ -95,9 +95,9 @@ export class AdminInvoiceEditModalComponent implements OnInit {
 
   ngOnInit() {
     if  (this.item.Invoice.InvoiceId === 0)
-      this.item2 = { ... this.item , ...this.item.Invoice};
-    else
       this.item2 = { ... this.item ,...this.item.InvoiceWaitingConfirm};
+    else
+      this.item2 = { ... this.item , ...this.item.Invoice};
     this.patchToInvoice();
     this.dueDateLocal = this.item2.DueDate;
     this.owingFeeLocal = this.item2.LessonFee;
@@ -208,7 +208,8 @@ export class AdminInvoiceEditModalComponent implements OnInit {
       LearnerName: this.item2.LearnerName,
       TermId: this.item2.TermId,
       GroupCourseInstanceId: this.item2.GroupCourseInstanceId,
-      CourseInstanceId: this.item2.CourseInstanceId
+      CourseInstanceId: this.item2.CourseInstanceId,
+      Comment: this.invoiceEditForm.value.Comment
     }
 
     data.OwingFee = +data.LessonFee + +data.ConcertFee + +data.NoteFee + +data.Other1Fee + +data.Other2Fee + +data.Other3Fee;
