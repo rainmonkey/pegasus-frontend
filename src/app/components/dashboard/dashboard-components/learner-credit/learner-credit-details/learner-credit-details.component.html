@@ -1,6 +1,6 @@
 <div class="container">
-  <ngb-accordion>
-    <ngb-panel id="1" title="Remaning Course">
+  <ngb-accordion activeIds="ngb-panel-1">
+    <ngb-panel id="ngb-panel-1" title="Remaning Course">
       <ng-template ngbPanelContent>
         <!-- First name: {{this.data.FirstName}} -->
         <span *ngIf="remainingDataWaitingFlag">Loading...</span>
@@ -32,7 +32,7 @@
         </table>
       </ng-template>
     </ngb-panel>
-    <ngb-panel id="2" title="Arranged Course">
+    <ngb-panel id="ngb-panel-2" title="Arranged Course">
       <ng-template ngbPanelContent>
         <!-- Last name: {{this.data.LastName}} -->
         <span *ngIf="arrangeDataWaitingFlag">Loading...</span>

@@ -5,9 +5,7 @@ import interactionPlugin from '@fullcalendar/interaction';
 import { CalendarComponent } from 'ng-fullcalendar';
 //declare let $: any;
 import timeGridPlugin from '@fullcalendar/timegrid';
-import Swal from 'sweetalert2';
 import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { reduce } from 'rxjs/operators';
 import { TrialConfirmComponent } from '../trial-confirm/trial-confirm.component';
 import { CoursesService } from 'src/app/services/http/courses.service';
 import { LookUpsService } from 'src/app/services/http/look-ups.service';
@@ -63,7 +61,6 @@ export class TrialModalComponent implements OnInit {
 
   @ViewChild('fullcalendar') fullcalendar: CalendarComponent;
   options: OptionsInput;
-  //eventsModel: any;
 
   constructor(public activeModal: NgbActiveModal,
     private modalService: NgbModal,
@@ -89,11 +86,8 @@ export class TrialModalComponent implements OnInit {
       allDaySlot: false,
       height: 700,
       selectable: true,
-      //starting time of a day
       minTime: '09:00',
-      //end time of a day
       maxTime: '18:00',
-      //each grid represents 15 min
       slotDuration: '00:15',
       events: this.getAvailableTime(),
       selectConstraint: this.getAvailableTime(),
@@ -143,7 +137,6 @@ export class TrialModalComponent implements OnInit {
 
   prepareCourse(duration) {
     let studentLevel = this.getStudentLevel();
-    //console.log(this.studentLevel)
     let array: Array<any> = [];
     for (let i of this.courses) {
       if (i.CourseType == 1 && this.whichTeacher.Level == i.TeacherLevel && i.CourseCategoryId == this.cateId
@@ -224,7 +217,6 @@ export class TrialModalComponent implements OnInit {
           })
       }
     )
-    // console.log(modalRef)
   }
   /*
     get teacher's available time.
@@ -251,9 +243,7 @@ export class TrialModalComponent implements OnInit {
           else, drop it.
   */
   checkAvailableDOW(array) {
-    //console.log(this.availableDOW)
     for (let i in this.availableDOW) {
-      //console.log(this.availableDOW[i]);
       if (this.availableDOW[i] == 7) {
         this.availableDOW[i] = 0;
       }
@@ -271,7 +261,6 @@ export class TrialModalComponent implements OnInit {
         }
       }
     }
-    // console.log(array)
     return array;
   }
 
@@ -316,7 +305,6 @@ export class TrialModalComponent implements OnInit {
   getTimeSlot() {
     let obj = [];
     for (let i of this.coursesTeachingByWhichTeacher) {
-      // console.log(i)
       obj.push({ "start": i.start, "end": i.end, "rendering": 'background', })
     }
     return obj;

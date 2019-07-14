@@ -12,7 +12,7 @@
       <div class='col-12 tl_body_search'>
         <span class='fas fa-search'></span>&nbsp;
         <input type="text" id='searchingInput' (keydown)='onSearch($event)' placeholder="Search by name">
-        <button *ngIf="isSearchingFlag" (click)="clearSearch()" class="btn btn-secondary ml-3">clear</button>
+        <button *ngIf="isSearchingFlag" (click)="clearSearch()" class="btn btn-danger ml-3 py-0">clear</button>
       </div>
 
       <!--body main-->

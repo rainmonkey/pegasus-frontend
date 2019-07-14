@@ -25,29 +25,26 @@ export class LearnerCreditDetailsComponent implements OnInit {
     private ngTableService: NgbootstraptableService,
     private router: Router,
     private generalRepoService: GeneralRepoService,
-  ) { }
-
-  ngOnInit() {
+  ) {
     this.generalRepoService.fisrtName.subscribe(data => {
       if (data == "Customer Name") {
         this.learnerId = +this.router.url.slice(this.router.url.lastIndexOf("/") + 1)
       } else {
         this.learner = data
         this.learnerId = this.learner.LearnerId
-        console.log(this.learner, this.learnerId)
       }
       this.getRemainingCourses()
       this.getArrangedLesson()
-    })
-    console.log(this.learnerId)
+    }, err => console.log(err))
   }
+
+  ngOnInit() { }
 
   getRemainingCourses() {
     this.remainingDataWaitingFlag = true
     this.learnerService.getRemainingCourses(this.learnerId).subscribe(data => {
       this.remainingCourseData = data["Data"]
       this.remainingDataWaitingFlag = false
-      console.log(this.remainingCourseData)
     }, error => console.log(error)
     )
   }
@@ -57,7 +54,6 @@ export class LearnerCreditDetailsComponent implements OnInit {
     this.learnerService.getArrangedLesson(this.learnerId).subscribe(data => {
       this.arrangedCourseData = data["Data"]
       this.arrangeDataWaitingFlag = false
-      console.log(this.arrangedCourseData)
     }, error => console.log(error))
   }
 

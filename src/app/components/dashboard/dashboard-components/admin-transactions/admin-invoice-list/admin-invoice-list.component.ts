@@ -19,20 +19,16 @@ interface Learner {
   styleUrls: ['./admin-invoice-list.component.css']
 })
 export class AdminInvoiceListComponent implements OnInit {
-  public queryParams: object = {};
   public learnerList: any;
   public learnerListLength: number;
   public temLearnerList: any; //save the original List
   public temLearnerListLength: number; //save the original List length
   public page: number = 1;  //pagination current page
-  public pageSize: number = 15;    //[can modify] pagination page size
+  public pageSize: number = 10;    //[can modify] pagination page size
 
   //error alert
   public errorMsg;
   public errorAlert = false;
-  public errMsgM;
-  public errMsgO;
-  public userId;
   isLoad: boolean = true
 
   public isSearchingFlag: boolean = false
@@ -49,7 +45,6 @@ export class AdminInvoiceListComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.userId = localStorage.getItem("userID");
     this.getData();
   }
 
@@ -61,20 +56,18 @@ export class AdminInvoiceListComponent implements OnInit {
       });
     //pass parameters to edit modals
     modalRef.componentInstance.item = item;
-    // modalRef.componentInstance.testString = "this is a test string"
     console.log(modalRef)
   }
 
   // get data from server side
   getData() {
-    this.transactionService.getLearnerInvo(this.userId).subscribe(
+    this.transactionService.getLearnerInvo(localStorage.getItem("userID")).subscribe(
       (res) => {
         this.learnerList = res.Data;
         this.learnerListLength = res.Data.length; //length prop is under Data prop
         this.temLearnerList = res.Data;
         this.temLearnerListLength = res.Data.length;
         this.isLoad = false;
-        //this.learnerList[0].Learner.Parent.Email
         // make array for sort
         this.makeArray();
       },
@@ -100,6 +93,12 @@ export class AdminInvoiceListComponent implements OnInit {
   // sort item
   onSort(orderBy, orderControls?) {
     this.ngTable.sorting(this.myArray, orderBy, orderControls)
+  }
+
+  clearSearch() {
+    this.isSearchingFlag = false
+    this.myArray = this.temLearnerList.map(data => data.Learner)
+    this.learnerListLength = this.temLearnerListLength
   }
 
   onSearch(event, initValue?) {

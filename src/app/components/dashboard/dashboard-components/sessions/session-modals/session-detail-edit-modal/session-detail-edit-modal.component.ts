@@ -1,11 +1,11 @@
-import {Component, Input, OnInit} from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { FormBuilder, Validator, Validators, RequiredValidator } from '@angular/forms';
 import { TransactionService } from '../../../../../../services/http/transaction.service';
-import {SessionsService} from '../../../../../../services/http/sessions.service';
-import {SessionEdit} from '../../../../../../models/SessionEdit';
-import swal from 'sweetalert2';
+import { SessionsService } from '../../../../../../services/http/sessions.service';
+import { SessionEdit } from '../../../../../../models/SessionEdit';
+import { TrialModalComponent } from "src/app/components/dashboard/dashboard-components/trial-session/trial-modal/trial-modal.component"
 import Swal from "sweetalert2";
 
 @Component({
@@ -69,9 +69,9 @@ export class SessionDetailEditModalComponent implements OnInit {
 
 
   getBranchs = () => {
-    this.sessionsService.GetTeachherFilter(this.LessonModel.courseId).subscribe(res=>{
+    this.sessionsService.GetTeachherFilter(this.LessonModel.courseId).subscribe(res => {
       this.BranchSelects = res.Data;
-    },err => {
+    }, err => {
       alert('Something ERR');
     });
   }
@@ -80,11 +80,11 @@ export class SessionDetailEditModalComponent implements OnInit {
     this.RoomSelects = this.BranchSelects.filter(s => s.OrgId == branchId)[0].Room;
   }
 
-  getTeachers = (branchId) =>{
+  getTeachers = (branchId) => {
     this.TeacherSelects = this.BranchSelects.filter(s => s.OrgId == branchId)[0].Teacher;
   }
 
-// confirm Modal
+  // confirm Modal
   open(confirmModal) {
     if (this.SessionForm.invalid) {
       this.errorMsg = 'The form is invalid.';
@@ -94,6 +94,10 @@ export class SessionDetailEditModalComponent implements OnInit {
       this.modalService.open(confirmModal);
 
     }
+  }
+
+  openTimePicker = () => {
+    let modalRef = this.modalService.open(TrialModalComponent, { size: 'lg', backdrop: 'static', keyboard: false })
   }
 
   ConfrimEdit = () => {
@@ -108,16 +112,16 @@ export class SessionDetailEditModalComponent implements OnInit {
       this.isEditSuccess = true;
       this.isloading = false;
     },
-    err => {
-      this.isEditFail = true;
-      this.isloading = false;
-      Swal.fire({
-        type: 'error',
-        title: 'Oops...',
-        text: err.error.ErrorMessage,
-      });
+      err => {
+        this.isEditFail = true;
+        this.isloading = false;
+        Swal.fire({
+          type: 'error',
+          title: 'Oops...',
+          text: err.error.ErrorMessage,
+        });
 
-    });
+      });
 
   }
 }
