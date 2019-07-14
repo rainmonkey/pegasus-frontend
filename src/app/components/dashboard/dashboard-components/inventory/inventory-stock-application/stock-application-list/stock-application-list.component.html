@@ -5,8 +5,8 @@
     </div>
     <div class="col-12">
       <!-- select a period of time -->
-      <div style="width:69%; float: right;">
-        <form style="float:right;">
+      <div >
+        <div style="float:left;">
           <span>
             <p class="label_p">Select a period of date:</p>
           </span>
@@ -33,12 +33,14 @@
               </button>
             </div>
           </div>
-          <button type="button" class='btn btn-info t_info_addmore_btn' (click)="searchPeriod()">
+          <button type="button" class='btn btn-info t_info_addmore_btn' (click)="selectPeriod()">
             <i class='fas fa-search'></i>Search
           </button>
-        </form>
-      </div>
-
+        </div>
+      <!--add more btn-->
+        <div class='btn btn-info t_info_addmore_btn' style="float:right;">
+           + Add More</div>
+        </div>
     </div>
     <div *ngIf='loadingFlag' class="loaderLarge"></div>
     <div *ngIf='!loadingFlag' class='t_mf_form'>

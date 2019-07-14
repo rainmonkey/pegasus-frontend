@@ -79,8 +79,8 @@ import { HeaderbarComponent } from './components/dashboard/general/headerbar/hea
 import { SidebarComponent } from './components/dashboard/general/sidebar/sidebar.component';
 import { TestoneComponent } from './components/testcomponent/testone/testone.component';
 import { StockApplicationListComponent } from './components/dashboard/dashboard-components/inventory/inventory-stock-application/stock-application-list/stock-application-list.component';
-import { StockApplicationModalComponent } from './components/dashboard/dashboard-components/inventory/inventory-stock-application/stock-application-modal/stock-application-modal.component';
-
+import { StockApplicationDetailModalComponent } from './components/dashboard/dashboard-components/inventory/inventory-stock-application/stock-application-detail-modal/stock-application-detail-modal.component';
+import { StockApplicationDeleteModalComponent } from './components/dashboard/dashboard-components/inventory/inventory-stock-application/stock-application-delete-modal/stock-application-delete-modal.component';
 import { LearnerItemComponent } from './shared/components/learner-item/learner-item.component';
 import { ModelTemplateComponent } from './shared/components/model-template/model-template.component';
 import { ColumnTitleFormatPipe } from './shared/pipes/column-title-format.pipe';
@@ -203,6 +203,9 @@ import { ConflictCheckComponent } from './components/dashboard/dashboard-compone
     TeacherPanelComponent,
     CourseDetailModalComponent,
     CourseDeleteModalComponent,
+    StockApplicationListComponent,
+    StockApplicationDetailModalComponent,
+    StockApplicationDeleteModalComponent,
     TestoneComponent,
     LearnerItemComponent,
     ModelTemplateComponent,
@@ -276,9 +279,8 @@ import { ConflictCheckComponent } from './components/dashboard/dashboard-compone
     PageGroupDetailsComponent,
 
     MessagerNotificationComponent,
-    ConflictCheckComponent,
-    StockApplicationListComponent,
-    StockApplicationModalComponent
+    ConflictCheckComponent
+
   ],
   imports: [
     NgbModule,
