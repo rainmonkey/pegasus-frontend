@@ -66,8 +66,10 @@ export class NgbootstraptableService {
       }
     }
     if (JSON.stringify(bool).search("false") == -1) {
-      // fail to find -1
+      // -1 means fail to find 'false'
       return true;
+    } else {
+      return false;
     }
   }
 
@@ -80,7 +82,6 @@ export class NgbootstraptableService {
       this.columnOrderControl = orderControls;
     }
     else if (this.previousOrderBy !== orderBy) {
-
       this.columnOrderControl = 1;
     }
     else {
