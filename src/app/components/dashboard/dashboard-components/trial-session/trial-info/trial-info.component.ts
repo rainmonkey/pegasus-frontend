@@ -7,7 +7,7 @@ import { NgbModal, NgbModalRef, NgbPagination } from '@ng-bootstrap/ng-bootstrap
 import { TrialModalComponent } from '../trial-modal/trial-modal.component';
 import { LearnersService } from 'src/app/services/http/learners.service';
 import { TransactionService } from '../../../../../services/http/transaction.service';
-
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-trial-info',
@@ -94,7 +94,8 @@ export class TrialInfoComponent implements OnInit {
         this.learners = res[6]['Data'];
       },
       (err) => {
-        alert('Sorry, something went wrong.')
+        // alert('Sorry, something went wrong.')
+        Swal.fire({  type: 'error',  title: 'Oops...', text: 'Sorry, something went wrong'+err.error.ErrorMessage });        
       }
     );
   }

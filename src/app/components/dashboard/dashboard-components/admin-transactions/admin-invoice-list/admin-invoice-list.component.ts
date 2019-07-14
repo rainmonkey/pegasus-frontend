@@ -3,7 +3,9 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { NgbootstraptableService } from 'src/app/services/others/ngbootstraptable.service';
 import { TransactionService } from '../../../../../services/http/transaction.service';
 import { AdminInvoiceEditModalComponent } from '../admin-invoice-edit-modal/admin-invoice-edit-modal.component';
+import { CoursesService } from '../../../../../services/http/courses.service';
 import { Subject } from "rxjs"
+import Swal from 'sweetalert2';
 
 interface Learner {
   OwingFee: string | number;
@@ -33,11 +35,13 @@ export class AdminInvoiceListComponent implements OnInit {
   public errMsgM;
   public errMsgO;
   public userId;
-  isLoad: boolean = true
+  isLoad: boolean = false;
 
   public isSearchingFlag: boolean = false
   // learner name and
   learner: Learner;
+  terms : [];
+  termId:number;
   myArray = [];
   //teachers list copy. Using in searching method, in order to initialize data to original
   public myArrayCopy: Array<any>;
@@ -46,13 +50,17 @@ export class AdminInvoiceListComponent implements OnInit {
     private modalService: NgbModal,
     private ngTable: NgbootstraptableService,
     private transactionService: TransactionService,
+    private coursesService: CoursesService,
   ) { }
 
   ngOnInit() {
     this.userId = localStorage.getItem("userID");
-    this.getData();
+    this.getTerm();
+    
   }
-
+  clearSearch(){
+    this.myArray=[];
+  }
   // modal method
   open(item) {
     const modalRef = this.modalService.open(AdminInvoiceEditModalComponent,
@@ -67,7 +75,8 @@ export class AdminInvoiceListComponent implements OnInit {
 
   // get data from server side
   getData() {
-    this.transactionService.getLearnerInvo(this.userId).subscribe(
+    this.isLoad = true;
+    this.transactionService.getLearnerInvo(this.userId,this.termId).subscribe(
       (res) => {
         this.learnerList = res.Data;
         this.learnerListLength = res.Data.length; //length prop is under Data prop
@@ -79,14 +88,48 @@ export class AdminInvoiceListComponent implements OnInit {
         this.makeArray();
       },
       error => {
+        this.isLoad = false;
         this.errorMsg = JSON.parse(error.error);
         console.log("Error!", this.errorMsg.ErrorMsg);
+        Swal.fire({
+          type: 'error',
+          title: 'Oops...',
+          text: error.error.ErrorMessage,
+        });
+
         this.errorAlert = false;
       });
   }
+  onChange(value){
+    this.termId = value;
+    //this.getData();
+  }
+  onSubmit(){
+    this.getData();
+  }
+  getTerm() {
+    var today = new Date();
+    this.coursesService.getoioi().subscribe(
+      (res) => {
+        this.terms = res.Data;
+        for (let e of this.terms){
+          if ((today  >= new Date(e['BeginDate'])) && (today  <= new Date(e['EndDate'])) )
+            this.termId = e['TermId'];
+        }
+        console.log(this.terms)
+      },(error)=>{
+        Swal.fire({
+          type: 'error',
+          title: 'Oops...',
+          text: error.error.ErrorMessage,
+        });
 
+      }
+    )
+  }
   // push to array for sort
   makeArray() {
+    this.myArray=[];
     this.learnerList.forEach(list => {
       let tempObj = {
         OwingFee: list.OwingFee,

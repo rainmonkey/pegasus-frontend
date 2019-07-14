@@ -59,6 +59,7 @@ export class AdminLearnerListComponent implements OnInit {
       (res) => {
         //@ts-ignore
         this.learnerList = res.Data;
+        console.log(this.learnerList)
         //@ts-ignore
         this.learnerListCopy = this.learnerList;
         //@ts-ignore
@@ -259,9 +260,7 @@ export class AdminLearnerListComponent implements OnInit {
     modalRef.componentInstance.command = command;
     modalRef.componentInstance.whichLearner = whichLearner;
     modalRef.componentInstance.signalForInit.subscribe(res => {
-      console.log('lyric')
       if (res == true) {
-        console.log('lyric')
         that.ngOnInit();
       }
     })

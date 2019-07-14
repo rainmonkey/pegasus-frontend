@@ -1,5 +1,5 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
-import { ChattingService } from 'src/app/services/repositories/chatting.service';
+import { MessagerService } from 'src/app/services/repositories/messager.service';
 import { Animations } from '../../../../../../animation/chatting-animation';
 
 @Component({
@@ -18,7 +18,7 @@ export class MessagerSubscribersComponent implements OnInit {
 
   @Output() onChattingWith = new EventEmitter();
 
-  constructor(private chattingService:ChattingService) { }
+  constructor(private messagerService:MessagerService) { }
 
   ngOnInit() {
     let that = this;
@@ -34,7 +34,7 @@ export class MessagerSubscribersComponent implements OnInit {
       -->in order to read, still put the storage data getting in service.
   */
   getSubscribers(){
-    let subscribers = this.chattingService.getSubscribers();
+    let subscribers = this.messagerService.getSubscribers();
     this.subsOfStaffs = subscribers.Item1;
     this.subsOfTeacher = subscribers.Item2;
     this.subsOfStudents = subscribers.Item3;
@@ -70,7 +70,7 @@ export class MessagerSubscribersComponent implements OnInit {
   */
   chattingWithHandler(event,subscriber){
     //save the subscriber now chatting with.
-    this.chattingService.saveSubscriberChattingWith(subscriber);
+    this.messagerService.saveSubscriberChattingWith(subscriber);
     //fire emit to parent component to notice need view switch
     this.onChattingWith.emit(true);
   }

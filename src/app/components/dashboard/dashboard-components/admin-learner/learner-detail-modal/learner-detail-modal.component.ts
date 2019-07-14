@@ -3,7 +3,7 @@ import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { LearnersService } from 'src/app/services/http/learners.service';
 import { environment } from 'src/environments/environment.prod';
 import { AmendmentHistoryModalComponent } from '../amendment-History-modal/amendment-History-modal.component';
-
+import Swal from 'sweetalert2';
 @Component({
   selector: 'app-learner-detail-modal',
   templateUrl: './learner-detail-modal.component.html',
@@ -62,7 +62,7 @@ export class LearnerDetailModalComponent implements OnInit {
         this.learnerList1 = res.Data;
       },
       (err) => {
-       alert("Something wrong in server")
+       Swal.fire({  type: 'error',  title: 'Oops...', text: "Something wrong in server:"+err.error.ErrorMessage });
       }
     )
   }

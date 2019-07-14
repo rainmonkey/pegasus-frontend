@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { IOtherPay } from '../../../../../models/learners';
 import { PaymentService } from 'src/app/services/http/payment.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-admin-learner-payment-other',
@@ -52,7 +53,8 @@ export class AdminLearnerPaymentOtherComponent implements OnInit {
       error => {
         this.errorMsg = JSON.parse(error.error);
         console.error('Error!', this.errorMsg.ErrorCode);
-        alert(`Can not access server ${this.errorMsg.ErrorCode}`);
+        //alert(`Can not access server ${this.errorMsg.ErrorCode}`);
+        Swal.fire({  type: 'error',  title: 'Oops...', text: this.errorMsg.ErrorCode });
       }
     );
   }
