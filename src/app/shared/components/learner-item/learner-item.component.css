@@ -1,0 +1,10 @@
+::ng-deep .my-class .modal-dialog {
+  max-width: 80%;
+  width: 80%;
+}
+
+.loaderLarge{
+position: fixed;
+top:40%;
+left: 50%;
+}

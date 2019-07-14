@@ -1,0 +1,18 @@
+<!--modal header-->
+<div class='modal-header'>
+  <h4 class='modal-title'>{{modelTitle}}</h4>
+  <button type="button" class='btn btn-sm btn-info t_dm_close_btn' aria-label="Close"
+    (click)="activeModal.close('Cross click')">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+
+<div class='modal-body'>
+    <app-admin-learner-payment-invoice *ngIf="whichModal == 'payInvoice'" [whichLearner]= 'whichObject'></app-admin-learner-payment-invoice>
+    <app-learner-credit-details *ngIf="whichModal == 'Learner Credit'" [whichLearner]='whichObject'></app-learner-credit-details>
+  <!-- <app-learner-registration-form [whichLearner]= 'whichLearner' (toLearnerListEvent)='toLearnerListEvent($event)' activeModalEvent='onActiveModalSubmit($event)'></app-learner-registration-form> -->
+</div>
+<!--modal footer-->
+<div class='modal-footer'>
+  <button type="button" class="btn btn-outline-dark" (click)="activeModal.close('Close click')">Close</button>
+</div>

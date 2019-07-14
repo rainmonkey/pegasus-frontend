@@ -67,7 +67,6 @@
     outline: none;
 }
 #m_c_emoji_picker_panel{
-    display: none;
     position: absolute;
     bottom: 0;
     z-index: 100;

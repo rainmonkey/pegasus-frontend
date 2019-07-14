@@ -1,7 +1,7 @@
 import { Component, OnInit, Input, Output, EventEmitter, ViewChild } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { StaffListService } from 'src/app/services/http/staff-list.service';
-
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-staff-edit-modal',
@@ -37,7 +37,8 @@ export class StaffEditModalComponent implements OnInit {
         console.log(this.typeList)
       },
       (err) => {
-        alert('Server Error!')
+        // alert('Server Error!')
+        Swal.fire({  type: 'error',  title: 'Oops...', text: err.error.ErrorMessage });
       }
     )
   }

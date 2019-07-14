@@ -5,6 +5,7 @@ import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ActivatedRoute, Router } from "@angular/router"
 import { forkJoin } from 'rxjs';
 import * as jsPDF from 'jspdf';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-trial-confirm',
@@ -41,6 +42,7 @@ export class TrialConfirmComponent implements OnInit {
   public loadingGifFlag = false;
   public successFlag = false;
   public extraFee;
+  private  isPayNow: boolean  = true;
 
   constructor(public activeModal: NgbActiveModal,
     private modalService: NgbModal,
@@ -70,7 +72,8 @@ export class TrialConfirmComponent implements OnInit {
         this.assignRandomRoom(allAvaliableRoom);
       },
       (err) => {
-        alert('Sorry, something went wrong.')
+        //alert('Sorry, something went wrong.')
+        Swal.fire({  type: 'error',  title: 'Oops...', text: 'Sorry, something went wrong'+err.error.ErrorMessage });
       }
     );
   }
@@ -102,7 +105,7 @@ export class TrialConfirmComponent implements OnInit {
   }
 
   onSubmit() {
-    if (this.paymentMethodValue == null && !this.arrangeFlag) {
+    if ((this.paymentMethodValue == null && this.isPayNow )&& !this.arrangeFlag) {
       this.error = true;
       return
     }
@@ -135,7 +138,8 @@ export class TrialConfirmComponent implements OnInit {
         (err) => {
           console.log(err);
           this.loadingGifFlag = false;
-          alert('Sorry,something went wrong in server.');
+         // alert('Sorry,something went wrong in server.');
+         Swal.fire({  type: 'error',  title: 'Oops...', text: 'Sorry, something went wrong'+err.error.ErrorMessage });
         }
       )
     }
@@ -167,6 +171,7 @@ export class TrialConfirmComponent implements OnInit {
       "Amount": this.coursePrice + this.extraFee,
       "StaffId": Number(localStorage.userID),
       "TrialCourseId": this.courseId,
+      "IsPayNow": this.isPayNow,
     }
     return obj
   }
@@ -180,7 +185,7 @@ export class TrialConfirmComponent implements OnInit {
       this.router.navigate(["/learner/credit/", this.learnerId])
     }
   }
-
+  
   downloadInvoice() {
     let doc = new jsPDF('p', 'pt', 'a4');
 

@@ -64,7 +64,7 @@
 <ng-template let-modal #methodModal>
   <div class="modal-header m-2">
     <h4>Please choose operation method</h4>
-    <button
+     <button
       type="button"
       class="close"
       aria-label="Close"
@@ -72,6 +72,9 @@
     >
       <span aria-hidden="true">&times;</span>
     </button>
+  </div>
+  <div  class="modal-body m-2">
+    <app-learner-item [learnerId]='eventInfo.event.extendedProps.info.LearnerId'></app-learner-item>
   </div>
   <div class="container">
     <div class="row">

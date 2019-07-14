@@ -38,6 +38,9 @@ export class LearnersService {
     return this.http.get(this.baseUrl + 'learner')
   }
 
+  getLearnerById(id) {
+    return this.http.get(this.baseUrl + 'learner/GetLearnerById/'+id)
+  }
 
   deleteLearner(LearnerId): any {
     return this.http.delete(this.baseUrl + 'learner/' + LearnerId);
@@ -61,7 +64,7 @@ export class LearnersService {
   }
 
   getRemainingCourses(LearnerId: number): Observable<any> {
-    return this.http.get(this.baseUrl + "CourseRemaining/" + LearnerId)
+    return this.http.get(this.baseUrl + "session/GetMakeupSessions/" + LearnerId)
   }
 
   getArrangedLesson(LearnerId: number): Observable<any> {

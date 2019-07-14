@@ -5,7 +5,8 @@
     <br>
     <div *ngIf="pageloading" class="loaderLarge"></div>
               <!-- Dashboard Counts Section-->
-              <section class="dashboard-counts no-padding-bottom">
+              <section class="dashboard-counts no-padding-bottom" style= 'padding: 5px 5px;
+              margin: 0;'>
                 <div class="container-fluid">
                   <div class="row bg-white has-shadow">
                     <!-- Item -->
@@ -47,12 +48,13 @@
                   </div>
                 </div>
               </section>
-
+    <div class='container-fluid'>
     <div class="row">
-        <div style="margin-bottom: 20px;" class="col-12 col-md-6 col-lg-8">
+        <div style="margin-bottom: 20px;" class="col-12">
             <app-charting></app-charting>
         </div>
     </div>
+  </div>
     <div class='row'>
         <div class="col-12 col-md-6 col-lg-4">
             <div *ngIf="toDoList" class="card">
