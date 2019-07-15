@@ -46,6 +46,7 @@ import{PageGroupDetailsComponent} from './components/dashboard/dashboard-compone
 import { ConflictCheckComponent } from './components/dashboard/dashboard-components/conflict-check/conflict-check/conflict-check.component';
 import { StockApplicationListComponent } from './components/dashboard/dashboard-components/inventory/inventory-stock-application/stock-application-list/stock-application-list.component';
 
+
 //canActivate: [DashboardRestrictGuard],
 const routes: Routes = [
   {

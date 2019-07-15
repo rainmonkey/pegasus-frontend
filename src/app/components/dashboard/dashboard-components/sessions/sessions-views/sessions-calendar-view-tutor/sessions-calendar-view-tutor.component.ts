@@ -41,7 +41,7 @@ export class SessionsCalendarViewTutorComponent implements OnInit {
       minTime: '08:00',
       scrollTime: '08:00',
       header: {
-        left: 'prev,next today DayPickerButton TutorPickerButton',
+        left: 'prev,next today DayPickerButton',
         center: 'title',
         right: 'timeGridWeek'
       },
