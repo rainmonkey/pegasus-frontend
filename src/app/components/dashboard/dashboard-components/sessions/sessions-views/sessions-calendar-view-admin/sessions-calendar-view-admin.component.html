@@ -89,20 +89,24 @@
       <p class="text-center">{{eventInfo.event.extendedProps.info.CourseName}}</p>
     </div>
 
-<!--    <div *ngIf="eventInfo.event.extendedProps.learners">-->
-<!--      <div *ngIf="eventInfo.event.extendedProps.IsCanceled==1 || eventInfo.event.extendedProps.IsConfirm==1">-->
-<!--        <h5 class="text-center">Reason (Cancel or Complete)</h5>-->
-<!--        <p class="text-center">{{eventInfo.event.extendedProps.Reason}}</p>-->
-<!--      </div>-->
-<!--      <h5 class="text-center">Teacher Name</h5>-->
-<!--      <p class="text-center">{{eventInfo.event.extendedProps.info.TeacherName}}</p>-->
-<!--      <h5 class="text-center">Students Name</h5>-->
-<!--      <p class="text-center">{{eventInfo.event.extendedProps.student[0]}}</p>-->
-<!--      <h5 class="text-center">Room name</h5>-->
-<!--      <p class="text-center">{{eventInfo.event.extendedProps.info.RoomName}} ({{eventInfo.event.extendedProps.info.OrgName}})</p>-->
-<!--      <h5 class="text-center">Course Name</h5>-->
-<!--      <p class="text-center">{{eventInfo.event.extendedProps.info.CourseName}}</p>-->
-<!--    </div>-->
+    <div *ngIf="eventInfo.event.extendedProps.learners">
+      <div *ngIf="eventInfo.event.extendedProps.IsCanceled==1 || eventInfo.event.extendedProps.IsConfirm==1">
+        <h5 class="text-center">Reason (Cancel or Complete)</h5>
+        <p class="text-center">{{eventInfo.event.extendedProps.Reason}}</p>
+      </div>
+      <h5 class="text-center">Teacher Name</h5>
+      <p class="text-center">{{eventInfo.event.extendedProps.info.TeacherName}}</p>
+      <h5 class="text-center">Students Name</h5>
+      <div *ngFor="let learner of eventInfo.event.extendedProps.learners">
+        <div class="col-4">
+          <p (click)="openLearnerItem(learner.LearnerId)">{{learner.FirstName}}</p>
+        </div>
+      </div>
+      <h5 class="text-center">Room name</h5>
+      <p class="text-center">{{eventInfo.event.extendedProps.info.RoomName}} ({{eventInfo.event.extendedProps.info.OrgName}})</p>
+      <h5 class="text-center">Course Name</h5>
+      <p class="text-center">{{eventInfo.event.extendedProps.info.CourseName}}</p>
+    </div>
 
   </div>
   <div class="container">
