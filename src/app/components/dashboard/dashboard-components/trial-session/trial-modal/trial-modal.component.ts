@@ -72,6 +72,7 @@ export class TrialModalComponent implements OnInit {
     private lookupsService: LookUpsService) { }
 
   ngOnInit() {
+    console.log(this.coursesTeachingByWhichTeacher) 
     if (this.duration) {
       this.arrangeFlag = true
     }
@@ -233,7 +234,9 @@ export class TrialModalComponent implements OnInit {
   getAvailableTime() {
     let array = [];
     array = this.checkAvailableDOW(array);
+    //console.log(array)
     array = this.checkAvailablePeriod(array);
+    //console.log(array)
     array.sort()
 
     let newObjArr = [];
@@ -242,6 +245,7 @@ export class TrialModalComponent implements OnInit {
         newObjArr.push({ "start": this.transferTimestampToTime(array[i]), "end": this.transferTimestampToTime(array[i + 1]), "rendering": 'background', })
       }
     }
+    console.log(newObjArr)
     return newObjArr
   }
 
@@ -251,6 +255,7 @@ export class TrialModalComponent implements OnInit {
           else, drop it.
   */
   checkAvailableDOW(array) {
+    console.log(this.availableDOW)
     //console.log(this.availableDOW)
     for (let i in this.availableDOW) {
       //console.log(this.availableDOW[i]);
@@ -282,10 +287,13 @@ export class TrialModalComponent implements OnInit {
   */
   checkAvailablePeriod(array) {
     let timeSlot = this.getTimeSlot()
+    console.log(timeSlot)
     for (let i of timeSlot) {
       if (Date.parse(i.start) >= Date.parse(this.currentDay)) {
         array.push(Date.parse(i.start));
         array.push(Date.parse(i.end));
+        console.log(i.start)
+        console.log(i.end)
       }
     }
     return array;

@@ -1,4 +1,5 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { MessagerService } from 'src/app/services/repositories/messager.service';
 
 @Component({
   selector: 'app-messager-recently',
@@ -7,20 +8,20 @@ import { Component, OnInit, Output, EventEmitter } from '@angular/core';
     '../../../dashboard-components/teachers/teacher-panel/teacher-panel.component.css']
 })
 export class MessagerRecentlyComponent implements OnInit {
-  public recentlySubscribers :Array<object>;
+  public recentlySubscribers: Array<object>;
+  
   @Output() onChattingWith = new EventEmitter();
-  constructor() { }
+  constructor(private messagerService: MessagerService) { }
 
   ngOnInit() {
-    this.recentlySubscribers = sessionStorage.recentlySubscribers;
+    this.recentlySubscribers = this.messagerService.getRecentSubscribers();
   }
 
   /*
   点击选择和谁聊天
   */
-  chattingWithHandler() {
-    //在sessionStorage里面保存 正在聊天的人
-    sessionStorage.setItem('userId', '123');
-    this.onChattingWith.emit({ "status": true, "userId": 123 })
+  chattingWithHandler(subscriber) {
+    this.messagerService.saveSubscriberChattingWith(subscriber);
+    this.onChattingWith.emit(true);
   }
 }

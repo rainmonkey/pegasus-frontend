@@ -1,13 +1,15 @@
 import { MessagerService } from '../../../../../services/repositories/messager.service';
 import { Component, OnInit, Output, Input, EventEmitter } from '@angular/core';
 import { Animations } from '../../../../../../animation/chatting-animation'
+import { fromEvent } from 'rxjs';
+import { map, takeUntil, concatMap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-messager-modal',
   templateUrl: './messager-modal.component.html',
   styleUrls: ['./messager-modal.component.css'],
   animations: [Animations.changeThemeColor,
-               Animations.personalPanelAnimation]
+  Animations.personalPanelAnimation]
 })
 export class MessagerModalComponent implements OnInit {
   //数组里的顺序和名字要和HTML里的一致
@@ -32,7 +34,6 @@ export class MessagerModalComponent implements OnInit {
   { background: 'linear-gradient(135deg, red, lightblue)' },
   { background: 'linear-gradient(135deg, lightblue, pink)' }]
 
-
   @Input() browserHeight;
   @Output() onCloseChattingModal = new EventEmitter();
   constructor(private messagerService: MessagerService) { }
@@ -47,6 +48,30 @@ export class MessagerModalComponent implements OnInit {
     //get init preBtnSelectOnj
     this.preBtnSelectedObj = document.getElementById('initSelected');
   }
+
+  ngAfterViewInit() {
+    console.log('a')
+    //this.draggable()
+  }
+
+  // draggable() {
+
+  //   const mouseDown$ = fromEvent(document.querySelector('.m_m_skeleton'), 'mousedown');
+  //   const mouseMove$ = fromEvent(document.querySelector('.m_m_skeleton'), 'mousemove');
+  //   const mouseUp$ = fromEvent(document.querySelector('.m_m_skeleton'), 'mouseup');
+
+  //   mouseDown$.pipe(
+  //     concatMap(mouseDownEvent => mouseUp$.pipe(
+  //       map(mouseUpEvent =>({
+  //         left:mouseUpEvent['clientX'] - mouseDownEvent['offsetX'],
+  //         top:mouseUpEvent['clientY'] - mouseDownEvent['offsetY']
+  //       }))
+  //     ))
+  //   ).subscribe(position=>{
+  //     document.querySelector('.m_m_skeleton')['style'].left = position.left + 'px'
+  //     document.querySelector('.m_m_skeleton')['style'].top = position.top + 'px'
+  //   })
+  // }
 
   /*
     called by template.
