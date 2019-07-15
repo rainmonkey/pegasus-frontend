@@ -41,7 +41,7 @@ export class SessionsCalendarViewTutorComponent implements OnInit {
       minTime: '08:00',
       scrollTime: '08:00',
       header: {
-        left: 'prev,next today DayPickerButton TutorPickerButton',
+        left: 'prev,next today DayPickerButton',
         center: 'title',
         right: 'timeGridWeek'
       },
@@ -84,7 +84,7 @@ export class SessionsCalendarViewTutorComponent implements OnInit {
       s.student.forEach(w => {
         s.description += '<div class="col-4">' + w + '</div> ';
 
-      });
+      })
       s.description += '</div><h4>Room Name</h4>' + s.roomName + ' (' + s.orgName + ')'
                         + '<h4>Course Name</h4>' + s.courseName;
     });
@@ -105,7 +105,7 @@ export class SessionsCalendarViewTutorComponent implements OnInit {
   }
   GetEventData = (beginDate) => {
     if (!this.teacherId) return
-    this.isloading = true;    
+    this.isloading = true;
     this.sessionsService.getTeacherLesson(this.teacherId,beginDate).subscribe(data => {
       this.eventsModel = this.generateEventData(data.Data);
       this.isloading = false;

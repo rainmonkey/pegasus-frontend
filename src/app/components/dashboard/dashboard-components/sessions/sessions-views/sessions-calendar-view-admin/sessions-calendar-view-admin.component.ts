@@ -14,7 +14,8 @@ import {SessionEdit} from '../../../../../../models/SessionEdit';
 import {SessionCancelModalComponent} from '../../session-modals/session-cancel-modal/session-cancel-modal.component';
 import {SessionCompletedModalComponent} from '../../session-modals/session-completed-modal/session-completed-modal.component';
 import {SessionRescheduleModalComponent} from '../../session-modals/session-reschedule-modal/session-reschedule-modal.component';
-
+import {AdminLearnerProfileComponent} from '../../../admin-learner/admin-learner-profile/admin-learner-profile.component';
+import {LearnersService} from '../../../../../../services/http/learners.service';
 @Component({
   selector: 'app-sessions-calendar-view-admin',
   encapsulation: ViewEncapsulation.None,
@@ -37,12 +38,14 @@ export class SessionsCalendarViewAdminComponent implements OnInit {
   private eventData = [];
   sessionEditModel;
   IsConfirmEditSuccess = false;
+  learnerProfileLoading = false;
   @ViewChild(CalendarComponent) fullcalendar: CalendarComponent;
 
   constructor(
     protected sessionService: SessionsService,
     private datePipe: DatePipe, private modalService: NgbModal,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private learnersService: LearnersService
     ) {}
   ngOnInit(): void {
     this.searchForm = this.fb.group({
@@ -70,22 +73,9 @@ export class SessionsCalendarViewAdminComponent implements OnInit {
         },
         ////////
         eventClick: (info) => {
-          console.log(info)
-          Swal.fire({
-            type: 'info',
-            title: 'Student',
-            showCancelButton: true,
-            confirmButtonColor: '#3085d6',
-            showCloseButton: true,
-            cancelButtonColor: '#d33',
-            confirmButtonText: 'Choose method',
-            html: info.event.extendedProps.description
-          }).then(result => {
-            if (result.value) {
-              this.eventInfo = info;
-              const modalRef = this.modalService.open(this.methodModal);
-            }
-          });
+          this.eventInfo = info;
+          const modalRef = this.modalService.open(this.methodModal);
+          console.log(this.eventInfo)
         },
         ////////
         eventDrop: (info) => { // when event drag , need to send put request to change the time of this event
@@ -141,24 +131,26 @@ export class SessionsCalendarViewAdminComponent implements OnInit {
   generateEventData = (data) => {
 
     data.forEach(s => {
-      if (s.isOwnAfterLesson == 1){
-        s.color = 'red'
+      if (s.isReadyToOwn == 1) {
+        s.color = 'red';
       }
+
+      if (s.IsCanceled == 1) {
+        s.color = 'grey';
+        s.editable = false;
+      }
+
+      if (s.IsConfirm == 1){
+        s.color = 'green';
+        s.editable = false;
+      }
+
       const type = '(' + s.title + ')';
       s.title = '';
       s.title += 'Tutor: ' + s.teacher + ' ' + type;
       if (s.IsGroup === false) {
-        s.title += '\nLearner: ' + s.student[0];
+        s.title += '\nLearner: ' + s.learner[0].FirstName;
       }
-      if (s.student.length === 1) {
-        s.description = s.student[0];
-        return data;
-      }
-      s.description += '<div class="row">';
-      s.student.forEach(w => {
-       s.description += '<div class="col-4 col-centered">' + w + '</div>';
-      });
-      s.description += '</div>';
     });
     return data;
   }
@@ -256,6 +248,34 @@ export class SessionsCalendarViewAdminComponent implements OnInit {
       () => {
         this.getEventByDate(Date);
       });
+  }
+
+  openLearnerItem = (learnerId) => {
+    const Date = this.datePipe.transform(this.fullcalendar.calendar.getDate(), 'yyyy-MM-dd');
+    this.learnerProfileLoading = true
+    this.learnersService.getLearnerById(learnerId).subscribe(res => {
+      this.learnerProfileLoading = false
+      this.modalService.dismissAll()
+      const modalRef = this.modalService.open(AdminLearnerProfileComponent,
+        // @ts-ignore
+        {size: 'xl', backdrop: 'static', keyboard: false });
+      // @ts-ignore
+      (modalRef.componentInstance as AdminLearnerProfileComponent).whichLearner = res.Data;
+      modalRef.result.then(
+        () => {
+          this.getEventByDate(Date);
+        },
+        () => {
+          this.getEventByDate(Date);
+        });
+    }, err => {
+      this.learnerProfileLoading = false
+      Swal.fire({
+        type: 'error',
+        title: 'Oops...',
+        text: err.error.ErrorMessage
+      });
+    });
   }
 
 }

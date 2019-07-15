@@ -218,7 +218,7 @@ export class AdminLearnerProfileComponent implements OnInit {
     detail modal
   */
   detailModal(command, whichLearner) {
-    const modalRef = this.modalService.open(LearnerDetailModalComponent, { size: 'lg', backdrop: 'static', keyboard: false });
+    const modalRef = this.modalService.open(LearnerDetailModalComponent, {windowClass: 'my-class', backdrop: 'static', keyboard: false });
     modalRef.componentInstance.command = command;
     modalRef.componentInstance.whichLearner = whichLearner;
   }

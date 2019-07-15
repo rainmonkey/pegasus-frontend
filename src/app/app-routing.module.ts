@@ -48,6 +48,7 @@ import { ConflictCheckComponent } from './components/dashboard/dashboard-compone
 import { StockApplicationListComponent } from './components/dashboard/dashboard-components/inventory/inventory-stock-application/stock-application-list/stock-application-list.component';
 import { AdminLearnerTimetableComponent } from './components/dashboard/dashboard-components/admin-learner/admin-learner-timetable/admin-learner-timetable.component';
 
+
 //canActivate: [DashboardRestrictGuard],
 const routes: Routes = [
   {
