@@ -89,13 +89,11 @@ export class AdminLearnerProfileComponent implements OnInit {
 
   ngOnInit() {
     this.loadingFlag = true;
-    console.log(this.whichLearner)
-    this.getDataFromServer()
+    this.getDataFromServer();
   }
-  //get data from server
+  // get data from server
   getDataFromServer() {
     if (!this.learnerId){this.getId = Number(this.whichLearner.LearnerId);}else {
-      console.log(this.learnerId)
       this.getId = Number(this.learnerId);
     }
     this.learnersService.getLearnerById(Number(this.getId)).subscribe(
@@ -106,7 +104,7 @@ export class AdminLearnerProfileComponent implements OnInit {
         this.loadingFlag = false;
       },
       (err) => {
-        console.log(err); this.errorMessage = "Wrong"
+        console.log(err); this.errorMessage = "Wrong";
       }
     )
     // this.LearnerListService.getLearnerList().subscribe(
@@ -134,7 +132,6 @@ export class AdminLearnerProfileComponent implements OnInit {
   */
   popUpModal(command,title) {
     let whichLearner = this.learnerList;
-    console.log(whichLearner)
     switch (command) {
       case 0:
         this.addModal(command, whichLearner)
@@ -182,12 +179,12 @@ export class AdminLearnerProfileComponent implements OnInit {
     let that = this;
     modalRef.result.then(
       (res) => {
-        that.ngOnInit()
+        that.ngOnInit();
       },
       (err) => {
-        return
+        return;
       }
-    )
+    );
   }
   /*
     learner invoice payment modal
@@ -198,21 +195,21 @@ export class AdminLearnerProfileComponent implements OnInit {
     let that = this;
     modalRef.result.then(
       (res) => {
-        that.ngOnInit()
+        that.ngOnInit();
       },
       (err) => {
-        return
+        return;
       }
-    )
+    );
     modalRef.componentInstance.whichObject = whichLearner.LearnerId;
-    modalRef.componentInstance.whichModal = title
+    modalRef.componentInstance.whichModal = title;
   }
 
   /*
     detail modal
   */
   detailModal(command, whichLearner) {
-    const modalRef = this.modalService.open(LearnerDetailModalComponent, { size: 'lg', backdrop: 'static', keyboard: false });
+    const modalRef = this.modalService.open(LearnerDetailModalComponent, {windowClass: 'my-class', backdrop: 'static', keyboard: false });
     modalRef.componentInstance.command = command;
     modalRef.componentInstance.whichLearner = whichLearner;
   }

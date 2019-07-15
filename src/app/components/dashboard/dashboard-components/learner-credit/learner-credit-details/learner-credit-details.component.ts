@@ -29,6 +29,7 @@ export class LearnerCreditDetailsComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    console.log(this.whichLearner)
     this.generalRepoService.fisrtName.subscribe(data => {
       if (data == "Customer Name") {
         this.learnerId = +this.router.url.slice(this.router.url.lastIndexOf("/") + 1)

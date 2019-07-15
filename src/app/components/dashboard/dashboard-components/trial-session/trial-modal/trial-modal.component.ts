@@ -93,7 +93,7 @@ export class TrialModalComponent implements OnInit {
       //starting time of a day
       minTime: '09:00',
       //end time of a day
-      maxTime: '18:00',
+      maxTime: '20:00',
       //each grid represents 15 min
       slotDuration: '00:15',
       events: this.getAvailableTime(),
