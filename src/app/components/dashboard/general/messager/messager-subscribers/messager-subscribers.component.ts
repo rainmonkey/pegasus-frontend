@@ -35,9 +35,9 @@ export class MessagerSubscribersComponent implements OnInit {
   */
   getSubscribers(){
     let subscribers = this.messagerService.getSubscribers();
-    this.subsOfStaffs = subscribers.Item1;
-    this.subsOfTeacher = subscribers.Item2;
-    this.subsOfStudents = subscribers.Item3;
+    this.subsOfStaffs = subscribers.StaffList;
+    this.subsOfTeacher = subscribers.TeacherList;
+    this.subsOfStudents = subscribers.LearnerList;
   }
 
   /*

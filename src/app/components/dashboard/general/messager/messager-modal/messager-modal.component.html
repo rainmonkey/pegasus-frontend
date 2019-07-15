@@ -1,11 +1,11 @@
 <div *ngIf='!isErrorFlag' [ngStyle]="{'height': setChattingModalHeight()+'px'}" class='m_m_skeleton'>
   <!--header-->
   <div class='m_m_header' [@themeColorTrigger]='themeChangeFlag'>
-    <span class='m_m_header_icon m_m_header_cog' (click)='displayConfigPanel()'>
+    <span class='m_m_header_icon m_m_header_cog' (click)='displayConfigPanel($event)' >
       <span class='fas fa-cog'></span>
     </span>
     <span class='m_m_header_chatting_with'>{{chattingWithStr}} </span>
-    <span class='m_m_header_icon m_m_header_close' (click)='closeChattingModal()'>
+    <span class='m_m_header_icon m_m_header_close' (click)='closeChattingModal($event)'>
       <span class='fas fa-times'></span>
     </span>
   </div>

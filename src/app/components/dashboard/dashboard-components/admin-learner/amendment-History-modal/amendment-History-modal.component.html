@@ -1,20 +1,20 @@
 <div class='modal-header'>
-  Course Amendment History
+  Course Schedule Change logs
 </div>
 
 <div class='modal-body'>
   <div *ngIf='whichCourse.Amendment.length==0'>
-    This course has not to be amendment
+    This course has not to be Changed
   </div>
 
   <div *ngIf='whichCourse.Amendment.length !== 0'>
     <div *ngFor='let i of amend'>
-      <span>Amendment Record</span>
+      <span>Changelog</span>
       <div class='card'>
         <div class='card-body'>
           <div class='row'>
             <div class='col-6'>
-              <span>Amendment at: </span> <span class='text'>{{i.CreatedAt.replace('T',' ')}}</span>
+              <span>Changed at: </span> <span class='text'>{{i.CreatedAt.replace('T',' ')}}</span>
             </div>
 
             <div class='col-6'>

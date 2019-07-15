@@ -1,6 +1,6 @@
 import { CommonModule, DatePipe } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
-import { NgModule } from '@angular/core';
+import { NgModule ,ErrorHandler} from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule, MatFormFieldModule, MatInputModule, MatSelectModule } from '@angular/material';
 // Dependencies
@@ -79,8 +79,8 @@ import { HeaderbarComponent } from './components/dashboard/general/headerbar/hea
 import { SidebarComponent } from './components/dashboard/general/sidebar/sidebar.component';
 import { TestoneComponent } from './components/testcomponent/testone/testone.component';
 import { StockApplicationListComponent } from './components/dashboard/dashboard-components/inventory/inventory-stock-application/stock-application-list/stock-application-list.component';
-import { StockApplicationModalComponent } from './components/dashboard/dashboard-components/inventory/inventory-stock-application/stock-application-modal/stock-application-modal.component';
-
+import { StockApplicationDetailModalComponent } from './components/dashboard/dashboard-components/inventory/inventory-stock-application/stock-application-detail-modal/stock-application-detail-modal.component';
+import { StockApplicationDeleteModalComponent } from './components/dashboard/dashboard-components/inventory/inventory-stock-application/stock-application-delete-modal/stock-application-delete-modal.component';
 import { LearnerItemComponent } from './shared/components/learner-item/learner-item.component';
 import { ModelTemplateComponent } from './shared/components/model-template/model-template.component';
 import { ColumnTitleFormatPipe } from './shared/pipes/column-title-format.pipe';
@@ -104,6 +104,7 @@ import { RemindPanelComponent } from './components/dashboard/dashboard-component
 
 import { StaffListComponent } from './components/dashboard/dashboard-components/admin-staff/Staff-list/Staff-list.component';
 
+import {CustomErrorHandler} from './services/errorhandler/CustomErrorHandler'
 import { SimplifyOrgPipe } from './shared/pipes/simplify-org.pipe';
 import { LearnerCreditPanelComponent } from './components/dashboard/dashboard-components/learner-credit/learner-credit-panel/learner-credit-panel.component';
 import { LearnerCreditDetailsComponent } from './components/dashboard/dashboard-components/learner-credit/learner-credit-details/learner-credit-details.component';
@@ -203,6 +204,9 @@ import { ConflictCheckComponent } from './components/dashboard/dashboard-compone
     TeacherPanelComponent,
     CourseDetailModalComponent,
     CourseDeleteModalComponent,
+    StockApplicationListComponent,
+    StockApplicationDetailModalComponent,
+    StockApplicationDeleteModalComponent,
     TestoneComponent,
     LearnerItemComponent,
     ModelTemplateComponent,
@@ -213,7 +217,6 @@ import { ConflictCheckComponent } from './components/dashboard/dashboard-compone
     LearnerDeleteCourseModalComponent,
     AmendmentHistoryModalComponent,
     IsTemporaryPipe,
-
     SessionCancelModalComponent,
     SessionTutorReportModalComponent,
     SessionCompletedModalComponent,
@@ -276,9 +279,8 @@ import { ConflictCheckComponent } from './components/dashboard/dashboard-compone
     PageGroupDetailsComponent,
 
     MessagerNotificationComponent,
-    ConflictCheckComponent,
-    StockApplicationListComponent,
-    StockApplicationModalComponent
+    ConflictCheckComponent
+
   ],
   imports: [
     NgbModule,
@@ -302,6 +304,10 @@ import { ConflictCheckComponent } from './components/dashboard/dashboard-compone
     DatePipe,
     MondayDateInWeekByDatePipe,
     NgbActiveModal,
+    {
+      provide: ErrorHandler,
+      useClass: CustomErrorHandler,
+    },
   ],
   entryComponents: [
     AdminLearnerProfileComponent,
@@ -350,10 +356,10 @@ import { ConflictCheckComponent } from './components/dashboard/dashboard-compone
     // AddHolidaysModalComponent,
     DeleteHolidayComponent,
     AdminPaymentProductModalComponent,
-    AdminPaymentConfirmModalComponent
-    // DeleteHolidayComponent,
+    AdminPaymentConfirmModalComponent,
+
     // AmendmentHistoryModalComponent,
-    // SelectHolidaysModalComponent
+    SelectHolidaysModalComponent
   ],
   exports: [AppComponent],
   bootstrap: [AppComponent]

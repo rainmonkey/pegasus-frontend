@@ -210,18 +210,19 @@ export class TeacherCourseModalComponent implements OnInit {
     get this teacher's salary
   */
   getTeacherSalary(course) {
-    if(this.whichTeacher.TeacherWageRate !== null){
+    console.log(this.whichTeacher)
+    if(this.whichTeacher.TeacherWageRates !== null){
       if(course == 'piano'){
-        return this.whichTeacher.TeacherWageRate.PianoRates;
+        return this.whichTeacher.TeacherWageRates.PianoRates;
       }
       else if(course == 'theory'){
-        return this.whichTeacher.TeacherWageRate.TheoryRates;
+        return this.whichTeacher.TeacherWageRates.TheoryRates;
       }
       else if(course == 'others'){
-        return this.whichTeacher.TeacherWageRate.OthersRates;
+        return this.whichTeacher.TeacherWageRates.OthersRates;
       }
       else if(course == 'group'){
-        return this.whichTeacher.TeacherWageRate.GroupRates;
+        return this.whichTeacher.TeacherWageRates.GroupRates;
       }
     }
     else{
