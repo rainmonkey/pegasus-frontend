@@ -137,10 +137,12 @@ export class SessionsCalendarViewAdminComponent implements OnInit {
 
       if (s.IsCanceled == 1) {
         s.color = 'grey';
+        s.editable = false;
       }
 
       if (s.IsConfirm == 1){
-        s.color = 'green'
+        s.color = 'green';
+        s.editable = false;
       }
 
       const type = '(' + s.title + ')';
