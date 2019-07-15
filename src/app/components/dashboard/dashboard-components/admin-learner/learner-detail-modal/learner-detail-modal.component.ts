@@ -32,7 +32,7 @@ export class LearnerDetailModalComponent implements OnInit {
   learnerList1: any
   //amendment列表
   amendmentList = []
-
+  learnerPaymentList=[]
 
   constructor(public activeModal: NgbActiveModal, private LearnerListService: LearnersService,   private modalService: NgbModal,) {
 
@@ -50,6 +50,7 @@ export class LearnerDetailModalComponent implements OnInit {
     this.getData()
     // this.getAmendentLength()
     this.getAmendmentList()
+    this.getLearnerPayment(this.whichLearner.LearnerId)
   }
 
   getData() {
@@ -65,49 +66,30 @@ export class LearnerDetailModalComponent implements OnInit {
     )
   }
 
-
-
-  ////!!!!!!!!!!!!原本
-  // lookUpData1(){
-  //   this.LearnerListService.getLookups(2).subscribe(
-  //     (res)=>{console.log(res), this.lookUpData2(res['Data'])},
-  //     (err)=>{console.warn(err)}
-  //   )
-  // }
-  // lookUpData2(data1){
-  //   this.LearnerListService.getLookups(3).subscribe(
-  //     (res)=>{console.log(res),
-
-  //       this.getPurposeValue(data1.concat(res['Data'])
-  //       )},
-  //     (err)=>{console.warn(err)}
-  //   )
-  // }
-
   lookUpData1() {
     this.LearnerListService.getLookups(2).subscribe(
-      (res) => { console.log(res), this.getPurposeValue(res.Data) },
+      (res) => {  this.getPurposeValue(res.Data) },
       (err) => { console.warn(err) }
     )
   }
 
   lookUpData2() {
     this.LearnerListService.getLookups(3).subscribe(
-      (res) => { console.log(res), this.getHowKnowValue(res.Data) },
+      (res) => { this.getHowKnowValue(res.Data) },
       (err) => { console.warn(err) }
     )
   }
 
   lookUpData4() {
     this.LearnerListService.getLookups(4).subscribe(
-      (res) => { console.log(res), this.getLearnerValue(res.Data) },
+      (res) => { this.getLearnerValue(res.Data) },
       (err) => { console.warn(err) }
     )
   }
 
   lookUpData5(){
     this.LearnerListService.getLookups(5).subscribe(
-      (res) => { console.log(res), this.getLevelType(res.Data) },
+      (res) => { this.getLevelType(res.Data) },
       (err) => { console.warn(err) }
     )
   }
@@ -144,24 +126,6 @@ export class LearnerDetailModalComponent implements OnInit {
         })
       }
     })
-
-    // 原本
-    // getPurposeValue(displayDatas){
-    //   console.log(displayDatas)
-
-    //   this.whichLearner.LearnerOthers.forEach(learnerOther => {
-    //     console.log(learnerOther)
-    //     if(learnerOther.OthersType == "2" || learnerOther.OthersType== "3"){
-    //         displayDatas.forEach(displayData => {
-    //           console.log(displayData)
-    //           if(learnerOther.OthersValue == displayData['PropValue']){
-    //             console.log(displayData)
-    //             this.otherValueList.push(displayData['PropName'])
-    //           }
-    //         })
-    //     }
-    //   })
-    // console.log(this.otherValueList)
   }
 
   getHowKnowValue(displayData) {
@@ -179,9 +143,6 @@ export class LearnerDetailModalComponent implements OnInit {
       // console.log(this.howKnowList)
     })
   }
-
-
-
 
 
 
@@ -225,7 +186,6 @@ export class LearnerDetailModalComponent implements OnInit {
 
 
   getAmendmentList() {
-
     for (let i of this.whichLearner.One2oneCourseInstance) {
       // console.log(i)
       if (i.Amendment) {
@@ -244,9 +204,14 @@ export class LearnerDetailModalComponent implements OnInit {
 
   openHistory(ele) {
     const modalRef = this.modalService.open(AmendmentHistoryModalComponent, { size: 'lg', backdrop: 'static', keyboard: false });
-
     modalRef.componentInstance.whichCourse=ele
+  }
 
+  getLearnerPayment(learnerId){
+    this.LearnerListService.getLearnerPayment(learnerId).subscribe(
+      (res) => {  this.learnerPaymentList=res['Data'], console.log(this.learnerPaymentList) },
+      (err) => { console.warn(err) }
+    )
   }
 
 }
