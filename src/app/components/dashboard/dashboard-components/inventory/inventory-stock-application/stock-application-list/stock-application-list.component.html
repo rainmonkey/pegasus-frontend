@@ -1,0 +1,110 @@
+<div class='container tl_body'>
+  <div class="row">
+    <div class='col-12 t_info_title'>
+      Stock Application
+    </div>
+    <div class="col-12">
+      <!-- select a period of time -->
+      <div >
+        <div style="float:left;">
+          <span>
+            <p class="label_p">Select a period of date:</p>
+          </span>
+          <div class="input-group input_datebar">
+            <input class="form-control" style="height: 30px;" placeholder="yyyy-mm-dd" ngbDatepicker
+              #beginDate="ngbDatepicker" (dateSelect)="onBeginDateSelect($event)">
+            <div class="input-group-append">
+              <button class="btn btn-outline-secondary calendar" style="height: 30px; line-height: 0;"
+                (click)="beginDate.toggle()" type="button">
+                <i class="far fa-calendar-alt"></i>
+              </button>
+            </div>
+          </div>
+          <span>
+            <p class="label_p">To</p>
+          </span>
+          <div class="input-group input_datebar">
+            <input class="form-control" style="height: 30px;" placeholder="yyyy-mm-dd" ngbDatepicker
+              #endDate="ngbDatepicker" (dateSelect)="onEndDateSelect($event)">
+            <div class="input-group-append">
+              <button class="btn btn-outline-secondary calendar" style="height: 30px; line-height: 0;"
+                (click)="endDate.toggle()" type="button">
+                <i class="far fa-calendar-alt"></i>
+              </button>
+            </div>
+          </div>
+          <button type="button" class='btn btn-info t_info_addmore_btn' (click)="selectPeriod()">
+            <i class='fas fa-search'></i>Search
+          </button>
+        </div>
+      <!--add more btn-->
+        <div class='btn btn-info t_info_addmore_btn' style="float:right;">
+           + Add More</div>
+        </div>
+    </div>
+    <div *ngIf='loadingFlag' class="loaderLarge"></div>
+    <div *ngIf='!loadingFlag' class='t_mf_form'>
+      <div class='col-12'>
+        <table class='table table-striped' style="text-align: center;">
+          <thead>
+            <tr>
+              <th scope='col' class='tl_body_table_head' style="width:5rem;">#</th>
+              <th scope='col' class='tl_body_table_head sorting_item' style="width:10rem" (click)='onSort("StaffName")'>
+                Staff Name
+              </th>
+              <th scope='col' class='tl_body_table_head sorting_item' style="width:10rem" (click)='onSort("Org")'>
+                Location
+              </th>
+              <th scope='col' class='tl_body_table_head sorting_item' style="width:10rem" (click)='onSort("ApplyAt")'>
+                Apply At
+              </th>
+              <th scope='col' class='tl_body_table_head sorting_item' style="width:10rem" (click)='onSort("ApplyReason")'>
+                Apply Reason
+              </th>
+              <th scope='col' class='tl_body_table_head sorting_item' style="width:10rem" (click)='onSort("ProductType")'>
+                Product Name
+              </th>
+              <th scope='col' class='tl_body_table_head sorting_item' style="width:10rem" (click)='onSort("ProductQuantity")'>
+                Product QTY
+              </th>
+              <th scope='col' class='tl_body_table_head sorting_item' style="width:10rem">Edit & Delete</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor='let item of stockApplications;'>
+              <th scope="row">{{ item.id }}</th>
+              <td>
+                {{ item.ApplyStaff.FirstName }}
+              </td>
+              <td>{{ item.Org.OrgName }}</td>
+              <td>{{ item.ApplyAt | date:'shortDate' }}</td>
+              <td>{{ item.ApplyReason }}</td>
+              <td>
+                <li *ngFor="let detail of item.ApplicationDetails">{{ detail.Product.ProductName }}</li>
+              </td>
+              <td>
+                <li *ngFor="let detail of item.ApplicationDetails">{{ detail.AppliedQty }}</li>
+              </td>
+              <td>
+                <span class='tl_body_table_btn' style="margin-right: 1rem;">
+                  <i class='fas fa-pen'></i>
+                </span>
+                <span class='tl_body_table_btn'>
+                  <i class='fas fa-trash-alt'></i>
+                </span>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <!--body pagination-->
+      <div class='col-12'>
+        <ngb-pagination  #pagination [collectionSize]='stockApplication.length' [(page)]='page' [pageSize]='pageSize'
+        (click)='getCurrentPage()'>
+        </ngb-pagination>
+      </div>
+    </div>
+  </div>
+</div>
+
+

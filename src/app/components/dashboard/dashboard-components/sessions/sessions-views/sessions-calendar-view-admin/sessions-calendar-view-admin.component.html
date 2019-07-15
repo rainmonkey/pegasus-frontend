@@ -60,11 +60,10 @@
     </button>
   </div>
 </ng-template>
-
 <ng-template let-modal #methodModal>
   <div class="modal-header m-2">
-    <h4>Please choose operation method</h4>
-    <button
+    <h4>Lesson Info</h4>
+     <button
       type="button"
       class="close"
       aria-label="Close"
@@ -73,24 +72,62 @@
       <span aria-hidden="true">&times;</span>
     </button>
   </div>
+  <div class="modal-body m-2">
+    <div *ngIf="learnerProfileLoading" class="loaderLarge"></div>
+    <div *ngIf="eventInfo.event.extendedProps.learner">
+      <div *ngIf="eventInfo.event.extendedProps.IsCanceled==1 || eventInfo.event.extendedProps.IsConfirm==1">
+        <h5 class="text-center">Reason (Cancel or Complete)</h5>
+        <p class="text-center">{{eventInfo.event.extendedProps.Reason}}</p>
+      </div>
+      <h5 class="text-center">Teacher Name</h5>
+      <p class="text-center">{{eventInfo.event.extendedProps.info.TeacherName}}</p>
+      <h5 class="text-center">Students Name</h5>
+      <p (click)="openLearnerItem(eventInfo.event.extendedProps.learner[0].LearnerId)" class="text-center">{{eventInfo.event.extendedProps.learner[0].FirstName}}</p>
+      <h5 class="text-center">Room name</h5>
+      <p class="text-center">{{eventInfo.event.extendedProps.info.RoomName}} ({{eventInfo.event.extendedProps.info.OrgName}})</p>
+      <h5 class="text-center">Course Name</h5>
+      <p class="text-center">{{eventInfo.event.extendedProps.info.CourseName}}</p>
+    </div>
+
+    <div *ngIf="eventInfo.event.extendedProps.learners">
+      <div *ngIf="eventInfo.event.extendedProps.IsCanceled==1 || eventInfo.event.extendedProps.IsConfirm==1">
+        <h5 class="text-center">Reason (Cancel or Complete)</h5>
+        <p class="text-center">{{eventInfo.event.extendedProps.Reason}}</p>
+      </div>
+      <h5 class="text-center">Teacher Name</h5>
+      <p class="text-center">{{eventInfo.event.extendedProps.info.TeacherName}}</p>
+      <h5 class="text-center">Students Name</h5>
+      <div *ngFor="let learner of eventInfo.event.extendedProps.learners">
+        <div class="col-4">
+          <p (click)="openLearnerItem(learner.LearnerId)">{{learner.FirstName}}</p>
+        </div>
+      </div>
+      <h5 class="text-center">Room name</h5>
+      <p class="text-center">{{eventInfo.event.extendedProps.info.RoomName}} ({{eventInfo.event.extendedProps.info.OrgName}})</p>
+      <h5 class="text-center">Course Name</h5>
+      <p class="text-center">{{eventInfo.event.extendedProps.info.CourseName}}</p>
+    </div>
+
+  </div>
   <div class="container">
-    <div class="row">
-      <div class="col-3">
-        <button (click)="openEdit(eventInfo)" (click)="modal.dismiss('Cross click')" class="btn btn-primary btn-block">Edit </button>
-      </div>
-      <div class="col-3">
-        <button  class="btn btn-success btn-block" (click)="openConfirm(eventInfo)" (click)="modal.dismiss('Cross click')"  >Confirm</button>
-      </div>
-      <div class="col-3">
-        <button (click)="openDelete(eventInfo)" (click)="modal.dismiss('Cross click')"  class="btn btn-danger btn-block" >Cancel</button>
-      </div>
-      <div class="col-3">
-        <button (click)="openReschedule(eventInfo)" (click)="modal.dismiss('Cross click')" class="btn btn-warning btn-block"><div style="color: #ffffff">Split</div></button>
+    <div *ngIf="eventInfo.event.extendedProps.IsCanceled!=1 && eventInfo.event.extendedProps.IsConfirm!=1">
+      <div class="row">
+        <div class="col-3">
+          <button (click)="openEdit(eventInfo)" (click)="modal.dismiss('Cross click')" class="btn btn-primary btn-block">Edit </button>
+        </div>
+        <div class="col-3">
+          <button  class="btn btn-success btn-block" (click)="openConfirm(eventInfo)" (click)="modal.dismiss('Cross click')"  >Confirm</button>
+        </div>
+        <div class="col-3">
+          <button (click)="openDelete(eventInfo)" (click)="modal.dismiss('Cross click')"  class="btn btn-danger btn-block" >Cancel</button>
+        </div>
+        <div class="col-3">
+          <button (click)="openReschedule(eventInfo)" (click)="modal.dismiss('Cross click')" class="btn btn-warning btn-block"><div style="color: #ffffff">Split</div></button>
+        </div>
       </div>
     </div>
   </div>
 </ng-template>
-
 <div class="container">
   <div *ngIf="isloading" class="loaderLarge"></div>
   <div *ngIf="options">

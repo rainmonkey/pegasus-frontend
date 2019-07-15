@@ -3,7 +3,7 @@ import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { LearnersService } from 'src/app/services/http/learners.service';
 import { environment } from 'src/environments/environment.prod';
 import { AmendmentHistoryModalComponent } from '../amendment-History-modal/amendment-History-modal.component';
-
+import Swal from 'sweetalert2';
 @Component({
   selector: 'app-learner-detail-modal',
   templateUrl: './learner-detail-modal.component.html',
@@ -13,8 +13,6 @@ export class LearnerDetailModalComponent implements OnInit {
   @Input() command;
   @Input() whichLearner;
   // PropNameArray:Array<any>
-  public isGroupCourse: boolean = true;
-  public isCustomCourse: boolean = false;
   public learnerPurpose: Array<any>;
   public howKnown: Array<any>;
   public Purpose: Array<any>;
@@ -62,18 +60,11 @@ export class LearnerDetailModalComponent implements OnInit {
         this.learnerList1 = res.Data;
       },
       (err) => {
-       alert("Something wrong in server")
+       Swal.fire({  type: 'error',  title: 'Oops...', text: "Something wrong in server:"+err.error.ErrorMessage });
       }
     )
   }
-  chooseGroupCourse() {
-    this.isGroupCourse = true;
-    this.isCustomCourse = false;
-  }
-  chooseCustomCourse() {
-    this.isCustomCourse = true;
-    this.isGroupCourse = false;
-  }
+
 
 
   ////!!!!!!!!!!!!原本
@@ -239,7 +230,7 @@ export class LearnerDetailModalComponent implements OnInit {
       // console.log(i)
       if (i.Amendment) {
         i.Amendment.sort((b, a) => a.CreatedAt.replace(/-/gi, '').slice(0, 8) - b.CreatedAt.replace(/-/gi, '').slice(0, 8))
-        console.log(i.Amendment.sort((b, a) => a.CreatedAt.replace(/-/gi, '').slice(0, 8) - b.CreatedAt.replace(/-/gi, '').slice(0, 8)))
+        // console.log(i.Amendment.sort((b, a) => a.CreatedAt.replace(/-/gi, '').slice(0, 8) - b.CreatedAt.replace(/-/gi, '').slice(0, 8)))
          for(let j of i.Amendment){
            if (j.IsTemporary == 0) {
             i.permanent = j;

@@ -5,7 +5,6 @@ import { UserAuthOtherGuard } from './guards/user-auth-other.guard';
 
 import { LoginComponent } from './components/basic/login/login.component';
 import { DashboardPanelComponent } from './components/dashboard/general/dashboard-panel/dashboard-panel.component';
-import { TimePickerComponent } from './components/dashboard/dashboard-components/time-picker/time-picker.component';
 import { LearnerRegistrationModalComponent } from './components/dashboard/dashboard-components/learner-registration/learner-registration-modal/learner-registration-modal.component';
 import { LearnerRegistrationFormComponent } from './components/dashboard/dashboard-components/learner-registration/learner-registration-form/learner-registration-form.component';
 import { AdminLearnerPaymentPanelComponent } from './components/dashboard/dashboard-components/admin-payment/admin-learner-payment-panel/admin-learner-payment-panel.component';
@@ -26,7 +25,7 @@ import { PayrollPanelComponent } from './components/dashboard/dashboard-componen
 import { PayrollListComponent } from './components/dashboard/dashboard-components/admin-payroll/payroll-list/payroll-list.component';
 import { AdminInvoiceListComponent } from './components/dashboard/dashboard-components/admin-transactions/admin-invoice-list/admin-invoice-list.component';
 import { TransactionsPanelComponent } from './components/dashboard/dashboard-components/admin-transactions/transactions-panel/transactions-panel.component';
-import { AdminPaymentListComponent } from './components/dashboard/dashboard-components/admin-transactions/admin-payment-list/admin-payment-list.component';
+import { AdminPaymentListComponent } from './components/dashboard/dashboard-components/admin-transactions/admin-payment/admin-payment-list/admin-payment-list.component';
 import { AdminSalesListComponent } from './components/dashboard/dashboard-components/admin-transactions/admin-sales-list/admin-sales-list.component';
 import { SessionsCalendarViewAdminComponent } from './components/dashboard/dashboard-components/sessions/sessions-views/sessions-calendar-view-admin/sessions-calendar-view-admin.component';
 import { SessionsCalendarViewTutorComponent } from './components/dashboard/dashboard-components/sessions/sessions-views/sessions-calendar-view-tutor/sessions-calendar-view-tutor.component';
@@ -38,13 +37,15 @@ import { DashboardHomeComponent } from './components/dashboard/dashboard-compone
 import { TrialInfoComponent } from './components/dashboard/dashboard-components/trial-session/trial-info/trial-info.component';
 import { RemindListComponent } from './components/dashboard/dashboard-components/remind/remind-list/remind-list.component';
 import { RemindPanelComponent } from './components/dashboard/dashboard-components/remind/remind-panel/remind-panel.component';
-
 import { StaffListComponent } from './components/dashboard/dashboard-components/admin-staff/Staff-list/Staff-list.component';
 import { LearnerCreditPanelComponent } from "./components/dashboard/dashboard-components/learner-credit/learner-credit-panel/learner-credit-panel.component";
 import { LearnerCreditDetailsComponent } from "./components/dashboard/dashboard-components/learner-credit/learner-credit-details/learner-credit-details.component"
 import { HolidayCalendarComponent } from './components/dashboard/dashboard-components/admin-holidays/holiday-calendar/holiday-calendar.component';
 import { CoporateOrderApplicationComponent } from './components/dashboard/dashboard-components/admin-inventory-application-dispatch/coporate-order-application/coporate-order-application.component';
+import{PageGroupDetailsComponent} from './components/dashboard/dashboard-components/admin-pageGroup/pageGroup-details/pageGroup-details.component'
 import { ConflictCheckComponent } from './components/dashboard/dashboard-components/conflict-check/conflict-check/conflict-check.component';
+import { StockApplicationListComponent } from './components/dashboard/dashboard-components/inventory/inventory-stock-application/stock-application-list/stock-application-list.component';
+
 
 //canActivate: [DashboardRestrictGuard],
 const routes: Routes = [
@@ -148,7 +149,8 @@ const routes: Routes = [
       {
         path: 'inventory', component: InventoryPanelComponent,
         children: [
-          { path: 'list', component: InventoryListComponent }
+          { path: 'list', component: InventoryListComponent },
+          { path: 'stock-application', component: StockApplicationListComponent }
         ]
       },
       // Payroll Area
@@ -167,8 +169,11 @@ const routes: Routes = [
       },
       //Staff Area
       { path: 'staff/list', component: StaffListComponent },
+
+      //pagegroup area
+      { path:'pageGroup',component:PageGroupDetailsComponent},
+
       // Below to be rearranged
-      { path: 'time/picker', component: TimePickerComponent },
       { path: 'holidays', component: HolidayCalendarComponent },
       { path: 'corporate-order-application', component: CoporateOrderApplicationComponent },
       { path: 'conflict-Check', component: ConflictCheckComponent }

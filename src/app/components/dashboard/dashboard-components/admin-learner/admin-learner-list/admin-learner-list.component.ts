@@ -59,6 +59,7 @@ export class AdminLearnerListComponent implements OnInit {
       (res) => {
         //@ts-ignore
         this.learnerList = res.Data;
+        console.log(this.learnerList)
         //@ts-ignore
         this.learnerListCopy = this.learnerList;
         //@ts-ignore
@@ -212,7 +213,7 @@ export class AdminLearnerListComponent implements OnInit {
     detail modal
   */
   detailModal(command, whichLearner) {
-    const modalRef = this.modalService.open(LearnerDetailModalComponent, { size: 'lg', backdrop: 'static', keyboard: false });
+    const modalRef = this.modalService.open(LearnerDetailModalComponent, {windowClass: 'my-class', backdrop: 'static', keyboard: false });
     modalRef.componentInstance.command = command;
     modalRef.componentInstance.whichLearner = whichLearner;
   }
@@ -259,9 +260,7 @@ export class AdminLearnerListComponent implements OnInit {
     modalRef.componentInstance.command = command;
     modalRef.componentInstance.whichLearner = whichLearner;
     modalRef.componentInstance.signalForInit.subscribe(res => {
-      console.log('lyric')
       if (res == true) {
-        console.log('lyric')
         that.ngOnInit();
       }
     })
