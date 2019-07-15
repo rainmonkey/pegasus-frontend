@@ -131,7 +131,7 @@ export class SessionsCalendarViewAdminComponent implements OnInit {
   generateEventData = (data) => {
 
     data.forEach(s => {
-      if (s.isOwnAfterLesson == 1) {
+      if (s.isReadyToOwn == 1) {
         s.color = 'red';
       }
 
