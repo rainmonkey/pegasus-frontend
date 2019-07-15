@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, Input } from '@angular/core';
 import { PaymentService } from '../../../../../services/http/payment.service';
 import { FormBuilder, Validators } from '@angular/forms';
 import { NgbModal, ModalDismissReasons, NgbTab, NgbTabTitle, } from '@ng-bootstrap/ng-bootstrap';
@@ -15,6 +15,8 @@ import Swal from "sweetalert2"
   styleUrls: ['./admin-learner-payment-invoice.component.css']
 })
 export class AdminLearnerPaymentInvoiceComponent implements OnInit, OnDestroy {
+  // active modal get by model template
+  @Input() whichLearner;
   // invoice
   public dataInvoice: any;
   public learnerId: any;
@@ -36,6 +38,8 @@ export class AdminLearnerPaymentInvoiceComponent implements OnInit, OnDestroy {
   fistNameSubscription
   // not show invoice data;
   noInvoice = false;
+  // id get from admin learner profile
+  // whichLearner;
 
   invoiceForm = this.fb.group({
     owing: ['', Validators.required],
@@ -290,6 +294,7 @@ export class AdminLearnerPaymentInvoiceComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit() {
+      if (!this.whichLearner){
       // put to service
       this.activatedRouter.paramMap.subscribe((obs:ParamMap) => {
       //  this.learnerId = this.activatedRouter.snapshot.paramMap.get("id")
@@ -314,7 +319,31 @@ export class AdminLearnerPaymentInvoiceComponent implements OnInit, OnDestroy {
           this.errorAlert = true;
           //alert(this.errorMsg);
         });
-      });
+      });} else {
+        this.learnerId = this.whichLearner;
+        console.log(this.whichLearner)
+        this.errorAlert = false;
+        this.errorMsg ='';
+        this.errMsgM = false;
+        this.errMsgO = false;
+        this.paymentsListService
+        .getInvoice(this.whichLearner)
+        .subscribe(res => {
+          this.noInvoice = false
+          // return console.log(dataInvoice)
+          this.dataInvoice = res['Data'];
+          console.log(this.dataInvoice)
+          this.incaseDateIsNull();
+          this.reSearchPrepare();
+        },error=>{
+          console.log(error);
+          this.noInvoice = true;
+          this.errorMsg =error.error.ErrorMessage;
+          this.errorAlert = true;
+          //alert(this.errorMsg);
+        });
+
+      }
       this.nameSubejct();
     }
   ngOnDestroy(){
