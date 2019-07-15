@@ -356,10 +356,10 @@ import { ConflictCheckComponent } from './components/dashboard/dashboard-compone
     // AddHolidaysModalComponent,
     DeleteHolidayComponent,
     AdminPaymentProductModalComponent,
-    AdminPaymentConfirmModalComponent
-    // DeleteHolidayComponent,
+    AdminPaymentConfirmModalComponent,
+
     // AmendmentHistoryModalComponent,
-    // SelectHolidaysModalComponent
+    SelectHolidaysModalComponent
   ],
   exports: [AppComponent],
   bootstrap: [AppComponent]
