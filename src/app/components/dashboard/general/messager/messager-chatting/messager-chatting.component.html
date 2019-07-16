@@ -41,7 +41,7 @@
               [class.m_c_chatting_messagers_right]='i.leftOrRight == "right"'
               [class.m_c_chatting_text_left]='i.leftOrRight == "left"'
               [class.m_c_chatting_text_right]='i.leftOrRight == "right"'>
-              {{i.msg}} {{last ? scroll() : ''}}
+              {{i.msg}} {{last ? scrollToBottom() : ''}}
             </div>
           </div>
         </div>
