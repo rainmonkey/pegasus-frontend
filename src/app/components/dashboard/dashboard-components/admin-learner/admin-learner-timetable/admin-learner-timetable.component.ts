@@ -46,7 +46,7 @@ export class AdminLearnerTimetableComponent implements OnInit {
   }
 
   getExistCourse() {
-    this.learnersService.getArrangedLesson(this.whichLearner).subscribe(
+    this.learnersService.getLearnerByIdTimePick(this.whichLearner).subscribe(
       (event) => {
         console.log(event);
         //@ts-ignore
@@ -61,7 +61,7 @@ export class AdminLearnerTimetableComponent implements OnInit {
   putInfo(data) {
     this.courseArray = [];
     for (let i of data) {
-      this.courseArray.push({ "title": i.teacherFirstName +' '+ i.orgName, "date": i.start })
+      this.courseArray.push({ "title": i.TeacherFirstName +' '+ i.BranchAbbr, "date": i.BeginTime })
     }
     return this.courseArray;
   }
