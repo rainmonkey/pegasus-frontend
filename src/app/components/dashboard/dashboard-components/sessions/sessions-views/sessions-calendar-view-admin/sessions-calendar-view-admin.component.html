@@ -79,14 +79,33 @@
         <h5 class="text-center">Reason (Cancel or Complete)</h5>
         <p class="text-center">{{eventInfo.event.extendedProps.Reason}}</p>
       </div>
+
       <h5 class="text-center">Teacher Name</h5>
-      <p class="text-center">{{eventInfo.event.extendedProps.info.TeacherName}}</p>
+      <div *ngIf="eventInfo.event.extendedProps.IsChanged==1">
+        <del><p class="text-center">{{eventInfo.event.extendedProps.info.TeacherFirstName}} {{eventInfo.event.extendedProps.info.TeacherLastName}}</p></del>
+        <p class="text-center">{{eventInfo.event.extendedProps.newLesson.TeacherFirstName}} {{eventInfo.event.extendedProps.newLesson.TeacherLastName}}</p>
+      </div>
+      <p *ngIf="eventInfo.event.extendedProps.IsChanged !=1" class="text-center">{{eventInfo.event.extendedProps.info.TeacherFirstName}} {{eventInfo.event.extendedProps.info.TeacherLastName}}</p>
+
       <h5 class="text-center">Students Name</h5>
       <p (click)="openLearnerItem(eventInfo.event.extendedProps.learner[0].LearnerId)" class="text-center">{{eventInfo.event.extendedProps.learner[0].FirstName}}</p>
+
       <h5 class="text-center">Room name</h5>
-      <p class="text-center">{{eventInfo.event.extendedProps.info.RoomName}} ({{eventInfo.event.extendedProps.info.OrgName}})</p>
+      <div *ngIf="eventInfo.event.extendedProps.IsChanged==1">
+        <del><p class="text-center">{{eventInfo.event.extendedProps.info.RoomName}} ({{eventInfo.event.extendedProps.info.OrgName}})</p></del>
+        <p class="text-center">{{eventInfo.event.extendedProps.newLesson.RoomName}} ({{eventInfo.event.extendedProps.newLesson.OrgName}})</p>
+      </div>
+      <p *ngIf="eventInfo.event.extendedProps.IsChanged !=1" class="text-center">{{eventInfo.event.extendedProps.info.RoomName}} ({{eventInfo.event.extendedProps.info.OrgName}})</p>
+
       <h5 class="text-center">Course Name</h5>
       <p class="text-center">{{eventInfo.event.extendedProps.info.CourseName}}</p>
+
+      <h5 class="text-center">Begin Time</h5>
+      <div *ngIf="eventInfo.event.extendedProps.IsChanged==1">
+        <del><p class="text-center">{{eventInfo.event.start}}</p></del>
+        <p class="text-center">{{eventInfo.event.extendedProps.newLesson.BeginTime}}</p>
+      </div>
+      <p *ngIf="eventInfo.event.extendedProps.IsChanged !=1" class="text-center">{{eventInfo.event.start}}</p>
     </div>
 
     <div *ngIf="eventInfo.event.extendedProps.learners">
@@ -95,9 +114,9 @@
         <p class="text-center">{{eventInfo.event.extendedProps.Reason}}</p>
       </div>
       <h5 class="text-center">Teacher Name</h5>
-      <p class="text-center">{{eventInfo.event.extendedProps.info.TeacherName}}</p>
+      <p class="text-center">{{eventInfo.event.extendedProps.info.TeacherFirstName}} {{eventInfo.event.extendedProps.info.TeacherLastName}}</p>
       <h5 class="text-center">Students Name</h5>
-      <div *ngFor="let learner of eventInfo.event.extendedProps.learners">
+      <div class="row" *ngFor="let learner of eventInfo.event.extendedProps.learners">
         <div class="col-4">
           <p (click)="openLearnerItem(learner.LearnerId)">{{learner.FirstName}}</p>
         </div>
@@ -106,6 +125,8 @@
       <p class="text-center">{{eventInfo.event.extendedProps.info.RoomName}} ({{eventInfo.event.extendedProps.info.OrgName}})</p>
       <h5 class="text-center">Course Name</h5>
       <p class="text-center">{{eventInfo.event.extendedProps.info.CourseName}}</p>
+      <h5 class="text-center">Begin Time</h5>
+      <p class="text-center">{{eventInfo.event.start}}</p>
     </div>
 
   </div>
