@@ -1,5 +1,6 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { MessagerService } from 'src/app/services/repositories/messager.service';
+import { environment } from 'src/environments/environment.prod';
 
 @Component({
   selector: 'app-messager-recently',
@@ -9,6 +10,7 @@ import { MessagerService } from 'src/app/services/repositories/messager.service'
 })
 export class MessagerRecentlyComponent implements OnInit {
   public recentlySubscribers: Array<object>;
+  public photoUrl = environment.photoUrl;
   
   @Output() onChattingWith = new EventEmitter();
   constructor(private messagerService: MessagerService) { }
