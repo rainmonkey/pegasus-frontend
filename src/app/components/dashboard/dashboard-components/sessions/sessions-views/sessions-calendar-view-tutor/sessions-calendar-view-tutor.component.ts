@@ -27,8 +27,10 @@ export class SessionsCalendarViewTutorComponent implements OnInit {
   dateOfLesson;
   teachers;
   teacherId;
+  teacherSelected;
   eventsModel: any;
-  constructor(private sessionsService: SessionsService,private coursesService:CoursesService, private datePipe: DatePipe, private modalService: NgbModal,
+  constructor(private sessionsService: SessionsService,
+              private coursesService: CoursesService, private datePipe: DatePipe, private modalService: NgbModal,
               private mondayDatePipe: MondayDateInWeekByDatePipe) { }
   ngOnInit() {
     this.dateOfLesson = {year:new Date().getFullYear(),month:new Date().getMonth()+1,day:new Date().getDate()};
@@ -66,27 +68,57 @@ export class SessionsCalendarViewTutorComponent implements OnInit {
     };
     this.InitialiseEventData();
   }
-  getTeachers = () =>{
-    this.coursesService.getTeachers().subscribe(res=>{
+  getTeachers = () => {
+    this.coursesService.getTeachers().subscribe(res => {
       this.teachers = res.Data;
-    })
-  };
+    });
+  }
   generateEventData = (data) => {
     data.forEach(s => {
-      s.title = s.orgName + ' ( ' + s.title + ' )'
+      if (s.IsCanceled == 1) {
+        s.color = 'grey';
+      }
+
+      if (s.IsConfirm == 1) {
+        s.color = 'green';
+      }
+      s.title = s.orgAbbr + ' ( ' + s.title + ' )\n';
+      s.title += s.student.length === 1 ? s.student[0] : null;
       s.description += '<h4>Students Name</h4><div class="row">';
       if (s.student.length === 1) {
         s.description = '<h4>Students Name</h4>' + s.student[0];
-        s.description += '</div><h4>Room Name</h4>' + s.roomName + ' (' + s.orgName + ')'
-          + '<h4>Course Name</h4>' + s.courseName;
+        s.description += '</div><h4>Room Name</h4>';
+        if (s.IsChanged == 1) {
+          s.description +=  '<div><del>' + s.roomName + ' (' + s.orgName + ' )</del></div>';
+          s.description += s.newLesson.RoomName + ' (' + s.newLesson.OrgName + ' )';
+        } else {
+          s.description += s.roomName + ' (' + s.orgName + ' )';
+        }
+        s.description += '<h4>Course Name</h4>' + s.courseName + '<h4>Begin Time</h4>'
+        s.description += s.IsChanged == 1 ? '<div><del>' + s.BeginTime + '</del></div>' + s.newLesson.BeginTime : s.BeginTime;
+        if (s.IsConfirm == 1 || s.IsCanceled == 1) {
+          s.description += '<h4>Reason (Complete or Cancel)</h4>';
+          s.description += s.Reason;
+        }
         return data;
       }
       s.student.forEach(w => {
         s.description += '<div class="col-4">' + w + '</div> ';
 
       })
-      s.description += '</div><h4>Room Name</h4>' + s.roomName + ' (' + s.orgName + ')'
-                        + '<h4>Course Name</h4>' + s.courseName;
+      s.description += '</div><h4>Room Name</h4>'
+      if (s.IsChanged == 1) {
+        s.description +=  '<div><del>' + s.roomName + ' (' + s.orgName + ' )</del></div>';
+        s.description += s.newLesson.RoomName + ' (' + s.newLesson.OrgName + ' )';
+      } else {
+        s.description += s.roomName + ' (' + s.orgName + ' )';
+      }
+      s.description += '<h4>Course Name</h4>' + s.courseName + '<h4>Begin Time</h4>'
+      s.description += s.IsChanged == 1 ? '<div><del>' + s.BeginTime + '</del></div>' + s.newLesson.BeginTime : s.BeginTime;
+      if (s.IsConfirm == 1 || s.IsCanceled == 1) {
+        s.description += '<h4>Reason (Complete or Cancel)</h4>';
+        s.description += s.Reason;
+      }
     });
     return data;
   }
@@ -106,7 +138,7 @@ export class SessionsCalendarViewTutorComponent implements OnInit {
   GetEventData = (beginDate) => {
     if (!this.teacherId) return
     this.isloading = true;
-    this.sessionsService.getTeacherLesson(this.teacherId,beginDate).subscribe(data => {
+    this.sessionsService.getTeacherLesson(this.teacherId, beginDate).subscribe(data => {
       this.eventsModel = this.generateEventData(data.Data);
       this.isloading = false;
     }, err => {
