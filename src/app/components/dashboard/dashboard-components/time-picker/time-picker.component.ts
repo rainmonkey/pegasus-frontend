@@ -218,27 +218,33 @@ export class TimePickerComponent implements OnInit {
     // availableDay org includes learner org
     if(availableOrgId.includes(this.learnerOrgId)) {
       /* 判断 available org 是否有 arranged */
-      // console.log('availableOrgId.includes(this.learnerOrgId)',availableOrgId.includes(this.learnerOrgId))
+      console.log('availableOrgId.includes(this.learnerOrgId)',availableOrgId.includes(this.learnerOrgId))
       this.checkAvailableHasArranged(x, y, availableObj, availableX);
     } else {
     // availabeDay org not includes learner org
-      // console.log('availableOrgId not includes(this.learnerOrgId)')
+      console.log('availableOrgId not includes(this.learnerOrgId)')
       this.availableOrgNotIncludesLearnerOrg(availableX);
     }
   }
   checkAvailableHasArranged(x: number, y: number, availableObj, availableX) {
-    this.arrangedArr.map((arrangedObj) => {
-      let arrangedX = arrangedObj['DayOfWeek']-1;
-      // if availableDay has arranged
-      if(availableX == arrangedX) {
-        /* 判断 arranged org 是否等于 learner org */
-        // console.log('availableX == arrangedX', availableX == arrangedX)
-        this.checkArrangedOrg(x, y, arrangedObj);
-      } else {
-        // console.log('availableX != arrangedX')
-        this.setDuration('isAvailable', 'ableToPick', x, y)
-      }
-    })
+    console.log('ss',x,y ,availableObj, availableX,this.arrangedArr)
+    if(this.arrangedArr.length != 0) {
+      this.arrangedArr.map((arrangedObj) => {
+        let arrangedX = arrangedObj['DayOfWeek']-1;
+        // if availableDay has arranged
+        console.log('ssss', this.arrangedArr)
+        if(arrangedX  == availableX) {
+          /* 判断 arranged org 是否等于 learner org */
+          console.log('availableX == arrangedX', availableX == arrangedX)
+          this.checkArrangedOrg(x, y, arrangedObj);
+        } else {
+          console.log('availableX != arrangedX')
+          this.setDuration('isAvailable', 'ableToPick', x, y)
+        }
+      })
+    } else {
+      this.setDuration('isAvailable', 'ableToPick', x, y);
+    }
   }
   checkArrangedOrg(x: number, y: number, arrangedObj,) {
     let arrangedOrgId = arrangedObj['OrgId'];
@@ -324,7 +330,7 @@ export class TimePickerComponent implements OnInit {
     return true;
   }
   setDuration(isAvailable: string, ableToPick: string, x: number, y: number){
-    // console.log('setDuration', isAvailable, ableToPick, x, y)
+    console.log('setDuration', isAvailable, ableToPick, x, y)
     if(this.hasNextDuration(isAvailable, x, y)) {
       for(let i = 0; i < this.duration+1; i++) {
         this.slot[x][y+i] = ableToPick;
