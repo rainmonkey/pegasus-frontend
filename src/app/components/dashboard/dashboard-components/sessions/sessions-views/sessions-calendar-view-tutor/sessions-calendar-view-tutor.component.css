@@ -6,6 +6,10 @@
 @import "~@fullcalendar/timeline/main.css";
 @import "~@fullcalendar/timegrid/main.css";
 @import "~sweetalert2/dist/sweetalert2.min.css";
+
+/*.fc-head-container .fc-wed{*/
+/*  background: green;*/
+/*}*/
 .container{
   padding: 20px;
 }
