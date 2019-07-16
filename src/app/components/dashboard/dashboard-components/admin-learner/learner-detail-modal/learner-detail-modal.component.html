@@ -380,7 +380,7 @@
     <ngb-tab title="Payment">
       <ng-template ngbTabContent>
         <div
-          *ngFor='let i of learnerPaymentList | slice: (currentPage-1)* pageSize : (currentPage-1) * pageSize + pageSize'>
+          *ngFor='let i of learnerPaymentList | slice: (currentPage-1)* pageSize : (currentPage-1) * pageSize + pageSize; let index=index'>
           <br>
           <div class='card'>
             <div class="card-body">
@@ -399,16 +399,22 @@
                 <div class="col-4">
                   <span class='label'>Payment Method: </span>
                   <span class='text' *ngIf='i.PaymentMethod'>
-                    {{a}}
+                    {{paymentMethodList[pageSize*currentPage-pageSize+index]}}
                   </span>
                 </div>
 
                 <div class="col-4">
-                  <span class='label'>Payment Amount: </span>
+                  <span class='label'>Amount received: </span>
+                  <span class='text' *ngIf='i.Amount'>
+                    ${{i.Amount}}
+                  </span>
                 </div>
 
                 <div class="col-4">
                   <span class='label'>Payment Type: </span>
+                  <span class='text' *ngIf='i.PaymentMethod'>
+                    {{paymentTypeList[pageSize*currentPage-pageSize+index]}}
+                  </span>
                 </div>
 
                 <div class="col-4">
@@ -424,6 +430,11 @@
                 <div class='col-4'>
                   <span class='label'>Is Confirmed: </span>
                   <span class='text' *ngIf='i.IsConfirmed'>{{i.IsConfirmed | IsTemporary}}</span>
+                </div>
+
+                <div class='col-4'>
+                  <span class='label'>Invoice Number: </span>
+                  <span class='text' *ngIf='i.IsConfirmed'>{{i.Invoice.InvoiceNum}}</span>
                 </div>
 
                 <div class="col-6">

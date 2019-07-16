@@ -44,6 +44,7 @@ export class LearnerDetailModalComponent implements OnInit {
   public learnerPaymentList = []
   public paymentListLength
   paymentMethodList = []
+  paymentTypeList=[]
 
   //invoice pagination
   public learnerInvoiceList = []
@@ -73,11 +74,12 @@ export class LearnerDetailModalComponent implements OnInit {
     let lookUpData4 = this.LearnerListService.getLookups(4);
     let lookUpData5 = this.LearnerListService.getLookups(5);
     let lookUpData7 = this.LearnerListService.getLookups(7);
+    let lookUpData14= this.LearnerListService.getLookups(14);
     let learnerInvoice = this.LearnerListService.getLearnerInvoice(this.whichLearner.LearnerId)
     let learnerPayment = this.LearnerListService.getLearnerPayment(this.whichLearner.LearnerId)
     let learnerSession = this.LearnerListService.getLearnerLesson(this.whichLearner.LearnerId)
 
-    forkJoin([learnerListData, lookUpData2, lookUpData3, lookUpData4, lookUpData5, lookUpData7, learnerInvoice, learnerPayment, learnerSession]).subscribe(
+    forkJoin([learnerListData, lookUpData2, lookUpData3, lookUpData4, lookUpData5, lookUpData7,learnerInvoice, learnerPayment, learnerSession,lookUpData14]).subscribe(
       (res) => {
         console.log(res)
         this.learnerList1 = res[0]['Data'];
@@ -91,16 +93,17 @@ export class LearnerDetailModalComponent implements OnInit {
         console.log(this.learnerPaymentList)
         this.paymentMethod(res[5]['Data'], this.learnerPaymentList)
 
+
         this.learnerInvoiceList = (res[6]['Data'])
         this.invoiceListLength = this.learnerInvoiceList.length
 
         this.learnerSessionList = (res[8]['Data'])
         this.sessionListLength = this.learnerSessionList.length
+        this.paymentType(res[9]['Data'],this.learnerPaymentList)
+
       }
     )
   }
-
-
 
   getLevelType(data) {
     data.forEach(element => {
@@ -150,7 +153,6 @@ export class LearnerDetailModalComponent implements OnInit {
   }
 
   paymentMethod(data, learnerPaymentList) {
-    console.log(learnerPaymentList)
     data.forEach(element => {
       for (let i of learnerPaymentList) {
         if (i.PaymentMethod == element['PropValue']) {
@@ -158,7 +160,19 @@ export class LearnerDetailModalComponent implements OnInit {
         }
       }
     })
-    console.log(this.paymentMethodList)
+    // console.log(this.paymentMethodList)
+  }
+
+  paymentType(data,learnerPaymentList){
+     console.log(learnerPaymentList)
+    data.forEach(element => {
+      for (let i of learnerPaymentList) {
+        if (i.PaymentType == element['PropValue']) {
+          this.paymentTypeList.push(element['PropName'])
+        }
+      }
+    })
+    console.log(this.paymentTypeList)
   }
 
   /*
@@ -222,12 +236,6 @@ export class LearnerDetailModalComponent implements OnInit {
     modalRef.componentInstance.whichCourse = ele
   }
 
-  getPaymentMethod(){
-    let index = this.index;
-    this.index++;
-    console.log(this.paymentMethodList[index])
-    //return this.paymentMethodList[index]
-  }
 
 
 }
