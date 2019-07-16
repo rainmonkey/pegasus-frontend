@@ -185,27 +185,27 @@
         <!-- parent information -->
         <div style='margin:20px;'>
           <h4>Parent Information</h4>
-          <div class="row"  *ngFor="let learnerParent of whichLearner.Parent">
-              <div class="col-6">
-                <span class="label">Name: </span>
-                <span class='text'>{{learnerParent.FirstName}} {{learnerParent.LastName}}</span>
-              </div>
-
-              <div class="col-6">
-                <span class="label">Relationship: </span>
-                <span class='text'>{{learnerParent.Relationship | relationship}}</span>
-              </div>
-
-              <div class="col-6">
-                <span class="label">Guardian's Phone: </span>
-                <span class='text'>{{learnerParent.ContactNum}}</span>
-              </div>
-
-              <div class="col-6">
-                <span class="label">Email: </span>
-                <span class='text'>{{learnerParent.Email}}</span>
-              </div>
+          <div class="row" *ngFor="let learnerParent of whichLearner.Parent">
+            <div class="col-6">
+              <span class="label">Name: </span>
+              <span class='text'>{{learnerParent.FirstName}} {{learnerParent.LastName}}</span>
             </div>
+
+            <div class="col-6">
+              <span class="label">Relationship: </span>
+              <span class='text'>{{learnerParent.Relationship | relationship}}</span>
+            </div>
+
+            <div class="col-6">
+              <span class="label">Guardian's Phone: </span>
+              <span class='text'>{{learnerParent.ContactNum}}</span>
+            </div>
+
+            <div class="col-6">
+              <span class="label">Email: </span>
+              <span class='text'>{{learnerParent.Email}}</span>
+            </div>
+          </div>
         </div>
 
       </ng-template>
@@ -379,22 +379,102 @@
 
     <ngb-tab title="Payment">
       <ng-template ngbTabContent>
+        <div
+          *ngFor='let i of learnerPaymentList | slice: (currentPage-1)* pageSize : (currentPage-1) * pageSize + pageSize'>
+          <br>
+          <div class='card'>
+            <div class="card-body">
+              <div class='row'>
+
+                <div class="col-4">
+                  <span class='label'>Payment Created At: </span>
+                  <span class='text' *ngIf='i.CreatedAt'>{{i.CreatedAt.replace('T', ' ')}}</span>
+                </div>
+
+                <div class='col-4'>
+                  <span class='label'>Staff: </span>
+                  <span class='text' *ngIf='i.Staff'>{{i.Staff.FirstName}} {{i.Staff.LastName}}</span>
+                </div>
+
+                <div class="col-4">
+                  <span class='label'>Payment Method: </span>
+                  <span class='text' *ngIf='i.PaymentMethod'>
+                    {{a}}
+                  </span>
+                </div>
+
+                <div class="col-4">
+                  <span class='label'>Payment Amount: </span>
+                </div>
+
+                <div class="col-4">
+                  <span class='label'>Payment Type: </span>
+                </div>
+
+                <div class="col-4">
+                  <span class='label'>Before Balance: </span>
+                  <span class='text' *ngIf='i.BeforeBalance'>{{i.BeforeBalance}}</span>
+                </div>
+
+                <div class="col-4">
+                  <span class='label'>After Balance: </span>
+                  <span class='text' *ngIf='i.BeforeBalance'>{{i.AfterBalance}}</span>
+                </div>
+
+                <div class='col-4'>
+                  <span class='label'>Is Confirmed: </span>
+                  <span class='text' *ngIf='i.IsConfirmed'>{{i.IsConfirmed | IsTemporary}}</span>
+                </div>
+
+                <div class="col-6">
+                  <span class='label'>Comment: </span>
+                  <span class='text' *ngIf='i.Comment'>{{i.Comment}}</span>
+                </div>
+
+              </div>
+            </div>
+          </div>
+        </div>
+        <br>
+
+        <ngb-pagination [collectionSize]="paymentListLength" [(page)]='currentPage' aria-label="Default pagination"
+          [pageSize]='pageSize'>
+        </ngb-pagination>
 
       </ng-template>
     </ngb-tab>
 
+
+
+
     <ngb-tab title="Sessions">
-        <ng-template ngbTabContent>
+      <ng-template ngbTabContent>
+        <div
+          *ngFor='let i of learnerSessionList | slice: (currentPage-1)* pageSize : (currentPage-1) * pageSize + pageSize'>
+        </div>
 
-        </ng-template>
-      </ngb-tab>
+
+        <ngb-pagination [collectionSize]="sessionListLength" [(page)]='currentPage' aria-label="Default pagination"
+          [pageSize]='pageSize'>
+        </ngb-pagination>
+
+      </ng-template>
+    </ngb-tab>
 
 
-      <ngb-tab title="invoice">
-          <ng-template ngbTabContent>
+    <ngb-tab title="invoice">
+      <ng-template ngbTabContent>
+        <div
+          *ngFor='let i of learnerInvoiceList | slice: (currentPage-1)* pageSize : (currentPage-1) * pageSize + pageSize'>
+        </div>
 
-          </ng-template>
-        </ngb-tab>
+
+        <ngb-pagination [collectionSize]="invoiceListLength" [(page)]='currentPage' aria-label="Default pagination"
+          [pageSize]='pageSize'>
+        </ngb-pagination>
+
+      </ng-template>
+    </ngb-tab>
   </ngb-tabset>
 
 
