@@ -69,7 +69,7 @@ export class HolidayCalendarComponent implements OnInit {
   }
 
   test(info) {
-  const modalRef = this.modalService.open(SelectHolidaysModalComponent,{ backdrop: 'static', keyboard: false })
+  const modalRef = this.modalService.open(SelectHolidaysModalComponent,{ backdrop: 'static', keyboard: false });
     let that = this;
     modalRef.componentInstance.date = info;
     modalRef.componentInstance.refreshFlag.subscribe(

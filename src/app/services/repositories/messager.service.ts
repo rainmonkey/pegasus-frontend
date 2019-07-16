@@ -100,4 +100,8 @@ export class MessagerService {
   getCustomizedTheme(){
     return localStorage.getItem('themeIndex');
   }
+
+  saveChattingHistory(){
+    
+  }
 }
