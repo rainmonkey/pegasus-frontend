@@ -354,6 +354,8 @@ import { ConflictCheckComponent } from './components/dashboard/dashboard-compone
     StaffDeleteModalComponent,
     StaffDetailModalComponent,
     StaffEditModalComponent,
+    StockApplicationDetailModalComponent,
+    StockApplicationDeleteModalComponent,
     InventoryDetailModalComponent,
     InventoryReceiptModalComponent,
     // AddHolidaysModalComponent,

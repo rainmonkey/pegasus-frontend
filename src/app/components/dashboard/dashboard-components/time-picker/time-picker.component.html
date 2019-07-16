@@ -1,6 +1,6 @@
 
 
-<div class="time-picker">
+<div class="time-picker" *ngIf="availableDayArr">
    <!-- color meanings -->
    <div class="d-flex flex-column" style="margin-left: 20px; margin-top: 10px;">
       <div class="d-inline-flex"><span class="dot dot_blue"></span><span>Teacher's available time.</span></div>
@@ -10,14 +10,11 @@
       <div class="d-inline-flex"><span class="dot dot_gray"></span><span>Someone was off.</span></div>
       <div class="d-inline-flex"><span class="dot dot_pink"></span><span>One hour around the arranged duration can not be picked because of different location.</span></div>
     </div>
-  <!-- <div *ngFor="let o of teacherAvailableData.Data.AvailableDay">{{o.DayOfWeek | weekFormat}}:&nbsp;
-    <ol *ngFor="let org of o.Orgs">{{org.OrgId}}{{org.OrgId | simplifyOrg}}</ol>
-  </div> -->
   <div class="weekly-schedule">
     <div class="hour-labels">
       <div class="hour-label" *ngFor="let hour of hours">{{hour}}:00</div>
     </div>
-    <div class="days" *ngIf="availableDayArr">
+    <div class="days">
       <div class="day" *ngFor="let x of xIndex; let i = index">
         <div class="day-label">{{weekdays[x]}}
         <div class="location">
