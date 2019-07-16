@@ -1,9 +1,12 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { InventoriesService } from 'src/app/services/http/inventories.service';
 import { NgbootstraptableService } from 'src/app/services/others/ngbootstraptable.service';
 import { NgbDate } from '@ng-bootstrap/ng-bootstrap';
 import Swal from 'sweetalert2';
+
+import { StockApplicationDetailModalComponent } from 'src/app/components/dashboard/dashboard-components/inventory/inventory-stock-application/stock-application-detail-modal/stock-application-detail-modal.component';
 
 @Component({
   selector: 'app-stock-application-list',
@@ -39,6 +42,7 @@ export class StockApplicationListComponent implements OnInit {
   constructor(
     private router: Router,
     private route: ActivatedRoute,
+    private modalService: NgbModal,
     private inventoriesService: InventoriesService,
     private ngTableService: NgbootstraptableService
   ) { }
@@ -148,5 +152,8 @@ export class StockApplicationListComponent implements OnInit {
     });
   }
   //////////////////////////////////////handler of angular-bootstrap modals/////////////////////////////////////
-
+  openDetailModal() {
+    const modalRef = this.modalService.open(StockApplicationDetailModalComponent, { size: 'lg', centered: true });
+    // modalRef.componentInstance.name = 'World';
+  }
 }
