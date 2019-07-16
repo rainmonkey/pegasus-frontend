@@ -48,7 +48,23 @@
 }
 .m_c_emoji_picker{
     float: right;
-    margin-right: 5px;
+    margin-right: 10px;
+    color:#5d5d5a;
+    font-size: 20px;
+    line-height: 25px;
+}
+.m_c_emoji_picker:hover{
+    cursor: pointer;
+}
+.m_c_history{
+    float: right;
+    margin-right:10px;
+    color:#5d5d5a;
+    font-size: 18px;
+    line-height: 25px;
+}
+.m_c_history:hover{
+    cursor: pointer;
 }
 .m_c_input_area{
     width: 100%;

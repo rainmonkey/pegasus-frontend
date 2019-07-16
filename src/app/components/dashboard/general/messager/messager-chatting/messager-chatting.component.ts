@@ -1,9 +1,11 @@
+import { ChattingService } from './../../../../../services/repositories/chatting.service';
 import { Component, OnInit, Input, Output, EventEmitter, ViewChildren, ViewChild } from '@angular/core';
 import { PickerModule } from '@ctrl/ngx-emoji-mart';
 import { EmojiModule } from '@ctrl/ngx-emoji-mart/ngx-emoji';
 import * as Emoji from 'node-emoji/'
 import { MessagerService } from 'src/app/services/repositories/messager.service';
-import { Animations } from '../../../../../../animation/chatting-animation'
+import { Animations } from '../../../../../../animation/chatting-animation';
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-messager-chatting',
@@ -21,7 +23,8 @@ export class MessagerChattingComponent implements OnInit {
   @Input() modalHeight;
   @Output() onStartChatting = new EventEmitter();
   @ViewChild('m_c_text_area') textArea;
-  constructor(private messagerService: MessagerService) { }
+  constructor(private messagerService: MessagerService,
+    private chattingService:ChattingService) { }
   ngOnInit() {
     this.getSubscriberChattingWith();
   }
@@ -36,6 +39,7 @@ export class MessagerChattingComponent implements OnInit {
     if (subObj) {
       this.chattingDisplayFlag = true;
       this.subscriber = subObj;
+      console.log(this.subscriber)
     }
     else {
       this.chattingDisplayFlag = false;
@@ -105,9 +109,9 @@ export class MessagerChattingComponent implements OnInit {
     //当ctrl和enter同时按下的时候发送消息
     if (this.keysCombination['Enter'] == true && this.keysCombination['Control'] == true) {
       this.pushMessageToView(event.target.value);
-      this.clearInputArea();
       this.scrollToBottom();
-      this.sendMessageToServer();
+      this.sendMessageToServer(event.target.value);
+      this.clearInputArea();
     }
   }
 
@@ -129,7 +133,12 @@ export class MessagerChattingComponent implements OnInit {
       this.localMsgHistroy.push({ 'msg': message, 'leftOrRight': 'right', 'timeStamp': timeStamp });
       //测试左侧
       this.localMsgHistroy.push({ 'msg': 'Hello World', 'leftOrRight': 'left', 'timeStamp': timeStamp });
+      this.saveChattingHistory();
     }
+  }
+
+  saveChattingHistory(){
+    
   }
 
   /*
@@ -147,8 +156,25 @@ export class MessagerChattingComponent implements OnInit {
     document.getElementById('scroll_anchor').scrollIntoView();
   }
 
-  sendMessageToServer() {
+  sendMessageToServer(messageToSend) {
+    let ReceiverUserId:number = this.subscriber['UserId'];
+    let SenderUserId:number = Number(localStorage.getItem('userID'));
+    let MessageBody:string = messageToSend;
+    let ChatGroupId:string = null;
+    let CreateAt = moment().format();;
 
+    this.chattingService.sendMessage({ReceiverUserId,SenderUserId,MessageBody,ChatGroupId,CreateAt}).then(
+      (res) =>{
+        console.log(res)
+      },
+      (err) =>{
+        console.log(err)
+      }
+    )
+    
+
+
+    console.log(this.subscriber)
   }
 
   /*
