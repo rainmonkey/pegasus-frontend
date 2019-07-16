@@ -6,6 +6,7 @@ import * as Emoji from 'node-emoji/'
 import { MessagerService } from 'src/app/services/repositories/messager.service';
 import { Animations } from '../../../../../../animation/chatting-animation';
 import * as moment from 'moment';
+import { environment } from 'src/environments/environment.prod';
 
 @Component({
   selector: 'app-messager-chatting',
@@ -20,6 +21,7 @@ export class MessagerChattingComponent implements OnInit {
   public keysCombination: object = { "Enter": false, "Control": false };
   public localMsgHistroy: Array<object> = [];
   public subscriber: object;
+  public photoUrl = environment.photoUrl;
   @Input() modalHeight;
   @Output() onStartChatting = new EventEmitter();
   @ViewChild('m_c_text_area') textArea;
@@ -62,14 +64,12 @@ export class MessagerChattingComponent implements OnInit {
     let emoji = Emoji.get(event.emoji.colons);
     //get emoji icon length in unicode
     let emojiLength = emoji.length;
-    //get text area element
-    let obj = document.getElementById('m_c_text_area');
     //get cursor position index
-    let cursorStartIndex = obj['selectionStart'];
+    let cursorStartIndex = this.textArea.nativeElement['selectionStart'];
     //add emoji icon after cursor position
-    obj['value'] = this.insertStr(obj['value'], emoji, cursorStartIndex);
+    this.textArea.nativeElement['value'] = this.insertStr(this.textArea.nativeElement['value'], emoji, cursorStartIndex);
     //set new cursor position
-    this.setCursorPosition(obj, cursorStartIndex + emojiLength);
+    this.setCursorPosition(this.textArea.nativeElement, cursorStartIndex + emojiLength);
   }
 
   /*
@@ -164,10 +164,9 @@ export class MessagerChattingComponent implements OnInit {
     let CreateAt = moment().format();;
 
     this.chattingService.sendMessage({ReceiverUserId,SenderUserId,MessageBody,ChatGroupId,CreateAt}).then(
-      (res) =>{
-        console.log(res)
-      },
+      null,
       (err) =>{
+        //消息发送失败处理程序
         console.log(err)
       }
     )

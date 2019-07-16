@@ -25,6 +25,7 @@ export class TrialSearchComponent implements OnInit {
   public timeSlot: Array<any> = [];
   public teachersLevel;
   public teacherExistsFlag: boolean = true
+  public waitingDataFlag: boolean = true
 
   @Input() courses;
   @Input() coursesCate;
@@ -55,6 +56,7 @@ export class TrialSearchComponent implements OnInit {
   */
   displayCoursesCateTabs() {
     if (this.coursesCate !== undefined) {
+      this.waitingDataFlag = false
       if (this.arrangeCourseDetails) {
         this.coursesCate = this.coursesCate.filter(data => data.CourseCategoryId == this.arrangeCourseDetails.CourseCategoryId)
         return this.coursesCate

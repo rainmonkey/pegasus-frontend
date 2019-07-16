@@ -14,16 +14,16 @@
         </select>
       </div>
       <div class='col-6 tl_body_title'>
-        <button type="button" class='btn btn-info t_info_addmore_btn' (click)="onSubmit()">
+        <button type="button" class='btn btn-info t_info_addmore_btn py-1' (click)="onSubmit()">
           <i class='fas fa-search'></i>Search
         </button>
       </div>
 
       <!--body search-->
-      <div class='col-6 tl_body_search'>
+      <div class='col-6 tl_body_search my-3'>
         <span class='fas fa-search'></span>&nbsp;
         <input type="text" id='searchingInput' (keydown)='onSearch($event)' placeholder="Search by name">
-        <button *ngIf="isSearchingFlag" (click)="clearSearch()" class="btn btn-secondary ml-3">clear</button>
+        <button *ngIf="isSearchingFlag" (click)="clearSearch()" class="btn btn-danger ml-3 py-0">clear</button>
       </div>
 
       <!--body main-->
@@ -47,22 +47,15 @@
             <!-- dataTable-->
             <tr *ngFor='let item of myArray | slice: (page-1)* pageSize : (page-1) * pageSize + pageSize; let j = index'>
               <th scope="row">{{j+1}}</th>
-              <td><app-learner-item [learnerInv]=item></app-learner-item></td>
+              <td>
+                <app-learner-item [learnerInv]=item></app-learner-item>
+              </td>
 
               <td>{{item.InvoiceWaitingConfirm.OwingFee}}</td>
               <td>{{item.Invoice.TotalFee}}</td>
-              <!-- <td>{{item.IsUnder18===1&&item.Parent[0]?item.Parent[0].Email:item.Email}}</td> -->
               <td>{{item.Invoice.Comment}}</td>
               <td *ngIf='item.Invoice.InvoiceId == 0'>No Confirmed</td>
               <td *ngIf='item.Invoice.InvoiceId != 0'>Confirmed</td>
-              <!-- <td *ngIf="item.Invoice">
-                <span class='tl_body_table_btn col-4' style="text-align: center;" (click)="open(1, i)">
-                  <i class="fas fa-times" style="color: red;"></i>
-                </span>
-              </td>
-              <td *ngIf="!item.Invoice">
-                <i class="fas fa-check"></i>
-              </td>               -->
               <td>{{item.InvoiceWaitingConfirm.IsEmailSent|MyType:'status'}}</td>
               <td *ngIf='item.Invoice.IsPaid!=1'>Non-Payment</td>
               <td *ngIf='item.Invoice.IsPaid==1'>Paid</td>

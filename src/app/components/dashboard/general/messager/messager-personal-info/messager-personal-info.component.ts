@@ -1,5 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { Animations } from '../../../../../../animation/chatting-animation'
+import { environment } from 'src/environments/environment.prod';
 
 @Component({
   selector: 'app-messager-personal-info',
@@ -19,6 +20,7 @@ export class MessagerPersonalInfoComponent implements OnInit {
   public userPhoto;
   public userPosition;
   public organisation;
+  public photoUrl = environment.photoUrl;
 
   @Input() themeChangeFlag;
   constructor() { }

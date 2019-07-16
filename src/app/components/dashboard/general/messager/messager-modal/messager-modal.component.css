@@ -103,5 +103,10 @@
 }
 
 .m_m_header_chatting_with{
+    display: inline-block;
+    width: 230px;
     font-size: 14px;
+    white-space: nowrap;
+    text-overflow:ellipsis;
+    overflow:hidden;
 }

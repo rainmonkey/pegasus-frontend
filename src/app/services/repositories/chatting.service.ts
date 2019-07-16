@@ -34,8 +34,9 @@ export class ChattingService {
         this.http.post(this.baseUrl + 'chat',messageObj).pipe(
           retry(2)
         ).subscribe(
+          null,
           (err)=>{
-            throw Error('message send failed.')
+            throw Error('message send failed.');
           }
         );
       })

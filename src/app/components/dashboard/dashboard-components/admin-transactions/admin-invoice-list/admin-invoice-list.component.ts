@@ -21,13 +21,12 @@ interface Learner {
   styleUrls: ['./admin-invoice-list.component.css']
 })
 export class AdminInvoiceListComponent implements OnInit {
-  public queryParams: object = {};
   public learnerList: any;
   public learnerListLength: number;
   public temLearnerList: any; //save the original List
   public temLearnerListLength: number; //save the original List length
   public page: number = 1;  //pagination current page
-  public pageSize: number = 15;    //[can modify] pagination page size
+  public pageSize: number = 10;    //[can modify] pagination page size
 
   //error alert
   public errorMsg;
@@ -40,8 +39,8 @@ export class AdminInvoiceListComponent implements OnInit {
   public isSearchingFlag: boolean = false
   // learner name and
   learner: Learner;
-  terms : [];
-  termId:number;
+  terms: [];
+  termId: number;
   myArray = [];
   //teachers list copy. Using in searching method, in order to initialize data to original
   public myArrayCopy: Array<any>;
@@ -56,11 +55,14 @@ export class AdminInvoiceListComponent implements OnInit {
   ngOnInit() {
     this.userId = localStorage.getItem("userID");
     this.getTerm();
-    
   }
-  clearSearch(){
-    this.myArray=[];
+
+  clearSearch() {
+    this.isSearchingFlag = false
+    this.myArray = this.temLearnerList.map(data => data.Learner)
+    this.learnerListLength = this.temLearnerListLength
   }
+
   // modal method
   open(item) {
     const modalRef = this.modalService.open(AdminInvoiceEditModalComponent,
@@ -69,21 +71,20 @@ export class AdminInvoiceListComponent implements OnInit {
       });
     //pass parameters to edit modals
     modalRef.componentInstance.item = item;
-    // modalRef.componentInstance.testString = "this is a test string"
     console.log(modalRef)
   }
 
   // get data from server side
   getData() {
     this.isLoad = true;
-    this.transactionService.getLearnerInvo(this.userId,this.termId).subscribe(
+    this.transactionService.getLearnerInvo(this.userId, this.termId).subscribe(
       (res) => {
+        console.log(res, this.termId)
         this.learnerList = res.Data;
         this.learnerListLength = res.Data.length; //length prop is under Data prop
         this.temLearnerList = res.Data;
         this.temLearnerListLength = res.Data.length;
         this.isLoad = false;
-        //this.learnerList[0].Learner.Parent.Email
         // make array for sort
         this.makeArray();
       },
@@ -96,30 +97,31 @@ export class AdminInvoiceListComponent implements OnInit {
           title: 'Oops...',
           text: error.error.ErrorMessage,
         });
-
         this.errorAlert = false;
       });
   }
-  onChange(value){
+
+  onChange(value) {
     this.termId = value;
-    //this.getData();
   }
-  onSubmit(){
+
+  onSubmit() {
     this.getData();
   }
+
   getTerm() {
     var today = new Date();
     this.coursesService.getoioi().subscribe(
       (res) => {
         this.terms = res.Data;
-        
+
         for (let e of this.terms){
           this.termId = e['TermId'];
           if ((today  >= new Date(e['BeginDate'])) && (today  <= new Date(e['EndDate'])) )
             break;
         }
         console.log(this.terms)
-      },(error)=>{
+      }, (error) => {
         Swal.fire({
           type: 'error',
           title: 'Oops...',
@@ -129,9 +131,10 @@ export class AdminInvoiceListComponent implements OnInit {
       }
     )
   }
+
   // push to array for sort
   makeArray() {
-    this.myArray=[];
+    this.myArray = [];
     this.learnerList.forEach(list => {
       let tempObj = {
         OwingFee: list.OwingFee,
