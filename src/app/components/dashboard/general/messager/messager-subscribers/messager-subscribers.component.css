@@ -41,6 +41,10 @@
     color:#5d5d5a;
     margin-top:5px!important;
     float: left;
+    max-width: 180px;
+    white-space: nowrap;
+    text-overflow:ellipsis;
+    overflow:hidden;
 }
 .m_s_subscribers_signature{
     height: 24px;
