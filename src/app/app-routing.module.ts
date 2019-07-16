@@ -13,6 +13,7 @@ import { AdminLearnerPaymentProductsComponent } from './components/dashboard/das
 import { AdminLearnerPaymentRegistrationComponent } from './components/dashboard/dashboard-components/admin-payment/admin-learner-payment-registration/admin-learner-payment-registration.component';
 import { AdminLearnerPaymentOtherComponent } from './components/dashboard/dashboard-components/admin-payment/admin-learner-payment-other/admin-learner-payment-other.component';
 import { AdminLearnerPaymentSuccessComponent } from './components/dashboard/dashboard-components/admin-payment/admin-learner-payment-success/admin-learner-payment-success.component';
+
 import { CoursesListComponent } from './components/dashboard/dashboard-components/courses/courses-list/courses-list.component'
 import { SessionsListViewComponent } from './components/dashboard/dashboard-components/sessions/sessions-views/sessions-list-view/sessions-list-view.component';
 import { SessionsPanelComponent } from './components/dashboard/dashboard-components/sessions/sessions-panel/sessions-panel.component';
@@ -45,6 +46,8 @@ import { CoporateOrderApplicationComponent } from './components/dashboard/dashbo
 import{PageGroupDetailsComponent} from './components/dashboard/dashboard-components/admin-pageGroup/pageGroup-details/pageGroup-details.component'
 import { ConflictCheckComponent } from './components/dashboard/dashboard-components/conflict-check/conflict-check/conflict-check.component';
 import { StockApplicationListComponent } from './components/dashboard/dashboard-components/inventory/inventory-stock-application/stock-application-list/stock-application-list.component';
+import { AdminLearnerTimetableComponent } from './components/dashboard/dashboard-components/admin-learner/admin-learner-timetable/admin-learner-timetable.component';
+
 
 //canActivate: [DashboardRestrictGuard],
 const routes: Routes = [
@@ -120,6 +123,10 @@ const routes: Routes = [
       {
         path: 'learner', component: AdminLearnerPanelComponent,
         children: [
+          {
+            path: 'timetable', component: AdminLearnerTimetableComponent,
+            canActivate: [UserAuthGuard],
+          },
           {
             path: 'list', component: AdminLearnerListComponent,
             canActivate: [UserAuthGuard],

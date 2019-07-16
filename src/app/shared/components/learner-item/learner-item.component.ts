@@ -36,13 +36,11 @@ export class LearnerItemComponent implements OnInit {
     }
     else{
       this.whichLearner = this.learner;
-      console.log(this.whichLearner)
     }
   }
   ngOnInit() {
   }
   onClicked(){
-    console.log(this.learner);
     this.showModal() ;
   }
   showModal() {

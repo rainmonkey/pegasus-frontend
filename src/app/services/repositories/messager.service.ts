@@ -23,7 +23,7 @@ export class MessagerService {
       return;
     }
     else{ 
-      this.http.get(this.baseUrl + 'Chat/GetStaffChattingList/' + userId).subscribe(
+      this.http.get(this.baseUrl + 'Chat/GetChattingList/' + userId).subscribe(
         (res) => {
           let subsStr =  JSON.stringify(res['Data']);
           //store the subscirbers list in session storage
@@ -68,11 +68,23 @@ export class MessagerService {
     save the recent subscribers in session storage
   */
   saveRecentSubscribers(subscriberObj){
-    console.log(subscriberObj)
-    //sessionStorage.setItem
-    let obj:object = {};
-    obj[subscriberObj.userId] = subscriberObj;
-    console.log(obj)
+    let userId = subscriberObj.UserId;
+    let array:string = sessionStorage.getItem('recentlySubscriberArray')
+    let arrayObj = array?JSON.parse(array):[];
+   
+    let index = arrayObj.findIndex(item => item.UserId === userId);
+    if(index !== -1){
+      arrayObj.splice(index, 1);
+    }
+    arrayObj.push(subscriberObj);
+    sessionStorage.setItem('recentlySubscriberArray',JSON.stringify(arrayObj));
+  }
+
+  /*
+    get the recent subscribers from session storage
+  */
+  getRecentSubscribers(){
+    return JSON.parse(sessionStorage.getItem('recentlySubscriberArray'));
   }
 
   /*

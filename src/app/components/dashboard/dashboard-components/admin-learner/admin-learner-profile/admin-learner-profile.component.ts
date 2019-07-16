@@ -78,6 +78,11 @@ export class AdminLearnerProfileComponent implements OnInit {
     parameter: 11,
     class: 'fas fa-folder'
   },
+  {
+    title: 'Learner Timetable',
+    parameter: 12,
+    class: 'fas fa-address-book'
+  },
   ];
   // @Output() activeModalEvent: EventEmitter<any> = new EventEmitter;
   // activeSubmitted: boolean = false;
@@ -89,13 +94,11 @@ export class AdminLearnerProfileComponent implements OnInit {
 
   ngOnInit() {
     this.loadingFlag = true;
-    console.log(this.whichLearner)
-    this.getDataFromServer()
+    this.getDataFromServer();
   }
-  //get data from server
+  // get data from server
   getDataFromServer() {
     if (!this.learnerId){this.getId = Number(this.whichLearner.LearnerId);}else {
-      console.log(this.learnerId)
       this.getId = Number(this.learnerId);
     }
     this.learnersService.getLearnerById(Number(this.getId)).subscribe(
@@ -106,7 +109,7 @@ export class AdminLearnerProfileComponent implements OnInit {
         this.loadingFlag = false;
       },
       (err) => {
-        console.log(err); this.errorMessage = "Wrong"
+        console.log(err); this.errorMessage = "Wrong";
       }
     )
     // this.LearnerListService.getLearnerList().subscribe(
@@ -132,21 +135,20 @@ export class AdminLearnerProfileComponent implements OnInit {
       2 --> Edit/update
       3 --> delete
   */
-  popUpModal(command,title) {
+  popUpModal(command, title) {
     let whichLearner = this.learnerList;
-    console.log(whichLearner)
     switch (command) {
       case 0:
-        this.addModal(command, whichLearner)
+        this.addModal(command, whichLearner);
         break;
       case 1:
-        this.detailModal(command, whichLearner)
+        this.detailModal(command, whichLearner);
         break;
       case 2:
-        this.EditModal(command, whichLearner)
+        this.EditModal(command, whichLearner);
         break;
       case 3:
-        this.modalTemplate(command, whichLearner,title);
+        this.modalTemplate(command, whichLearner, title);
         break;
       case 4:
         this.deleteCourseModal(whichLearner);
@@ -158,7 +160,11 @@ export class AdminLearnerProfileComponent implements OnInit {
         this.periodCourseChangeModal(command, whichLearner);
         break;
       case 11:
-        this.modalTemplate(command, whichLearner,title);
+        this.modalTemplate(command, whichLearner, title);
+        break;
+      case 12:
+        this.modalTemplate(command, whichLearner, title);
+        break;
     }
   }
 
@@ -182,12 +188,12 @@ export class AdminLearnerProfileComponent implements OnInit {
     let that = this;
     modalRef.result.then(
       (res) => {
-        that.ngOnInit()
+        that.ngOnInit();
       },
       (err) => {
-        return
+        return;
       }
-    )
+    );
   }
   /*
     learner invoice payment modal
@@ -198,21 +204,21 @@ export class AdminLearnerProfileComponent implements OnInit {
     let that = this;
     modalRef.result.then(
       (res) => {
-        that.ngOnInit()
+        that.ngOnInit();
       },
       (err) => {
-        return
+        return;
       }
-    )
+    );
     modalRef.componentInstance.whichObject = whichLearner.LearnerId;
-    modalRef.componentInstance.whichModal = title
+    modalRef.componentInstance.whichModal = title;
   }
 
   /*
     detail modal
   */
   detailModal(command, whichLearner) {
-    const modalRef = this.modalService.open(LearnerDetailModalComponent, { size: 'lg', backdrop: 'static', keyboard: false });
+    const modalRef = this.modalService.open(LearnerDetailModalComponent, {windowClass: 'my-class', backdrop: 'static', keyboard: false });
     modalRef.componentInstance.command = command;
     modalRef.componentInstance.whichLearner = whichLearner;
   }
@@ -225,10 +231,10 @@ export class AdminLearnerProfileComponent implements OnInit {
     let that = this;
     modalRef.result.then(
       (res) => {
-        that.ngOnInit()
+        that.ngOnInit();
       },
       (err) => {
-        return
+        return;
       }
     )
     modalRef.componentInstance.command = command;
@@ -239,8 +245,8 @@ export class AdminLearnerProfileComponent implements OnInit {
     jump to another page
   */
   jumpToTrialCoursePage() {
-    history.pushState(null, '', 'trial')
-    this.activeModal.dismiss()
+    history.pushState(null, '', 'trial');
+    this.activeModal.dismiss();
   }
 
   /*

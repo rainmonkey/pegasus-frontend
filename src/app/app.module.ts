@@ -1,6 +1,6 @@
 import { CommonModule, DatePipe } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
-import { NgModule } from '@angular/core';
+import { NgModule ,ErrorHandler} from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule, MatFormFieldModule, MatInputModule, MatSelectModule } from '@angular/material';
 // Dependencies
@@ -29,6 +29,7 @@ import { AdminLearnerPaymentProductsComponent } from './components/dashboard/das
 import { AdminLearnerPaymentRegistrationComponent } from './components/dashboard/dashboard-components/admin-payment/admin-learner-payment-registration/admin-learner-payment-registration.component';
 import { AdminLearnerPaymentSuccessComponent } from './components/dashboard/dashboard-components/admin-payment/admin-learner-payment-success/admin-learner-payment-success.component';
 import { AdminLearnerProfileComponent } from './components/dashboard/dashboard-components/admin-learner/admin-learner-profile/admin-learner-profile.component';
+import { AdminLearnerTimetableComponent } from './components/dashboard/dashboard-components/admin-learner/admin-learner-timetable/admin-learner-timetable.component';
 import { PayrollListComponent } from './components/dashboard/dashboard-components/admin-payroll/payroll-list/payroll-list.component';
 import { PayrollPanelComponent } from './components/dashboard/dashboard-components/admin-payroll/payroll-panel/payroll-panel.component';
 import { AdminInvoiceEditModalComponent } from './components/dashboard/dashboard-components/admin-transactions/admin-invoice-edit-modal/admin-invoice-edit-modal.component';
@@ -104,6 +105,7 @@ import { RemindPanelComponent } from './components/dashboard/dashboard-component
 
 import { StaffListComponent } from './components/dashboard/dashboard-components/admin-staff/Staff-list/Staff-list.component';
 
+import {CustomErrorHandler} from './services/errorhandler/CustomErrorHandler'
 import { SimplifyOrgPipe } from './shared/pipes/simplify-org.pipe';
 import { LearnerCreditPanelComponent } from './components/dashboard/dashboard-components/learner-credit/learner-credit-panel/learner-credit-panel.component';
 import { LearnerCreditDetailsComponent } from './components/dashboard/dashboard-components/learner-credit/learner-credit-details/learner-credit-details.component';
@@ -166,6 +168,7 @@ import { ConflictCheckComponent } from './components/dashboard/dashboard-compone
     AdminLearnerPaymentSuccessComponent,
     AdminLearnerProfileComponent,
     AdminLearnerNameComponent,
+    AdminLearnerTimetableComponent,
     TimePickerComponent,
     FooterComponent,
     CoursesPanelComponent,
@@ -216,7 +219,6 @@ import { ConflictCheckComponent } from './components/dashboard/dashboard-compone
     LearnerDeleteCourseModalComponent,
     AmendmentHistoryModalComponent,
     IsTemporaryPipe,
-
     SessionCancelModalComponent,
     SessionTutorReportModalComponent,
     SessionCompletedModalComponent,
@@ -304,6 +306,10 @@ import { ConflictCheckComponent } from './components/dashboard/dashboard-compone
     DatePipe,
     MondayDateInWeekByDatePipe,
     NgbActiveModal,
+    {
+      provide: ErrorHandler,
+      useClass: CustomErrorHandler,
+    },
   ],
   entryComponents: [
     AdminLearnerProfileComponent,
@@ -338,6 +344,7 @@ import { ConflictCheckComponent } from './components/dashboard/dashboard-compone
     ChangePasswordModalComponent,
     RemindModalComponent,
     AdminLearnerLeaveComponent,
+    AdminLearnerTimetableComponent,
     ChangePasswordModalComponent,
     LearnerRegistrationModalComponent,
     LearnerRegistrationConfirmModalComponent,
@@ -354,10 +361,9 @@ import { ConflictCheckComponent } from './components/dashboard/dashboard-compone
     // AddHolidaysModalComponent,
     DeleteHolidayComponent,
     AdminPaymentProductModalComponent,
-    AdminPaymentConfirmModalComponent
-    // DeleteHolidayComponent,
+    AdminPaymentConfirmModalComponent,
     // AmendmentHistoryModalComponent,
-    // SelectHolidaysModalComponent
+    SelectHolidaysModalComponent
   ],
   exports: [AppComponent],
   bootstrap: [AppComponent]
