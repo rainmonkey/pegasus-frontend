@@ -175,13 +175,14 @@ export class TimePickerComponent implements OnInit {
 
 ///////////////////////////////// event triggered in HTML /////////////////////////////////////////////////////////////
   mouseover(x: number, y: number) {
+    // this.tempChangeIsAbleToPick(x, y);
     this.availableDayArr.map((availableObj) => {
       let availableX = availableObj['DayOfWeek']-1;
       if(x == availableX) {
-        this.checkTeacherOrg(x,y);
+        this.checkTeacherOrg(x, y, availableObj, availableX);
       }
     })
-    this.tempChangeIsAbleToPick(x,y);
+    // this.tempChangeIsAbleToPick(x, y);
   }
   mouseout(x: number, y: number) {
     this.availableDayArr.map((o) => {
@@ -206,46 +207,55 @@ export class TimePickerComponent implements OnInit {
     outputObj['BeginTime'] = this.startTime;
     outputObj['Index'] = this.teaList[2];
     this.beginTime.emit(outputObj);
-    console.log('confirm', outputObj);
+    // console.log('confirm', outputObj);
   }
 
 ////////////////////////////// check if teacher's org includes learner's org/////////////////////////////////
-  checkTeacherOrg(x: number, y: number) {
-    this.availableDayArr.map((availableObj) => {
-      let xIndex = availableObj['DayOfWeek']-1;
-      let availableOrgId = availableObj.Orgs.map((o) => o.OrgId);
-      /* 判断 availableDay org 是否包含 learner org */
-      // availableDay org includes learner org
-      if(availableOrgId.includes(this.learnerOrgId)) {
-        /* 判断 available org 是否有 arranged */
-        this.checkAvailableHasArranged(availableObj,x,y);
-      } else {
-      // availabeDay org not includes learner org
-        this.availableOrgNotIncludesLearnerOrg(xIndex);
-      }
-    })
+  checkTeacherOrg(x: number, y: number, availableObj, availableX) {
+    // let xIndex = availableObj['DayOfWeek']-1;
+    let availableOrgId = availableObj.Orgs.map((o) => o.OrgId);
+    /* 判断 availableDay org 是否包含 learner org */
+    // availableDay org includes learner org
+    if(availableOrgId.includes(this.learnerOrgId)) {
+      /* 判断 available org 是否有 arranged */
+      // console.log('availableOrgId.includes(this.learnerOrgId)',availableOrgId.includes(this.learnerOrgId))
+      this.checkAvailableHasArranged(x, y, availableObj, availableX);
+    } else {
+    // availabeDay org not includes learner org
+      console.log('availableOrgId not includes(this.learnerOrgId)')
+      this.availableOrgNotIncludesLearnerOrg(availableX);
+    }
   }
-  checkAvailableHasArranged(availableObj: any, x: number, y: number) {
-    let availableX = availableObj['DayOfWeek']-1;
-    this.arrangedArr.map((arrangedObj) => {
-      let arrangedX = arrangedObj['DayOfWeek']-1;
-      // if availableDay has arranged
-      if(availableX == arrangedX) {
-        /* 判断 arranged org 是否等于 learner org */
-        this.checkArrangedOrg(arrangedObj,x,y);
-      } else {
-        // availableDay 
-      }
-    })
+  checkAvailableHasArranged(x: number, y: number, availableObj, availableX) {
+    // console.log('ss',x,y ,availableObj, availableX,this.arrangedArr)
+    if(this.arrangedArr.length != 0) {
+      this.arrangedArr.map((arrangedObj) => {
+        let arrangedX = arrangedObj['DayOfWeek']-1;
+        // if availableDay has arranged
+        if(arrangedX  == availableX) {
+          /* 判断 arranged org 是否等于 learner org */
+          // console.log('availableX == arrangedX', availableX == arrangedX)
+          this.checkArrangedOrg(x, y, arrangedObj);
+        } else {
+          // console.log('availableX != arrangedX')
+          this.setDuration('isAvailable', 'ableToPick', x, y)
+        }
+      })
+    } else {
+      this.setDuration('isAvailable', 'ableToPick', x, y);
+    }
   }
-  checkArrangedOrg(arrangedObj: any, x: number, y: number) {
+  checkArrangedOrg(x: number, y: number, arrangedObj,) {
     let arrangedOrgId = arrangedObj['OrgId'];
     if(arrangedOrgId == this.learnerOrgId) {
       // arranged 前后可选
+      // console.log('arrangedOrgId == this.learnerOrgId', arrangedOrgId == this.learnerOrgId)
       this.setDuration('isAvailable', 'ableToPick', x, y)
     } else {
       // arranged 前后一小时不能选
+      // console.log('arrangedOrgId != this.learnerOrgId')
       this.aroundArrangedCanNotPick();
+      this.setDuration('isAvailable', 'ableToPick', x, y)
     }
   }
   aroundArrangedCanNotPick() {
@@ -273,7 +283,7 @@ export class TimePickerComponent implements OnInit {
   checkTempChange(x:number, y:number) {
     this.tempChangeArr.map((o) => {
       let gap = o.EndY - o.BeginY;
-      if(gap < this.duration) {
+      if(gap+1 < this.duration) {
         return false
       }
     });
@@ -287,6 +297,7 @@ export class TimePickerComponent implements OnInit {
     this.tempChangeArr.map((o) => {
       let xIndex = o.DayOfWeek-1
       if(this.checkTempChange(x,y) && x == xIndex && this.slot[x][y] == "isTempChange") {
+        console.log('tempchange', this.tempChangeArr,x,y)
         this.setDuration('isTempChange', 'ableToPick', x, y);
       }
     })
@@ -318,6 +329,7 @@ export class TimePickerComponent implements OnInit {
     return true;
   }
   setDuration(isAvailable: string, ableToPick: string, x: number, y: number){
+    console.log('setDuration', isAvailable, ableToPick, x, y)
     if(this.hasNextDuration(isAvailable, x, y)) {
       for(let i = 0; i < this.duration+1; i++) {
         this.slot[x][y+i] = ableToPick;

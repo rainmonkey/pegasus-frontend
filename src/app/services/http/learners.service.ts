@@ -41,6 +41,9 @@ export class LearnersService {
   getLearnerById(id) {
     return this.http.get(this.baseUrl + 'learner/GetLearnerById/'+id)
   }
+  getLearnerByIdTimePick(id) {
+    return this.http.get(this.baseUrl + 'lesson/GetLessonsForLearner/'+id)
+  }
 
   deleteLearner(LearnerId): any {
     return this.http.delete(this.baseUrl + 'learner/' + LearnerId);

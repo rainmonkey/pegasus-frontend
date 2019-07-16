@@ -10,12 +10,19 @@
 .m_c_subscribers_name{
     color:#5d5d5a;
     margin-top:5px!important;
+    max-width: 180px;
+    white-space: nowrap;
+    text-overflow:ellipsis;
+    overflow:hidden;
 }
 .m_c_subscribers_signature{
     height: 24px;
     font-size:14px;
     color:#8a8a88;
-    overflow: hidden;
+    max-width: 220px;
+    white-space: nowrap;
+    text-overflow:ellipsis;
+    overflow:hidden;
 }
 .m_c_subscribers_photo{
     height: 51px;
@@ -48,7 +55,23 @@
 }
 .m_c_emoji_picker{
     float: right;
-    margin-right: 5px;
+    margin-right: 10px;
+    color:#5d5d5a;
+    font-size: 20px;
+    line-height: 25px;
+}
+.m_c_emoji_picker:hover{
+    cursor: pointer;
+}
+.m_c_history{
+    float: right;
+    margin-right:10px;
+    color:#5d5d5a;
+    font-size: 18px;
+    line-height: 25px;
+}
+.m_c_history:hover{
+    cursor: pointer;
 }
 .m_c_input_area{
     width: 100%;

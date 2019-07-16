@@ -19,12 +19,17 @@ constructor(public activeModal: NgbActiveModal,) { }
         break;
       case 'Learner Credit':
         this.modelTitle = 'Learner Credit';
+        break;
+      case 'Learner Timetable':
+        this.modelTitle = 'Learner\'s Timetable';
+        break;
       default:
       this.modelTitle = '';
     }
   }
   ngOnInit() {
     this.getModalDetail()
+    console.log(this.modelTitle)
   }
 
 }

@@ -114,9 +114,11 @@ export class AdminInvoiceListComponent implements OnInit {
     this.coursesService.getoioi().subscribe(
       (res) => {
         this.terms = res.Data;
-        for (let e of this.terms) {
-          if ((today >= new Date(e['BeginDate'])) && (today <= new Date(e['EndDate'])))
-            this.termId = e['TermId'];
+
+        for (let e of this.terms){
+          this.termId = e['TermId'];
+          if ((today  >= new Date(e['BeginDate'])) && (today  <= new Date(e['EndDate'])) )
+            break;
         }
         console.log(this.terms)
       }, (error) => {
