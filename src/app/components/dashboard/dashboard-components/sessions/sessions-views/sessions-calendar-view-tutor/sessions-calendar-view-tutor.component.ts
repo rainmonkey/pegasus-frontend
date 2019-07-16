@@ -27,6 +27,7 @@ export class SessionsCalendarViewTutorComponent implements OnInit {
   dateOfLesson;
   teachers;
   teacherId;
+  AvailableDays = [];
   teacherSelected;
   eventsModel: any;
   constructor(private sessionsService: SessionsService,
@@ -45,7 +46,7 @@ export class SessionsCalendarViewTutorComponent implements OnInit {
       header: {
         left: 'prev,next today DayPickerButton',
         center: 'title',
-        right: 'timeGridWeek'
+        right: ''
       },
       slotDuration: '00:15',
       customButtons: {
@@ -53,7 +54,7 @@ export class SessionsCalendarViewTutorComponent implements OnInit {
           text: 'Search',
           click: () => {
             this.modalService.open(this.content);
-          }
+        }
         }
       },
       eventClick: (info) => {
@@ -123,6 +124,7 @@ export class SessionsCalendarViewTutorComponent implements OnInit {
     return data;
   }
 
+
   clickButton = (model) => {
     if (model.buttonType === 'next' ||  model.buttonType === 'prev') {
       const datefromcalendar = model.data;
@@ -134,7 +136,9 @@ export class SessionsCalendarViewTutorComponent implements OnInit {
       const beginDate = this.mondayDatePipe.transform(datefromcalendar);
       this.GetEventData(this.datePipe.transform(beginDate, 'yyyy-MM-dd'));
     }
+    this.headerChangeColorHandler();
   }
+
   GetEventData = (beginDate) => {
     if (!this.teacherId) return
     this.isloading = true;
@@ -154,6 +158,7 @@ export class SessionsCalendarViewTutorComponent implements OnInit {
   }
 
   search = () => {
+
     if (this.dateOfLesson === '' || this.dateOfLesson === null || this.dateOfLesson === undefined) {
       Swal.fire({
         type: 'error',
@@ -170,5 +175,59 @@ export class SessionsCalendarViewTutorComponent implements OnInit {
     const beginDate = this.mondayDatePipe.transform(datetoshow);
     this.fullcalendar.calendar.gotoDate(beginDate);
     this.GetEventData(this.datePipe.transform(beginDate, 'yyyy-MM-dd'));
+    this.AvailableDays =  this.teachers.filter(teacher => teacher.TeacherId == this.teacherId)[0].AvailableDays;
+    this.headerChangeColorHandler();
+  }
+
+  headerChangeColorHandler = () => {
+    // @ts-ignore
+    document.querySelector('.fc-mon').style.background = '';
+    // @ts-ignore
+    document.querySelector('.fc-tue').style.background = '';
+    // @ts-ignore
+    document.querySelector('.fc-wed').style.background = '';
+    // @ts-ignore
+    document.querySelector('.fc-thu').style.background = '';
+    // @ts-ignore
+    document.querySelector('.fc-fri').style.background = '';
+    // @ts-ignore
+    document.querySelector('.fc-sat').style.background = '';
+    // @ts-ignore
+    document.querySelector('.fc-sun').style.background = '';
+    this.AvailableDays.map(s => {
+      if (s.DayOfWeek == 1) {
+        // @ts-ignore
+        document.querySelector('.fc-mon').style.background = 'green';
+      }
+      if (s.DayOfWeek == 2) {
+        // @ts-ignore
+        document.querySelector('.fc-tue').style.background = 'green';
+      }
+
+      if (s.DayOfWeek == 3) {
+        // @ts-ignore
+        document.querySelector('.fc-wed').style.background = 'green';
+      }
+
+      if (s.DayOfWeek == 4) {
+        // @ts-ignore
+        document.querySelector('.fc-thu').style.background = 'green';
+      }
+
+      if (s.DayOfWeek == 5) {
+        // @ts-ignore
+        document.querySelector('.fc-fri').style.background = 'green';
+      }
+
+      if (s.DayOfWeek == 6) {
+        // @ts-ignore
+        document.querySelector('.fc-sat').style.background = 'green';
+      }
+
+      if (s.DayOfWeek == 7) {
+        // @ts-ignore
+        document.querySelector('.fc-sun').style.background = 'green';
+      }
+    });
   }
 }
