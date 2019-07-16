@@ -329,7 +329,7 @@ export class TimePickerComponent implements OnInit {
     return true;
   }
   setDuration(isAvailable: string, ableToPick: string, x: number, y: number){
-    console.log('setDuration', isAvailable, ableToPick, x, y)
+    // console.log('setDuration', isAvailable, ableToPick, x, y)
     if(this.hasNextDuration(isAvailable, x, y)) {
       for(let i = 0; i < this.duration+1; i++) {
         this.slot[x][y+i] = ableToPick;
