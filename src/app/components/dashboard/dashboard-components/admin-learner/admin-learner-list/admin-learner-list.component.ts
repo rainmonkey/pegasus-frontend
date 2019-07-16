@@ -254,7 +254,7 @@ export class AdminLearnerListComponent implements OnInit {
         this.ngOnInit()
       },
       (err) => {
-        return
+        return;
       }
     )
     modalRef.componentInstance.command = command;

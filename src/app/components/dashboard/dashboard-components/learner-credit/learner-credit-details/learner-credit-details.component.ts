@@ -36,12 +36,10 @@ export class LearnerCreditDetailsComponent implements OnInit {
       } else {
         this.learner = data
         this.learnerId = this.learner.LearnerId
-        console.log(this.learner, this.learnerId)
       }
       this.getRemainingCourses()
       this.getArrangedLesson()
-    })
-    console.log(this.learnerId)
+    }, err => console.log(err))
   }
 
   getRemainingCourses() {
@@ -49,7 +47,6 @@ export class LearnerCreditDetailsComponent implements OnInit {
     this.learnerService.getRemainingCourses(this.learnerId).subscribe(data => {
       this.remainingCourseData = data["Data"]
       this.remainingDataWaitingFlag = false
-      console.log(this.remainingCourseData)
     }, error => console.log(error)
     )
   }
@@ -59,7 +56,6 @@ export class LearnerCreditDetailsComponent implements OnInit {
     this.learnerService.getArrangedLesson(this.learnerId).subscribe(data => {
       this.arrangedCourseData = data["Data"]
       this.arrangeDataWaitingFlag = false
-      console.log(this.arrangedCourseData)
     }, error => console.log(error))
   }
 

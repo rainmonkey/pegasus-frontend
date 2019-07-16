@@ -7,11 +7,11 @@
       <div class='row m_c_subscribers'>
         <div class='col-3'>
           <div class='m_c_subscribers_photo'>
-            <img src="../../../../../../assets/images/usersimg/userphoto02.jpg" alt="">
+            <img [src]="photoUrl + subscriber.Photo" alt="" onerror="this.src='../../../../../../assets/images/shared/default-employer-profile.png'">
           </div>
         </div>
         <div class='col-9'>
-          <div class='col-12 m_c_subscribers_name'>
+          <div class='col-12 m_c_subscribers_name' [title]="subscriber.FirstName + ' ' + subscriber.LastName">
             {{subscriber.FirstName}} {{subscriber.LastName}}
           </div>
           <div class='col-12 m_c_subscribers_signature'>
@@ -58,8 +58,8 @@
   <!--emoji框-->
   <div class='m_c_emoji_panel'>
     <span class='m_c_emoji_panel_info'>crtl + enter to send</span>
-    <ngx-emoji emoji='sunglasses' size="25" class='m_c_emoji_picker' (click)='displayEmojiPicker()'>
-    </ngx-emoji>
+    <span class='m_c_emoji_picker' (click)='displayEmojiPicker()' title='emoji'><span class='far fa-laugh-wink'></span></span>
+    <span (click)='displayChattingHistory()' class='m_c_history' title='history'><span class='fas fa-history'></span></span>
   </div>
 
 
