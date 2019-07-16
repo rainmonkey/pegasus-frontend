@@ -19,6 +19,8 @@ constructor(public activeModal: NgbActiveModal,) { }
         break;
       case 'Learner Credit':
         this.modelTitle = 'Learner Credit';
+      case 'Learner Timetable':
+        this.modelTitle = 'Learner\'s Timetable';
       default:
       this.modelTitle = '';
     }

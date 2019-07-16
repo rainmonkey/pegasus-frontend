@@ -2,7 +2,7 @@ import { MessagerService } from '../../../../../services/repositories/messager.s
 import { Component, OnInit, Output, Input, EventEmitter } from '@angular/core';
 import { Animations } from '../../../../../../animation/chatting-animation'
 import { fromEvent } from 'rxjs';
-import { map, takeUntil, concatMap } from 'rxjs/operators';
+import { map, takeUntil, concatMap, delay, skip } from 'rxjs/operators';
 
 @Component({
   selector: 'app-messager-modal',
@@ -32,7 +32,10 @@ export class MessagerModalComponent implements OnInit {
   { background: 'linear-gradient(135deg, lightgreen, lightblue)' },
   { background: 'linear-gradient(135deg, black, white)' },
   { background: 'linear-gradient(135deg, red, lightblue)' },
-  { background: 'linear-gradient(135deg, lightblue, pink)' }]
+  { background: 'linear-gradient(135deg, lightblue, pink)' }];
+  public leftPos;
+  public topPos;
+  public mouseEnter = false;
 
   @Input() browserHeight;
   @Output() onCloseChattingModal = new EventEmitter();
@@ -50,28 +53,32 @@ export class MessagerModalComponent implements OnInit {
   }
 
   ngAfterViewInit() {
-    console.log('a')
-    //this.draggable()
+    this.draggable();
   }
 
-  // draggable() {
 
-  //   const mouseDown$ = fromEvent(document.querySelector('.m_m_skeleton'), 'mousedown');
-  //   const mouseMove$ = fromEvent(document.querySelector('.m_m_skeleton'), 'mousemove');
-  //   const mouseUp$ = fromEvent(document.querySelector('.m_m_skeleton'), 'mouseup');
 
-  //   mouseDown$.pipe(
-  //     concatMap(mouseDownEvent => mouseUp$.pipe(
-  //       map(mouseUpEvent =>({
-  //         left:mouseUpEvent['clientX'] - mouseDownEvent['offsetX'],
-  //         top:mouseUpEvent['clientY'] - mouseDownEvent['offsetY']
-  //       }))
-  //     ))
-  //   ).subscribe(position=>{
-  //     document.querySelector('.m_m_skeleton')['style'].left = position.left + 'px'
-  //     document.querySelector('.m_m_skeleton')['style'].top = position.top + 'px'
-  //   })
-  // }
+  /*
+    user can drag chatting modal
+  */
+  draggable() {
+    const mouseDown$ = fromEvent(document.querySelector('.m_m_header'), 'mousedown');
+    const mouseMove$ = fromEvent(document, 'mousemove');
+    const mouseUp$ = fromEvent(document, 'mouseup');
+
+    mouseDown$.pipe(
+      concatMap(mouseDownEvent => mouseMove$.pipe(
+        map(mouseMoveEvent => ({
+          left: mouseMoveEvent['clientX'] - mouseDownEvent['offsetX'],
+          top: mouseMoveEvent['clientY'] - mouseDownEvent['offsetY']
+        })),
+        takeUntil(mouseUp$)
+      ))
+    ).subscribe(position => {
+      document.querySelector('.m_m_skeleton')['style'].left = position.left + 'px';
+      document.querySelector('.m_m_skeleton')['style'].top = position.top + 'px';
+    })
+  }
 
   /*
     called by template.
@@ -166,8 +173,18 @@ export class MessagerModalComponent implements OnInit {
   /*
     fire emit to parent component to close chatting modal(minimize)
   */
-  closeChattingModal() {
+  closeChattingModal(event) {
     this.onCloseChattingModal.emit('true');
+    return false;
   }
+
+  // mouseEnterHandler() {
+  //   this.mouseEnter = true;
+  //   console.log(this.mouseEnter)
+  // }
+  // mouseLeaveHandler() {
+  //   this.mouseEnter = false;
+  //   console.log(this.mouseEnter)
+  // }
 
 }
