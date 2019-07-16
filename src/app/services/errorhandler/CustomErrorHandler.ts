@@ -9,14 +9,11 @@ export class CustomErrorHandler implements ErrorHandler {
         ) { }
 
     handleError(error) {
-        Swal.fire({
-            title: 'Error!',
-            text: 'Sorry! Something wrong, ' + error,
-            type: 'error',
-        });
+        if (error.message.includes("ExpressionChangedAfterItHasBeenCheckedError")) return ;
+        Swal.fire({ title: 'Error!', text: 'Sorry! Something wrong, ' + error.messgae, type: 'error' });
         //const router = this.injector.get(Router);
         //router.navigate(['/error/page']);
         //location.reload();
-        throw error;
+        //throw error;
     }
 }
