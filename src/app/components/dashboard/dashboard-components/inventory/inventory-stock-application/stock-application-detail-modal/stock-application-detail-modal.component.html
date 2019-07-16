@@ -5,9 +5,57 @@
   </button>
 </div>
 <div class="modal-body">
-  <form>
-    
-  </form>
+  <div class='t_mf_form'>
+    <form [formGroup]='applicationFrom'>
+      <!-- first row -->
+      <div class="row">
+        <div class="col-6">
+          <label class='t_mf_label'>Staff Name:</label>&nbsp;
+          <input type="text" class='col-12 t_mf_input' formControlName='staffName'
+          [class.t_mf_error_border]='applicationFrom.get("staffName").invalid && applicationFrom.get("staffName").touched'>
+          <small class='text-danger errorfontsmall' style='text-align: center'
+          *ngIf='applicationFrom.get("staffName").invalid && applicationFrom.get("staffName").touched'>required</small>
+        </div>
+        <div class="col-6">
+          <label class='t_mf_label'>Location:</label>&nbsp;
+          <input type="text" class='col-12 t_mf_input' formControlName='org'>
+        </div>
+      </div>
+      <!-- second row -->
+      <div class="row">
+        <div class="col-6">
+          <label class='t_mf_label'>Apply At:</label>&nbsp;
+          <input type="text" class='col-12 t_mf_input' formControlName='applyAt'>
+        </div>
+        <div class="col-6">
+          <label class='t_mf_label'>Apply Reason:</label>&nbsp;
+          <input type="text" class='col-12 t_mf_input' formControlName='productQty'
+            [class.t_mf_error_border]='applicationFrom.get("productQty").invalid && applicationFrom.get("productQty").touched'>
+          <small class='text-danger errorfontsmall' style='text-align: center'
+            *ngIf='applicationFrom.get("productQty").invalid && applicationFrom.get("productQty").touched'>required</small>
+        </div>
+      </div>
+      <!-- third row -->
+      <div class="row">
+        <div class="col-6">
+          <label class='t_mf_label'>Product Name:</label>&nbsp;
+          <select class='col-12 t_mf_input' formControlName='location'
+            [class.t_mf_error_border]='applicationFrom.get("location").invalid && applicationFrom.get("location").touched'>
+            <option *ngFor='let org of orgs' value={{org.OrgId}}>{{org.OrgName}}</option>
+          </select>
+          <small class='text-danger errorfontsmall' style='text-align: center'
+          *ngIf='applicationFrom.get("location").invalid && applicationFrom.get("location").touched'>required</small>
+        </div>
+        <div class="col-6">
+          <label class='t_mf_label'>Quantity:</label>&nbsp;
+          <input type="number" class='col-12 t_mf_input' formControlName='productQty'
+            [class.t_mf_error_border]='applicationFrom.get("productQty").invalid && applicationFrom.get("productQty").touched'>
+          <small class='text-danger errorfontsmall' style='text-align: center'
+            *ngIf='applicationFrom.get("productQty").invalid && applicationFrom.get("productQty").touched'>required</small>
+        </div>
+      </div>
+    </form>
+  </div>
 </div>
 <div class="modal-footer">
   <button type="button" class="btn btn-outline-dark" (click)="activeModal.close('Close click')">Close</button>
