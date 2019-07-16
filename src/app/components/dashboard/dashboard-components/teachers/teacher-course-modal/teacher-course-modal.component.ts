@@ -210,18 +210,18 @@ export class TeacherCourseModalComponent implements OnInit {
     get this teacher's salary
   */
   getTeacherSalary(course) {
-    if(this.whichTeacher.TeacherWageRate !== null){
+    if(this.whichTeacher.TeacherWageRates !== null){
       if(course == 'piano'){
-        return this.whichTeacher.TeacherWageRate.PianoRates;
+        return this.whichTeacher.TeacherWageRates.PianoRates;
       }
       else if(course == 'theory'){
-        return this.whichTeacher.TeacherWageRate.TheoryRates;
+        return this.whichTeacher.TeacherWageRates.TheoryRates;
       }
       else if(course == 'others'){
-        return this.whichTeacher.TeacherWageRate.OthersRates;
+        return this.whichTeacher.TeacherWageRates.OthersRates;
       }
       else if(course == 'group'){
-        return this.whichTeacher.TeacherWageRate.GroupRates;
+        return this.whichTeacher.TeacherWageRates.GroupRates;
       }
     }
     else{
@@ -270,7 +270,7 @@ export class TeacherCourseModalComponent implements OnInit {
   }
 
   submitToServer(dataToSubmit) {
-    if(this.whichTeacher.TeacherWageRate == null){
+    if(this.whichTeacher.TeacherWageRates == null){
       this.teacherService.updateTeacherCoursePost(dataToSubmit).subscribe(
         (res) => {
           this.onsubmit = false;
@@ -300,7 +300,7 @@ export class TeacherCourseModalComponent implements OnInit {
 
   formGroupAssemble() {
     let groupObj;
-      if(this.whichTeacher.TeacherWageRate == null){
+      if(this.whichTeacher.TeacherWageRates == null){
         groupObj = {
           PianoRates: [{ value:null, disabled: false }, Validators.required],
           TheoryRates: [{ value: null, disabled: false }, Validators.required],
@@ -310,10 +310,10 @@ export class TeacherCourseModalComponent implements OnInit {
       }
       else{
         groupObj = {
-          PianoRates: [{ value: this.whichTeacher.TeacherWageRate.PianoRates, disabled: false }, Validators.required],
-          TheoryRates: [{ value: this.whichTeacher.TeacherWageRate.TheoryRates, disabled: false }, Validators.required],
-          OthersRates:[{ value: this.whichTeacher.TeacherWageRate.OthersRates, disabled: false }, Validators.required],
-          GroupRates:[{ value: this.whichTeacher.TeacherWageRate.GroupRates, disabled: false }, Validators.required],
+          PianoRates: [{ value: this.whichTeacher.TeacherWageRates.PianoRates, disabled: false }, Validators.required],
+          TheoryRates: [{ value: this.whichTeacher.TeacherWageRates.TheoryRates, disabled: false }, Validators.required],
+          OthersRates:[{ value: this.whichTeacher.TeacherWageRates.OthersRates, disabled: false }, Validators.required],
+          GroupRates:[{ value: this.whichTeacher.TeacherWageRates.GroupRates, disabled: false }, Validators.required],
         }
       }
       this.CourseForm = this.fb.group(groupObj);
