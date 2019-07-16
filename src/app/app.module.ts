@@ -306,15 +306,14 @@ import { ConflictCheckComponent } from './components/dashboard/dashboard-compone
     DatePipe,
     MondayDateInWeekByDatePipe,
     NgbActiveModal,
-    {
-      provide: ErrorHandler,
-      useClass: CustomErrorHandler,
-    },
+    // {
+    //   provide: ErrorHandler,
+    //   useClass: CustomErrorHandler,
+    // },
   ],
   entryComponents: [
     AdminLearnerProfileComponent,
     AmendmentHistoryModalComponent,
-
     PageGroupListComponent,
     PageGroupEditComponent,
     PageGroupDeleteComponent,
