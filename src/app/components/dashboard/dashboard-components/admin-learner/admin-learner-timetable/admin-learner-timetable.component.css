@@ -1,0 +1,6 @@
+@import '@fullcalendar/core/main.css';
+@import '@fullcalendar/daygrid/main.css';
+
+.note{
+  font-size:13px;
+}
