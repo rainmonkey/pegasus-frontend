@@ -39,8 +39,8 @@ export class AdminInvoiceListComponent implements OnInit {
   public isSearchingFlag: boolean = false
   // learner name and
   learner: Learner;
-  terms : [];
-  termId:number;
+  terms: [];
+  termId: number;
   myArray = [];
   //teachers list copy. Using in searching method, in order to initialize data to original
   public myArrayCopy: Array<any>;
@@ -55,11 +55,14 @@ export class AdminInvoiceListComponent implements OnInit {
   ngOnInit() {
     this.userId = localStorage.getItem("userID");
     this.getTerm();
+  }
 
+  clearSearch() {
+    this.isSearchingFlag = false
+    this.myArray = this.temLearnerList.map(data => data.Learner)
+    this.learnerListLength = this.temLearnerListLength
   }
-  clearSearch(){
-    this.myArray=[];
-  }
+
   // modal method
   open(item) {
     const modalRef = this.modalService.open(AdminInvoiceEditModalComponent,
@@ -74,8 +77,9 @@ export class AdminInvoiceListComponent implements OnInit {
   // get data from server side
   getData() {
     this.isLoad = true;
-    this.transactionService.getLearnerInvo(this.userId,this.termId).subscribe(
+    this.transactionService.getLearnerInvo(this.userId, this.termId).subscribe(
       (res) => {
+        console.log(res, this.termId)
         this.learnerList = res.Data;
         this.learnerListLength = res.Data.length; //length prop is under Data prop
         this.temLearnerList = res.Data;
@@ -93,28 +97,29 @@ export class AdminInvoiceListComponent implements OnInit {
           title: 'Oops...',
           text: error.error.ErrorMessage,
         });
-
         this.errorAlert = false;
       });
   }
-  onChange(value){
+
+  onChange(value) {
     this.termId = value;
-    //this.getData();
   }
-  onSubmit(){
+
+  onSubmit() {
     this.getData();
   }
+
   getTerm() {
     var today = new Date();
     this.coursesService.getoioi().subscribe(
       (res) => {
         this.terms = res.Data;
-        for (let e of this.terms){
-          if ((today  >= new Date(e['BeginDate'])) && (today  <= new Date(e['EndDate'])) )
+        for (let e of this.terms) {
+          if ((today >= new Date(e['BeginDate'])) && (today <= new Date(e['EndDate'])))
             this.termId = e['TermId'];
         }
         console.log(this.terms)
-      },(error)=>{
+      }, (error) => {
         Swal.fire({
           type: 'error',
           title: 'Oops...',
@@ -124,9 +129,10 @@ export class AdminInvoiceListComponent implements OnInit {
       }
     )
   }
+
   // push to array for sort
   makeArray() {
-    this.myArray=[];
+    this.myArray = [];
     this.learnerList.forEach(list => {
       let tempObj = {
         OwingFee: list.OwingFee,
@@ -140,12 +146,6 @@ export class AdminInvoiceListComponent implements OnInit {
   // sort item
   onSort(orderBy, orderControls?) {
     this.ngTable.sorting(this.myArray, orderBy, orderControls)
-  }
-
-  clearSearch() {
-    this.isSearchingFlag = false
-    this.myArray = this.temLearnerList.map(data => data.Learner)
-    this.learnerListLength = this.temLearnerListLength
   }
 
   onSearch(event, initValue?) {

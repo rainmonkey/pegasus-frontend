@@ -5,7 +5,7 @@ import { FormBuilder, Validator, Validators, RequiredValidator } from '@angular/
 import { TransactionService } from '../../../../../../services/http/transaction.service';
 import { SessionsService } from '../../../../../../services/http/sessions.service';
 import { SessionEdit } from '../../../../../../models/SessionEdit';
-import { TrialModalComponent } from "src/app/components/dashboard/dashboard-components/trial-session/trial-modal/trial-modal.component"
+import { TimePickerComponent } from "src/app/components/dashboard/dashboard-components/time-picker/time-picker.component"
 import Swal from "sweetalert2";
 
 @Component({
@@ -71,6 +71,7 @@ export class SessionDetailEditModalComponent implements OnInit {
   getBranchs = () => {
     this.sessionsService.GetTeachherFilter(this.LessonModel.courseId).subscribe(res => {
       this.BranchSelects = res.Data;
+      console.log(this.BranchSelects)
     }, err => {
       alert('Something ERR');
     });
@@ -97,7 +98,9 @@ export class SessionDetailEditModalComponent implements OnInit {
   }
 
   openTimePicker = () => {
-    let modalRef = this.modalService.open(TrialModalComponent, { size: 'lg', backdrop: 'static', keyboard: false })
+    let modalRef = this.modalService.open(TimePickerComponent, { size: 'lg', backdrop: 'static', keyboard: false })
+    // modalRef.componentInstance.command = command;
+
   }
 
   ConfrimEdit = () => {
@@ -120,7 +123,6 @@ export class SessionDetailEditModalComponent implements OnInit {
           title: 'Oops...',
           text: err.error.ErrorMessage,
         });
-
       });
 
   }

@@ -42,8 +42,6 @@ export class LearnerCreditDetailsComponent implements OnInit {
     }, err => console.log(err))
   }
 
-  ngOnInit() { }
-
   getRemainingCourses() {
     this.remainingDataWaitingFlag = true
     this.learnerService.getRemainingCourses(this.learnerId).subscribe(data => {
