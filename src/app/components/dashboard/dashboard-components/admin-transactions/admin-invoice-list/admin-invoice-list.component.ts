@@ -4,8 +4,9 @@ import { NgbootstraptableService } from 'src/app/services/others/ngbootstraptabl
 import { TransactionService } from '../../../../../services/http/transaction.service';
 import { AdminInvoiceEditModalComponent } from '../admin-invoice-edit-modal/admin-invoice-edit-modal.component';
 import { CoursesService } from '../../../../../services/http/courses.service';
-import * as jsPDF from 'jspdf';
+import { DownloadPDFService } from "../../../../../services/others/download-pdf.service"
 import Swal from 'sweetalert2';
+import * as jsPDF from "jspdf"
 
 interface Learner {
   OwingFee: string | number;
@@ -50,6 +51,7 @@ export class AdminInvoiceListComponent implements OnInit {
     private ngTable: NgbootstraptableService,
     private transactionService: TransactionService,
     private coursesService: CoursesService,
+    private downloadPDFService: DownloadPDFService
   ) { }
 
   ngOnInit() {
@@ -71,15 +73,11 @@ export class AdminInvoiceListComponent implements OnInit {
     const modalRef = this.modalService.open(AdminInvoiceEditModalComponent,
       {
         size: 'lg', backdrop: "static", keyboard: false,
-        // beforeDismiss: new Promise((resolve,reject)=>{
-        //
-        // })
       });
     //pass parameters to edit modals
     modalRef.result.then(result => {
       this.getData()
     }, reason => { })
-
     modalRef.componentInstance.item = item;
   }
 
@@ -93,9 +91,6 @@ export class AdminInvoiceListComponent implements OnInit {
         this.temLearnerList = res.Data;
         this.temLearnerListLength = res.Data.length;
         this.isLoad = false;
-        // setInterval(() => {
-        //   console.log(res.Data)
-        // }, 3000)
         // make array for sort
         this.makeArray();
       },
@@ -152,6 +147,7 @@ export class AdminInvoiceListComponent implements OnInit {
       Object.assign(list.Learner, tempObj, list);
       this.myArray.push(list.Learner);
     });
+    console.log(this.myArray)
   }
 
   // sort item
@@ -187,39 +183,71 @@ export class AdminInvoiceListComponent implements OnInit {
     }
   }
 
-  // downloadInvoice() {
-  //   let doc = new jsPDF('p', 'pt', 'a4');
-  //
-  //   let text = `${this.studentFullName}'s Payment Invoice`;
-  //   let xOffset = (doc.internal.pageSize.width / 2) - (doc.getStringUnitWidth(text) * 20 / 2);
-  //
-  //   doc.setFontSize(20);
-  //   doc.text(text, xOffset, 50);
-  //
-  //   doc.setFontSize(14);
-  //   doc.text(`Invoice To:  ${this.studentFullName}`, 30, 100);
-  //   doc.text(`For`, 30, 120);
-  //   doc.text(`1 Lesson of ${this.cateName} trial course,`, 40, 140);
-  //   doc.text(`by ${this.whichTeacher.FirstName}  ${this.whichTeacher.LastName},`, 40, 160);
-  //   doc.text(`from ${this.startTime} to ${this.endTime},`, 40, 180);
-  //   doc.text(`at ${this.orgName} ${this.avaliableRoom.RoomName}.`, 40, 200);
-  //   doc.text(`Price:`, 30, 250);
-  //   doc.text(`$ ${this.coursePrice + this.extraFee}`, 220, 250);
-  //   //Total
-  //   doc.setFontSize(25);
-  //   doc.text(`TOTAL: $ ${this.coursePrice + this.extraFee}`, 30, 350);
-  //   doc.setFontSize(14);
-  //   doc.text(`Create Date: ${new Date().toLocaleString()}`, 30, 370);
-  //
-  //   doc.save('aaaa');
-  // }
-
-  downloadInvoice() {
-    let doc = new jsPDF('p', 'pt', 'a4');
-    let text = `Invoice`;
-    let xOffset = (doc.internal.pageSize.width / 2) - (doc.getStringUnitWidth(text) * 20 / 2);
+  downloadPDF(index, learner, invoice) {
+    //FirstName LastName LessonQuantity CourseName LessonFee BeginDate
+    //ConcertFeeName? ConcertFee? LessonNoteFeeName? NoteFee?
+    //Other1FeeName? Other1Fee? Other2FeeName? Other2Fee? Other3FeeName? Other3Fee?
+    //TotalFee DueDate
+    learner = this.myArray[index]
+    let invDetail = learner.Invoice;
+    let currentHeight: number = 50
+    let interval: number = 10
+    // Landscape export, 2×4 inches
+    let doc = new jsPDF({
+      orientation: 'landscape',
+      unit: 'mm',
+      format: [600, 460]
+    });
+    // title
     doc.setFontSize(20);
-    doc.text(text, xOffset, 50);
-    doc.save('aaaa');
+    doc.text(`Able Music Studio`, 75, 20);
+    // detail
+    doc.setFontSize(12);
+    doc.text(`Invoice To: ${learner.FirstName}  ${learner.LastName}`, 30, 30);
+
+    doc.setFontSize(10)
+    doc.text(`For`, 30, 40);
+    doc.text(`${invDetail.LessonQuantity} Lessons of ${invDetail.CourseName}`, 35, 46);
+    doc.text(`$${invDetail.LessonFee}`, 170, 50);
+    doc.text(`From the Date ${invDetail.BeginDate.slice(0, 10)}`, 35, 50)
+
+    if (invDetail.ConcertFee) {
+      currentHeight += interval
+      doc.text(`${invDetail.ConcertFeeName}`, 35, currentHeight);
+      doc.text(`$${invDetail.ConcertFee}`, 170, currentHeight);
+    }
+
+    if (invDetail.NoteFee) {
+      currentHeight += interval
+      doc.text(`${invDetail.LessonNoteFeeName}`, 35, currentHeight);
+      doc.text(`$${invDetail.NoteFee}`, 170, currentHeight);
+    }
+
+    if (invDetail.Other1Fee) {
+      currentHeight += interval
+      doc.text(`Others: ${invDetail.Other1FeeName}`, 35, currentHeight)
+      doc.text(`$${invDetail.Other1Fee}`, 170, currentHeight)
+    }
+
+    if (invDetail.Other2Fee) {
+      currentHeight += interval
+      doc.text(`${invDetail.Other2FeeName}`, 35, currentHeight)
+      doc.text(`$${invDetail.Other2Fee}`, 170, currentHeight)
+    }
+
+    if (invDetail.Other3Fee) {
+      currentHeight += interval
+      doc.text(`${invDetail.Other3FeeName}`, 35, currentHeight)
+      doc.text(`$${invDetail.Other3Fee}`, 170, currentHeight)
+    }
+
+    doc.setFontSize(16);
+    currentHeight += interval * 2
+    doc.text(`TOTAL:$ ${invDetail.TotalFee}`, 30, currentHeight);
+
+    doc.setFontSize(10);
+    currentHeight += interval
+    doc.text(`Due Date: ${invDetail.DueDate.slice(0, 10)}`, 30, currentHeight);
+    doc.save(`${learner.FirstName}  ${learner.LastName}'s invoice`);
   }
 }
