@@ -12,6 +12,9 @@
     <app-learner-credit-details *ngIf="whichModal == 'Learner Credit'" [whichLearner]='whichObject'></app-learner-credit-details>
     <app-admin-learner-timetable *ngIf="whichModal == 'Learner Timetable'" [whichLearner]='whichObject'></app-admin-learner-timetable>
     <!-- <app-learner-registration-form [whichLearner]= 'whichLearner' (toLearnerListEvent)='toLearnerListEvent($event)' activeModalEvent='onActiveModalSubmit($event)'></app-learner-registration-form> -->
+    <div *ngIf="learnerCourseTimeTable">
+
+    </div>
 </div>
 <!--modal footer-->
 <div class='modal-footer'>

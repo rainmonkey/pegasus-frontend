@@ -5,6 +5,7 @@ import dayGridPlugin from '@fullcalendar/daygrid';
 import { OptionsInput } from '@fullcalendar/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { LearnersService } from 'src/app/services/http/learners.service';
+import { ModelTemplateComponent } from 'src/app/shared/components/model-template/model-template.component';
 
 
 @Component({
@@ -36,12 +37,15 @@ export class AdminLearnerTimetableComponent implements OnInit {
   }
 
   initFullCalendar(pointer) {
-    console.log(this.fullcalendar);
     let that = pointer;
     this.options = {
       plugins: [dayGridPlugin, interactionPlugin],
       selectable: true,
       eventTextColor: '#ffffff',
+      eventClick: (info) => {
+        console.log(info)
+        that.checkLearner(info)
+      },
     };
   }
 
@@ -64,5 +68,16 @@ export class AdminLearnerTimetableComponent implements OnInit {
       this.courseArray.push({ "title": i.TeacherFirstName +' '+ i.BranchAbbr, "date": i.BeginTime })
     }
     return this.courseArray;
+  }
+
+  checkLearner(info) {
+    const modalRef = this.modalService.open(ModelTemplateComponent,{ backdrop: 'static', keyboard: false })
+    let that = this;
+    modalRef.componentInstance.learnerCourseTimeTable = info;
+    modalRef.result.then(
+      (res) => {
+        that.ngOnInit()
+      },
+    )
   }
 }

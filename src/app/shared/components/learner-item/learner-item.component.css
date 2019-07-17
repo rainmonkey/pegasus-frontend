@@ -8,3 +8,12 @@ position: fixed;
 top:40%;
 left: 50%;
 }
+
+.spanNameHover{
+  cursor: pointer;
+}
+
+.spanNameHover:hover {
+  font-size: large;
+  text-decoration: underline;
+}
