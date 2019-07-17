@@ -4,7 +4,7 @@ import { NgbootstraptableService } from 'src/app/services/others/ngbootstraptabl
 import { TransactionService } from '../../../../../services/http/transaction.service';
 import { AdminInvoiceEditModalComponent } from '../admin-invoice-edit-modal/admin-invoice-edit-modal.component';
 import { CoursesService } from '../../../../../services/http/courses.service';
-import { Subject } from "rxjs"
+import * as jsPDF from 'jspdf';
 import Swal from 'sweetalert2';
 
 interface Learner {
@@ -55,6 +55,9 @@ export class AdminInvoiceListComponent implements OnInit {
   ngOnInit() {
     this.userId = localStorage.getItem("userID");
     this.getTerm();
+    // setInterval(() => {
+    //   console.log(this.myArray)
+    // }, 2000)
   }
 
   clearSearch() {
@@ -67,11 +70,17 @@ export class AdminInvoiceListComponent implements OnInit {
   open(item) {
     const modalRef = this.modalService.open(AdminInvoiceEditModalComponent,
       {
-        size: 'lg', backdrop: "static", keyboard: false
+        size: 'lg', backdrop: "static", keyboard: false,
+        // beforeDismiss: new Promise((resolve,reject)=>{
+        //
+        // })
       });
     //pass parameters to edit modals
+    modalRef.result.then(result => {
+      this.getData()
+    }, reason => { })
+
     modalRef.componentInstance.item = item;
-    console.log(modalRef)
   }
 
   // get data from server side
@@ -79,12 +88,14 @@ export class AdminInvoiceListComponent implements OnInit {
     this.isLoad = true;
     this.transactionService.getLearnerInvo(this.userId, this.termId).subscribe(
       (res) => {
-        console.log(res, this.termId)
         this.learnerList = res.Data;
         this.learnerListLength = res.Data.length; //length prop is under Data prop
         this.temLearnerList = res.Data;
         this.temLearnerListLength = res.Data.length;
         this.isLoad = false;
+        // setInterval(() => {
+        //   console.log(res.Data)
+        // }, 3000)
         // make array for sort
         this.makeArray();
       },
@@ -102,7 +113,7 @@ export class AdminInvoiceListComponent implements OnInit {
   }
 
   onChange(value) {
-    this.termId = value;
+    this.termId = +value;
   }
 
   onSubmit() {
@@ -114,20 +125,18 @@ export class AdminInvoiceListComponent implements OnInit {
     this.coursesService.getoioi().subscribe(
       (res) => {
         this.terms = res.Data;
-
-        for (let e of this.terms){
+        for (let e of this.terms) {
           this.termId = e['TermId'];
-          if ((today  >= new Date(e['BeginDate'])) && (today  <= new Date(e['EndDate'])) )
+          if ((today >= new Date(e['BeginDate'])) && (today <= new Date(e['EndDate'])))
             break;
         }
-        console.log(this.terms)
+        this.getData()
       }, (error) => {
         Swal.fire({
           type: 'error',
           title: 'Oops...',
           text: error.error.ErrorMessage,
         });
-
       }
     )
   }
@@ -176,5 +185,41 @@ export class AdminInvoiceListComponent implements OnInit {
         this.learnerListLength = this.temLearnerListLength
       }
     }
+  }
+
+  // downloadInvoice() {
+  //   let doc = new jsPDF('p', 'pt', 'a4');
+  //
+  //   let text = `${this.studentFullName}'s Payment Invoice`;
+  //   let xOffset = (doc.internal.pageSize.width / 2) - (doc.getStringUnitWidth(text) * 20 / 2);
+  //
+  //   doc.setFontSize(20);
+  //   doc.text(text, xOffset, 50);
+  //
+  //   doc.setFontSize(14);
+  //   doc.text(`Invoice To:  ${this.studentFullName}`, 30, 100);
+  //   doc.text(`For`, 30, 120);
+  //   doc.text(`1 Lesson of ${this.cateName} trial course,`, 40, 140);
+  //   doc.text(`by ${this.whichTeacher.FirstName}  ${this.whichTeacher.LastName},`, 40, 160);
+  //   doc.text(`from ${this.startTime} to ${this.endTime},`, 40, 180);
+  //   doc.text(`at ${this.orgName} ${this.avaliableRoom.RoomName}.`, 40, 200);
+  //   doc.text(`Price:`, 30, 250);
+  //   doc.text(`$ ${this.coursePrice + this.extraFee}`, 220, 250);
+  //   //Total
+  //   doc.setFontSize(25);
+  //   doc.text(`TOTAL: $ ${this.coursePrice + this.extraFee}`, 30, 350);
+  //   doc.setFontSize(14);
+  //   doc.text(`Create Date: ${new Date().toLocaleString()}`, 30, 370);
+  //
+  //   doc.save('aaaa');
+  // }
+
+  downloadInvoice() {
+    let doc = new jsPDF('p', 'pt', 'a4');
+    let text = `Invoice`;
+    let xOffset = (doc.internal.pageSize.width / 2) - (doc.getStringUnitWidth(text) * 20 / 2);
+    doc.setFontSize(20);
+    doc.text(text, xOffset, 50);
+    doc.save('aaaa');
   }
 }

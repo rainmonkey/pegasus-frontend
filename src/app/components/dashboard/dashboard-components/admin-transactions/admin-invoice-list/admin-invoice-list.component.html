@@ -9,7 +9,7 @@
         <h2>Invoice Edit & Email</h2>
       </div>
       <div class='col-6 tl_body_title'>Please Select a Term
-        <select style="width: 360px;" (change)="onChange($event.target.value)">
+        <select style="width: 360px;" [value]='termId' (change)="onChange($event.target.value)">
           <option *ngFor="let i of terms" value="{{i.TermId}}">{{i.TermName}}:{{i.BeginDate}} - {{i.EndDate}}</option>
         </select>
       </div>
@@ -50,7 +50,6 @@
               <td>
                 <app-learner-item [learnerInv]=item></app-learner-item>
               </td>
-
               <td>{{item.InvoiceWaitingConfirm.OwingFee}}</td>
               <td>{{item.Invoice.TotalFee}}</td>
               <td>{{item.Invoice.Comment}}</td>
@@ -61,6 +60,9 @@
               <td *ngIf='item.Invoice.IsPaid==1'>Paid</td>
               <td>
                 <a (click)='open(item)' style="cursor: pointer;"><span class='fas fa-pen'></span>&nbsp;Edit</a>
+              </td>
+              <td>
+                <a (click)="downloadInvoice()" style="cursor: pointer;"><span class='fas fa-pen'></span>&nbsp;PDF</a>
               </td>
             </tr>
           </tbody>
