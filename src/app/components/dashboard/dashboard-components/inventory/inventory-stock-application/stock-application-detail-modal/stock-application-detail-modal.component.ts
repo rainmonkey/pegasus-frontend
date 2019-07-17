@@ -20,7 +20,7 @@ export class StockApplicationDetailModalComponent implements OnInit {
   public staffName: string;
   public prodCats: any[];
   public prodTypes: any[];
-  public prods: any[];
+  public products: any[];
   public errorMessage: any;
   
 
@@ -32,14 +32,13 @@ export class StockApplicationDetailModalComponent implements OnInit {
     this.getLocalStorage();
     this.getProdCats();
     // this.getProducts();
+    // this.getProdByType(1);
     this.applicationFrom = this.fb.group(this.formGroupAssemble());
   }
 
   /* form group obj */
   formGroupAssemble() {
     return {
-      staffName: [this.staffName, Validators.required],
-      orgName: [this.orgName, Validators.required],
       applyReason: ['', Validators.required],
       productIdQty: this.fb.array([this.createProd()])
     }
@@ -96,11 +95,17 @@ export class StockApplicationDetailModalComponent implements OnInit {
     this.inventoriesService.getProdByType(typeId).subscribe(
       res => {
         console.log('prod', res['Data'])
-        this.prods = res['Data'];
-        // console.log('prods', this.prods)
+        this.products = res.Data;
       },
       err => this.errHandler(err)
     )
+  }
+  /* event form HTML */
+  resetForm(i: number) {
+    this.applicationFrom.reset(i);
+  }
+  deleteForm(i: number) {
+    this.productIdQty.removeAt(i);
   }
   // getProducts() {
   //   this.inventoriesService.getProdts().subscribe(
