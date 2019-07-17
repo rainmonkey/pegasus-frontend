@@ -1,6 +1,7 @@
-import { Component, OnInit, Input, ViewChild, AfterViewChecked } from '@angular/core';
+import { Component, OnInit, Input, ViewChild, AfterViewChecked, Output, EventEmitter} from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { TimePickerComponent } from '../../time-picker/time-picker.component';
+import { Observable } from 'rxjs';
 @Component({
   selector: 'app-learner-registration-modal',
   templateUrl: './learner-registration-modal.component.html',
@@ -13,8 +14,11 @@ export class LearnerRegistrationModalComponent implements OnInit, AfterViewCheck
 
   // edwin add
   @Input() whichLearner;
-  public beginTime:any;
+  public beginTime:any = null;
   public modalopen: boolean = true;
+  // timepicker send back to main component
+  @Output() beginTimeTo: EventEmitter<any> = new EventEmitter
+
    constructor(public activeModal: NgbActiveModal) {}
 
    ngAfterViewChecked(){
@@ -24,9 +28,9 @@ export class LearnerRegistrationModalComponent implements OnInit, AfterViewCheck
    }
 
    beginTimeFromChild(event) {
-     this.beginTime = event;
-     console.log('BeginTimeFromTimePicker', event);
+
+    this.beginTimeTo.emit(event)
      this.activeModal.dismiss();
    }
-   
+
 }

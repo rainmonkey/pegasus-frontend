@@ -11,11 +11,15 @@ export class ModelTemplateComponent implements OnInit {
 @Input() whichModal;
 modelTitle;
 
-constructor(public activeModal: NgbActiveModal,) { }
+// for timetable
+@Input() learnerCourseTimeTable;
+titleArray;
+
+constructor(public activeModal: NgbActiveModal,) {}
   getModalDetail(){
     switch (this.whichModal) {
       case 'payInvoice':
-      this.modelTitle = 'Invoice Payment';
+        this.modelTitle = 'Invoice Payment';
         break;
       case 'Learner Credit':
         this.modelTitle = 'Learner Credit';
@@ -27,9 +31,20 @@ constructor(public activeModal: NgbActiveModal,) { }
       this.modelTitle = '';
     }
   }
+  ShowTimeTableDetail(){
+    this.titleArray = this.learnerCourseTimeTable.event.title.split(' ');
+    this.modelTitle = 'Learner\'s Course Detail';
+    console.log(this.learnerCourseTimeTable);
+  }
+
   ngOnInit() {
-    this.getModalDetail()
-    console.log(this.modelTitle)
+    console.log(this.learnerCourseTimeTable)
+    if (this.whichModal) {
+    this.getModalDetail();
+    }
+    if (this.learnerCourseTimeTable){
+      this.ShowTimeTableDetail()
+    }
   }
 
 }
