@@ -60,6 +60,15 @@
     background: rgb(173, 216, 230, 0.1);
     height: 26px;
 }   
+.t_mf_input__textarea{
+    border: none;
+    border: 1px solid lightgrey;
+    border-radius: 3px;
+    text-align: center;
+    text-align-last: center;
+    background: rgb(173, 216, 230, 0.1);
+    height: 50px;
+}   
 .t_mf_language{
     border: 1px solid lightgray;
     border-radius: 3px;
@@ -152,3 +161,9 @@
     text-transform: capitalize;
     text-align: center;
 }
+.t_info_addmore_btn {
+    height: 30px;
+    width: auto;
+    line-height: 17px;
+    cursor: pointer;
+  }
