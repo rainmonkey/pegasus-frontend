@@ -11,11 +11,11 @@
       <div class="row">
         <div class="col-6">
           <label class='t_mf_label'>Staff Name:</label>&nbsp;
-          <input type="text" class='col-12 t_mf_input' formControlName="staffName" readonly>
+          <input type="text" class='col-12 t_mf_input' [value]="staffName" readonly>
         </div>
         <div class="col-6">
           <label class='t_mf_label'>Location:</label>&nbsp;
-          <input type="text" class='col-12 t_mf_input' formControlName="orgName" readonly>
+          <input type="text" class='col-12 t_mf_input' [value]="orgName" readonly>
         </div>
       </div>
       <!-- second row -->
@@ -32,6 +32,11 @@
       <div formArrayName="productIdQty" 
         *ngFor="let prods of applicationFrom.get('productIdQty').controls; let i = index">
         <div [formGroupName]="i">
+          <div class="d-flex justify-content-end" style="margin-top: 10px; margin-bottom: 10px;">
+            <button class="btn btn-info t_info_addmore_btn" (click)="resetForm(i)" style="margin-right: 20px;">Reset</button>
+            <button class="btn btn-info t_info_addmore_btn" (click)="deleteForm(i)">Delete</button>
+          </div>
+          <!-- fourth row -->
           <div class="row">
             <div class="col-6">
               <label class='t_mf_label'>Product Category:</label>&nbsp;
@@ -48,15 +53,15 @@
               </select>
             </div>
           </div>
-          <!-- forth row -->
+          <!-- fifth row -->
           <div class="row">
             <div class="col-6">
+                <!-- <div *ngIf="prods">{{prods| json}}</div> -->
               <label class='t_mf_label'>Product Name:</label>&nbsp;
               <select class='col-12 t_mf_input' formControlName="prod">
                 <option selected>Choose..</option>
-                <option *ngFor='let prod of prods' [value]="prod.ProductId">{{prod.ProductName}}</option>
+                <option *ngFor='let prod of products' [value]="prod.ProductId">{{prod.ProductName}}</option>
               </select>
-              <div *ngIf="prods">{{prods| json}}</div>>
             </div>
             <div class="col-6">
               <label class='t_mf_label'>Product Quantity:</label>&nbsp;
@@ -67,7 +72,7 @@
       </div>
       <!-- fifth row -->
       <div class="d-flex justify-content-end" style="margin-top: 10px">
-        <button class="btn btn-info t_info_addmore_btn" style="margin-right: 20px;">Reset</button>
+        <button class="btn btn-info t_info_addmore_btn" (click)="resetForm()" style="margin-right: 20px;">Reset</button>
         <button class="btn btn-info t_info_addmore_btn" (click)="addProds()">Add more Product</button>
       </div>
     </form>
