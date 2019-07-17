@@ -22,6 +22,7 @@ export class MessagerChattingComponent implements OnInit {
   public localMsgHistroy: Array<object> = [];
   public subscriber: object;
   public photoUrl = environment.photoUrl;
+  public userPhoto;
   @Input() modalHeight;
   @Output() onStartChatting = new EventEmitter();
   @ViewChild('m_c_text_area') textArea;
@@ -41,7 +42,6 @@ export class MessagerChattingComponent implements OnInit {
     if (subObj) {
       this.chattingDisplayFlag = true;
       this.subscriber = subObj;
-      console.log(this.subscriber)
     }
     else {
       this.chattingDisplayFlag = false;
@@ -183,4 +183,8 @@ export class MessagerChattingComponent implements OnInit {
     this.onStartChatting.emit(false)
   }
 
+  showPhotoIcon(leftOrRight){
+    let src = (leftOrRight=='left')? this.photoUrl+this.subscriber['Photo']:this.photoUrl+localStorage.getItem('photo');
+    return src;
+  }
 }
