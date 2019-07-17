@@ -24,7 +24,7 @@ export class LearnerDetailModalComponent implements OnInit {
   howKnowList = [];
   learnerLevelList = []
   levelTypeList = []
-
+  itemPayment='Payment For Item: '
   othersmsg = '';
   agreeFormMsg = '';
   howKnow: any
@@ -43,8 +43,7 @@ export class LearnerDetailModalComponent implements OnInit {
   //payment
   public learnerPaymentList = []
   public paymentListLength
-  paymentMethodList = []
-  paymentTypeList=[]
+
 
   //invoice pagination
   public learnerInvoiceList = []
@@ -74,12 +73,12 @@ export class LearnerDetailModalComponent implements OnInit {
     let lookUpData4 = this.LearnerListService.getLookups(4);
     let lookUpData5 = this.LearnerListService.getLookups(5);
     let lookUpData7 = this.LearnerListService.getLookups(7);
-    let lookUpData14= this.LearnerListService.getLookups(14);
+    let lookUpData14 = this.LearnerListService.getLookups(14);
     let learnerInvoice = this.LearnerListService.getLearnerInvoice(this.whichLearner.LearnerId)
     let learnerPayment = this.LearnerListService.getLearnerPayment(this.whichLearner.LearnerId)
     let learnerSession = this.LearnerListService.getLearnerLesson(this.whichLearner.LearnerId)
 
-    forkJoin([learnerListData, lookUpData2, lookUpData3, lookUpData4, lookUpData5, lookUpData7,learnerInvoice, learnerPayment, learnerSession,lookUpData14]).subscribe(
+    forkJoin([learnerListData, lookUpData2, lookUpData3, lookUpData4, lookUpData5, lookUpData7, learnerInvoice, learnerPayment, learnerSession, lookUpData14]).subscribe(
       (res) => {
         console.log(res)
         this.learnerList1 = res[0]['Data'];
@@ -99,7 +98,7 @@ export class LearnerDetailModalComponent implements OnInit {
 
         this.learnerSessionList = (res[8]['Data'])
         this.sessionListLength = this.learnerSessionList.length
-        this.paymentType(res[9]['Data'],this.learnerPaymentList)
+        this.paymentType(res[9]['Data'], this.learnerPaymentList)
 
       }
     )
@@ -153,27 +152,29 @@ export class LearnerDetailModalComponent implements OnInit {
   }
 
   paymentMethod(data, learnerPaymentList) {
-    data.forEach(element => {
-      for (let i of learnerPaymentList) {
+    for (let i of learnerPaymentList) {
+      data.forEach(element => {
         if (i.PaymentMethod == element['PropValue']) {
-          this.paymentMethodList.push(element['PropName'])
+          // this.paymentMethodList.push(element['PropName'])
+          i.paymentMethodName=element['PropName']
         }
-      }
-    })
-    // console.log(this.paymentMethodList)
+      })
+    }
   }
 
-  paymentType(data,learnerPaymentList){
-     console.log(learnerPaymentList)
+  paymentType(data, learnerPaymentList) {
+    //  console.log(learnerPaymentList)
+    for (let i of learnerPaymentList){
     data.forEach(element => {
-      for (let i of learnerPaymentList) {
+
         if (i.PaymentType == element['PropValue']) {
-          this.paymentTypeList.push(element['PropName'])
+         i.paymentTypeName=element['PropName']
         }
-      }
+
     })
-    console.log(this.paymentTypeList)
+
   }
+}
 
   /*
    if photo not found, set default photo

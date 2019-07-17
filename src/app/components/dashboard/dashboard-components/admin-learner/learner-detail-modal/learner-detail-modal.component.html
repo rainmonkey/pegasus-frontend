@@ -380,71 +380,108 @@
     <ngb-tab title="Payment">
       <ng-template ngbTabContent>
         <div
-          *ngFor='let i of learnerPaymentList | slice: (currentPage-1)* pageSize : (currentPage-1) * pageSize + pageSize; let index=index'>
+          *ngFor='let i of learnerPaymentList | slice: (currentPage-1)* pageSize : (currentPage-1) * pageSize + pageSize'>
           <br>
+
+          <!-- Pay Invoice -->
           <div class='card'>
             <div class="card-body">
               <div class='row'>
 
-                <div class="col-4">
+                  <div *ngIf='i.PaymentType == 1' class='col-lg-12 col-sm-12'>
+                      <span class='label'>Payment For Lessons</span>
+                  </div>
+
+                <div *ngIf='i.PaymentType == 2' class='col-lg-12 col-sm-12'>
+                    <span class='label'>{{itemPayment}} </span>
+                </div>
+
+                <div *ngIf='i.PaymentType == 3' class='col-lg-12 col-sm-12'>
+                    <span class='label'>Payment For Trial session </span>
+                </div>
+
+                <div *ngIf='i.PaymentType == 4' class='col-lg-12 col-sm-12'>
+                    <span class='label'>Payment For Registration </span>
+                </div>
+
+                <!-- 通用 -->
+                <div class="col-lg-4  col-sm-6">
                   <span class='label'>Payment Created At: </span>
                   <span class='text' *ngIf='i.CreatedAt'>{{i.CreatedAt.replace('T', ' ')}}</span>
                 </div>
 
-                <div class='col-4'>
+                <div class='col-lg-4  col-sm-6'>
                   <span class='label'>Staff: </span>
                   <span class='text' *ngIf='i.Staff'>{{i.Staff.FirstName}} {{i.Staff.LastName}}</span>
                 </div>
 
-                <div class="col-4">
+                <div class="col-lg-4  col-sm-6">
                   <span class='label'>Payment Method: </span>
                   <span class='text' *ngIf='i.PaymentMethod'>
-                    {{paymentMethodList[pageSize*currentPage-pageSize+index]}}
+                    {{i.paymentMethodName}}
                   </span>
                 </div>
 
-                <div class="col-4">
-                  <span class='label'>Amount received: </span>
-                  <span class='text' *ngIf='i.Amount'>
-                    ${{i.Amount}}
-                  </span>
+                <!-- 非通用 上课可以先收一部分钱 -->
+                <div class="col-lg-4 col-sm-6" *ngIf='i.PaymentType == 1'>
+                    <span class='label'>Amount received: </span>
+                    <span class='text' *ngIf='i.Amount'>
+                      ${{i.Amount}}
+                    </span>
                 </div>
 
-                <div class="col-4">
+                <!-- 非通用 卖的什么东西 -->
+
+
+                <!-- 非通用，卖东西显示总价 -->
+                <div class="col-lg-4 col-sm-6" *ngIf='i.PaymentType == 2 ||3 ||4'>
+                    <span class='label'>Total Amount: </span>
+                    <span class='text' *ngIf='i.Amount'>
+                      ${{i.Amount}}
+                    </span>
+                </div>
+
+                <!-- 非通用 trial Lesson /  注册费用 还没写 -->
+
+                <div class="col-lg-4  col-sm-6">
                   <span class='label'>Payment Type: </span>
                   <span class='text' *ngIf='i.PaymentMethod'>
-                    {{paymentTypeList[pageSize*currentPage-pageSize+index]}}
+                    {{i.paymentTypeName}}
                   </span>
                 </div>
 
-                <div class="col-4">
+                <div class="col-lg-4  col-sm-6">
                   <span class='label'>Before Balance: </span>
                   <span class='text' *ngIf='i.BeforeBalance'>{{i.BeforeBalance}}</span>
                 </div>
 
-                <div class="col-4">
+                <div class="col-lg-4 col-sm-6">
                   <span class='label'>After Balance: </span>
-                  <span class='text' *ngIf='i.BeforeBalance'>{{i.AfterBalance}}</span>
+                  <span class='text' *ngIf='i.AfterBalance'>{{i.AfterBalance}}</span>
                 </div>
 
-                <div class='col-4'>
+                <div class='col-lg-4  col-sm-6'>
                   <span class='label'>Is Confirmed: </span>
                   <span class='text' *ngIf='i.IsConfirmed'>{{i.IsConfirmed | IsTemporary}}</span>
                 </div>
 
-                <div class='col-4'>
+                <!-- Invoice非通用 -->
+                <div class='col-lg-4  col-sm-6' *ngIf='i.PaymentType == 1'>
                   <span class='label'>Invoice Number: </span>
-                  <span class='text' *ngIf='i.IsConfirmed'>{{i.Invoice.InvoiceNum}}</span>
+                  <span class='text' *ngIf='i.InvoiceNum'>{{i.Invoice.InvoiceNum}}</span>
                 </div>
 
-                <div class="col-6">
+                <!-- 通用 -->
+                <div class="col-lg-12 col-sm-12">
                   <span class='label'>Comment: </span>
                   <span class='text' *ngIf='i.Comment'>{{i.Comment}}</span>
                 </div>
 
+
               </div>
             </div>
           </div>
+
         </div>
         <br>
 

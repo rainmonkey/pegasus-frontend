@@ -89,4 +89,6 @@ export class LearnersService {
   getLearnerLesson(learnerId){
     return this.http.get(this.baseUrl+'Lesson/'+'GetLessonsForLearner/'+learnerId)
   }
+
+
 }
