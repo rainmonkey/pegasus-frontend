@@ -20,6 +20,7 @@ export class LearnerRegistrationModalComponent implements OnInit, AfterViewCheck
    ngAfterViewChecked(){
      this.timepickerChosen = this.timePickerComponent.name;
    }
+   
    ngOnInit() {
    }
 
@@ -28,5 +29,5 @@ export class LearnerRegistrationModalComponent implements OnInit, AfterViewCheck
      console.log('BeginTimeFromTimePicker', event);
      this.activeModal.dismiss();
    }
-   
+
 }

@@ -7,11 +7,11 @@
       <div class='row m_c_subscribers'>
         <div class='col-3'>
           <div class='m_c_subscribers_photo'>
-            <img src="../../../../../../assets/images/usersimg/userphoto02.jpg" alt="">
+            <img [src]="photoUrl + subscriber.Photo" alt="" onerror="this.src='../../../../../../assets/images/shared/default-employer-profile.png'">
           </div>
         </div>
         <div class='col-9'>
-          <div class='col-12 m_c_subscribers_name'>
+          <div class='col-12 m_c_subscribers_name' [title]="subscriber.FirstName + ' ' + subscriber.LastName">
             {{subscriber.FirstName}} {{subscriber.LastName}}
           </div>
           <div class='col-12 m_c_subscribers_signature'>

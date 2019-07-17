@@ -42,6 +42,8 @@ export class AdminInvoiceEditModalComponent implements OnInit {
   tempNoteFee: number = 10;
   item2: any;
 
+  totalFee: number
+
   // activated modal tranfer data
   @Input() item;
 
@@ -62,13 +64,13 @@ export class AdminInvoiceEditModalComponent implements OnInit {
     BeginDate: [null],
     LessonFee: [null, Validators.required],
     Concert: this.fb.group({
-      ConcertFeeName: [{ value: null, disabled: true }],
-      ConcertFee: [{ value: null, disabled: true }],
+      ConcertFeeName: [{ value: null }],
+      ConcertFee: [{ value: null }],
       concertCheckBox: [false],
     }, { validator: this.invoiceValidator.matcher }),
     Note: this.fb.group({
-      LessonNoteFeeName: [{ value: null, disabled: true }],
-      NoteFee: [{ value: null, disabled: true }],
+      LessonNoteFeeName: [{ value: null }],
+      NoteFee: [{ value: null }],
       noteCheckBox: [false]
     }, { validator: this.invoiceValidator.matcher }),
     Other1: this.fb.group({
@@ -94,10 +96,12 @@ export class AdminInvoiceEditModalComponent implements OnInit {
   }
 
   ngOnInit() {
-    if  (this.item.Invoice.InvoiceId === 0)
-      this.item2 = { ... this.item ,...this.item.InvoiceWaitingConfirm};
+    if (this.item.Invoice.InvoiceId === 0)
+      this.item2 = { ... this.item, ...this.item.InvoiceWaitingConfirm };
     else
-      this.item2 = { ... this.item , ...this.item.Invoice};
+      this.item2 = { ... this.item, ...this.item.Invoice };
+    console.log(this.item2)
+    this.totalFee = this.item2.TotalFee
     this.patchToInvoice();
     this.dueDateLocal = this.item2.DueDate;
     this.owingFeeLocal = this.item2.LessonFee;
@@ -139,12 +143,12 @@ export class AdminInvoiceEditModalComponent implements OnInit {
       BeginDate: this.item2.BeginDate === null ? null : this.item2.BeginDate.slice(0, 10),
       LessonFee: this.item2.LessonFee || 0,
       Concert: {
-        ConcertFee: 0,
-        ConcertFeeName: ""
+        ConcertFee: this.item2.ConcertFee,
+        ConcertFeeName: this.item2.ConcertFeeName
       },
       Note: {
-        NoteFee: 0,
-        LessonNoteFeeName: ""
+        NoteFee: this.item2.NoteFee,
+        LessonNoteFeeName: this.item2.LessonNoteFeeName
       },
       Other1: {
         Other1FeeName: this.item2.Other1FeeName,
@@ -161,6 +165,15 @@ export class AdminInvoiceEditModalComponent implements OnInit {
       PaidFee: this.item2.PaidFee,
       Comment: this.item2.Comment
     });
+    //disable if no data
+    if (!this.item2.ConcertFee) {
+      this.concertInUse = true
+      this.checkboxOnChange("concertCheckBox")
+    }
+    if (!this.item2.NoteFee) {
+      this.noteInUse = true
+      this.checkboxOnChange("noteCheckBox")
+    }
   }
 
   // moniting user change course quantity
