@@ -838,8 +838,27 @@ selectLocation(id, i) {
     this.modalRefTimePicker.componentInstance.customCourse = this.customCourse.value[i];
     this.modalRefTimePicker.componentInstance.teaList = this.teaListOutArray[i].teaListToDatePick;
     this.timePickArrayNumber = i;
-  }
+    this.modalRefTimePicker.componentInstance.beginTimeTo.subscribe(
+      (res) =>{
+        this.getTimePickerInfo(res.BeginTime,i);
+      },
+      (err) => {
+        console.log(err)
+      }
+    )
 
+  }
+  getTimePickerInfo(time,i){
+    console.log(time)
+    let timeArray = time.split(':');
+
+    let timeTrans: NgbTimeStruct = { hour: Number(timeArray[0]), minute: Number(timeArray[1]), second: 0 };
+    console.log(timeTrans)
+    this.customCourse.controls[i].patchValue({
+      beginTime: timeTrans
+    })
+    console.log(this.customCourse.controls[i])
+  }
   // // ng-activeModal for confirm submit
   openConfirm() {
     console.log(this.addCourse)
