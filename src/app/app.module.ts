@@ -1,6 +1,6 @@
 import { CommonModule, DatePipe } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
-import { NgModule ,ErrorHandler} from '@angular/core';
+import { NgModule, ErrorHandler } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule, MatFormFieldModule, MatInputModule, MatSelectModule } from '@angular/material';
 // Dependencies
@@ -105,7 +105,7 @@ import { RemindPanelComponent } from './components/dashboard/dashboard-component
 
 import { StaffListComponent } from './components/dashboard/dashboard-components/admin-staff/Staff-list/Staff-list.component';
 
-import {CustomErrorHandler} from './services/errorhandler/CustomErrorHandler'
+import { CustomErrorHandler } from './services/errorhandler/CustomErrorHandler'
 import { SimplifyOrgPipe } from './shared/pipes/simplify-org.pipe';
 import { LearnerCreditPanelComponent } from './components/dashboard/dashboard-components/learner-credit/learner-credit-panel/learner-credit-panel.component';
 import { LearnerCreditDetailsComponent } from './components/dashboard/dashboard-components/learner-credit/learner-credit-details/learner-credit-details.component';
@@ -306,15 +306,14 @@ import { ConflictCheckComponent } from './components/dashboard/dashboard-compone
     DatePipe,
     MondayDateInWeekByDatePipe,
     NgbActiveModal,
-    {
-      provide: ErrorHandler,
-      useClass: CustomErrorHandler,
-    },
+    // {
+    //   provide: ErrorHandler,
+    //   useClass: CustomErrorHandler,
+    // },
   ],
   entryComponents: [
     AdminLearnerProfileComponent,
     AmendmentHistoryModalComponent,
-
     PageGroupListComponent,
     PageGroupEditComponent,
     PageGroupDeleteComponent,
@@ -363,7 +362,9 @@ import { ConflictCheckComponent } from './components/dashboard/dashboard-compone
     AdminPaymentProductModalComponent,
     AdminPaymentConfirmModalComponent,
     // AmendmentHistoryModalComponent,
-    SelectHolidaysModalComponent
+    SelectHolidaysModalComponent,
+
+    TimePickerComponent
   ],
   exports: [AppComponent],
   bootstrap: [AppComponent]

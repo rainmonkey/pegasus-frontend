@@ -47,7 +47,7 @@
               <div class="popover__body__item"><span><b>Weekday:</b>&nbsp;{{weekdays[x]}}</span></div>
               <div class="popover__body__item"><span><b>Time:</b>&nbsp;{{startTimeToEndTime}}</span></div>
               <div class="popover__body__item"><span><b>Location:</b>&nbsp;{{learnerOrgId | simplifyOrg}}</span></div>
-              <button class="confirm__btn" (click)="confirm()" style="width:100%">confirm</button>
+              <button class="confirm__btn" (click)="confirm(x,y)" style="width:100%">confirm</button>
             </div>
             <div class="triangle"></div>
           </div>

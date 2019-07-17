@@ -19,7 +19,7 @@
       <div>
         <label for="dateofLesson">Choose a Tutor</label>
         <div>
-          <select [(ngModel)]="teacherId" class='form-control'>
+          <select [(ngModel)]="teacherId"  class='form-control'>
             <option *ngFor="let teacher of teachers" [value]="teacher.TeacherId">{{teacher.FirstName}} {{teacher.LastName}}</option>
           </select>
         </div>

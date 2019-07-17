@@ -9,6 +9,8 @@
             <tr>
               <th scope="col">#</th>
               <th scope="col">CourseName</th>
+              <th scope="col">Original Date</th>
+              <th scope="col">Operate Time</th>              
               <th scope="col">Expiry Date</th>
               <th scope="col">Reschedule</th>
             </tr>
@@ -17,6 +19,8 @@
             <tr *ngFor="let i of remainingCourseData;let j = index">
               <th scope="row">{{j+1}}</th>
               <td>{{i.CourseInstance.Course.CourseName}}</td>
+              <td>{{i.MissedLesson.BeginTime}}</td>
+              <td>{{i.CreateAt}}</td>              
               <td>{{i.ExpiredDate|date:"dd/MM/yyyy"}}</td>
               <td>
                 <!-- <span *ngIf="i.Quantity>0" class='t_info_table_btn' title='Book a Course' (click)="navigateToArrange(j)" style="cursor:pointer"><span class="fas fa-folder-plus"></span></span>
