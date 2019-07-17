@@ -202,10 +202,11 @@ export class TimePickerComponent implements OnInit {
       }
     })
   }
-  confirm() {
+  confirm(x: number, y: number) {
     let outputObj = {};
     outputObj['BeginTime'] = this.startTime;
     outputObj['Index'] = this.teaList[2];
+    outputObj['DayOfWeek'] = this.weekdays[x];
     this.beginTime.emit(outputObj);
     // console.log('confirm', outputObj);
   }
