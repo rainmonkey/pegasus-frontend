@@ -30,6 +30,16 @@ export class InventoriesService {
 
   /* get stock-application data from server*/
   getStockApplication(beginDate: any, endDate: any ): Observable<any> {
-    return this.http.get(this.baseUrl + `StockApplication/${beginDate}/${endDate}`)
+    return this.http.get(this.baseUrl + `StockApplication/${beginDate}/${endDate}`);
+  }
+  /* for stock-application-detail-modal dropdown options */
+  getProdCats(): Observable<any> {
+    return this.http.get(this.baseUrl + `Product/GetCat`);
+  }
+  getProdTypeByCat(cateId: number): Observable<any> {
+    return this.http.get(this.baseUrl + `Product/GetTypeByCat/${cateId}`);
+  }
+  getProdByType(typeId: number): Observable<any> {
+    return this.http.get(this.baseUrl + `Product/GetProdByType/${typeId}`);
   }
 }
