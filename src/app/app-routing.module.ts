@@ -124,10 +124,6 @@ const routes: Routes = [
         path: 'learner', component: AdminLearnerPanelComponent,
         children: [
           {
-            path: 'timetable', component: AdminLearnerTimetableComponent,
-            canActivate: [UserAuthGuard],
-          },
-          {
             path: 'list', component: AdminLearnerListComponent,
             canActivate: [UserAuthGuard],
             children: [{ path: 'success', component: AdminLearnerPaymentSuccessComponent, }]

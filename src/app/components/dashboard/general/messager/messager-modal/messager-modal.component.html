@@ -4,7 +4,7 @@
     <span class='m_m_header_icon m_m_header_cog' (click)='displayConfigPanel($event)' >
       <span class='fas fa-cog'></span>
     </span>
-    <span class='m_m_header_chatting_with'>{{chattingWithStr}} </span>
+    <span class='m_m_header_chatting_with' [title]='chattingWithStr'>{{chattingWithStr}} </span>
     <span class='m_m_header_icon m_m_header_close' (click)='closeChattingModal($event)'>
       <span class='fas fa-times'></span>
     </span>

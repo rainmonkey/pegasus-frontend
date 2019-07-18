@@ -7,11 +7,11 @@
       <div class='row m_c_subscribers'>
         <div class='col-3'>
           <div class='m_c_subscribers_photo'>
-            <img src="../../../../../../assets/images/usersimg/userphoto02.jpg" alt="">
+            <img [src]="photoUrl + subscriber.Photo" alt="" onerror="this.src='../../../../../../assets/images/shared/default-employer-profile.png'">
           </div>
         </div>
         <div class='col-9'>
-          <div class='col-12 m_c_subscribers_name'>
+          <div class='col-12 m_c_subscribers_name' [title]="subscriber.FirstName + ' ' + subscriber.LastName">
             {{subscriber.FirstName}} {{subscriber.LastName}}
           </div>
           <div class='col-12 m_c_subscribers_signature'>
@@ -26,22 +26,22 @@
   <div style="position: relative">
     <div [ngStyle]="{'height': modalHeight - 200 + 'px'}" class='m_c_chatting_panel' id='m_c_chatting_panel'>
       <!--聊天内容-->
-      <div *ngFor='let i of localMsgHistroy; let last = last' class='clearfix' style="margin-bottom: 5px">
+      <div *ngFor='let i of getChattingHistory(); let last = last' class='clearfix' style="margin-bottom: 5px">
         <div class='m_c_chatting_messagers' [class.m_c_chatting_messagers_left]='i.leftOrRight == "left"'
           [class.m_c_chatting_messagers_right]='i.leftOrRight == "right"'>
-          <img src="../../../../../../assets/images/usersimg/userphoto02.jpg" alt=""
+          <img [src]="showPhotoIcon(i.leftOrRight)" alt=""
             [class.m_c_chatting_messagers_left]='i.leftOrRight == "left"'
             [class.m_c_chatting_messagers_right]='i.leftOrRight == "right"'>
           <div [class.m_c_chatting_messagers_left]='i.leftOrRight == "left"'
             [class.m_c_chatting_messagers_right]='i.leftOrRight == "right"'>
             <div class='m_c_time_stamp' [class.m_c_time_stamp_left]='i.leftOrRight == "left"'
-              [class.m_c_time_stamp_right]='i.leftOrRight == "right"'>{{i.timeStamp}}</div>
+              [class.m_c_time_stamp_right]='i.leftOrRight == "right"'>{{i.createTime}}</div>
             <div class='m_c_chatting_text' [class.m_c_chatting_messagers_left]='i.leftOrRight == "left"'
               [class.m_c_chatting_text_left]='i.leftOrRight == "left"'
               [class.m_c_chatting_messagers_right]='i.leftOrRight == "right"'
               [class.m_c_chatting_text_left]='i.leftOrRight == "left"'
               [class.m_c_chatting_text_right]='i.leftOrRight == "right"'>
-              {{i.msg}} {{last ? scrollToBottom() : ''}}
+              {{i.message}} {{last ? scrollToBottom() : ''}}
             </div>
           </div>
         </div>
