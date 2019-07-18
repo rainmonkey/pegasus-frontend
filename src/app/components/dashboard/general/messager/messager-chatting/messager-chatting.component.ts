@@ -35,7 +35,7 @@ export class MessagerChattingComponent implements OnInit {
   /*
     get subscriber now chatting
       --> subObj:true   chatting with a subscriber
-          subOnj:false  no one selected 
+          subOnj:false  no one selected
   */
   getSubscriberChattingWith() {
     let subObj = this.messagerService.getSubscriberChattingWith();
@@ -74,7 +74,7 @@ export class MessagerChattingComponent implements OnInit {
   }
 
   /*
-   insert a sub-string to an exist string at a specific position 
+   insert a sub-string to an exist string at a specific position
  */
   insertStr(strToBeInsert, strToInsert, startIndex) {
     return strToBeInsert.slice(0, startIndex) + strToInsert + strToBeInsert.slice(startIndex);
@@ -180,6 +180,7 @@ export class MessagerChattingComponent implements OnInit {
       }
     )
   }
+
 
 
 
