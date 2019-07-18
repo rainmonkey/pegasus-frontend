@@ -56,8 +56,6 @@ export class MessagerModalComponent implements OnInit {
     this.draggable();
   }
 
-
-
   /*
     user can drag chatting modal
   */

@@ -12,16 +12,16 @@ export class StockApplicationDetailModalComponent implements OnInit {
   // @Input() name;
 
   public applicationFrom: FormGroup;
-  public productIdQty: FormArray;
   /* for modal */
   public orgId: number;
   public orgName: string;
   public staffId: number;
   public staffName: string;
-  public prodCats: any[];
-  public prodTypes: any[];
-  public products: any[];
+  public prodCats: any[] = [];
+  public prodTypes: any[] = [];
+  public products: any[] = [];
   public errorMessage: any;
+  public previousI: number = null;
   
 
   constructor(private activeModal: NgbActiveModal,
@@ -35,7 +35,7 @@ export class StockApplicationDetailModalComponent implements OnInit {
     // this.getProdByType(1);
     this.applicationFrom = this.fb.group(this.formGroupAssemble());
   }
-
+  
   /* form group obj */
   formGroupAssemble() {
     return {
@@ -43,7 +43,7 @@ export class StockApplicationDetailModalComponent implements OnInit {
       productIdQty: this.fb.array([this.createProd()])
     }
   }
-  /* productIdQty: FormArray */
+  /* get productIdQty: FormArray */
   createProd(): FormGroup {
     return this.fb.group({
       prodCat: ['', Validators.required],
@@ -52,9 +52,8 @@ export class StockApplicationDetailModalComponent implements OnInit {
       appliedQty: [null, Validators.required]
     })
   }
-  addProds(): void {
-    this.productIdQty = this.applicationFrom.get('productIdQty') as FormArray;
-    this.productIdQty.push(this.createProd());
+  get productIdQty() {
+    return this.applicationFrom.get('productIdQty') as FormArray;
   }
   /* get data from local storage */
   getLocalStorage() {
@@ -74,18 +73,28 @@ export class StockApplicationDetailModalComponent implements OnInit {
     }
   }
   getProdCats() {
+    // this.previousI = i;
+    // console.log('previousI', i,this.previousI );
+
     this.inventoriesService.getProdCats().subscribe(
       res => {
-        console.log('prodCats', res['Data'])
+        // let tempProdCats = [];
+        // tempProdCats = res['Data'];
+        // this.prodCats.push(tempProdCats)
+        // console.log('prodCats', this.prodCats)
         this.prodCats = res['Data']
       },
       err => this.errHandler(err)
     )
   }
-  getProdTypeByCat(cateId: number) {
+  getProdTypeByCat(cateId: number, i) {
     this.inventoriesService.getProdTypeByCat(cateId).subscribe(
       res => {
-        console.log('prodTypes', res['Data'][0]['ProdType'])
+        // console.log('prodTypes', res['Data'][0]['ProdType'])
+        // let tempProdTypes = [];
+        // tempProdTypes = res['Data'][0].ProdType;
+        // this.prodTypes.push(tempProdTypes);
+        // console.log('prodTypes', this.prodTypes)
         this.prodTypes = res['Data'][0].ProdType;
       },
       err => this.errHandler(err)
@@ -94,18 +103,53 @@ export class StockApplicationDetailModalComponent implements OnInit {
   getProdByType(typeId: number) {
     this.inventoriesService.getProdByType(typeId).subscribe(
       res => {
-        console.log('prod', res['Data'])
-        this.products = res.Data;
+        // console.log('prod', res['Data'])
+        // let tempProducts = res['Data'];
+        // this.products.push(tempProducts);
+        // console.log('prod', this.products)
+        this.products = res['Data'];
       },
       err => this.errHandler(err)
     )
   }
   /* event form HTML */
-  resetForm(i: number) {
-    this.applicationFrom.reset(i);
-  }
   deleteForm(i: number) {
     this.productIdQty.removeAt(i);
+    console.log('delete', i, this.productIdQty.value)
+  }
+  addProds(i): void {
+    this.previousI = i;
+    let tempObj = {};
+    tempObj['cate'] = this.prodCats;
+    tempObj['type'] = this.prodTypes;
+    tempObj['prod'] = this.products;
+    let tempProductIdQty = [];
+    tempProductIdQty.push(tempObj)
+    // this.productIdQty.push(this.createProd());
+    // tempProductIdQty.push(this.productIdQty)
+    this.productIdQty.push(this.createProd());
+    console.log('add', tempProductIdQty)
+  }
+  resetForm(i: number) {
+    // this.productIdQty[i].reset([]);
+    // this.productIdQty.controls[i]
+    this.productIdQty.controls[i].value.prodCat=""
+    // this.productIdQty.setValue([
+    //   {
+    //     prodCat: '',
+    //     prodType: '',
+    //     prod: '',
+    //     appliedQty: ''
+    //   },
+    //   {
+    //     prodCat: '',
+    //     prodType: '',
+    //     prod: '',
+    //     appliedQty: ''
+    //   },
+    // ]);
+    console.log('reset', i, this.productIdQty.value,this.productIdQty.value[i])
+    // console.log('reset form', this.createProd())
   }
   // getProducts() {
   //   this.inventoriesService.getProdts().subscribe(
