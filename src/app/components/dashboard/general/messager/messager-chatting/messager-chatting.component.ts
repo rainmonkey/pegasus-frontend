@@ -19,7 +19,7 @@ export class MessagerChattingComponent implements OnInit {
   public chattingDisplayFlag: boolean = false;
   public emojiPickerDisplayFlag: boolean = false;
   public keysCombination: object = { "Enter": false, "Control": false };
-  public localMsgHistroy: Array<object> = [];
+  //public localMsgHistroy: Array<object> = [];
   public subscriber: object;
   public photoUrl = environment.photoUrl;
   public userPhoto;
@@ -42,6 +42,7 @@ export class MessagerChattingComponent implements OnInit {
     if (subObj) {
       this.chattingDisplayFlag = true;
       this.subscriber = subObj;
+      console.log(this.subscriber)
     }
     else {
       this.chattingDisplayFlag = false;
@@ -108,8 +109,9 @@ export class MessagerChattingComponent implements OnInit {
     }
     //当ctrl和enter同时按下的时候发送消息
     if (this.keysCombination['Enter'] == true && this.keysCombination['Control'] == true) {
-      this.pushMessageToView(event.target.value);
+      //this.pushMessageToView(event.target.value);
       this.scrollToBottom();
+      this.saveMessageToLocal(event.target.value);
       this.sendMessageToServer(event.target.value);
       this.clearInputArea();
     }
@@ -125,27 +127,10 @@ export class MessagerChattingComponent implements OnInit {
   }
 
   /*
-    push text area's text to view
-  */
-  pushMessageToView(message) {
-    if (message !== '') {
-      let timeStamp = (new Date()).toLocaleString();
-      this.localMsgHistroy.push({ 'msg': message, 'leftOrRight': 'right', 'timeStamp': timeStamp });
-      //测试左侧
-      this.localMsgHistroy.push({ 'msg': 'Hello World', 'leftOrRight': 'left', 'timeStamp': timeStamp });
-      this.saveChattingHistory();
-    }
-  }
-
-  saveChattingHistory(){
-    
-  }
-
-  /*
     clear input area
   */
   clearInputArea() {
-    this.textArea.nativeElement.value = null;
+    this.textArea.nativeElement.value='';
   }
 
   /*
@@ -156,25 +141,47 @@ export class MessagerChattingComponent implements OnInit {
     document.getElementById('scroll_anchor').scrollIntoView();
   }
 
+  saveMessageToLocal(message) {
+    if (message !== '') {
+      let timeStamp = (new Date()).toLocaleString();
+      let messageObj = {
+        subscriberId:this.subscriber['UserId'],
+        message:message,
+        leftOrRight:'right',
+        createTime:timeStamp
+      }
+      this.messagerService.saveChattingHistory(messageObj);
+    }
+  }
+
+  /*
+    called by template event
+    get chatting history from service
+  */
+  getChattingHistory(){
+    return this.messagerService.getChattingHistory(this.subscriber['UserId']);
+  }
+
   sendMessageToServer(messageToSend) {
     let ReceiverUserId:number = this.subscriber['UserId'];
     let SenderUserId:number = Number(localStorage.getItem('userID'));
     let MessageBody:string = messageToSend;
     let ChatGroupId:string = null;
-    let CreateAt = moment().format();;
-
+    let CreateAt = new Date();
+    console.log(CreateAt)
     this.chattingService.sendMessage({ReceiverUserId,SenderUserId,MessageBody,ChatGroupId,CreateAt}).then(
-      null,
+      (res)=>{
+        //消息发送成功处理程序 未完成 
+        console.log('send success');
+      },
       (err) =>{
-        //消息发送失败处理程序
+        //消息发送失败处理程序 未完成
         console.log(err)
       }
     )
-    
-
-
-    console.log(this.subscriber)
   }
+
+
 
   /*
     if no subscriber selected and now click chatting icon

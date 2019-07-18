@@ -101,7 +101,28 @@ export class MessagerService {
     return localStorage.getItem('themeIndex');
   }
 
-  saveChattingHistory(){
-    
+  /*
+    save chatting history
+  */
+  saveChattingHistory(messageObj:{subscriberId:number,message:string,leftOrRight:string,createTime:any}){
+    let historyKeyName = messageObj.subscriberId + 'History';
+    if(sessionStorage.getItem(historyKeyName)){
+      let historyObj = JSON.parse(sessionStorage.getItem(historyKeyName));
+      historyObj.push(messageObj);
+      sessionStorage.setItem(historyKeyName,JSON.stringify(historyObj));
+    }
+    else{
+      sessionStorage.setItem(historyKeyName,JSON.stringify([messageObj]));
+    }
+  }
+
+  getChattingHistory(userId){
+    let historyKeyName = userId + 'History';
+    if(sessionStorage.getItem(historyKeyName)){
+      return JSON.parse(sessionStorage.getItem(historyKeyName));
+    } 
+    else{
+      return [];
+    }
   }
 }
