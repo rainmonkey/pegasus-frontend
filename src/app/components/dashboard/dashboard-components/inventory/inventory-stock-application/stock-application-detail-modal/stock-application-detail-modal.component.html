@@ -29,26 +29,24 @@
         </div>
       </div>
       <!-- third row -->
-      <div formArrayName="productIdQty" 
+      <div formArrayName="productIdQty"
         *ngFor="let prods of applicationFrom.get('productIdQty').controls; let i = index">
         <div [formGroupName]="i">
           <div class="d-flex justify-content-end" style="margin-top: 10px; margin-bottom: 10px;">
-            <button class="btn btn-info t_info_addmore_btn" (click)="resetForm(i)" style="margin-right: 20px;">Reset</button>
-            <button class="btn btn-info t_info_addmore_btn" (click)="deleteForm(i)">Delete</button>
+            <button class="btn btn-info t_info_addmore_btn" (click)="resetForm(i)" style="margin-right: 20px;"><i class="fas fa-eraser"></i></button>
+            <button class="btn btn-info t_info_addmore_btn" (click)="deleteForm(i)"><i class='fas fa-trash-alt'></i></button>
           </div>
           <!-- fourth row -->
           <div class="row">
             <div class="col-6">
-              <label class='t_mf_label'>Product Category:</label>&nbsp;
-              <select class='col-12 t_mf_input' formControlName="prodCat" (change)="getProdTypeByCat($event.target.value)">
-                <option selected>Choose..</option>
+              <label class='t_mf_label' for="prodCat[i]">Product Category:</label>&nbsp;
+              <select class='col-12 t_mf_input' formControlName="prodCat" id="prodCat[i]" (change)="getProdTypeByCat($event.target.value)">
                 <option *ngFor='let prodCat of prodCats' [value]="prodCat.ProdCatId">{{prodCat.ProdCatName}}</option>
               </select>
             </div>
             <div class="col-6">
-              <label class='t_mf_label'>Product Type:</label>&nbsp;
-              <select class='col-12 t_mf_input' formControlName="prodType" (change)="getProdByType($event.target.value)">
-                <option selected>Choose..</option>
+              <label class='t_mf_label' for="prodType[i]">Product Type:</label>&nbsp;
+              <select class='col-12 t_mf_input' formControlName="prodType" id="prodType[i]" (change)="getProdByType($event.target.value)">
                 <option *ngFor='let prodType of prodTypes' [value]="prodType.ProdTypeId">{{prodType.ProdTypeName}}</option>
               </select>
             </div>
@@ -56,10 +54,8 @@
           <!-- fifth row -->
           <div class="row">
             <div class="col-6">
-                <!-- <div *ngIf="prods">{{prods| json}}</div> -->
-              <label class='t_mf_label'>Product Name:</label>&nbsp;
-              <select class='col-12 t_mf_input' formControlName="prod">
-                <option selected>Choose..</option>
+              <label class='t_mf_label' for="prod[i]">Product Name:</label>&nbsp;
+              <select class='col-12 t_mf_input' formControlName="prod" id="prod[i]">
                 <option *ngFor='let prod of products' [value]="prod.ProductId">{{prod.ProductName}}</option>
               </select>
             </div>
@@ -70,10 +66,12 @@
           </div>
         </div>
       </div>
-      <!-- fifth row -->
+      <!-- fifth row [disabled]="productIdQty.invalid" -->
       <div class="d-flex justify-content-end" style="margin-top: 10px">
-        <button class="btn btn-info t_info_addmore_btn" (click)="resetForm()" style="margin-right: 20px;">Reset</button>
-        <button class="btn btn-info t_info_addmore_btn" (click)="addProds()">Add more Product</button>
+        <button class="btn btn-info t_info_addmore_btn" (click)="addProds(i)">
+          <i class="fas fa-plus-circle"></i>
+          <span>Add product</span>
+        </button>
       </div>
     </form>
   </div>
