@@ -45,4 +45,9 @@
   text-decoration: line-through;
 }
 
-
+.label{
+  font-size: 16px;
+}
+.header{
+  font-size:21px;
+}

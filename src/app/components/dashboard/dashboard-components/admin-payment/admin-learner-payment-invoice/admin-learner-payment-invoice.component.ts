@@ -147,7 +147,7 @@ export class AdminLearnerPaymentInvoiceComponent implements OnInit, OnDestroy {
                   text: 'Sorry! '+ this.errorMsg.ErrorCode,
                   type: 'error',
                 });
-        
+
               }
             );
           },
@@ -269,8 +269,7 @@ export class AdminLearnerPaymentInvoiceComponent implements OnInit, OnDestroy {
         {
         this.learner = res;
         console.log(this.learner)
-        }
-        ,error=>{
+        },error=>{
           console.log(error);
           this.errorMsg = JSON.parse(error.error);
           this.errorAlert = true;

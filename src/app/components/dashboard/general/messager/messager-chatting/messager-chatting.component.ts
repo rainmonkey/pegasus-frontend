@@ -22,6 +22,7 @@ export class MessagerChattingComponent implements OnInit {
   public localMsgHistroy: Array<object> = [];
   public subscriber: object;
   public photoUrl = environment.photoUrl;
+  public userPhoto;
   @Input() modalHeight;
   @Output() onStartChatting = new EventEmitter();
   @ViewChild('m_c_text_area') textArea;
@@ -34,14 +35,13 @@ export class MessagerChattingComponent implements OnInit {
   /*
     get subscriber now chatting
       --> subObj:true   chatting with a subscriber
-          subOnj:false  no one selected 
+          subOnj:false  no one selected
   */
   getSubscriberChattingWith() {
     let subObj = this.messagerService.getSubscriberChattingWith();
     if (subObj) {
       this.chattingDisplayFlag = true;
       this.subscriber = subObj;
-      console.log(this.subscriber)
     }
     else {
       this.chattingDisplayFlag = false;
@@ -73,7 +73,7 @@ export class MessagerChattingComponent implements OnInit {
   }
 
   /*
-   insert a sub-string to an exist string at a specific position 
+   insert a sub-string to an exist string at a specific position
  */
   insertStr(strToBeInsert, strToInsert, startIndex) {
     return strToBeInsert.slice(0, startIndex) + strToInsert + strToBeInsert.slice(startIndex);
@@ -110,7 +110,6 @@ export class MessagerChattingComponent implements OnInit {
     if (this.keysCombination['Enter'] == true && this.keysCombination['Control'] == true) {
       this.pushMessageToView(event.target.value);
       this.scrollToBottom();
-      this.sendMessageToServer(event.target.value);
       this.clearInputArea();
     }
   }
@@ -134,11 +133,12 @@ export class MessagerChattingComponent implements OnInit {
       //测试左侧
       this.localMsgHistroy.push({ 'msg': 'Hello World', 'leftOrRight': 'left', 'timeStamp': timeStamp });
       this.saveChattingHistory();
+      this.sendMessageToServer(message);
     }
   }
 
   saveChattingHistory(){
-    
+
   }
 
   /*
@@ -164,13 +164,15 @@ export class MessagerChattingComponent implements OnInit {
     let CreateAt = moment().format();;
 
     this.chattingService.sendMessage({ReceiverUserId,SenderUserId,MessageBody,ChatGroupId,CreateAt}).then(
-      null,
+      (res) =>{
+        console.log('aaaa')
+      },
       (err) =>{
         //消息发送失败处理程序
         console.log(err)
       }
     )
-    
+
 
 
     console.log(this.subscriber)
@@ -183,4 +185,8 @@ export class MessagerChattingComponent implements OnInit {
     this.onStartChatting.emit(false)
   }
 
+  showPhotoIcon(leftOrRight){
+    let src = (leftOrRight=='left')? this.photoUrl+this.subscriber['Photo']:this.photoUrl+localStorage.getItem('photo');
+    return src;
+  }
 }
