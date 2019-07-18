@@ -99,16 +99,16 @@ export class TrialSearchComponent implements OnInit {
     }
     //再从teachingcourse里寻找教指定乐器的老师
     let array1: Array<any> = [];
-    if (this.arrangeCourseDetails) {
-      for (let i of this.teachingCourses) {
-        for (let j of array) {
-          if (j.TeacherId == i.TeacherId && i.CourseId == this.arrangeCourseDetails.CourseId) {
-            array1.push(j)
-          }
-        }
-      }
-    }
-    else{
+    // if (this.arrangeCourseDetails) {   // Teacher of making up lesson can be any teacher who can teach this instrument Regardless of the level
+    //   for (let i of this.teachingCourses) {
+    //     for (let j of array) {
+    //       if (j.TeacherId == i.TeacherId && i.CourseId == this.arrangeCourseDetails.CourseId) {
+    //         array1.push(j)
+    //       }
+    //     }
+    //   }
+    // }
+    // else{
       for (let i of this.teachingCourses) {
         for (let j of array) {
           if (j.TeacherId == i.TeacherId && i.Course.CourseCategory.CourseCategoryId == this.filters["CategoriesId"]) {
@@ -116,7 +116,7 @@ export class TrialSearchComponent implements OnInit {
           }
         }
       }
-     }
+     //}
     let hash = {};
     let result = array1.reduce(function(item, next) {
       hash[next.TeacherId] ? '' : hash[next.TeacherId] = true && item.push(next);
@@ -146,7 +146,7 @@ export class TrialSearchComponent implements OnInit {
       },
       (err) => {
         //alert('Sorry, something went wrong in server.')
-        Swal.fire({  type: 'error',  title: 'Oops...', text: 'Sorry, something went wrong'+err.error.ErrorMessage });
+        Swal.fire({  type: 'error',  title: 'Oops...', text: 'Sorry, something went wrong, '+err.error.ErrorMessage });
       }
     )
   };

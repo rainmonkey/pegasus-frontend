@@ -9,6 +9,7 @@ import { GeneralRepoService } from '../../../../../services/repositories/general
 import * as jsPDF from 'jspdf';
 import { getLocaleDateFormat } from '@angular/common';
 import Swal from "sweetalert2"
+
 @Component({
   selector: 'app-admin-learner-payment-invoice',
   templateUrl: './admin-learner-payment-invoice.component.html',
@@ -308,15 +309,28 @@ export class AdminLearnerPaymentInvoiceComponent implements OnInit, OnDestroy {
           this.noInvoice = false
           // return console.log(dataInvoice)
           this.dataInvoice = res['Data'];
+          if (this.dataInvoice['IsFound']=false){
+            this.noInvoice = true;
+            Swal.fire({
+              title: 'Error!',
+              text: 'Sorry! '+ "no invoice for this student",
+              type: 'error',
+            });  
+          }
           console.log(this.dataInvoice)
           this.incaseDateIsNull();
           this.reSearchPrepare();
         },error=>{
           console.log(error);
-          this.noInvoice = true;
-          this.errorMsg =error.error.ErrorMessage;
-          this.errorAlert = true;
+           this.noInvoice = true;
+          // this.errorMsg =error.error.ErrorMessage;
+          // this.errorAlert = true;
           //alert(this.errorMsg);
+          Swal.fire({
+            title: 'Error!',
+            text: 'Sorry! '+ error.error.ErrorMessage,
+            type: 'error',
+          });          
         });
       });} else {
         this.learnerId = this.whichLearner;
@@ -331,15 +345,28 @@ export class AdminLearnerPaymentInvoiceComponent implements OnInit, OnDestroy {
           this.noInvoice = false
           // return console.log(dataInvoice)
           this.dataInvoice = res['Data'];
+          if (this.dataInvoice['IsFound']=false){
+            this.noInvoice = true;
+            Swal.fire({
+              title: 'Error!',
+              text: 'Sorry! '+ "no invoice for this student",
+              type: 'error',
+            });  
+          }          
           console.log(this.dataInvoice)
           this.incaseDateIsNull();
           this.reSearchPrepare();
         },error=>{
           console.log(error);
           this.noInvoice = true;
-          this.errorMsg =error.error.ErrorMessage;
-          this.errorAlert = true;
+          // this.errorMsg =error.error.ErrorMessage;
+          // this.errorAlert = true;
           //alert(this.errorMsg);
+          Swal.fire({
+            title: 'Error!',
+            text: 'Sorry! '+ error.error.ErrorMessage,
+            type: 'error',
+          });               
         });
 
       }
