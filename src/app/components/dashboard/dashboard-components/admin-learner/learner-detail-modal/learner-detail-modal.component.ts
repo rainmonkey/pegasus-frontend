@@ -24,7 +24,7 @@ export class LearnerDetailModalComponent implements OnInit {
   howKnowList = [];
   learnerLevelList = []
   levelTypeList = []
-  itemPayment='Payment For Item: '
+  itemPayment = 'Payment For Item: '
   othersmsg = '';
   agreeFormMsg = '';
   howKnow: any
@@ -33,6 +33,7 @@ export class LearnerDetailModalComponent implements OnInit {
   otherFileUrl = ''
   agreeFileUrl = ''
   learnerList1: any
+  errorMessage
   //amendment列表
   amendmentList = []
 
@@ -80,6 +81,7 @@ export class LearnerDetailModalComponent implements OnInit {
 
     forkJoin([learnerListData, lookUpData2, lookUpData3, lookUpData4, lookUpData5, lookUpData7, learnerInvoice, learnerPayment, learnerSession, lookUpData14]).subscribe(
       (res) => {
+
         console.log(res)
         this.learnerList1 = res[0]['Data'];
         this.getPurposeValue(res[1]['Data'])
@@ -88,18 +90,27 @@ export class LearnerDetailModalComponent implements OnInit {
         this.getLevelType(res[4]['Data'])
 
         this.learnerPaymentList = (res[7]['Data'])
-        this.paymentListLength = this.learnerPaymentList.length
-        console.log(this.learnerPaymentList)
+        if (this.learnerPaymentList !== null) {
+          this.paymentListLength = this.learnerPaymentList.length
+        }
         this.paymentMethod(res[5]['Data'], this.learnerPaymentList)
 
 
         this.learnerInvoiceList = (res[6]['Data'])
-        this.invoiceListLength = this.learnerInvoiceList.length
+        if (this.learnerInvoiceList !== null) {
+          this.invoiceListLength = this.learnerInvoiceList.length
+        }
 
         this.learnerSessionList = (res[8]['Data'])
-        this.sessionListLength = this.learnerSessionList.length
+        if (this.learnerSessionList !== null) {
+          this.sessionListLength = this.learnerSessionList.length
+        }
         this.paymentType(res[9]['Data'], this.learnerPaymentList)
 
+      },
+
+      (err) => {
+        Swal.fire({  type: 'error',  title: 'Oops...', text: 'Sorry, something went wrong'+err.error.ErrorMessage });
       }
     )
   }
@@ -156,7 +167,7 @@ export class LearnerDetailModalComponent implements OnInit {
       data.forEach(element => {
         if (i.PaymentMethod == element['PropValue']) {
           // this.paymentMethodList.push(element['PropName'])
-          i.paymentMethodName=element['PropName']
+          i.paymentMethodName = element['PropName']
         }
       })
     }
@@ -164,17 +175,17 @@ export class LearnerDetailModalComponent implements OnInit {
 
   paymentType(data, learnerPaymentList) {
     //  console.log(learnerPaymentList)
-    for (let i of learnerPaymentList){
-    data.forEach(element => {
+    for (let i of learnerPaymentList) {
+      data.forEach(element => {
 
         if (i.PaymentType == element['PropValue']) {
-         i.paymentTypeName=element['PropName']
+          i.paymentTypeName = element['PropName']
         }
 
-    })
+      })
 
+    }
   }
-}
 
   /*
    if photo not found, set default photo
