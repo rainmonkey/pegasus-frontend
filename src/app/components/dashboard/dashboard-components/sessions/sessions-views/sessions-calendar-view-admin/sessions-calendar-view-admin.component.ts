@@ -40,7 +40,7 @@ export class SessionsCalendarViewAdminComponent implements OnInit {
   IsConfirmEditSuccess = false;
   learnerProfileLoading = false;
   @ViewChild(CalendarComponent) fullcalendar: CalendarComponent;
-
+  t;
   constructor(
     protected sessionService: SessionsService,
     private datePipe: DatePipe, private modalService: NgbModal,
@@ -69,7 +69,7 @@ export class SessionsCalendarViewAdminComponent implements OnInit {
             click: () => {
               this.modalService.open(this.content);
             }
-          }
+          },
         },
         ////////
         eventClick: (info) => {
@@ -115,18 +115,24 @@ export class SessionsCalendarViewAdminComponent implements OnInit {
         header: {
           left: 'today prev,next DayPickerButton',
           center: 'title',
-          right: 'resourceTimeGridDay'
+          right: 'testButton'
         },
         plugins: [timeslot, interactionPlugin]
       };
     });
   }
+
+
   clickButton = (model) => {
-    if (model.buttonType === 'next' || model.buttonType === 'today' || model.buttonType === 'prev') {
+    if (this.t) {
+      clearTimeout(this.t);
+    }
+    if (model.buttonType === 'next' || model.buttonType === 'today' || model.buttonType === 'prev' || model.buttonType === 'testButton') {
       const datefromcalendar = model.data;
       const date = this.datePipe.transform(datefromcalendar, 'yyyy-MM-dd')
-      this.getEventByDate(date);
+      this.t = setTimeout(() => this.getEventByDate(date), 500);
     }
+
   }
   generateEventData = (data) => {
 
