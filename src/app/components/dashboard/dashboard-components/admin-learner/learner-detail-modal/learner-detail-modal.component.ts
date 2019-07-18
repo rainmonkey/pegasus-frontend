@@ -34,6 +34,8 @@ export class LearnerDetailModalComponent implements OnInit {
   agreeFileUrl = ''
   learnerList1: any
   errorMessage
+
+
   //amendment列表
   amendmentList = []
 
