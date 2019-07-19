@@ -8,7 +8,7 @@ export class DownloadPDFService {
 
   constructor() { }
 
-  downloadPDF(learnerName, invoice) {
+  downloadPDF(learnerName: IInvoiceLearnerName, invoice: IInvoice) {
     let currentHeight: number = 50
     let interval: number = 10
     // Landscape export, 2×4 inches
@@ -44,19 +44,19 @@ export class DownloadPDFService {
 
     if (invoice.Other1Fee) {
       currentHeight += interval
-      doc.text(`Others1: ${invoice.Other1FeeName}`, 35, currentHeight)
+      doc.text(`${invoice.Other1FeeName}`, 35, currentHeight)
       doc.text(`$${invoice.Other1Fee}`, 170, currentHeight)
     }
 
     if (invoice.Other2Fee) {
       currentHeight += interval
-      doc.text(`Others2: ${invoice.Other2FeeName}`, 35, currentHeight)
+      doc.text(`${invoice.Other2FeeName}`, 35, currentHeight)
       doc.text(`$${invoice.Other2Fee}`, 170, currentHeight)
     }
 
     if (invoice.Other3Fee) {
       currentHeight += interval
-      doc.text(`Others3: ${invoice.Other3FeeName}`, 35, currentHeight)
+      doc.text(`${invoice.Other3FeeName}`, 35, currentHeight)
       doc.text(`$${invoice.Other3Fee}`, 170, currentHeight)
     }
 
@@ -64,9 +64,13 @@ export class DownloadPDFService {
     currentHeight += interval * 2
     doc.text(`TOTAL:$ ${invoice.TotalFee}`, 30, currentHeight);
 
-    doc.setFontSize(10);
-    currentHeight += interval
-    doc.text(`Due Date: ${invoice.DueDate.slice(0, 10)}`, 30, currentHeight);
+
+    if (invoice.DueDate) {
+      doc.setFontSize(10);
+      currentHeight += interval
+      doc.text(`Due Date: ${invoice.DueDate.split("T")[0]}`, 30, currentHeight);
+    }
+
     doc.save(`${learnerName.firstName}  ${learnerName.lastName}'s invoice`);
   }
 }
@@ -78,8 +82,8 @@ export interface IInvoiceLearnerName {
 
 export interface IInvoice {
   LessonQuantity?: number
-  CourseName?: string
-  LessonFee?: number
+  CourseName: string
+  LessonFee: number
   BeginDate?: string
   ConcertFeeName?: string
   ConcertFee?: number
@@ -91,7 +95,7 @@ export interface IInvoice {
   Other2Fee?: number
   Other3FeeName?: string
   Other3Fee?: number
-  TotalFee?: number
+  TotalFee: number
   DueDate?: string
   [propName: string]: any;
 }

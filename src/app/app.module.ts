@@ -364,7 +364,8 @@ import { ConflictCheckComponent } from './components/dashboard/dashboard-compone
     // AmendmentHistoryModalComponent,
     SelectHolidaysModalComponent,
 
-    TimePickerComponent
+    TimePickerComponent,
+    TrialSearchComponent
   ],
   exports: [AppComponent],
   bootstrap: [AppComponent]

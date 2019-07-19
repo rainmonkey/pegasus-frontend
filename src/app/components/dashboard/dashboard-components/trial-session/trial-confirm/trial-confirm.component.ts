@@ -41,7 +41,8 @@ export class TrialConfirmComponent implements OnInit {
   public error: boolean = false;
   public loadingGifFlag = false;
   public successFlag = false;
-  public extraFee;
+  public extraFee: number;
+  public extraFeeName: string;
   private isPayNow: boolean = true;
 
   constructor(public activeModal: NgbActiveModal,
@@ -91,6 +92,7 @@ export class TrialConfirmComponent implements OnInit {
     for (let i of extraFee) {
       if (i.PropValue == 1) {
         this.extraFee = Number(i.PropName);
+        this.extraFeeName = i.Description
       }
     }
 
@@ -214,7 +216,6 @@ export class TrialConfirmComponent implements OnInit {
   //   doc.save('aaaa');
   // }
 
-  //extra需要具体原因,缺少due date
   downloadPDFReady() {
     let learnerName = {} as IInvoiceLearnerName
     learnerName.firstName = this.studentFullName.split(" ")[0]
@@ -225,9 +226,8 @@ export class TrialConfirmComponent implements OnInit {
     invoice.BeginDate = this.startTime
     invoice.LessonFee = this.coursePrice
     invoice.Other1Fee = this.extraFee
-    invoice.Other1FeeName = "extra"
+    invoice.Other1FeeName = this.extraFeeName
     invoice.TotalFee = this.coursePrice + this.extraFee
-    invoice.DueDate = "no date"
     this.downloadPDFService.downloadPDF(learnerName, invoice)
   }
 }
