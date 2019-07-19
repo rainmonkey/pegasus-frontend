@@ -2,7 +2,7 @@ import { MessagerService } from '../../../../../services/repositories/messager.s
 import { Component, OnInit, Output, Input, EventEmitter } from '@angular/core';
 import { Animations } from '../../../../../../animation/chatting-animation'
 import { fromEvent } from 'rxjs';
-import { map, takeUntil, concatMap, delay, skip } from 'rxjs/operators';
+import { map, takeUntil, concatMap, delay, skip, tap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-messager-modal',
@@ -60,15 +60,18 @@ export class MessagerModalComponent implements OnInit {
     user can drag chatting modal
   */
   draggable() {
-    const mouseDown$ = fromEvent(document.querySelector('.m_m_header'), 'mousedown');
+    const mouseDown$ = fromEvent(document.querySelector('#draggable'), 'mousedown');
     const mouseMove$ = fromEvent(document, 'mousemove');
     const mouseUp$ = fromEvent(document, 'mouseup');
 
     mouseDown$.pipe(
       concatMap(mouseDownEvent => mouseMove$.pipe(
+        tap(mouseMoveEvent =>{
+          mouseMoveEvent.preventDefault();
+        }),
         map(mouseMoveEvent => ({
           left: mouseMoveEvent['clientX'] - mouseDownEvent['offsetX'],
-          top: mouseMoveEvent['clientY'] - mouseDownEvent['offsetY']
+          top: mouseMoveEvent['clientY'] - mouseDownEvent['offsetY'],
         })),
         takeUntil(mouseUp$)
       ))

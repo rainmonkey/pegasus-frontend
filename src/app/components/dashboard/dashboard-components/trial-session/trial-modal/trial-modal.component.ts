@@ -228,9 +228,9 @@ export class TrialModalComponent implements OnInit {
   getAvailableTime() {
     let array = [];
     array = this.checkAvailableDOW(array);
-    //console.log(array)
+    console.log(array)
     array = this.checkAvailablePeriod(array);
-    //console.log(array)
+    console.log(array)
     array.sort()
 
     let newObjArr = [];
@@ -249,7 +249,7 @@ export class TrialModalComponent implements OnInit {
           else, drop it.
   */
   checkAvailableDOW(array) {
-    console.log(this.availableDOW)
+    //console.log(this.availableDOW)
     //console.log(this.availableDOW)
     for (let i in this.availableDOW) {
       if (this.availableDOW[i] == 7) {
@@ -258,6 +258,7 @@ export class TrialModalComponent implements OnInit {
     }
     //  --> the days befor current day are unavailable.
     this.termPeriod[0].BeginDate = this.currentDay;
+
     //outer for-loop can support multiple semesters
     for (let j of this.termPeriod) {
       //check each day of a semester, if it is available, push it in an array, else drop it
@@ -269,6 +270,7 @@ export class TrialModalComponent implements OnInit {
         }
       }
     }
+    console.log(array.length)
     return array;
   }
 
