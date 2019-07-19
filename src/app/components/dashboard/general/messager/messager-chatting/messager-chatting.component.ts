@@ -168,17 +168,30 @@ export class MessagerChattingComponent implements OnInit {
     let MessageBody:string = messageToSend;
     let ChatGroupId:string = null;
     let CreateAt = new Date();
-    console.log(CreateAt)
-    this.chattingService.sendMessage({ReceiverUserId,SenderUserId,MessageBody,ChatGroupId,CreateAt}).then(
+    let createAtTimestamp = CreateAt.getTime();
+    
+    this.chattingService.sendMessage({ReceiverUserId,SenderUserId,MessageBody,ChatGroupId,CreateAt},createAtTimestamp)
+    .subscribe(
       (res)=>{
-        //消息发送成功处理程序 未完成 
-        console.log('send success');
+        console.log('yes')
       },
       (err) =>{
-        //消息发送失败处理程序 未完成
-        console.log(err)
+        console.log('err')
       }
     )
+    // .then(
+    //   (res)=>{
+    //     //消息发送成功处理程序 未完成 
+    //     console.log('send success');
+    //   },
+    //   (err) =>{
+    //     //消息发送失败处理程序 未完成
+    //     console.log(err)
+    //   }
+    // )
+    // .catch(err=>{
+    //   console.log(err)
+    // })
   }
 
 

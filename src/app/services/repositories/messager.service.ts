@@ -72,11 +72,18 @@ export class MessagerService {
     let array:string = sessionStorage.getItem('recentlySubscriberArray')
     let arrayObj = array?JSON.parse(array):[];
    
+    //if subscriber already exist, remove it and add it to the array as 1st
     let index = arrayObj.findIndex(item => item.UserId === userId);
     if(index !== -1){
       arrayObj.splice(index, 1);
     }
-    arrayObj.push(subscriberObj);
+    arrayObj.unshift(subscriberObj);
+
+    //if number of rencently suibscribers > 10, remove the last one
+    if(arrayObj.length > 10){
+      arrayObj.pop();
+    }
+    
     sessionStorage.setItem('recentlySubscriberArray',JSON.stringify(arrayObj));
   }
 
