@@ -7,7 +7,8 @@
       <div class='row m_c_subscribers'>
         <div class='col-3'>
           <div class='m_c_subscribers_photo'>
-            <img [src]="photoUrl + subscriber.Photo" alt="" onerror="this.src='../../../../../../assets/images/shared/default-employer-profile.png'">
+            <img [src]="photoUrl + subscriber.Photo" alt=""
+              onerror="this.src='../../../../../../assets/images/shared/default-employer-profile.png'">
           </div>
         </div>
         <div class='col-9'>
@@ -26,22 +27,24 @@
   <div style="position: relative">
     <div [ngStyle]="{'height': modalHeight - 200 + 'px'}" class='m_c_chatting_panel' id='m_c_chatting_panel'>
       <!--聊天内容-->
-      <div *ngFor='let i of getChattingHistory(); let last = last' class='clearfix' style="margin-bottom: 5px">
+      <div *ngFor='let i of getChattingHistory(); let last = last; let count = count' class='clearfix' style="margin-bottom: 5px">
         <div class='m_c_chatting_messagers' [class.m_c_chatting_messagers_left]='i.leftOrRight == "left"'
           [class.m_c_chatting_messagers_right]='i.leftOrRight == "right"'>
-          <img [src]="showPhotoIcon(i.leftOrRight)" alt=""
-            [class.m_c_chatting_messagers_left]='i.leftOrRight == "left"'
+          <img [src]="showPhotoIcon(i.leftOrRight)" alt="" [class.m_c_chatting_messagers_left]='i.leftOrRight == "left"'
             [class.m_c_chatting_messagers_right]='i.leftOrRight == "right"'>
           <div [class.m_c_chatting_messagers_left]='i.leftOrRight == "left"'
             [class.m_c_chatting_messagers_right]='i.leftOrRight == "right"'>
             <div class='m_c_time_stamp' [class.m_c_time_stamp_left]='i.leftOrRight == "left"'
-              [class.m_c_time_stamp_right]='i.leftOrRight == "right"'>{{i.createTime}}</div>
+              [class.m_c_time_stamp_right]='i.leftOrRight == "right"'>{{i.createTime}}
+            </div>
+            <!--message sent failed sign-->
+            <div *ngIf='i.isError' class='m_c_message_sent_failed' (click)='messageSentFailedHandler($event)'><span class='fas fa-exclamation-circle'></span></div>
             <div class='m_c_chatting_text' [class.m_c_chatting_messagers_left]='i.leftOrRight == "left"'
               [class.m_c_chatting_text_left]='i.leftOrRight == "left"'
               [class.m_c_chatting_messagers_right]='i.leftOrRight == "right"'
               [class.m_c_chatting_text_left]='i.leftOrRight == "left"'
               [class.m_c_chatting_text_right]='i.leftOrRight == "right"'>
-              {{i.message}} {{last ? scrollToBottom() : ''}}
+              {{i.message}} {{last ? scrollToBottom(count) : ''}}
             </div>
           </div>
         </div>
@@ -50,22 +53,25 @@
     </div>
 
     <!--emoji选择面板-->
-    <emoji-mart emoji='point_up' (emojiSelect)='emojiClickEventHandler($event)' id='m_c_emoji_picker_panel' [style]='{width:"100%"}'
-      isNative=true [@displayPickerPanelTrigger]='emojiPickerDisplayFlag?"display":"hide"'>
+    <emoji-mart emoji='point_up' (emojiSelect)='emojiClickEventHandler($event)' id='m_c_emoji_picker_panel'
+      [style]='{width:"100%"}' isNative=true [@displayPickerPanelTrigger]='emojiPickerDisplayFlag?"display":"hide"'>
     </emoji-mart>
   </div>
 
   <!--emoji框-->
   <div class='m_c_emoji_panel'>
     <span class='m_c_emoji_panel_info'>crtl + enter to send</span>
-    <span class='m_c_emoji_picker' (click)='displayEmojiPicker()' title='emoji'><span class='far fa-laugh-wink'></span></span>
-    <span (click)='displayChattingHistory()' class='m_c_history' title='history'><span class='fas fa-history'></span></span>
+    <span class='m_c_emoji_picker' (click)='displayEmojiPicker()' title='emoji'><span
+        class='far fa-laugh-wink'></span></span>
+    <span (click)='displayChattingHistory()' class='m_c_history' title='history'><span
+        class='fas fa-history'></span></span>
   </div>
 
 
   <!--输入框-->
   <div class='m_c_input_area'>
-    <textarea #m_c_text_area spellcheck="false" (keydown)='keysDownEventHandler($event)' (keyup)='keysUpEventHanlder($event)'></textarea>
+    <textarea #m_c_text_area spellcheck="false" (keydown)='keysDownEventHandler($event)'
+      (keyup)='keysUpEventHanlder($event)'></textarea>
   </div>
 
 </div>

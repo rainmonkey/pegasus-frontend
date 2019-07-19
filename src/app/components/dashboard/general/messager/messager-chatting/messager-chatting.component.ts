@@ -23,6 +23,8 @@ export class MessagerChattingComponent implements OnInit {
   public subscriber: object;
   public photoUrl = environment.photoUrl;
   public userPhoto;
+  //how many messagers in current chatting panel 
+  public chattingAreaMessageCounter:number = 0;
   @Input() modalHeight;
   @Output() onStartChatting = new EventEmitter();
   @ViewChild('m_c_text_area') textArea;
@@ -110,9 +112,8 @@ export class MessagerChattingComponent implements OnInit {
     //当ctrl和enter同时按下的时候发送消息
     if (this.keysCombination['Enter'] == true && this.keysCombination['Control'] == true) {
       //this.pushMessageToView(event.target.value);
-      this.scrollToBottom();
+      //this.scrollToBottom();
       this.saveMessageToLocal(event.target.value);
-      this.sendMessageToServer(event.target.value);
       this.clearInputArea();
     }
   }
@@ -135,67 +136,71 @@ export class MessagerChattingComponent implements OnInit {
 
   /*
     scroll scroll bar to bottom
-      --> if messages are too many to show the scroll bar, when update a new message, scroll to this new message
+      --> if messages are too many to show the scroll bar, when push a new message, scroll to this new message
   */
-  scrollToBottom() {
-    document.getElementById('scroll_anchor').scrollIntoView();
+  scrollToBottom(count) {
+    //if counter changed, scrolled to bottom, to avoid *ngFor automatically checking
+    if(!(count == this.chattingAreaMessageCounter)){
+      document.getElementById('scroll_anchor').scrollIntoView();
+    }
+    this.chattingAreaMessageCounter = count;
   }
 
+  /*
+    save the message to local storage
+  */
   saveMessageToLocal(message) {
     if (message !== '') {
-      let timeStamp = (new Date()).toLocaleString();
+      //message create time
+      let createAt = new Date();
+
       let messageObj = {
         subscriberId:this.subscriber['UserId'],
         message:message,
         leftOrRight:'right',
-        createTime:timeStamp
+        isError:false,
+        createTime:createAt.toLocaleString(),
+        createTimeStamp:createAt.getTime()
       }
+
       this.messagerService.saveChattingHistory(messageObj);
+      this.sendMessageToServer(message,createAt);
     }
   }
+
+  /*
+    send message to server 这一步应该后台来完成,没必要放在前台
+  */
+  sendMessageToServer(messageToSend,createAt) {
+    let ReceiverUserId:number = this.subscriber['UserId'];
+    let SenderUserId:number = Number(localStorage.getItem('userID'));
+    let MessageBody:string = messageToSend;
+    let ChatGroupId:string = null;
+    
+    this.chattingService.sendMessage({ReceiverUserId,SenderUserId,MessageBody,ChatGroupId,createAt})
+    .subscribe(
+      (res)=>{
+        //成功处理程序
+        //console.log('yes'),
+        //console.log('then',createAt.getTime())
+      },
+      (err) =>{
+        //失败处理程序
+        this.messagerService.messageSendFailedHandler(createAt.getTime(),this.subscriber['UserId']);
+       // console.log('err')
+      }
+    )
+  }
+
+
 
   /*
     called by template event
     get chatting history from service
   */
-  getChattingHistory(){
-    return this.messagerService.getChattingHistory(this.subscriber['UserId']);
-  }
-
-  sendMessageToServer(messageToSend) {
-    let ReceiverUserId:number = this.subscriber['UserId'];
-    let SenderUserId:number = Number(localStorage.getItem('userID'));
-    let MessageBody:string = messageToSend;
-    let ChatGroupId:string = null;
-    let CreateAt = new Date();
-    let createAtTimestamp = CreateAt.getTime();
-    
-    this.chattingService.sendMessage({ReceiverUserId,SenderUserId,MessageBody,ChatGroupId,CreateAt},createAtTimestamp)
-    .subscribe(
-      (res)=>{
-        console.log('yes')
-      },
-      (err) =>{
-        console.log('err')
-      }
-    )
-    // .then(
-    //   (res)=>{
-    //     //消息发送成功处理程序 未完成 
-    //     console.log('send success');
-    //   },
-    //   (err) =>{
-    //     //消息发送失败处理程序 未完成
-    //     console.log(err)
-    //   }
-    // )
-    // .catch(err=>{
-    //   console.log(err)
-    // })
-  }
-
-
-
+ getChattingHistory(){
+  return this.messagerService.getChattingHistory(this.subscriber['UserId']);
+}
 
   /*
     if no subscriber selected and now click chatting icon
@@ -207,5 +212,13 @@ export class MessagerChattingComponent implements OnInit {
   showPhotoIcon(leftOrRight){
     let src = (leftOrRight=='left')? this.photoUrl+this.subscriber['Photo']:this.photoUrl+localStorage.getItem('photo');
     return src;
+  }
+
+  /*
+    called by template evetn
+    message send failed handler
+  */
+  messageSentFailedHandler(event){
+    event.preventDefault()
   }
 }
