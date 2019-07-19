@@ -56,14 +56,10 @@ export class SessionsCalendarViewAdminComponent implements OnInit {
     this.sessionService.getReceptionistRoom().subscribe(data => {
       this.resourceData = data.Data;
       const date = this.datePipe.transform(new Date(), 'yyyy-MM-dd');
-      this.sessionService.getReceptionistLesson(date).subscribe(event => {
-        this.eventsModel = this.generateEventData(event.Data);
-      });
       this.isloading = false;
       this.options = {
         themeSystem: 'jquery-ui',
         editable: true,
-        resourceLabelText: 'Rooms',
         customButtons: {
           DayPickerButton: {
             text: 'Search',
@@ -97,6 +93,12 @@ export class SessionsCalendarViewAdminComponent implements OnInit {
           });
         },
         resources: this.resourceData,
+        resourceRender: (info) => {
+          console.log(this.eventsModel)
+          const text = document.createElement('div');
+          text.innerText = '你好 hello ';
+          info.el.appendChild(text);
+        },
         displayEventTime: false,
         events: this.eventData,
         aspectRatio: 1.8,
