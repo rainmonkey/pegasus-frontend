@@ -52,10 +52,27 @@ export class SessionsCalendarViewAdminComponent implements OnInit {
     this.searchForm = this.fb.group({
       dateOfLesson: ['']
     })
-    this.isloading = true;
     this.sessionService.getReceptionistRoom().subscribe(data => {
       this.resourceData = data.Data;
       const date = this.datePipe.transform(new Date(), 'yyyy-MM-dd');
+      this.sessionService.getReceptionistLesson(date).subscribe(event => {
+        this.eventsModel = this.generateEventData(event.Data);
+        const resourceCol = document.querySelectorAll('.fc-resource-cell')
+        resourceCol.forEach(s => {
+          const resourceId = Number(s.getAttribute('data-resource-id'));
+          const events = this.eventsModel.filter(s => s.resourceId == resourceId);
+          const teachersArray = []
+          events.map(info => teachersArray.push(info.teacher));
+          const teachersNewArray = Array.from(new Set(teachersArray))
+          teachersNewArray.map(q => {
+            const div = document.createElement('div');
+            const text = document.createElement('span')
+            text.innerText = q;
+            div.appendChild(text)
+            s.appendChild(div);
+          });
+        });
+      });
       this.isloading = false;
       this.options = {
         themeSystem: 'jquery-ui',
@@ -72,7 +89,6 @@ export class SessionsCalendarViewAdminComponent implements OnInit {
         eventClick: (info) => {
           this.eventInfo = info;
           const modalRef = this.modalService.open(this.methodModal);
-          console.log(this.eventInfo)
         },
         ////////
         eventDrop: (info) => { // when event drag , need to send put request to change the time of this event
@@ -93,12 +109,6 @@ export class SessionsCalendarViewAdminComponent implements OnInit {
           });
         },
         resources: this.resourceData,
-        resourceRender: (info) => {
-          console.log(this.eventsModel)
-          const text = document.createElement('div');
-          text.innerText = '你好 hello ';
-          info.el.appendChild(text);
-        },
         displayEventTime: false,
         events: this.eventData,
         aspectRatio: 1.8,
@@ -170,6 +180,21 @@ export class SessionsCalendarViewAdminComponent implements OnInit {
       this.eventData = this.generateEventData(event.Data);
       this.eventsModel = this.eventData;
       this.isloading = false;
+      const resourceCol = document.querySelectorAll('.fc-resource-cell')
+      resourceCol.forEach(s => {
+        const resourceId = Number(s.getAttribute('data-resource-id'));
+        const events = this.eventsModel.filter(s => s.resourceId == resourceId);
+        const teachersArray = []
+        events.map(info => teachersArray.push(info.teacher));
+        const teachersNewArray = Array.from(new Set(teachersArray))
+        teachersNewArray.map(q => {
+          const div = document.createElement('div');
+          const text = document.createElement('span')
+          text.innerText = q;
+          div.appendChild(text)
+          s.appendChild(div);
+        });
+      });
     });
   }
   search = () => {
