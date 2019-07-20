@@ -2,10 +2,10 @@ import { Component, OnInit, ViewChild, ViewEncapsulation, Input } from '@angular
 import { OptionsInput } from '@fullcalendar/core';
 import interactionPlugin from '@fullcalendar/interaction';
 import { CalendarComponent } from 'ng-fullcalendar';
-//declare let $: any;
 import timeGridPlugin from '@fullcalendar/timegrid';
 import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { TrialConfirmComponent } from '../trial-confirm/trial-confirm.component';
+import { SessionTimePickerService } from "src/app/services/others/session-time-picker.service"
 
 
 
@@ -34,7 +34,6 @@ export class TrialModalComponent implements OnInit {
   public timeStamp1Day: number = 86400000;
   public currentDay: string;
   public coursePrice: number;
-  //public availableDOW: Array<number> = [2, 3, 4];
   public studentFullName: string;
   public studentLevel: number;
   public courseId: number;
@@ -49,7 +48,7 @@ export class TrialModalComponent implements OnInit {
   @Input() cateId: number;
   @Input() whichTeacher: any;
   @Input() LearnerId: any;
-  @Input() availableDOW: any;
+  @Input() availableDOW: Array<number>;
   @Input() learners: any;
   @Input() coursesTeachingByWhichTeacher: any;
 
@@ -61,63 +60,23 @@ export class TrialModalComponent implements OnInit {
   options: OptionsInput;
 
   constructor(public activeModal: NgbActiveModal,
-    private modalService: NgbModal) { }
+    private modalService: NgbModal,
+    private sessionTimePicker: SessionTimePickerService) { }
 
   ngOnInit() {
     if (this.duration) {
       this.arrangeFlag = true
     }
     //assign current day as semester begain day.
-    this.currentDay = this.transferTimestampToTime(new Date().getTime(), 1);
-    console.log(this.currentDay, new Date().getTime())
-    this.initFullCalendar(this);
+    this.currentDay = this.sessionTimePicker.transferTimestampToTime(new Date().getTime(), 1);
+    this.prepareCalendar()
   }
 
-  /*
-    transfer time stamp to the timeStr that fullcalendar can read.
-  */
-  transferTimestampToTime(timestamp, code?) {
-    var date = new Date(timestamp);//时间戳为10位需*1000，时间戳为13位的话不需乘1000
-    var Y = date.getFullYear() + '-';
-    var M = (date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1) + '-';
-    var D = (date.getDate() < 10 ? '0' + (date.getDate()) : date.getDate()) + 'T';
-    var h = (date.getHours() < 10 ? '0' + (date.getHours()) : date.getHours()) + ':';
-    var m = (date.getMinutes() < 10 ? '0' + (date.getMinutes()) : date.getMinutes()) + ':';
-    var s = (date.getSeconds() < 10 ? '0' + (date.getSeconds()) : date.getSeconds());
-    if (code == 1) {
-      return Y + M + D + '00:00:00';
-    }
-    else {
-      return Y + M + D + h + m + s;
-    }
-  }
-
-  /*
-    initiate settings of full calendar mode
-  */
-  initFullCalendar(pointer) {
-    let that = pointer;
-    this.options = {
-      allDaySlot: false,
-      height: 700,
-      selectable: true,
-      minTime: '09:00',
-      //end time of a day
-      maxTime: '20:00',
-      //each grid represents 15 min
-      slotDuration: '00:15',
-      events: this.getAvailableTime(),
-      selectConstraint: this.getAvailableTime(),
-      select: function(info) {
-        that.selectCallBack(info);
-      },
-      header: {
-        left: 'prev,next today',
-        center: 'title',
-        right: 'timeGridWeek'
-      },
-      plugins: [timeGridPlugin, interactionPlugin]
-    };
+  prepareCalendar() {
+    this.sessionTimePicker.initFullCalendar(this);
+    let newObjArr = this.getAvailableTime()
+    this.options.events = newObjArr
+    this.options.selectConstraint = newObjArr
   }
 
   /*
@@ -126,17 +85,15 @@ export class TrialModalComponent implements OnInit {
   */
   getAvailableTime() {
     let array = [];
-    array = this.checkAvailableDOW(array);
+    array = this.checkAvailableDOW(array, this.availableDOW);
     array = this.checkAvailablePeriod(array);
     array.sort()
-
     let newObjArr = [];
     for (let i = 0; i < array.length; i += 2) {
       if (array[i + 1] - array[i] >= this.timeInterval30Min) {
-        newObjArr.push({ "start": this.transferTimestampToTime(array[i]), "end": this.transferTimestampToTime(array[i + 1]), "rendering": 'background' })
+        newObjArr.push({ "start": this.sessionTimePicker.transferTimestampToTime(array[i]), "end": this.sessionTimePicker.transferTimestampToTime(array[i + 1]), "rendering": 'background' })
       }
     }
-    console.log(newObjArr)
     return newObjArr
   }
 
@@ -145,13 +102,13 @@ export class TrialModalComponent implements OnInit {
       --> if available, push this day in an array,
           else, drop it.
   */
-  checkAvailableDOW(array) {
-    //console.log(this.availableDOW)
-    for (let i in this.availableDOW) {
-      if (this.availableDOW[i] == 7) {
-        this.availableDOW[i] = 0;
+  checkAvailableDOW(array, availableDOW) {
+    for (let i in availableDOW) {
+      if (availableDOW[i] == 7) {
+        availableDOW[i] = 0;
       }
     }
+    console.log(this.termPeriod)
     //  --> the days befor current day are unavailable.
     this.termPeriod[0].BeginDate = this.currentDay;
     //outer for-loop can support multiple semesters
@@ -159,7 +116,12 @@ export class TrialModalComponent implements OnInit {
       //check each day of a semester, if it is available, push it in an array, else drop it
       for (let i = Date.parse(j.BeginDate); i <= Date.parse(j.EndDate); i += this.timeStamp1Day) {
         let date = new Date(i);
-        if (this.availableDOW.indexOf(date.getDay()) !== -1) {
+        console.log(date.getDay())
+        // if (availableDOW.indexOf(date.getDay()) !== -1) {
+        //   array.push(i); //start time
+        //   array.push(i + this.timeStamp1Day); //end time
+        // }
+        if (availableDOW.includes(date.getDay())) {
           array.push(i); //start time
           array.push(i + this.timeStamp1Day); //end time
         }
@@ -202,7 +164,7 @@ export class TrialModalComponent implements OnInit {
   selectCallBack(info) {
     let startTimestamp = Date.parse(info.startStr);
     let endTimestamp = Date.parse(info.endStr);
-
+    console.log(info)
     //arrange
     if (this.arrangeFlag) {
       if (endTimestamp - startTimestamp >= this.timeInterval30Min) {
@@ -282,8 +244,8 @@ export class TrialModalComponent implements OnInit {
 
   popUpConfirmModal(startTimestamp, endTimestamp) {
     const modalRef = this.modalService.open(TrialConfirmComponent, { size: 'lg', backdrop: 'static', keyboard: false });
-    modalRef.componentInstance.startTime = this.transferTimestampToTime(startTimestamp);
-    modalRef.componentInstance.endTime = this.transferTimestampToTime(endTimestamp);
+    modalRef.componentInstance.startTime = this.sessionTimePicker.transferTimestampToTime(startTimestamp);
+    modalRef.componentInstance.endTime = this.sessionTimePicker.transferTimestampToTime(endTimestamp);
     modalRef.componentInstance.orgName = this.orgName;
     modalRef.componentInstance.cateName = this.cateName;
     modalRef.componentInstance.whichTeacher = this.whichTeacher;

@@ -281,7 +281,7 @@ import { ConflictCheckComponent } from './components/dashboard/dashboard-compone
     PageGroupDetailsComponent,
 
     MessagerNotificationComponent,
-    ConflictCheckComponent
+    ConflictCheckComponent,
 
   ],
   imports: [

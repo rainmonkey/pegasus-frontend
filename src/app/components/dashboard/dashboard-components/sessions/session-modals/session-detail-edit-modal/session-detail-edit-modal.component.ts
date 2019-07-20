@@ -1,8 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { Router, ActivatedRoute } from '@angular/router';
+import { Router } from '@angular/router';
 import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { FormBuilder, Validator, Validators, RequiredValidator } from '@angular/forms';
-import { TransactionService } from '../../../../../../services/http/transaction.service';
 import { SessionsService } from '../../../../../../services/http/sessions.service';
 import { SessionEdit } from '../../../../../../models/SessionEdit';
 import { TrialModalComponent } from "src/app/components/dashboard/dashboard-components/trial-session/trial-modal/trial-modal.component"
@@ -29,8 +28,6 @@ export class SessionDetailEditModalComponent implements OnInit {
     public activeModal: NgbActiveModal,
     private fb: FormBuilder,
     public modalService: NgbModal,
-    private transactionService: TransactionService,
-    private router: Router,
     private sessionsService: SessionsService,
   ) {
 
