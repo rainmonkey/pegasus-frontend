@@ -16,6 +16,7 @@ import {SessionCompletedModalComponent} from '../../session-modals/session-compl
 import {SessionRescheduleModalComponent} from '../../session-modals/session-reschedule-modal/session-reschedule-modal.component';
 import {AdminLearnerProfileComponent} from '../../../admin-learner/admin-learner-profile/admin-learner-profile.component';
 import {LearnersService} from '../../../../../../services/http/learners.service';
+
 @Component({
   selector: 'app-sessions-calendar-view-admin',
   encapsulation: ViewEncapsulation.None,
@@ -40,7 +41,7 @@ export class SessionsCalendarViewAdminComponent implements OnInit {
   IsConfirmEditSuccess = false;
   learnerProfileLoading = false;
   @ViewChild(CalendarComponent) fullcalendar: CalendarComponent;
-  t;
+  t = null;
   constructor(
     protected sessionService: SessionsService,
     private datePipe: DatePipe, private modalService: NgbModal,
@@ -51,18 +52,31 @@ export class SessionsCalendarViewAdminComponent implements OnInit {
     this.searchForm = this.fb.group({
       dateOfLesson: ['']
     })
-    this.isloading = true;
     this.sessionService.getReceptionistRoom().subscribe(data => {
       this.resourceData = data.Data;
       const date = this.datePipe.transform(new Date(), 'yyyy-MM-dd');
       this.sessionService.getReceptionistLesson(date).subscribe(event => {
         this.eventsModel = this.generateEventData(event.Data);
+        const resourceCol = document.querySelectorAll('.fc-resource-cell')
+        resourceCol.forEach(s => {
+          const resourceId = Number(s.getAttribute('data-resource-id'));
+          const events = this.eventsModel.filter(s => s.resourceId == resourceId);
+          const teachersArray = []
+          events.map(info => teachersArray.push(info.teacher));
+          const teachersNewArray = Array.from(new Set(teachersArray))
+          teachersNewArray.map(q => {
+            const div = document.createElement('div');
+            const text = document.createElement('span')
+            text.innerText = q;
+            div.appendChild(text)
+            s.appendChild(div);
+          });
+        });
       });
       this.isloading = false;
       this.options = {
         themeSystem: 'jquery-ui',
         editable: true,
-        resourceLabelText: 'Rooms',
         customButtons: {
           DayPickerButton: {
             text: 'Search',
@@ -75,7 +89,6 @@ export class SessionsCalendarViewAdminComponent implements OnInit {
         eventClick: (info) => {
           this.eventInfo = info;
           const modalRef = this.modalService.open(this.methodModal);
-          console.log(this.eventInfo)
         },
         ////////
         eventDrop: (info) => { // when event drag , need to send put request to change the time of this event
@@ -129,7 +142,7 @@ export class SessionsCalendarViewAdminComponent implements OnInit {
     }
     if (model.buttonType === 'next' || model.buttonType === 'today' || model.buttonType === 'prev' || model.buttonType === 'testButton') {
       const datefromcalendar = model.data;
-      const date = this.datePipe.transform(datefromcalendar, 'yyyy-MM-dd')
+      const date = this.datePipe.transform(datefromcalendar, 'yyyy-MM-dd');
       this.t = setTimeout(() => this.getEventByDate(date), 500);
     }
 
@@ -167,6 +180,21 @@ export class SessionsCalendarViewAdminComponent implements OnInit {
       this.eventData = this.generateEventData(event.Data);
       this.eventsModel = this.eventData;
       this.isloading = false;
+      const resourceCol = document.querySelectorAll('.fc-resource-cell')
+      resourceCol.forEach(s => {
+        const resourceId = Number(s.getAttribute('data-resource-id'));
+        const events = this.eventsModel.filter(s => s.resourceId == resourceId);
+        const teachersArray = []
+        events.map(info => teachersArray.push(info.teacher));
+        const teachersNewArray = Array.from(new Set(teachersArray))
+        teachersNewArray.map(q => {
+          const div = document.createElement('div');
+          const text = document.createElement('span')
+          text.innerText = q;
+          div.appendChild(text)
+          s.appendChild(div);
+        });
+      });
     });
   }
   search = () => {

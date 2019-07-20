@@ -74,6 +74,12 @@
   </div>
   <div class="modal-body m-2">
     <div *ngIf="learnerProfileLoading" class="loaderLarge"></div>
+    <h5 class="text-center">Begin Time</h5>
+    <div *ngIf="eventInfo.event.extendedProps.IsChanged==1">
+      <del><p class="text-center">{{eventInfo.event.extendedProps.info.BeginTime}}</p></del>
+      <p class="text-center">{{eventInfo.event.extendedProps.newLesson.BeginTime}}</p>
+    </div>
+    <p *ngIf="eventInfo.event.extendedProps.IsChanged !=1" class="text-center">{{eventInfo.event.extendedProps.info.BeginTime}}</p>
     <div *ngIf="eventInfo.event.extendedProps.learner">
       <div *ngIf="eventInfo.event.extendedProps.IsCanceled==1 || eventInfo.event.extendedProps.IsConfirm==1">
         <h5 class="text-center">Reason (Cancel or Complete)</h5>
@@ -100,15 +106,11 @@
       <h5 class="text-center">Course Name</h5>
       <p class="text-center">{{eventInfo.event.extendedProps.info.CourseName}}</p>
 
-      <h5 class="text-center">Begin Time</h5>
-      <div *ngIf="eventInfo.event.extendedProps.IsChanged==1">
-        <del><p class="text-center">{{eventInfo.event.start}}</p></del>
-        <p class="text-center">{{eventInfo.event.extendedProps.newLesson.BeginTime}}</p>
-      </div>
-      <p *ngIf="eventInfo.event.extendedProps.IsChanged !=1" class="text-center">{{eventInfo.event.start}}</p>
     </div>
 
     <div *ngIf="eventInfo.event.extendedProps.learners">
+      <h5 class="text-center">Begin Time</h5>
+      <p class="text-center">{{eventInfo.event.extendedProps.info.BeginTime}}</p>
       <div *ngIf="eventInfo.event.extendedProps.IsCanceled==1 || eventInfo.event.extendedProps.IsConfirm==1">
         <h5 class="text-center">Reason (Cancel or Complete)</h5>
         <p class="text-center">{{eventInfo.event.extendedProps.Reason}}</p>
@@ -125,8 +127,6 @@
       <p class="text-center">{{eventInfo.event.extendedProps.info.RoomName}} ({{eventInfo.event.extendedProps.info.OrgName}})</p>
       <h5 class="text-center">Course Name</h5>
       <p class="text-center">{{eventInfo.event.extendedProps.info.CourseName}}</p>
-      <h5 class="text-center">Begin Time</h5>
-      <p class="text-center">{{eventInfo.event.start}}</p>
     </div>
 
   </div>
