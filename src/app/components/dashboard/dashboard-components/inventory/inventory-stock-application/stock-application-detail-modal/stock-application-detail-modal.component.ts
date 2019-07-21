@@ -1,7 +1,9 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { FormBuilder, Validators, Form, FormGroup, FormArray } from '@angular/forms';
-import { InventoriesService } from 'src/app/services/http/inventories.service'
+import { InventoriesService } from 'src/app/services/http/inventories.service';
+import { PostProduct } from 'src/app/models/ApplyProduct';
+import { ProductIdQty } from 'src/app/models/ProductIdQty';
 
 @Component({
   selector: 'app-stock-application-detail-modal',
@@ -20,19 +22,16 @@ export class StockApplicationDetailModalComponent implements OnInit {
   public prodCats: any[] = [];
   public prodTypes: any[] = [];
   public products: any[] = [];
-  public errorMessage: any;
-  public previousI: number = null;
+  public getPostProduct: PostProduct;
+  public errorMessage: string;
   
-
   constructor(private activeModal: NgbActiveModal,
               private fb: FormBuilder,
               private inventoriesService: InventoriesService) { }
 
   ngOnInit() {
     this.getLocalStorage();
-    this.getProdCats();
-    // this.getProducts();
-    // this.getProdByType(1);
+    this.getProdCats(0);
     this.applicationFrom = this.fb.group(this.formGroupAssemble());
   }
   
@@ -66,48 +65,35 @@ export class StockApplicationDetailModalComponent implements OnInit {
   /* get data from server */
   errHandler(err: any) {
     console.warn(err);
-    if (err.error.ErrorMessage != null) {
-      this.errorMessage = err.error.ErrorMessage;
+    if (err.ErrorMessage != null) {
+      this.errorMessage = err.ErrorMessage;
     } else {
       this.errorMessage = 'Error! Can Not Catch Data!';
     }
   }
-  getProdCats() {
-    // this.previousI = i;
-    // console.log('previousI', i,this.previousI );
-
+  getProdCats(i: number) {
     this.inventoriesService.getProdCats().subscribe(
       res => {
-        // let tempProdCats = [];
-        // tempProdCats = res['Data'];
-        // this.prodCats.push(tempProdCats)
-        // console.log('prodCats', this.prodCats)
-        this.prodCats = res['Data']
+        this.prodCats[i] = res['Data']
+        console.log('prodCat', i, this.prodCats[i])
       },
       err => this.errHandler(err)
     )
   }
-  getProdTypeByCat(cateId: number, i) {
+  getProdTypeByCat(cateId: number, i: number) {
     this.inventoriesService.getProdTypeByCat(cateId).subscribe(
       res => {
-        // console.log('prodTypes', res['Data'][0]['ProdType'])
-        // let tempProdTypes = [];
-        // tempProdTypes = res['Data'][0].ProdType;
-        // this.prodTypes.push(tempProdTypes);
-        // console.log('prodTypes', this.prodTypes)
-        this.prodTypes = res['Data'][0].ProdType;
+        this.prodTypes[i] = res['Data'][0].ProdType;
+        // console.log('prodTypes', i, this.prodTypes[i])
       },
       err => this.errHandler(err)
     )
   }
-  getProdByType(typeId: number) {
+  getProdByType(typeId: number, i) {
     this.inventoriesService.getProdByType(typeId).subscribe(
       res => {
-        // console.log('prod', res['Data'])
-        // let tempProducts = res['Data'];
-        // this.products.push(tempProducts);
-        // console.log('prod', this.products)
-        this.products = res['Data'];
+        this.products[i] = res['Data'];
+        // console.log('prod', i, this.products[i])
       },
       err => this.errHandler(err)
     )
@@ -117,50 +103,39 @@ export class StockApplicationDetailModalComponent implements OnInit {
     this.productIdQty.removeAt(i);
     console.log('delete', i, this.productIdQty.value)
   }
-  addProds(i): void {
-    this.previousI = i;
-    let tempObj = {};
-    tempObj['cate'] = this.prodCats;
-    tempObj['type'] = this.prodTypes;
-    tempObj['prod'] = this.products;
-    let tempProductIdQty = [];
-    tempProductIdQty.push(tempObj)
-    // this.productIdQty.push(this.createProd());
-    // tempProductIdQty.push(this.productIdQty)
+  addProds(): void {
+    // this.prodTypes.push([]);
+    // console.log('addProds', this.productIdQty.length, this.productIdQty);
+    let i = this.productIdQty.length;
+    this.getProdCats(i);
     this.productIdQty.push(this.createProd());
-    console.log('add', tempProductIdQty)
+    console.log('number value', this.productIdQty.at(0).value.appliedQty)
   }
-  resetForm(i: number) {
-    // this.productIdQty[i].reset([]);
-    // this.productIdQty.controls[i]
-    this.productIdQty.controls[i].value.prodCat=""
-    // this.productIdQty.setValue([
-    //   {
-    //     prodCat: '',
-    //     prodType: '',
-    //     prod: '',
-    //     appliedQty: ''
-    //   },
-    //   {
-    //     prodCat: '',
-    //     prodType: '',
-    //     prod: '',
-    //     appliedQty: ''
-    //   },
-    // ]);
-    console.log('reset', i, this.productIdQty.value,this.productIdQty.value[i])
-    // console.log('reset form', this.createProd())
+  //////////////////////////////////////// post //////////////////////////////////////////////
+  dataToPost(): PostProduct {
+    let applyReason = this.applicationFrom.get('applyReason').value;
+    let productDetail: Array<ProductIdQty> = [];
+    for(let prod of this.productIdQty.value) {
+      let productId = prod.prod;
+      let appliedQty = prod.appliedQty;
+      let productIdQty = new ProductIdQty(productId, appliedQty);
+      productDetail.push(productIdQty);
+    }
+    let postProduct = new PostProduct(this.orgId, this.staffId, applyReason, productDetail);
+    console.log('dataToPost', postProduct)
+    return postProduct;
   }
-  // getProducts() {
-  //   this.inventoriesService.getProdts().subscribe(
-  //     res => {
-  //       console.log('prods', res['Data'])
-  //       res['Data'].map((prod) => {
-  //         // this.prodCats = prod.prodType
-  //       })
-  //     },
-  //     err => this.errHandler(err)
-  //   ) 
-  // }
+  postProduct() {
+    this.inventoriesService.postProduct(this.dataToPost()).subscribe(
+      res => {
+        this.getPostProduct = res;
+        console.log('postdata', res)
+      },
+      err => this.errHandler(err)
+    )
+  }
+  submitOrder() {
+    this.postProduct()
+  }
  
 }
