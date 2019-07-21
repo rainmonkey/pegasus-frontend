@@ -1,6 +1,7 @@
 .m_s_subscribers{
     height: 60px;
     padding: 1px 0!important;
+    overflow: auto;
 }
 .m_s_subscribers:hover{
     background: rgb(230, 223, 223);
