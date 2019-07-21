@@ -27,7 +27,7 @@
   <div style="position: relative">
     <div [ngStyle]="{'height': modalHeight - 200 + 'px'}" class='m_c_chatting_panel' id='m_c_chatting_panel'>
       <!--聊天内容-->
-      <div *ngFor='let i of getChattingHistory(); let last = last; let count = count' class='clearfix' style="margin-bottom: 5px">
+      <div *ngFor='let i of getChattingHistory(); let last = last; let count = count; let index = index' class='clearfix' style="margin-bottom: 5px">
         <div class='m_c_chatting_messagers' [class.m_c_chatting_messagers_left]='i.leftOrRight == "left"'
           [class.m_c_chatting_messagers_right]='i.leftOrRight == "right"'>
           <img [src]="showPhotoIcon(i.leftOrRight)" alt="" [class.m_c_chatting_messagers_left]='i.leftOrRight == "left"'
@@ -35,10 +35,10 @@
           <div [class.m_c_chatting_messagers_left]='i.leftOrRight == "left"'
             [class.m_c_chatting_messagers_right]='i.leftOrRight == "right"'>
             <div class='m_c_time_stamp' [class.m_c_time_stamp_left]='i.leftOrRight == "left"'
-              [class.m_c_time_stamp_right]='i.leftOrRight == "right"'>{{i.createTime}}
+              [class.m_c_time_stamp_right]='i.leftOrRight == "right"'>{{i.createTime.toLocaleString()}}
             </div>
             <!--message sent failed sign-->
-            <div *ngIf='i.isError' class='m_c_message_sent_failed' (click)='messageSentFailedHandler($event)'><span class='fas fa-exclamation-circle'></span></div>
+            <div *ngIf='i.isError' class='m_c_message_sent_failed' (click)='resentMessage($event,index)'><span class='fas fa-exclamation-circle'></span></div>
             <div class='m_c_chatting_text' [class.m_c_chatting_messagers_left]='i.leftOrRight == "left"'
               [class.m_c_chatting_text_left]='i.leftOrRight == "left"'
               [class.m_c_chatting_messagers_right]='i.leftOrRight == "right"'
@@ -70,8 +70,7 @@
 
   <!--输入框-->
   <div class='m_c_input_area'>
-    <textarea #m_c_text_area spellcheck="false" (keydown)='keysDownEventHandler($event)'
-      (keyup)='keysUpEventHanlder($event)'></textarea>
+    <textarea #m_c_text_area spellcheck="false"  (keydown.control.enter)= 'keysDownEventHandler($event)'></textarea>
   </div>
 
 </div>

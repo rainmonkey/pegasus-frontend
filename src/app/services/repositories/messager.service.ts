@@ -15,12 +15,12 @@ export class MessagerService {
   public errorFlag: boolean;
 
   constructor(private http: HttpClient) {
-    console.log('service')
   }
 
-  //目前不同的权限调用的api不同 后台在改 到时候可以直接调用同一个api 后台进行判断 未完成
+  //get subscribers list from server
   getSubscribersList(userId) {
-    //To avoid dulplicated data transfer, when the web initiate, call api from server(refresh, render or re-render don't call api)
+    //To avoid dulplicated data transfer, when the web initiate, call api from server once
+    //refresh, render or re-render don't call api
     if (sessionStorage.chattingInit == 'true') {
       return;
     }
@@ -115,15 +115,16 @@ export class MessagerService {
      --> save chatting messages to the local storage when user push the send button,
          but if message sent failed(async), update info of message's history (push a new message with isError prop and delete the failed message) 
   */
-  saveChattingHistory(messageObj: { subscriberId: number, message: string, leftOrRight: string, createTime: any, isError: boolean, createTimeStamp?: number }) {
+  saveChattingHistory(messageObj: { subscriberId: number, message: string, leftOrRight: string, createTime: any, isError: boolean, isResend:boolean,createTimeStamp?: number }) {
     let historyKeyName = messageObj.subscriberId + 'History';
+    //messageObj.createTime = messageObj.createTime.toLocaleString();
     //if histroy exist with a subscriber, push new message to local storage
     if (sessionStorage.getItem(historyKeyName)) {
       let historyObj = JSON.parse(sessionStorage.getItem(historyKeyName));
 
-      //message sent failed handler
-      //if any message sent failed, update message info to failed status
-      if (messageObj.isError) {
+      //message sent failed or resend handler
+      //if any message sent failed or resend, update message info to failed status
+      if (messageObj.isError || messageObj.isResend) {
         //@param: index of failed message
         let failedIndex;
         //get the index of failed message
@@ -160,6 +161,13 @@ export class MessagerService {
   }
 
   /*
+    find a specific message with index
+  */
+  getSpecificChattingMessageHistory(subscriberUserId,index){
+    let history = this.getChattingHistory(subscriberUserId);
+    return history[index];
+  }
+  /*
     @timeStamp: message sent time stamp, use it as the key in chatting history.
   */
   messageSendFailedHandler(timeStamp, subscriberUserId) {
@@ -175,6 +183,7 @@ export class MessagerService {
               leftOrRight: res['leftOrRight'],
               createTime: res['createTime'],
               isError: true,
+              isResend:false,
               createTimeStamp: res['createTimeStamp']
             }
             //@params: message object

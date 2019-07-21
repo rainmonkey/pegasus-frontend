@@ -70,7 +70,7 @@ export class ChattingService {
     this.hubConnection.on('SendMessageOneToOne',
       (id, message, messageTime) => {
         //接收信息处理
-        this.messagerService.saveChattingHistory({ subscriberId: id, message: message, leftOrRight: 'left', createTime: messageTime,isError:false })
+        this.messagerService.saveChattingHistory({ subscriberId: id, message: message, leftOrRight: 'left', createTime: messageTime,isError:false,isResend:false })
       }),
       (err) => {
         console.log(err)
