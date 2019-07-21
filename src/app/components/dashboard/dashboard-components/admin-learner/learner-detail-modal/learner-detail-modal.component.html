@@ -487,7 +487,7 @@
         </div>
         <br>
 
-        <ngb-pagination [collectionSize]="paymentListLength" [(page)]='currentPage' aria-label="Default pagination"
+        <ngb-pagination [collectionSize]="paymentListLength" [(page)]='currentPage' [maxSize]='10' aria-label="Default pagination"
           [pageSize]='pageSize'>
         </ngb-pagination>
 
@@ -571,7 +571,7 @@
           </div>
         </div>
 
-        <ngb-pagination [collectionSize]="sessionListLength" [(page)]='currentPage' aria-label="Default pagination"
+        <ngb-pagination [collectionSize]="sessionListLength" [(page)]='currentPage' [maxSize]='10' aria-label="Default pagination"
           [pageSize]='pageSize'>
         </ngb-pagination>
 
@@ -698,7 +698,7 @@
         </div>
 
 
-        <ngb-pagination [collectionSize]="invoiceListLength" [(page)]='currentPage' aria-label="Default pagination"
+        <ngb-pagination [collectionSize]="invoiceListLength" [(page)]='currentPage' [maxSize]='10' aria-label="Default pagination"
           [pageSize]='pageSize'>
         </ngb-pagination>
 
