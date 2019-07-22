@@ -123,6 +123,7 @@ export class MessagerChattingComponent implements OnInit {
       .subscribe(
         null,
         (err) => {
+          console.log('message sent error')
           //message send failed handler
           this.messagerService.messageSendFailedHandler(createAt.getTime(), this.subscriber['UserId']);
         }
