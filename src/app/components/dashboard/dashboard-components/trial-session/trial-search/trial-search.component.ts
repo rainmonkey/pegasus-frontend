@@ -99,38 +99,23 @@ export class TrialSearchComponent implements OnInit {
     }
     //再从teachingcourse里寻找教指定乐器的老师
     let array1: Array<any> = [];
-    // if (this.arrangeCourseDetails) {   // Teacher of making up lesson can be any teacher who can teach this instrument Regardless of the level
-    //   for (let i of this.teachingCourses) {
-    //     for (let j of array) {
-    //       if (j.TeacherId == i.TeacherId && i.CourseId == this.arrangeCourseDetails.CourseId) {
-    //         array1.push(j)
-    //       }
-    //     }
-    //   }
-    // }
-    // else{
-      for (let i of this.teachingCourses) {
-        for (let j of array) {
-          if (j.TeacherId == i.TeacherId && i.Course.CourseCategory.CourseCategoryId == this.filters["CategoriesId"]) {
-            array1.push(j)
-          }
+    for (let i of this.teachingCourses) {
+      for (let j of array) {
+        if (j.TeacherId == i.TeacherId && i.Course.CourseCategory.CourseCategoryId == this.filters["CategoriesId"]) {
+          array1.push(j)
         }
       }
-     //}
+    }
     let hash = {};
     let result = array1.reduce(function(item, next) {
       hash[next.TeacherId] ? '' : hash[next.TeacherId] = true && item.push(next);
       return item;
     }, [])
-
-    // if (this.arrangeCourseDetails) {
-    //   result = result.filter(data => data.Level == this.arrangeCourseDetails.Level)
-    // }
-
     if (result.length == 0) {
       this.teacherExistsFlag = false
+    } else {
+      this.teacherExistsFlag = true
     }
-
     return result;
   }
 
@@ -146,7 +131,7 @@ export class TrialSearchComponent implements OnInit {
       },
       (err) => {
         //alert('Sorry, something went wrong in server.')
-        Swal.fire({  type: 'error',  title: 'Oops...', text: 'Sorry, something went wrong, '+err.error.ErrorMessage });
+        Swal.fire({ type: 'error', title: 'Oops...', text: 'Sorry, something went wrong, ' + err.error.ErrorMessage });
       }
     )
   };
@@ -232,48 +217,13 @@ export class TrialSearchComponent implements OnInit {
     event.stopPropagation();
   }
 
-  /*
-    pop up FullCalendar modal
-  */
-  popUpModalReady(whichTeacher, coursesTeachingByWhichTeacher) {
-    const modalRef = this.modalService.open(TrialModalComponent, { size: 'lg', backdrop: 'static', keyboard: false });
-    modalRef.componentInstance.termPeriod = this.termPeriod;
-    modalRef.componentInstance.cateName = this.filters['CategoriesName'];
-    modalRef.componentInstance.orgName = this.filters['OrgsName'];
-    modalRef.componentInstance.whichTeacher = whichTeacher;
-    modalRef.componentInstance.cateId = this.filters["CategoriesId"];
-    modalRef.componentInstance.orgId = this.filters["OrgsId"];
-    modalRef.componentInstance.courses = this.courses;
-    modalRef.componentInstance.LearnerId = this.LearnerId;
-    modalRef.componentInstance.availableDOW = this.getAvailabelDOW(whichTeacher);
-    modalRef.componentInstance.learners = this.learners;
-    modalRef.componentInstance.coursesTeachingByWhichTeacher = coursesTeachingByWhichTeacher;
-    if (this.arrangeCourseDetails) {
-      modalRef.componentInstance.arrangeCourseInstance = this.arrangeCourseInstance
-      modalRef.componentInstance.duration = this.arrangeCourseDetails.Duration
-    }
-  }
-
-  popUpModal(whichTeacher) {
-    let teacherId = whichTeacher.TeacherId;
+  popUpModal(teacherDetails) {
+    let teacherId = teacherDetails.TeacherId;
     this.coursesService.getLessonsByTeacherId(teacherId).subscribe(
       (res) => {
-        this.popUpModalReady(whichTeacher, res.Data);
+        this.popUpModalReady(teacherDetails, res.Data);
       }
     )
-  }
-
-  /*
-    get teacher availabe day in a week
-  */
-  getAvailabelDOW(whichTeacher) {
-    let array: Array<any> = [];
-    for (let i of whichTeacher.AvailableDays) {
-      if (i.OrgId == this.filters["OrgsId"]) {
-        array.push(i.DayOfWeek)
-      }
-    }
-    return array;
   }
 
   /*
@@ -284,6 +234,27 @@ export class TrialSearchComponent implements OnInit {
       if (level == i.PropValue) {
         return i.PropName;
       }
+    }
+  }
+
+  /*
+    pop up FullCalendar modal
+  */
+  popUpModalReady(teacherDetails, coursesTeachingByWhichTeacher) {
+    const modalRef = this.modalService.open(TrialModalComponent, { size: 'lg', backdrop: 'static', keyboard: false });
+    modalRef.componentInstance.termPeriod = this.termPeriod;
+    modalRef.componentInstance.cateName = this.filters['CategoriesName'];
+    modalRef.componentInstance.orgName = this.filters['OrgsName'];
+    modalRef.componentInstance.teacherDetails = teacherDetails;
+    modalRef.componentInstance.cateId = this.filters["CategoriesId"];
+    modalRef.componentInstance.orgId = this.filters["OrgsId"];
+    modalRef.componentInstance.courses = this.courses;
+    modalRef.componentInstance.LearnerId = this.LearnerId;
+    modalRef.componentInstance.learners = this.learners;
+    modalRef.componentInstance.coursesTeachingByWhichTeacher = coursesTeachingByWhichTeacher;
+    if (this.arrangeCourseDetails) {
+      modalRef.componentInstance.arrangeCourseInstance = this.arrangeCourseInstance
+      modalRef.componentInstance.duration = this.arrangeCourseDetails.Duration
     }
   }
 

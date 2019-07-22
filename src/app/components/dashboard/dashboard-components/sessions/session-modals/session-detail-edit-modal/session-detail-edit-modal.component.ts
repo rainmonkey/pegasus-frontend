@@ -1,7 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
 import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { FormBuilder, Validator, Validators, RequiredValidator } from '@angular/forms';
+import { FormBuilder, Validators } from '@angular/forms';
 import { SessionsService } from '../../../../../../services/http/sessions.service';
 import { SessionEdit } from '../../../../../../models/SessionEdit';
 import { TrialModalComponent } from "src/app/components/dashboard/dashboard-components/trial-session/trial-modal/trial-modal.component"
@@ -80,6 +79,7 @@ export class SessionDetailEditModalComponent implements OnInit {
 
   getTeachers = (branchId) => {
     this.TeacherSelects = this.BranchSelects.filter(s => s.OrgId == branchId)[0].Teacher;
+    console.log(this.TeacherSelects, this.BranchSelects)
   }
 
   // confirm Modal
@@ -97,7 +97,8 @@ export class SessionDetailEditModalComponent implements OnInit {
   openTimePicker = () => {
     let modalRef = this.modalService.open(TrialModalComponent, { size: 'lg', backdrop: 'static', keyboard: false })
     // modalRef.componentInstance.command = command;
-
+    modalRef.componentInstance.LearnerId = this.LessonModel.LearnerId
+    console.log(this)
   }
 
   ConfrimEdit = () => {
