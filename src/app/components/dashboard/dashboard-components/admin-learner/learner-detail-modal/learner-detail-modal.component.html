@@ -352,7 +352,7 @@
                       <span class='text line-trough'> {{sechdule.BeginTime.replace('T',' ')}} -- </span>
                       <span class='text line-trough'>{{sechdule.EndTime.replace('T',' ')}} </span>
 
-                      <span class='text' *ngIf='ele.permanent'>  ===> {{ele.permanent.DayOfWeek|weekFormat}} </span>
+                      <span class='text' *ngIf='ele.permanent'> ===> {{ele.permanent.DayOfWeek|weekFormat}} </span>
                       <span class='text' *ngIf='ele.permanent'>{{ele.permanent.BeginTime.replace('T',' ')}}</span> --
                       <span class='text' *ngIf='ele.permanent'>{{ele.permanent.EndTime.replace('T',' ')}}</span>
                     </span>
@@ -405,7 +405,7 @@
 
                   <!-- 通用 -->
                   <div class="col-lg-4  col-sm-6">
-                    <span class='label'>Payment Created At: </span>
+                    <span class='label'>Payment Date: </span>
                     <span class='text' *ngIf='i.CreatedAt'>{{i.CreatedAt.replace('T', ' ')}}</span>
                   </div>
 
@@ -447,21 +447,20 @@
                     </span>
                   </div>
 
+                  <!-- 非通用 课程名字 -->
+                  <div class="col-lg-4 col-sm-6" *ngIf='i.PaymentType == 1 '>
+                    <span class='label'>Items: </span>
+                    <span class='text' *ngIf='i.Invoice'>
+                      {{i.Invoice.CourseName}}
+                    </span>
+                  </div>
+
+
                   <div class="col-lg-4  col-sm-6">
                     <span class='label'>Payment Type: </span>
                     <span class='text' *ngIf='i.PaymentMethod'>
                       {{i.paymentTypeName}}
                     </span>
-                  </div>
-
-                  <div class="col-lg-4  col-sm-6">
-                    <span class='label'>Before Balance: </span>
-                    <span class='text' *ngIf='i.BeforeBalance'>{{i.BeforeBalance}}</span>
-                  </div>
-
-                  <div class="col-lg-4 col-sm-6">
-                    <span class='label'>After Balance: </span>
-                    <span class='text' *ngIf='i.AfterBalance'>{{i.AfterBalance}}</span>
                   </div>
 
                   <div class='col-lg-4  col-sm-6'>
@@ -487,97 +486,12 @@
         </div>
         <br>
 
-        <ngb-pagination [collectionSize]="paymentListLength" [(page)]='currentPage' [maxSize]='10' aria-label="Default pagination"
-          [pageSize]='pageSize'>
+        <ngb-pagination [collectionSize]="paymentListLength" [(page)]='currentPage' [maxSize]='10'
+          aria-label="Default pagination" [pageSize]='pageSize'>
         </ngb-pagination>
 
       </ng-template>
     </ngb-tab>
-
-
-    <ngb-tab title="Sessions">
-      <ng-template ngbTabContent>
-        <div *ngIf='learnerSessionList == null'>
-          No Sessions Record
-        </div>
-
-        <div *ngIf='learnerSessionList !== null'>
-          <div
-            *ngFor='let i of learnerSessionList | slice: (currentPage-1)* pageSize : (currentPage-1) * pageSize + pageSize'>
-            <br>
-
-            <div class='card'>
-              <div class="card-body">
-                <div class='row'>
-
-                  <div class='col-lg-5  col-sm-6'>
-                    <span class='label'>Course: </span>
-                    <span class='text' *ngIf='i.CourseName'>{{i.CourseName}}</span>
-                  </div>
-
-                  <div class='col-lg-4  col-sm-6'>
-                    <span class='label'>Time: </span>
-                    <span class='text' *ngIf='i.BeginTime && i.EndTime'>{{i.BeginTime.replace('T',' ')}} ~
-                      {{i.EndTime.replace('T', ' ')}}</span>
-                  </div>
-
-                  <div class='col-lg-3 col-sm-6'>
-                    <span class='label'>Teacher: </span>
-                    <span class='text' *ngIf='i.TeacherFirstName'>{{i.TeacherFirstName}}</span>
-                  </div>
-
-                  <div class='col-lg-5 col-sm-6'>
-                    <span class='label'>Location: </span>
-                    <span class='text' *ngIf='i.Branch && i.Room'>{{i.Branch}} {{i.Room}}</span>
-                  </div>
-
-                  <div class='col-lg-4 col-sm-6'>
-                    <span class='label'>Trial Course: </span>
-                    <span class='text' *ngIf='IsTrial'>{{i.IsTrial | IsTemporary}}</span>
-                  </div>
-
-                  <div class='col-lg-3 col-sm-6' *ngIf='i.IsCanceled == 1'>
-                    <span class='label'>Canceled: </span>
-                    <span class='text'>{{i.IsCanceled | IsTemporary}}</span>
-                  </div>
-
-                  <div class='col-lg-5 col-sm-6' *ngIf='i.IsCanceled == 1'>
-                    <span class='label'>Canceled Reason: </span>
-                    <span class='text'>{{i.CancelReson}}</span>
-                  </div>
-
-                  <div class='col-lg-3 col-sm-6'>
-                    <span class='label'>Confirm: </span>
-                    <span class='text' *ngIf='IsConfirmed'>{{i.IsConfirmed | IsTemporary}}</span>
-                  </div>
-
-                  <div *ngIf='i.IsChanged !== null' class='col-lg-12 col-sm-12'>
-                    <div class='label'>Course Change to: </div>
-                    <span class='label col-lg-3 col-sm-6'>Teacher: </span>
-                    <span class='text col-lg-3 col-sm-6'>{{i.newLessons.TeacherFirstName}}</span>
-
-                    <span class='label col-lg-3 col-sm-6'>Location: </span>
-                    <span class='text col-lg-3 col-sm-6'>{{i.newLessons.BranchAbbr}} {{i.newLessons.Room}}</span>
-
-                    <span class='label col-lg-3 col-sm-6'>Time: </span>
-                    <span class='text col-lg-3 col-sm-6'
-                      *ngIf='i.newLessons.BeginTime && i.newLessons.EndTime'>{{i.newLessons.BeginTime.replace('T', ' ')}}
-                      ~ {{i.newLessons.EndTime.replace('T', ' ')}}</span>
-                  </div>
-
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <ngb-pagination [collectionSize]="sessionListLength" [(page)]='currentPage' [maxSize]='10' aria-label="Default pagination"
-          [pageSize]='pageSize'>
-        </ngb-pagination>
-
-      </ng-template>
-    </ngb-tab>
-
 
     <ngb-tab title="invoice">
       <ng-template ngbTabContent>
@@ -600,7 +514,7 @@
                   </div>
 
                   <div class='col-lg-5 col-sm-6'>
-                    <span class='label'>Duration: </span>
+                    <span class='label'>Period: </span>
                     <span class='text' *ngIf='i.BeginDate && i.EndDate'>{{i.BeginDate.replace('T', ' ')}} ~
                       {{i.EndDate.replace('T',' ')}}</span>
                   </div>
@@ -621,9 +535,34 @@
                   </div>
 
                   <div class='col-lg-3 col-sm-6'>
-                      <span class='label'>Is Paid: </span>
-                      <span class='text' *ngIf='i.IsPaid !== null'>{{i.IsPaid|IsTemporary}}</span>
-                    </div>
+                    <span class='label'>Is Paid: </span>
+                    <span class='text' *ngIf='i.IsPaid !== null'>{{i.IsPaid|IsTemporary}}</span>
+                  </div>
+
+                  <div class='col-lg-2 col-sm-6'>
+                    <span class='label'>Paid Fee: </span>
+                    <span class='text' *ngIf='i.PaidFee'>${{i.PaidFee}}</span>
+                  </div>
+
+                  <div class='col-lg-2 col-sm-6'>
+                    <span class='label'>Owing Fee: </span>
+                    <span class='text' *ngIf='i.OwingFee'>${{i.OwingFee}}</span>
+                  </div>
+
+                  <div class='col-lg-2 col-sm-6'>
+                    <span class='label'>Total Fee: </span>
+                    <span class='text' *ngIf='i.TotalFee'>${{i.TotalFee}}</span>
+                  </div>
+
+                  <div class='col-lg-4 col-sm-6'>
+                    <span class='label'>Term: </span>
+                    <span class='text' *ngIf='i.Term'>{{i.Term.TermName}}</span>
+                  </div>
+
+                  <div class='col-lg-12 col-sm-12'>
+                    <span class='label'>Comment: </span>
+                    <span class='text' *ngIf='i.Comment'>{{i.Comment}}</span>
+                  </div>
 
 
                   <!--fees details  -->
@@ -666,29 +605,74 @@
                     </div>
                   </div>
 
-                  <div class='col-lg-2 col-sm-6'>
-                      <span class='label'>Paid Fee: </span>
-                      <span class='text' *ngIf='i.PaidFee'>${{i.PaidFee}}</span>
-                    </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
 
-                    <div class='col-lg-2 col-sm-6'>
-                      <span class='label'>Owing Fee: </span>
-                      <span class='text' *ngIf='i.OwingFee'>${{i.OwingFee}}</span>
-                    </div>
 
-                    <div class='col-lg-2 col-sm-6'>
-                      <span class='label'>Total Fee: </span>
-                      <span class='text' *ngIf='i.TotalFee'>${{i.TotalFee}}</span>
-                    </div>
+        <ngb-pagination [collectionSize]="invoiceListLength" [(page)]='currentPage' [maxSize]='10'
+          aria-label="Default pagination" [pageSize]='pageSize'>
+        </ngb-pagination>
+
+      </ng-template>
+    </ngb-tab>
+
+    <!-- Sessions -->
+    <ngb-tab title="Uncomplete session">
+      <ng-template ngbTabContent>
+        <div *ngIf='uncompleteSession == null'>
+          No Sessions Record
+        </div>
+
+        <div *ngIf='uncompleteSession !== null'>
+          <div
+            *ngFor='let i of uncompleteSession | slice: (currentPage-1)* pageSize : (currentPage-1) * pageSize + pageSize'>
+            <br>
+
+            <div class='card'>
+              <div class="card-body">
+                <div class='row'>
+
+                  <div class='col-lg-5  col-sm-6'>
+                    <span class='label'>Course: </span>
+                    <span class='text' *ngIf='i.CourseName'>{{i.CourseName}}</span>
+                  </div>
+
+                  <div class='col-lg-4  col-sm-6'>
+                    <span class='label'>Time: </span>
+                    <span class='text' *ngIf='i.BeginTime && i.EndTime'>{{i.BeginTime.replace('T',' ')}} ~
+                      {{i.EndTime.replace('T', ' ')}}</span>
+                  </div>
+
+                  <div class='col-lg-3 col-sm-6'>
+                    <span class='label'>Teacher: </span>
+                    <span class='text' *ngIf='i.TeacherFirstName'>{{i.TeacherFirstName}}</span>
+                  </div>
+
+                  <div class='col-lg-5 col-sm-6'>
+                    <span class='label'>Location: </span>
+                    <span class='text' *ngIf='i.Branch && i.Room'>{{i.Branch}} {{i.Room}}</span>
+                  </div>
 
                   <div class='col-lg-4 col-sm-6'>
-                      <span class='label'>Term: </span>
-                      <span class='text' *ngIf='i.Term'>{{i.Term.TermName}}</span>
-                    </div>
+                    <span class='label'>Trial Course: </span>
+                    <span class='text' *ngIf='i.IsTrial'>{{i.IsTrial | IsTemporary}}</span>
+                  </div>
 
-                  <div class='col-lg-12 col-sm-12'>
-                    <span class='label'>Comment: </span>
-                    <span class='text' *ngIf='i.Comment'>{{i.Comment}}</span>
+                  <div *ngIf='i.IsChanged == 1' class='col-lg-12 col-sm-12'>
+                    <div class='label'>Course Change to: </div>
+                    <span class='label col-lg-3 col-sm-6'>Teacher: </span>
+                    <span class='text col-lg-3 col-sm-6'>{{i.newLessons.TeacherFirstName}}</span>
+
+                    <span class='label col-lg-3 col-sm-6'>Location: </span>
+                    <span class='text col-lg-3 col-sm-6'>{{i.newLessons.BranchAbbr}} {{i.newLessons.Room}}</span>
+
+                    <span class='label col-lg-3 col-sm-6'>Time: </span>
+                    <span class='text col-lg-3 col-sm-6'
+                      *ngIf='i.newLessons.BeginTime && i.newLessons.EndTime'>{{i.newLessons.BeginTime.replace('T', ' ')}}
+                      ~ {{i.newLessons.EndTime.replace('T', ' ')}}</span>
                   </div>
 
                 </div>
@@ -697,13 +681,192 @@
           </div>
         </div>
 
-
-        <ngb-pagination [collectionSize]="invoiceListLength" [(page)]='currentPage' [maxSize]='10' aria-label="Default pagination"
-          [pageSize]='pageSize'>
+        <ngb-pagination [collectionSize]="uncompleteSessionLength" [(page)]='currentPage' [maxSize]='10'
+          aria-label="Default pagination" [pageSize]='pageSize'>
         </ngb-pagination>
 
       </ng-template>
     </ngb-tab>
+
+    <!-- Complete Sessions -->
+    <ngb-tab title="Complete session">
+      <ng-template ngbTabContent>
+        <div *ngIf='compeleteSession == null'>
+          No Sessions Record
+        </div>
+
+        <div *ngIf='compeleteSession !== null'>
+          <div
+            *ngFor='let i of compeleteSession | slice: (currentPage-1)* pageSize : (currentPage-1) * pageSize + pageSize'>
+            <br>
+
+            <div class='card'>
+              <div class="card-body">
+                <div class='row'>
+
+                  <div class='col-lg-5  col-sm-6'>
+                    <span class='label'>Course: </span>
+                    <span class='text' *ngIf='i.CourseName'>{{i.CourseName}}</span>
+                  </div>
+
+                  <div class='col-lg-4  col-sm-6'>
+                    <span class='label'>Time: </span>
+                    <span class='text' *ngIf='i.BeginTime && i.EndTime'>{{i.BeginTime.replace('T',' ')}} ~
+                      {{i.EndTime.replace('T', ' ')}}</span>
+                  </div>
+
+                  <div class='col-lg-3 col-sm-6'>
+                    <span class='label'>Teacher: </span>
+                    <span class='text' *ngIf='i.TeacherFirstName'>{{i.TeacherFirstName}}</span>
+                  </div>
+
+                  <div class='col-lg-5 col-sm-6'>
+                    <span class='label'>Location: </span>
+                    <span class='text' *ngIf='i.Branch && i.Room'>{{i.Branch}} {{i.Room}}</span>
+                  </div>
+
+                  <div class='col-lg-4 col-sm-6'>
+                    <span class='label'>Trial Course: </span>
+                    <span class='text' *ngIf='i.IsTrial'>{{i.IsTrial | IsTemporary}}</span>
+                  </div>
+
+                  <div *ngIf='i.IsChanged == 1' class='col-lg-12 col-sm-12'>
+                    <div class='label'>Course Change to: </div>
+                    <span class='label col-lg-3 col-sm-6'>Teacher: </span>
+                    <span class='text col-lg-3 col-sm-6'>{{i.newLessons.TeacherFirstName}}</span>
+
+                    <span class='label col-lg-3 col-sm-6'>Location: </span>
+                    <span class='text col-lg-3 col-sm-6'>{{i.newLessons.BranchAbbr}} {{i.newLessons.Room}}</span>
+
+                    <span class='label col-lg-3 col-sm-6'>Time: </span>
+                    <span class='text col-lg-3 col-sm-6'
+                      *ngIf='i.newLessons.BeginTime && i.newLessons.EndTime'>{{i.newLessons.BeginTime.replace('T', ' ')}}
+                      ~ {{i.newLessons.EndTime.replace('T', ' ')}}</span>
+                  </div>
+
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <ngb-pagination [collectionSize]="completeSessionLength" [(page)]='currentPage' [maxSize]='10'
+          aria-label="Default pagination" [pageSize]='pageSize'>
+        </ngb-pagination>
+
+      </ng-template>
+    </ngb-tab>
+
+    <!-- Cancled session -->
+    <ngb-tab title="Cancelled session">
+      <ng-template ngbTabContent>
+        <div *ngIf='cancledSession == null'>
+          No Sessions Record
+        </div>
+
+        <div *ngIf='cancledSession !== null'>
+          <div
+            *ngFor='let i of cancledSession | slice: (currentPage-1)* pageSize : (currentPage-1) * pageSize + pageSize'>
+            <br>
+
+            <div class='card'>
+              <div class="card-body">
+                <div class='row'>
+
+                  <div class='col-lg-5  col-sm-6'>
+                    <span class='label'>Course: </span>
+                    <span class='text' *ngIf='i.CourseName'>{{i.CourseName}}</span>
+                  </div>
+
+                  <div class='col-lg-4  col-sm-6'>
+                    <span class='label'>Time: </span>
+                    <span class='text' *ngIf='i.BeginTime && i.EndTime'>{{i.BeginTime.replace('T',' ')}} ~
+                      {{i.EndTime.replace('T', ' ')}}</span>
+                  </div>
+
+                  <div class='col-lg-3 col-sm-6'>
+                    <span class='label'>Teacher: </span>
+                    <span class='text' *ngIf='i.TeacherFirstName'>{{i.TeacherFirstName}}</span>
+                  </div>
+
+                  <div class='col-lg-5 col-sm-6'>
+                    <span class='label'>Location: </span>
+                    <span class='text' *ngIf='i.Branch && i.Room'>{{i.Branch}} {{i.Room}}</span>
+                  </div>
+
+                  <div class='col-lg-4 col-sm-6'>
+                    <span class='label'>Trial Course: </span>
+                    <span class='text' *ngIf='i.IsTrial'>{{i.IsTrial | IsTemporary}}</span>
+                  </div>
+
+                  <div *ngIf='i.IsChanged == 1' class='col-lg-12 col-sm-12'>
+                    <div class='label'>Course Change to: </div>
+                    <span class='label col-lg-3 col-sm-6'>Teacher: {{i.newLessons.TeacherFirstName}}</span>
+
+                    <span class='label col-lg-3 col-sm-6'>Location: {{i.newLessons.BranchAbbr}}
+                      {{i.newLessons.Room}}</span>
+
+                    <span class='label col-lg-3 col-sm-6'>Time:
+                      <span
+                        *ngIf='i.newLessons.BeginTime && i.newLessons.EndTime'>{{i.newLessons.BeginTime.replace('T', ' ')}}
+                        ~ {{i.newLessons.EndTime.replace('T', ' ')}}
+                      </span>
+                    </span>
+                  </div>
+
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <ngb-pagination [collectionSize]="cancledSessionLength" [(page)]='currentPage' [maxSize]='10'
+          aria-label="Default pagination" [pageSize]='pageSize'>
+        </ngb-pagination>
+
+      </ng-template>
+    </ngb-tab>
+
+    <!-- Make up session -->
+    <ngb-tab title="Makeup session">
+      <ng-template ngbTabContent>
+        <div *ngIf='makeupSession == null'>
+          No Sessions Record
+        </div>
+
+        <div *ngIf='makeupSession !== null'>
+          <div
+            *ngFor='let i of makeupSession | slice: (currentPage-1)* pageSize : (currentPage-1) * pageSize + pageSize'>
+            <br>
+
+            <div class='card'>
+              <div class="card-body">
+                <div class='row'>
+
+                  <div *ngIf='i.MissedLesson'>
+                    <div class='col-12'>
+                      <span class='header'>Missed Lesson: </span>
+                    </div>
+
+                    <div class='col-lg-3 col-sm-6'>
+                      <span class='label'></span>
+                    </div>
+                  </div>
+
+
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <ngb-pagination [collectionSize]="makeupSessionLength" [(page)]='currentPage' [maxSize]='10'
+          aria-label="Default pagination" [pageSize]='pageSize'>
+        </ngb-pagination>
+
+      </ng-template>
+    </ngb-tab>
+
   </ngb-tabset>
 
 
