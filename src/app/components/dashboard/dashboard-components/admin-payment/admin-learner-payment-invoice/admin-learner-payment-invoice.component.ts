@@ -147,7 +147,7 @@ export class AdminLearnerPaymentInvoiceComponent implements OnInit, OnDestroy {
                   text: 'Sorry! '+ this.errorMsg.ErrorCode,
                   type: 'error',
                 });
-        
+
               }
             );
           },
@@ -294,58 +294,41 @@ export class AdminLearnerPaymentInvoiceComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit() {
+      console.log(this.whichLearner)
       if (!this.whichLearner){
       // put to service
       this.activatedRouter.paramMap.subscribe((obs:ParamMap) => {
       //  this.learnerId = this.activatedRouter.snapshot.paramMap.get("id")
         this.learnerId = parseInt(obs.get('id'));
-        this.errorAlert = false;
-        this.errorMsg ='';
-        this.errMsgM = false;
-        this.errMsgO = false;
-        this.paymentsListService
-        .getInvoice(this.learnerId)
-        .subscribe(res => {
-          this.noInvoice = false
-          // return console.log(dataInvoice)
-          this.dataInvoice = res['Data'];
-          console.log(this.dataInvoice)
-          this.incaseDateIsNull();
-          this.reSearchPrepare();
-        },error=>{
-          console.log(error);
-          this.noInvoice = true;
-          this.errorMsg =error.error.ErrorMessage;
-          this.errorAlert = true;
-          //alert(this.errorMsg);
-        });
+        this.getInvoice(this.learnerId);
       });} else {
         this.learnerId = this.whichLearner;
+        this.getInvoice(this.learnerId);
+
+      }
+      this.nameSubejct();
+    }
+  getInvoice(id){
         console.log(this.whichLearner)
         this.errorAlert = false;
         this.errorMsg ='';
         this.errMsgM = false;
         this.errMsgO = false;
         this.paymentsListService
-        .getInvoice(this.whichLearner)
+        .getInvoice(id)
         .subscribe(res => {
           this.noInvoice = false
           // return console.log(dataInvoice)
           this.dataInvoice = res['Data'];
-          console.log(this.dataInvoice)
           this.incaseDateIsNull();
           this.reSearchPrepare();
         },error=>{
-          console.log(error);
           this.noInvoice = true;
           this.errorMsg =error.error.ErrorMessage;
           this.errorAlert = true;
           //alert(this.errorMsg);
         });
-
-      }
-      this.nameSubejct();
-    }
+  }
   ngOnDestroy(){
     this.fistNameSubscription.unsubscribe();
   }
