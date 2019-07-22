@@ -54,8 +54,16 @@ export class LearnerDetailModalComponent implements OnInit {
 
   //session
   public learnerSessionList = []
-  public sessionListLength
+  public uncompleteSession = []
+  public uncompleteSessionLength
+  public compeleteSession = []
+  public completeSessionLength
+  public cancledSession = []
+  public cancledSessionLength
 
+  // makeUp lesson
+  public makeupSession=[]
+  makeupSessionLength
   constructor(public activeModal: NgbActiveModal, private LearnerListService: LearnersService, private modalService: NgbModal, ) {
 
   }
@@ -80,8 +88,8 @@ export class LearnerDetailModalComponent implements OnInit {
     let learnerInvoice = this.LearnerListService.getLearnerInvoice(this.whichLearner.LearnerId)
     let learnerPayment = this.LearnerListService.getLearnerPayment(this.whichLearner.LearnerId)
     let learnerSession = this.LearnerListService.getLearnerLesson(this.whichLearner.LearnerId)
-
-    forkJoin([learnerListData, lookUpData2, lookUpData3, lookUpData4, lookUpData5, lookUpData7, learnerInvoice, learnerPayment, learnerSession, lookUpData14]).subscribe(
+    let makeUpSession = this.LearnerListService.getMakeUpLesson(this.whichLearner.LearnerId)
+    forkJoin([learnerListData, lookUpData2, lookUpData3, lookUpData4, lookUpData5, lookUpData7, learnerInvoice, learnerPayment, learnerSession, lookUpData14,makeUpSession]).subscribe(
       (res) => {
 
         console.log(res)
@@ -104,17 +112,37 @@ export class LearnerDetailModalComponent implements OnInit {
         }
 
         this.learnerSessionList = (res[8]['Data'])
-        if (this.learnerSessionList !== null) {
-          this.sessionListLength = this.learnerSessionList.length
-        }
+        this.sortLearnerSession(this.learnerSessionList)
+
         this.paymentType(res[9]['Data'], this.learnerPaymentList)
 
+        this.makeupSession=(res[10]['Data'])
+        if(this.makeupSession !== null){
+          this.makeupSessionLength=this.makeupSession.length
+        }
       },
 
       (err) => {
-        Swal.fire({  type: 'error',  title: 'Oops...', text: 'Sorry, something went wrong'+err.error.ErrorMessage });
+        Swal.fire({ type: 'error', title: 'Oops...', text: 'Sorry, something went wrong' + err.error.ErrorMessage });
       }
     )
+  }
+
+  sortLearnerSession(learnerSessionList) {
+    for (let i of learnerSessionList)
+      if (i.IsConfirm == 0 && i.IsCanceled == 0) {
+        this.uncompleteSession.push(i)
+      } else if(i.IsConfirm == 1 && i.IsCanceled == 0){
+        this.compeleteSession.push(i)
+      } else if (i.IsCanceled == 1){
+        this.cancledSession.push(i)
+      }
+    this.uncompleteSessionLength = this.uncompleteSession.length
+    this.completeSessionLength = this.cancledSession.length
+    this.cancledSessionLength = this.cancledSession.length
+    console.log('111111',this.uncompleteSession)
+    console.log('222222',this.compeleteSession)
+    console.log('333333',this.cancledSession)
   }
 
   getLevelType(data) {
