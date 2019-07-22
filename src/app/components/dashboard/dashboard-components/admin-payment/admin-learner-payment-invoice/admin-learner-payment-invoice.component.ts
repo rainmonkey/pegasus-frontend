@@ -117,46 +117,6 @@ export class AdminLearnerPaymentInvoiceComponent implements OnInit, OnDestroy {
     };
   }
 
-<<<<<<< HEAD
-    // confirm payment open method
-    openP(contentP, item) {
-      this.addFund = this.invoiceForm.value.owing;
-      this.modalService
-        .open(contentP, { ariaLabelledBy: 'modal-basic-title' })
-        .result.then(
-          result => {
-            this.closeResult = `Closed with: ${result}`;
-            this.postPaymentMethod(item);
-            console.log('!!!!!',this.postPayment)
-            this.paymentsListService.addFund(this.postPayment).subscribe(
-              response => {
-                console.log('Success!', response);
-                this.successAlert = true;
-                Swal.fire({
-                  title: 'Your Payment Has Been Made!',
-                  type: 'success',
-                  showConfirmButton: true,
-                });
-                this.router.navigate(['../success'], {relativeTo: this.activatedRouter});
-              },
-              (error) => {
-                this.errorMsg = JSON.parse(error.error);
-                this.errorAlert = true;
-                //alert(this.errorMsg.ErrorCode);
-                Swal.fire({
-                  title: 'Error!',
-                  text: 'Sorry! '+ this.errorMsg.ErrorCode,
-                  type: 'error',
-                });
-
-              }
-            );
-          },
-          reason => {
-            this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
-          }
-        );
-=======
   // confirm payment open method
   openP(contentP, item) {
     this.addFund = this.invoiceForm.value.owing;
@@ -204,7 +164,6 @@ export class AdminLearnerPaymentInvoiceComponent implements OnInit, OnDestroy {
   validMethodI(contentP, item, j) {
     if (this.invoiceForm.controls.paymentMethodI.invalid === true) {
       this.errMsgM = true;
->>>>>>> 83dd440a6bd4d54c8632f8b29779f5a265018449
     }
     if (this.invoiceForm.value.owing <= 0 || (this.invoiceForm.value.owing > this.dataInvoice[j].OwingFee)) {
       this.errMsgO = true;
@@ -335,36 +294,12 @@ export class AdminLearnerPaymentInvoiceComponent implements OnInit, OnDestroy {
     });
   }
 
-<<<<<<< HEAD
-    ngOnInit() {
-      console.log(this.whichLearner)
-      if (!this.whichLearner){
-=======
   ngOnInit() {
     if (!this.whichLearner) {
->>>>>>> 83dd440a6bd4d54c8632f8b29779f5a265018449
       // put to service
       this.activatedRouter.paramMap.subscribe((obs: ParamMap) => {
         //  this.learnerId = this.activatedRouter.snapshot.paramMap.get("id")
         this.learnerId = parseInt(obs.get('id'));
-<<<<<<< HEAD
-        this.getInvoice(this.learnerId);
-      });} else {
-        this.learnerId = this.whichLearner;
-        this.getInvoice(this.learnerId);
-
-      }
-      this.nameSubejct();
-    }
-  getInvoice(id){
-        console.log(this.whichLearner)
-        this.errorAlert = false;
-        this.errorMsg ='';
-        this.errMsgM = false;
-        this.errMsgO = false;
-        this.paymentsListService
-        .getInvoice(id)
-=======
         this.errorAlert = false;
         this.errorMsg = '';
         this.errMsgM = false;
@@ -408,16 +343,10 @@ export class AdminLearnerPaymentInvoiceComponent implements OnInit, OnDestroy {
       this.errMsgO = false;
       this.paymentsListService
         .getInvoice(this.whichLearner)
->>>>>>> 83dd440a6bd4d54c8632f8b29779f5a265018449
         .subscribe(res => {
           this.noInvoice = false
           // return console.log(dataInvoice)
           this.dataInvoice = res['Data'];
-<<<<<<< HEAD
-          this.incaseDateIsNull();
-          this.reSearchPrepare();
-        },error=>{
-=======
           if (this.dataInvoice['IsFound'] = false) {
             this.noInvoice = true;
             Swal.fire({
@@ -431,7 +360,6 @@ export class AdminLearnerPaymentInvoiceComponent implements OnInit, OnDestroy {
           this.reSearchPrepare();
         }, error => {
           console.log(error);
->>>>>>> 83dd440a6bd4d54c8632f8b29779f5a265018449
           this.noInvoice = true;
           // this.errorMsg =error.error.ErrorMessage;
           // this.errorAlert = true;
@@ -442,16 +370,11 @@ export class AdminLearnerPaymentInvoiceComponent implements OnInit, OnDestroy {
             type: 'error',
           });
         });
-<<<<<<< HEAD
-  }
-  ngOnDestroy(){
-=======
 
     }
     this.nameSubejct();
   }
   ngOnDestroy() {
->>>>>>> 83dd440a6bd4d54c8632f8b29779f5a265018449
     this.fistNameSubscription.unsubscribe();
   }
 }

@@ -74,7 +74,7 @@ export class LearnerDeleteCourseModalComponent implements OnInit {
       fun = this.endCourse.endGroupCourse(idIns, this.groupArray.controls[i].value);
     } else{
       let idIns = ele.CourseInstanceId
-      fun = this.endCourse.end121Course(idIns, this.one2OneEndDate);
+      fun = this.endCourse.end121Course(idIns, this.ono2OneArray.controls[i].value);
     }
     fun.subscribe(
       res => {
