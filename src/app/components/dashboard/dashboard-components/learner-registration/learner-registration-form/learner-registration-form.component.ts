@@ -522,7 +522,6 @@ export class LearnerRegistrationFormComponent implements OnInit, DoCheck, AfterV
   }
   confirmGroupCourse() {
     let tempGroupModal = {};
-    console.log('wo yao jia ji tui', this.groupCourseInstance)
     this.groupCourseForSubmit = [];
     this.learnerGroupCourse = []
     for (let groupCourse of this.groupCourseInstance) {
@@ -548,7 +547,7 @@ export class LearnerRegistrationFormComponent implements OnInit, DoCheck, AfterV
     console.log(this.learnerlevelType)
   }
   emptySelectionCat(i) {
-
+    console.log('!@#$%^&*()',this.customCourse.controls[i])
     this.customCourse.controls[i].patchValue({
       course: '',
       teacherName: '',
@@ -849,15 +848,11 @@ selectLocation(id, i) {
 
   }
   getTimePickerInfo(time,i){
-    console.log(time)
     let timeArray = time.split(':');
-
     let timeTrans: NgbTimeStruct = { hour: Number(timeArray[0]), minute: Number(timeArray[1]), second: 0 };
-    console.log(timeTrans)
     this.customCourse.controls[i].patchValue({
-      beginTime: timeTrans
+      schedule: {beginTime:timeTrans, dayOfWeek:'6',durationType:''}
     })
-    console.log(this.customCourse.controls[i])
   }
   // // ng-activeModal for confirm submit
   openConfirm() {

@@ -112,6 +112,9 @@ export class SessionDetailEditModalComponent implements OnInit {
     this.sessionsService.SessionEdit(sessionEdit).subscribe(res => {
       this.isEditSuccess = true;
       this.isloading = false;
+      setTimeout(() => {
+          this.activeModal.dismiss('Cross click');
+        }, 1000);
     },
       err => {
         this.isEditFail = true;

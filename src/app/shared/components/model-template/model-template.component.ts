@@ -34,7 +34,6 @@ constructor(public activeModal: NgbActiveModal,) {}
   ShowTimeTableDetail(){
     this.titleArray = this.learnerCourseTimeTable.event.title.split(' ');
     this.modelTitle = 'Learner\'s Course Detail';
-    console.log(this.learnerCourseTimeTable);
   }
 
   ngOnInit() {
