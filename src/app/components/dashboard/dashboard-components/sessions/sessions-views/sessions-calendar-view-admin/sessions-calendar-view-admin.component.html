@@ -62,7 +62,9 @@
 </ng-template>
 <ng-template let-modal #methodModal>
   <div class="modal-header m-2">
-    <h4>Lesson Info</h4>
+    <h4>lesson Info</h4>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    <h5>{{eventInfo.event.extendedProps.info.BeginTime|date: "HH:mm"}} - {{eventInfo.event.end|date: "HH:mm"}}</h5>
      <button
       type="button"
       class="close"
@@ -74,6 +76,12 @@
   </div>
   <div class="modal-body m-2">
     <div *ngIf="learnerProfileLoading" class="loaderLarge"></div>
+    <h5 class="text-center">Begin Time</h5>
+    <div *ngIf="eventInfo.event.extendedProps.IsChanged==1">
+      <del><p class="text-center">{{eventInfo.event.extendedProps.info.BeginTime}}</p></del>
+      <p class="text-center">{{eventInfo.event.extendedProps.newLesson.BeginTime}}</p>
+    </div>
+    <p *ngIf="eventInfo.event.extendedProps.IsChanged !=1" class="text-center">{{eventInfo.event.extendedProps.info.BeginTime}}</p>
     <div *ngIf="eventInfo.event.extendedProps.learner">
       <div *ngIf="eventInfo.event.extendedProps.IsCanceled==1 || eventInfo.event.extendedProps.IsConfirm==1">
         <h5 class="text-center">Reason (Cancel or Complete)</h5>
@@ -100,12 +108,6 @@
       <h5 class="text-center">Course Name</h5>
       <p class="text-center">{{eventInfo.event.extendedProps.info.CourseName}}</p>
 
-      <h5 class="text-center">Begin Time</h5>
-      <div *ngIf="eventInfo.event.extendedProps.IsChanged==1">
-        <del><p class="text-center">{{eventInfo.event.start}}</p></del>
-        <p class="text-center">{{eventInfo.event.extendedProps.newLesson.BeginTime}}</p>
-      </div>
-      <p *ngIf="eventInfo.event.extendedProps.IsChanged !=1" class="text-center">{{eventInfo.event.start}}</p>
     </div>
 
     <div *ngIf="eventInfo.event.extendedProps.learners">
@@ -116,8 +118,8 @@
       <h5 class="text-center">Teacher Name</h5>
       <p class="text-center">{{eventInfo.event.extendedProps.info.TeacherFirstName}} {{eventInfo.event.extendedProps.info.TeacherLastName}}</p>
       <h5 class="text-center">Students Name</h5>
-      <div class="row" *ngFor="let learner of eventInfo.event.extendedProps.learners">
-        <div class="col-4">
+      <div class="row">
+        <div class="col-4" *ngFor="let learner of eventInfo.event.extendedProps.learners">
           <p (click)="openLearnerItem(learner.LearnerId)">{{learner.FirstName}}</p>
         </div>
       </div>
@@ -125,8 +127,6 @@
       <p class="text-center">{{eventInfo.event.extendedProps.info.RoomName}} ({{eventInfo.event.extendedProps.info.OrgName}})</p>
       <h5 class="text-center">Course Name</h5>
       <p class="text-center">{{eventInfo.event.extendedProps.info.CourseName}}</p>
-      <h5 class="text-center">Begin Time</h5>
-      <p class="text-center">{{eventInfo.event.start}}</p>
     </div>
 
   </div>
@@ -137,7 +137,7 @@
           <button (click)="openEdit(eventInfo)" (click)="modal.dismiss('Cross click')" class="btn btn-primary btn-block">Edit </button>
         </div>
         <div class="col-3">
-          <button  class="btn btn-success btn-block" (click)="openConfirm(eventInfo)" (click)="modal.dismiss('Cross click')"  >Confirm</button>
+          <button class="btn btn-success btn-block" style="padding-left: 6px" (click)="openConfirm(eventInfo)" (click)="modal.dismiss('Cross click')"  >Complete</button>
         </div>
         <div class="col-3">
           <button (click)="openDelete(eventInfo)" (click)="modal.dismiss('Cross click')"  class="btn btn-danger btn-block" >Cancel</button>

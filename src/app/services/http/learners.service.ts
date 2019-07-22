@@ -77,4 +77,22 @@ export class LearnersService {
   getTeachers() {
     return this.http.get(this.baseUrl + 'teacher');
   }
+
+  getLearnerPayment(learnerId ){
+    return this.http.get(this.baseUrl+'Payment/'+'PaymentByLearner/'+learnerId )
+  }
+
+  getLearnerInvoice(learnerId){
+    return this.http.get(this.baseUrl+'Invoice/'+ learnerId)
+  }
+
+  getLearnerLesson(learnerId){
+    return this.http.get(this.baseUrl+'Lesson/'+'GetLessonsForLearner/'+learnerId)
+  }
+
+  getMakeUpLesson(learnerId){
+    return this.http.get(this.baseUrl+'Session/'+'GetMakeupSessions/'+learnerId)
+  }
+
+
 }

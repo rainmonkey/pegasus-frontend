@@ -4,7 +4,7 @@ import { NgbootstraptableService } from 'src/app/services/others/ngbootstraptabl
 import { TransactionService } from '../../../../../services/http/transaction.service';
 import { AdminInvoiceEditModalComponent } from '../admin-invoice-edit-modal/admin-invoice-edit-modal.component';
 import { CoursesService } from '../../../../../services/http/courses.service';
-import { Subject } from "rxjs"
+import { DownloadPDFService, IInvoiceLearnerName, IInvoice } from "../../../../../services/others/download-pdf.service"
 import Swal from 'sweetalert2';
 
 interface Learner {
@@ -50,6 +50,7 @@ export class AdminInvoiceListComponent implements OnInit {
     private ngTable: NgbootstraptableService,
     private transactionService: TransactionService,
     private coursesService: CoursesService,
+    private downloadPDFService: DownloadPDFService
   ) { }
 
   ngOnInit() {
@@ -67,11 +68,13 @@ export class AdminInvoiceListComponent implements OnInit {
   open(item) {
     const modalRef = this.modalService.open(AdminInvoiceEditModalComponent,
       {
-        size: 'lg', backdrop: "static", keyboard: false
+        size: 'lg', backdrop: "static", keyboard: false,
       });
     //pass parameters to edit modals
+    modalRef.result.then(result => {
+      this.getData()
+    }, reason => { })
     modalRef.componentInstance.item = item;
-    console.log(modalRef)
   }
 
   // get data from server side
@@ -79,7 +82,6 @@ export class AdminInvoiceListComponent implements OnInit {
     this.isLoad = true;
     this.transactionService.getLearnerInvo(this.userId, this.termId).subscribe(
       (res) => {
-        console.log(res, this.termId)
         this.learnerList = res.Data;
         this.learnerListLength = res.Data.length; //length prop is under Data prop
         this.temLearnerList = res.Data;
@@ -102,7 +104,7 @@ export class AdminInvoiceListComponent implements OnInit {
   }
 
   onChange(value) {
-    this.termId = value;
+    this.termId = +value;
   }
 
   onSubmit() {
@@ -114,20 +116,18 @@ export class AdminInvoiceListComponent implements OnInit {
     this.coursesService.getoioi().subscribe(
       (res) => {
         this.terms = res.Data;
-
-        for (let e of this.terms){
+        for (let e of this.terms) {
           this.termId = e['TermId'];
-          if ((today  >= new Date(e['BeginDate'])) && (today  <= new Date(e['EndDate'])) )
+          if ((today >= new Date(e['BeginDate'])) && (today <= new Date(e['EndDate'])))
             break;
         }
-        console.log(this.terms)
+        this.getData()
       }, (error) => {
         Swal.fire({
           type: 'error',
           title: 'Oops...',
           text: error.error.ErrorMessage,
         });
-
       }
     )
   }
@@ -176,5 +176,14 @@ export class AdminInvoiceListComponent implements OnInit {
         this.learnerListLength = this.temLearnerListLength
       }
     }
+  }
+
+  downloadPDFReady(index, page) {
+    let learner = this.myArray[(page - 1) * this.pageSize + index]
+    let learnerName = {} as IInvoiceLearnerName
+    learnerName.firstName = learner.FirstName
+    learnerName.lastName = learner.LastName
+    let invoice: IInvoice = learner.Invoice;
+    this.downloadPDFService.downloadPDF(learnerName, invoice)
   }
 }

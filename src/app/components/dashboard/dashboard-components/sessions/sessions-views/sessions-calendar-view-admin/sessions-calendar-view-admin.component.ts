@@ -16,6 +16,7 @@ import {SessionCompletedModalComponent} from '../../session-modals/session-compl
 import {SessionRescheduleModalComponent} from '../../session-modals/session-reschedule-modal/session-reschedule-modal.component';
 import {AdminLearnerProfileComponent} from '../../../admin-learner/admin-learner-profile/admin-learner-profile.component';
 import {LearnersService} from '../../../../../../services/http/learners.service';
+
 @Component({
   selector: 'app-sessions-calendar-view-admin',
   encapsulation: ViewEncapsulation.None,
@@ -40,42 +41,41 @@ export class SessionsCalendarViewAdminComponent implements OnInit {
   IsConfirmEditSuccess = false;
   learnerProfileLoading = false;
   @ViewChild(CalendarComponent) fullcalendar: CalendarComponent;
-
+  t = null;
   constructor(
     protected sessionService: SessionsService,
     private datePipe: DatePipe, private modalService: NgbModal,
     private fb: FormBuilder,
-    private learnersService: LearnersService
+    private learnersService: LearnersService,
     ) {}
   ngOnInit(): void {
     this.searchForm = this.fb.group({
       dateOfLesson: ['']
     })
-    this.isloading = true;
     this.sessionService.getReceptionistRoom().subscribe(data => {
       this.resourceData = data.Data;
       const date = this.datePipe.transform(new Date(), 'yyyy-MM-dd');
       this.sessionService.getReceptionistLesson(date).subscribe(event => {
         this.eventsModel = this.generateEventData(event.Data);
+        this.teacherAvoidDuplicate();
       });
       this.isloading = false;
       this.options = {
         themeSystem: 'jquery-ui',
         editable: true,
-        resourceLabelText: 'Rooms',
         customButtons: {
           DayPickerButton: {
             text: 'Search',
             click: () => {
               this.modalService.open(this.content);
             }
-          }
+          },
         },
         ////////
         eventClick: (info) => {
           this.eventInfo = info;
           const modalRef = this.modalService.open(this.methodModal);
-          console.log(this.eventInfo)
+          const Date = this.datePipe.transform(this.fullcalendar.calendar.getDate(), 'yyyy-MM-dd');
         },
         ////////
         eventDrop: (info) => { // when event drag , need to send put request to change the time of this event
@@ -115,20 +115,35 @@ export class SessionsCalendarViewAdminComponent implements OnInit {
         header: {
           left: 'today prev,next DayPickerButton',
           center: 'title',
-          right: 'resourceTimeGridDay'
+          right: 'testButton'
         },
         plugins: [timeslot, interactionPlugin]
       };
     });
   }
+
+
   clickButton = (model) => {
-    if (model.buttonType === 'next' || model.buttonType === 'today' || model.buttonType === 'prev') {
-      const datefromcalendar = model.data;
-      const date = this.datePipe.transform(datefromcalendar, 'yyyy-MM-dd')
-      this.getEventByDate(date);
+    if (this.t) {
+      clearTimeout(this.t);
     }
+    if (model.buttonType === 'next' || model.buttonType === 'today' || model.buttonType === 'prev' || model.buttonType === 'testButton') {
+      const datefromcalendar = model.data;
+      const date = this.datePipe.transform(datefromcalendar, 'yyyy-MM-dd');
+      this.t = setTimeout(() => this.getEventByDate(date), 500);
+    }
+
   }
   generateEventData = (data) => {
+    const resourceCol = document.querySelectorAll('.fc-resource-cell')
+    let teachersNewArray = []
+    resourceCol.forEach(s => {
+      const resourceId = Number(s.getAttribute('data-resource-id'));
+      const events = data.filter(s => s.resourceId == resourceId);
+      const teachersArray = []
+      events.map(info => teachersArray.push(info.teacher));
+      teachersNewArray = Array.from(new Set(teachersArray));
+    });
 
     data.forEach(s => {
       if (s.isReadyToOwn == 1) {
@@ -144,10 +159,19 @@ export class SessionsCalendarViewAdminComponent implements OnInit {
         s.color = 'green';
         s.editable = false;
       }
+      if (teachersNewArray.length == 0) {
+        const Type = '(' + s.title + ')';
+        if (s.IsGroup === false) {
+          s.title += 'Learner: ' + s.learner[0].FirstName + '\n';
+        }
+        s.title =  Type
+        return data;
+      }
+
 
       const type = '(' + s.title + ')';
       s.title = '';
-      s.title += 'Tutor: ' + s.teacher + ' ' + type;
+      s.title += s.teacher + ' ' + type;
       if (s.IsGroup === false) {
         s.title += '\nLearner: ' + s.learner[0].FirstName;
       }
@@ -155,14 +179,40 @@ export class SessionsCalendarViewAdminComponent implements OnInit {
     return data;
   }
   getEventByDate = (date) => {
+    const teacherRoom = document.querySelectorAll('#teacherRoom');
+    teacherRoom.forEach(s => {
+      s.remove();
+    })
     this.isloading = true;
     this.fullcalendar.calendar.removeAllEvents();
     this.sessionService.getReceptionistLesson(date).subscribe(event => {
       this.eventData = this.generateEventData(event.Data);
       this.eventsModel = this.eventData;
       this.isloading = false;
+      this.teacherAvoidDuplicate();
     });
   }
+
+  teacherAvoidDuplicate = () => {
+    // document.getElementById('teacherRoom').remove()
+    const resourceCol = document.querySelectorAll('.fc-resource-cell')
+    resourceCol.forEach(s => {
+      const resourceId = Number(s.getAttribute('data-resource-id'));
+      const events = this.eventsModel.filter(s => s.resourceId == resourceId);
+      const teachersArray = []
+      events.map(info => teachersArray.push(info.teacher));
+      const teachersNewArray = Array.from(new Set(teachersArray))
+      teachersNewArray.map(q => {
+        const div = document.createElement('div');
+        div.setAttribute('id', 'teacherRoom');
+        const text = document.createElement('span')
+        text.innerText = q;
+        div.appendChild(text)
+        s.appendChild(div);
+      });
+    });
+  }
+
   search = () => {
     if (this.searchForm.get('dateOfLesson').value === '' || this.searchForm.get('dateOfLesson').value === null) {
       Swal.fire({

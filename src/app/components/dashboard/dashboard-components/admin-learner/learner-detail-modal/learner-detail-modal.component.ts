@@ -4,6 +4,7 @@ import { LearnersService } from 'src/app/services/http/learners.service';
 import { environment } from 'src/environments/environment.prod';
 import { AmendmentHistoryModalComponent } from '../amendment-History-modal/amendment-History-modal.component';
 import Swal from 'sweetalert2';
+import { forkJoin } from 'rxjs';
 @Component({
   selector: 'app-learner-detail-modal',
   templateUrl: './learner-detail-modal.component.html',
@@ -13,6 +14,7 @@ export class LearnerDetailModalComponent implements OnInit {
   @Input() command;
   @Input() whichLearner;
   // PropNameArray:Array<any>
+  public index = 0;
   public learnerPurpose: Array<any>;
   public howKnown: Array<any>;
   public Purpose: Array<any>;
@@ -21,7 +23,8 @@ export class LearnerDetailModalComponent implements OnInit {
   otherValueList = [];
   howKnowList = [];
   learnerLevelList = []
-  levelTypeList=[]
+  levelTypeList = []
+  itemPayment = 'Payment For Item: '
   othersmsg = '';
   agreeFormMsg = '';
   howKnow: any
@@ -30,97 +33,125 @@ export class LearnerDetailModalComponent implements OnInit {
   otherFileUrl = ''
   agreeFileUrl = ''
   learnerList1: any
+  errorMessage
+
+
   //amendment列表
   amendmentList = []
 
+  //pagination
+  public currentPage: number = 1;
+  public pageSize: number = 10;
 
-  constructor(public activeModal: NgbActiveModal, private LearnerListService: LearnersService,   private modalService: NgbModal,) {
+  //payment
+  public learnerPaymentList = []
+  public paymentListLength
+
+
+  //invoice pagination
+  public learnerInvoiceList = []
+  public invoiceListLength
+
+  //session
+  public learnerSessionList = []
+  public uncompleteSession = []
+  public uncompleteSessionLength
+  public compeleteSession = []
+  public completeSessionLength
+  public cancledSession = []
+  public cancledSessionLength
+
+  // makeUp lesson
+  public makeupSession=[]
+  makeupSessionLength
+  constructor(public activeModal: NgbActiveModal, private LearnerListService: LearnersService, private modalService: NgbModal, ) {
 
   }
 
   ngOnInit() {
-
-    this.lookUpData1()
-    this.lookUpData2()
-    this.lookUpData4()
-    this.lookUpData5()
+    this.getData()
     this.getOthersUrl()
     this.getFormUrl()
-    console.log(this.whichLearner)
-    this.getData()
-    // this.getAmendentLength()
     this.getAmendmentList()
+
   }
 
+
   getData() {
-    this.LearnerListService.getLearnerList().subscribe(
+    let learnerListData = this.LearnerListService.getLearnerList();
+    let lookUpData2 = this.LearnerListService.getLookups(2);
+    let lookUpData3 = this.LearnerListService.getLookups(3);
+    let lookUpData4 = this.LearnerListService.getLookups(4);
+    let lookUpData5 = this.LearnerListService.getLookups(5);
+    let lookUpData7 = this.LearnerListService.getLookups(7);
+    let lookUpData14 = this.LearnerListService.getLookups(14);
+    let learnerInvoice = this.LearnerListService.getLearnerInvoice(this.whichLearner.LearnerId)
+    let learnerPayment = this.LearnerListService.getLearnerPayment(this.whichLearner.LearnerId)
+    let learnerSession = this.LearnerListService.getLearnerLesson(this.whichLearner.LearnerId)
+    let makeUpSession = this.LearnerListService.getMakeUpLesson(this.whichLearner.LearnerId)
+    forkJoin([learnerListData, lookUpData2, lookUpData3, lookUpData4, lookUpData5, lookUpData7, learnerInvoice, learnerPayment, learnerSession, lookUpData14,makeUpSession]).subscribe(
       (res) => {
-        // console.log(res)
-        //@ts-ignore
-        this.learnerList1 = res.Data;
+
+        console.log(res)
+        this.learnerList1 = res[0]['Data'];
+        this.getPurposeValue(res[1]['Data'])
+        this.getHowKnowValue(res[2]['Data'])
+        this.getLearnerValue(res[3]['Data'])
+        this.getLevelType(res[4]['Data'])
+
+        this.learnerPaymentList = (res[7]['Data'])
+        if (this.learnerPaymentList !== null) {
+          this.paymentListLength = this.learnerPaymentList.length
+        }
+        this.paymentMethod(res[5]['Data'], this.learnerPaymentList)
+
+
+        this.learnerInvoiceList = (res[6]['Data'])
+        if (this.learnerInvoiceList !== null) {
+          this.invoiceListLength = this.learnerInvoiceList.length
+        }
+
+        this.learnerSessionList = (res[8]['Data'])
+        this.sortLearnerSession(this.learnerSessionList)
+
+        this.paymentType(res[9]['Data'], this.learnerPaymentList)
+
+        this.makeupSession=(res[10]['Data'])
+        if(this.makeupSession !== null){
+          this.makeupSessionLength=this.makeupSession.length
+        }
       },
+
       (err) => {
-       Swal.fire({  type: 'error',  title: 'Oops...', text: "Something wrong in server:"+err.error.ErrorMessage });
+        Swal.fire({ type: 'error', title: 'Oops...', text: 'Sorry, something went wrong' + err.error.ErrorMessage });
       }
     )
   }
 
-
-
-  ////!!!!!!!!!!!!原本
-  // lookUpData1(){
-  //   this.LearnerListService.getLookups(2).subscribe(
-  //     (res)=>{console.log(res), this.lookUpData2(res['Data'])},
-  //     (err)=>{console.warn(err)}
-  //   )
-  // }
-  // lookUpData2(data1){
-  //   this.LearnerListService.getLookups(3).subscribe(
-  //     (res)=>{console.log(res),
-
-  //       this.getPurposeValue(data1.concat(res['Data'])
-  //       )},
-  //     (err)=>{console.warn(err)}
-  //   )
-  // }
-
-  lookUpData1() {
-    this.LearnerListService.getLookups(2).subscribe(
-      (res) => { console.log(res), this.getPurposeValue(res.Data) },
-      (err) => { console.warn(err) }
-    )
+  sortLearnerSession(learnerSessionList) {
+    for (let i of learnerSessionList)
+      if (i.IsConfirm == 0 && i.IsCanceled == 0) {
+        this.uncompleteSession.push(i)
+      } else if(i.IsConfirm == 1 && i.IsCanceled == 0){
+        this.compeleteSession.push(i)
+      } else if (i.IsCanceled == 1){
+        this.cancledSession.push(i)
+      }
+    this.uncompleteSessionLength = this.uncompleteSession.length
+    this.completeSessionLength = this.cancledSession.length
+    this.cancledSessionLength = this.cancledSession.length
+    console.log('111111',this.uncompleteSession)
+    console.log('222222',this.compeleteSession)
+    console.log('333333',this.cancledSession)
   }
 
-  lookUpData2() {
-    this.LearnerListService.getLookups(3).subscribe(
-      (res) => { console.log(res), this.getHowKnowValue(res.Data) },
-      (err) => { console.warn(err) }
-    )
+  getLevelType(data) {
+    data.forEach(element => {
+      if (this.whichLearner.LevelType == element['PropValue']) {
+        this.levelTypeList.push(element['PropName'])
+      }
+    });
   }
-
-  lookUpData4() {
-    this.LearnerListService.getLookups(4).subscribe(
-      (res) => { console.log(res), this.getLearnerValue(res.Data) },
-      (err) => { console.warn(err) }
-    )
-  }
-
-  lookUpData5(){
-    this.LearnerListService.getLookups(5).subscribe(
-      (res) => { console.log(res), this.getLevelType(res.Data) },
-      (err) => { console.warn(err) }
-    )
-  }
-
-
-  getLevelType(data){
-  data.forEach(element => {
-    if (this.whichLearner.LevelType == element['PropValue']) {
-      this.levelTypeList.push(element['PropName'])
-    }
-  });
-  console.log(this.levelTypeList)
-}
 
   getLearnerValue(displayData1) {
     displayData1.forEach(element => {
@@ -128,7 +159,6 @@ export class LearnerDetailModalComponent implements OnInit {
         this.learnerLevelList.push(element['PropName'])
       }
     });
-    console.log(this.learnerLevelList)
   }
 
   getPurposeValue(displayDatas) {
@@ -144,24 +174,6 @@ export class LearnerDetailModalComponent implements OnInit {
         })
       }
     })
-
-    // 原本
-    // getPurposeValue(displayDatas){
-    //   console.log(displayDatas)
-
-    //   this.whichLearner.LearnerOthers.forEach(learnerOther => {
-    //     console.log(learnerOther)
-    //     if(learnerOther.OthersType == "2" || learnerOther.OthersType== "3"){
-    //         displayDatas.forEach(displayData => {
-    //           console.log(displayData)
-    //           if(learnerOther.OthersValue == displayData['PropValue']){
-    //             console.log(displayData)
-    //             this.otherValueList.push(displayData['PropName'])
-    //           }
-    //         })
-    //     }
-    //   })
-    // console.log(this.otherValueList)
   }
 
   getHowKnowValue(displayData) {
@@ -180,10 +192,30 @@ export class LearnerDetailModalComponent implements OnInit {
     })
   }
 
+  paymentMethod(data, learnerPaymentList) {
+    for (let i of learnerPaymentList) {
+      data.forEach(element => {
+        if (i.PaymentMethod == element['PropValue']) {
+          // this.paymentMethodList.push(element['PropName'])
+          i.paymentMethodName = element['PropName']
+        }
+      })
+    }
+  }
 
+  paymentType(data, learnerPaymentList) {
+    //  console.log(learnerPaymentList)
+    for (let i of learnerPaymentList) {
+      data.forEach(element => {
 
+        if (i.PaymentType == element['PropValue']) {
+          i.paymentTypeName = element['PropName']
+        }
 
+      })
 
+    }
+  }
 
   /*
    if photo not found, set default photo
@@ -225,18 +257,17 @@ export class LearnerDetailModalComponent implements OnInit {
 
 
   getAmendmentList() {
-
     for (let i of this.whichLearner.One2oneCourseInstance) {
       // console.log(i)
       if (i.Amendment) {
         i.Amendment.sort((b, a) => a.CreatedAt.replace(/-/gi, '').slice(0, 8) - b.CreatedAt.replace(/-/gi, '').slice(0, 8))
         // console.log(i.Amendment.sort((b, a) => a.CreatedAt.replace(/-/gi, '').slice(0, 8) - b.CreatedAt.replace(/-/gi, '').slice(0, 8)))
-         for(let j of i.Amendment){
-           if (j.IsTemporary == 0) {
+        for (let j of i.Amendment) {
+          if (j.IsTemporary == 0) {
             i.permanent = j;
             break;
           }
-         }
+        }
       }
     }
     console.log(this.whichLearner.One2oneCourseInstance)
@@ -244,10 +275,10 @@ export class LearnerDetailModalComponent implements OnInit {
 
   openHistory(ele) {
     const modalRef = this.modalService.open(AmendmentHistoryModalComponent, { size: 'lg', backdrop: 'static', keyboard: false });
-
-    modalRef.componentInstance.whichCourse=ele
-
+    modalRef.componentInstance.whichCourse = ele
   }
+
+
 
 }
 

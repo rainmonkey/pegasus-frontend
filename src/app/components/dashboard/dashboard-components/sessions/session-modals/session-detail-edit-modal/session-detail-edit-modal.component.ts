@@ -6,7 +6,7 @@ import { TransactionService } from '../../../../../../services/http/transaction.
 import { SessionsService } from '../../../../../../services/http/sessions.service';
 import { SessionEdit } from '../../../../../../models/SessionEdit';
 import { TimePickerComponent } from "src/app/components/dashboard/dashboard-components/time-picker/time-picker.component"
-import Swal from "sweetalert2";
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-session-detail-edit-modal',
@@ -114,6 +114,9 @@ export class SessionDetailEditModalComponent implements OnInit {
     this.sessionsService.SessionEdit(sessionEdit).subscribe(res => {
       this.isEditSuccess = true;
       this.isloading = false;
+      setTimeout(() => {
+          this.activeModal.dismiss('Cross click');
+        }, 1000);
     },
       err => {
         this.isEditFail = true;

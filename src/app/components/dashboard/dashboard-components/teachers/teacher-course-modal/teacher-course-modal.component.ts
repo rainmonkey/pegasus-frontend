@@ -211,7 +211,7 @@ export class TeacherCourseModalComponent implements OnInit {
   */
   getTeacherSalary(course) {
     console.log(this.whichTeacher)
-    if(this.whichTeacher.TeacherWageRates !== null){
+    if(this.whichTeacher.TeacherWageRates.length >0 ){
       if(course == 'piano'){
         return this.whichTeacher.TeacherWageRates.PianoRates;
       }
@@ -271,7 +271,7 @@ export class TeacherCourseModalComponent implements OnInit {
   }
 
   submitToServer(dataToSubmit) {
-    if(this.whichTeacher.TeacherWageRates == null){
+    if(this.whichTeacher.TeacherWageRates.length==0){
       this.teacherService.updateTeacherCoursePost(dataToSubmit).subscribe(
         (res) => {
           this.onsubmit = false;
