@@ -1,6 +1,6 @@
 <!--modal header-->
 <div class='modal-header'>
-  <h4 class='modal-title'>{{modelTitle}}</h4>
+  <h4 class='modal-title'>{{modelTitle}}134</h4>
   <button type="button" class='btn btn-sm btn-info t_dm_close_btn' aria-label="Close"
     (click)="activeModal.close('Cross click')">
     <span aria-hidden="true">&times;</span>
@@ -13,7 +13,14 @@
     <app-admin-learner-timetable *ngIf="whichModal == 'Learner Timetable'" [whichLearner]='whichObject'></app-admin-learner-timetable>
     <!-- <app-learner-registration-form [whichLearner]= 'whichLearner' (toLearnerListEvent)='toLearnerListEvent($event)' activeModalEvent='onActiveModalSubmit($event)'></app-learner-registration-form> -->
     <div *ngIf="learnerCourseTimeTable">
-
+      <div class='container'>
+        <div class='row justify-content-center'>
+          <p><span>Learner's Name:</span> <span><br>{{titleArray[0]}}</span></p>
+        </div>
+        <div class='row justify-content-center'>
+          <p><span>Location:</span> <span><br>{{titleArray[1]}}</span></p>
+        </div>
+      </div>
     </div>
 </div>
 <!--modal footer-->
