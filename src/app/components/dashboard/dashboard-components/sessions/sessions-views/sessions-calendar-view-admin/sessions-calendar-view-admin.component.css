@@ -12,6 +12,11 @@
   padding: 20px;
 }
 
+/*.fc-slats table tbody tr:nth-child(2n){*/
+/*  border: 1px solid rgba(59, 59, 69, 0.93);*/
+/*}*/
+
+
 .fc-content{
   color: aliceblue;
 }
