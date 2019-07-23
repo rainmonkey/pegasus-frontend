@@ -152,6 +152,53 @@ section.dashboard-counts div[class*='col-']:last-of-type .item {
 
 /*
 * ==========================================================
+*     UPDATES SECTION
+* ==========================================================
+*/
+/*====== Recent Updates Box ======*/
+.recent-updates .item {
+  padding: 20px;
+}
+
+.recent-updates .item:nth-of-type(even) {
+  background: #fafafa;
+}
+
+.recent-updates .icon {
+  margin-right: 10px;
+}
+
+.recent-updates h5 {
+  margin-bottom: 5px;
+  color: #333;
+  font-weight: 400;
+}
+
+.recent-updates p {
+  font-size: 0.8em;
+  color: #aaa;
+  margin-bottom: 0;
+}
+
+.recent-updates .date {
+  font-size: 0.9em;
+  color: #adadad;
+}
+
+.recent-updates .date strong {
+  font-size: 1.4em;
+  line-height: 0.8em;
+  display: block;
+}
+
+.recent-updates .date span {
+  font-size: 0.9em;
+  font-weight: 300;
+}
+
+
+/*
+* ==========================================================
 *     DASHBOARD HEADER SECTION
 * ==========================================================
 */
