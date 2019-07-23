@@ -22,6 +22,7 @@ export class ChattingService {
     private messagerService: MessagerService) { }
 
   //start connection
+  //如果连接失败 重连5次 如果中途短线 会自动保持15s连接状态
   startConnection(userId: number) {
     this.hubConnection = new signalR.HubConnectionBuilder()
       .withUrl(this.baseUrlForChatting + 'chat?userId=' + userId)
@@ -37,6 +38,7 @@ export class ChattingService {
       })
       //当connect连接出现错误(连接失败)
       .catch(err => {
+        this.disconnectFlag$.next(true);
         console.log('11111')
         this.reconnect(userId);
       });
@@ -44,19 +46,20 @@ export class ChattingService {
     this.hubConnection
     //当连接成功后 断线(连接断开)
       .onclose(() =>{
-        if(!this.manualReconnectFlag){
-          this.reconnect(userId);
-        }
-        console.log('------');
-        return;
+        this.reconnectCounter = 0;
+        this.disconnectFlag$.next(true);
+        // if(!this.manualReconnectFlag){
+        //   this.reconnect(userId);
+        // }
+        // console.log('------');
+        // return;
       })
   }
 
   reconnect(userId){
-    //重连10次  
-    if(this.reconnectCounter > 10){
-      //10次之后肯定失败 调用方法
-      this.disconnectFlag$.next(true);
+    //重连5次后放弃  
+    if(this.reconnectCounter > 4){
+      this.reconnectCounter = 0;
       return;
     }
     let reconnectTimeInterval = this.reconnectCounter === 0? 0 : 5000;
@@ -64,6 +67,7 @@ export class ChattingService {
     setTimeout(()=>{
       this.startConnection(userId)
     },reconnectTimeInterval)
+
     this.reconnectCounter ++;
   }
 

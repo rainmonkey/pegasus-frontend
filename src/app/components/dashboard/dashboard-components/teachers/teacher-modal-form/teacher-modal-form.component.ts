@@ -7,7 +7,7 @@ import { environment } from 'src/environments/environment.prod';
   selector: 'app-teacher-modal-form',
   templateUrl: './teacher-modal-form.component.html',
   styleUrls: ['./teacher-modal-form.component.css',
-              '../teacher-panel/teacher-panel.component.css']
+    '../teacher-panel/teacher-panel.component.css']
 })
 export class TeacherModalFormComponent implements OnInit {
   public updateForm;
@@ -15,8 +15,8 @@ export class TeacherModalFormComponent implements OnInit {
   public qualificationOptions: Object;
   //language dropdown options
   public languageOptions: any;
-  public languageOptions1 :any;
-  public languageOptions2:any;
+  public languageOptions1: any;
+  public languageOptions2: any;
   //orgs dropdown options
   public orgOptions: Object;
   //Level dropdown options
@@ -33,10 +33,10 @@ export class TeacherModalFormComponent implements OnInit {
   public showRightImgFlag: boolean = false;
   public isAvailableDaysNull: boolean = false;
   public PhotoToSubmit: any;
-  public IdPhotoToSubmit:any;
-  public CVToSubmit:any;
-  public FormToSubmit:any;
-  public OthersToSubmit:any;
+  public IdPhotoToSubmit: any;
+  public CVToSubmit: any;
+  public FormToSubmit: any;
+  public OthersToSubmit: any;
   public week: Array<object> = [{ "dayName": "Monday", 'dayId': 1 }, { "dayName": "Tuesday", 'dayId': 2 },
   { "dayName": "Wednesday", 'dayId': 3 }, { "dayName": "Thursday", 'dayId': 4 },
   { "dayName": "Friday", 'dayId': 5 }, { "dayName": "Saturday", 'dayId': 6 },
@@ -48,7 +48,8 @@ export class TeacherModalFormComponent implements OnInit {
   public cvmsg = '';
   public formmsg = '';
   public othersmsg = '';
-  public avliableTextLength:number = 1000;
+  public avliableTextLength: number = 1000;
+  public rooms;
 
 
   @Input() command;
@@ -64,22 +65,22 @@ export class TeacherModalFormComponent implements OnInit {
     this.loadingFlag = true;
     this.setReadOnly();
     this.updateForm = this.fb.group(this.formGroupAssemble());
-
-      this.getDropdownOptions();
-      this.getTeacherLevel();
+    this.getRooms();
+    this.getDropdownOptions();
+    this.getTeacherLevel();
     this.getInitTextAreaLength();
   }
-  ngAfterViewInit(){
+  ngAfterViewInit() {
     this.loadingFlag = false;
   }
 
   /////////////////////////////////////////////methods call by other methods/////////////////////////////////////////////////
 
-  getInitTextAreaLength(){
-    if(this.whichTeacher!==null &&this.whichTeacher.Comment !==null){
-     this.avliableTextLength = 1000 - this.whichTeacher.Comment.length;
+  getInitTextAreaLength() {
+    if (this.whichTeacher !== null && this.whichTeacher.Comment !== null) {
+      this.avliableTextLength = 1000 - this.whichTeacher.Comment.length;
     }
-    else{
+    else {
       return;
     }
   }
@@ -92,6 +93,28 @@ export class TeacherModalFormComponent implements OnInit {
     }
   }
 
+  getRooms(){
+    this.teachersService.getRooms().subscribe(
+      res =>{
+        this.rooms = res['Data'];
+        console.log(res['Data'])
+      },
+      err=>{
+        alert('Server error!')
+      }
+    )
+  }
+
+  /*
+    筛选与某个org匹配的Id
+  */
+  getAvailableRooms(orgId){
+    return this.rooms.filter(val => {
+      if(val.OrgId == orgId){
+        return val;
+      }
+    })
+  }
   /*
     some dropdown options are come from server
     get them and save in specific paras
@@ -101,9 +124,13 @@ export class TeacherModalFormComponent implements OnInit {
       (res) => {
         this.qualificationOptions = res.Data.qualifications;
         this.languageOptions = res.Data.Languages;
-        this.languageOptions1 = res.Data.Languages.slice(0,3);
+        this.languageOptions1 = res.Data.Languages.slice(0, 3);
         this.languageOptions2 = res.Data.Languages.slice(3);
-        this.orgOptions = res.Data.Orgs;
+        this.orgOptions = res.Data.Orgs.map(val=>{
+          val.showRoom = false;
+          return val;
+        });
+        console.log(this.orgOptions)
       },
       (err) => {
         alert('Server error!')
@@ -160,6 +187,15 @@ export class TeacherModalFormComponent implements OnInit {
     }
   }
 
+  displayRoom(event,orgId,i){
+    let obj = document.getElementById(i.dayName + orgId);
+    if(event.target.checked){
+      obj.style.display = 'block';
+    }
+    else{
+      obj.style.display = 'none';
+    }
+  }
   /*
    display default branches selection
  */
@@ -173,6 +209,7 @@ export class TeacherModalFormComponent implements OnInit {
         }
       }
       return false;
+ 
     }
     else {
       return false;
@@ -266,35 +303,35 @@ export class TeacherModalFormComponent implements OnInit {
     }
   }
 
-  uploadCV(event){
+  uploadCV(event) {
     this.CVToSubmit = <File>event.target.files[0];
   }
 
-  uploadForm(event){
+  uploadForm(event) {
     this.FormToSubmit = <File>event.target.files[0];
   }
 
-  uploadOthers(event){
+  uploadOthers(event) {
     this.OthersToSubmit = <File>event.target.files[0];
   }
 
-  getCVUrl(){
-    if(this.whichTeacher.CV !== null){
+  getCVUrl() {
+    if (this.whichTeacher.CV !== null) {
       this.cvmsg = 'Download CV'
       return this.photoUrl + this.whichTeacher.CV;
     }
   }
 
-  getFormUrl(){
-    if(this.whichTeacher.Form !== null){
+  getFormUrl() {
+    if (this.whichTeacher.Form !== null) {
       this.formmsg = 'Download Form'
       return this.photoUrl + this.whichTeacher.Form;
     }
   }
 
-  getOthersUrl(){
+  getOthersUrl() {
     // console.log(this.whichTeacher.OtherFile)
-    if(this.whichTeacher.OtherFile !== null){
+    if (this.whichTeacher.OtherFile !== null) {
       this.othersmsg = 'Download Other Files'
       return this.photoUrl + this.whichTeacher.OtherFile;
     }
@@ -333,24 +370,24 @@ export class TeacherModalFormComponent implements OnInit {
     Branch options hide in default, when user click week name, toggle branch options,
   */
   toggleBranchOptions(event, dayName) {
-    let dropDownsObj:any = document.getElementsByClassName('dayName');
+    let dropDownsObj: any = document.getElementsByClassName('dayName');
     //set [flag] attr to element, to switch between show and hide
     event.target.attributes.flag = !event.target.attributes.flag;
 
     if (event.target.attributes.flag == true) {
-      for (let i of dropDownsObj){
-       i.style.display = 'block';
+      for (let i of dropDownsObj) {
+        i.style.display = 'block';
       }
     }
     else {
-      for (let i of dropDownsObj){
+      for (let i of dropDownsObj) {
         i.style.display = 'none';
-       }
+      }
     }
   }
 
-  toggleLanguageOptions(event){
-    let dropDownsObj:any = document.getElementById('languageDropdown');
+  toggleLanguageOptions(event) {
+    let dropDownsObj: any = document.getElementById('languageDropdown');
     event.target.attributes.flag = !event.target.attributes.flag;
     if (event.target.attributes.flag == true) {
 
@@ -371,7 +408,7 @@ export class TeacherModalFormComponent implements OnInit {
     return;
   }
 
-  calculateTextLength(event){
+  calculateTextLength(event) {
     this.avliableTextLength = 1000 - event.target.value.length;
   }
   /////////////////////////////////////////////form group/////////////////////////////////////////////////
@@ -380,11 +417,11 @@ export class TeacherModalFormComponent implements OnInit {
     let groupObj: any;
     if (this.command == 0) {
       groupObj = {
-        CV:[null],
-        Form:[null],
-        OtherFile:[null],
-        Photo:[null],
-        IdPhoto:[null],
+        CV: [null],
+        Form: [null],
+        OtherFile: [null],
+        Photo: [null],
+        IdPhoto: [null],
         FirstName: [null, Validators.required],
         LastName: [null, Validators.required],
         Gender: [null, Validators.required],
@@ -408,11 +445,11 @@ export class TeacherModalFormComponent implements OnInit {
     }
     else {
       groupObj = {
-        CV:[null],
-        Form:[null],
-        OtherFile:[null],
-        Photo:[null],
-        IdPhoto:[null],
+        CV: [null],
+        Form: [null],
+        OtherFile: [null],
+        Photo: [null],
+        IdPhoto: [null],
         //formControlName 决定了提交表单时的参数名
         FirstName: [{ value: this.whichTeacher.FirstName, disabled: this.readOnlyFlag }, Validators.required],
         LastName: [{ value: this.whichTeacher.LastName, disabled: this.readOnlyFlag }, Validators.required],

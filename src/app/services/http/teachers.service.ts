@@ -58,4 +58,8 @@ export class TeachersService {
   updateTeacherCoursePost(data):any{
     return this.http.post(this.baseUrl + 'teachercourse',data)
   }
+
+  getRooms(){
+    return this.http.get(this.baseUrl + 'Room');
+  }
 }
