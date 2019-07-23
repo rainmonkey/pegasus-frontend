@@ -16,6 +16,7 @@ import {SessionCompletedModalComponent} from '../../session-modals/session-compl
 import {SessionRescheduleModalComponent} from '../../session-modals/session-reschedule-modal/session-reschedule-modal.component';
 import {AdminLearnerProfileComponent} from '../../../admin-learner/admin-learner-profile/admin-learner-profile.component';
 import {LearnersService} from '../../../../../../services/http/learners.service';
+import {debounce} from '../../../../../../shared/utils/debounce';
 
 @Component({
   selector: 'app-sessions-calendar-view-admin',
@@ -24,6 +25,7 @@ import {LearnersService} from '../../../../../../services/http/learners.service'
   styleUrls: ['./sessions-calendar-view-admin.component.css']
 })
 export class SessionsCalendarViewAdminComponent implements OnInit {
+  debounce = debounce();
   searchForm: FormGroup; // searchform by formbuilder
   reason: string;  // session edit reason
   isloadingSmall = false;  // when drag the event, it will pop up the window for confirm (this loading icon is for this modal)
@@ -124,13 +126,12 @@ export class SessionsCalendarViewAdminComponent implements OnInit {
 
 
   clickButton = (model) => {
-    if (this.t) {
-      clearTimeout(this.t);
-    }
     if (model.buttonType === 'next' || model.buttonType === 'today' || model.buttonType === 'prev' || model.buttonType === 'testButton') {
       const datefromcalendar = model.data;
       const date = this.datePipe.transform(datefromcalendar, 'yyyy-MM-dd');
-      this.t = setTimeout(() => this.getEventByDate(date), 500);
+      this.debounce(() => {
+        this.getEventByDate(date);
+      }, 500);
     }
 
   }
