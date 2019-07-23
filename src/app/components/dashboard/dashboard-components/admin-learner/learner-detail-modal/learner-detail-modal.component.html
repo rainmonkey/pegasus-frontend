@@ -622,11 +622,11 @@
     <!-- Sessions -->
     <ngb-tab title="Uncomplete session">
       <ng-template ngbTabContent>
-        <div *ngIf='uncompleteSession == null'>
+        <div *ngIf='uncompleteSession.length == 0'>
           No Sessions Record
         </div>
 
-        <div *ngIf='uncompleteSession !== null'>
+        <div *ngIf='uncompleteSession.length !== 0'>
           <div
             *ngFor='let i of uncompleteSession | slice: (currentPage-1)* pageSize : (currentPage-1) * pageSize + pageSize'>
             <br>
@@ -691,11 +691,11 @@
     <!-- Complete Sessions -->
     <ngb-tab title="Complete session">
       <ng-template ngbTabContent>
-        <div *ngIf='compeleteSession == null'>
+        <div *ngIf='compeleteSession.length == 0'>
           No Sessions Record
         </div>
 
-        <div *ngIf='compeleteSession !== null'>
+        <div *ngIf='compeleteSession.length !== 0'>
           <div
             *ngFor='let i of compeleteSession | slice: (currentPage-1)* pageSize : (currentPage-1) * pageSize + pageSize'>
             <br>
@@ -760,11 +760,11 @@
     <!-- Cancled session -->
     <ngb-tab title="Cancelled session">
       <ng-template ngbTabContent>
-        <div *ngIf='cancledSession == null'>
+        <div *ngIf='cancledSession.length == 0'>
           No Sessions Record
         </div>
 
-        <div *ngIf='cancledSession !== null'>
+        <div *ngIf='cancledSession.length !== 0'>
           <div
             *ngFor='let i of cancledSession | slice: (currentPage-1)* pageSize : (currentPage-1) * pageSize + pageSize'>
             <br>
@@ -830,35 +830,81 @@
     <!-- Make up session -->
     <ngb-tab title="Makeup session">
       <ng-template ngbTabContent>
-        <div *ngIf='makeupSession == null'>
+        <div *ngIf='makeupSession.length == 0'>
           No Sessions Record
         </div>
 
-        <div *ngIf='makeupSession !== null'>
+        <div *ngIf='makeupSession.length !== 0'>
           <div
             *ngFor='let i of makeupSession | slice: (currentPage-1)* pageSize : (currentPage-1) * pageSize + pageSize'>
             <br>
 
             <div class='card'>
               <div class="card-body">
-                <div class='row'>
 
-                  <div *ngIf='i.MissedLesson'>
+                <div *ngIf='i.MissedLesson'>
+                  <div class='row'>
                     <div class='col-12'>
                       <span class='header'>Missed Lesson: </span>
                     </div>
 
+
+                    <div class='col-lg-4 col-sm-6'>
+                      <span class='label'>Course: </span>
+                      <span class='text'>{{i.CourseInstance.CourseName}}</span>
+                    </div>
+
+                    <div class='col-lg-2 col-sm-6'>
+                      <span class='label'>Teacher: </span>
+                      <span class='text'>{{i.MissedLesson.Teacher}}</span>
+                    </div>
+
                     <div class='col-lg-3 col-sm-6'>
-                      <span class='label'></span>
+                      <span class='label'>Location: </span>
+                      <span class='text'>{{i.MissedLesson.Org}}</span>
+                    </div>
+
+                    <div class='col-lg-3 col-sm-6'>
+                      <span class='label'>Begin Date: </span>
+                      <span class='text'>{{i.MissedLesson.beginDate.replace('T',' ')}}</span>
+                    </div>
+
+                    <div class='col-lg-3 col-sm-6'>
+                        <span class='label'>Makeup Lesson Complete: </span>
+                        <span class='text' *ngIf='i.IsActive'>{{i.IsActive | IsTemporary}}</span>
+                      </div>
+
+                  </div>
+                </div>
+
+                <div *ngIf='i.NewLesson.Org !== null && i.NewLesson.Teacher !== null && i.NewLesson.beginDate !== null'>
+                  <div class='row'>
+                    <div class='col-12'>
+                      <span class='header'>New Lesson: </span>
+                    </div>
+
+                    <div class='col-lg-3 col-sm-6'>
+                      <span class='label'>Teacher: </span>
+                      <span class='text'>{{i.NewLesson.Teacher}}</span>
+                    </div>
+                    <div class='col-lg-3 col-sm-6'>
+                      <span class='label'>Location: </span>
+                      <span class='text'>{{i.NewLesson.Org}}</span>
+                    </div>
+
+                    <div class='col-lg-3 col-sm-6'>
+                      <span class='label'>Begin Date: </span>
+                      <span class='text'>{{i.NewLesson.beginDate.replace('T',' ')}}</span>
                     </div>
                   </div>
-
-
                 </div>
+
+
               </div>
             </div>
           </div>
         </div>
+
 
         <ngb-pagination [collectionSize]="makeupSessionLength" [(page)]='currentPage' [maxSize]='10'
           aria-label="Default pagination" [pageSize]='pageSize'>
