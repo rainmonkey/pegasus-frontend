@@ -4,7 +4,7 @@ import { Injectable } from '@angular/core';
 import * as signalR from '@aspnet/signalr';
 import { retry, delay } from 'rxjs/operators'
 import { MessagerService } from './messager.service';
-import { throwError, from, forkJoin } from 'rxjs';
+import { throwError, from, forkJoin, Observable, of, Subject } from 'rxjs';
 import { tap } from 'rxjs/operators';
 
 @Injectable({
@@ -15,6 +15,8 @@ export class ChattingService {
   public baseUrlForChatting: any = environment.baseUrlForChatting;
   public baseUrl: any = environment.baseUrl;
   public reconnectCounter:number = 0;
+  public manualReconnectFlag:boolean = false;
+  public disconnectFlag$ = new Subject();
 
   constructor(private http: HttpClient,
     private messagerService: MessagerService) { }
@@ -24,40 +26,54 @@ export class ChattingService {
     this.hubConnection = new signalR.HubConnectionBuilder()
       .withUrl(this.baseUrlForChatting + 'chat?userId=' + userId)
       .build();
-    console.log('1111')
+    
     this.hubConnection
       .start()
       .then(() => {
         console.log('connection started');
         this.reconnectCounter = 0;
+        this.manualReconnectFlag = false;
         this.listenMessage();
       })
       //当connect连接出现错误(连接失败)
       .catch(err => {
-        console.log(err);
-        console.log('???')
+        console.log('11111')
         this.reconnect(userId);
       });
 
     this.hubConnection
     //当连接成功后 断线(连接断开)
       .onclose(() =>{
-        console.log("!!!")
-        this.reconnect(userId);
+        if(!this.manualReconnectFlag){
+          this.reconnect(userId);
+        }
+        console.log('------');
+        return;
       })
   }
 
   reconnect(userId){
-    //重连10次
+    //重连10次  
     if(this.reconnectCounter > 10){
+      //10次之后肯定失败 调用方法
+      this.disconnectFlag$.next(true);
       return;
     }
     let reconnectTimeInterval = this.reconnectCounter === 0? 0 : 5000;
-    console.log(reconnectTimeInterval);
+  
     setTimeout(()=>{
       this.startConnection(userId)
     },reconnectTimeInterval)
     this.reconnectCounter ++;
+  }
+
+  closeConnection(){
+    this.manualReconnectFlag = true;
+    console.log('close')
+    this.hubConnection.stop()
+    .then(()=>{
+      this.disconnectFlag$.next(true);
+    })
   }
 
   //send message
@@ -70,27 +86,6 @@ export class ChattingService {
       //   retry(2)
       // )
     )
-
-
-
-    // return this.hubConnection.invoke('SendMessageOneToOne', messageObj)
-    //   .then(
-    //     () => {
-
-    //       this.http.post(this.baseUrl + 'chat', messageObj).pipe(
-    //         retry(2)
-    //       ).subscribe(
-    //         (res) => {
-    //           this.error = true;
-    //         },
-    //         (err) => {
-    //           return throwError('message send failed.');
-    //         });
-    //     })
-    //   .catch(err => {
-    //     console.log('?????')
-    //     return createAtTimestamp;
-    //   });
   }
 
   //listen on the message

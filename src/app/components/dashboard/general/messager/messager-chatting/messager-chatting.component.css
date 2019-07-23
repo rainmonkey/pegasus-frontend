@@ -171,3 +171,6 @@ pre{
 .m_c_message_sent_failed:hover{
     cursor: pointer;
 }
+#scroll_anchor{
+    clear: both;
+}
