@@ -21,7 +21,7 @@ export class TrialConfirmComponent implements OnInit {
   @Input() orgId;
   @Input() cateName;
   @Input() cateId;
-  @Input() whichTeacher;
+  @Input() teacherDetails;
   @Input() coursePrice;
   @Input() learnerId;
   @Input() courseId;
@@ -41,7 +41,8 @@ export class TrialConfirmComponent implements OnInit {
   public error: boolean = false;
   public loadingGifFlag = false;
   public successFlag = false;
-  public extraFee;
+  public extraFee: number;
+  public extraFeeName: string;
   private isPayNow: boolean = true;
 
   constructor(public activeModal: NgbActiveModal,
@@ -56,7 +57,7 @@ export class TrialConfirmComponent implements OnInit {
   ngOnInit() {
     this.startTimeTem = this.timeFormatting(this.startTime);
     this.endTimeTem = this.timeFormatting(this.endTime);
-    this.whichTeacherFullName = this.whichTeacher.FirstName + ' ' + this.whichTeacher.LastName;
+    this.whichTeacherFullName = this.teacherDetails.FirstName + ' ' + this.teacherDetails.LastName;
     this.getDataFromServer();
   }
 
@@ -91,6 +92,7 @@ export class TrialConfirmComponent implements OnInit {
     for (let i of extraFee) {
       if (i.PropValue == 1) {
         this.extraFee = Number(i.PropName);
+        this.extraFeeName = i.Description
       }
     }
 
@@ -152,7 +154,7 @@ export class TrialConfirmComponent implements OnInit {
     let data = {
       "LearnerId": Number(this.learnerId),
       "RoomId": this.avaliableRoom.RoomId,
-      "TeacherId": this.whichTeacher.TeacherId,
+      "TeacherId": this.teacherDetails.TeacherId,
       "OrgId": this.orgId,
       "BeginTime": this.startTime,
       "Reason": "arrange course",
@@ -165,7 +167,7 @@ export class TrialConfirmComponent implements OnInit {
     let obj = {
       "LearnerId": Number(this.learnerId),
       "RoomId": this.avaliableRoom.RoomId,
-      "TeacherId": this.whichTeacher.TeacherId,
+      "TeacherId": this.teacherDetails.TeacherId,
       "OrgId": this.orgId,
       "BeginTime": this.startTime,
       "EndTime": this.endTime,
@@ -188,33 +190,6 @@ export class TrialConfirmComponent implements OnInit {
     }
   }
 
-  // downloadInvoice() {
-  //
-  //   let text = `${this.studentFullName}'s Payment Invoice`;
-  //   let xOffset = (doc.internal.pageSize.width / 2) - (doc.getStringUnitWidth(text) * 20 / 2);
-  //
-  //   doc.setFontSize(20);
-  //   doc.text(text, xOffset, 50);
-  //
-  //   doc.setFontSize(14);
-  //   doc.text(`Invoice To:  ${this.studentFullName}`, 30, 100);
-  //   doc.text(`For`, 30, 120);
-  //   doc.text(`1 Lesson of ${this.cateName} trial course,`, 40, 140);
-  //   doc.text(`by ${this.whichTeacher.FirstName}  ${this.whichTeacher.LastName},`, 40, 160);
-  //   doc.text(`from ${this.startTime} to ${this.endTime},`, 40, 180);
-  //   doc.text(`at ${this.orgName} ${this.avaliableRoom.RoomName}.`, 40, 200);
-  //   doc.text(`Price:`, 30, 250);
-  //   doc.text(`$ ${this.coursePrice + this.extraFee}`, 220, 250);
-  //   //Total
-  //   doc.setFontSize(25);
-  //   doc.text(`TOTAL: $ ${this.coursePrice + this.extraFee}`, 30, 350);
-  //   doc.setFontSize(14);
-  //   doc.text(`Create Date: ${new Date().toLocaleString()}`, 30, 370);
-  //
-  //   doc.save('aaaa');
-  // }
-
-  //extra需要具体原因,缺少due date
   downloadPDFReady() {
     let learnerName = {} as IInvoiceLearnerName
     learnerName.firstName = this.studentFullName.split(" ")[0]
@@ -225,9 +200,8 @@ export class TrialConfirmComponent implements OnInit {
     invoice.BeginDate = this.startTime
     invoice.LessonFee = this.coursePrice
     invoice.Other1Fee = this.extraFee
-    invoice.Other1FeeName = "extra"
+    invoice.Other1FeeName = this.extraFeeName
     invoice.TotalFee = this.coursePrice + this.extraFee
-    invoice.DueDate = "no date"
     this.downloadPDFService.downloadPDF(learnerName, invoice)
   }
 }

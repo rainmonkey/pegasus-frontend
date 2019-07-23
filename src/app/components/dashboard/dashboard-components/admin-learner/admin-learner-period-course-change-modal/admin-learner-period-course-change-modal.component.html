@@ -41,7 +41,7 @@
         <div class="col-5">
           <div>Room Name</div>
           <div>
-            <select formControlName="RoomId">
+            <select disabled formControlName="RoomId">
               <option disabled selected value> -- select an option -- </option>
               <option *ngFor="let room of Rooms" [value]="room.RoomId">{{room.RoomName}}</option>
             </select>

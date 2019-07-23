@@ -86,7 +86,6 @@
   <div *ngIf='loadingGifFlag' class="loaderSmall"></div>
   <button *ngIf='!successFlag' type="button" class="btn btn-outline-dark" (click)="onSubmit()">Confirm</button>
   <button *ngIf='!successFlag' type="button" class="btn btn-outline-dark" (click)="activeModal.close('Close click')">Cancel</button>
-  <!-- <button *ngIf='successFlag && !arrangeFlag' type="button" class="btn btn-outline-dark" (click)="downloadPDFReady()">Download Invoice</button> -->
-  <button type="button" class="btn btn-outline-dark" (click)="downloadPDFReady()">Download Invoice</button>
+  <button *ngIf='successFlag && !arrangeFlag' type="button" class="btn btn-outline-dark" (click)="downloadPDFReady()">Download Invoice</button>
   <button *ngIf='successFlag && !arrangeFlag' type="button" class="btn btn-outline-dark" (click)="closeModal()">Close</button>
 </div>

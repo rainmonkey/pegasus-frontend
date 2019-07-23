@@ -11,6 +11,7 @@ import {DatePipe} from '@angular/common';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {MondayDateInWeekByDatePipe} from '../../../../../../shared/pipes/monday-date-in-week-by-date.pipe';
 import { CoursesService } from '../../../../../../services/http/courses.service';
+import {debounce} from '../../../../../../shared/utils/debounce';
 
 @Component({
   selector: 'app-sessions-calendar-view-tutor',
@@ -19,6 +20,7 @@ import { CoursesService } from '../../../../../../services/http/courses.service'
   encapsulation: ViewEncapsulation.None
 })
 export class SessionsCalendarViewTutorComponent implements OnInit {
+  debounce = debounce();
   options: OptionsInput;
   isloading = false;
   @ViewChild('fullcalendar') fullcalendar: CalendarComponent;
@@ -128,24 +130,20 @@ export class SessionsCalendarViewTutorComponent implements OnInit {
 
 
   clickButton = (model) => {
-    if (this.t) {
-      clearTimeout(this.t);
-    }
+
     if (model.buttonType === 'next' ||  model.buttonType === 'prev') {
       const datefromcalendar = model.data;
       const date = this.datePipe.transform(datefromcalendar, 'yyyy-MM-dd');
-      this.t = setTimeout(() => {
+      this.debounce( () => {
         this.GetEventData(date);
       }, 500);
     }
     if (model.buttonType === 'today') {
-      if (this.t) {
-        clearTimeout(this.t);
-      }
+
       const datefromcalendar = model.data;
       const beginDate = this.mondayDatePipe.transform(datefromcalendar);
-      this.t = setTimeout(() => {
-        this.GetEventData(this.datePipe.transform(beginDate, 'yyyy-MM-dd'))
+      this.debounce( () => {
+        this.GetEventData(this.datePipe.transform(beginDate, 'yyyy-MM-dd'));
       }, 500);
     }
     this.headerChangeColorHandler();
