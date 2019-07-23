@@ -5,42 +5,44 @@
     </div>
     <div class="col-12">
       <!-- select a period of time -->
-      <div >
-        <div style="float:left;">
-          <span>
-            <p class="label_p">Select a period of date:</p>
-          </span>
-          <div class="input-group input_datebar">
-            <input class="form-control" style="height: 30px;" placeholder="yyyy-mm-dd" ngbDatepicker
-              #beginDate="ngbDatepicker" (dateSelect)="onBeginDateSelect($event)">
-            <div class="input-group-append">
-              <button class="btn btn-outline-secondary calendar" style="height: 30px; line-height: 0;"
-                (click)="beginDate.toggle()" type="button">
-                <i class="far fa-calendar-alt"></i>
-              </button>
+      <div class="row">
+        <div class="col-9">
+          <!-- select a period of time -->
+          <span>Select a period of date:</span>
+          <div class="d-inline-flex">
+            <div class="input-group input__datebar">
+              <input class="form-control" style="height: 30px;" placeholder="yyyy-mm-dd" ngbDatepicker
+                #beginDate="ngbDatepicker" (dateSelect)="onBeginDateSelect($event)">
+              <div class="input-group-append">
+                <button class="btn btn-outline-secondary calendar" style="height: 30px; line-height: 0;"
+                  (click)="beginDate.toggle()">
+                  <i class="far fa-calendar-alt"></i>
+                </button>
+              </div>
             </div>
-          </div>
-          <span>
-            <p class="label_p">To</p>
-          </span>
-          <div class="input-group input_datebar">
-            <input class="form-control" style="height: 30px;" placeholder="yyyy-mm-dd" ngbDatepicker
-              #endDate="ngbDatepicker" (dateSelect)="onEndDateSelect($event)">
-            <div class="input-group-append">
-              <button class="btn btn-outline-secondary calendar" style="height: 30px; line-height: 0;"
-                (click)="endDate.toggle()" type="button">
-                <i class="far fa-calendar-alt"></i>
-              </button>
+            <div class="m-1">To</div>   
+            <div class="input-group input__datebar">
+              <input class="form-control" style="height: 30px;" placeholder="yyyy-mm-dd" ngbDatepicker
+                #endDate="ngbDatepicker" (dateSelect)="onEndDateSelect($event)">
+              <div class="input-group-append">
+                <button class="btn btn-outline-secondary calendar" style="height: 30px; line-height: 0;"
+                  (click)="endDate.toggle()">
+                  <i class="far fa-calendar-alt"></i>
+                </button>
+              </div>
             </div>
+            <button class='btn btn-info btn__search--right' (click)="selectPeriod()">
+              <i class='fas fa-search'></i>Search
+            </button>
           </div>
-          <button type="button" class='btn btn-info t_info_addmore_btn' (click)="selectPeriod()">
-            <i class='fas fa-search'></i>Search
+        </div>
+        <!--add more btn-->
+        <div class="col-3">
+          <button class="btn btn-info btn__add--right" (click)="openDetailModal()">
+            + Add More
           </button>
         </div>
-      <!--add more btn-->
-        <div class='btn btn-info t_info_addmore_btn' style="float:right;" (click)="openDetailModal()">
-           + Add More</div>
-        </div>
+      </div>
     </div>
     <div *ngIf='loadingFlag' class="loaderLarge"></div>
     <div *ngIf='!loadingFlag' class='t_mf_form'>
@@ -67,6 +69,9 @@
               <th scope='col' class='tl_body_table_head sorting_item' style="width:10rem" (click)='onSort("ProductQuantity")'>
                 Product QTY
               </th>
+              <th scope='col' class='tl_body_table_head sorting_item' style="width:10rem" (click)='onSort("ProcessStatus")'>
+                Process Status
+              </th>
               <th scope='col' class='tl_body_table_head sorting_item' style="width:10rem">Edit & Delete</th>
             </tr>
           </thead>
@@ -85,6 +90,7 @@
               <td>
                 <li *ngFor="let detail of item.ApplicationDetails">{{ detail.AppliedQty }}</li>
               </td>
+              <td>{{ item.ProcessStatus }}</td>
               <td>
                 <span class='tl_body_table_btn' style="margin-right: 1rem;">
                   <i class='fas fa-pen'></i>

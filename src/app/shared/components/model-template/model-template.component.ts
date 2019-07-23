@@ -42,7 +42,7 @@ constructor(public activeModal: NgbActiveModal,) {}
     this.getModalDetail();
     }
     if (this.learnerCourseTimeTable){
-      this.ShowTimeTableDetail()
+      this.ShowTimeTableDetail();
     }
   }
 

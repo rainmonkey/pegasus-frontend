@@ -4,7 +4,6 @@ import { CoursesService } from 'src/app/services/http/courses.service';
 import { forkJoin } from 'rxjs'; //卧槽他妈的成功了！ rxjs 6 直接import forkJoin就行 不用再import Observable
 import { TeachersService } from 'src/app/services/http/teachers.service';
 import { NgbModal, NgbModalRef, NgbPagination } from '@ng-bootstrap/ng-bootstrap';
-import { TrialModalComponent } from '../trial-modal/trial-modal.component';
 import { LearnersService } from 'src/app/services/http/learners.service';
 import { TransactionService } from '../../../../../services/http/transaction.service';
 import Swal from 'sweetalert2';

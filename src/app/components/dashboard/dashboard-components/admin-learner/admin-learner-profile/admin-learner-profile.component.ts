@@ -200,7 +200,8 @@ export class AdminLearnerProfileComponent implements OnInit {
   */
  modalTemplate(command, whichLearner, title) {
     const modalRef = this.modalService
-    .open(ModelTemplateComponent,{ windowClass: 'my-class', backdrop: 'static', keyboard: false });
+    //@ts-ignore
+    .open(ModelTemplateComponent,{ size:'xl', backdrop: 'static', keyboard: false });
     let that = this;
     modalRef.result.then(
       (res) => {
@@ -218,7 +219,8 @@ export class AdminLearnerProfileComponent implements OnInit {
     detail modal
   */
   detailModal(command, whichLearner) {
-    const modalRef = this.modalService.open(LearnerDetailModalComponent, {windowClass: 'my-class', backdrop: 'static', keyboard: false });
+    //@ts-ignore
+    const modalRef = this.modalService.open(LearnerDetailModalComponent, {size:'xl', backdrop: 'static', keyboard: false });
     modalRef.componentInstance.command = command;
     modalRef.componentInstance.whichLearner = whichLearner;
   }
@@ -226,7 +228,8 @@ export class AdminLearnerProfileComponent implements OnInit {
     Edit modal
   */
   EditModal(command, whichLearner) {
-    const modalRef = this.modalService.open(LearnerEditModalComponent, { windowClass: 'my-class', backdrop: 'static', keyboard: false });
+    //@ts-ignore
+    const modalRef = this.modalService.open(LearnerEditModalComponent, { size:'xl', backdrop: 'static', keyboard: false });
 
     let that = this;
     modalRef.result.then(
@@ -253,7 +256,8 @@ export class AdminLearnerProfileComponent implements OnInit {
     Add courses modal
   */
   addModal(command, whichLearner) {
-    const modalRef = this.modalService.open(LearnerAddModalComponent, { windowClass: 'my-class', backdrop: 'static', keyboard: false });
+    //@ts-ignore
+    const modalRef = this.modalService.open(LearnerAddModalComponent, { size:'xl', backdrop: 'static', keyboard: false });
     let that = this;
     modalRef.result.then(
       (res) => {
@@ -272,7 +276,8 @@ export class AdminLearnerProfileComponent implements OnInit {
     })
   }
   deleteCourseModal(whichLearner) {
-    const modalRef = this.modalService.open(LearnerDeleteCourseModalComponent, { windowClass: 'my-class', backdrop: 'static', keyboard: false });
+    //@ts-ignore
+    const modalRef = this.modalService.open(LearnerDeleteCourseModalComponent, { size:'xl', backdrop: 'static', keyboard: false });
 
     let that = this;
     modalRef.result.then(
