@@ -1,8 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { Router, ActivatedRoute } from '@angular/router';
 import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { FormBuilder, Validator, Validators, RequiredValidator } from '@angular/forms';
-import { TransactionService } from '../../../../../../services/http/transaction.service';
+import { FormBuilder, Validators } from '@angular/forms';
 import { SessionsService } from '../../../../../../services/http/sessions.service';
 import { SessionEdit } from '../../../../../../models/SessionEdit';
 import { TimePickerComponent } from "src/app/components/dashboard/dashboard-components/time-picker/time-picker.component"
@@ -30,8 +28,6 @@ export class SessionDetailEditModalComponent implements OnInit {
     public activeModal: NgbActiveModal,
     private fb: FormBuilder,
     public modalService: NgbModal,
-    private transactionService: TransactionService,
-    private router: Router,
     private sessionsService: SessionsService,
     private datePipe: DatePipe,
   ) {
@@ -107,6 +103,7 @@ export class SessionDetailEditModalComponent implements OnInit {
 
   getTeachers = (branchId) => {
     this.TeacherSelects = this.BranchSelects.filter(s => s.OrgId == branchId)[0].Teacher;
+    console.log(this.TeacherSelects, this.BranchSelects)
   }
 
   // confirm Modal

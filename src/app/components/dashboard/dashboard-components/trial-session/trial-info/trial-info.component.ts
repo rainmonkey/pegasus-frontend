@@ -94,8 +94,7 @@ export class TrialInfoComponent implements OnInit {
         this.learners = res[6]['Data'];
       },
       (err) => {
-        // alert('Sorry, something went wrong.')
-        Swal.fire({  type: 'error',  title: 'Oops...', text: 'Sorry, something went wrong'+err.error.ErrorMessage });        
+        Swal.fire({  type: 'error',  title: 'Oops...', text: 'Sorry, something went wrong'+err.error.ErrorMessage });
       }
     );
   }

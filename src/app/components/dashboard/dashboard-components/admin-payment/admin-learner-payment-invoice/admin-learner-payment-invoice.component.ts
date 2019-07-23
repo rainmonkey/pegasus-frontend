@@ -250,7 +250,6 @@ export class AdminLearnerPaymentInvoiceComponent implements OnInit, OnDestroy {
   // }
 
   //有bug 页面如果刷新，则无法取到正确的this.learner的值, 采用判断数据类型的方法分类
-  //due date存在长度问题
   downloadPDFReady(index: number) {
     let learnerName = {} as IInvoiceLearnerName
     if (typeof this.learner == "string") {
