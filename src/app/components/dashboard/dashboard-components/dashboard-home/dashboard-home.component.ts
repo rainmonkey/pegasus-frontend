@@ -64,11 +64,13 @@ export class DashboardHomeComponent implements OnInit, AfterViewInit {
 
   // Fires when the component is ready for use when all queries and inputs have been resolved
   ngOnInit(): void {
+    console.log('ajfiew')
     // Subscribe for all the to dos
     this.getToDoList();
     let orgString = localStorage.getItem('OrgId').slice(1,-1);
     this.dashboardService.getStatistic(orgString).subscribe(
       res=>{
+        console.log(res)
         this.messages = res.Data;
       }
     )
