@@ -1,7 +1,10 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { FormBuilder, Validators, Form, FormGroup, FormArray } from '@angular/forms';
-import { InventoriesService } from 'src/app/services/http/inventories.service'
+import { InventoriesService } from 'src/app/services/http/inventories.service';
+import { PostProduct } from 'src/app/models/PostProduct';
+import { ProductIdQty } from 'src/app/models/ProductIdQty';
+import { connectableObservableDescriptor } from 'rxjs/internal/observable/ConnectableObservable';
 
 @Component({
   selector: 'app-stock-application-detail-modal',
@@ -19,23 +22,28 @@ export class StockApplicationDetailModalComponent implements OnInit {
   public staffName: string;
   public prodCats: any[] = [];
   public prodTypes: any[] = [];
-  public products: any[] = [];
-  public errorMessage: any;
-  public previousI: number = null;
-  
+  public prodNames: any[] = [];
+  public getPostProduct: PostProduct;
+  public errorMessage: string;
+  public isDeleted: boolean[] = [];
 
   constructor(private activeModal: NgbActiveModal,
-              private fb: FormBuilder,
-              private inventoriesService: InventoriesService) { }
+    private fb: FormBuilder,
+    private inventoriesService: InventoriesService) { }
 
   ngOnInit() {
     this.getLocalStorage();
-    this.getProdCats();
-    // this.getProducts();
-    // this.getProdByType(1);
+    this.getProdCats(0);
+    console.log('isDelete', this.isDeleted)
+    this.isDeleted[0] = true;
     this.applicationFrom = this.fb.group(this.formGroupAssemble());
+    console.log('prod type', this.prodTypes, 'prod name', this.prodNames)
   }
-  
+  /* get form control method */
+  get applyReason() { return this.applicationFrom.get('applyReason') }
+  get productIdQty() { return this.applicationFrom.get('productIdQty') as FormArray }
+  // get appliedQty() { return this.productIdQty.get('appliedQty') }
+
   /* form group obj */
   formGroupAssemble() {
     return {
@@ -49,12 +57,10 @@ export class StockApplicationDetailModalComponent implements OnInit {
       prodCat: ['', Validators.required],
       prodType: ['', Validators.required],
       prod: ['', Validators.required],
-      appliedQty: [null, Validators.required]
+      appliedQty: [0, [Validators.required, Validators.pattern('[0-9]*')]]
     })
   }
-  get productIdQty() {
-    return this.applicationFrom.get('productIdQty') as FormArray;
-  }
+
   /* get data from local storage */
   getLocalStorage() {
     let orgIdArr = localStorage.getItem('staffId');
@@ -66,101 +72,139 @@ export class StockApplicationDetailModalComponent implements OnInit {
   /* get data from server */
   errHandler(err: any) {
     console.warn(err);
-    if (err.error.ErrorMessage != null) {
-      this.errorMessage = err.error.ErrorMessage;
+    if (err.ErrorMessage != null) {
+      this.errorMessage = err.ErrorMessage;
     } else {
       this.errorMessage = 'Error! Can Not Catch Data!';
     }
   }
-  getProdCats() {
-    // this.previousI = i;
-    // console.log('previousI', i,this.previousI );
-
+  getProdCats(i: number) {
     this.inventoriesService.getProdCats().subscribe(
       res => {
-        // let tempProdCats = [];
-        // tempProdCats = res['Data'];
-        // this.prodCats.push(tempProdCats)
-        // console.log('prodCats', this.prodCats)
-        this.prodCats = res['Data']
+        this.prodCats[i] = res['Data']
+        // console.log('prodCat', i, this.prodCats[i])
       },
       err => this.errHandler(err)
     )
   }
-  getProdTypeByCat(cateId: number, i) {
+  getProdTypeByCat(cateId: number, i: number) {
     this.inventoriesService.getProdTypeByCat(cateId).subscribe(
       res => {
-        // console.log('prodTypes', res['Data'][0]['ProdType'])
-        // let tempProdTypes = [];
-        // tempProdTypes = res['Data'][0].ProdType;
-        // this.prodTypes.push(tempProdTypes);
-        // console.log('prodTypes', this.prodTypes)
-        this.prodTypes = res['Data'][0].ProdType;
+        this.prodTypes[i] = res['Data'][0].ProdType;
+        console.log('prodTypes', i, this.prodTypes)
       },
       err => this.errHandler(err)
     )
   }
-  getProdByType(typeId: number) {
+  getProdByType(typeId: number, i) {
     this.inventoriesService.getProdByType(typeId).subscribe(
       res => {
-        // console.log('prod', res['Data'])
-        // let tempProducts = res['Data'];
-        // this.products.push(tempProducts);
-        // console.log('prod', this.products)
-        this.products = res['Data'];
+        this.prodNames[i] = res['Data'];
+        console.log('prodName', i, this.prodNames)
       },
       err => this.errHandler(err)
     )
   }
   /* event form HTML */
   deleteForm(i: number) {
+    this.prodTypes.splice(i, 1);
+    this.prodNames.splice(i, 1)
+    console.log('delete prodTypes', i, this.prodTypes, 'delete prodNames', this.prodNames)
     this.productIdQty.removeAt(i);
-    console.log('delete', i, this.productIdQty.value)
+    let prodLength = this.productIdQty.length;
+    if (prodLength == 1) {
+      for (let i in this.productIdQty.value) {
+        console.log('i', i)
+        this.isDeleted[i] = true;
+      }
+    }
   }
-  addProds(i): void {
-    this.previousI = i;
-    let tempObj = {};
-    tempObj['cate'] = this.prodCats;
-    tempObj['type'] = this.prodTypes;
-    tempObj['prod'] = this.products;
-    let tempProductIdQty = [];
-    tempProductIdQty.push(tempObj)
-    // this.productIdQty.push(this.createProd());
-    // tempProductIdQty.push(this.productIdQty)
+  addNewProd(): void {
+    let prodLength = this.productIdQty.length;
+    console.log('prodLength', prodLength);
+    this.getProdCats(prodLength);
     this.productIdQty.push(this.createProd());
-    console.log('add', tempProductIdQty)
+    console.log('add productIdQty',this.productIdQty, this.checkProductIdQty() )
+    // this.checkProductIdQty()
+    if (prodLength > 1 || prodLength == 1) {
+      for (let i in this.productIdQty.value) {
+        console.log('i', i)
+        this.isDeleted[i] = false;
+      }
+    }
+    // console.log('add prodTypes', i, this.prodTypes, 'add prodNames', this.prodNames)
   }
-  resetForm(i: number) {
-    // this.productIdQty[i].reset([]);
-    // this.productIdQty.controls[i]
-    this.productIdQty.controls[i].value.prodCat=""
-    // this.productIdQty.setValue([
-    //   {
-    //     prodCat: '',
-    //     prodType: '',
-    //     prod: '',
-    //     appliedQty: ''
-    //   },
-    //   {
-    //     prodCat: '',
-    //     prodType: '',
-    //     prod: '',
-    //     appliedQty: ''
-    //   },
-    // ]);
-    console.log('reset', i, this.productIdQty.value,this.productIdQty.value[i])
-    // console.log('reset form', this.createProd())
+
+  // post product 
+  dataToPost(): PostProduct {
+    let applyReason = this.applicationFrom.get('applyReason').value;
+    let productDetail: Array<ProductIdQty> = [];
+    for (let prod of this.productIdQty.value) {
+      let productId = Number(prod.prod);
+      let appliedQty = prod.appliedQty;
+      let productIdQty = new ProductIdQty(productId, appliedQty);
+      productDetail.push(productIdQty);
+    }
+    let postProduct = new PostProduct(this.orgId, this.staffId, applyReason, productDetail);
+    console.log('dataToPost', postProduct)
+    return postProduct;
   }
-  // getProducts() {
-  //   this.inventoriesService.getProdts().subscribe(
-  //     res => {
-  //       console.log('prods', res['Data'])
-  //       res['Data'].map((prod) => {
-  //         // this.prodCats = prod.prodType
-  //       })
-  //     },
-  //     err => this.errHandler(err)
-  //   ) 
-  // }
- 
+  postProduct() {
+    this.inventoriesService.postProduct(this.dataToPost()).subscribe(
+      res => {
+        this.getPostProduct = res;
+        console.log('postdata', res)
+      },
+      err => this.errHandler(err)
+    )
+  }
+  submitOrder() {
+    this.checkInputValue();
+    // this.postProduct()
+  }
+  /* algorithm for add or minus prod number */
+  minusProd(i: number) {
+    let appliedQty = this.productIdQty.controls[i].get('appliedQty');
+    let currentNumber = parseInt(appliedQty.value);
+    let minusNumber = currentNumber - 1;
+    appliedQty.setValue(minusNumber);
+    //  console.log('minusNumber', minusNumber)  
+  }
+  increaseProd(i: number) {
+    let appliedQty = this.productIdQty.controls[i].get('appliedQty');
+    let currentNumber = parseInt(appliedQty.value);
+    let increaseNumber = currentNumber + 1;
+    appliedQty.setValue(increaseNumber);
+    //  console.log('increaseNumber', increaseNumber)
+  }
+  /* check whether data valid or not (ruled by Validators) */
+  checkInputValue() {
+    if(this.applicationFrom.status == 'INVALID') {
+      if(this.checkAppliedQty() && this.checkProductIdQty()) {
+        console.log('please check your input')
+      }
+    }
+    
+    // for (let i of this.applicationFrom.controls) {
+    //   console.log('check', i)
+    // }
+  }
+  checkAppliedQty() {
+    console.log('checkAppliedQty', this.applicationFrom)
+    if(this.applyReason.status == "INVALID") {
+      return true
+    } else {
+      return false
+    }
+  }
+  checkProductIdQty() {
+    console.log('checkProductIdQty', this.productIdQty)
+    if(this.productIdQty.status == "INVALID") {
+      for(let prod of this.productIdQty.controls) {
+        if(prod.status == "INVALID") {
+          return true
+        }
+      }
+    }
+  }
 }
