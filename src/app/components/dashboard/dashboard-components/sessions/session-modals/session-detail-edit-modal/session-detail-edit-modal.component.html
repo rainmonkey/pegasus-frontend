@@ -29,7 +29,6 @@
         <div>
           <label class="mt-2">Branch</label>
           <select [class.is-invalid]="Branch.invalid && Branch.touched" class="form-control" type="text" (change)="getRooms($event.target.value)" (change)="getTeachers($event.target.value)" formControlName="Branch">
-            <!--              <option selected disabled [value]="LessonModel.Branch">{{LessonModel.Branch}}</option>-->
             <option *ngFor="let branch of BranchSelects" [value]="branch.OrgId">
               {{branch.OrgName}}
             </option>
@@ -48,9 +47,11 @@
       <div class="col-5">
         <label class="mt-2">Begining at</label>
         <input class="form-control" [value]="LessonModel.BeginTime" type="datetime-local" formControlName="BeginTime" />
-        <button class="btn btn-primary mt-2 mb-4" (click)="openTimePicker()">Time Picker</button>
       </div>
-      <div class='col-5'></div>
+      <div class='col-3'>
+        <button class="btn btn-primary mt-4 py-3" *ngIf="Teacher.value && Branch.value && Room.value" (click)="openTimePicker()">Time Picker</button>
+      </div>
+      <div class="col-2"></div>
       <div class="col-10">
         <label class="mt-2">Reason</label>
         <input [class.is-invalid]="Reason.invalid && Reason.touched" class="form-control" type="text" formControlName="Reason" />

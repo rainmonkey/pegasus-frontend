@@ -23,7 +23,7 @@ export class TrialInfoComponent implements OnInit {
   public groupCoursesInstance;
   public teachingCourses;
   public popUpFlag: boolean = false;
-  public LearnerId;
+  public LearnerId: number;
   public learners;
   public lastRouteName: string
   public arrangeUrl;
@@ -45,12 +45,11 @@ export class TrialInfoComponent implements OnInit {
 
   ngOnInit() {
     this.getDataFromServer();
-    this.LearnerId = this.routerInfo.snapshot.queryParams.LearnerId || this.routerInfo.snapshot.params.learnerId;
+    this.LearnerId = +(this.routerInfo.snapshot.queryParams.LearnerId || this.routerInfo.snapshot.params.learnerId)
     if (this.routerInfo.snapshot.params.courseId) {
       this.arrangeCourseId = this.routerInfo.snapshot.params.courseId
       this.getCourseData()
     }
-
   }
 
   returnOnClick() {
@@ -94,7 +93,7 @@ export class TrialInfoComponent implements OnInit {
         this.learners = res[6]['Data'];
       },
       (err) => {
-        Swal.fire({  type: 'error',  title: 'Oops...', text: 'Sorry, something went wrong'+err.error.ErrorMessage });
+        Swal.fire({ type: 'error', title: 'Oops...', text: 'Sorry, something went wrong' + err.error.ErrorMessage });
       }
     );
   }

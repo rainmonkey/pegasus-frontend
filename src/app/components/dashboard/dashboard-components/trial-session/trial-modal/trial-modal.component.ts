@@ -8,6 +8,7 @@ import { TrialConfirmComponent } from '../trial-confirm/trial-confirm.component'
 import { CoursesService } from 'src/app/services/http/courses.service';
 import { TeachersService } from 'src/app/services/http/teachers.service';
 import { LearnersService } from 'src/app/services/http/learners.service';
+import { forkJoin } from 'rxjs';
 
 @Component({
   selector: 'app-trial-modal',
@@ -39,18 +40,23 @@ export class TrialModalComponent implements OnInit {
   public availableDOW;
   public learnerDetails;
   public LearnerLevel: number;
+  public course
+  public learner
+  public teachers
+  public teachingCourses;
+  public timeSlots
   //arrange
   public arrangeFlag: boolean = false
 
   @Input() termPeriod: Array<any>; //this.coursesService.getoioi()  => term.BeginDate
   @Input() courses;  //this.coursesService.getCourses()  => courseId, coursePrice
-  @Input() orgName;  // ok 不需要
-  @Input() orgId;   // ok
-  @Input() cateName; // ok 不需要
-  @Input() cateId;  // ok
+  @Input() orgName: string;  // ok
+  @Input() orgId: number;   // ok
+  @Input() cateName: string; // ok
+  @Input() cateId: number;  // ok
   @Input() teacherDetails;  //
-  @Input() LearnerId;  // ok
-  @Input() learners; // this.learnersService.getLearnerList()  => studentFullName LearnerLevel
+  @Input() LearnerId: number;  // ok
+  @Input() TeacherId: number
   @Input() coursesTeachingByWhichTeacher;  //this.coursesService.getLessonsByTeacherId(teacherId)
   // => start end
   //arrange
@@ -67,50 +73,65 @@ export class TrialModalComponent implements OnInit {
     private learnersService: LearnersService) { }
 
   ngOnInit() {
-    this.prepareData()
+    this.currentDay = this.transferTimestampToTime(new Date().getTime(), 1);
     if (this.duration) {
       this.arrangeFlag = true
     }
-    console.log(this.teacherDetails)
-    this.availableDOW = this.getAvailabelDOW(this.teacherDetails)
+    this.prepareData()
     //assign current day as semester begain day.
-    this.currentDay = this.transferTimestampToTime(new Date().getTime(), 1);
-    this.initFullCalendar(this);
+
+
   }
 
   prepareData() {
+    //timeslot有问题
+    let array: Array<any> = []
+
+    array.push(this.learnersService.getLearnerById(this.LearnerId))
     if (!this.termPeriod) {
-      this.coursesService.getoioi().subscribe(res => {
-        this.termPeriod = res["Data"]
-        console.log(this.termPeriod)
-      })
+      array.push(this.coursesService.getoioi())
     }
-
     if (!this.courses) {
-      this.coursesService.getCourses().subscribe(res => {
-        this.courses = res["Data"]
-        console.log(this.courses)
-      })
+      array.push(this.coursesService.getCourses())
     }
-
     if (!this.teacherDetails) {
-      let teachers;
-      this.teachersService.getTeachersInfo().subscribe(res => {
-        teachers = res["Data"]
-        console.log(teachers)
-      })
-
-      let teachingCourses;
-      this.teachersService.getTeachingCourse().subscribe(res => {
-        teachingCourses = res["Data"]
-        console.log(teachingCourses)
-      })
+      array.push(this.teachersService.getTeachersInfo())
+    }
+    if (!this.coursesTeachingByWhichTeacher) {
+      array.push(this.coursesService.getLessonsByTeacherId(this.TeacherId))
     }
 
-    this.learnersService.getLearnerById(this.LearnerId).subscribe(res => {
-      let learner = res["Data"]
-      this.studentFullName = learner.FirstName + ' ' + learner.LastName;
-      this.LearnerLevel = learner.LearnerLevel
+    forkJoin(array).subscribe(res => {
+      this.learner = res[0]["Data"]
+      let index = 1
+      if (!this.termPeriod) {
+        this.termPeriod = res[index]["Data"]
+        index++
+        console.log(this.termPeriod)
+      }
+      if (!this.courses) {
+        this.courses = res[index]["Data"]
+        index++
+        console.log(this.courses)
+      }
+      if (!this.teacherDetails) {
+        let teacherList = res[index]["Data"]
+        this.teacherDetails = teacherList.find(teacher => teacher.TeacherId == this.TeacherId)
+        index++
+        console.log(teacherList, this.TeacherId, this.teacherDetails)
+      }
+      if (!this.coursesTeachingByWhichTeacher) {
+        this.coursesTeachingByWhichTeacher = res[index]["Data"]
+        index++
+        console.log(this.coursesTeachingByWhichTeacher)
+      }
+
+      this.studentFullName = this.learner.FirstName + ' ' + this.learner.LastName;
+      this.LearnerLevel = this.learner.LearnerLevel
+      console.log(res, this.availableDOW, this.teacherDetails)
+      this.availableDOW = this.getAvailabelDOW(this.teacherDetails)
+      this.timeSlots = this.getAvailableTimeSlots()
+      this.initFullCalendar(this);
     })
   }
 
@@ -118,7 +139,6 @@ export class TrialModalComponent implements OnInit {
     initiate settings of full calendar mode
   */
   initFullCalendar(pointer) {
-    let timeSlots = this.getAvailableTime()
     this.options = {
       allDaySlot: false,
       height: 700,
@@ -128,8 +148,8 @@ export class TrialModalComponent implements OnInit {
       maxTime: '20:00',
       //each grid represents 15 min
       slotDuration: '00:15',
-      events: timeSlots,
-      selectConstraint: timeSlots,
+      events: this.timeSlots,
+      selectConstraint: this.timeSlots,
       select: function(info) {
         pointer.selectCallBack(info);
       },
@@ -165,10 +185,10 @@ export class TrialModalComponent implements OnInit {
     get teacher's available time.
       --> in order to pick a period of time to take the trial lesson.
   */
-  getAvailableTime() {
-    let array = [];
-    array = this.checkAvailableDOW(array, this.termPeriod);
-    array = this.checkAvailablePeriod(array);
+  getAvailableTimeSlots() {
+    let array = []
+    array = this.getAvailableTime(array, this.termPeriod);
+    array = this.addOccupiedTime(array);
     array.sort()
     let newObjArr = [];
     for (let i = 0; i < array.length; i += 2) {
@@ -197,7 +217,7 @@ export class TrialModalComponent implements OnInit {
       --> if available, push this day in an array,
           else, drop it.
   */
-  checkAvailableDOW(array, termPeriod?) {
+  getAvailableTime(array, termPeriod?) {
     for (let i in this.availableDOW) {
       if (this.availableDOW[i] == 7) {
         this.availableDOW[i] = 0;
@@ -208,7 +228,6 @@ export class TrialModalComponent implements OnInit {
       termPeriod = termPeriod.slice(1)
     }
     termPeriod[0].BeginDate = this.currentDay;
-    console.log(this.currentDay, termPeriod)
     //outer for-loop can support multiple semesters
     for (let j of termPeriod) {
       //check each day of a semester, if it is available, push it in an array, else drop it
@@ -228,9 +247,9 @@ export class TrialModalComponent implements OnInit {
       --> if a period of time is already taken(on lessons time), drop it from available time array,
           else push it to available time array.
   */
-  checkAvailablePeriod(array) {
-    let timeSlot = this.getTimeSlot()
-    for (let i of timeSlot) {
+  addOccupiedTime(array) {
+    let occupiedTimeSlots = this.getTimeSlot()
+    for (let i of occupiedTimeSlots) {
       if (Date.parse(i.start) >= Date.parse(this.currentDay)) {
         array.push(Date.parse(i.start));
         array.push(Date.parse(i.end));
@@ -272,20 +291,17 @@ export class TrialModalComponent implements OnInit {
   }
 
   prepareCourse(duration) {
-    let array: Array<any> = [];
     for (let i of this.courses) {
-      if (i.CourseType == 1 && this.teacherDetails.Level == i.TeacherLevel && i.CourseCategoryId == this.cateId
-        && i.Duration == duration && i.Level == this.LearnerLevel) {
-        array.push(i);
+      if (i.CourseType == 1 && this.teacherDetails.Level == i.TeacherLevel && i.Duration == duration && i.Level == this.LearnerLevel) {
+        this.course = i
         this.coursePrice = i.Price;
         this.courseId = i.CourseId;
       }
     }
-    if (array.length == 0) {
+    if (!this.course) {
       alert('Sorry, we do not have such course, please select another one.')
       return false;
     }
-
     return true;
   }
 

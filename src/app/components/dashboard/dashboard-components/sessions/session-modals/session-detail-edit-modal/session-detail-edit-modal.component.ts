@@ -50,7 +50,6 @@ export class SessionDetailEditModalComponent implements OnInit {
   }
 
   ngOnInit() {
-    console.log(this.LessonModel)
     this.SessionForm = this.fb.group({
       CourseName: [this.LessonModel.CourseName],
       Room: ['', [Validators.required]],
@@ -60,7 +59,6 @@ export class SessionDetailEditModalComponent implements OnInit {
       Reason: ['', [Validators.required]]
     });
     this.getBranchs();
-
   }
 
 
@@ -95,10 +93,14 @@ export class SessionDetailEditModalComponent implements OnInit {
   }
 
   openTimePicker = () => {
+    console.log(this.LessonModel, this.LessonModel.CourseName.split("-")[0])
+    let orgId: number = +this.SessionForm.get("Branch").value
+    let orgName: string = this.BranchSelects.find(branch => branch.OrgId == orgId).OrgName
     let modalRef = this.modalService.open(TrialModalComponent, { size: 'lg', backdrop: 'static', keyboard: false })
-    // modalRef.componentInstance.command = command;
     modalRef.componentInstance.LearnerId = this.LessonModel.LearnerId
-    console.log(this)
+    modalRef.componentInstance.TeacherId = this.LessonModel.TeacherId
+    modalRef.componentInstance.orgName = orgName
+    modalRef.componentInstance.orgId = orgId
   }
 
   ConfrimEdit = () => {
@@ -113,8 +115,8 @@ export class SessionDetailEditModalComponent implements OnInit {
       this.isEditSuccess = true;
       this.isloading = false;
       setTimeout(() => {
-          this.activeModal.dismiss('Cross click');
-        }, 1000);
+        this.activeModal.dismiss('Cross click');
+      }, 1000);
     },
       err => {
         this.isEditFail = true;
