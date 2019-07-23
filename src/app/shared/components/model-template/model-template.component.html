@@ -15,10 +15,13 @@
     <div *ngIf="learnerCourseTimeTable">
       <div class='container'>
         <div class='row justify-content-center'>
-          <p><span>Learner's Name:</span> <span><br>{{titleArray[0]}}</span></p>
+          <p>Learner's Name:</p> <p>{{titleArray[0]}}</p>
         </div>
         <div class='row justify-content-center'>
-          <p><span>Location:</span> <span><br>{{titleArray[1]}}</span></p>
+          <p>Location: <br>{{titleArray[1]}}</p>
+        </div>
+        <div class='row justify-content-center'>
+          <p>Start at {{learnerCourseTimeTable.event.start|date:'short'}}</p>
         </div>
       </div>
     </div>

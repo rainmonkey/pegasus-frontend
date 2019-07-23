@@ -1,12 +1,10 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { Router, ActivatedRoute } from '@angular/router';
 import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { FormBuilder, Validator, Validators, RequiredValidator } from '@angular/forms';
-import { TransactionService } from '../../../../../../services/http/transaction.service';
+import { FormBuilder, Validators } from '@angular/forms';
 import { SessionsService } from '../../../../../../services/http/sessions.service';
 import { SessionEdit } from '../../../../../../models/SessionEdit';
-import { TimePickerComponent } from "src/app/components/dashboard/dashboard-components/time-picker/time-picker.component"
-import Swal from 'sweetalert2';
+import { TrialModalComponent } from "src/app/components/dashboard/dashboard-components/trial-session/trial-modal/trial-modal.component"
+import Swal from "sweetalert2";
 
 @Component({
   selector: 'app-session-detail-edit-modal',
@@ -29,8 +27,6 @@ export class SessionDetailEditModalComponent implements OnInit {
     public activeModal: NgbActiveModal,
     private fb: FormBuilder,
     public modalService: NgbModal,
-    private transactionService: TransactionService,
-    private router: Router,
     private sessionsService: SessionsService,
   ) {
 
@@ -83,6 +79,7 @@ export class SessionDetailEditModalComponent implements OnInit {
 
   getTeachers = (branchId) => {
     this.TeacherSelects = this.BranchSelects.filter(s => s.OrgId == branchId)[0].Teacher;
+    console.log(this.TeacherSelects, this.BranchSelects)
   }
 
   // confirm Modal
@@ -98,9 +95,10 @@ export class SessionDetailEditModalComponent implements OnInit {
   }
 
   openTimePicker = () => {
-    let modalRef = this.modalService.open(TimePickerComponent, { size: 'lg', backdrop: 'static', keyboard: false })
+    let modalRef = this.modalService.open(TrialModalComponent, { size: 'lg', backdrop: 'static', keyboard: false })
     // modalRef.componentInstance.command = command;
-
+    modalRef.componentInstance.LearnerId = this.LessonModel.LearnerId
+    console.log(this)
   }
 
   ConfrimEdit = () => {
