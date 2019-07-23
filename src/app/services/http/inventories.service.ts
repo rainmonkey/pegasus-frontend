@@ -4,7 +4,7 @@ import { environment } from '../../../environments/environment.prod';
 import { Observable } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { throwError } from 'rxjs';
-import { PostProduct } from 'src/app/models/ApplyProduct';
+import { PostProduct } from 'src/app/models/PostProduct';
 
 @Injectable({
   providedIn: 'root'
@@ -49,7 +49,7 @@ export class InventoriesService {
 
   /* post data  */
   postProduct(product: PostProduct): Observable<any>{
-    return this.http.post(this.baseUrl, `StockApplication/${product}`)
+    return this.http.post(this.baseUrl+'StockApplication',product)
            .pipe(
              catchError(this.errorHandler)
            );

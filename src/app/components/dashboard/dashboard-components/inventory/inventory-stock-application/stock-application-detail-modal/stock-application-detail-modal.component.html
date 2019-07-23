@@ -7,73 +7,104 @@
 <div class="modal-body">
   <div class='t_mf_form'>
     <form [formGroup]='applicationFrom'>
-      <!-- first row -->
+      <!-- staff name and location -->
       <div class="row">
         <div class="col-6">
-          <label class='t_mf_label'>Staff Name:</label>&nbsp;
-          <input type="text" class='col-12 t_mf_input' [value]="staffName" readonly>
+          <label class="label__style">Staff Name:</label>
+          <input type="text" class="col-12 input__style" [value]="staffName" readonly>
         </div>
         <div class="col-6">
-          <label class='t_mf_label'>Location:</label>&nbsp;
-          <input type="text" class='col-12 t_mf_input' [value]="orgName" readonly>
+          <label class="label__style">Location:</label>&nbsp;
+          <input type="text" class="col-12 input__style" [value]="orgName" readonly>
         </div>
       </div>
-      <!-- second row -->
+      <!-- apply reason -->
       <div class="row">
         <div class="col-12">
-          <label class='t_mf_label'>Apply Reason:</label>&nbsp;
-          <small class='text-danger errorfontsmall' style='text-align: center'
-            *ngIf='applicationFrom.get("applyReason").invalid && applicationFrom.get("applyReason").touched'>required</small>
-          <input type="textarea" class='col-12 t_mf_input__textarea' formControlName='applyReason'
-            [class.t_mf_error_border]='applicationFrom.get("applyReason").invalid && applicationFrom.get("applyReason").touched'>
+          <label class="label__style col-12 p-0">Apply Reason:</label>
+          <input type="textarea" class="col-12 input__textarea--style" formControlName='applyReason'>
+          <!-- validator required -->
+          <div *ngIf="applyReason.invalid && (applyReason.dirty || applyReason.touched)">
+            <small *ngIf="applyReason.errors.required" class="alert__message--red">
+              Apply Reason is required.
+            </small>
+          </div>
+         </div>
         </div>
-      </div>
-      <!-- third row -->
+      <!-- productIdQty: FormArray -->
       <div formArrayName="productIdQty"
         *ngFor="let prods of applicationFrom.get('productIdQty').controls; let i = index">
         <div [formGroupName]="i">
-          <div class="d-flex justify-content-end" style="margin-top: 10px; margin-bottom: 10px;">
-            <button class="btn btn-info t_info_addmore_btn" (click)="deleteForm(i)">
+          <div class="d-flex justify-content-end">
+            <button class="btn btn-info my-2" [disabled]="isDeleted[i]" (click)="deleteForm(i)">
               <i class='fas fa-trash-alt'></i>
             </button>
           </div>
-          <!-- fourth row -->
+          <!-- product category and product type -->
           <div class="row">
             <div class="col-6">
-              <label class='t_mf_label' >Product Category:</label>&nbsp;
-              <select class='col-12 t_mf_input' formControlName="prodCat" 
+              <label class="label__style">Product Category:</label>&nbsp;
+              <select class="col-12 select__style" formControlName="prodCat" 
                  (change)="getProdTypeByCat($event.target.value, i)">
-                <option selected>choose..</option>
+                <option value="" selected disabled hidden>choose..</option>
                 <option *ngFor='let prodCat of prodCats[i]' [value]="prodCat.ProdCatId">{{prodCat.ProdCatName}}</option>
               </select>
+              <!-- validator required -->
+              <div *ngIf="prods.get('prodCat').invalid && (prods.get('prodCat').dirty || prods.get('prodCat').touched)">
+                <small *ngIf="prods.get('prodCat').errors.required" class="alert__message--red">
+                  Product Category is required.
+                </small>
+              </div>
             </div>
             <div class="col-6">
-              <label class='t_mf_label'>Product Type:</label>&nbsp;
-              <select class='col-12 t_mf_input' formControlName="prodType" (change)="getProdByType($event.target.value, i)">
-                <option selected>choose..</option>
-                <option *ngFor='let prodType of prodTypes[i]' [value]="prodType.ProdTypeId">{{prodType.ProdTypeName}}</option>
+              <label class="label__style">Product Type:</label>&nbsp;
+              <select class="col-12 select__style" formControlName="prodType" (change)="getProdByType($event.target.value, i)">
+                <option disabled>choose Product Category first</option>
+                <option *ngFor="let prodType of prodTypes[i]" [value]="prodType.ProdTypeId">{{prodType.ProdTypeName}}</option>
               </select>
+              <!-- validator required -->
+              <div *ngIf="prods.get('prodType').invalid && (prods.get('prodType').dirty || prods.get('prodType').touched)">
+                <small *ngIf="prods.get('prodType').errors.required" class="alert__message--red">
+                  Product Type is required.
+                </small>
+              </div>
             </div>
           </div>
-          <!-- fifth row -->
+          <!-- product name and product quantity -->
           <div class="row">
             <div class="col-6">
-              <label class='t_mf_label'>Product Name:</label>&nbsp;
-              <select class='col-12 t_mf_input' formControlName="prod">
-                <option selected>choose..</option>
-                <option *ngFor='let prod of products[i]' [value]="prod.ProductId">{{prod.ProductName}}</option>
+              <label class="label__style">Product Name:</label>&nbsp;
+              <select class="col-12 select__style" formControlName="prod">
+                <option disabled>choose Product Type first</option>
+                <option *ngFor='let prodName of prodNames[i]' [value]="prodName.ProductId">{{prodName.ProductName}}</option>
               </select>
+              <!-- validator required -->
+              <div *ngIf="prods.get('prod').invalid && (prods.get('prod').dirty || prods.get('prod').touched)">
+                <small *ngIf="prods.get('prod').errors.required" class="alert__message--red">
+                  Product Name is required.
+                </small>
+              </div>
             </div>
             <div class="col-6">
-              <label class='t_mf_label'>Product Quantity:</label>&nbsp;
-              <input type="number" class='col-12 t_mf_input' formControlName="appliedQty">
+              <label class="label__style">Product Quantity:</label>&nbsp;
+              <div class="col-12 p-0 d-inline-flex justify-content-around arithmetic__btn">
+                <button class="minus__btn" (click)="minusProd(i)">-</button>
+                <input type="text" class="input__number--style" formControlName="appliedQty">
+                <button class="increase__btn" (click)="increaseProd(i)">+</button>
+              </div>
+              <!-- validator required -->
+              <div *ngIf="prods.get('appliedQty').invalid && (prods.get('appliedQty').dirty || prods.get('appliedQty').touched)">
+                <small *ngIf="prods.get('appliedQty').errors.pattern" class="alert__message--red">
+                  Product Quantity must be a positive number
+                </small>
+              </div>
             </div>
           </div>
         </div>
       </div>
-      <!-- fifth row [disabled]="productIdQty.invalid" -->
+      <!-- add new product btn: [disabled]="productIdQty.invalid" -->
       <div class="d-flex justify-content-end" style="margin-top: 10px">
-        <button class="btn btn-info t_info_addmore_btn" (click)="addProds(i)">
+        <button class="btn btn-info t_info_addmore_btn" (click)="addNewProd(i)">
           <i class="fas fa-plus-circle"></i>
         </button>
       </div>
