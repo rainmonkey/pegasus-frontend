@@ -90,5 +90,9 @@ export class LearnersService {
     return this.http.get(this.baseUrl+'Lesson/'+'GetLessonsForLearner/'+learnerId)
   }
 
+  getMakeUpLesson(learnerId){
+    return this.http.get(this.baseUrl+'Session/'+'GetMakeupSessions/'+learnerId)
+  }
+
 
 }

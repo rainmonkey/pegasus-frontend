@@ -72,4 +72,13 @@ export class SessionsService {
     // @ts-ignore
     return this.http.put<any>(this.baseUrl + 'LessonReschedule/' + lessonId + '/' + localStorage.getItem('userID') + '/' + reason);
   }
+
+  GetSessionEditRoom(TeacherId, OrgId, beginTime) {
+    console.log(this.httpHeaders);
+    return this.http.get<any>(this.baseUrl + 'Room/' + TeacherId + '/' + OrgId + '/' + beginTime);
+  }
+  GetSessionEditRoomTwo(OrgId, StartTime, EndTime) {
+    console.log(this.httpHeaders);
+    return this.http.get<any>(this.baseUrl + 'RoomAvailableCheck/checkbylesson/' + OrgId + '/' + StartTime + '/' + EndTime);
+  }
 }
