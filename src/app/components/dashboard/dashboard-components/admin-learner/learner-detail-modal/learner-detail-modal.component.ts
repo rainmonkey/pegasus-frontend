@@ -24,7 +24,6 @@ export class LearnerDetailModalComponent implements OnInit {
   howKnowList = [];
   learnerLevelList = []
   levelTypeList = []
-  itemPayment = 'Payment For Item: '
   othersmsg = '';
   agreeFormMsg = '';
   howKnow: any
