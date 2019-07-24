@@ -66,21 +66,21 @@ export class SessionDetailEditModalComponent implements OnInit {
 
   getRooms = () => {
     // @ts-ignore
-    const dateDiff = Number(new Date(this.LessonModel.EndTime) - new Date(this.LessonModel.BeginTime))
+    const dateDiff = Number(new Date(this.LessonModel.EndTime) - new Date(this.LessonModel.BeginTime));
     if ((!this.Branch.touched || this.Branch.invalid) || (!this.Teacher.touched || this.Teacher.invalid)) {
       return;
     }
     this.sessionsService.GetSessionEditRoom(this.SessionForm.value.Teacher, this.SessionForm.value.Branch,
       this.SessionForm.value.BeginTime).subscribe(res => {
-        if (res.Data.length == 0) {
-          const EditBeginTime = new Date(this.SessionForm.value.BeginTime)
+        if (res.Data.length === 0) {
+          const EditBeginTime = new Date(this.SessionForm.value.BeginTime);
           const EditEndTime = new Date(this.SessionForm.value.BeginTime);
-          console.log(EditBeginTime.getMinutes().toString().length)
+          console.log(EditBeginTime.getMinutes().toString().length);
           EditEndTime.setMinutes(EditBeginTime.getMinutes() + (dateDiff / 60 / 1000));
           const BeginTime = EditBeginTime.getFullYear() + '-' + (EditBeginTime.getMonth() + 1) + '-' + EditBeginTime.getDate() + 'T' +
-            EditBeginTime.getHours() + ':' + (EditBeginTime.getMinutes().toString().length === 1 ? '0' + EditBeginTime.getMinutes().toString() : EditBeginTime.getMinutes())
+            EditBeginTime.getHours() + ':' + (EditBeginTime.getMinutes().toString().length === 1 ? '0' + EditBeginTime.getMinutes().toString() : EditBeginTime.getMinutes());
           const EndTime = EditEndTime.getFullYear() + '-' + (EditEndTime.getMonth() + 1) + '-' + EditEndTime.getDate() + 'T' +
-            EditEndTime.getHours() + ':' + (EditEndTime.getMinutes().toString().length === 1 ? '0' + EditEndTime.getMinutes().toString() : EditEndTime.getMinutes())
+            EditEndTime.getHours() + ':' + (EditEndTime.getMinutes().toString().length === 1 ? '0' + EditEndTime.getMinutes().toString() : EditEndTime.getMinutes());
           this.sessionsService.GetSessionEditRoomTwo(this.SessionForm.value.Branch, BeginTime, EndTime).subscribe(data => {
             this.RoomSelects = data.Data;
           });
@@ -98,9 +98,9 @@ export class SessionDetailEditModalComponent implements OnInit {
     });
   }
 
-  getTeachers = (branchId) => {
-    this.TeacherSelects = this.BranchSelects.filter(s => s.OrgId == branchId)[0].Teacher;
-    console.log(this.TeacherSelects, this.BranchSelects)
+  getTeachers = (branchId: number) => {
+    this.TeacherSelects = this.BranchSelects.filter(s => s.OrgId === branchId)[0].Teacher;
+    console.log(this.TeacherSelects, this.BranchSelects);
   }
 
   // confirm Modal
@@ -116,14 +116,20 @@ export class SessionDetailEditModalComponent implements OnInit {
   }
 
   openTimePicker = () => {
-    console.log(this.LessonModel, this.LessonModel.CourseName.split("-")[0])
-    let orgId: number = +this.SessionForm.get("Branch").value
-    let orgName: string = this.BranchSelects.find(branch => branch.OrgId == orgId).OrgName
-    let modalRef = this.modalService.open(TrialModalComponent, { size: 'lg', backdrop: 'static', keyboard: false })
-    modalRef.componentInstance.LearnerId = this.LessonModel.LearnerId
-    modalRef.componentInstance.TeacherId = this.LessonModel.TeacherId
-    modalRef.componentInstance.orgName = orgName
-    modalRef.componentInstance.orgId = orgId
+    // 返回正确时间 传入duration
+    console.log(this.LessonModel, this.LessonModel.CourseName.split('-')[0]);
+    const orgId: number = +this.SessionForm.get('Branch').value;
+    const orgName: string = this.BranchSelects.find(branch => branch.OrgId === orgId).OrgName;
+    const teacherId = +this.SessionForm.get('Teacher').value;
+    const modalRef = this.modalService.open(TrialModalComponent, { size: 'lg', backdrop: 'static', keyboard: false });
+    modalRef.componentInstance.LearnerId = this.LessonModel.LearnerId;
+    modalRef.componentInstance.TeacherId = teacherId;
+    modalRef.componentInstance.orgName = orgName;
+    modalRef.componentInstance.orgId = orgId;
+    modalRef.componentInstance.notDraggable = true;
+    modalRef.componentInstance.userSelectedTime.subscribe(res => {
+      console.log(res);
+    });
   }
 
   ConfrimEdit = () => {

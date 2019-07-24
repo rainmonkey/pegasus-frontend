@@ -2,8 +2,8 @@ import { LookUpsService } from 'src/app/services/http/look-ups.service';
 import { CoursesService } from 'src/app/services/http/courses.service';
 import { Component, OnInit, Input, Output, ViewChildren, EventEmitter } from '@angular/core';
 import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { ActivatedRoute, Router } from "@angular/router"
-import { DownloadPDFService, IInvoiceLearnerName, IInvoice } from "src/app/services/others/download-pdf.service"
+import { ActivatedRoute, Router } from '@angular/router';
+import { DownloadPDFService, IInvoiceLearnerName, IInvoice } from 'src/app/services/others/download-pdf.service';
 import { forkJoin } from 'rxjs';
 import Swal from 'sweetalert2';
 
@@ -26,8 +26,8 @@ export class TrialConfirmComponent implements OnInit {
   @Input() learnerId;
   @Input() courseId;
   @Input() studentFullName;
-  //arrange
-  @Input() arrangeFlag
+  // arrange
+  @Input() arrangeFlag;
   @Input() arrangeCourseInstance;
 
   @ViewChildren('radios') radios;
@@ -38,20 +38,20 @@ export class TrialConfirmComponent implements OnInit {
   public startTimeTem;
   public endTimeTem;
   public avaliableRoom;
-  public error: boolean = false;
+  public error = false;
   public loadingGifFlag = false;
   public successFlag = false;
   public extraFee: number;
   public extraFeeName: string;
-  private isPayNow: boolean = true;
+  private isPayNow = true;
 
   constructor(public activeModal: NgbActiveModal,
-    private modalService: NgbModal,
-    private lookupsService: LookUpsService,
-    private CoursesService: CoursesService,
-    private activatedRoute: ActivatedRoute,
-    private router: Router,
-    private downloadPDFService: DownloadPDFService
+              private modalService: NgbModal,
+              private lookupsService: LookUpsService,
+              private CoursesService: CoursesService,
+              private activatedRoute: ActivatedRoute,
+              private router: Router,
+              private downloadPDFService: DownloadPDFService
   ) { }
 
   ngOnInit() {
@@ -62,37 +62,37 @@ export class TrialConfirmComponent implements OnInit {
   }
 
   getDataFromServer() {
-    let LookUpsService7 = this.lookupsService.getLookUps(7);
-    let RoomAvailableCheckService = this.CoursesService.getAvailableRoom(this.orgId, this.startTime, this.endTime);
-    let LookUpsService17 = this.lookupsService.getLookUps(17);
+    const LookUpsService7 = this.lookupsService.getLookUps(7);
+    const RoomAvailableCheckService = this.CoursesService.getAvailableRoom(this.orgId, this.startTime, this.endTime);
+    const LookUpsService17 = this.lookupsService.getLookUps(17);
 
     forkJoin([LookUpsService7, RoomAvailableCheckService, LookUpsService17]).subscribe(
       (res) => {
-        this.paymentMethods = res[0]['Data'];
-        let allAvaliableRoom = res[1]['Data'];
-        let extraFee = res[2]['Data'];
+        this.paymentMethods = res[0].Data;
+        const allAvaliableRoom = res[1].Data;
+        const extraFee = res[2].Data;
         this.getExtraFee(extraFee);
         this.assignRandomRoom(allAvaliableRoom);
       },
       (err) => {
-        //alert('Sorry, something went wrong.')
+        // alert('Sorry, something went wrong.')
         Swal.fire({ type: 'error', title: 'Oops...', text: 'Sorry, something went wrong' + err.error.ErrorMessage });
       }
     );
   }
 
   assignRandomRoom(allAvaliableRoom) {
-    let length = allAvaliableRoom.length;
-    let randomNum = Math.floor(Math.random() * length) + 1;
+    const length = allAvaliableRoom.length;
+    const randomNum = Math.floor(Math.random() * length) + 1;
     this.avaliableRoom = allAvaliableRoom[randomNum];
-    //console.log(this.avaliableRoom)
+    // console.log(this.avaliableRoom)
   }
 
   getExtraFee(extraFee) {
-    for (let i of extraFee) {
+    for (const i of extraFee) {
       if (i.PropValue == 1) {
         this.extraFee = Number(i.PropName);
-        this.extraFeeName = i.Description
+        this.extraFeeName = i.Description;
       }
     }
 
@@ -111,29 +111,28 @@ export class TrialConfirmComponent implements OnInit {
   onSubmit() {
     if ((this.paymentMethodValue == null && this.isPayNow) && !this.arrangeFlag) {
       this.error = true;
-      return
-    }
-    else {
+      return;
+    } else {
       this.error = false;
     }
 
     this.loadingGifFlag = true;
     if (this.arrangeFlag) {
-      let dataToSubmit = this.prepareArrangeData()
-      console.log(dataToSubmit)
+      const dataToSubmit = this.prepareArrangeData();
+      console.log(dataToSubmit);
       this.CoursesService.arrangeCourse(localStorage.userID, dataToSubmit).subscribe(
         res => {
-          this.loadingGifFlag = false
+          this.loadingGifFlag = false;
           this.successFlag = true;
         },
         err => {
-          console.log(localStorage.userID, dataToSubmit, err)
-          this.loadingGifFlag = false
+          console.log(localStorage.userID, dataToSubmit, err);
+          this.loadingGifFlag = false;
         },
-      )
+      );
 
     } else {
-      let dataToSubmit = this.prepareTrialData();
+      const dataToSubmit = this.prepareTrialData();
       this.CoursesService.postTrialLesson(dataToSubmit).subscribe(
         (res) => {
           this.loadingGifFlag = false;
@@ -145,63 +144,63 @@ export class TrialConfirmComponent implements OnInit {
           // alert('Sorry,something went wrong in server.');
           Swal.fire({ type: 'error', title: 'Oops...', text: 'Sorry, something went wrong' + err.error.ErrorMessage });
         }
-      )
+      );
     }
   }
 
   prepareArrangeData() {
-    console.log(Number(this.learnerId))
-    let data = {
-      "LearnerId": Number(this.learnerId),
-      "RoomId": this.avaliableRoom.RoomId,
-      "TeacherId": this.teacherDetails.TeacherId,
-      "OrgId": this.orgId,
-      "BeginTime": this.startTime,
-      "Reason": "arrange course",
-      "CourseInstanceId": this.arrangeCourseInstance.CourseInstanceId
-    }
-    return data
+    console.log(Number(this.learnerId));
+    const data = {
+      LearnerId: Number(this.learnerId),
+      RoomId: this.avaliableRoom.RoomId,
+      TeacherId: this.teacherDetails.TeacherId,
+      OrgId: this.orgId,
+      BeginTime: this.startTime,
+      Reason: 'arrange course',
+      CourseInstanceId: this.arrangeCourseInstance.CourseInstanceId
+    };
+    return data;
   }
 
   prepareTrialData() {
-    let obj = {
-      "LearnerId": Number(this.learnerId),
-      "RoomId": this.avaliableRoom.RoomId,
-      "TeacherId": this.teacherDetails.TeacherId,
-      "OrgId": this.orgId,
-      "BeginTime": this.startTime,
-      "EndTime": this.endTime,
-      "PaymentMethod": this.paymentMethodValue,
-      "Amount": this.coursePrice + this.extraFee,
-      "StaffId": Number(localStorage.userID),
-      "TrialCourseId": this.courseId,
-      "IsPayNow": this.isPayNow,
-    }
-    return obj
+    const obj = {
+      LearnerId: Number(this.learnerId),
+      RoomId: this.avaliableRoom.RoomId,
+      TeacherId: this.teacherDetails.TeacherId,
+      OrgId: this.orgId,
+      BeginTime: this.startTime,
+      EndTime: this.endTime,
+      PaymentMethod: this.paymentMethodValue,
+      Amount: this.coursePrice + this.extraFee,
+      StaffId: Number(localStorage.userID),
+      TrialCourseId: this.courseId,
+      IsPayNow: this.isPayNow,
+    };
+    return obj;
   }
 
   closeModal() {
     this.closeModalFlag.emit(true);
-    this.activeModal.close('Cross click')
+    this.activeModal.close('Cross click');
     if (!this.arrangeFlag) {
-      this.router.navigate(["/learner/list"])
+      this.router.navigate(['/learner/list']);
     } else if (this.arrangeFlag) {
-      this.router.navigate(["/learner/credit/", this.learnerId])
+      this.router.navigate(['/learner/credit/', this.learnerId]);
     }
   }
 
   downloadPDFReady() {
-    let learnerName = {} as IInvoiceLearnerName
-    learnerName.firstName = this.studentFullName.split(" ")[0]
-    learnerName.lastName = this.studentFullName.split(" ")[1]
-    let invoice = {} as IInvoice
-    invoice.LessonQuantity = 1
-    invoice.CourseName = this.cateName
-    invoice.BeginDate = this.startTime
-    invoice.LessonFee = this.coursePrice
-    invoice.Other1Fee = this.extraFee
-    invoice.Other1FeeName = this.extraFeeName
-    invoice.TotalFee = this.coursePrice + this.extraFee
-    this.downloadPDFService.downloadPDF(learnerName, invoice)
+    const learnerName = {} as IInvoiceLearnerName;
+    learnerName.firstName = this.studentFullName.split(' ')[0];
+    learnerName.lastName = this.studentFullName.split(' ')[1];
+    const invoice = {} as IInvoice;
+    invoice.LessonQuantity = 1;
+    invoice.CourseName = this.cateName;
+    invoice.BeginDate = this.startTime;
+    invoice.LessonFee = this.coursePrice;
+    invoice.Other1Fee = this.extraFee;
+    invoice.Other1FeeName = this.extraFeeName;
+    invoice.TotalFee = this.coursePrice + this.extraFee;
+    this.downloadPDFService.downloadPDF(learnerName, invoice);
   }
 }
