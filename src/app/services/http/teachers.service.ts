@@ -8,55 +8,55 @@ import { environment } from '../../../environments/environment.prod';
 export class TeachersService {
   baseUrl: any = environment.baseUrl;
   httpHeaders: HttpHeaders;
-  token:string
+  token: string
 
 
   constructor(
-    private http:HttpClient
-    ) {  }
+    private http: HttpClient
+  ) { }
   // API Request headers
-  prepareHeaders(){
+  prepareHeaders() {
     this.token = localStorage.getItem('Token')
-    return this.httpHeaders = new HttpHeaders({'Authorization': "Bearer "+ localStorage.getItem('Token')})
+    return this.httpHeaders = new HttpHeaders({ 'Authorization': "Bearer " + localStorage.getItem('Token') })
   }
 
-  getTeachersInfo():any{
+  getTeachersInfo(): any {
     return this.http.get(this.baseUrl + 'teacher');
   }
 
-  deleteTeacher(teacherId):any{
+  deleteTeacher(teacherId): any {
     return this.http.delete(this.baseUrl + 'teacher/' + teacherId);
   }
 
-  getDropdownOptions():any{
+  getDropdownOptions(): any {
     return this.http.get(this.baseUrl + 'qualificationslanguagesorgs');
   }
 
-  getTeacherLevel():any{
+  getTeacherLevel(): any {
     return this.http.get(this.baseUrl + 'Lookups/1')
   }
 
-  searching(searchString,columnToSearch):any{
-    return this.http.get(this.baseUrl + 'teacher/' + searchString, columnToSearch) 
+  searching(searchString, columnToSearch): any {
+    return this.http.get(this.baseUrl + 'teacher/' + searchString, columnToSearch)
   }
 
-  addNew(data):any{
-    return this.http.post(this.baseUrl +'teacher',data)
+  addNew(data): any {
+    return this.http.post(this.baseUrl + 'teacher', data)
   }
 
-  update(data,teacherId):any{
+  update(data, teacherId): any {
     return this.http.put(this.baseUrl + 'teacher/' + teacherId, data)
   }
-  
-  getTeachingCourse():any{
-    return this.http.get(this.baseUrl + 'teachercourse'); 
+
+  getTeachingCourse(): any {
+    return this.http.get(this.baseUrl + 'teachercourse');
   }
-  
-  updateTeacherCoursePut(data):any{
-    return this.http.put(this.baseUrl + 'teachercourse',data)
+
+  updateTeacherCoursePut(data): any {
+    return this.http.put(this.baseUrl + 'teachercourse', data)
   }
-  updateTeacherCoursePost(data):any{
-    return this.http.post(this.baseUrl + 'teachercourse',data)
+  updateTeacherCoursePost(data): any {
+    return this.http.post(this.baseUrl + 'teachercourse', data)
   }
 
   getRooms(){

@@ -106,17 +106,13 @@ export class TrialSearchComponent implements OnInit {
         }
       }
     }
-    let hash = {};
-    let result = array1.reduce(function(item, next) {
-      hash[next.TeacherId] ? '' : hash[next.TeacherId] = true && item.push(next);
-      return item;
-    }, [])
-    if (result.length == 0) {
+    array1 = Array.from(new Set(array1))
+    if (array1.length == 0) {
       this.teacherExistsFlag = false
     } else {
       this.teacherExistsFlag = true
     }
-    return result;
+    return array1;
   }
 
   /*
@@ -127,10 +123,8 @@ export class TrialSearchComponent implements OnInit {
     this.coursesService.getoioi().subscribe(
       (res) => {
         this.termPeriod = res.Data;
-        //console.log(this.termPeriod)
       },
       (err) => {
-        //alert('Sorry, something went wrong in server.')
         Swal.fire({ type: 'error', title: 'Oops...', text: 'Sorry, something went wrong, ' + err.error.ErrorMessage });
       }
     )
@@ -250,7 +244,6 @@ export class TrialSearchComponent implements OnInit {
     modalRef.componentInstance.orgId = this.filters["OrgsId"];
     modalRef.componentInstance.courses = this.courses;
     modalRef.componentInstance.LearnerId = this.LearnerId;
-    modalRef.componentInstance.learners = this.learners;
     modalRef.componentInstance.coursesTeachingByWhichTeacher = coursesTeachingByWhichTeacher;
     if (this.arrangeCourseDetails) {
       modalRef.componentInstance.arrangeCourseInstance = this.arrangeCourseInstance
