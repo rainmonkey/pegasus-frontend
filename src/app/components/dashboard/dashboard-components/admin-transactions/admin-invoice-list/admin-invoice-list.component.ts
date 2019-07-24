@@ -117,8 +117,8 @@ export class AdminInvoiceListComponent implements OnInit {
       (res) => {
         this.terms = res.Data;
         for (const e of this.terms) {
-          this.termId = e.TermId;
-          if ((today >= new Date(e.BeginDate)) && (today <= new Date(e.EndDate))) {
+          this.termId = e["TermId"];
+          if ((today >= new Date(e["BeginDate"])) && (today <= new Date(e["EndDate"]))) {
             break;
           }
         }
@@ -159,11 +159,11 @@ export class AdminInvoiceListComponent implements OnInit {
       let searchBy: string;
       const searchingInputObj = document.getElementById('searchingInput');
 
-      (initValue == undefined) ? { searchString, searchBy } = { searchString: searchingInputObj.value, searchBy: 'FirstName' } :
+      (initValue == undefined) ? { searchString, searchBy } = { searchString: searchingInputObj["value"], searchBy: 'FirstName' } :
         { searchString, searchBy } = initValue;
 
       // If there is a value, do search. If there is no value, return the initial list.
-      if (searchingInputObj.value) {
+      if (searchingInputObj["value"]) {
         this.isSearchingFlag = true;
         this.myArray = this.temLearnerList.map(data => data.Learner);
         this.myArray = this.ngTable.searching(this.myArray, searchBy, searchString);
