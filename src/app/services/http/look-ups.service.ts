@@ -14,6 +14,7 @@ export class LookUpsService {
     4: Level
     7: payment methods
     8: durations
+    18: process status
   */
  
   getLookUps(id):any{

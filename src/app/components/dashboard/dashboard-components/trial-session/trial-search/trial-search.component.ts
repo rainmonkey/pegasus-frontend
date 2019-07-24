@@ -247,7 +247,7 @@ export class TrialSearchComponent implements OnInit {
     modalRef.componentInstance.coursesTeachingByWhichTeacher = coursesTeachingByWhichTeacher;
     if (this.arrangeCourseDetails) {
       modalRef.componentInstance.arrangeCourseInstance = this.arrangeCourseInstance
-      modalRef.componentInstance.duration = this.arrangeCourseDetails.Duration
+      modalRef.componentInstance.durationId = this.arrangeCourseDetails.Duration
     }
   }
 
