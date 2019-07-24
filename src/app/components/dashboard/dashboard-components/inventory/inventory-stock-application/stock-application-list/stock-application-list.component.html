@@ -38,7 +38,7 @@
         </div>
         <!--add more btn-->
         <div class="col-3">
-          <button class="btn btn-info btn__add--right" (click)="openDetailModal()">
+          <button class="btn btn-info btn__add--right" (click)="openAddModal()">
             + Add More
           </button>
         </div>
@@ -90,12 +90,15 @@
               <td>
                 <li *ngFor="let detail of item.ApplicationDetails">{{ detail.AppliedQty }}</li>
               </td>
-              <td>{{ item.ProcessStatus }}</td>
+              <td>{{ item.ProcessStatus | processStatus}}</td>
               <td>
+                <span class='tl_body_table_btn' style="margin-right: 1rem;" (click)="openDetailModal()">
+                  <i class='fas fa-info-circle'></i>
+                </span>
                 <span class='tl_body_table_btn' style="margin-right: 1rem;">
                   <i class='fas fa-pen'></i>
                 </span>
-                <span class='tl_body_table_btn'>
+                <span class='tl_body_table_btn' (click)="deleteModal()">
                   <i class='fas fa-trash-alt'></i>
                 </span>
               </td>

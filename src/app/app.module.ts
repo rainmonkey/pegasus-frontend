@@ -59,6 +59,10 @@ import { SessionsPanelComponent } from './components/dashboard/dashboard-compone
 import { SessionsCalendarViewAdminComponent } from './components/dashboard/dashboard-components/sessions/sessions-views/sessions-calendar-view-admin/sessions-calendar-view-admin.component';
 import { SessionsCalendarViewTutorComponent } from './components/dashboard/dashboard-components/sessions/sessions-views/sessions-calendar-view-tutor/sessions-calendar-view-tutor.component';
 import { SessionsListViewComponent } from './components/dashboard/dashboard-components/sessions/sessions-views/sessions-list-view/sessions-list-view.component';
+import { StockApplicationListComponent } from './components/dashboard/dashboard-components/inventory/inventory-stock-application/stock-application-list/stock-application-list.component';
+import { StockApplicationAddModalComponent } from './components/dashboard/dashboard-components/inventory/inventory-stock-application/stock-application-add-modal/stock-application-add-modal.component';
+import { StockApplicationDetailModalComponent } from './/components/dashboard/dashboard-components/inventory/inventory-stock-application/stock-application-detail-modal/stock-application-detail-modal.component';
+import { StockApplicationDeleteModalComponent } from './components/dashboard/dashboard-components/inventory/inventory-stock-application/stock-application-delete-modal/stock-application-delete-modal.component';
 import { ChangePasswordModalComponent } from './components/dashboard/dashboard-components/support/change-password-modal/change-password-modal.component';
 import { ChartingComponent } from './components/dashboard/dashboard-components/support/charting/charting.component';
 import { RatingModalComponent } from './components/dashboard/dashboard-components/support/rating-modal/rating-modal.component';
@@ -79,9 +83,6 @@ import { DashboardPanelComponent } from './components/dashboard/general/dashboar
 import { HeaderbarComponent } from './components/dashboard/general/headerbar/headerbar.component';
 import { SidebarComponent } from './components/dashboard/general/sidebar/sidebar.component';
 import { TestoneComponent } from './components/testcomponent/testone/testone.component';
-import { StockApplicationListComponent } from './components/dashboard/dashboard-components/inventory/inventory-stock-application/stock-application-list/stock-application-list.component';
-import { StockApplicationDetailModalComponent } from './components/dashboard/dashboard-components/inventory/inventory-stock-application/stock-application-detail-modal/stock-application-detail-modal.component';
-import { StockApplicationDeleteModalComponent } from './components/dashboard/dashboard-components/inventory/inventory-stock-application/stock-application-delete-modal/stock-application-delete-modal.component';
 import { LearnerItemComponent } from './shared/components/learner-item/learner-item.component';
 import { ModelTemplateComponent } from './shared/components/model-template/model-template.component';
 import { ColumnTitleFormatPipe } from './shared/pipes/column-title-format.pipe';
@@ -147,6 +148,8 @@ import { PageGroupListComponent } from './components/dashboard/dashboard-compone
 import { PageGroupFormComponent } from './components/dashboard/dashboard-components/admin-pageGroup/pageGroup-form/pageGroup-form.component';
 import { MessagerNotificationComponent } from './components/dashboard/general/messager/messager-notification/messager-notification.component';
 import { ConflictCheckComponent } from './components/dashboard/dashboard-components/conflict-check/conflict-check/conflict-check.component';
+import { ProcessStatusPipe } from './shared/pipes/process-status.pipe';
+import { StockApplicationFormComponent } from './components/dashboard/dashboard-components/inventory/inventory-stock-application/stock-application-form/stock-application-form.component';
 
 @NgModule({
   declarations: [
@@ -206,9 +209,6 @@ import { ConflictCheckComponent } from './components/dashboard/dashboard-compone
     TeacherPanelComponent,
     CourseDetailModalComponent,
     CourseDeleteModalComponent,
-    StockApplicationListComponent,
-    StockApplicationDetailModalComponent,
-    StockApplicationDeleteModalComponent,
     TestoneComponent,
     LearnerItemComponent,
     ModelTemplateComponent,
@@ -245,7 +245,10 @@ import { ConflictCheckComponent } from './components/dashboard/dashboard-compone
     RemindListComponent,
     RemindPanelComponent,
     StaffListComponent,
-
+    StockApplicationListComponent,
+    StockApplicationAddModalComponent,
+    StockApplicationDetailModalComponent,
+    StockApplicationDeleteModalComponent,
     SimplifyOrgPipe,
     TrialModalComponent,
     LearnerCreditPanelComponent,
@@ -282,6 +285,9 @@ import { ConflictCheckComponent } from './components/dashboard/dashboard-compone
 
     MessagerNotificationComponent,
     ConflictCheckComponent,
+    ProcessStatusPipe,
+    StockApplicationFormComponent,
+  
 
   ],
   imports: [
@@ -353,6 +359,7 @@ import { ConflictCheckComponent } from './components/dashboard/dashboard-compone
     StaffDeleteModalComponent,
     StaffDetailModalComponent,
     StaffEditModalComponent,
+    StockApplicationAddModalComponent,
     StockApplicationDetailModalComponent,
     StockApplicationDeleteModalComponent,
     InventoryDetailModalComponent,
