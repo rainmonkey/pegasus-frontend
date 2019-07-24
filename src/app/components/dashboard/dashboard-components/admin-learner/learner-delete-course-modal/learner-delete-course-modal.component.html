@@ -17,7 +17,7 @@
     </div>
 
     <div *ngIf='isGroupCourse' class='m-2'>
-      <div *ngFor='let groupCourse of whichLearner.LearnerGroupCourse '>
+      <div *ngFor='let groupCourse of whichLearner.LearnerGroupCourse, let i = index'>
         <br>
         <div class="card">
           <div class="card-body">
@@ -47,7 +47,7 @@
                   {{groupCourse.GroupCourseInstance.Teacher.LastName}}
                 </span>
                 <p class='text'>Edit End Day:</p>
-                <input type="date" [(ngModel)]="groupEndDate" required>
+                <input type="date" (change)='changeGroupDate($event,i)' required>
               </div>
 
               <div class="col-6">
@@ -58,7 +58,7 @@
                 </div>
               </div>
               <div class='col-6'>
-                <button (click)='onSubmit(groupCourse)'>Submit End Date</button>
+                <button (click)='onSubmit(groupCourse,i)'>Submit End Date</button>
               </div>
             </div>
           </div>
@@ -66,10 +66,14 @@
       </div>
     </div>
 
-    <!-- one2one Course -->
-    <div *ngIf='!isGroupCourse'>
+    <!-- <div [formGroup]="dateForm">
+      <div *ngFor="let array of list"></div>
+    </div> -->
 
-      <div *ngFor="let ele of whichLearner.One2oneCourseInstance" class='m-2'>
+    <!-- one2one Course -->
+    <div *ngIf='!isGroupCourse' [formGroup]="dateForm">
+      <div  formArrayName="ono2OneDateForm">
+      <div *ngFor="let ele of whichLearner.One2oneCourseInstance; let j = index" class='m-2'>
         <br>
         <div class="card">
           <div class="card-body">
@@ -101,14 +105,14 @@
                 <span class='text'>{{ele.BeginDate}}</span>
               </div>
 
-              <div class="col-6">
+              <div class="col-6" [formGroupName]="j">
                 <span class="label">Course End Day: </span>
                 <span class='text'>{{ele.EndDate}}</span>
                 <p class='text'>Edit End Day:</p>
-                <input type="date" [(ngModel)]="one2OneEndDate">
+                <input type="date" formControlName="OneEnd">
               </div>
               <div class='col-6'>
-                <button (click)='onSubmit(ele)'>Submit End Date</button>
+                <button (click)='onSubmit(ele, j)'>Submit End Date</button>
               </div>
 
               <div class="col-6">
@@ -125,7 +129,7 @@
     </div>
   </div>
 </div>
-
+</div>
 
 <!--modal footer-->
 <div class='modal-footer'>

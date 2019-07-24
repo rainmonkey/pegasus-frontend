@@ -1,6 +1,7 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { MessagerService } from 'src/app/services/repositories/messager.service';
 import { Animations } from '../../../../../../animation/chatting-animation';
+import { environment } from 'src/environments/environment.prod';
 
 @Component({
   selector: 'app-messager-subscribers',
@@ -15,6 +16,7 @@ export class MessagerSubscribersComponent implements OnInit {
   public subsOfStudents: Array<object>;
   public subsOfStaffs:Array<object>;
   public notiNum = 0;
+  public photoUrl:any = environment.photoUrl;
 
   @Output() onChattingWith = new EventEmitter();
 
@@ -35,9 +37,9 @@ export class MessagerSubscribersComponent implements OnInit {
   */
   getSubscribers(){
     let subscribers = this.messagerService.getSubscribers();
-    this.subsOfStaffs = subscribers.Item1;
-    this.subsOfTeacher = subscribers.Item2;
-    this.subsOfStudents = subscribers.Item3;
+    this.subsOfStaffs = subscribers.StaffList;
+    this.subsOfTeacher = subscribers.TeacherList;
+    this.subsOfStudents = subscribers.LearnerList;
   }
 
   /*

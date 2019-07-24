@@ -9,365 +9,923 @@
 </div>
 
 <div class='modal-body'>
-  <div>
-    <h4>Student Information</h4>
-    <div class="row lable-pos">
-      <div class="col-5">
-        <p style="font-weight: bold">Student Photo</p>
-        <div>
-          <img class="imageSize" src="{{photoUrl+whichLearner.Photo}}" (error)='setDefaultPhoto($event)'>
-        </div>
-      </div>
-
-      <div class="col-7">
-        <p style="font-weight: bold">ABRSM Certific</p>
-        <div>
-          <img class="G5imageSize" src="{{photoUrl+whichLearner.G5Certification}}" (error)='setDefaultPhoto1($event)'>
-        </div>
-      </div>
-
-      <div class="col-4">
-        <span class="label">First Name: </span>
-        <span class='text'>{{whichLearner.FirstName}}</span>
-      </div>
-
-      <div class="col-4" *ngIf='whichLearner.MiddleName'>
-        <span class="label">Middle Name: </span>
-        <span class='text'>{{whichLearner.MiddleName}}</span>
-      </div>
-
-      <div class="col-4">
-        <span class="label">Last Name: </span>
-        <span class='text'>{{whichLearner.LastName}}</span>
-      </div>
-
-      <div class="col-4">
-        <span class="label">Gender: </span>
-        <span class='text'>{{whichLearner.Gender | gender}}</span>
-      </div>
-
-      <div class="col-8">
-        <span class="label">Date of Birth: </span>
-        <span class='text'>{{whichLearner.Dob}}</span>
-      </div>
-      <br>
-      <div class="col-6">
-        <span class="label">Date of Enrollment: </span>
-        <span class='text'>{{whichLearner.EnrollDate}}</span>
-      </div>
+  <!-- tab分页 -->
 
 
-      <div *ngIf='whichLearner.Org' class="col-6">
-        <span class="label">Location: </span>
-        <span class='text'>{{whichLearner.Org.OrgName}}</span>
-      </div>
+  <!-- Student Information -->
+  <ngb-tabset>
+    <ngb-tab title="Student Information">
+      <ng-template ngbTabContent>
+        <div style="margin:20px;">
+          <div class="lable-pos">
+            <div class="row">
+              <div class="col-5">
+                <p style="font-weight: bold">Student Photo</p>
+                <div>
+                  <img class="imageSize" src="{{photoUrl+whichLearner.Photo}}" (error)='setDefaultPhoto($event)'>
+                </div>
+              </div>
 
-      <div class="col-6">
-        <span class="label">Contact Phone: </span>
-        <span class='text'>{{whichLearner.ContactNum}}</span>
-      </div>
+              <div class="col-7">
+                <p style="font-weight: bold">ABRSM Certific</p>
+                <div>
+                  <img class="G5imageSize" src="{{photoUrl+whichLearner.G5Certification}}"
+                    (error)='setDefaultPhoto1($event)'>
+                </div>
+              </div>
 
-      <div class="col-6">
-        <span class="label">Email: </span>
-        <span class='text'>{{whichLearner.Email}}</span>
-      </div>
+              <div class="col-4">
+                <span class="label">First Name: </span>
+                <span class='text'>{{whichLearner.FirstName}}</span>
+              </div>
 
-      <div class="col-6">
-        <span class="label">Physical Address: </span>
-        <span class='text'>{{whichLearner.Address}}</span>
-      </div>
+              <div class="col-4" *ngIf='whichLearner.MiddleName'>
+                <span class="label">Middle Name: </span>
+                <span class='text'>{{whichLearner.MiddleName}}</span>
+              </div>
 
-      <div class="col-6" *ngFor='let i of learnerLevelList'>
-        <span class="label">Current Level: </span>
-        <span class='text'>
-          {{i}}
-        </span>
-      </div>
+              <div class="col-4">
+                <span class="label">Last Name: </span>
+                <span class='text'>{{whichLearner.LastName}}</span>
+              </div>
 
-      <div class="col-6" *ngFor='let i of levelTypeList'>
-        <span class="label">Level Type: </span>
-        <span class='text'>
-          {{i}}
-        </span>
-      </div>
+              <div class="col-4">
+                <span class="label">Gender: </span>
+                <span class='text'>{{whichLearner.Gender | gender}}</span>
+              </div>
 
-      <div class="col-6">
-        <span class="label">Payment Period: </span>
-        <span class='text'>{{whichLearner.PaymentPeriod | paymentPeriod}}</span>
-      </div>
+              <div class="col-4">
+                <span class="label">Date of Birth: </span>
+                <span class='text'>{{whichLearner.Dob}}</span>
+              </div>
 
-      <div class="col-6">
-        <span class="label">Referrer: </span>
-        <span class='text'>{{whichLearner.Referrer}}</span>
-      </div>
 
-      <div class="col-6">
-        <span class="label">Is under 18?: </span>
-        <span class='text'>{{whichLearner.IsUnder18 | isUnder18}}</span>
-      </div>
+              <div class="col-4">
+                <span class="label">Date of Enrollment: </span>
+                <span class='text'>{{whichLearner.EnrollDate.replace('T', ' ')}}</span>
+              </div>
 
-    </div>
-  </div>
 
-  <hr>
-  <div>
-    <h4>Parent Information</h4>
-    <div class="row lable-pos" *ngFor="let learnerParent of whichLearner.Parent">
-      <div class="col-6">
-        <span class="label">Name: </span>
-        <span class='text'>{{learnerParent.FirstName}} {{learnerParent.LastName}}</span>
-      </div>
+              <!-- <div *ngIf='whichLearner.Org' class="col-4">
+              <span class="label">Location: </span>
+              <span class='text'>{{whichLearner.Org.OrgName}}</span>
+            </div> -->
 
-      <div class="col-6">
-        <span class="label">Relationship: </span>
-        <span class='text'>{{learnerParent.Relationship | relationship}}</span>
-      </div>
+              <div class="col-4">
+                <span class="label">Contact Phone: </span>
+                <span class='text'>{{whichLearner.ContactNum}}</span>
+              </div>
 
-      <div class="col-6">
-        <span class="label">Guardian's Phone: </span>
-        <span class='text'>{{learnerParent.ContactNum}}</span>
-      </div>
+              <div class="col-4">
+                <span class="label">Email: </span>
+                <span class='text'>{{whichLearner.Email}}</span>
+              </div>
 
-      <div class="col-6">
-        <span class="label">Email: </span>
-        <span class='text'>{{learnerParent.Email}}</span>
-      </div>
-    </div>
-  </div>
+              <div class="col-4">
+                <span class="label">Physical Address: </span>
+                <span class='text'>{{whichLearner.Address}}</span>
+              </div>
 
-  <hr>
-  <div>
-    <h4>Course</h4>
-    <div>
-      <div class="row lable-pos">
-        <button class="button-margin btn btn-outline-primary" (click)="chooseGroupCourse()">Group Course</button>
-        <button class=' btn btn-outline-primary' (click)="chooseCustomCourse()">One-on-One Course</button>
-      </div>
+              <div class="col-4">
+                <span class="label">Current Level: </span>
+                <span class='text'>
+                  {{whichLearner.learnerLevelName}}
+                </span>
+              </div>
 
-      <!-- Group Course -->
-      <div *ngIf='isGroupCourse'>
-        <div *ngFor='let groupCourse of whichLearner.LearnerGroupCourse '>
-          <br>
-          <div class="card">
-            <div class="card-body">
+              <div class="col-4">
+                <span class="label">Level Type: </span>
+                <span class='text'>
+                  {{whichLearner.levelTypeName}}
+                </span>
+              </div>
+
+              <div class="col-4">
+                <span class="label">Payment Period: </span>
+                <span class='text'>{{whichLearner.PaymentPeriod | paymentPeriod}}</span>
+              </div>
+
+              <div class="col-4">
+                <span class="label">Referrer: </span>
+                <span class='text'>{{whichLearner.Referrer}}</span>
+              </div>
+
+              <div class="col-4">
+                <span class="label">Is under 18?: </span>
+                <span class='text'>{{whichLearner.IsUnder18 | isUnder18}}</span>
+              </div>
+            </div>
+
+            <hr>
+            <!-- Others -->
+            <div>
+              <h4>Others</h4>
+
               <div class="row">
-                <div class="col-7">
-                  <span class="label">Course: </span>
-                  <span class='text'>{{groupCourse.GroupCourseInstance.Course.CourseName}}</span>
-                </div>
-
-                <div class="col-5">
-                  <span class="label">Teacher: </span>
-                  <span class='text'>{{groupCourse.GroupCourseInstance.Teacher.FirstName}}
-                    {{groupCourse.GroupCourseInstance.Teacher.LastName}}
-                  </span>
-                </div>
-
-                <div class="col-12">
-                  <span class="label">Location: </span>
-                  <span class='text'>
-                  {{groupCourse.GroupCourseInstance.OrgId|orgFormat}} {{groupCourse.GroupCourseInstance.Room.RoomName}}
-                  </span>
+                <div class="col-6">
+                  <div class="label">
+                    Why do you learn the piano:
+                  </div>
+                  <div *ngFor='let ele of otherValueList'>
+                    <div>
+                      <span class='text'> {{ele}}</span>
+                    </div>
+                  </div>
                 </div>
 
                 <div class="col-6">
-                  <span class="label">Schedule: </span>
-                  <div  *ngFor='let time of groupCourse.GroupCourseInstance.CourseSchedule'>
-                    <span class='text'>{{time.DayOfWeek|weekFormat}}
-                      {{time.BeginTime}} -- {{time.EndTime}}</span>
+                  <div class="label">
+                    How do you know about us:
+                  </div>
+                  <div>
+                    <div *ngFor='let ele of howKnowList'>
+                      <div>
+                        <span class='text'> {{ele}}</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <hr>
+
+            <!-- agreement file -->
+            <div class='row'>
+              <div class='col-6'>
+                <h5>
+                  Other Files: &nbsp;
+                </h5>
+
+                <div *ngIf="this.whichLearner.OtherfileUrl !== null" class='download'>
+                  <span (click)='clickOtherFileUrl()' download>{{othersmsg}}</span>
+                </div>
+                <div *ngIf="this.whichLearner.OtherfileUrl == null">
+                  <span>No Files</span>
+                </div>
+              </div>
+
+              <!-- Form Url -->
+              <div class='col-6'>
+                <h5>
+                  Enrollment Agreement: &nbsp;
+                </h5>
+                <div *ngIf="this.whichLearner.FormUrl !== null" class='download'>
+                  <span (click)='clickFormUrl()' download>{{othersmsg}}</span>
+                </div>
+                <div *ngIf="this.whichLearner.FormUrl == null">
+                  <span>No Files</span>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+
+        <hr>
+        <!-- parent information -->
+        <div style='margin:20px;'>
+          <h4>Parent Information</h4>
+          <div class="row" *ngFor="let learnerParent of whichLearner.Parent">
+            <div class="col-6">
+              <span class="label">Name: </span>
+              <span class='text'>{{learnerParent.FirstName}} {{learnerParent.LastName}}</span>
+            </div>
+
+            <div class="col-6">
+              <span class="label">Relationship: </span>
+              <span class='text'>{{learnerParent.Relationship | relationship}}</span>
+            </div>
+
+            <div class="col-6">
+              <span class="label">Guardian's Phone: </span>
+              <span class='text'>{{learnerParent.ContactNum}}</span>
+            </div>
+
+            <div class="col-6">
+              <span class="label">Email: </span>
+              <span class='text'>{{learnerParent.Email}}</span>
+            </div>
+          </div>
+        </div>
+
+      </ng-template>
+    </ngb-tab>
+
+
+
+
+    <!-- Group Course -->
+    <ngb-tab title="Group Course">
+      <ng-template ngbTabContent>
+        <div style='margin:20px'>
+
+          <div *ngIf='whichLearner.LearnerGroupCourse.length == 0 ||whichLearner.LearnerGroupCourse == null'>
+            No Course records
+          </div>
+
+          <div *ngIf='whichLearner.LearnerGroupCourse.length !== 0 '>
+          <div *ngFor='let groupCourse of whichLearner.LearnerGroupCourse '>
+            <br>
+            <div class="card">
+              <div class="card-body">
+                <div class="row">
+                  <div class="col-7">
+                    <span class="label">Course: </span>
+                    <span class='text'>{{groupCourse.GroupCourseInstance.Course.CourseName}}</span>
+                  </div>
+
+                  <div class="col-5">
+                    <span class="label">Teacher: </span>
+                    <span class='text'>{{groupCourse.GroupCourseInstance.Teacher.FirstName}}
+                      {{groupCourse.GroupCourseInstance.Teacher.LastName}}
+                    </span>
+                  </div>
+
+                  <div class="col-12">
+                    <span class="label">Location: </span>
+                    <span class='text'>
+                      {{groupCourse.GroupCourseInstance.OrgId|orgFormat}}
+                      {{groupCourse.GroupCourseInstance.Room.RoomName}}
+                    </span>
+                  </div>
+
+                  <div class="col-12">
+                    <span class="label">Schedule: </span>
+                    <span *ngFor='let time of groupCourse.GroupCourseInstance.CourseSchedule'>
+                      <span class='text'>{{time.DayOfWeek|weekFormat}}
+                        {{time.BeginTime}} -- {{time.EndTime}}</span>
+                    </span>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
+          </div>
         </div>
-      </div>
-</div>
+      </ng-template>
+    </ngb-tab>
 
-
-      <!-- one2one Course -->
-      <div *ngIf='isCustomCourse'>
-
-        <div *ngFor="let ele of whichLearner.One2oneCourseInstance">
-          <br>
-          <div class="card">
-            <div class="card-body">
-              <div class="row">
-                <div class="col-9">
-                  <span class="label">Course: </span>
-                  <span class='text'>{{ele.Course.CourseName}}</span>
-                </div>
-
-                <!-- Amendent History Button-->
-                <div class='col-3'>
-                  <button type="button" class="btn btn-outline-info btn-sm" (click)='openHistory(ele)'>Amendment History</button>
-                </div>
-
-                <!-- teacher无编辑 -->
-                <div class="col-12"  *ngIf='ele.Amendment.length == 0'>
-                  <span class="label">Teacher Name: </span>
-                  <span class='text'>{{ele.Teacher.FirstName}} {{ele.Teacher.LastName}}</span>
-                </div>
-
-                <!-- teacher有编辑 -->
-                <div class='col-12' *ngIf='ele.Amendment.length !== 0'>
-                  <span class="label">Teacher Name: </span>
-                  <span class='text line-trough'>{{ele.Teacher.FirstName}} {{ele.Teacher.LastName}}</span>
-
-                  <span class='text' *ngIf='ele.permanent'>===> {{ele.permanent.Teacher.FirstName}} {{ele.permanent.Teacher.LastName}}</span>
-
-                </div>
-
-                <!-- Org无编辑 -->
-                <div *ngIf='ele.Amendment.length == 0' class="col-12">
-                  <div *ngIf='ele.Org'>
-                    <span class="label">Location: </span>
-                    <span class='text'>{{ele.Org.OrgName}} {{ele.Room.RoomName}}</span>
+    <!-- one2one Course -->
+    <ngb-tab title="One-on-One Course">
+      <ng-template ngbTabContent>
+        <!-- one2one Course -->
+        <div style='margin:20px'>
+          <div *ngFor="let ele of whichLearner.One2oneCourseInstance">
+            <br>
+            <div class="card">
+              <div class="card-body">
+                <div class="row">
+                  <div class="col-9">
+                    <span class="label">Course: </span>
+                    <span class='text'>{{ele.Course.CourseName}}</span>
                   </div>
-                </div>
 
-                <!-- Org有编辑 -->
-                <div *ngIf='ele.Amendment.length !== 0' class="col-12">
-                  <div *ngIf='ele.Org'>
-                    <span class="label">Location: </span>
-                    <span class='text line-trough'>{{ele.Org.OrgName}} {{ele.Room.RoomName}}</span>
-
-                    <span class='text' *ngIf='ele.permanent'>  ===> {{ele.permanent.OrgId|orgFormat}} {{ele.permanent.Room.RoomName}}</span>
+                  <!-- Amendent History Button-->
+                  <div class='col-3'>
+                    <button type="button" class="btn btn-outline-info btn-sm" (click)='openHistory(ele)'>Amendment
+                      History</button>
                   </div>
-                </div>
 
-                <!-- startDay无编辑 -->
-                <div class="col-12" *ngIf='ele.Amendment.length ==0 && ele.BeginDate'>
-                  <span class="label">Course Start Day: </span>
-                  <span class='text'>{{ele.BeginDate.replace('T',' ')}}</span>
-                </div>
+                  <!-- teacher无编辑 -->
+                  <div class="col-12" *ngIf='ele.Amendment.length == 0'>
+                    <span class="label">Teacher Name: </span>
+                    <span class='text'>{{ele.Teacher.FirstName}} {{ele.Teacher.LastName}}</span>
+                  </div>
 
-                <!-- startDay有编辑 -->
-                <div class='col-12' *ngIf='ele.Amendment.length!==0 && ele.BeginDate'>
-                  <span class="label">Course Start Day: </span>
-                  <span class='text line-trough'>{{ele.BeginDate.replace('T',' ')}}</span>
+                  <!-- teacher有编辑 -->
+                  <div class='col-12' *ngIf='ele.Amendment.length !== 0'>
+                    <span class="label">Teacher Name: </span>
+                    <span class='text line-trough'>{{ele.Teacher.FirstName}} {{ele.Teacher.LastName}}</span>
+                    <span class='text' *ngIf='ele.permanent'> ===> {{ele.permanent.Teacher.FirstName}}
+                      {{ele.permanent.Teacher.LastName}}</span>
 
-                  <span class='text' *ngIf='ele.permanent'>  ===> {{ele.permanent.BeginDate.replace('T',' ')}}</span>
-                </div>
+                  </div>
 
-                <!-- End date 无编辑 -->
-                <div class="col-12" *ngIf='ele.Amendment.length == 0'>
-                  <span class="label"  *ngIf='ele.EndDate'>Course End Day:</span>
-                  <span class='text' *ngIf='ele.EndDate'>{{ele.EndDate.replace('T',' ')}}</span>
-                </div>
+                  <!-- Org无编辑 -->
+                  <div *ngIf='ele.Amendment.length == 0' class="col-12">
+                    <div *ngIf='ele.Org'>
+                      <span class="label">Location: </span>
+                      <span class='text'>{{ele.Org.OrgName}} {{ele.Room.RoomName}}</span>
+                    </div>
+                  </div>
 
+                  <!-- Org有编辑 -->
+                  <div *ngIf='ele.Amendment.length !== 0' class="col-12">
+                    <div *ngIf='ele.Org'>
+                      <span class="label">Location: </span>
+                      <span class='text line-trough'>{{ele.Org.OrgName}} {{ele.Room.RoomName}}</span>
+                      <span class='text' *ngIf='ele.permanent'> ===> {{ele.permanent.OrgId|orgFormat}}
+                        {{ele.permanent.Room.RoomName}}</span>
+                    </div>
+                  </div>
 
-                <!-- end date有编辑 -->
-                <div class='col-12' *ngIf='ele.Amendment.length !== 0 && ele.permanet' >
-                  <span class="label">Course End Day: </span>
-                  <span class='text' >{{ele.permanent.EndDate.replace('T', ' ')}}</span>
-                </div>
+                  <!-- startDay无编辑 -->
+                  <div class="col-12" *ngIf='ele.Amendment.length ==0 && ele.BeginDate'>
+                    <span class="label">Course Start Day: </span>
+                    <span class='text'>{{ele.BeginDate.replace('T',' ')}}</span>
+                  </div>
 
-                <div *ngIf='ele.Amendment.length == 0' class="col-12">
-                  <div *ngFor='let sechdule of ele.CourseSchedule'>
+                  <!-- startDay有编辑 -->
+                  <div class='col-12' *ngIf='ele.Amendment.length!==0 && ele.BeginDate'>
+                    <span class="label">Course Start Day: </span>
+                    <span class='text line-trough'>{{ele.BeginDate.replace('T',' ')}}</span>
+                    <span class='text' *ngIf='ele.permanent'> ===> {{ele.permanent.BeginDate.replace('T',' ')}}</span>
+                  </div>
+
+                  <!-- End date 无编辑 -->
+                  <div class="col-12" *ngIf='ele.Amendment.length == 0'>
+                    <span class="label" *ngIf='ele.EndDate'>Course End Day:</span>
+                    <span class='text' *ngIf='ele.EndDate'>{{ele.EndDate.replace('T',' ')}}</span>
+                  </div>
+
+                  <!-- end date有编辑 -->
+                  <div class='col-12' *ngIf='ele.Amendment.length !== 0 && ele.permanet'>
+                    <span class="label">Course End Day: </span>
+                    <span class='text'>{{ele.permanent.EndDate.replace('T', ' ')}}</span>
+                  </div>
+
+                  <div *ngIf='ele.Amendment.length == 0' class="col-12">
+                    <div *ngFor='let sechdule of ele.CourseSchedule'>
+                      <span class="label">Course Sechdule: </span>
+                      <span class='text'> {{sechdule.DayOfWeek|weekFormat}}
+                        {{sechdule.BeginTime.replace('T',' ')}} -- {{sechdule.EndTime.replace('T',' ')}} </span>
+                    </div>
+                  </div>
+
+                  <div *ngIf='ele.Amendment.length!==0' class="col-12">
                     <span class="label">Course Sechdule: </span>
-                    <span class='text'> {{sechdule.DayOfWeek|weekFormat}}
-                      {{sechdule.BeginTime.replace('T',' ')}} -- {{sechdule.EndTime.replace('T',' ')}} </span>
+                    <span *ngFor='let sechdule of ele.CourseSchedule'>
+                      <span class='text line-trough'> {{sechdule.DayOfWeek|weekFormat}} </span>
+                      <span class='text line-trough'> {{sechdule.BeginTime.replace('T',' ')}} -- </span>
+                      <span class='text line-trough'>{{sechdule.EndTime.replace('T',' ')}} </span>
+
+                      <span class='text' *ngIf='ele.permanent'> ===> {{ele.permanent.DayOfWeek|weekFormat}} </span>
+                      <span class='text' *ngIf='ele.permanent'>{{ele.permanent.BeginTime.replace('T',' ')}}</span> --
+                      <span class='text' *ngIf='ele.permanent'>{{ele.permanent.EndTime.replace('T',' ')}}</span>
+                    </span>
+                  </div>
+
+                  <!-- Amendment Reason -->
+                  <div *ngIf='ele.Amendment.length !== 0' class='col-12'>
+                    <span class='label'>Amendment Reason: </span>
+                    <span class='text' *ngIf='ele.permanent'>{{ele.permanent.Reason}}</span>
+                  </div>
+
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </ng-template>
+    </ngb-tab>
+
+    <ngb-tab title="Payment">
+      <ng-template ngbTabContent>
+        <div *ngIf='learnerPaymentList == null'>
+          No Payment Record
+        </div>
+
+        <div *ngIf='learnerPaymentList !== null'>
+          <div
+            *ngFor='let i of learnerPaymentList | slice: (currentPage-1)* pageSize : (currentPage-1) * pageSize + pageSize'>
+            <br>
+
+            <div class='card'>
+              <div class="card-body">
+                <div class='row'>
+
+                  <div *ngIf='i.PaymentType == 1' class='col-lg-12 col-sm-12'>
+                    <span class='header'>Payment For Lessons</span>
+                  </div>
+
+                  <div *ngIf='i.PaymentType == 2' class='col-lg-12 col-sm-12'>
+                    <span class='header'>{{itemPayment}} </span>
+                  </div>
+
+                  <div *ngIf='i.PaymentType == 3' class='col-lg-12 col-sm-12'>
+                    <span class='header'>Payment For Trial session </span>
+                  </div>
+
+                  <div *ngIf='i.PaymentType == 4' class='col-lg-12 col-sm-12'>
+                    <span class='header'>Payment For Registration </span>
+                  </div>
+
+                  <!-- 通用 -->
+                  <div class="col-lg-4  col-sm-6">
+                    <span class='label'>Payment Date: </span>
+                    <span class='text' *ngIf='i.CreatedAt'>{{i.CreatedAt.replace('T', ' ')}}</span>
+                  </div>
+
+                  <div class='col-lg-4  col-sm-6'>
+                    <span class='label'>Staff: </span>
+                    <span class='text' *ngIf='i.Staff'>{{i.Staff.FirstName}} {{i.Staff.LastName}}</span>
+                  </div>
+
+                  <div class="col-lg-4  col-sm-6">
+                    <span class='label'>Payment Method: </span>
+                    <span class='text' *ngIf='i.PaymentMethod'>
+                      {{i.paymentMethodName}}
+                    </span>
+                  </div>
+
+                  <!-- 非通用 上课可以先收一部分钱 -->
+                  <div class="col-lg-4 col-sm-6" *ngIf='i.PaymentType == 1'>
+                    <span class='label'>Amount received: </span>
+                    <span class='text' *ngIf='i.Amount'>
+                      ${{i.Amount}}
+                    </span>
+                  </div>
+
+                  <!-- 非通用，卖东西显示总价 -->
+                  <div class="col-lg-4 col-sm-6" *ngIf='i.PaymentType == 2 || 3 || 4'>
+                    <span class='label'>Total Amount: </span>
+                    <span class='text' *ngIf='i.Amount'>
+                      ${{i.Amount}}
+                    </span>
+                  </div>
+
+                  <!-- 非通用 卖的什么东西 -->
+                  <div class="col-lg-4 col-sm-6" *ngIf='i.PaymentType == 2'>
+                    <span class='label'>Items: </span>
+                    <span class='text' *ngIf='i.SoldTransaction'>
+                      <span *ngFor='let j of i.SoldTransaction'>
+                        {{j.Product.Brand}} {{j.Product.Model}} {{j.Product.ProductName}}
+                      </span>
+                    </span>
+                  </div>
+
+                  <!-- 非通用 课程名字 -->
+                  <div class="col-lg-4 col-sm-6" *ngIf='i.PaymentType == 1 '>
+                    <span class='label'>Items: </span>
+                    <span class='text' *ngIf='i.Invoice'>
+                      {{i.Invoice.CourseName}}
+                    </span>
+                  </div>
+
+
+                  <div class="col-lg-4  col-sm-6">
+                    <span class='label'>Payment Type: </span>
+                    <span class='text' *ngIf='i.PaymentMethod'>
+                      {{i.paymentTypeName}}
+                    </span>
+                  </div>
+
+                  <div class='col-lg-4  col-sm-6'>
+                    <span class='label'>Is Confirmed: </span>
+                    <span class='text' *ngIf='i.IsConfirmed'>{{i.IsConfirmed | IsTemporary}}</span>
+                  </div>
+
+                  <!-- Invoice非通用 -->
+                  <div class='col-lg-4  col-sm-6' *ngIf='i.PaymentType == 1'>
+                    <span class='label'>Invoice Number: </span>
+                    <span class='text' *ngIf='i.InvoiceNum'>{{i.Invoice.InvoiceNum}}</span>
+                  </div>
+
+                  <!-- 通用 -->
+                  <div class="col-lg-12 col-sm-12">
+                    <span class='label'>Comment: </span>
+                    <span class='text' *ngIf='i.Comment'>{{i.Comment}}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <br>
+
+        <ngb-pagination [collectionSize]="paymentListLength" [(page)]='currentPage' [maxSize]='10'
+          aria-label="Default pagination" [pageSize]='pageSize'>
+        </ngb-pagination>
+
+      </ng-template>
+    </ngb-tab>
+
+    <ngb-tab title="invoice">
+      <ng-template ngbTabContent>
+        <div *ngIf='learnerInvoiceList == null'>
+          No Invoice Record
+        </div>
+
+        <div *ngIf='learnerInvoiceList !== null'>
+          <div
+            *ngFor='let i of learnerInvoiceList | slice: (currentPage-1)* pageSize : (currentPage-1) * pageSize + pageSize'>
+            <br>
+
+            <div class='card'>
+              <div class="card-body">
+                <div class='row'>
+
+                  <div class='col-lg-4 col-sm-6'>
+                    <span class='label'>Invoice Number: </span>
+                    <span class='text' *ngIf='i.InvoiceNum'>{{i.InvoiceNum}}</span>
+                  </div>
+
+                  <div class='col-lg-5 col-sm-6'>
+                    <span class='label'>Period: </span>
+                    <span class='text' *ngIf='i.BeginDate && i.EndDate'>{{i.BeginDate.replace('T', ' ')}} ~
+                      {{i.EndDate.replace('T',' ')}}</span>
+                  </div>
+
+                  <div class='col-lg-3 col-sm-6'>
+                    <span class='label'>Due Date: </span>
+                    <span class='text' *ngIf='i.DueDate'>{{i.DueDate.replace('T', ' ')}}</span>
+                  </div>
+
+                  <div class='col-lg-4 col-sm-6'>
+                    <span class='label'>Course: </span>
+                    <span class='text' *ngIf='i.CourseName'>{{i.CourseName}}</span>
+                  </div>
+
+                  <div class='col-lg-5 col-sm-6'>
+                    <span class='label'>Course Quantity: </span>
+                    <span class='text' *ngIf='i.LessonQuantity'>{{i.LessonQuantity}}</span>
+                  </div>
+
+                  <div class='col-lg-3 col-sm-6'>
+                    <span class='label'>Is Paid: </span>
+                    <span class='text' *ngIf='i.IsPaid !== null'>{{i.IsPaid|IsTemporary}}</span>
+                  </div>
+
+                  <div class='col-lg-2 col-sm-6'>
+                    <span class='label'>Paid Fee: </span>
+                    <span class='text' *ngIf='i.PaidFee'>${{i.PaidFee}}</span>
+                  </div>
+
+                  <div class='col-lg-2 col-sm-6'>
+                    <span class='label'>Owing Fee: </span>
+                    <span class='text' *ngIf='i.OwingFee'>${{i.OwingFee}}</span>
+                  </div>
+
+                  <div class='col-lg-2 col-sm-6'>
+                    <span class='label'>Total Fee: </span>
+                    <span class='text' *ngIf='i.TotalFee'>${{i.TotalFee}}</span>
+                  </div>
+
+                  <div class='col-lg-4 col-sm-6'>
+                    <span class='label'>Term: </span>
+                    <span class='text' *ngIf='i.Term'>{{i.Term.TermName}}</span>
+                  </div>
+
+                  <div class='col-lg-12 col-sm-12'>
+                    <span class='label'>Comment: </span>
+                    <span class='text' *ngIf='i.Comment'>{{i.Comment}}</span>
+                  </div>
+
+
+                  <!--fees details  -->
+                  <div class='col-12'>
+                    <button type="button" class="btn btn-outline-primary btn-sm" data-toggle='collapse'
+                      data-target="#fees">Fees Details</button>
+                    <div id="fees" class="collapse">
+                      <div class="row">
+                        <div class='col-lg-2 col-sm-6'>
+                          <span class='label'>Course Fee: </span>
+                          <span class='text' *ngIf='i.LessonFee'>${{i.LessonFee}}</span>
+                        </div>
+
+                        <div class='col-lg-2 col-sm-6'>
+                          <span class='label'>Concert Fee: </span>
+                          <span class='text' *ngIf='i.ConcertFee'>${{i.ConcertFee}}</span>
+                        </div>
+
+                        <div class='col-lg-2 col-sm-6'>
+                          <span class='label'>Note Fee: </span>
+                          <span class='text' *ngIf='i.NoteFee'>${{i.NoteFee}}</span>
+                        </div>
+
+                        <div *ngIf='i.Other1Fee !== null && i.Other1Fee !== 0' class='col-lg-2 col-sm-6'>
+                          <span class='label'>Other Fee 1: </span>
+                          <span class='text'>${{i.Other1Fee}}</span>
+                        </div>
+
+                        <div *ngIf='i.Other2Fee !== null && i.Other2Fee !== 0' class='col-lg-2 col-sm-6'>
+                          <span class='label'>Other Fee 2: </span>
+                          <span class='text'>${{i.Other2Fee}}</span>
+                        </div>
+
+                        <div *ngIf='i.Other3Fee !== null && i.Other3Fee !== 0 ' class='col-lg-2 col-sm-6'>
+                          <span class='label'>Other Fee 3: </span>
+                          <span class='text'>${{i.Other3Fee}}</span>
+                        </div>
+
+                      </div>
+                    </div>
+                  </div>
+
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+
+        <ngb-pagination [collectionSize]="invoiceListLength" [(page)]='currentPage' [maxSize]='10'
+          aria-label="Default pagination" [pageSize]='pageSize'>
+        </ngb-pagination>
+
+      </ng-template>
+    </ngb-tab>
+
+    <!-- Sessions -->
+    <ngb-tab title="Uncomplete session">
+      <ng-template ngbTabContent>
+        <div *ngIf='uncompleteSession.length == 0'>
+          No Sessions Record
+        </div>
+
+        <div *ngIf='uncompleteSession.length !== 0'>
+          <div
+            *ngFor='let i of uncompleteSession | slice: (currentPage-1)* pageSize : (currentPage-1) * pageSize + pageSize'>
+            <br>
+
+            <div class='card'>
+              <div class="card-body">
+                <div class='row'>
+
+                  <div class='col-lg-6  col-sm-6'>
+                    <span class='label'>Course: </span>
+                    <span class='text' *ngIf='i.CourseName'>{{i.CourseName}}</span>
+                  </div>
+
+                  <div class='col-lg-6  col-sm-6'>
+                    <span class='label'>Time: </span>
+                    <span class='text' *ngIf='i.BeginTime && i.EndTime'>{{i.BeginTime.replace('T',' ')}} ~
+                      {{i.EndTime.replace('T', ' ')}}</span>
+                  </div>
+
+                  <div class='col-lg-6 col-sm-6'>
+                    <span class='label'>Location: </span>
+                    <span class='text' *ngIf='i.Branch && i.Room'>{{i.Branch}} {{i.Room}}</span>
+                  </div>
+
+                  <div class='col-lg-6 col-sm-6'>
+                    <span class='label'>Teacher: </span>
+                    <span class='text' *ngIf='i.TeacherFirstName'>{{i.TeacherFirstName}}</span>
+                  </div>
+
+                  <div class='col-lg-6 col-sm-6'>
+                    <span class='label'>Trial Course: </span>
+                    <span class='text' *ngIf='i.IsTrial'>{{i.IsTrial | IsTemporary}}</span>
+                  </div>
+
+                  <div *ngIf='i.IsChanged == 1' class='col-lg-12 col-sm-12'>
+                    <div class='label'>Course Change to: </div>
+                    <span class='label col-lg-3 col-sm-6'>Teacher: </span>
+                    <span class='text col-lg-3 col-sm-6'>{{i.newLessons.TeacherFirstName}}</span>
+
+                    <span class='label col-lg-3 col-sm-6'>Location: </span>
+                    <span class='text col-lg-3 col-sm-6'>{{i.newLessons.BranchAbbr}} {{i.newLessons.Room}}</span>
+
+                    <span class='label col-lg-3 col-sm-6'>Time: </span>
+                    <span class='text col-lg-3 col-sm-6'
+                      *ngIf='i.newLessons.BeginTime && i.newLessons.EndTime'>{{i.newLessons.BeginTime.replace('T', ' ')}}
+                      ~ {{i.newLessons.EndTime.replace('T', ' ')}}</span>
+                  </div>
+
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <ngb-pagination [collectionSize]="uncompleteSessionLength" [(page)]='currentPage' [maxSize]='10'
+          aria-label="Default pagination" [pageSize]='pageSize'>
+        </ngb-pagination>
+
+      </ng-template>
+    </ngb-tab>
+
+    <!-- Complete Sessions -->
+    <ngb-tab title="Complete session">
+      <ng-template ngbTabContent>
+        <div *ngIf='compeleteSession.length == 0'>
+          No Sessions Record
+        </div>
+
+        <div *ngIf='compeleteSession.length !== 0'>
+          <div
+            *ngFor='let i of compeleteSession | slice: (currentPage-1)* pageSize : (currentPage-1) * pageSize + pageSize'>
+            <br>
+
+            <div class='card'>
+              <div class="card-body">
+                <div class='row'>
+
+                  <div class='col-lg-6  col-sm-6'>
+                    <span class='label'>Course: </span>
+                    <span class='text' *ngIf='i.CourseName'>{{i.CourseName}}</span>
+                  </div>
+
+                  <div class='col-lg-6  col-sm-6'>
+                    <span class='label'>Time: </span>
+                    <span class='text' *ngIf='i.BeginTime && i.EndTime'>{{i.BeginTime.replace('T',' ')}} ~
+                      {{i.EndTime.replace('T', ' ')}}</span>
+                  </div>
+
+                  <div class='col-lg-6 col-sm-6'>
+                    <span class='label'>Location: </span>
+                    <span class='text' *ngIf='i.Branch && i.Room'>{{i.Branch}} {{i.Room}}</span>
+                  </div>
+
+                  <div class='col-lg-6 col-sm-6'>
+                    <span class='label'>Teacher: </span>
+                    <span class='text' *ngIf='i.TeacherFirstName'>{{i.TeacherFirstName}}</span>
+                  </div>
+
+
+                  <div class='col-lg-6 col-sm-6'>
+                    <span class='label'>Trial Course: </span>
+                    <span class='text' *ngIf='i.IsTrial'>{{i.IsTrial | IsTemporary}}</span>
+                  </div>
+
+                  <div *ngIf='i.IsChanged == 1' class='col-lg-12 col-sm-12'>
+                    <div class='label'>Course Change to: </div>
+                    <span class='label col-lg-3 col-sm-6'>Teacher: </span>
+                    <span class='text col-lg-3 col-sm-6'>{{i.newLessons.TeacherFirstName}}</span>
+
+                    <span class='label col-lg-3 col-sm-6'>Location: </span>
+                    <span class='text col-lg-3 col-sm-6'>{{i.newLessons.BranchAbbr}} {{i.newLessons.Room}}</span>
+
+                    <span class='label col-lg-3 col-sm-6'>Time: </span>
+                    <span class='text col-lg-3 col-sm-6'
+                      *ngIf='i.newLessons.BeginTime && i.newLessons.EndTime'>{{i.newLessons.BeginTime.replace('T', ' ')}}
+                      ~ {{i.newLessons.EndTime.replace('T', ' ')}}</span>
+                  </div>
+
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <ngb-pagination [collectionSize]="completeSessionLength" [(page)]='currentPage' [maxSize]='10'
+          aria-label="Default pagination" [pageSize]='pageSize'>
+        </ngb-pagination>
+
+      </ng-template>
+    </ngb-tab>
+
+    <!-- Cancled session -->
+    <ngb-tab title="Cancelled session">
+      <ng-template ngbTabContent>
+        <div *ngIf='cancledSession.length == 0'>
+          No Sessions Record
+        </div>
+
+        <div *ngIf='cancledSession.length !== 0'>
+          <div
+            *ngFor='let i of cancledSession | slice: (currentPage-1)* pageSize : (currentPage-1) * pageSize + pageSize'>
+            <br>
+
+            <div class='card'>
+              <div class="card-body">
+                <div class='row'>
+
+                  <div class='col-lg-6  col-sm-6'>
+                    <span class='label'>Course: </span>
+                    <span class='text' *ngIf='i.CourseName'>{{i.CourseName}}</span>
+                  </div>
+
+                  <div class='col-lg-6  col-sm-6'>
+                    <span class='label'>Time: </span>
+                    <span class='text' *ngIf='i.BeginTime && i.EndTime'>{{i.BeginTime.replace('T',' ')}} ~
+                      {{i.EndTime.replace('T', ' ')}}</span>
+                  </div>
+
+                  <div class='col-lg-6 col-sm-6'>
+                    <span class='label'>Location: </span>
+                    <span class='text' *ngIf='i.Branch && i.Room'>{{i.Branch}} {{i.Room}}</span>
+                  </div>
+
+                  <div class='col-lg-6 col-sm-6'>
+                    <span class='label'>Teacher: </span>
+                    <span class='text' *ngIf='i.TeacherFirstName'>{{i.TeacherFirstName}}</span>
+                  </div>
+
+                  <div class='col-lg-6 col-sm-6'>
+                    <span class='label'>Trial Course: </span>
+                    <span class='text' *ngIf='i.IsTrial'>{{i.IsTrial | IsTemporary}}</span>
+                  </div>
+
+                  <div *ngIf='i.IsChanged == 1' class='col-lg-12 col-sm-12'>
+                    <div class='label'>Course Change to: </div>
+                    <span class='label col-lg-3 col-sm-6'>Teacher: {{i.newLessons.TeacherFirstName}}</span>
+
+                    <span class='label col-lg-3 col-sm-6'>Location: {{i.newLessons.BranchAbbr}}
+                      {{i.newLessons.Room}}</span>
+
+                    <span class='label col-lg-3 col-sm-6'>Time:
+                      <span
+                        *ngIf='i.newLessons.BeginTime && i.newLessons.EndTime'>{{i.newLessons.BeginTime.replace('T', ' ')}}
+                        ~ {{i.newLessons.EndTime.replace('T', ' ')}}
+                      </span>
+                    </span>
+                  </div>
+
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <ngb-pagination [collectionSize]="cancledSessionLength" [(page)]='currentPage' [maxSize]='10'
+          aria-label="Default pagination" [pageSize]='pageSize'>
+        </ngb-pagination>
+
+      </ng-template>
+    </ngb-tab>
+
+    <!-- Make up session -->
+    <ngb-tab title="Makeup session">
+      <ng-template ngbTabContent>
+        <div *ngIf='makeupSession.length == 0'>
+          No Sessions Record
+        </div>
+
+        <div *ngIf='makeupSession.length !== 0'>
+          <div
+            *ngFor='let i of makeupSession | slice: (currentPage-1)* pageSize : (currentPage-1) * pageSize + pageSize'>
+            <br>
+
+            <div class='card'>
+              <div class="card-body">
+
+                <div *ngIf='i.MissedLesson'>
+                  <div class='row'>
+                    <div class='col-12'>
+                      <span class='header'>Missed Lesson: </span>
+                    </div>
+
+
+                    <div class='col-lg-6 col-sm-6'>
+                      <span class='label'>Course: </span>
+                      <span class='text'>{{i.CourseInstance.CourseName}}</span>
+                    </div>
+
+                    <div class='col-lg-6 col-sm-6'>
+                      <span class='label'>Teacher: </span>
+                      <span class='text'>{{i.MissedLesson.Teacher}}</span>
+                    </div>
+
+                    <div class='col-lg-6 col-sm-6'>
+                      <span class='label'>Location: </span>
+                      <span class='text'>{{i.MissedLesson.Org}}</span>
+                    </div>
+
+                    <div class='col-lg-6 col-sm-6'>
+                      <span class='label'>Begin Date: </span>
+                      <span class='text'>{{i.MissedLesson.beginDate.replace('T',' ')}}</span>
+                    </div>
+
+                    <div class='col-lg-6 col-sm-6'>
+                      <span class='label'>Makeup Lesson Complete: </span>
+                      <span class='text' *ngIf='i.IsActive'>{{i.IsActive | IsTemporary}}</span>
+                    </div>
+
                   </div>
                 </div>
 
-                <div *ngIf='ele.Amendment.length!==0' class="col-12">
-                  <span class="label">Course Sechdule: </span>
-                  <div *ngFor='let sechdule of ele.CourseSchedule'>
-                    <span class='text line-trough'> {{sechdule.DayOfWeek|weekFormat}} </span>
-                    <span class='text line-trough'> {{sechdule.BeginTime.replace('T',' ')}} -- </span>
-                    <span class='text line-trough'>{{sechdule.EndTime.replace('T',' ')}} </span>
+                <div *ngIf='i.NewLesson.Org !== null && i.NewLesson.Teacher !== null && i.NewLesson.beginDate !== null'>
+                  <div class='row'>
+                    <div class='col-12'>
+                      <span class='header'>New Lesson: </span>
+                    </div>
 
-                    <span class='text' *ngIf='ele.permanent'> ===> {{ele.permanent.DayOfWeek|weekFormat}} </span>
-                    <span class='text' *ngIf='ele.permanent'>{{ele.permanent.BeginTime.replace('T',' ')}}</span> --
-                    <span class='text' *ngIf='ele.permanent'>{{ele.permanent.EndTime.replace('T',' ')}}</span>
+                    <div class='col-lg-6 col-sm-6'>
+                      <span class='label'>Teacher: </span>
+                      <span class='text'>{{i.NewLesson.Teacher}}</span>
+                    </div>
+                    <div class='col-lg-6 col-sm-6'>
+                      <span class='label'>Location: </span>
+                      <span class='text'>{{i.NewLesson.Org}}</span>
+                    </div>
+
+                    <div class='col-lg-6 col-sm-6'>
+                      <span class='label'>Begin Date: </span>
+                      <span class='text'>{{i.NewLesson.beginDate.replace('T',' ')}}</span>
+                    </div>
                   </div>
                 </div>
 
-                <!-- Amendment Reason -->
-                <div *ngIf='ele.Amendment.length !== 0' class='col-12'>
-                  <span class='label'>Amendment Reason: </span>
-                  <span class='text' *ngIf='ele.permanent'>{{ele.permanent.Reason}}</span>
-                </div>
 
               </div>
             </div>
           </div>
         </div>
-      </div>
-    </div>
+
+
+        <ngb-pagination [collectionSize]="makeupSessionLength" [(page)]='currentPage' [maxSize]='10'
+          aria-label="Default pagination" [pageSize]='pageSize'>
+        </ngb-pagination>
+
+      </ng-template>
+    </ngb-tab>
+
+  </ngb-tabset>
+
+
+
+  <!--modal footer-->
+  <div class='modal-footer'>
+    <button type="button" class="btn btn-outline-dark" (click)="activeModal.close('Close click')">Close</button>
   </div>
-
-  <hr>
-  <!-- Others -->
-  <div>
-    <h4>Others</h4>
-
-    <div class="row">
-      <div class="col-6">
-        <div class="label">
-          Why do you learn the piano:
-        </div>
-        <div *ngFor='let ele of otherValueList'>
-          <div>
-            <span class='text'> {{ele}}</span>
-          </div>
-        </div>
-      </div>
-
-      <div class="col-6">
-        <div class="label">
-          How do you know about us:
-        </div>
-        <div>
-          <div *ngFor='let ele of howKnowList'>
-            <div>
-              <span class='text'> {{ele}}</span>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <hr>
-
-  <!-- agreement file -->
-  <div class='row'>
-    <div class='col-6'>
-      <h5>
-        Other Files: &nbsp;
-      </h5>
-      <div *ngIf="this.whichLearner.OtherfileUrl !== null" class='download'>
-        <span (click)='clickOtherFileUrl()' download>{{othersmsg}}</span>
-      </div>
-      <div *ngIf="this.whichLearner.OtherfileUrl == null">
-        <span>No Files</span>
-      </div>
-    </div>
-
-
-    <!-- Form Url -->
-    <div class='col-6'>
-      <h5>
-        Enrollment Agreement: &nbsp;
-      </h5>
-      <div *ngIf="this.whichLearner.FormUrl !== null" class='download'>
-        <span (click)='clickFormUrl()' download>{{othersmsg}}</span>
-      </div>
-      <div *ngIf="this.whichLearner.FormUrl == null">
-        <span>No Files</span>
-      </div>
-    </div>
-  </div>
-
-
-
-
-
-
-</div>
-
-<!--modal footer-->
-<div class='modal-footer'>
-  <button type="button" class="btn btn-outline-dark" (click)="activeModal.close('Close click')">Close</button>
-</div>

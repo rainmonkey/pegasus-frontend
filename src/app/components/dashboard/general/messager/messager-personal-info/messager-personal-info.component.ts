@@ -1,5 +1,9 @@
+import { ChattingService } from './../../../../../services/repositories/chatting.service';
 import { Component, OnInit, Input } from '@angular/core';
 import { Animations } from '../../../../../../animation/chatting-animation'
+import { environment } from 'src/environments/environment.prod';
+import { fromEvent } from 'rxjs';
+import { bufferTime, debounceTime } from 'rxjs/operators';
 
 @Component({
   selector: 'app-messager-personal-info',
@@ -19,14 +23,19 @@ export class MessagerPersonalInfoComponent implements OnInit {
   public userPhoto;
   public userPosition;
   public organisation;
+  public photoUrl = environment.photoUrl;
 
   @Input() themeChangeFlag;
-  constructor() { }
+  constructor(
+    private chattingService: ChattingService
+  ) { }
 
   ngOnInit() {
     //获取用户信息
     console.log(localStorage)
     this.getUserInfo();
+    //一开始就调用所有的事件处理
+    this.eventHandler();
     // console.log('a')
     //登陆的时候就给后台发送在线状态变更 这个要在项目登陆界面实现  （未实现）
 
@@ -39,15 +48,6 @@ export class MessagerPersonalInfoComponent implements OnInit {
     this.userPhoto = localStorage.getItem('photo');
     this.userPosition = localStorage.getItem('userPosition');
     this.organisation = localStorage.getItem('organisations');
-  }
-
-  /*
-    改变用户的在线状态
-  */
-  changeOnlineStatus() {
-    this.onlineStatus = this.onlineStatus == 'online'? 'offline':'online';
-    
-    //向后台发送状态变更 （未实现）
   }
 
   /*
@@ -68,6 +68,56 @@ export class MessagerPersonalInfoComponent implements OnInit {
 
     }
     console.log('b', event.target.value)
+  }
+
+  changeOnlineStatusStyle(){
+    this.onlineStatus = this.onlineStatus == 'online'? 'offline':'online';
+  }
+  
+  /*
+    event handlers in this component
+  */
+  eventHandler(){
+    this.getOnlineStatusHandler();
+    this.changeOnlineStatusHandler();
+  }
+
+  /*
+    获得当前的在线状态
+  */
+  getOnlineStatusHandler(){
+    this.chattingService.disconnectFlag$.subscribe(
+      (res) =>{
+        //if res true means network disconnect
+        this.onlineStatus = res? 'offline':'online';
+      }
+    )
+  }
+
+  /*
+    on line status handler
+  */
+  changeOnlineStatusHandler(){
+    let obj = document.querySelector('.m_p_online_status');
+    let click$ = fromEvent(obj,'click');
+
+    //if no click event happend after 1s, send the online status to the server
+    click$.pipe(
+      debounceTime(1000)
+    )
+    .subscribe((res) =>{
+      console.log(this.onlineStatus)
+      if(this.onlineStatus ==='online'){
+        //调后台在线api
+        let userId = localStorage.getItem('userID');
+        this.chattingService.startConnection(Number(userId));
+      }
+      else{
+        //调后台离线api
+        this.chattingService.closeConnection();
+      }
+    })
+   
   }
 
 }

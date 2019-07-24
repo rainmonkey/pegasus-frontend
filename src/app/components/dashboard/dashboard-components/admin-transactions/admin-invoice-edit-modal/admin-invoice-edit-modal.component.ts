@@ -30,8 +30,8 @@ export class AdminInvoiceEditModalComponent implements OnInit {
   noteData: Array<any>
   originPrice = 0;
   userChosenPrice = 0;
-  concertInUse: boolean
-  noteInUse: boolean
+  concertInUse: boolean = true
+  noteInUse: boolean = true
   tempNote
   tempConcert
   tempOther1Fee: number = 0
@@ -41,6 +41,8 @@ export class AdminInvoiceEditModalComponent implements OnInit {
   tempConcertFee: number = 20
   tempNoteFee: number = 10;
   item2: any;
+
+  totalFee: number
 
   // activated modal tranfer data
   @Input() item;
@@ -62,13 +64,13 @@ export class AdminInvoiceEditModalComponent implements OnInit {
     BeginDate: [null],
     LessonFee: [null, Validators.required],
     Concert: this.fb.group({
-      ConcertFeeName: [{ value: null, disabled: true }],
-      ConcertFee: [{ value: null, disabled: true }],
+      ConcertFeeName: [{ value: null }],
+      ConcertFee: [{ value: null }],
       concertCheckBox: [false],
     }, { validator: this.invoiceValidator.matcher }),
     Note: this.fb.group({
-      LessonNoteFeeName: [{ value: null, disabled: true }],
-      NoteFee: [{ value: null, disabled: true }],
+      LessonNoteFeeName: [{ value: null }],
+      NoteFee: [{ value: null }],
       noteCheckBox: [false]
     }, { validator: this.invoiceValidator.matcher }),
     Other1: this.fb.group({
@@ -94,17 +96,34 @@ export class AdminInvoiceEditModalComponent implements OnInit {
   }
 
   ngOnInit() {
-    if  (this.item.Invoice.InvoiceId === 0)
-      this.item2 = { ... this.item ,...this.item.InvoiceWaitingConfirm};
+    if (this.item.Invoice.InvoiceId === 0)
+      this.item2 = { ... this.item, ...this.item.InvoiceWaitingConfirm };
     else
-      this.item2 = { ... this.item , ...this.item.Invoice};
+      this.item2 = { ... this.item, ...this.item.Invoice };
+    this.setDataIfConfirmed()
     this.patchToInvoice();
     this.dueDateLocal = this.item2.DueDate;
-    this.owingFeeLocal = this.item2.LessonFee;
+    this.owingFeeLocal = this.item2.TotalFee || this.item2.LessonFee;
     this.tempLessonFee = this.item2.LessonFee
     this.getCourse();
     this.getLooksUpData()
   }
+
+  setDataIfConfirmed() {
+    if (!this.item2.ConcertFee) {
+      this.checkboxOnChange("concertCheckBox")
+    } else {
+      this.tempConcertFee = this.item2.ConcertFee
+      this.invoiceEditForm.get("Concert").get("concertCheckBox").patchValue(true)
+    }
+    if (!this.item2.NoteFee) {
+      this.checkboxOnChange("noteCheckBox")
+    } else {
+      this.tempNoteFee = this.item2.NoteFee
+      this.invoiceEditForm.get("Note").get("noteCheckBox").patchValue(true)
+    }
+  }
+
   // get group or 121 course id
   getCourse() {
     let type;
@@ -139,12 +158,12 @@ export class AdminInvoiceEditModalComponent implements OnInit {
       BeginDate: this.item2.BeginDate === null ? null : this.item2.BeginDate.slice(0, 10),
       LessonFee: this.item2.LessonFee || 0,
       Concert: {
-        ConcertFee: 0,
-        ConcertFeeName: ""
+        ConcertFee: this.item2.ConcertFee,
+        ConcertFeeName: this.item2.ConcertFeeName
       },
       Note: {
-        NoteFee: 0,
-        LessonNoteFeeName: ""
+        NoteFee: this.item2.NoteFee,
+        LessonNoteFeeName: this.item2.LessonNoteFeeName
       },
       Other1: {
         Other1FeeName: this.item2.Other1FeeName,
@@ -208,21 +227,20 @@ export class AdminInvoiceEditModalComponent implements OnInit {
       LearnerName: this.item2.LearnerName,
       TermId: this.item2.TermId,
       GroupCourseInstanceId: this.item2.GroupCourseInstanceId,
-      CourseInstanceId: this.item2.CourseInstanceId
+      CourseInstanceId: this.item2.CourseInstanceId,
+      Comment: this.invoiceEditForm.value.Comment
     }
-
     data.OwingFee = +data.LessonFee + +data.ConcertFee + +data.NoteFee + +data.Other1Fee + +data.Other2Fee + +data.Other3Fee;
     data.TotalFee = data.OwingFee;
 
     this.itemTempPublic = data
-    console.log(this.itemTempPublic);
   }
 
   putInvoiceData() {
     this.transactionService.update(this.itemTempPublic)
       .subscribe(
         (res) => {
-          this.activeModal.dismiss();
+          this.activeModal.close();
           swal.fire("Confirmed")
           this.item2.IsConfirmed = 1
           console.log(this.itemTempPublic)
@@ -249,6 +267,7 @@ export class AdminInvoiceEditModalComponent implements OnInit {
           this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
         });
   }
+
   // validate lesson price
   validatePrice() {
     this.originPrice = Number(this.invoiceEditForm.value.LessonQuantity) * Number(this.coursePrice);
@@ -272,8 +291,8 @@ export class AdminInvoiceEditModalComponent implements OnInit {
         this.concertData = res["Data"]
         this.tempConcert = {
           Concert: {
-            ConcertFee: +this.concertData[1].PropName,
-            ConcertFeeName: this.concertData[0].PropName
+            ConcertFee: this.item2.ConcertFee || +this.concertData[1].PropName,
+            ConcertFeeName: this.item2.ConcertFeeName || this.concertData[0].PropName
           }
         }
       },
@@ -286,8 +305,8 @@ export class AdminInvoiceEditModalComponent implements OnInit {
         this.noteData = res["Data"]
         this.tempNote = {
           Note: {
-            NoteFee: +this.noteData[1].PropName,
-            LessonNoteFeeName: this.noteData[0].PropName
+            NoteFee: this.item2.NoteFee || +this.noteData[1].PropName,
+            LessonNoteFeeName: this.item2.LessonNoteFeeName || this.noteData[0].PropName
           }
         }
       },
@@ -338,6 +357,7 @@ export class AdminInvoiceEditModalComponent implements OnInit {
     } else {
       fee = +this.invoiceEditForm.get(feeControlName).value
     }
+    console.log(fee)
     switch (feeControlName) {
       case "Other1Fee":
         this.owingFeeLocal = this.owingFeeLocal + fee - this.tempOther1Fee

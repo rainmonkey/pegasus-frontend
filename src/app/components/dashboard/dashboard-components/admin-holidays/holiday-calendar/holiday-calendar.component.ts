@@ -42,8 +42,8 @@ export class HolidayCalendarComponent implements OnInit {
   getExitHoliday() {
     this.HolidayServer.getHoliday().subscribe(
       (event) => {
-        const eventData = this.putInfo(event.Data)
-        this.eventsModel = eventData
+        const eventData = this.putInfo(event.Data);
+        this.eventsModel = eventData;
       },
       (err) => {
         alert('something wrong')
@@ -52,7 +52,7 @@ export class HolidayCalendarComponent implements OnInit {
   }
 
   initFullCalendar(pointer) {
-    console.log(this.fullcalendar)
+    console.log(this.fullcalendar);
     let that = pointer;
     this.options = {
       plugins: [dayGridPlugin, interactionPlugin],
@@ -69,7 +69,7 @@ export class HolidayCalendarComponent implements OnInit {
   }
 
   test(info) {
-  const modalRef = this.modalService.open(SelectHolidaysModalComponent,{ backdrop: 'static', keyboard: false })
+  const modalRef = this.modalService.open(SelectHolidaysModalComponent,{ backdrop: 'static', keyboard: false });
     let that = this;
     modalRef.componentInstance.date = info;
     modalRef.componentInstance.refreshFlag.subscribe(

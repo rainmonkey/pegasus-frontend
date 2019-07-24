@@ -80,6 +80,7 @@ export class InventoryDetailModalComponent implements OnInit {
           title: 'Server error!',
           type: 'error',
           showConfirmButton: true,
+          text:err.error.ErrorMessage
         });
         console.log(err.error.ErrorMessage);
       }
@@ -169,8 +170,9 @@ export class InventoryDetailModalComponent implements OnInit {
     this.inventoriesService.addNew(formValue).subscribe(
       (res) => {
         Swal.fire({
-          title: 'Successfully Add!',
+          title: 'Success',
           type: 'success',
+          text:'Successfully Add!',
           showConfirmButton: true,
         });
         this.activeModal.close();

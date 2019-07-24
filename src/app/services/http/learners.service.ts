@@ -41,6 +41,9 @@ export class LearnersService {
   getLearnerById(id) {
     return this.http.get(this.baseUrl + 'learner/GetLearnerById/'+id)
   }
+  getLearnerByIdTimePick(id) {
+    return this.http.get(this.baseUrl + 'lesson/GetLessonsForLearner/'+id)
+  }
 
   deleteLearner(LearnerId): any {
     return this.http.delete(this.baseUrl + 'learner/' + LearnerId);
@@ -74,4 +77,22 @@ export class LearnersService {
   getTeachers() {
     return this.http.get(this.baseUrl + 'teacher');
   }
+
+  getLearnerPayment(learnerId ){
+    return this.http.get(this.baseUrl+'Payment/'+'PaymentByLearner/'+learnerId )
+  }
+
+  getLearnerInvoice(learnerId){
+    return this.http.get(this.baseUrl+'Invoice/'+ learnerId)
+  }
+
+  getLearnerLesson(learnerId){
+    return this.http.get(this.baseUrl+'Lesson/'+'GetLessonsForLearner/'+learnerId)
+  }
+
+  getMakeUpLesson(learnerId){
+    return this.http.get(this.baseUrl+'Session/'+'GetMakeupSessions/'+learnerId)
+  }
+
+
 }

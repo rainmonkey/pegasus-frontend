@@ -1,9 +1,10 @@
-<span  *ngIf="learner && whichName == 'FirstName'" (click)="onClicked()">
+<span  *ngIf="learner && whichName == 'FirstName'" class='spanNameHover' (click)="onClicked()">
   {{learner.FirstName}}
 </span>
-<span  *ngIf="learner && whichName == 'LastName'" (click)="onClicked()">
+<span  *ngIf="learner && whichName == 'LastName'" class='spanNameHover' (click)="onClicked()">
   {{learner.LastName}}
 </span>
-<span  *ngIf="learnerInv" (click)="onClicked()">
+<span  *ngIf="learnerInv" class='spanNameHover' (click)="onClicked()">
   {{learnerInv.FirstName}}
 </span>
+

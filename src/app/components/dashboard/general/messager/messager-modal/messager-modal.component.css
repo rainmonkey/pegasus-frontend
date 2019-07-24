@@ -24,6 +24,7 @@
     line-height: 20px;
 }
 .m_m_header_close{
+    display:inline-block;
     position: absolute;
     right: 0;
 }
@@ -69,6 +70,7 @@
 .m_m_recently{
     height: 480px;
     width: 100%;
+    overflow: auto;
 }
 .m_m_chatting{
     height: 580px;
@@ -103,5 +105,15 @@
 }
 
 .m_m_header_chatting_with{
+    display: inline-block;
+    width: 230px;
     font-size: 14px;
+    white-space: nowrap;
+    text-overflow:ellipsis;
+    overflow:hidden;
+}
+
+#draggable{
+    display: inline-block;
+    width: 280px;
 }

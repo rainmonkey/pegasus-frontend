@@ -522,7 +522,6 @@ export class LearnerRegistrationFormComponent implements OnInit, DoCheck, AfterV
   }
   confirmGroupCourse() {
     let tempGroupModal = {};
-    console.log('wo yao jia ji tui', this.groupCourseInstance)
     this.groupCourseForSubmit = [];
     this.learnerGroupCourse = []
     for (let groupCourse of this.groupCourseInstance) {
@@ -548,7 +547,7 @@ export class LearnerRegistrationFormComponent implements OnInit, DoCheck, AfterV
     console.log(this.learnerlevelType)
   }
   emptySelectionCat(i) {
-
+    console.log('!@#$%^&*()',this.customCourse.controls[i])
     this.customCourse.controls[i].patchValue({
       course: '',
       teacherName: '',
@@ -751,7 +750,7 @@ selectLocation(id, i) {
     this.fdObj['Parent'] = this.parent;
     if (!this.whichLearner){
       this.fdObj['LearnerGroupCourse'] = this.learnerGroupCourse;
-      this.fdObj['One2oneCourseInstance'] = this.oneOnOneCourse;
+      this.fdObj['OneToOneCourseInstance'] = this.oneOnOneCourse;
     }
     this.fdObj['LearnerOthers'] = this.learnerOthers;
     console.log(this.fdObj);
@@ -838,8 +837,23 @@ selectLocation(id, i) {
     this.modalRefTimePicker.componentInstance.customCourse = this.customCourse.value[i];
     this.modalRefTimePicker.componentInstance.teaList = this.teaListOutArray[i].teaListToDatePick;
     this.timePickArrayNumber = i;
-  }
+    this.modalRefTimePicker.componentInstance.beginTimeTo.subscribe(
+      (res) =>{
+        this.getTimePickerInfo(res.BeginTime,i);
+      },
+      (err) => {
+        console.log(err)
+      }
+    )
 
+  }
+  getTimePickerInfo(time,i){
+    let timeArray = time.split(':');
+    let timeTrans: NgbTimeStruct = { hour: Number(timeArray[0]), minute: Number(timeArray[1]), second: 0 };
+    this.customCourse.controls[i].patchValue({
+      schedule: {beginTime:timeTrans, dayOfWeek:'6',durationType:''}
+    })
+  }
   // // ng-activeModal for confirm submit
   openConfirm() {
     console.log(this.addCourse)
@@ -939,7 +953,7 @@ selectLocation(id, i) {
   }
   handleEmailChange(value){
     if (!this.whichLearner)
-      this.parentForm.at(0).get("Email").patchValue(value);
+      this.parentForm.at(0).get("email").patchValue(value);
   }
   handleNumChange(value){
     if (!this.whichLearner)

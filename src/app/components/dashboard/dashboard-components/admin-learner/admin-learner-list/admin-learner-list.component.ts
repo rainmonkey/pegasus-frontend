@@ -212,8 +212,10 @@ export class AdminLearnerListComponent implements OnInit {
   /*
     detail modal
   */
+
   detailModal(command, whichLearner) {
-    const modalRef = this.modalService.open(LearnerDetailModalComponent, { size: 'lg', backdrop: 'static', keyboard: false });
+    //@ts-ignore
+    const modalRef = this.modalService.open(LearnerDetailModalComponent, {size:'xl', backdrop: 'static', keyboard: false });
     modalRef.componentInstance.command = command;
     modalRef.componentInstance.whichLearner = whichLearner;
   }
@@ -254,7 +256,7 @@ export class AdminLearnerListComponent implements OnInit {
         this.ngOnInit()
       },
       (err) => {
-        return
+        return;
       }
     )
     modalRef.componentInstance.command = command;

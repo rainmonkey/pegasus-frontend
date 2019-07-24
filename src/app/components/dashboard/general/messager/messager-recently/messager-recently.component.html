@@ -1,12 +1,12 @@
-<div *ngFor='let i of recentlySubscribers' class='row m_s_subscribers' (dblclick)='chattingWithHandler()'>
+<div *ngFor='let i of recentlySubscribers' class='row m_s_subscribers' (dblclick)='chattingWithHandler(i)'>
     <div class='col-3'>
       <div class='m_s_subscribers_photo'>
-        <img src="../../../../../../assets/images/usersimg/userphoto02.jpg" alt="">
+        <img [src]="photoUrl + i.Photo" alt="" onerror="this.src='../../../../../../assets/images/shared/default-employer-profile.png'">
       </div>
     </div>
     <div class='col-9'>
-      <div class='col-12 m_s_subscribers_name'>
-        Winne
+      <div class='col-12 m_s_subscribers_name' [title]='i.FirstName + " " + i.LastName'>
+        {{i.FirstName}} {{i.LastName}}
       </div>
       <div class='col-12 m_s_subscribers_signature'>
         奥克兰吴彦祖 奥克兰陈冠希 奥克兰王力宏

@@ -4,7 +4,7 @@ import { NgbootstraptableService } from 'src/app/services/others/ngbootstraptabl
 import { TransactionService } from '../../../../../services/http/transaction.service';
 import { AdminInvoiceEditModalComponent } from '../admin-invoice-edit-modal/admin-invoice-edit-modal.component';
 import { CoursesService } from '../../../../../services/http/courses.service';
-import { Subject } from "rxjs"
+import { DownloadPDFService, IInvoiceLearnerName, IInvoice } from "../../../../../services/others/download-pdf.service"
 import Swal from 'sweetalert2';
 
 interface Learner {
@@ -21,13 +21,12 @@ interface Learner {
   styleUrls: ['./admin-invoice-list.component.css']
 })
 export class AdminInvoiceListComponent implements OnInit {
-  public queryParams: object = {};
   public learnerList: any;
   public learnerListLength: number;
   public temLearnerList: any; //save the original List
   public temLearnerListLength: number; //save the original List length
   public page: number = 1;  //pagination current page
-  public pageSize: number = 15;    //[can modify] pagination page size
+  public pageSize: number = 10;    //[can modify] pagination page size
 
   //error alert
   public errorMsg;
@@ -40,8 +39,8 @@ export class AdminInvoiceListComponent implements OnInit {
   public isSearchingFlag: boolean = false
   // learner name and
   learner: Learner;
-  terms : [];
-  termId:number;
+  terms: [];
+  termId: number;
   myArray = [];
   //teachers list copy. Using in searching method, in order to initialize data to original
   public myArrayCopy: Array<any>;
@@ -51,38 +50,43 @@ export class AdminInvoiceListComponent implements OnInit {
     private ngTable: NgbootstraptableService,
     private transactionService: TransactionService,
     private coursesService: CoursesService,
+    private downloadPDFService: DownloadPDFService
   ) { }
 
   ngOnInit() {
     this.userId = localStorage.getItem("userID");
     this.getTerm();
-   // this.getData();
+  }
 
+  clearSearch() {
+    this.isSearchingFlag = false
+    this.myArray = this.temLearnerList.map(data => data.Learner)
+    this.learnerListLength = this.temLearnerListLength
   }
 
   // modal method
   open(item) {
     const modalRef = this.modalService.open(AdminInvoiceEditModalComponent,
       {
-        size: 'lg', backdrop: "static", keyboard: false
+        size: 'lg', backdrop: "static", keyboard: false,
       });
     //pass parameters to edit modals
+    modalRef.result.then(result => {
+      this.getData()
+    }, reason => { })
     modalRef.componentInstance.item = item;
-    // modalRef.componentInstance.testString = "this is a test string"
-    console.log(modalRef)
   }
 
   // get data from server side
   getData() {
     this.isLoad = true;
-    this.transactionService.getLearnerInvo(this.userId,this.termId).subscribe(
+    this.transactionService.getLearnerInvo(this.userId, this.termId).subscribe(
       (res) => {
         this.learnerList = res.Data;
         this.learnerListLength = res.Data.length; //length prop is under Data prop
         this.temLearnerList = res.Data;
         this.temLearnerListLength = res.Data.length;
         this.isLoad = false;
-        //this.learnerList[0].Learner.Parent.Email
         // make array for sort
         this.makeArray();
       },
@@ -95,40 +99,42 @@ export class AdminInvoiceListComponent implements OnInit {
           title: 'Oops...',
           text: error.error.ErrorMessage,
         });
-
         this.errorAlert = false;
       });
   }
-  onChange(value){
-    this.termId = value;
-    //this.getData();
-  }
-  onSubmit(){
 
+  onChange(value) {
+    this.termId = +value;
+  }
+
+  onSubmit() {
     this.getData();
   }
+
   getTerm() {
     var today = new Date();
     this.coursesService.getoioi().subscribe(
       (res) => {
         this.terms = res.Data;
-        for (let e of this.terms){
-          if ((today  >= new Date(e['BeginDate'])) && (today  <= new Date(e['EndDate'])) )
-            this.termId = e['TermId'];
+        for (let e of this.terms) {
+          this.termId = e['TermId'];
+          if ((today >= new Date(e['BeginDate'])) && (today <= new Date(e['EndDate'])))
+            break;
         }
-        console.log(this.terms)
-      },(error)=>{
+        this.getData()
+      }, (error) => {
         Swal.fire({
           type: 'error',
           title: 'Oops...',
           text: error.error.ErrorMessage,
         });
-
       }
     )
   }
+
   // push to array for sort
   makeArray() {
+    this.myArray = [];
     this.learnerList.forEach(list => {
       let tempObj = {
         OwingFee: list.OwingFee,
@@ -170,5 +176,14 @@ export class AdminInvoiceListComponent implements OnInit {
         this.learnerListLength = this.temLearnerListLength
       }
     }
+  }
+
+  downloadPDFReady(index, page) {
+    let learner = this.myArray[(page - 1) * this.pageSize + index]
+    let learnerName = {} as IInvoiceLearnerName
+    learnerName.firstName = learner.FirstName
+    learnerName.lastName = learner.LastName
+    let invoice: IInvoice = learner.Invoice;
+    this.downloadPDFService.downloadPDF(learnerName, invoice)
   }
 }

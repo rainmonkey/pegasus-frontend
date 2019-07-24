@@ -14,6 +14,9 @@ import {SessionEdit} from '../../../../../../models/SessionEdit';
 import {SessionCancelModalComponent} from '../../session-modals/session-cancel-modal/session-cancel-modal.component';
 import {SessionCompletedModalComponent} from '../../session-modals/session-completed-modal/session-completed-modal.component';
 import {SessionRescheduleModalComponent} from '../../session-modals/session-reschedule-modal/session-reschedule-modal.component';
+import {AdminLearnerProfileComponent} from '../../../admin-learner/admin-learner-profile/admin-learner-profile.component';
+import {LearnersService} from '../../../../../../services/http/learners.service';
+import {debounce} from '../../../../../../shared/utils/debounce';
 
 @Component({
   selector: 'app-sessions-calendar-view-admin',
@@ -22,6 +25,7 @@ import {SessionRescheduleModalComponent} from '../../session-modals/session-resc
   styleUrls: ['./sessions-calendar-view-admin.component.css']
 })
 export class SessionsCalendarViewAdminComponent implements OnInit {
+  debounce = debounce();
   searchForm: FormGroup; // searchform by formbuilder
   reason: string;  // session edit reason
   isloadingSmall = false;  // when drag the event, it will pop up the window for confirm (this loading icon is for this modal)
@@ -37,55 +41,43 @@ export class SessionsCalendarViewAdminComponent implements OnInit {
   private eventData = [];
   sessionEditModel;
   IsConfirmEditSuccess = false;
+  learnerProfileLoading = false;
   @ViewChild(CalendarComponent) fullcalendar: CalendarComponent;
-
+  t = null;
   constructor(
     protected sessionService: SessionsService,
     private datePipe: DatePipe, private modalService: NgbModal,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private learnersService: LearnersService,
     ) {}
   ngOnInit(): void {
     this.searchForm = this.fb.group({
       dateOfLesson: ['']
     })
-    this.isloading = true;
     this.sessionService.getReceptionistRoom().subscribe(data => {
       this.resourceData = data.Data;
       const date = this.datePipe.transform(new Date(), 'yyyy-MM-dd');
       this.sessionService.getReceptionistLesson(date).subscribe(event => {
         this.eventsModel = this.generateEventData(event.Data);
+        this.teacherAvoidDuplicate();
       });
       this.isloading = false;
       this.options = {
         themeSystem: 'jquery-ui',
         editable: true,
-        resourceLabelText: 'Rooms',
         customButtons: {
           DayPickerButton: {
             text: 'Search',
             click: () => {
               this.modalService.open(this.content);
             }
-          }
+          },
         },
         ////////
         eventClick: (info) => {
-          console.log(info)
-          Swal.fire({
-            type: 'info',
-            title: 'Student',
-            showCancelButton: true,
-            confirmButtonColor: '#3085d6',
-            showCloseButton: true,
-            cancelButtonColor: '#d33',
-            confirmButtonText: 'Choose method',
-            html: info.event.extendedProps.description
-          }).then(result => {
-            if (result.value) {
-              this.eventInfo = info;
-              const modalRef = this.modalService.open(this.methodModal);
-            }
-          });
+          this.eventInfo = info;
+          const modalRef = this.modalService.open(this.methodModal);
+          const Date = this.datePipe.transform(this.fullcalendar.calendar.getDate(), 'yyyy-MM-dd');
         },
         ////////
         eventDrop: (info) => { // when event drag , need to send put request to change the time of this event
@@ -125,52 +117,103 @@ export class SessionsCalendarViewAdminComponent implements OnInit {
         header: {
           left: 'today prev,next DayPickerButton',
           center: 'title',
-          right: 'resourceTimeGridDay'
+          right: 'testButton'
         },
         plugins: [timeslot, interactionPlugin]
       };
     });
   }
+
+
   clickButton = (model) => {
-    if (model.buttonType === 'next' || model.buttonType === 'today' || model.buttonType === 'prev') {
+    if (model.buttonType === 'next' || model.buttonType === 'today' || model.buttonType === 'prev' || model.buttonType === 'testButton') {
       const datefromcalendar = model.data;
-      const date = this.datePipe.transform(datefromcalendar, 'yyyy-MM-dd')
-      this.getEventByDate(date);
+      const date = this.datePipe.transform(datefromcalendar, 'yyyy-MM-dd');
+      this.debounce(() => {
+        this.getEventByDate(date);
+      }, 500);
     }
+
   }
   generateEventData = (data) => {
+    const resourceCol = document.querySelectorAll('.fc-resource-cell')
+    let teachersNewArray = []
+    resourceCol.forEach(s => {
+      const resourceId = Number(s.getAttribute('data-resource-id'));
+      const events = data.filter(s => s.resourceId == resourceId);
+      const teachersArray = []
+      events.map(info => teachersArray.push(info.teacher));
+      teachersNewArray = Array.from(new Set(teachersArray));
+    });
 
     data.forEach(s => {
-      if (s.isOwnAfterLesson == 1){
-        s.color = 'red'
+      if (s.isReadyToOwn == 1) {
+        s.color = 'red';
       }
-      const type = '(' + s.title + ')';
-      s.title = '';
-      s.title += 'Tutor: ' + s.teacher + ' ' + type;
-      if (s.IsGroup === false) {
-        s.title += '\nLearner: ' + s.student[0];
+
+      if (s.IsCanceled == 1) {
+        s.color = 'grey';
+        s.editable = false;
       }
-      if (s.student.length === 1) {
-        s.description = s.student[0];
+
+      if (s.IsConfirm == 1){
+        s.color = 'green';
+        s.editable = false;
+      }
+      if (teachersNewArray.length == 0) {
+        const Type = '(' + s.title + ')';
+        if (s.IsGroup === false) {
+          s.title += 'Learner: ' + s.learner[0].FirstName + '\n';
+        }
+        s.title =  Type
         return data;
       }
-      s.description += '<div class="row">';
-      s.student.forEach(w => {
-       s.description += '<div class="col-4 col-centered">' + w + '</div>';
-      });
-      s.description += '</div>';
+
+
+      const type = '(' + s.title + ')';
+      s.title = '';
+      s.title += s.teacher + ' ' + type;
+      if (s.IsGroup === false) {
+        s.title += '\nLearner: ' + s.learner[0].FirstName;
+      }
     });
     return data;
   }
   getEventByDate = (date) => {
+    const teacherRoom = document.querySelectorAll('#teacherRoom');
+    teacherRoom.forEach(s => {
+      s.remove();
+    })
     this.isloading = true;
     this.fullcalendar.calendar.removeAllEvents();
     this.sessionService.getReceptionistLesson(date).subscribe(event => {
       this.eventData = this.generateEventData(event.Data);
       this.eventsModel = this.eventData;
       this.isloading = false;
+      this.teacherAvoidDuplicate();
     });
   }
+
+  teacherAvoidDuplicate = () => {
+    // document.getElementById('teacherRoom').remove()
+    const resourceCol = document.querySelectorAll('.fc-resource-cell')
+    resourceCol.forEach(s => {
+      const resourceId = Number(s.getAttribute('data-resource-id'));
+      const events = this.eventsModel.filter(s => s.resourceId == resourceId);
+      const teachersArray = []
+      events.map(info => teachersArray.push(info.teacher));
+      const teachersNewArray = Array.from(new Set(teachersArray))
+      teachersNewArray.map(q => {
+        const div = document.createElement('div');
+        div.setAttribute('id', 'teacherRoom');
+        const text = document.createElement('span')
+        text.innerText = q;
+        div.appendChild(text)
+        s.appendChild(div);
+      });
+    });
+  }
+
   search = () => {
     if (this.searchForm.get('dateOfLesson').value === '' || this.searchForm.get('dateOfLesson').value === null) {
       Swal.fire({
@@ -256,6 +299,34 @@ export class SessionsCalendarViewAdminComponent implements OnInit {
       () => {
         this.getEventByDate(Date);
       });
+  }
+
+  openLearnerItem = (learnerId) => {
+    const Date = this.datePipe.transform(this.fullcalendar.calendar.getDate(), 'yyyy-MM-dd');
+    this.learnerProfileLoading = true
+    this.learnersService.getLearnerById(learnerId).subscribe(res => {
+      this.learnerProfileLoading = false
+      this.modalService.dismissAll()
+      const modalRef = this.modalService.open(AdminLearnerProfileComponent,
+        // @ts-ignore
+        {size: 'xl', backdrop: 'static', keyboard: false });
+      // @ts-ignore
+      (modalRef.componentInstance as AdminLearnerProfileComponent).whichLearner = res.Data;
+      modalRef.result.then(
+        () => {
+          this.getEventByDate(Date);
+        },
+        () => {
+          this.getEventByDate(Date);
+        });
+    }, err => {
+      this.learnerProfileLoading = false
+      Swal.fire({
+        type: 'error',
+        title: 'Oops...',
+        text: err.error.ErrorMessage
+      });
+    });
   }
 
 }

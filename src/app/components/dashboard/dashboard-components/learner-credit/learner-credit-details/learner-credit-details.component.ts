@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { ActivatedRoute, ParamMap, Router, RouterStateSnapshot } from "@angular/router";
 import { LearnersService } from "../../../../../services/http/learners.service"
 import { NgbootstraptableService } from "../../../../../services/others/ngbootstraptable.service"
@@ -11,7 +11,8 @@ import { GeneralRepoService } from '../../../../../services/repositories/general
   styleUrls: ['./learner-credit-details.component.css']
 })
 export class LearnerCreditDetailsComponent implements OnInit {
-
+// get learner id from model template component
+@Input() whichLearner;
   public learner: any
   public learnerId: number
   public remainingCourseData: any
@@ -28,18 +29,17 @@ export class LearnerCreditDetailsComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    console.log(this.whichLearner)
     this.generalRepoService.fisrtName.subscribe(data => {
       if (data == "Customer Name") {
         this.learnerId = +this.router.url.slice(this.router.url.lastIndexOf("/") + 1)
       } else {
         this.learner = data
         this.learnerId = this.learner.LearnerId
-        console.log(this.learner, this.learnerId)
       }
       this.getRemainingCourses()
       this.getArrangedLesson()
-    })
-    console.log(this.learnerId)
+    }, err => console.log(err))
   }
 
   getRemainingCourses() {
@@ -47,7 +47,6 @@ export class LearnerCreditDetailsComponent implements OnInit {
     this.learnerService.getRemainingCourses(this.learnerId).subscribe(data => {
       this.remainingCourseData = data["Data"]
       this.remainingDataWaitingFlag = false
-      console.log(this.remainingCourseData)
     }, error => console.log(error)
     )
   }
@@ -57,7 +56,6 @@ export class LearnerCreditDetailsComponent implements OnInit {
     this.learnerService.getArrangedLesson(this.learnerId).subscribe(data => {
       this.arrangedCourseData = data["Data"]
       this.arrangeDataWaitingFlag = false
-      console.log(this.arrangedCourseData)
     }, error => console.log(error))
   }
 

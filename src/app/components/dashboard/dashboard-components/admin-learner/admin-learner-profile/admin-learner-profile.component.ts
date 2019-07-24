@@ -2,7 +2,8 @@ import { Component, OnInit, Input } from '@angular/core';
 import { NgbootstraptableService } from 'src/app/services/others/ngbootstraptable.service';
 import { NgbModal, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { LearnersService } from 'src/app/services/http/learners.service';
-import { LearnerDeleteModalComponent } from '../learner-delete-modal/learner-delete-modal.component';
+import { AdminLearnerPaymentInvoiceComponent } from '../../admin-payment/admin-learner-payment-invoice/admin-learner-payment-invoice.component';
+import { ModelTemplateComponent } from '../../../../../shared/components/model-template/model-template.component'
 import { LearnerDetailModalComponent } from '../learner-detail-modal/learner-detail-modal.component';
 import { LearnerEditModalComponent } from '../learner-edit-modal/learner-edit-modal.component';
 import { AdminLearnerLeaveComponent } from '../admin-learner-leave/admin-learner-leave.component';
@@ -68,9 +69,19 @@ export class AdminLearnerProfileComponent implements OnInit {
     class: 'fas fa-calendar'
   },
   {
-    title: 'Delete Student Record',
+    title: 'payInvoice',
     parameter: 3,
-    class: 'fas fa-trash-alt'
+    class: 'fas fa-file-invoice-dollar'
+  },
+  {
+    title: 'Learner Credit',
+    parameter: 11,
+    class: 'fas fa-folder'
+  },
+  {
+    title: 'Learner Timetable',
+    parameter: 12,
+    class: 'fas fa-address-book'
   },
   ];
   // @Output() activeModalEvent: EventEmitter<any> = new EventEmitter;
@@ -83,22 +94,22 @@ export class AdminLearnerProfileComponent implements OnInit {
 
   ngOnInit() {
     this.loadingFlag = true;
-    this.getDataFromServer()
+    this.getDataFromServer();
   }
-  //get data from server
+  // get data from server
   getDataFromServer() {
     if (!this.learnerId){this.getId = Number(this.whichLearner.LearnerId);}else {
-      console.log(this.learnerId)
       this.getId = Number(this.learnerId);
     }
     this.learnersService.getLearnerById(Number(this.getId)).subscribe(
       res => {
         // @ts-ignore
         this.learnerList = res.Data;
+        console.log(this.learnerList)
         this.loadingFlag = false;
       },
       (err) => {
-        console.log(err); this.errorMessage = "Wrong"
+        console.log(err); this.errorMessage = "Wrong";
       }
     )
     // this.LearnerListService.getLearnerList().subscribe(
@@ -124,21 +135,20 @@ export class AdminLearnerProfileComponent implements OnInit {
       2 --> Edit/update
       3 --> delete
   */
-  popUpModal(command) {
+  popUpModal(command, title) {
     let whichLearner = this.learnerList;
-    console.log(whichLearner)
     switch (command) {
       case 0:
-        this.addModal(command, whichLearner)
+        this.addModal(command, whichLearner);
         break;
       case 1:
-        this.detailModal(command, whichLearner)
+        this.detailModal(command, whichLearner);
         break;
       case 2:
-        this.EditModal(command, whichLearner)
+        this.EditModal(command, whichLearner);
         break;
       case 3:
-        this.deleteModal(command, whichLearner);
+        this.modalTemplate(command, whichLearner, title);
         break;
       case 4:
         this.deleteCourseModal(whichLearner);
@@ -148,6 +158,13 @@ export class AdminLearnerProfileComponent implements OnInit {
         break;
       case 10:
         this.periodCourseChangeModal(command, whichLearner);
+        break;
+      case 11:
+        this.modalTemplate(command, whichLearner, title);
+        break;
+      case 12:
+        this.modalTemplate(command, whichLearner, title);
+        break;
     }
   }
 
@@ -171,36 +188,39 @@ export class AdminLearnerProfileComponent implements OnInit {
     let that = this;
     modalRef.result.then(
       (res) => {
-        that.ngOnInit()
+        that.ngOnInit();
       },
       (err) => {
-        return
+        return;
       }
-    )
+    );
   }
   /*
-    delete modal
+    learner invoice payment modal
   */
-  deleteModal(command, whichLearner) {
-    const modalRef = this.modalService.open(LearnerDeleteModalComponent);
+ modalTemplate(command, whichLearner, title) {
+    const modalRef = this.modalService
+    //@ts-ignore
+    .open(ModelTemplateComponent,{ size:'xl', backdrop: 'static', keyboard: false });
     let that = this;
     modalRef.result.then(
       (res) => {
-        that.ngOnInit()
+        that.ngOnInit();
       },
       (err) => {
-        return
+        return;
       }
-    )
-    modalRef.componentInstance.command = command;
-    modalRef.componentInstance.whichLearner = whichLearner;
+    );
+    modalRef.componentInstance.whichObject = whichLearner.LearnerId;
+    modalRef.componentInstance.whichModal = title;
   }
 
   /*
     detail modal
   */
   detailModal(command, whichLearner) {
-    const modalRef = this.modalService.open(LearnerDetailModalComponent, { size: 'lg', backdrop: 'static', keyboard: false });
+    //@ts-ignore
+    const modalRef = this.modalService.open(LearnerDetailModalComponent, { size:'xl', backdrop: 'static', keyboard: false });
     modalRef.componentInstance.command = command;
     modalRef.componentInstance.whichLearner = whichLearner;
   }
@@ -208,15 +228,16 @@ export class AdminLearnerProfileComponent implements OnInit {
     Edit modal
   */
   EditModal(command, whichLearner) {
-    const modalRef = this.modalService.open(LearnerEditModalComponent, { windowClass: 'my-class', backdrop: 'static', keyboard: false });
+    //@ts-ignore
+    const modalRef = this.modalService.open(LearnerEditModalComponent, { size:'xl', backdrop: 'static', keyboard: false });
 
     let that = this;
     modalRef.result.then(
       (res) => {
-        that.ngOnInit()
+        that.ngOnInit();
       },
       (err) => {
-        return
+        return;
       }
     )
     modalRef.componentInstance.command = command;
@@ -227,14 +248,16 @@ export class AdminLearnerProfileComponent implements OnInit {
     jump to another page
   */
   jumpToTrialCoursePage() {
-    history.pushState(null, '', 'trial')
+    history.pushState(null, '', 'trial');
+    this.activeModal.dismiss();
   }
 
   /*
     Add courses modal
   */
   addModal(command, whichLearner) {
-    const modalRef = this.modalService.open(LearnerAddModalComponent, { windowClass: 'my-class', backdrop: 'static', keyboard: false });
+    //@ts-ignore
+    const modalRef = this.modalService.open(LearnerAddModalComponent, { size:'xl', backdrop: 'static', keyboard: false });
     let that = this;
     modalRef.result.then(
       (res) => {
@@ -253,7 +276,8 @@ export class AdminLearnerProfileComponent implements OnInit {
     })
   }
   deleteCourseModal(whichLearner) {
-    const modalRef = this.modalService.open(LearnerDeleteCourseModalComponent, { windowClass: 'my-class', backdrop: 'static', keyboard: false });
+    //@ts-ignore
+    const modalRef = this.modalService.open(LearnerDeleteCourseModalComponent, { size:'xl', backdrop: 'static', keyboard: false });
 
     let that = this;
     modalRef.result.then(

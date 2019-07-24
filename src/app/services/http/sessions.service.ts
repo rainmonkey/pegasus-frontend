@@ -33,9 +33,9 @@ export class SessionsService {
 
   }
 
-  getTeacherLesson(beginDate) {
+  getTeacherLesson(teacherId,beginDate) {
     console.log(this.httpHeaders);
-    return this.http.get<any>(this.baseUrl + 'lesson/GetLessonsForTeacher/1/' + beginDate);
+    return this.http.get<any>(this.baseUrl + 'lesson/GetLessonsForTeacher/'+teacherId+'/' + beginDate);
   }
 
   getReceptionistLessonBetweenDate(beginDate, endDate) {
@@ -71,5 +71,14 @@ export class SessionsService {
     console.log(this.httpHeaders);
     // @ts-ignore
     return this.http.put<any>(this.baseUrl + 'LessonReschedule/' + lessonId + '/' + localStorage.getItem('userID') + '/' + reason);
+  }
+
+  GetSessionEditRoom(TeacherId, OrgId, beginTime) {
+    console.log(this.httpHeaders);
+    return this.http.get<any>(this.baseUrl + 'Room/' + TeacherId + '/' + OrgId + '/' + beginTime);
+  }
+  GetSessionEditRoomTwo(OrgId, StartTime, EndTime) {
+    console.log(this.httpHeaders);
+    return this.http.get<any>(this.baseUrl + 'RoomAvailableCheck/checkbylesson/' + OrgId + '/' + StartTime + '/' + EndTime);
   }
 }

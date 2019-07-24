@@ -242,6 +242,7 @@ export class CourseClassDetailModalComponent implements OnInit {
   // check whether data vailad or not(ruled by Validators).
   checkInputVailad(valueSubmit) {
     //once click save btn, touch all inputs form with for-loop. In order to trigger Validator
+    console.log('checkInput', this.updateForm)
     for (let i in this.updateForm.controls) {
       this.updateForm.controls[i].touched == true;
     }

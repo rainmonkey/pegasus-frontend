@@ -1,6 +1,10 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { environment } from '../../../environments/environment.prod';
+import { Observable } from 'rxjs';
+import { catchError } from 'rxjs/operators';
+import { throwError } from 'rxjs';
+import { PostProduct } from 'src/app/models/PostProduct';
 
 @Injectable({
   providedIn: 'root'
@@ -25,5 +29,33 @@ export class InventoriesService {
   }
   getStaff() {
     return this.http.get(this.baseUrl + 'Staff');
+  }
+
+  /* get stock-application data from server*/
+  getStockApplication(beginDate: any, endDate: any ): Observable<any> {
+    return this.http.get(this.baseUrl + `StockApplication/${beginDate}/${endDate}`);
+  }
+
+  /* for stock-application-detail-modal dropdown options */
+  getProdCats(): Observable<any> {
+    return this.http.get(this.baseUrl + `Product/GetCat`);
+  }
+  getProdTypeByCat(cateId: number): Observable<any> {
+    return this.http.get(this.baseUrl + `Product/GetTypeByCat/${cateId}`);
+  }
+  getProdByType(typeId: number): Observable<any> {
+    return this.http.get(this.baseUrl + `Product/GetProdByType/${typeId}`);
+  }
+
+  /* post data  */
+  postProduct(product: PostProduct): Observable<any>{
+    return this.http.post(this.baseUrl+'StockApplication',product)
+           .pipe(
+             catchError(this.errorHandler)
+           );
+  }
+  // throw error to component
+  errorHandler(error: HttpErrorResponse) {
+    return throwError(error);
   }
 }

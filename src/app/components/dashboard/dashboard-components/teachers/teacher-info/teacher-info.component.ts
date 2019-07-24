@@ -67,7 +67,7 @@ export class TeacherInfoComponent implements OnInit {
         this.teachersList = res.Data;
         this.teachersListCopy = this.teachersList;
         this.teachersListLength = res.Data.length;
-        //console.log(this.teachersList)
+        // console.log(this.teachersList)
 
         this.refreshPageControl();
         this.loadingFlag = false;
@@ -170,7 +170,7 @@ export class TeacherInfoComponent implements OnInit {
     else {
       this.queryParams[paraName] = paraValue;
     }
-
+  
     this.router.navigate(['tutors/list'], {
       queryParams: this.queryParams
     });

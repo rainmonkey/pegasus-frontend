@@ -7,6 +7,7 @@ import { Router } from '@angular/router';
 import { StaffDeleteModalComponent } from '../staff-delete-modal/staff-delete-modal.component';
 import { StaffDetailModalComponent } from '../staff-detail-modal/staff-detail-modal.component';
 import { StaffEditModalComponent } from '../staff-edit-modal/staff-edit-modal.component';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-Staff-list',
@@ -55,7 +56,8 @@ export class StaffListComponent implements OnInit {
        console.log(this.staffList)
      },
      (err) => {
-       alert("Thers's something wrong in server, please try later.")
+       //alert("Thers's something wrong in server, please try later.")
+       Swal.fire({  type: 'error',  title: 'Oops...', text: 'There is something wrong in server,'+err.error.ErrorMessage });       
      }
    )
  }

@@ -3,8 +3,9 @@ import { CoursesService } from 'src/app/services/http/courses.service';
 import { Component, OnInit, Input, Output, ViewChildren, EventEmitter } from '@angular/core';
 import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ActivatedRoute, Router } from "@angular/router"
+import { DownloadPDFService, IInvoiceLearnerName, IInvoice } from "src/app/services/others/download-pdf.service"
 import { forkJoin } from 'rxjs';
-import * as jsPDF from 'jspdf';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-trial-confirm',
@@ -20,7 +21,7 @@ export class TrialConfirmComponent implements OnInit {
   @Input() orgId;
   @Input() cateName;
   @Input() cateId;
-  @Input() whichTeacher;
+  @Input() teacherDetails;
   @Input() coursePrice;
   @Input() learnerId;
   @Input() courseId;
@@ -40,20 +41,23 @@ export class TrialConfirmComponent implements OnInit {
   public error: boolean = false;
   public loadingGifFlag = false;
   public successFlag = false;
-  public extraFee;
-  private  isPayNow: boolean  = true;
+  public extraFee: number;
+  public extraFeeName: string;
+  private isPayNow: boolean = true;
 
   constructor(public activeModal: NgbActiveModal,
     private modalService: NgbModal,
     private lookupsService: LookUpsService,
     private CoursesService: CoursesService,
     private activatedRoute: ActivatedRoute,
-    private router: Router) { }
+    private router: Router,
+    private downloadPDFService: DownloadPDFService
+  ) { }
 
   ngOnInit() {
     this.startTimeTem = this.timeFormatting(this.startTime);
     this.endTimeTem = this.timeFormatting(this.endTime);
-    this.whichTeacherFullName = this.whichTeacher.FirstName + ' ' + this.whichTeacher.LastName;
+    this.whichTeacherFullName = this.teacherDetails.FirstName + ' ' + this.teacherDetails.LastName;
     this.getDataFromServer();
   }
 
@@ -71,7 +75,8 @@ export class TrialConfirmComponent implements OnInit {
         this.assignRandomRoom(allAvaliableRoom);
       },
       (err) => {
-        alert('Sorry, something went wrong.')
+        //alert('Sorry, something went wrong.')
+        Swal.fire({ type: 'error', title: 'Oops...', text: 'Sorry, something went wrong' + err.error.ErrorMessage });
       }
     );
   }
@@ -87,6 +92,7 @@ export class TrialConfirmComponent implements OnInit {
     for (let i of extraFee) {
       if (i.PropValue == 1) {
         this.extraFee = Number(i.PropName);
+        this.extraFeeName = i.Description
       }
     }
 
@@ -103,7 +109,7 @@ export class TrialConfirmComponent implements OnInit {
   }
 
   onSubmit() {
-    if ((this.paymentMethodValue == null && this.isPayNow )&& !this.arrangeFlag) {
+    if ((this.paymentMethodValue == null && this.isPayNow) && !this.arrangeFlag) {
       this.error = true;
       return
     }
@@ -136,7 +142,8 @@ export class TrialConfirmComponent implements OnInit {
         (err) => {
           console.log(err);
           this.loadingGifFlag = false;
-          alert('Sorry,something went wrong in server.');
+          // alert('Sorry,something went wrong in server.');
+          Swal.fire({ type: 'error', title: 'Oops...', text: 'Sorry, something went wrong' + err.error.ErrorMessage });
         }
       )
     }
@@ -147,7 +154,7 @@ export class TrialConfirmComponent implements OnInit {
     let data = {
       "LearnerId": Number(this.learnerId),
       "RoomId": this.avaliableRoom.RoomId,
-      "TeacherId": this.whichTeacher.TeacherId,
+      "TeacherId": this.teacherDetails.TeacherId,
       "OrgId": this.orgId,
       "BeginTime": this.startTime,
       "Reason": "arrange course",
@@ -160,7 +167,7 @@ export class TrialConfirmComponent implements OnInit {
     let obj = {
       "LearnerId": Number(this.learnerId),
       "RoomId": this.avaliableRoom.RoomId,
-      "TeacherId": this.whichTeacher.TeacherId,
+      "TeacherId": this.teacherDetails.TeacherId,
       "OrgId": this.orgId,
       "BeginTime": this.startTime,
       "EndTime": this.endTime,
@@ -182,31 +189,19 @@ export class TrialConfirmComponent implements OnInit {
       this.router.navigate(["/learner/credit/", this.learnerId])
     }
   }
-  
-  downloadInvoice() {
-    let doc = new jsPDF('p', 'pt', 'a4');
 
-    let text = `${this.studentFullName}'s Payment Invoice`;
-    let xOffset = (doc.internal.pageSize.width / 2) - (doc.getStringUnitWidth(text) * 20 / 2);
-
-    doc.setFontSize(20);
-    doc.text(text, xOffset, 50);
-
-    doc.setFontSize(14);
-    doc.text(`Invoice To:  ${this.studentFullName}`, 30, 100);
-    doc.text(`For`, 30, 120);
-    doc.text(`1 Lesson of ${this.cateName} trial course,`, 40, 140);
-    doc.text(`by ${this.whichTeacher.FirstName}  ${this.whichTeacher.LastName},`, 40, 160);
-    doc.text(`from ${this.startTime} to ${this.endTime},`, 40, 180);
-    doc.text(`at ${this.orgName} ${this.avaliableRoom.RoomName}.`, 40, 200);
-    doc.text(`Price:`, 30, 250);
-    doc.text(`$ ${this.coursePrice + this.extraFee}`, 220, 250);
-    //Total
-    doc.setFontSize(25);
-    doc.text(`TOTAL: $ ${this.coursePrice + this.extraFee}`, 30, 350);
-    doc.setFontSize(14);
-    doc.text(`Create Date: ${new Date().toLocaleString()}`, 30, 370);
-
-    doc.save('aaaa');
+  downloadPDFReady() {
+    let learnerName = {} as IInvoiceLearnerName
+    learnerName.firstName = this.studentFullName.split(" ")[0]
+    learnerName.lastName = this.studentFullName.split(" ")[1]
+    let invoice = {} as IInvoice
+    invoice.LessonQuantity = 1
+    invoice.CourseName = this.cateName
+    invoice.BeginDate = this.startTime
+    invoice.LessonFee = this.coursePrice
+    invoice.Other1Fee = this.extraFee
+    invoice.Other1FeeName = this.extraFeeName
+    invoice.TotalFee = this.coursePrice + this.extraFee
+    this.downloadPDFService.downloadPDF(learnerName, invoice)
   }
 }
