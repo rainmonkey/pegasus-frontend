@@ -6,6 +6,7 @@ import { NgbootstraptableService } from 'src/app/services/others/ngbootstraptabl
 import { NgbDate } from '@ng-bootstrap/ng-bootstrap';
 import Swal from 'sweetalert2';
 
+import { StockApplicationAddModalComponent } from 'src/app/components/dashboard/dashboard-components/inventory/inventory-stock-application/stock-application-add-modal/stock-application-add-modal.component';
 import { StockApplicationDetailModalComponent } from 'src/app/components/dashboard/dashboard-components/inventory/inventory-stock-application/stock-application-detail-modal/stock-application-detail-modal.component';
 
 @Component({
@@ -22,7 +23,7 @@ export class StockApplicationListComponent implements OnInit {
   public loadingFlag: boolean = true;
   public stockApplicationLength: number;
   public page: number = 1;
-  public pageSize: number = 3;
+  public pageSize: number = 8;
   /* after loading, display default data of three months */
   public currentDate: any;
   public formerDate: any;
@@ -152,8 +153,24 @@ export class StockApplicationListComponent implements OnInit {
     });
   }
   //////////////////////////////////////handler of angular-bootstrap modals/////////////////////////////////////
+  openAddModal() {
+    const modalRef = this.modalService.open(StockApplicationAddModalComponent, { size: 'lg', centered: true });
+    modalRef.componentInstance.passProduct.subscribe((applicationId: number) => {
+      this.loadingFlag = true;
+      this.inventoriesService.getNewStockApplication(applicationId).subscribe(
+        res => {
+          console.log('receivedProduct', res['Data']);
+          this.stockApplication.unshift(res['Data']);
+          this.loadingFlag = false;
+        },
+        err => this.backendErrorHandler(err)
+      )
+    })
+  }
   openDetailModal() {
     const modalRef = this.modalService.open(StockApplicationDetailModalComponent, { size: 'lg', centered: true });
-    // modalRef.componentInstance.name = 'World';
+  }
+  deleteModal() {
+    
   }
 }
