@@ -24,6 +24,7 @@ export class SessionDetailEditModalComponent implements OnInit {
   BranchSelects: any;
   RoomSelects: any;
   TeacherSelects: any;
+  duration: number
   constructor(
     public activeModal: NgbActiveModal,
     private fb: FormBuilder,
@@ -83,6 +84,7 @@ export class SessionDetailEditModalComponent implements OnInit {
             EditEndTime.getHours() + ':' + (EditEndTime.getMinutes().toString().length === 1 ? '0' + EditEndTime.getMinutes().toString() : EditEndTime.getMinutes());
           this.sessionsService.GetSessionEditRoomTwo(this.SessionForm.value.Branch, BeginTime, EndTime).subscribe(data => {
             this.RoomSelects = data.Data;
+            this.duration = EditEndTime.getTime() - EditBeginTime.getTime()
           });
         } else {
           this.RoomSelects = res.Data;
@@ -100,7 +102,6 @@ export class SessionDetailEditModalComponent implements OnInit {
 
   getTeachers = (branchId: number) => {
     this.TeacherSelects = this.BranchSelects.filter(s => s.OrgId === branchId)[0].Teacher;
-    console.log(this.TeacherSelects, this.BranchSelects);
   }
 
   // confirm Modal
@@ -127,8 +128,10 @@ export class SessionDetailEditModalComponent implements OnInit {
     modalRef.componentInstance.orgName = orgName;
     modalRef.componentInstance.orgId = orgId;
     modalRef.componentInstance.notDraggable = true;
+    modalRef.componentInstance.duration = this.duration;
     modalRef.componentInstance.userSelectedTime.subscribe(res => {
-      console.log(res);
+      console.log(res)
+      this.SessionForm.get("BeginTime").patchValue(res)
     });
   }
 
