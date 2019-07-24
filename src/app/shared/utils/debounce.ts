@@ -1,16 +1,11 @@
-export class Debounce {
-  t;
-  constructor() {
-    this.t = null;
-  }
-
-  debounce = (fn, delay) => {
-    if (this.t) {
-      clearTimeout(this.t);
-      this.t = null
+export const debounce = () => {
+  let timeout = null;
+  return (fn, delay) => {
+    if (timeout) {
+      clearTimeout(timeout);
     }
-    this.t = setTimeout(() => {
+    timeout = setTimeout(() => {
       fn();
     }, delay);
-  }
+  };
 }

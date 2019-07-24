@@ -3,8 +3,9 @@ import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { FormBuilder, Validators } from '@angular/forms';
 import { SessionsService } from '../../../../../../services/http/sessions.service';
 import { SessionEdit } from '../../../../../../models/SessionEdit';
-import { TrialModalComponent } from "src/app/components/dashboard/dashboard-components/trial-session/trial-modal/trial-modal.component"
-import Swal from "sweetalert2";
+import { TrialModalComponent } from 'src/app/components/dashboard/dashboard-components/trial-session/trial-modal/trial-modal.component';
+import Swal from 'sweetalert2';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-session-detail-edit-modal',
@@ -28,6 +29,7 @@ export class SessionDetailEditModalComponent implements OnInit {
     private fb: FormBuilder,
     public modalService: NgbModal,
     private sessionsService: SessionsService,
+    private datePipe: DatePipe,
   ) {
 
   }
@@ -50,7 +52,6 @@ export class SessionDetailEditModalComponent implements OnInit {
   }
 
   ngOnInit() {
-    console.log(this.LessonModel)
     this.SessionForm = this.fb.group({
       CourseName: [this.LessonModel.CourseName],
       Room: ['', [Validators.required]],
@@ -60,21 +61,41 @@ export class SessionDetailEditModalComponent implements OnInit {
       Reason: ['', [Validators.required]]
     });
     this.getBranchs();
-
   }
 
+
+  getRooms = () => {
+    // @ts-ignore
+    const dateDiff = Number(new Date(this.LessonModel.EndTime) - new Date(this.LessonModel.BeginTime))
+    if ((!this.Branch.touched || this.Branch.invalid) || (!this.Teacher.touched || this.Teacher.invalid)) {
+      return;
+    }
+    this.sessionsService.GetSessionEditRoom(this.SessionForm.value.Teacher, this.SessionForm.value.Branch,
+      this.SessionForm.value.BeginTime).subscribe(res => {
+        if (res.Data.length == 0) {
+          const EditBeginTime = new Date(this.SessionForm.value.BeginTime)
+          const EditEndTime = new Date(this.SessionForm.value.BeginTime);
+          console.log(EditBeginTime.getMinutes().toString().length)
+          EditEndTime.setMinutes(EditBeginTime.getMinutes() + (dateDiff / 60 / 1000));
+          const BeginTime = EditBeginTime.getFullYear() + '-' + (EditBeginTime.getMonth() + 1) + '-' + EditBeginTime.getDate() + 'T' +
+            EditBeginTime.getHours() + ':' + (EditBeginTime.getMinutes().toString().length === 1 ? '0' + EditBeginTime.getMinutes().toString() : EditBeginTime.getMinutes())
+          const EndTime = EditEndTime.getFullYear() + '-' + (EditEndTime.getMonth() + 1) + '-' + EditEndTime.getDate() + 'T' +
+            EditEndTime.getHours() + ':' + (EditEndTime.getMinutes().toString().length === 1 ? '0' + EditEndTime.getMinutes().toString() : EditEndTime.getMinutes())
+          this.sessionsService.GetSessionEditRoomTwo(this.SessionForm.value.Branch, BeginTime, EndTime).subscribe(data => {
+            this.RoomSelects = data.Data;
+          });
+        } else {
+          this.RoomSelects = res.Data;
+        }
+      });
+  }
 
   getBranchs = () => {
     this.sessionsService.GetTeachherFilter(this.LessonModel.courseId).subscribe(res => {
       this.BranchSelects = res.Data;
-      console.log(this.BranchSelects)
     }, err => {
       alert('Something ERR');
     });
-  }
-
-  getRooms = (branchId) => {
-    this.RoomSelects = this.BranchSelects.filter(s => s.OrgId == branchId)[0].Room;
   }
 
   getTeachers = (branchId) => {
@@ -95,10 +116,14 @@ export class SessionDetailEditModalComponent implements OnInit {
   }
 
   openTimePicker = () => {
+    console.log(this.LessonModel, this.LessonModel.CourseName.split("-")[0])
+    let orgId: number = +this.SessionForm.get("Branch").value
+    let orgName: string = this.BranchSelects.find(branch => branch.OrgId == orgId).OrgName
     let modalRef = this.modalService.open(TrialModalComponent, { size: 'lg', backdrop: 'static', keyboard: false })
-    // modalRef.componentInstance.command = command;
     modalRef.componentInstance.LearnerId = this.LessonModel.LearnerId
-    console.log(this)
+    modalRef.componentInstance.TeacherId = this.LessonModel.TeacherId
+    modalRef.componentInstance.orgName = orgName
+    modalRef.componentInstance.orgId = orgId
   }
 
   ConfrimEdit = () => {
@@ -113,8 +138,8 @@ export class SessionDetailEditModalComponent implements OnInit {
       this.isEditSuccess = true;
       this.isloading = false;
       setTimeout(() => {
-          this.activeModal.dismiss('Cross click');
-        }, 1000);
+        this.activeModal.dismiss('Cross click');
+      }, 1000);
     },
       err => {
         this.isEditFail = true;

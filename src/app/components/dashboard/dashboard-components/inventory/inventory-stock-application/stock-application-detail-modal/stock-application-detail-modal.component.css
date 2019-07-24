@@ -1,3 +1,44 @@
+.alert__message--red {
+    color: red; 
+ }
+
+.label__style {
+    font-weight: bold;
+    font-size: 14px;
+}
+.input__style {
+    border: 1px solid lightgrey;
+    border-radius: 3px;
+    text-align: center;
+    background: rgb(173, 216, 230, 0.1);
+}
+.select__style {
+    border: 1px solid lightgrey;
+    border-radius: 3px;
+    text-align: center;
+    background: rgb(173, 216, 230, 0.1);
+}
+.input__textarea--style {
+    border: 1px solid lightgrey;
+    border-radius: 3px;
+    background: rgb(173, 216, 230, 0.1);
+    height: 50px;
+}
+.input__number--style {
+    border: 1px solid lightgrey;
+    border-radius: 3px;
+    text-align: center;
+    background: rgb(173, 216, 230, 0.1);
+    width: 300px;
+}
+.minus__btn, .increase__btn {
+    border: 1px solid lightgrey;
+    border-radius: 3px;
+    background: rgb(173, 216, 230, 0.1);
+    width: 80px;
+}
+
+
 .t_um_title{
     font-weight: bold;
     font-style: italic;
@@ -64,8 +105,8 @@
     border: none;
     border: 1px solid lightgrey;
     border-radius: 3px;
-    text-align: center;
-    text-align-last: center;
+    /* text-align: center;
+    text-align-last: center; */
     background: rgb(173, 216, 230, 0.1);
     height: 50px;
 }   

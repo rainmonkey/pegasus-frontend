@@ -750,7 +750,7 @@ selectLocation(id, i) {
     this.fdObj['Parent'] = this.parent;
     if (!this.whichLearner){
       this.fdObj['LearnerGroupCourse'] = this.learnerGroupCourse;
-      this.fdObj['One2oneCourseInstance'] = this.oneOnOneCourse;
+      this.fdObj['OneToOneCourseInstance'] = this.oneOnOneCourse;
     }
     this.fdObj['LearnerOthers'] = this.learnerOthers;
     console.log(this.fdObj);

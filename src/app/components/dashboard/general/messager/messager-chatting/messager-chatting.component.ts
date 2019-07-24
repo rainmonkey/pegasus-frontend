@@ -77,9 +77,9 @@ export class MessagerChattingComponent implements OnInit {
       --> if messages are too many to show the scroll bar, when push a new message, scroll to this new message
   */
   scrollToBottom(count) {
-    //if counter changed, scrolled to bottom, to avoid *ngFor automatically checking
+    //if counter changed(that means new messages pushed on the view), scrolled to bottom, to avoid *ngFor automatically checking
     if (!(count == this.chattingAreaMessageCounter)) {
-      document.getElementById('scroll_anchor').scrollIntoView();
+      document.getElementById('scroll_anchor').scrollBy();
     }
     this.chattingAreaMessageCounter = count;
   }
@@ -150,6 +150,7 @@ export class MessagerChattingComponent implements OnInit {
     message send failed handler
   */
   resentMessage(event, index) {
+    console.log('???')
     //get the failed message object from storage 
     let msg = this.messagerService.getSpecificChattingMessageHistory(this.subscriber['UserId'], index);
     //set isError to false
@@ -159,7 +160,7 @@ export class MessagerChattingComponent implements OnInit {
     let createAt = new Date(msg['createTimeStamp'])
     //save(update) resend message to storage
     this.messagerService.saveChattingHistory(msg);
-    //resend to subscriber
+    //resend to subscriber   
     this.sendMessageToServer(msg['message'], createAt);
   }
 
