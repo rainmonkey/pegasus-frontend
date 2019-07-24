@@ -369,9 +369,10 @@
                   <input #branches class='col-1 tl_muf_orgName' type='checkbox' name={{i.dayName}} value={{j.OrgId}}
                     [checked]='setDefaultBranchSelection(j.OrgId,i)' formControlName='DayOfWeek'
                     (input)='displayRoom($event,j.OrgId,i)'>
-                  <select id={{i.dayName+j.OrgId}} [style.display]='setDefaultBranchSelection(j.OrgId,i)?"block":"none"' class='col-12 t_mf_input' style="text-align: center">
+                  <select id={{i.dayName+j.OrgId}} [style.display]='setDefaultBranchSelection(j.OrgId,i)?"block":"none"' class='col-12 t_mf_input' style="text-align: center"
+                  formControlName='Rooms' #Rooms>
                     <option value='null'>please select room</option>
-                    <option *ngFor='let i of getAvailableRooms(j.OrgId)' value="i.RoomId">{{i.RoomName}}</option>
+                    <option *ngFor='let k of getAvailableRooms(j.OrgId)' value={{k.RoomId}} data-roomId='k.RoomId'>{{k.RoomName}}</option>
                   </select>
                 </div>
               </div>

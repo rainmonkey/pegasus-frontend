@@ -50,6 +50,7 @@ export class TeacherModalFormComponent implements OnInit {
   public othersmsg = '';
   public avliableTextLength: number = 1000;
   public rooms;
+  public DayOfWeek:Array<object>;
 
 
   @Input() command;
@@ -57,6 +58,7 @@ export class TeacherModalFormComponent implements OnInit {
   @ViewChildren('lan') languagesCheckBox;
   @ViewChildren('branches') branchesCheckBox;
   @ViewChild('genderToSubmit') genderToSubmit;
+  @ViewChild('Rooms') Rooms;
 
   constructor(private fb: FormBuilder,
     private teachersService: TeachersService) { }
@@ -69,9 +71,11 @@ export class TeacherModalFormComponent implements OnInit {
     this.getDropdownOptions();
     this.getTeacherLevel();
     this.getInitTextAreaLength();
+    console.log(this.DayOfWeek)
   }
   ngAfterViewInit() {
     this.loadingFlag = false;
+
   }
 
   /////////////////////////////////////////////methods call by other methods/////////////////////////////////////////////////
@@ -256,6 +260,7 @@ export class TeacherModalFormComponent implements OnInit {
         }
       }
       //返回一个有序数组 （如果availableDays比较多 按照Monday--->Sunday顺序排列）
+      console.log(availableDays)
       return availableDays.sort();
     }
     else {
@@ -440,7 +445,8 @@ export class TeacherModalFormComponent implements OnInit {
         IsLeft: [null, Validators.required],
         IsContract: [null, Validators.required],
         Level: [null, Validators.required],
-        Comment: [null]
+        Comment: [null],
+        Rooms:[null]
       }
     }
     else {
@@ -471,7 +477,8 @@ export class TeacherModalFormComponent implements OnInit {
         IsLeft: [{ value: this.whichTeacher.IsLeft, disabled: this.readOnlyFlag }, Validators.required],
         IsContract: [{ value: this.whichTeacher.IsContract, disabled: this.readOnlyFlag }, Validators.required],
         Level: [{ value: this.whichTeacher.Level, disabled: this.readOnlyFlag }, Validators.required],
-        Comment: [{ value: this.whichTeacher.Comment, disabled: this.readOnlyFlag }]
+        Comment: [{ value: this.whichTeacher.Comment, disabled: this.readOnlyFlag }],
+        Rooms:[null]
       }
     }
 

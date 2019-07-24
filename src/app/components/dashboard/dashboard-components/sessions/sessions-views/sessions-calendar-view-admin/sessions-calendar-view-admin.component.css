@@ -16,6 +16,10 @@
 /*  border: 1px solid rgba(59, 59, 69, 0.93);*/
 /*}*/
 
+.fc-event {
+  border-width: 2px;
+}
+
 
 .fc-content{
   color: aliceblue;
@@ -53,3 +57,4 @@ th{
   -ms-transform: translate(-50%, -50%);
   transform: translate(-50%, -50%);
 }
+
