@@ -34,22 +34,22 @@
                 </div>
               </div>
 
-              <div class="col-2">
+              <div class="col-4">
                 <span class="label">First Name: </span>
                 <span class='text'>{{whichLearner.FirstName}}</span>
               </div>
 
-              <div class="col-2" *ngIf='whichLearner.MiddleName'>
+              <div class="col-4" *ngIf='whichLearner.MiddleName'>
                 <span class="label">Middle Name: </span>
                 <span class='text'>{{whichLearner.MiddleName}}</span>
               </div>
 
-              <div class="col-2">
+              <div class="col-4">
                 <span class="label">Last Name: </span>
                 <span class='text'>{{whichLearner.LastName}}</span>
               </div>
 
-              <div class="col-2">
+              <div class="col-4">
                 <span class="label">Gender: </span>
                 <span class='text'>{{whichLearner.Gender | gender}}</span>
               </div>
@@ -60,7 +60,7 @@
               </div>
 
 
-              <div class="col-3">
+              <div class="col-4">
                 <span class="label">Date of Enrollment: </span>
                 <span class='text'>{{whichLearner.EnrollDate.replace('T', ' ')}}</span>
               </div>
@@ -71,46 +71,46 @@
               <span class='text'>{{whichLearner.Org.OrgName}}</span>
             </div> -->
 
-              <div class="col-3">
+              <div class="col-4">
                 <span class="label">Contact Phone: </span>
                 <span class='text'>{{whichLearner.ContactNum}}</span>
               </div>
 
-              <div class="col-3">
+              <div class="col-4">
                 <span class="label">Email: </span>
                 <span class='text'>{{whichLearner.Email}}</span>
               </div>
 
-              <div class="col-3">
+              <div class="col-4">
                 <span class="label">Physical Address: </span>
                 <span class='text'>{{whichLearner.Address}}</span>
               </div>
 
-              <div class="col-3" *ngFor='let i of learnerLevelList'>
+              <div class="col-4">
                 <span class="label">Current Level: </span>
                 <span class='text'>
-                  {{i}}
+                  {{whichLearner.learnerLevelName}}
                 </span>
               </div>
 
-              <div class="col-3" *ngFor='let i of levelTypeList'>
+              <div class="col-4">
                 <span class="label">Level Type: </span>
                 <span class='text'>
-                  {{i}}
+                  {{whichLearner.levelTypeName}}
                 </span>
               </div>
 
-              <div class="col-3">
+              <div class="col-4">
                 <span class="label">Payment Period: </span>
                 <span class='text'>{{whichLearner.PaymentPeriod | paymentPeriod}}</span>
               </div>
 
-              <div class="col-3">
+              <div class="col-4">
                 <span class="label">Referrer: </span>
                 <span class='text'>{{whichLearner.Referrer}}</span>
               </div>
 
-              <div class="col-3">
+              <div class="col-4">
                 <span class="label">Is under 18?: </span>
                 <span class='text'>{{whichLearner.IsUnder18 | isUnder18}}</span>
               </div>
@@ -218,6 +218,12 @@
     <ngb-tab title="Group Course">
       <ng-template ngbTabContent>
         <div style='margin:20px'>
+
+          <div *ngIf='whichLearner.LearnerGroupCourse.length == 0 ||whichLearner.LearnerGroupCourse == null'>
+            No Course records
+          </div>
+
+          <div *ngIf='whichLearner.LearnerGroupCourse.length !== 0 '>
           <div *ngFor='let groupCourse of whichLearner.LearnerGroupCourse '>
             <br>
             <div class="card">
@@ -243,16 +249,17 @@
                     </span>
                   </div>
 
-                  <div class="col-6">
+                  <div class="col-12">
                     <span class="label">Schedule: </span>
-                    <div *ngFor='let time of groupCourse.GroupCourseInstance.CourseSchedule'>
+                    <span *ngFor='let time of groupCourse.GroupCourseInstance.CourseSchedule'>
                       <span class='text'>{{time.DayOfWeek|weekFormat}}
                         {{time.BeginTime}} -- {{time.EndTime}}</span>
-                    </div>
+                    </span>
                   </div>
                 </div>
               </div>
             </div>
+          </div>
           </div>
         </div>
       </ng-template>
@@ -635,28 +642,28 @@
               <div class="card-body">
                 <div class='row'>
 
-                  <div class='col-lg-5  col-sm-6'>
+                  <div class='col-lg-6  col-sm-6'>
                     <span class='label'>Course: </span>
                     <span class='text' *ngIf='i.CourseName'>{{i.CourseName}}</span>
                   </div>
 
-                  <div class='col-lg-4  col-sm-6'>
+                  <div class='col-lg-6  col-sm-6'>
                     <span class='label'>Time: </span>
                     <span class='text' *ngIf='i.BeginTime && i.EndTime'>{{i.BeginTime.replace('T',' ')}} ~
                       {{i.EndTime.replace('T', ' ')}}</span>
                   </div>
 
-                  <div class='col-lg-3 col-sm-6'>
-                    <span class='label'>Teacher: </span>
-                    <span class='text' *ngIf='i.TeacherFirstName'>{{i.TeacherFirstName}}</span>
-                  </div>
-
-                  <div class='col-lg-5 col-sm-6'>
+                  <div class='col-lg-6 col-sm-6'>
                     <span class='label'>Location: </span>
                     <span class='text' *ngIf='i.Branch && i.Room'>{{i.Branch}} {{i.Room}}</span>
                   </div>
 
-                  <div class='col-lg-4 col-sm-6'>
+                  <div class='col-lg-6 col-sm-6'>
+                    <span class='label'>Teacher: </span>
+                    <span class='text' *ngIf='i.TeacherFirstName'>{{i.TeacherFirstName}}</span>
+                  </div>
+
+                  <div class='col-lg-6 col-sm-6'>
                     <span class='label'>Trial Course: </span>
                     <span class='text' *ngIf='i.IsTrial'>{{i.IsTrial | IsTemporary}}</span>
                   </div>
@@ -704,28 +711,29 @@
               <div class="card-body">
                 <div class='row'>
 
-                  <div class='col-lg-5  col-sm-6'>
+                  <div class='col-lg-6  col-sm-6'>
                     <span class='label'>Course: </span>
                     <span class='text' *ngIf='i.CourseName'>{{i.CourseName}}</span>
                   </div>
 
-                  <div class='col-lg-4  col-sm-6'>
+                  <div class='col-lg-6  col-sm-6'>
                     <span class='label'>Time: </span>
                     <span class='text' *ngIf='i.BeginTime && i.EndTime'>{{i.BeginTime.replace('T',' ')}} ~
                       {{i.EndTime.replace('T', ' ')}}</span>
                   </div>
 
-                  <div class='col-lg-3 col-sm-6'>
-                    <span class='label'>Teacher: </span>
-                    <span class='text' *ngIf='i.TeacherFirstName'>{{i.TeacherFirstName}}</span>
-                  </div>
-
-                  <div class='col-lg-5 col-sm-6'>
+                  <div class='col-lg-6 col-sm-6'>
                     <span class='label'>Location: </span>
                     <span class='text' *ngIf='i.Branch && i.Room'>{{i.Branch}} {{i.Room}}</span>
                   </div>
 
-                  <div class='col-lg-4 col-sm-6'>
+                  <div class='col-lg-6 col-sm-6'>
+                    <span class='label'>Teacher: </span>
+                    <span class='text' *ngIf='i.TeacherFirstName'>{{i.TeacherFirstName}}</span>
+                  </div>
+
+
+                  <div class='col-lg-6 col-sm-6'>
                     <span class='label'>Trial Course: </span>
                     <span class='text' *ngIf='i.IsTrial'>{{i.IsTrial | IsTemporary}}</span>
                   </div>
@@ -773,28 +781,28 @@
               <div class="card-body">
                 <div class='row'>
 
-                  <div class='col-lg-5  col-sm-6'>
+                  <div class='col-lg-6  col-sm-6'>
                     <span class='label'>Course: </span>
                     <span class='text' *ngIf='i.CourseName'>{{i.CourseName}}</span>
                   </div>
 
-                  <div class='col-lg-4  col-sm-6'>
+                  <div class='col-lg-6  col-sm-6'>
                     <span class='label'>Time: </span>
                     <span class='text' *ngIf='i.BeginTime && i.EndTime'>{{i.BeginTime.replace('T',' ')}} ~
                       {{i.EndTime.replace('T', ' ')}}</span>
                   </div>
 
-                  <div class='col-lg-3 col-sm-6'>
-                    <span class='label'>Teacher: </span>
-                    <span class='text' *ngIf='i.TeacherFirstName'>{{i.TeacherFirstName}}</span>
-                  </div>
-
-                  <div class='col-lg-5 col-sm-6'>
+                  <div class='col-lg-6 col-sm-6'>
                     <span class='label'>Location: </span>
                     <span class='text' *ngIf='i.Branch && i.Room'>{{i.Branch}} {{i.Room}}</span>
                   </div>
 
-                  <div class='col-lg-4 col-sm-6'>
+                  <div class='col-lg-6 col-sm-6'>
+                    <span class='label'>Teacher: </span>
+                    <span class='text' *ngIf='i.TeacherFirstName'>{{i.TeacherFirstName}}</span>
+                  </div>
+
+                  <div class='col-lg-6 col-sm-6'>
                     <span class='label'>Trial Course: </span>
                     <span class='text' *ngIf='i.IsTrial'>{{i.IsTrial | IsTemporary}}</span>
                   </div>
@@ -849,30 +857,30 @@
                     </div>
 
 
-                    <div class='col-lg-4 col-sm-6'>
+                    <div class='col-lg-6 col-sm-6'>
                       <span class='label'>Course: </span>
                       <span class='text'>{{i.CourseInstance.CourseName}}</span>
                     </div>
 
-                    <div class='col-lg-2 col-sm-6'>
+                    <div class='col-lg-6 col-sm-6'>
                       <span class='label'>Teacher: </span>
                       <span class='text'>{{i.MissedLesson.Teacher}}</span>
                     </div>
 
-                    <div class='col-lg-3 col-sm-6'>
+                    <div class='col-lg-6 col-sm-6'>
                       <span class='label'>Location: </span>
                       <span class='text'>{{i.MissedLesson.Org}}</span>
                     </div>
 
-                    <div class='col-lg-3 col-sm-6'>
+                    <div class='col-lg-6 col-sm-6'>
                       <span class='label'>Begin Date: </span>
                       <span class='text'>{{i.MissedLesson.beginDate.replace('T',' ')}}</span>
                     </div>
 
-                    <div class='col-lg-3 col-sm-6'>
-                        <span class='label'>Makeup Lesson Complete: </span>
-                        <span class='text' *ngIf='i.IsActive'>{{i.IsActive | IsTemporary}}</span>
-                      </div>
+                    <div class='col-lg-6 col-sm-6'>
+                      <span class='label'>Makeup Lesson Complete: </span>
+                      <span class='text' *ngIf='i.IsActive'>{{i.IsActive | IsTemporary}}</span>
+                    </div>
 
                   </div>
                 </div>
@@ -883,16 +891,16 @@
                       <span class='header'>New Lesson: </span>
                     </div>
 
-                    <div class='col-lg-3 col-sm-6'>
+                    <div class='col-lg-6 col-sm-6'>
                       <span class='label'>Teacher: </span>
                       <span class='text'>{{i.NewLesson.Teacher}}</span>
                     </div>
-                    <div class='col-lg-3 col-sm-6'>
+                    <div class='col-lg-6 col-sm-6'>
                       <span class='label'>Location: </span>
                       <span class='text'>{{i.NewLesson.Org}}</span>
                     </div>
 
-                    <div class='col-lg-3 col-sm-6'>
+                    <div class='col-lg-6 col-sm-6'>
                       <span class='label'>Begin Date: </span>
                       <span class='text'>{{i.NewLesson.beginDate.replace('T',' ')}}</span>
                     </div>

@@ -17,7 +17,7 @@
         </div>
         <div>
           <label class="mt-2">Branch</label>
-          <select [class.is-invalid]="Branch.invalid && Branch.touched" class="form-control" type="text" (change)="getTeachers(+$event.target.value)" (blur)="getRooms()" formControlName="Branch">
+          <select [class.is-invalid]="Branch.invalid && Branch.touched" class="form-control" type="text" (change)="getTeachers($event.target.value)" (change)="getRooms()" (blur)="getRooms()" formControlName="Branch">
             <!--              <option selected disabled [value]="LessonModel.Branch">{{LessonModel.Branch}}</option>-->
             <option *ngFor="let branch of BranchSelects" [value]="branch.OrgId">
               {{branch.OrgName}}
@@ -35,7 +35,7 @@
         </div>
         <div>
           <label class="mt-2">Teacher</label>
-          <select [class.is-invalid]="Teacher.invalid && Teacher.touched" (blur)="getRooms()" class="form-control" type="text" formControlName="Teacher">
+          <select [class.is-invalid]="Teacher.invalid && Teacher.touched" (blur)="getRooms()" (change)="getRooms()" class="form-control" type="text" formControlName="Teacher">
             <!--              <option selected disabled [value]="LessonModel.TeacherFirstName">{{LessonModel.TeacherFirstName}}</option>-->
             <option *ngFor="let teacher of TeacherSelects" [value]="teacher.TeacherId">{{teacher.TeacherName}}</option>
           </select>
