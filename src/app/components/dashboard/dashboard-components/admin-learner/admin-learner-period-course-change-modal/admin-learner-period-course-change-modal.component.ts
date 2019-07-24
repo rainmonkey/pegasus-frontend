@@ -38,7 +38,7 @@ export class AdminLearnerPeriodCourseChangeModalComponent implements OnInit {
       reason: ['', Validators.required],
       instanceId: ['', Validators.required],
       OrgId: ['', Validators.required],
-      RoomId: ['', Validators.required],
+      RoomId: [''],
       DayOfWeek: ['', Validators.required],
       IsTemporary: ['', Validators.required],
       CourseScheduleId: ['', Validators.required],

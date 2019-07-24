@@ -147,7 +147,8 @@ export class LearnerDetailModalComponent implements OnInit {
   getLevelType(data) {
     data.forEach(element => {
       if (this.whichLearner.LevelType == element['PropValue']) {
-        this.levelTypeList.push(element['PropName'])
+        // this.levelTypeList.push(element['PropName'])
+        this.whichLearner.levelTypeName = element['PropName']
       }
     });
   }
@@ -155,9 +156,11 @@ export class LearnerDetailModalComponent implements OnInit {
   getLearnerValue(displayData1) {
     displayData1.forEach(element => {
       if (this.whichLearner.LearnerLevel == element['PropValue']) {
-        this.learnerLevelList.push(element['PropName'])
+        // this.learnerLevelList.push(element['PropName'])
+        this.whichLearner.learnerLevelName = element['PropName']
       }
     });
+    console.log(this.whichLearner)
   }
 
   getPurposeValue(displayDatas) {
