@@ -35,7 +35,9 @@ export class InventoriesService {
   getStockApplication(beginDate: any, endDate: any ): Observable<any> {
     return this.http.get(this.baseUrl + `StockApplication/${beginDate}/${endDate}`);
   }
-
+  getNewStockApplication(applicationId: number) {
+    return this.http.get(this.baseUrl + `StockApplication/getById/${applicationId}`);
+  }
   /* for stock-application-detail-modal dropdown options */
   getProdCats(): Observable<any> {
     return this.http.get(this.baseUrl + `Product/GetCat`);
