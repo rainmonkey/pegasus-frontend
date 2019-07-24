@@ -172,5 +172,7 @@ pre{
     cursor: pointer;
 }
 #scroll_anchor{
+    height: 5px;
+    width:100%;
     clear: both;
 }

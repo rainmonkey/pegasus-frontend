@@ -346,10 +346,14 @@
       <div *ngIf='!isAvailableDaysNull' class='col-12' style="margin-top:10px">
         <div *ngIf='command == 1' class='row'>
           <div class='col-12 t_mf_label' style='text-align: center'>Available Days:</div>
-          <div *ngFor='let i of getAvailableDays()' class='col-4'>
+          <div *ngFor='let i of availableDays' class='col-4'>
             <div class='row t_mf_week'>
               <div class='col-12 t_mf_week_title'>{{i | weekFormat}}</div>
-              <div *ngFor='let j of getAvailableOrgs(i)' class='col-12'>{{j | orgFormat}}</div>
+              <div *ngFor='let j of getAvailableOrgs(i)' class='col-12'>{{j.orgId | orgFormat}}
+                <div class='col-12'>
+                  Room: {{j.roomName}} {{j.roomId}}
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -370,8 +374,8 @@
                     [checked]='setDefaultBranchSelection(j.OrgId,i)' formControlName='DayOfWeek'
                     (input)='displayRoom($event,j.OrgId,i)'>
                   <select id={{i.dayName+j.OrgId}} [style.display]='setDefaultBranchSelection(j.OrgId,i)?"block":"none"' class='col-12 t_mf_input' style="text-align: center"
-                  formControlName='Rooms' #Rooms>
-                    <option value='null'>please select room</option>
+                  formControlName='Rooms' #Rooms (change)='tipRooms($event,i,j.OrgId)' value={{getDefaultRoom(i,j.OrgId)}}>
+                    <option value='-1'>no room selected</option>
                     <option *ngFor='let k of getAvailableRooms(j.OrgId)' value={{k.RoomId}} data-roomId='k.RoomId'>{{k.RoomName}}</option>
                   </select>
                 </div>
