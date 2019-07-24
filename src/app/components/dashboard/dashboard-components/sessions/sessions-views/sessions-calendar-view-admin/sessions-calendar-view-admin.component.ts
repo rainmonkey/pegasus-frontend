@@ -148,7 +148,7 @@ export class SessionsCalendarViewAdminComponent implements OnInit {
 
     data.forEach(s => {
       if (s.isReadyToOwn == 1) {
-        s.color = 'red';
+        s.borderColor = 'red';
       }
 
       if (s.IsCanceled == 1) {
@@ -156,16 +156,16 @@ export class SessionsCalendarViewAdminComponent implements OnInit {
         s.editable = false;
       }
 
-      if (s.IsConfirm == 1){
+      if (s.IsConfirm == 1) {
         s.color = 'green';
         s.editable = false;
       }
       if (teachersNewArray.length == 0) {
         const Type = '(' + s.title + ')';
-        if (s.IsGroup === false) {
-          s.title += 'Learner: ' + s.learner[0].FirstName + '\n';
+        if (s.IsGroup == false) {
+          s.title = 'Learner: ' + s.learner[0].FirstName + '\n';
         }
-        s.title =  Type
+        s.title =  Type + s.title
         return data;
       }
 
@@ -173,7 +173,7 @@ export class SessionsCalendarViewAdminComponent implements OnInit {
       const type = '(' + s.title + ')';
       s.title = '';
       s.title += s.teacher + ' ' + type;
-      if (s.IsGroup === false) {
+      if (s.IsGroup == false) {
         s.title += '\nLearner: ' + s.learner[0].FirstName;
       }
     });
@@ -207,6 +207,7 @@ export class SessionsCalendarViewAdminComponent implements OnInit {
         const div = document.createElement('div');
         div.setAttribute('id', 'teacherRoom');
         const text = document.createElement('span')
+        text.style.cssText = 'font-style:italic;color:blue'
         text.innerText = q;
         div.appendChild(text)
         s.appendChild(div);
