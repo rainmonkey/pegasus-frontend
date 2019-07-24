@@ -83,13 +83,13 @@ export class ChattingService {
   //send message
   sendMessage(messageObj) {
     //return from(this.hubConnection.invoke('SendMessageOneToOne', messageObj));
-    return forkJoin(
-      from(this.hubConnection.invoke('SendMessageOneToOne', messageObj)),
+    
+      from(this.hubConnection.invoke('SendMessageOneToOne', messageObj))
       //放后台吧这个东西
       // this.http.post(this.baseUrl + 'chat', messageObj).pipe(
       //   retry(2)
       // )
-    )
+    
   }
 
   //listen on the message

@@ -8,6 +8,7 @@ import { Animations } from '../../../../../../animation/chatting-animation';
 import { environment } from 'src/environments/environment.prod';
 
 @Component({
+    
   selector: 'app-messager-chatting',
   templateUrl: './messager-chatting.component.html',
   styleUrls: ['./messager-chatting.component.css',
