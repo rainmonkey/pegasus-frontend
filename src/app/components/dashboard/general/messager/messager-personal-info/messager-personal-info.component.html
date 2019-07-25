@@ -2,7 +2,8 @@
   <div class='m_p_photo_outer'>
     <div class='m_p_photo_inner'>
       <!-- <img src="../../../../../../assets/images/usersimg/userphoto.jpg" alt=""> -->
-      <img [src]="photoUrl + userPhoto" alt=""  onerror="this.src='../../../../../../assets/images/shared/default-employer-profile.png'">
+      <img [src]="photoUrl + userPhoto" alt=""  onerror="this.src='../../../../../../assets/images/shared/default-employer-profile.png'"
+      [@greyFilterTrigger]='onlineStatus'>
     </div>
   </div>
   <div class='m_p_info'>
