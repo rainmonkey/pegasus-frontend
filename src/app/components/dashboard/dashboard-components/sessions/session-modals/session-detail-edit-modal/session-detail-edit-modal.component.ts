@@ -84,7 +84,6 @@ export class SessionDetailEditModalComponent implements OnInit {
             EditEndTime.getHours() + ':' + (EditEndTime.getMinutes().toString().length === 1 ? '0' + EditEndTime.getMinutes().toString() : EditEndTime.getMinutes());
           this.sessionsService.GetSessionEditRoomTwo(this.SessionForm.value.Branch, BeginTime, EndTime).subscribe(data => {
             this.RoomSelects = data.Data;
-            this.duration = EditEndTime.getTime() - EditBeginTime.getTime()
           });
         } else {
           this.RoomSelects = res.Data;
@@ -122,6 +121,8 @@ export class SessionDetailEditModalComponent implements OnInit {
     const orgId: number = +this.SessionForm.get('Branch').value;
     const orgName: string = this.BranchSelects.find(branch => branch.OrgId === orgId).OrgName;
     const teacherId = +this.SessionForm.get('Teacher').value;
+    this.duration = new Date(this.LessonModel.EndTime).getTime() - new Date(this.LessonModel.BeginTime).getTime()
+
     const modalRef = this.modalService.open(TrialModalComponent, { size: 'lg', backdrop: 'static', keyboard: false });
     modalRef.componentInstance.LearnerId = this.LessonModel.LearnerId;
     modalRef.componentInstance.TeacherId = teacherId;
