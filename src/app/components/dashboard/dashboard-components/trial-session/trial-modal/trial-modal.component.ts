@@ -45,6 +45,7 @@ export class TrialModalComponent implements OnInit {
   public teachers;
   public teachingCourses;
   public timeSlots;
+  public endTimestampList: Array<number> = []
   // arrange
   public isDraggableFlag = true;
 
@@ -186,13 +187,15 @@ export class TrialModalComponent implements OnInit {
     let array = [];
     array = this.getAvailableTime(array, this.termPeriod);
     array = this.addOccupiedTime(array);
-    array = Array.from(new Set(array.sort()))
+    array.sort()
     const newObjArr = [];
     for (let i = 0; i < array.length; i += 2) {
       if (array[i + 1] - array[i] >= this.timeInterval30Min) {
+        this.endTimestampList.push(array[i + 1])
         newObjArr.push({ start: this.transferTimestampToTime(array[i]), end: this.transferTimestampToTime(array[i + 1]), rendering: 'background' });
       }
     }
+    console.log(newObjArr)
     return newObjArr;
   }
 
@@ -236,6 +239,7 @@ export class TrialModalComponent implements OnInit {
         }
       }
     }
+    console.log(this.availableDOW)
     return array;
   }
 
@@ -255,6 +259,15 @@ export class TrialModalComponent implements OnInit {
     return array;
   }
 
+  checkTimeConflict(startTimestamp) {
+    for (let endTimestamp of this.endTimestampList) {
+      if (startTimestamp < endTimestamp && startTimestamp + this.duration > endTimestamp) {
+        return false
+      }
+    }
+    return true
+  }
+
   /*
     events handler when user select grids on calendar
   */
@@ -265,24 +278,20 @@ export class TrialModalComponent implements OnInit {
     if (!this.isDraggableFlag) {
       if (endTimestamp - startTimestamp >= this.timeInterval30Min) {
         alert('Please select a start time');
+      } else if (!this.checkTimeConflict(startTimestamp)) {
+        alert('There is a time conflict with existed course, please select another  start time');
       } else {
-        if (false) {
-
+        if (this.durationId) {
+          this.prepareCourse(this.durationId);
+          endTimestamp = this.transferEndTime(startTimestamp, this.durationId);
+          this.popUpConfirmModal(startTimestamp, endTimestamp);
         } else {
-          if (this.durationId) {
-            this.prepareCourse(this.durationId);
-            endTimestamp = this.transferEndTime(startTimestamp, this.durationId);
-            this.popUpConfirmModal(startTimestamp, endTimestamp);
-          } else {
-            const durationId = this.durationFormatting(0, this.duration);
-            console.log(durationId)
-            if (this.prepareCourse(durationId)) {
-              this.userSelectedTime.emit(this.transferTimestampToTime(startTimestamp));
-              this.activeModal.close()
-            }
+          const durationId = this.durationFormatting(0, this.duration);
+          if (this.prepareCourse(durationId, startTimestamp)) {
+            this.userSelectedTime.emit(this.transferTimestampToTime(startTimestamp));
+            this.activeModal.close()
           }
         }
-
       }
     } else {
       if (endTimestamp - startTimestamp < this.timeInterval30Min) {
@@ -298,10 +307,11 @@ export class TrialModalComponent implements OnInit {
     }
   }
 
-  prepareCourse(durationId) {
+  prepareCourse(durationId, startTimestamp?) {
     let count = 0
     for (const i of this.courses) {
       console.log(count)
+      // console.log(i.CourseType === 1, this.teacherDetails.Level === i.TeacherLevel, i.Duration, durationId, i.Duration === durationId, i.Level === this.LearnerLevel, (!this.cateId || i.CourseCategoryId === this.cateId))
       if (i.CourseType === 1 && this.teacherDetails.Level === i.TeacherLevel && i.Duration === durationId && i.Level === this.LearnerLevel && (!this.cateId || i.CourseCategoryId === this.cateId)) {
         count++
         this.course = i;

@@ -77,6 +77,7 @@ export class SessionsService {
     console.log(this.httpHeaders);
     return this.http.get<any>(this.baseUrl + 'Room/' + TeacherId + '/' + OrgId + '/' + beginTime);
   }
+  
   GetSessionEditRoomTwo(OrgId, StartTime, EndTime) {
     console.log(this.httpHeaders);
     return this.http.get<any>(this.baseUrl + 'RoomAvailableCheck/checkbylesson/' + OrgId + '/' + StartTime + '/' + EndTime);
