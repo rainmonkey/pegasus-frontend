@@ -12,7 +12,8 @@ import { bufferTime, debounceTime } from 'rxjs/operators';
     '../../../dashboard-components/teachers/teacher-panel/teacher-panel.component.css'],
   //theme background img changing animations
   animations: [Animations.changeThemeImg,
-               Animations.changeOnlineStatus]
+               Animations.changeOnlineStatus,
+               Animations.photoImgGreyFilterAnimation]
 })
 export class MessagerPersonalInfoComponent implements OnInit {
   //应该把onlineStatus写在localStorage里面
