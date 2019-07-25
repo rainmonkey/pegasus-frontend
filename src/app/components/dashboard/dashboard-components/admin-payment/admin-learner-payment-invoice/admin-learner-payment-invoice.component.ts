@@ -308,82 +308,55 @@ export class AdminLearnerPaymentInvoiceComponent implements OnInit, OnDestroy {
       // put to service
       this.activatedRouter.paramMap.subscribe((obs: ParamMap) => {
         //  this.learnerId = this.activatedRouter.snapshot.paramMap.get("id")
-        this.learnerId = parseInt(obs.get('id'));
-        this.errorAlert = false;
-        this.errorMsg = '';
-        this.errMsgM = false;
-        this.errMsgO = false;
-        this.paymentsListService
-          .getInvoice(this.learnerId)
-          .subscribe(res => {
-            this.noInvoice = false
-            // return console.log(dataInvoice)
-            this.dataInvoice = res['Data'];
-            if (this.dataInvoice['IsFound'] = false) {
-              this.noInvoice = true;
-              Swal.fire({
-                title: 'Error!',
-                text: 'Sorry! ' + "no invoice for this student",
-                type: 'error',
-              });
-            }
-            console.log(this.dataInvoice)
-            this.incaseDateIsNull();
-            this.reSearchPrepare();
-          }, error => {
-            console.log(error);
-            this.noInvoice = true;
-            // this.errorMsg =error.error.ErrorMessage;
-            // this.errorAlert = true;
-            //alert(this.errorMsg);
-            Swal.fire({
-              title: 'Error!',
-              text: 'Sorry! ' + error.error.ErrorMessage,
-              type: 'error',
-            });
-          });
+        let learnerId = parseInt(obs.get('id'));
+        this.payInvoiceService(learnerId);
       });
     } else {
-      this.learnerId = this.whichLearner;
-      console.log(this.whichLearner)
-      this.errorAlert = false;
-      this.errorMsg = '';
-      this.errMsgM = false;
-      this.errMsgO = false;
-      this.paymentsListService
-        .getInvoice(this.whichLearner)
-        .subscribe(res => {
-          this.noInvoice = false
-          // return console.log(dataInvoice)
-          this.dataInvoice = res['Data'];
-          if (this.dataInvoice['IsFound'] = false) {
-            this.noInvoice = true;
-            Swal.fire({
-              title: 'Error!',
-              text: 'Sorry! ' + "no invoice for this student",
-              type: 'error',
-            });
-          }
-          console.log(this.dataInvoice)
-          this.incaseDateIsNull();
-          this.reSearchPrepare();
-        }, error => {
-          console.log(error);
-          this.noInvoice = true;
-          // this.errorMsg =error.error.ErrorMessage;
-          // this.errorAlert = true;
-          //alert(this.errorMsg);
-          Swal.fire({
-            title: 'Error!',
-            text: 'Sorry! ' + error.error.ErrorMessage,
-            type: 'error',
-          });
-        });
-
+      let learnerId = this.whichLearner;
+      this.payInvoiceService(learnerId);
     }
     this.nameSubejct();
 
   }
+
+  payInvoiceService(id) {
+    this.errorAlert = false;
+    this.errorMsg = '';
+    this.errMsgM = false;
+    this.errMsgO = false;
+    this.paymentsListService
+      .getInvoice(id)
+      .subscribe(res => {
+        this.noInvoice = false
+        // return console.log(dataInvoice)
+        this.dataInvoice = res['Data'];
+        console.log(this.dataInvoice)
+        if (!this.dataInvoice) {
+          this.noInvoice = true;
+          Swal.fire({
+            title: 'Error!',
+            text: 'Sorry! ' + "no invoice for this student",
+            type: 'error',
+          });
+        }
+        console.log(this.dataInvoice)
+        if (this.dataInvoice){
+        this.incaseDateIsNull();
+        this.reSearchPrepare();}
+      }, error => {
+        console.log(error);
+        this.noInvoice = true;
+        // this.errorMsg =error.error.ErrorMessage;
+        // this.errorAlert = true;
+        //alert(this.errorMsg);
+        Swal.fire({
+          title: 'Error!',
+          text: 'Sorry! ' + error.error.ErrorMessage,
+          type: 'error',
+        });
+      });
+  }
+
   ngOnDestroy() {
     this.fistNameSubscription.unsubscribe();
   }
