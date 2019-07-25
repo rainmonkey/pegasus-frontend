@@ -157,7 +157,7 @@ export class LearnerRegistrationFormComponent implements OnInit, DoCheck, AfterV
       beginDate: [this.myDate()],
       endDate: [''],
       schedule: this.fb.group({
-        dayOfWeek: ['6'],
+        dayOfWeek: [''],
         beginTime: [this.time, ngtimepickerValidator],
         durationType: ['']
       }),
@@ -839,7 +839,7 @@ selectLocation(id, i) {
     this.timePickArrayNumber = i;
     this.modalRefTimePicker.componentInstance.beginTimeTo.subscribe(
       (res) =>{
-        this.getTimePickerInfo(res.BeginTime,i);
+        this.getTimePickerInfo(res,i);
       },
       (err) => {
         console.log(err)
@@ -848,11 +848,37 @@ selectLocation(id, i) {
 
   }
   getTimePickerInfo(time,i){
-    let timeArray = time.split(':');
+    console.log(time)
+    let timeArray = time.BeginTime.split(':');
+    let dayOfWeek = time.DayOfWeek
+    let day
+    switch (dayOfWeek){
+      case 'Monday':
+        day = '1';
+        break;
+      case 'Tuesday':
+        day = '2';
+        break;
+      case 'Wednesday':
+        day = '3';
+        break;
+      case 'Thursday':
+        day = '4';
+        break;
+      case 'Friday':
+        day = '5';
+        break;
+      case 'Saturday':
+        day = '6';
+        break;
+      case 'Sunday':
+        day = '7';
+        break;
+    }
     let timeTrans: NgbTimeStruct = { hour: Number(timeArray[0]), minute: Number(timeArray[1]), second: 0 };
     this.customCourse.controls[i].patchValue({
-      schedule: {beginTime:timeTrans, dayOfWeek:'6',durationType:''}
-    })
+      schedule: { beginTime: timeTrans, dayOfWeek: day, durationType:''}
+    });
   }
   // // ng-activeModal for confirm submit
   openConfirm() {

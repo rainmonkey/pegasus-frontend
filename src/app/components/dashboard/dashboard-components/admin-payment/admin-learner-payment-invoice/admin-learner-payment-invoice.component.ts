@@ -294,6 +294,7 @@ export class AdminLearnerPaymentInvoiceComponent implements OnInit, OnDestroy {
   }
   // delete tab section if only one invoice
   getSingleTab(){
+    // question how to check whether we have a d-none class
     document.querySelector('.nav-pills').classList.remove('d-none');
     if (this.dataInvoice.length == 1){
     document.querySelector('.nav-pills').classList.add('d-none');}
