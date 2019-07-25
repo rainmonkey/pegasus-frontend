@@ -292,6 +292,16 @@ export class AdminLearnerPaymentInvoiceComponent implements OnInit, OnDestroy {
       console.log(element.CourseName)
     });
   }
+// WEASRTDYUFGIYJTREFWDFRTDYUGKJRFEWDFRTHUJGGYTRFEWDQSETGLHIOGUJTRFEWDFRTHULHIOUYTREFWDFRTHUYJTREFWDQ
+// EWRTYREWDFRGTHYHGREFWJUGRFEGRTHJHTREFRGTHTRGEFGTHJYTREGJHTGRTHUJYTRETHYUYTRGE
+// ERTFETHTREFGHGRGHJTGRNHTGRHJTGRTHRF
+// EWFRGTHTGEFRTGREFWFRGBEFGBERGTHTREFGREWFRGEFRSGBEFASG
+// WEFRTSEWFRSGBFERGBREFSGBHRFESBGCHSBRFFERGEFRSG
+// RFESGBRFEGBERGBFREFSGBHERSGBHRGTHJUYIKLILKIUYJHGRFEDWSADCFGHJUIYTREWDSa
+// EDRFGTHNFJKUIOLPJIHUGYJFTDRSFEDSCGFBHJKIGUYJFTDGRFDZ
+  getSingleTab(){
+    document.querySelector('.nav-pills')
+  }
 
   ngOnInit() {
     if (!this.whichLearner) {
@@ -299,80 +309,54 @@ export class AdminLearnerPaymentInvoiceComponent implements OnInit, OnDestroy {
       this.activatedRouter.paramMap.subscribe((obs: ParamMap) => {
         //  this.learnerId = this.activatedRouter.snapshot.paramMap.get("id")
         this.learnerId = parseInt(obs.get('id'));
-        this.errorAlert = false;
-        this.errorMsg = '';
-        this.errMsgM = false;
-        this.errMsgO = false;
-        this.paymentsListService
-          .getInvoice(this.learnerId)
-          .subscribe(res => {
-            this.noInvoice = false
-            // return console.log(dataInvoice)
-            this.dataInvoice = res['Data'];
-            if (this.dataInvoice['IsFound'] = false) {
-              this.noInvoice = true;
-              Swal.fire({
-                title: 'Error!',
-                text: 'Sorry! ' + "no invoice for this student",
-                type: 'error',
-              });
-            }
-            console.log(this.dataInvoice)
-            this.incaseDateIsNull();
-            this.reSearchPrepare();
-          }, error => {
-            console.log(error);
-            this.noInvoice = true;
-            // this.errorMsg =error.error.ErrorMessage;
-            // this.errorAlert = true;
-            //alert(this.errorMsg);
-            Swal.fire({
-              title: 'Error!',
-              text: 'Sorry! ' + error.error.ErrorMessage,
-              type: 'error',
-            });
-          });
+        this.payInvoiceService(this.learnerId);
       });
     } else {
       this.learnerId = this.whichLearner;
-      console.log(this.whichLearner)
-      this.errorAlert = false;
-      this.errorMsg = '';
-      this.errMsgM = false;
-      this.errMsgO = false;
-      this.paymentsListService
-        .getInvoice(this.whichLearner)
-        .subscribe(res => {
-          this.noInvoice = false
-          // return console.log(dataInvoice)
-          this.dataInvoice = res['Data'];
-          if (this.dataInvoice['IsFound'] = false) {
-            this.noInvoice = true;
-            Swal.fire({
-              title: 'Error!',
-              text: 'Sorry! ' + "no invoice for this student",
-              type: 'error',
-            });
-          }
-          console.log(this.dataInvoice)
-          this.incaseDateIsNull();
-          this.reSearchPrepare();
-        }, error => {
-          console.log(error);
-          this.noInvoice = true;
-          // this.errorMsg =error.error.ErrorMessage;
-          // this.errorAlert = true;
-          //alert(this.errorMsg);
-          Swal.fire({
-            title: 'Error!',
-            text: 'Sorry! ' + error.error.ErrorMessage,
-            type: 'error',
-          });
-        });
-
+      this.payInvoiceService(this.learnerId);
     }
     this.nameSubejct();
+
   }
+
+  payInvoiceService(id) {
+    this.errorAlert = false;
+    this.errorMsg = '';
+    this.errMsgM = false;
+    this.errMsgO = false;
+    this.paymentsListService
+      .getInvoice(id)
+      .subscribe(res => {
+        this.noInvoice = false
+        // return console.log(dataInvoice)
+        this.dataInvoice = res['Data'];
+        console.log(this.dataInvoice)
+        if (!this.dataInvoice) {
+          this.noInvoice = true;
+          Swal.fire({
+            title: 'Error!',
+            text: 'Sorry! ' + "no invoice for this student",
+            type: 'error',
+          });
+        }
+        console.log(this.dataInvoice)
+        if (this.dataInvoice){
+        this.incaseDateIsNull();
+        this.reSearchPrepare();}
+      }, error => {
+        console.log(error);
+        this.noInvoice = true;
+        // this.errorMsg =error.error.ErrorMessage;
+        // this.errorAlert = true;
+        //alert(this.errorMsg);
+        Swal.fire({
+          title: 'Error!',
+          text: 'Sorry! ' + error.error.ErrorMessage,
+          type: 'error',
+        });
+      });
+  }
+
   ngOnDestroy() {
     this.fistNameSubscription.unsubscribe();
   }

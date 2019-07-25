@@ -1,100 +1,146 @@
 <div style="margin-top:10px;" class="container-fluid">
-    <div class="page-header"><h5 style='font-weight: bold'>Dashboard</h5>
-    <div style="" class="text-info">Welcome &nbsp; Bienvenido &nbsp;  Willkommen  &nbsp; добро  &nbsp; пожаловать &nbsp;  欢迎  &nbsp; Manaakitia &nbsp;  Bienvenue</div>
+  <div class="page-header">
+    <h5 style="font-weight: bold">Dashboard</h5>
+    <div style="" class="text-info">
+      Welcome &nbsp; Bienvenido &nbsp; Willkommen &nbsp; добро &nbsp; пожаловать
+      &nbsp; 欢迎 &nbsp; Manaakitia &nbsp; Bienvenue
     </div>
-    <br>
-    <div *ngIf="pageloading" class="loaderLarge"></div>
-              <!-- Dashboard Counts Section-->
-              <section class="dashboard-counts no-padding-bottom" style= 'padding: 5px 5px;
-              margin: 0;'>
-                <div class="container-fluid">
-                  <div class="row bg-white has-shadow">
-                    <!-- Item -->
-                    <div class="col-xl-3 col-sm-6">
-                      <div class="item d-flex align-items-center">
-                        <div class="icon bg-violet"><i class="fas fa-users"></i></div>
-                        <div class="title"><span>New<br>Students</span>
-                        </div>
-                        <div class="number" *ngIf="messages"><strong>{{messages.newStudentsForToday}} </strong></div>
-                      </div>
-                    </div>
-                    <!-- Item -->
-                    <div class="col-xl-3 col-sm-6">
-                      <div class="item d-flex align-items-center">
-                        <div class="icon bg-red"><i class="fas fa-clone"></i></div>
-                        <div class="title"><span>Rearranged<br>Lessons</span>
-                        </div>
-                        <div class="number" *ngIf="messages"><strong>{{messages.rearrangedLessonsForToday}}</strong></div>
-                      </div>
-                    </div>
-                    <!-- Item -->
-                    <div class="col-xl-3 col-sm-6">
-                      <div class="item d-flex align-items-center">
-                        <div class="icon bg-green"><i class="fas fa-file-invoice-dollar"></i></div>
-                        <div class="title"><span>Waiting<br>Invoices</span>
-                        </div>
-                        <div class="number" *ngIf="messages"><strong>{{messages.waitingInvoices}}</strong></div>
-                      </div>
-                    </div>
-                    <!-- Item -->
-                    <div class="col-xl-3 col-sm-6">
-                      <div class="item d-flex align-items-center">
-                        <div class="icon bg-orange"><i class="fas fa-chalkboard"></i></div>
-                        <div class="title"><span>Today's<br>Lessons</span>
-                        </div>
-                        <div class="number" *ngIf="messages"><strong>{{messages.lessonsForToday}}</strong></div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </section>
-    <div class='container-fluid'>
-    <div class="row">
-        <div style="margin-bottom: 20px;" class="col-12">
-            <app-charting></app-charting>
+  </div>
+  <br />
+  <div *ngIf="pageloading" class="loaderLarge"></div>
+  <!-- Dashboard Counts Section-->
+  <section
+    class="dashboard-counts no-padding-bottom"
+    style="padding: 5px 5px;
+              margin: 0;"
+  >
+    <div class="container-fluid">
+      <div class="row bg-white has-shadow">
+        <!-- Item -->
+        <div class="col-xl-3 col-sm-6">
+          <div class="item d-flex align-items-center">
+            <div class="icon bg-violet"><i class="fas fa-users"></i></div>
+            <div class="title">
+              <span>New<br />Students</span>
+            </div>
+            <div class="number" *ngIf="messages">
+              <strong>{{ messages.newStudentsForToday }} </strong>
+            </div>
+          </div>
         </div>
+        <!-- Item -->
+        <div class="col-xl-3 col-sm-6">
+          <div class="item d-flex align-items-center">
+            <div class="icon bg-red"><i class="fas fa-clone"></i></div>
+            <div class="title">
+              <span>Rearranged<br />Lessons</span>
+            </div>
+            <div class="number" *ngIf="messages">
+              <strong>{{ messages.rearrangedLessonsForToday }}</strong>
+            </div>
+          </div>
+        </div>
+        <!-- Item -->
+        <div class="col-xl-3 col-sm-6">
+          <div class="item d-flex align-items-center">
+            <div class="icon bg-green">
+              <i class="fas fa-file-invoice-dollar"></i>
+            </div>
+            <div class="title">
+              <span>Waiting<br />Invoices</span>
+            </div>
+            <div class="number" *ngIf="messages">
+              <strong>{{ messages.waitingInvoices }}</strong>
+            </div>
+          </div>
+        </div>
+        <!-- Item -->
+        <div class="col-xl-3 col-sm-6">
+          <div class="item d-flex align-items-center">
+            <div class="icon bg-orange"><i class="fas fa-chalkboard"></i></div>
+            <div class="title">
+              <span>Today's<br />Lessons</span>
+            </div>
+            <div class="number" *ngIf="messages">
+              <strong>{{ messages.lessonsForToday }}</strong>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <div class="container-fluid">
+    <div class="row">
+      <div style="margin-bottom: 20px;" class="col-12">
+        <app-charting></app-charting>
+      </div>
     </div>
   </div>
 
-    <div class='row d-none'>
-        <div class="col-12 col-md-6 col-lg-4">
-            <div *ngIf="toDoList" class="card">
-                <div class="card-header">
-                    Tasks to do
-                    <!-- <a style="float:right; cursor: pointer; font-size:15px;" (click)="newTaskFormBuilder(); openOrClosePopOver()" class="text-primary">New Task</a> -->
-                </div>
-                <!-- <div [ngbPopover]="toDoPopOver" #popOver="ngbPopover" placement="top" [autoClose]="'outside'" popoverTitle="New Task" popoverClass="toDoPopoverClass"></div> -->
-                <div style="max-height:300px; overflow-y:auto">
-                    <ul  *ngFor="let task of toDoList" class="list-group list-group-flush">
-                        <li style="font-size:14px;" class="list-group-item">
-                            <!-- <a href="" [routerLink]="['/' + task.link]"> -->
-                                {{task.ListContent}} &nbsp; &nbsp; {{task.origin}}
-                            <!-- </a>  -->
-                            <a style="float: right; cursor: pointer; font-size:15px;" class="text-danger" (click)="completedTask(task.ListId)"> Completed </a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
+  <div class="row d-none">
+    <div class="col-12 col-md-6 col-lg-4">
+      <div *ngIf="toDoList" class="card">
+        <div class="card-header">
+          Tasks to do
+          <!-- <a style="float:right; cursor: pointer; font-size:15px;" (click)="newTaskFormBuilder(); openOrClosePopOver()" class="text-primary">New Task</a> -->
         </div>
-
-
-        <div class="col-12 col-md-6 col-lg-8">
-            <div  *ngIf="notices" class="card">
-                <div class="card-header">
-                    Notices
-                    <a style="float:right; cursor: pointer; font-size:15px;" (click)="newNoticeFormBuilder(); openOrClosePopOver('right')" class="text-primary">New notice</a>
-                    <div [ngbPopover]="noticePopOver" #popOver="ngbPopover" [autoClose]="'outside'" popoverTitle="New Notice" popoverClass="toDoPopoverClass"></div>
-                </div>
-                <div style="max-height:300px; overflow-y:auto" >
-                    <ul  *ngFor="let notice of notices" class="list-group list-group-flush">
-                        <li class="list-group-item" style='position: relative'>{{notice.notice}} &nbsp; &nbsp; &nbsp; &nbsp; {{notice.origin}} <span style='position: absolute; right: 1%; top:5%; cursor: pointer;' ><i class="fas fa-times"></i></span></li>
-                    </ul>
-                </div>
-            </div>
+        <!-- <div [ngbPopover]="toDoPopOver" #popOver="ngbPopover" placement="top" [autoClose]="'outside'" popoverTitle="New Task" popoverClass="toDoPopoverClass"></div> -->
+        <div style="max-height:300px; overflow-y:auto">
+          <ul *ngFor="let task of toDoList" class="list-group list-group-flush">
+            <li style="font-size:14px;" class="list-group-item">
+              <!-- <a href="" [routerLink]="['/' + task.link]"> -->
+              {{ task.ListContent }} &nbsp; &nbsp; {{ task.origin }}
+              <!-- </a>  -->
+              <a
+                style="float: right; cursor: pointer; font-size:15px;"
+                class="text-danger"
+                (click)="completedTask(task.ListId)"
+              >
+                Completed
+              </a>
+            </li>
+          </ul>
         </div>
+      </div>
     </div>
-</div>
 
+    <div class="col-12 col-md-6 col-lg-8">
+      <div *ngIf="notices" class="card">
+        <div class="card-header">
+          Notices
+          <a
+            style="float:right; cursor: pointer; font-size:15px;"
+            (click)="newNoticeFormBuilder(); openOrClosePopOver('right')"
+            class="text-primary"
+            >New notice</a
+          >
+          <div
+            [ngbPopover]="noticePopOver"
+            #popOver="ngbPopover"
+            [autoClose]="'outside'"
+            popoverTitle="New Notice"
+            popoverClass="toDoPopoverClass"
+          ></div>
+        </div>
+        <div style="max-height:300px; overflow-y:auto">
+          <ul
+            *ngFor="let notice of notices"
+            class="list-group list-group-flush"
+          >
+            <li class="list-group-item" style="position: relative">
+              {{ notice.notice }} &nbsp; &nbsp; &nbsp; &nbsp;
+              {{ notice.origin }}
+              <span
+                style="position: absolute; right: 1%; top:5%; cursor: pointer;"
+                ><i class="fas fa-times"></i
+              ></span>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 
 <!-- <ng-template #toDoPopOver>
     <form novalidate [formGroup]="toDoForm">
@@ -104,125 +150,224 @@
         <div *ngIf="formError" class="text-danger">{{formError}}</div>
     </form>
 </ng-template> -->
-<div class='row justify-content-around'>
-<div class="col-lg-6">
-  <div class="checklist card">
-    <div class="card-close">
-      <div class="dropdown">
-        <button type="button" id="closeCard5" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="dropdown-toggle"><i class="fa fa-ellipsis-v"></i></button>
-        <div aria-labelledby="closeCard5" class="dropdown-menu dropdown-menu-right has-shadow"><a href="#" class="dropdown-item remove"> <i class="fa fa-times"></i>Close</a><a href="#" class="dropdown-item edit"> <i class="fa fa-gear"></i>Edit</a></div>
+<div class="row justify-content-around">
+  <div class="col-lg-6">
+    <div class="checklist card">
+      <div class="card-close">
+        <div class="dropdown">
+          <button
+            type="button"
+            id="closeCard5"
+            data-toggle="dropdown"
+            aria-haspopup="true"
+            aria-expanded="false"
+            class="dropdown-toggle"
+          >
+            <i class="fa fa-ellipsis-v"></i>
+          </button>
+          <div
+            aria-labelledby="closeCard5"
+            class="dropdown-menu dropdown-menu-right has-shadow"
+          >
+            <a href="#" class="dropdown-item remove">
+              <i class="fa fa-times"></i>Close</a
+            ><a href="#" class="dropdown-item edit">
+              <i class="fa fa-gear"></i>Edit</a
+            >
+          </div>
+        </div>
       </div>
-    </div>
-    <div class="card-header d-flex align-items-center">
-      <h2 class="h3">To Do List </h2>
-    </div>
-    <div class="card-body no-padding">
-      <div class="item d-flex">
-        <input type="checkbox" id="input-1" name="input-1" class="checkbox-template">
-        <label for="input-1">Lorem ipsum dolor sit amet, consectetur adipisicing elit.</label>
+      <div class="card-header d-flex align-items-center">
+        <h2 class="h3">To Do List</h2>
       </div>
-      <div class="item d-flex">
-        <input type="checkbox" id="input-2" name="input-2" class="checkbox-template">
-        <label for="input-2">Lorem ipsum dolor sit amet, consectetur adipisicing elit.</label>
-      </div>
-      <div class="item d-flex">
-        <input type="checkbox" id="input-3" name="input-3" class="checkbox-template">
-        <label for="input-3">Lorem ipsum dolor sit amet, consectetur adipisicing elit.</label>
-      </div>
-      <div class="item d-flex">
-        <input type="checkbox" id="input-4" name="input-4" class="checkbox-template">
-        <label for="input-4">Lorem ipsum dolor sit amet, consectetur adipisicing elit.</label>
-      </div>
-      <div class="item d-flex">
-        <input type="checkbox" id="input-5" name="input-5" class="checkbox-template">
-        <label for="input-5">Lorem ipsum dolor sit amet, consectetur adipisicing elit.</label>
-      </div>
-      <div class="item d-flex">
-        <input type="checkbox" id="input-6" name="input-6" class="checkbox-template">
-        <label for="input-6">Lorem ipsum dolor sit amet, consectetur adipisicing elit.</label>
+      <div class="card-body no-padding">
+        <div class="item d-flex">
+          <input
+            type="checkbox"
+            id="input-1"
+            name="input-1"
+            class="checkbox-template"
+          />
+          <label for="input-1"
+            >Lorem ipsum dolor sit amet, consectetur adipisicing elit.</label
+          >
+        </div>
+        <div class="item d-flex">
+          <input
+            type="checkbox"
+            id="input-2"
+            name="input-2"
+            class="checkbox-template"
+          />
+          <label for="input-2"
+            >Lorem ipsum dolor sit amet, consectetur adipisicing elit.</label
+          >
+        </div>
+        <div class="item d-flex">
+          <input
+            type="checkbox"
+            id="input-3"
+            name="input-3"
+            class="checkbox-template"
+          />
+          <label for="input-3"
+            >Lorem ipsum dolor sit amet, consectetur adipisicing elit.</label
+          >
+        </div>
+        <div class="item d-flex">
+          <input
+            type="checkbox"
+            id="input-4"
+            name="input-4"
+            class="checkbox-template"
+          />
+          <label for="input-4"
+            >Lorem ipsum dolor sit amet, consectetur adipisicing elit.</label
+          >
+        </div>
+        <div class="item d-flex">
+          <input
+            type="checkbox"
+            id="input-5"
+            name="input-5"
+            class="checkbox-template"
+          />
+          <label for="input-5"
+            >Lorem ipsum dolor sit amet, consectetur adipisicing elit.</label
+          >
+        </div>
+        <div class="item d-flex">
+          <input
+            type="checkbox"
+            id="input-6"
+            name="input-6"
+            class="checkbox-template"
+          />
+          <label for="input-6"
+            >Lorem ipsum dolor sit amet, consectetur adipisicing elit.</label
+          >
+        </div>
       </div>
     </div>
   </div>
-</div>
 
-<!-- Recent Updates-->
-<div class="col-lg-6">
-  <div class="recent-updates card">
-    <div class="card-close">
-      <div class="dropdown">
-        <button type="button" id="closeCard6" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="dropdown-toggle"><i class="fa fa-ellipsis-v"></i></button>
-        <div aria-labelledby="closeCard6" class="dropdown-menu dropdown-menu-right has-shadow"><a href="#" class="dropdown-item remove"> <i class="fa fa-times"></i>Close</a><a href="#" class="dropdown-item edit"> <i class="fa fa-gear"></i>Edit</a></div>
-      </div>
-    </div>
-    <div class="card-header">
-      <h3 class="h4">Recent Updates</h3>
-    </div>
-    <div class="card-body no-padding">
-      <!-- Item-->
-      <div class="item d-flex justify-content-between">
-        <div class="info d-flex">
-          <div class="icon"><i class="far fa-envelope"></i></div>
-          <div class="title">
-            <h5>Lorem ipsum dolor sit amet.</h5>
-            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit sed.</p>
+  <!-- Recent Updates-->
+  <div class="col-lg-6">
+    <div class="recent-updates card">
+      <div class="card-close">
+        <div class="dropdown">
+          <button
+            type="button"
+            id="closeCard6"
+            data-toggle="dropdown"
+            aria-haspopup="true"
+            aria-expanded="false"
+            class="dropdown-toggle"
+          >
+            <i class="fa fa-ellipsis-v"></i>
+          </button>
+          <div
+            aria-labelledby="closeCard6"
+            class="dropdown-menu dropdown-menu-right has-shadow"
+          >
+            <a href="#" class="dropdown-item remove">
+              <i class="fa fa-times"></i>Close</a
+            ><a href="#" class="dropdown-item edit">
+              <i class="fa fa-gear"></i>Edit</a
+            >
           </div>
         </div>
-        <div class="date text-right"><strong>24</strong><span>May</span></div>
       </div>
-      <!-- Item-->
-      <div class="item d-flex justify-content-between">
-        <div class="info d-flex">
-          <div class="icon"><i class="far fa-envelope"></i></div>
-          <div class="title">
-            <h5>Lorem ipsum dolor sit amet.</h5>
-            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit sed.</p>
-          </div>
-        </div>
-        <div class="date text-right"><strong>24</strong><span>May</span></div>
+      <div class="card-header">
+        <h3 class="h4">Recent Updates</h3>
       </div>
-      <!-- Item        -->
-      <div class="item d-flex justify-content-between">
-        <div class="info d-flex">
-          <div class="icon"><i class="far fa-envelope"></i></div>
-          <div class="title">
-            <h5>Lorem ipsum dolor sit amet.</h5>
-            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit sed.</p>
+      <div class="card-body no-padding">
+        <!-- Item-->
+        <div class="item d-flex justify-content-between">
+          <div class="info d-flex">
+            <div class="icon"><i class="far fa-envelope"></i></div>
+            <div class="title">
+              <h5>Lorem ipsum dolor sit amet.</h5>
+              <p>
+                Lorem ipsum dolor sit amet, consectetur adipisicing elit sed.
+              </p>
+            </div>
           </div>
+          <div class="date text-right"><strong>24</strong><span>May</span></div>
         </div>
-        <div class="date text-right"><strong>24</strong><span>May</span></div>
-      </div>
-      <!-- Item-->
-      <div class="item d-flex justify-content-between">
-        <div class="info d-flex">
-          <div class="icon"><i class="far fa-envelope"></i></div>
-          <div class="title">
-            <h5>Lorem ipsum dolor sit amet.</h5>
-            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit sed.</p>
+        <!-- Item-->
+        <div class="item d-flex justify-content-between">
+          <div class="info d-flex">
+            <div class="icon"><i class="far fa-envelope"></i></div>
+            <div class="title">
+              <h5>Lorem ipsum dolor sit amet.</h5>
+              <p>
+                Lorem ipsum dolor sit amet, consectetur adipisicing elit sed.
+              </p>
+            </div>
           </div>
+          <div class="date text-right"><strong>24</strong><span>May</span></div>
         </div>
-        <div class="date text-right"><strong>24</strong><span>May</span></div>
-      </div>
-      <!-- Item-->
-      <div class="item d-flex justify-content-between">
-        <div class="info d-flex">
-          <div class="icon"><i class="far fa-envelope"></i></div>
-          <div class="title">
-            <h5>Lorem ipsum dolor sit amet.</h5>
-            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit sed.</p>
+        <!-- Item        -->
+        <div class="item d-flex justify-content-between">
+          <div class="info d-flex">
+            <div class="icon"><i class="far fa-envelope"></i></div>
+            <div class="title">
+              <h5>Lorem ipsum dolor sit amet.</h5>
+              <p>
+                Lorem ipsum dolor sit amet, consectetur adipisicing elit sed.
+              </p>
+            </div>
           </div>
+          <div class="date text-right"><strong>24</strong><span>May</span></div>
         </div>
-        <div class="date text-right"><strong>24</strong><span>May</span></div>
+        <!-- Item-->
+        <div class="item d-flex justify-content-between">
+          <div class="info d-flex">
+            <div class="icon"><i class="far fa-envelope"></i></div>
+            <div class="title">
+              <h5>Lorem ipsum dolor sit amet.</h5>
+              <p>
+                Lorem ipsum dolor sit amet, consectetur adipisicing elit sed.
+              </p>
+            </div>
+          </div>
+          <div class="date text-right"><strong>24</strong><span>May</span></div>
+        </div>
+        <!-- Item-->
+        <div class="item d-flex justify-content-between">
+          <div class="info d-flex">
+            <div class="icon"><i class="far fa-envelope"></i></div>
+            <div class="title">
+              <h5>Lorem ipsum dolor sit amet.</h5>
+              <p>
+                Lorem ipsum dolor sit amet, consectetur adipisicing elit sed.
+              </p>
+            </div>
+          </div>
+          <div class="date text-right"><strong>24</strong><span>May</span></div>
+        </div>
       </div>
     </div>
   </div>
-</div>
 </div>
 <ng-template #noticePopOver>
-    <form novalidate [formGroup]="noticeForm">
-        <textarea class="form-control" type="text" placeholder="New notice" formControlName="notice" rows="4"></textarea>
+  <form novalidate [formGroup]="noticeForm">
+    <textarea
+      class="form-control"
+      type="text"
+      placeholder="New notice"
+      formControlName="notice"
+      rows="4"
+    ></textarea>
 
-        <input type="submit" style="margin-top:5px; padding:4px 8px 4px 8px; font-size:14px;"  class="btn btn-info" value="Add" (click)="newNoticeSubmit()">
-        <div *ngIf="formError" class="text-danger">{{formError}}</div>
-    </form>
+    <input
+      type="submit"
+      style="margin-top:5px; padding:4px 8px 4px 8px; font-size:14px;"
+      class="btn btn-info"
+      value="Add"
+      (click)="newNoticeSubmit()"
+    />
+    <div *ngIf="formError" class="text-danger">{{ formError }}</div>
+  </form>
 </ng-template>
-

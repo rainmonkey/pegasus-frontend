@@ -18,7 +18,7 @@ titleArray;
 constructor(public activeModal: NgbActiveModal,) {}
   getModalDetail(){
     switch (this.whichModal) {
-      case 'payInvoice':
+      case 'pay Invoice':
         this.modelTitle = 'Invoice Payment';
         break;
       case 'Learner Credit':
