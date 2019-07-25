@@ -69,7 +69,7 @@ export class AdminLearnerProfileComponent implements OnInit {
     class: 'fas fa-calendar'
   },
   {
-    title: 'payInvoice',
+    title: 'pay Invoice',
     parameter: 3,
     class: 'fas fa-file-invoice-dollar'
   },
