@@ -308,12 +308,12 @@ export class AdminLearnerPaymentInvoiceComponent implements OnInit, OnDestroy {
       // put to service
       this.activatedRouter.paramMap.subscribe((obs: ParamMap) => {
         //  this.learnerId = this.activatedRouter.snapshot.paramMap.get("id")
-        let learnerId = parseInt(obs.get('id'));
-        this.payInvoiceService(learnerId);
+        this.learnerId = parseInt(obs.get('id'));
+        this.payInvoiceService(this.learnerId);
       });
     } else {
-      let learnerId = this.whichLearner;
-      this.payInvoiceService(learnerId);
+      this.learnerId = this.whichLearner;
+      this.payInvoiceService(this.learnerId);
     }
     this.nameSubejct();
 
