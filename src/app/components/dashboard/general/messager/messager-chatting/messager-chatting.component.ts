@@ -8,6 +8,7 @@ import { Animations } from '../../../../../../animation/chatting-animation';
 import { environment } from 'src/environments/environment.prod';
 
 @Component({
+    
   selector: 'app-messager-chatting',
   templateUrl: './messager-chatting.component.html',
   styleUrls: ['./messager-chatting.component.css',
@@ -79,7 +80,7 @@ export class MessagerChattingComponent implements OnInit {
   scrollToBottom(count) {
     //if counter changed(that means new messages pushed on the view), scrolled to bottom, to avoid *ngFor automatically checking
     if (!(count == this.chattingAreaMessageCounter)) {
-      document.getElementById('scroll_anchor').scrollBy();
+      document.getElementById('scroll_anchor').scrollIntoView()
     }
     this.chattingAreaMessageCounter = count;
   }

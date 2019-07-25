@@ -50,6 +50,9 @@ export class TeacherModalFormComponent implements OnInit {
   public othersmsg = '';
   public avliableTextLength: number = 1000;
   public rooms;
+  public DayOfWeek: Array<any> = [[], [], [], [], [], [], []];
+  public availableDays;
+  public setDefaultBranchSelectionCounter: number = 0;
 
 
   @Input() command;
@@ -57,11 +60,14 @@ export class TeacherModalFormComponent implements OnInit {
   @ViewChildren('lan') languagesCheckBox;
   @ViewChildren('branches') branchesCheckBox;
   @ViewChild('genderToSubmit') genderToSubmit;
+  @ViewChild('Rooms') Rooms;
 
   constructor(private fb: FormBuilder,
     private teachersService: TeachersService) { }
 
   ngOnInit() {
+    this.getAvailableDays();
+    this.setDefaultDayOfWeek();
     this.loadingFlag = true;
     this.setReadOnly();
     this.updateForm = this.fb.group(this.formGroupAssemble());
@@ -72,6 +78,7 @@ export class TeacherModalFormComponent implements OnInit {
   }
   ngAfterViewInit() {
     this.loadingFlag = false;
+
   }
 
   /////////////////////////////////////////////methods call by other methods/////////////////////////////////////////////////
@@ -93,13 +100,12 @@ export class TeacherModalFormComponent implements OnInit {
     }
   }
 
-  getRooms(){
+  getRooms() {
     this.teachersService.getRooms().subscribe(
-      res =>{
+      res => {
         this.rooms = res['Data'];
-        console.log(res['Data'])
       },
-      err=>{
+      err => {
         alert('Server error!')
       }
     )
@@ -108,9 +114,9 @@ export class TeacherModalFormComponent implements OnInit {
   /*
     筛选与某个org匹配的Id
   */
-  getAvailableRooms(orgId){
+  getAvailableRooms(orgId) {
     return this.rooms.filter(val => {
-      if(val.OrgId == orgId){
+      if (val.OrgId == orgId) {
         return val;
       }
     })
@@ -126,11 +132,10 @@ export class TeacherModalFormComponent implements OnInit {
         this.languageOptions = res.Data.Languages;
         this.languageOptions1 = res.Data.Languages.slice(0, 3);
         this.languageOptions2 = res.Data.Languages.slice(3);
-        this.orgOptions = res.Data.Orgs.map(val=>{
+        this.orgOptions = res.Data.Orgs.map(val => {
           val.showRoom = false;
           return val;
         });
-        console.log(this.orgOptions)
       },
       (err) => {
         alert('Server error!')
@@ -187,15 +192,37 @@ export class TeacherModalFormComponent implements OnInit {
     }
   }
 
-  displayRoom(event,orgId,i){
+  displayRoom(event, orgId, i) {
     let obj = document.getElementById(i.dayName + orgId);
-    if(event.target.checked){
+    if (event.target.checked) {
       obj.style.display = 'block';
+      this.DayOfWeek[i.dayId - 1].push({ "OrgId": orgId })
     }
-    else{
+    else {
       obj.style.display = 'none';
+      let newArray = [];
+      this.DayOfWeek[i.dayId - 1].map(val => {
+        if (val.OrgId !== orgId) {
+          newArray.push(val);
+        }
+      })
+      this.DayOfWeek[i.dayId - 1] = newArray;
     }
+
+    //console.log(this.DayOfWeek)
   }
+
+  tipRooms(event, dayofweek, orgId) {
+    let roomId = event.target.value;
+    this.DayOfWeek[dayofweek.dayId - 1].map(val => {
+      if (val.OrgId == orgId) {
+        val.RoomId = (roomId == -1)? null:Number(roomId);
+      }
+    })
+    //console.log(this.DayOfWeek)
+  }
+
+
   /*
    display default branches selection
  */
@@ -209,7 +236,7 @@ export class TeacherModalFormComponent implements OnInit {
         }
       }
       return false;
- 
+
     }
     else {
       return false;
@@ -240,6 +267,39 @@ export class TeacherModalFormComponent implements OnInit {
     }
   }
 
+  // checkOrgs() {
+  //   let temBranches = this.modalUpdateFormComponentObj.branchesCheckBox._results;
+  //   let temBranchesList = [[], [], [], [], [], [], []];
+
+  //   for (let i of temBranches) {
+  //     if (i.nativeElement.checked == true) {
+  //       if (i.nativeElement.name == 'Monday') {
+  //         temBranchesList[0].push(Number(i.nativeElement.defaultValue))
+  //       }
+  //       if (i.nativeElement.name == 'Tuesday') {
+  //         temBranchesList[1].push(Number(i.nativeElement.defaultValue))
+  //       }
+  //       if (i.nativeElement.name == 'Wednesday') {
+  //         temBranchesList[2].push(Number(i.nativeElement.defaultValue))
+  //       }
+  //       if (i.nativeElement.name == 'Thursday') {
+  //         temBranchesList[3].push(Number(i.nativeElement.defaultValue))
+  //       }
+  //       if (i.nativeElement.name == 'Friday') {
+  //         temBranchesList[4].push(Number(i.nativeElement.defaultValue))
+  //       }
+  //       if (i.nativeElement.name == 'Saturday') {
+  //         temBranchesList[5].push(Number(i.nativeElement.defaultValue))
+  //       }
+  //       if (i.nativeElement.name == 'Sunday') {
+  //         temBranchesList[6].push(Number(i.nativeElement.defaultValue))
+  //       }
+  //     }
+  //   }
+  //   return temBranchesList;
+  // }
+
+
   /*
     in update and add mode
     get days that teacher available of one week
@@ -256,11 +316,31 @@ export class TeacherModalFormComponent implements OnInit {
         }
       }
       //返回一个有序数组 （如果availableDays比较多 按照Monday--->Sunday顺序排列）
-      return availableDays.sort();
+      this.availableDays = availableDays.sort();
+      // return availableDays.sort();
     }
     else {
       this.isAvailableDaysNull = true;
     }
+  }
+
+  setDefaultDayOfWeek() {
+    //console.log(this.whichTeacher)
+    this.whichTeacher.AvailableDays.map(val => {
+      this.DayOfWeek[val.DayOfWeek - 1].push({ "OrgId": val.OrgId, "RoomId": val.RoomId })
+    })
+  }
+
+  getDefaultRoom(dayofweek, orgId) {
+    let day = Number(dayofweek.dayId - 1);
+    let value: number = null;
+    this.DayOfWeek[day].map(val => {
+      if (Number(val.OrgId) === Number(orgId)) {
+        value = Number(val.RoomId)
+      }
+    })
+    let a = value? value:-1 ;
+    return a;
   }
 
   /*
@@ -271,9 +351,11 @@ export class TeacherModalFormComponent implements OnInit {
       let temOrgs = [];
       for (let i of this.whichTeacher.AvailableDays) {
         if (i.DayOfWeek == whichDay && temOrgs.indexOf(i.OrgId) == -1) {
-          temOrgs.push(i.OrgId);
+          console.log(i)
+          temOrgs.push({"orgId":i.OrgId,"roomName":i.Room,"roomId":i.RoomId});
         }
       }
+
       return temOrgs;
     }
   }
@@ -440,7 +522,8 @@ export class TeacherModalFormComponent implements OnInit {
         IsLeft: [null, Validators.required],
         IsContract: [null, Validators.required],
         Level: [null, Validators.required],
-        Comment: [null]
+        Comment: [null],
+        Rooms: [null]
       }
     }
     else {
@@ -471,7 +554,8 @@ export class TeacherModalFormComponent implements OnInit {
         IsLeft: [{ value: this.whichTeacher.IsLeft, disabled: this.readOnlyFlag }, Validators.required],
         IsContract: [{ value: this.whichTeacher.IsContract, disabled: this.readOnlyFlag }, Validators.required],
         Level: [{ value: this.whichTeacher.Level, disabled: this.readOnlyFlag }, Validators.required],
-        Comment: [{ value: this.whichTeacher.Comment, disabled: this.readOnlyFlag }]
+        Comment: [{ value: this.whichTeacher.Comment, disabled: this.readOnlyFlag }],
+        Rooms: [null]
       }
     }
 
