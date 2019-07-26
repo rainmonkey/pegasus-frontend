@@ -1,4 +1,4 @@
-<div *ngIf='!isErrorFlag' [ngStyle]="{'height': setChattingModalHeight()+'px'}" class='m_m_skeleton'>
+<div *ngIf='!isErrorFlag' [ngStyle]="{'height': browserHeight+'px'}" class='m_m_skeleton'>
   <!--header-->
   <div class='m_m_header' [@themeColorTrigger]='themeChangeFlag'>
     <span class='m_m_header_icon m_m_header_cog' (click)='displayConfigPanel($event)' >
@@ -26,21 +26,21 @@
   </app-messager-personal-info>
 
   <!--subscribers ui-->
-  <div *ngIf='subscribersDisplayFlag' [ngStyle]="{'height': setChattingModalHeight() -170 + 'px'}"
+  <div *ngIf='subscribersDisplayFlag' [ngStyle]="{'height': browserHeight -170 + 'px'}"
     class='m_m_subscribers' id='subscribers'>
     <app-messager-subscribers (onChattingWith)='startChattingWith($event)'></app-messager-subscribers>
   </div>
 
   <!--recently chatting ui-->
-  <div *ngIf='recentlyDisplayFlag' [ngStyle]="{'height': setChattingModalHeight() -170 + 'px'}" class='m_m_recently'
+  <div *ngIf='recentlyDisplayFlag' [ngStyle]="{'height': browserHeight -170 + 'px'}" class='m_m_recently'
     id='recently'>
     <app-messager-recently (onChattingWith)='startChattingWith($event)'></app-messager-recently>
   </div>
 
   <!--chatting ui-->
-  <div *ngIf='chattingDisplayFlag' [ngStyle]="{'height': setChattingModalHeight() -70 + 'px'}" class='m_m_chatting'
+  <div *ngIf='chattingDisplayFlag' [ngStyle]="{'height': browserHeight -70 + 'px'}" class='m_m_chatting'
     id='chatting'>
-    <app-messager-chatting [modalHeight]='setChattingModalHeight()-70' (onStartChatting)='startChattingWith($event)'>
+    <app-messager-chatting [modalHeight]='browserHeight-70' (onStartChatting)='startChattingWith($event)'>
     </app-messager-chatting>
   </div>
 

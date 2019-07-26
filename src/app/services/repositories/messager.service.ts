@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from '../../../environments/environment.prod';
-import { of, from } from 'rxjs'
+import { of, from, Subject } from 'rxjs'
 import { map, filter } from 'rxjs/operators'
 
 @Injectable({
@@ -9,48 +9,84 @@ import { map, filter } from 'rxjs/operators'
 })
 export class MessagerService {
   public baseUrl: any = environment.baseUrl;
-  // public subsOfStaffs;
-  // public subsOfTeachers;
-  // public subsOfStudents;
-  public errorFlag: boolean;
+  public isSubscriberListsGotError: boolean = false;
 
-  public userIdsOfTeachers: object;
-  public userIdsOfStaffs: object;
-  public userIdsOfLearners: object;
+  public userIdsOfTeachers: object = {};
+  public userIdsOfStaffs: object = {};
+  public userIdsOfLearners: object = {};
+
+  public subscribersNoti: object = {};
+  public teachersNotiNum: number = 0;
+  public teacherNoti$ = new Subject();
+  public staffsNotiNum: number = 0;
+  public staffNoti$ = new Subject();
+  public learnersNotiNum: number = 0;
+  public learnersNoti$ = new Subject();
+  public subscriberChattingWith: object = {};
+
 
 
   constructor(private http: HttpClient) {
     console.log('messager service')
   }
 
-  //get subscribers list from server
-  getSubscribersList(userId) {
-    console.log("111")
+  /**
+   * Get user's subscriber lists from server and saved to session storage.
+   * @param {number} userId - user ID 
+  */
+  getSubscribersList(userId: number) {
+    //console.log("111")
     //To avoid dulplicated data transfer, when the web initiate, call api from server once
     //refresh, render or re-render don't call api
-    if (sessionStorage.chattingInit == 'true') {
+    if (JSON.parse(sessionStorage.getItem('chattingInit'))) {
+      console.log('aaa')
       return;
     }
-    else {
-      this.http.get(this.baseUrl + 'Chat/GetChattingList/' + userId)
-        .subscribe(
-          (res) => {
-            let LearnerList = res['Data'].LearnerList.map(val => this.subscribersMap(val, 0));
-            let StaffList = res['Data'].StaffList.map(val => this.subscribersMap(val, 1));
-            let TeacherList = res['Data'].TeacherList.map(val => this.subscribersMap(val, 2));
 
-            //store the subscirbers list in session storage
-            sessionStorage.setItem('LearnerList', JSON.stringify(LearnerList));
-            sessionStorage.setItem('StaffList', JSON.stringify(StaffList));
-            sessionStorage.setItem('TeacherList', JSON.stringify(TeacherList));
-            //set 'true' as a sign
-            sessionStorage.setItem('chattingInit', 'true');
-          },
-          (err) => {
-            //console.log(err)
-            this.errorFlag = true;
-          }
-        )
+    this.http.get(this.baseUrl + 'Chat/GetChattingList/' + userId)
+      .subscribe(
+        (res) => {
+          sessionStorage.setItem('chattingInit', JSON.stringify(true));
+          this.saveSubscriberLists(res);
+        },
+        (err) => {
+          //console.log(err)
+          this.isSubscriberListsGotError = true;
+        }
+      )
+  }
+
+  /**
+   * save subscibers list to session storage
+   * @param {object} data - object of subscribers lists
+   */
+  saveSubscriberLists(data) {
+    let LearnerList = data['Data'].LearnerList;
+    let StaffList = data['Data'].StaffList;
+    let TeacherList = data['Data'].TeacherList;
+    //store the subscirbers list in session storage
+    sessionStorage.setItem('LearnerList', JSON.stringify(LearnerList));
+    sessionStorage.setItem('StaffList', JSON.stringify(StaffList));
+    sessionStorage.setItem('TeacherList', JSON.stringify(TeacherList));
+  }
+
+  /**
+   * @returns {object} - return subscriber lists stored in session storage
+  */
+  readSubscriberLists() {
+    return {
+      LearnerList: JSON.parse(sessionStorage.getItem('LearnerList')),
+      StaffList: JSON.parse(sessionStorage.getItem('StaffList')),
+      TeacherList: JSON.parse(sessionStorage.getItem('TeacherList'))
+    };
+  }
+
+
+  getDefaultNotifications() {
+    return {
+      teachersNotiNum: Number(sessionStorage.getItem('teachersNotiNum')),
+      staffsNotiNum: Number(sessionStorage.getItem('staffsNotiNum')),
+      learnersNotiNum: Number(sessionStorage.getItem('learnersNotiNum'))
     }
   }
 
@@ -62,29 +98,32 @@ export class MessagerService {
     val.newMessage = 0;
     let userId = val.UserId;
     console.log(userId)
-    // switch (groupIndex) {
-    //   case 0:
-    //     this.userIdsOfLearners.userId = val.UserId;
-    //   case 1:
-    //     this.userIdsOfStaffs.userId = val.UserId;
-    //   case 2:
-    //     this.userIdsOfTeachers.userId = val.UserId;
-    // }
-    console.log(this.userIdsOfLearners)
+    switch (groupIndex) {
+      case 0:
+        this.userIdsOfLearners[userId] = val.UserId;
+      case 1:
+        this.userIdsOfStaffs[userId] = val.UserId;
+      case 2:
+        this.userIdsOfTeachers[userId] = val.UserId;
+    }
     return val;
   }
 
-  /*
-    return the subscribers stored in local session storage,
-      -->为了代码整洁 把从sessionStorage里面获取数据放在了service里面
+  /**
+    *@param {number} subscriberUserId - sender's userId 
+    *@param {boolean} isAdd - true: add notifications  false: minus notifications
   */
-  getSubscribers() {
-    return {
-      LearnerList: JSON.parse(sessionStorage.getItem('LearnerList')),
-      StaffList: JSON.parse(sessionStorage.getItem('StaffList')),
-      TeacherList: JSON.parse(sessionStorage.getItem('TeacherList'))
-    };
+  calculateNotifications(subscriberUserId: number, isAdd: boolean) {
+
   }
+
+
+  notify() {
+    this.learnersNoti$.next(this.learnersNotiNum);
+    this.teacherNoti$.next(this.teachersNotiNum);
+    this.staffNoti$.next(this.staffsNotiNum);
+  }
+
 
   /*
     save the subscriber's object now chatting in session storage 
@@ -100,6 +139,7 @@ export class MessagerService {
   */
   getSubscriberChattingWith() {
     let subscriberObj = sessionStorage.getItem('subscriberChattingWith') ? JSON.parse(sessionStorage.getItem('subscriberChattingWith')) : null;
+    this.subscriberChattingWith = subscriberObj;
     return subscriberObj;
   }
 
