@@ -15,7 +15,6 @@ export class DashboardPanelComponent  {
     private activatedRoute: ActivatedRoute,
     public settingService: AppSettingsService
   ) {
-  
     if(!this.activatedRoute.snapshot.firstChild){
       this.router.navigate(['/home'])
     }

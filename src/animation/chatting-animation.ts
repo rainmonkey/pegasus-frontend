@@ -89,5 +89,14 @@ export const Animations = {
         state('hide', style({
             display: 'none'
         }))
+    ]),
+
+    photoImgGreyFilterAnimation: trigger('greyFilterTrigger',[
+        state('online',style({
+            filter: 'grayscale(0%)'
+        })),
+        state('offline',style({
+            filter: 'grayscale(100%)'
+        }))
     ])
 }

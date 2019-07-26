@@ -10,20 +10,19 @@ import { Animations } from '../../../../../../animation/chatting-animation';
   animations: [Animations.unReadMessage]
 })
 export class MessagerIconComponent implements OnInit {
-  public popUpModalFlag = false;
+  public isModalDisplayed: boolean = false;
   //animation state
   public unReadAnimationStatus: boolean = false;
-  //pass to child component, browser's height
-  public browserHeight: number;
+
   public msgNotificationTimer;
 
-  constructor(private messagerService: MessagerService,
-    private chattingService: ChattingService) { }
+  constructor(
+    private messagerService: MessagerService,
+    private chattingService: ChattingService
+  ) { }
 
   ngOnInit() {
-    //get browser's height, chatting modal can resize in diffrent browsers
-    this.browserHeight = window.outerHeight;
-    //sent get subscribers request
+    //send request to server to get the subscribers lists
     this.messagerService.getSubscribersList(1);
     //build a chatting connection
     this.chattingService.startConnection(localStorage.userID);
@@ -31,7 +30,6 @@ export class MessagerIconComponent implements OnInit {
     //if(sessionStorage.getItem('chattingInit'))
     //如果有未读消息或者有新消息 但是聊天框最小化了
     this.setMessageNoticeAnimationState();
-
   }
 
   /*
@@ -51,7 +49,7 @@ export class MessagerIconComponent implements OnInit {
   displayMessager() {
     this.unReadAnimationStatus = false;
     clearInterval(this.msgNotificationTimer);
-    this.popUpModalFlag = true;
+    this.isModalDisplayed = true;
   }
 
   /*
@@ -60,7 +58,7 @@ export class MessagerIconComponent implements OnInit {
   */
   hideMessager(event) {
     if (event == 'true') {
-      this.popUpModalFlag = false;
+      this.isModalDisplayed = false;
     }
   }
 

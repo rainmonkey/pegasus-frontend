@@ -1,3 +1,4 @@
+<div *ngIf="isloading" class="loaderLarge"></div>
 <div class="modal-header">
   <h4 class="modal-title">Registration Confirmation</h4>
   <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
@@ -5,12 +6,11 @@
   </button>
 </div>
 <div class="modal-body">
-  <div *ngIf="isloading" class='loaderSmall'></div>
   <div class="container">
     <p>Do you want update the infomation of this new student?</p>
   </div>
 </div>
 <div class="modal-footer">
     <button type="button" class="btn btn-outline-dark" (click)="onSubmit()" [disabled]='isConfirmClick'>Save</button>
-  <button type="button" class="btn btn-outline-dark" (click)="activeModal.close('Close click')">Close</button>
+  <button type="button" class="btn btn-outline-dark" (click)="activeModal.close('Close click')" [disabled]='isloading'>Close</button>
 </div>

@@ -38,7 +38,7 @@
         </div>
         <!--add more btn-->
         <div class="col-3">
-          <button class="btn btn-info btn__add--right" (click)="openDetailModal()">
+          <button class="btn btn-info btn__add--right" (click)="updateModal(command, whichOrder)">
             + Add More
           </button>
         </div>
@@ -76,7 +76,7 @@
             </tr>
           </thead>
           <tbody>
-            <tr *ngFor='let item of stockApplications;'>
+            <tr *ngFor="let item of stockApplications; let i = index">
               <th scope="row">{{ item.id }}</th>
               <td>
                 {{ item.ApplyStaff.FirstName }}
@@ -90,12 +90,15 @@
               <td>
                 <li *ngFor="let detail of item.ApplicationDetails">{{ detail.AppliedQty }}</li>
               </td>
-              <td>{{ item.ProcessStatus }}</td>
+              <td>{{ item.ProcessStatus | processStatus}}</td>
               <td>
-                <span class='tl_body_table_btn' style="margin-right: 1rem;">
+                <span class='tl_body_table_btn' style="margin-right: 1rem;" (click)="detailModal(1, item.id)">
+                  <i class='fas fa-info-circle'></i>
+                </span>
+                <span class='tl_body_table_btn' style="margin-right: 1rem;" (click)="updateModal(2, item.id)">
                   <i class='fas fa-pen'></i>
                 </span>
-                <span class='tl_body_table_btn'>
+                <span class='tl_body_table_btn' (click)="deleteModal(3, item)">
                   <i class='fas fa-trash-alt'></i>
                 </span>
               </td>

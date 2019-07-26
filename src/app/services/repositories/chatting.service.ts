@@ -39,7 +39,7 @@ export class ChattingService {
       //当connect连接出现错误(连接失败)
       .catch(err => {
         this.disconnectFlag$.next(true);
-        console.log('11111')
+        //console.log('11111')
         this.reconnect(userId);
       });
 
@@ -83,13 +83,13 @@ export class ChattingService {
   //send message
   sendMessage(messageObj) {
     //return from(this.hubConnection.invoke('SendMessageOneToOne', messageObj));
-    return forkJoin(
-      from(this.hubConnection.invoke('SendMessageOneToOne', messageObj)),
+    
+      return from(this.hubConnection.invoke('SendMessageOneToOne', messageObj))
       //放后台吧这个东西
       // this.http.post(this.baseUrl + 'chat', messageObj).pipe(
       //   retry(2)
       // )
-    )
+    
   }
 
   //listen on the message
@@ -98,6 +98,7 @@ export class ChattingService {
       (id, message, messageTime) => {
         //接收信息处理
         this.messagerService.saveChattingHistory({ subscriberId: id, message: message, leftOrRight: 'left', createTime: messageTime, isError: false, isResend: false })
+        this.messagerService.calculateNotifications(id,true);
       }),
       (err) => {
         console.log(err)

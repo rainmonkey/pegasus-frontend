@@ -6,7 +6,9 @@ import { NgbootstraptableService } from 'src/app/services/others/ngbootstraptabl
 import { NgbDate } from '@ng-bootstrap/ng-bootstrap';
 import Swal from 'sweetalert2';
 
+import { StockApplicationUpdateModalComponent } from 'src/app/components/dashboard/dashboard-components/inventory/inventory-stock-application/stock-application-update-modal/stock-application-update-modal.component';
 import { StockApplicationDetailModalComponent } from 'src/app/components/dashboard/dashboard-components/inventory/inventory-stock-application/stock-application-detail-modal/stock-application-detail-modal.component';
+import { StockApplicationDeleteModalComponent } from '../stock-application-delete-modal/stock-application-delete-modal.component';
 
 @Component({
   selector: 'app-stock-application-list',
@@ -22,7 +24,7 @@ export class StockApplicationListComponent implements OnInit {
   public loadingFlag: boolean = true;
   public stockApplicationLength: number;
   public page: number = 1;
-  public pageSize: number = 3;
+  public pageSize: number = 8;
   /* after loading, display default data of three months */
   public currentDate: any;
   public formerDate: any;
@@ -90,7 +92,7 @@ export class StockApplicationListComponent implements OnInit {
   /* slice specific part of data to display in table of HTML */
   get stockApplications(): any[] {
     if (!this.loadingFlag) {
-      return this.stockApplication
+      return this.stockApplication.reverse()
         .map((stockInfo, i) => ({ id: i + 1, ...stockInfo }))
         .slice((this.page - 1) * this.pageSize, (this.page - 1) * this.pageSize + this.pageSize);
     }
@@ -152,8 +154,41 @@ export class StockApplicationListComponent implements OnInit {
     });
   }
   //////////////////////////////////////handler of angular-bootstrap modals/////////////////////////////////////
-  openDetailModal() {
-    const modalRef = this.modalService.open(StockApplicationDetailModalComponent, { size: 'lg', centered: true });
-    // modalRef.componentInstance.name = 'World';
+  updateModal(command: number, whichOrder: number) {
+    console.log('update command', command, 'whichOrder', whichOrder)
+    const modalRef = this.modalService.open(StockApplicationUpdateModalComponent, { size: 'lg', centered: true, backdrop: 'static', keyboard: false });
+    modalRef.componentInstance.command = command;
+    modalRef.componentInstance.whichOrder = whichOrder;
+    modalRef.componentInstance.passProduct.subscribe((applicationId: number) => {
+      this.loadingFlag = true;
+      this.inventoriesService.getNewStockApplication(applicationId).subscribe(
+        res => {
+          console.log('receivedProduct', res['Data']);
+          this.stockApplication.push(res['Data']);
+          // console.log('stockApplications',this.stockApplications);
+          this.loadingFlag = false;
+          modalRef.close();
+        },
+        err => this.backendErrorHandler(err)
+      )
+    })
+  }
+  detailModal(command: number, whichOrder: number) {
+    console.log('detail command', command, 'whichOrder', whichOrder)
+    const modalRef = this.modalService.open(StockApplicationDetailModalComponent, { size: 'lg', centered: true, backdrop: 'static', keyboard: false });
+    modalRef.componentInstance.command = command;
+    modalRef.componentInstance.whichOrder = whichOrder;
+  }
+  deleteModal(command: number, orderDetail) {
+    console.log('delete command', command, 'whichOrder', orderDetail)
+    const modalRef = this.modalService.open(StockApplicationDeleteModalComponent, { windowClass: 'delete-modal-size', centered: true, backdrop: 'static', keyboard: false });
+    modalRef.componentInstance.command = command;
+    modalRef.componentInstance.orderDetail = orderDetail;
+    modalRef.componentInstance.sendDeleteResult.subscribe(
+      res => {
+        console.log('sendDeleteResult', res);
+        
+      }
+    )
   }
 }

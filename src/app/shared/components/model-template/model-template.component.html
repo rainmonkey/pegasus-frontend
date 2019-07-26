@@ -8,7 +8,7 @@
 </div>
 
 <div class='modal-body'>
-    <app-admin-learner-payment-invoice *ngIf="whichModal == 'payInvoice'" [whichLearner]= 'whichObject'></app-admin-learner-payment-invoice>
+    <app-admin-learner-payment-invoice *ngIf="whichModal == 'pay Invoice'" [whichLearner]= 'whichObject'></app-admin-learner-payment-invoice>
     <app-learner-credit-details *ngIf="whichModal == 'Learner Credit'" [whichLearner]='whichObject'></app-learner-credit-details>
     <app-admin-learner-timetable *ngIf="whichModal == 'Learner Timetable'" [whichLearner]='whichObject'></app-admin-learner-timetable>
     <!-- <app-learner-registration-form [whichLearner]= 'whichLearner' (toLearnerListEvent)='toLearnerListEvent($event)' activeModalEvent='onActiveModalSubmit($event)'></app-learner-registration-form> -->
