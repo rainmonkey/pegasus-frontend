@@ -363,7 +363,7 @@
                   <option *ngFor="let tName of prepareTeaNameListArray[i].prepareTeaNameItemArray;" [value]="tName.TeacherId">{{tName.TeacherName}}</option>
                 </select>
               </div>
-              <div class="col-sm-6 col-md-6">
+              <div class="col-sm-6 col-md-6 d-none">
                 <label for="room">Room No.</label>
                 <select class="form-control" formControlName="room" name="room" id="room">
                   <option selected>Choose..</option>
