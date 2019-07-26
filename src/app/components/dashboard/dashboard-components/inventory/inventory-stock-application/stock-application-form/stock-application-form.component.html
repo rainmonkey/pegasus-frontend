@@ -1,14 +1,14 @@
 <div class='t_mf_form'>
-  <form [formGroup]='applicationFrom'>
+  <form [formGroup]='applicationForm'>
     <!-- staff name and location -->
     <div class="row">
       <div class="col-6">
-        <label class="label__style">Staff Name:</label>
-        <input type="text" class="col-12 input__style" [value]="staffName" readonly>
+        <label class="label__style" >Staff Name:</label>
+        <input type="text" class="col-12 input__style" [value]="staffName" formControlName="staffId" readonly>
       </div>
       <div class="col-6">
         <label class="label__style">Location:</label>&nbsp;
-        <input type="text" class="col-12 input__style" [value]="orgName" readonly>
+        <input type="text" class="col-12 input__style" [value]="orgName" formControlName="orgId" readonly>
       </div>
     </div>
     <!-- apply reason -->
@@ -25,7 +25,7 @@
       </div>
     </div>
     <!-- productIdQty: FormArray -->
-    <div formArrayName="productIdQty" *ngFor="let prods of applicationFrom.get('productIdQty').controls; let i = index">
+    <div formArrayName="productIdQty" *ngFor="let prods of applicationForm.get('productIdQty').controls; let i = index">
       <div [formGroupName]="i">
         <div class="d-flex justify-content-end">
           <button class="btn btn-info my-2" [disabled]="isDeleted[i]" (click)="deleteForm(i)">
