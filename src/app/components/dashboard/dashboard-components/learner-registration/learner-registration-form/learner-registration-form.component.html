@@ -19,7 +19,7 @@
       <div formGroupName="learnerForm" class="card">
         <div class="card-body">
           <div class="button text-right">
-            <button class="btn_reset my-3" (click)="resetLearner()">Reset</button>
+            <button class="btn_reset my-3 btn btn-info" (click)="resetLearner()">Reset</button>
           </div>
           <div class="learnerPhoto">
             <label for="photo"></label>
@@ -186,7 +186,7 @@
           </div>
           <!-- <small *ngIf="showErrorH && touchNext" class='text-danger'>Please Select At Least One Option</small> -->
           <div class="button text-right">
-            <button class="btn_next my-3" [disabled]="learnerForm.invalid" (click)="next('parentForm')">Next</button>
+            <button class="btn_next my-3 btn btn-info" [disabled]="learnerForm.invalid" (click)="next('parentForm')">Next</button>
           </div>
         </div>
       </div>
@@ -203,8 +203,8 @@
         <div *ngFor="let parent of parentForm.controls; let i=index;" class="card my-3">
           <div [formGroupName]="i" class="card-body">
             <div class="parentForm__button d-flex justify-content-end my-3">
-              <button class="btn_reset mx-3" (click)="resetParent()">Reset</button>
-              <button class="btn_delete" (click)="deleteParent()">Delete</button>
+              <button class="btn_reset mx-3 btn btn-info" (click)="resetParent()">Reset</button>
+              <button class="btn_delete btn btn-danger" (click)="deleteParent()">Delete</button>
             </div>
             <div class="parentName-relationship row">
               <div class="col-sm-4 col-md-4">
@@ -248,15 +248,15 @@
               </div>
             </div>
             <div class="parentForm__button my-3 d-flex justify-content-end">
-              <button class="btn_back mx-3" (click)="next('learnerForm')">Back</button>
+              <button class="btn_back mx-3 btn btn-info" (click)="next('learnerForm')">Back</button>
               <button *ngIf="!whichLearner" class="btn_next" [disabled]="parentForm.invalid && !this.learnerForm.value.isUnder18" (click)="next('courseForm')">Next</button>
-              <button class="btn_next" [disabled]="parentForm.invalid && !this.learnerForm.value.isUnder18" (click)="onSubmit()">Submit</button>
+              <button class="btn_next btn btn-primary" [disabled]="parentForm.invalid && !this.learnerForm.value.isUnder18" (click)="onSubmit()">Submit</button>
             </div>
           </div>
         </div>
       </div>
       <div class="button text-right">
-        <button class="btn_add" (click)="addParent()"><b>Add more parent or guardian</b></button>
+        <button class="btn_add btn btn-info" (click)="addParent()"><b>Add more parent or guardian</b></button>
       </div>
     </div>
     <!-- -----courseForm html----- -->
@@ -267,8 +267,8 @@
         <li><a class="nav-link active">Course</a></li>
       </ul>
       <div>
-        <button (click)="chooseGroupCourse()">Group Course</button>
-        <button (click)="chooseCustomCourse()">One-on-One Course</button>
+        <button (click)="chooseGroupCourse()" class='btn btn-outline-primary'>Group Course</button>
+        <button (click)="chooseCustomCourse()" class='btn btn-outline-primary'>One-on-One Course</button>
       </div>
 
 
@@ -307,9 +307,9 @@
               </tbody>
             </table>
             <div class="text-right">
-              <button *ngIf="addCourse == undefined" class="btn_back mx-3" (click)="next('parentForm')">Back</button>
-              <button *ngIf="!addCourse" [disabled]="registrationForm.invalid" (click)="onSubmit()" class="btn_submit" type="submit">Submit</button>
-              <button *ngIf="addCourse" (click)="onSubmit()" class="btn_submit" type="submit">Submit Group Courses</button>
+              <button *ngIf="addCourse == undefined" class="btn_back mx-3 btn btn-info" (click)="next('parentForm')">Back</button>
+              <button *ngIf="!addCourse" [disabled]="registrationForm.invalid" (click)="onSubmit()" class="btn_submit btn btn-primary" type="submit">Submit</button>
+              <button *ngIf="addCourse" (click)="onSubmit()" class="btn_submit btn btn-primary" type="submit">Submit Group Courses</button>
             </div>
           </div>
         </div>
@@ -320,8 +320,8 @@
         <div *ngFor="let course of customCourse.controls; let i=index;" class="card my-3">
           <div [formGroupName]="i" class="card-body">
             <div class="customCourseForm__button d-flex justify-content-end my-3">
-              <button class="btn_reset mx-3" (click)="resetCustomCourse(i)">Reset</button>
-              <button class="btn_delete" (click)="deleteCustomCourse(i)">Delete</button>
+              <button class="btn_reset mx-3 btn btn-info" (click)="resetCustomCourse(i)">Reset</button>
+              <button class="btn_delete btn btn-danger" (click)="deleteCustomCourse(i)">Delete</button>
             </div>
             <div class="selectCourse-yourLever row">
               <div class="col-sm-6 col-md-6">
@@ -406,14 +406,14 @@
               </div>
             </div>
             <div class="d-flex my-3 justify-content-end">
-              <button *ngIf="addCourse == undefined" class="mx-3 btn_back" (click)="next('parentForm')">Back</button>
+              <button *ngIf="addCourse == undefined" class="mx-3 btn_back btn btn-info" (click)="next('parentForm')">Back</button>
             </div>
           </div>
         </div>
         <div class="text-right">
-          <button class="btn_add" (click)="addCustomCourse()"><b>Add more courses</b></button>
-          <button *ngIf="!addCourse" [disabled]="customCourse.invalid || customCourse.untouched" (click)="onSubmit()" class="btn_submit" type="submit">Submit</button>
-          <button *ngIf="addCourse" [disabled]="customCourse.invalid || customCourse.untouched" (click)="onSubmit()" class="btn_submit" type="submit">Submit One-on-One Course</button>
+          <button class="btn_add btn btn-info" (click)="addCustomCourse()"><b>Add more courses</b></button>
+          <button *ngIf="!addCourse" [disabled]="customCourse.invalid || customCourse.untouched" (click)="onSubmit()" class="btn_submit btn btn-primary" type="submit">Submit</button>
+          <button *ngIf="addCourse" [disabled]="customCourse.invalid || customCourse.untouched" (click)="onSubmit()" class="btn_submit btn btn-primary" type="submit">Submit One-on-One Course</button>
         </div>
       </div>
     </div>
