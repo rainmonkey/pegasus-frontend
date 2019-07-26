@@ -45,6 +45,7 @@ export class TrialModalComponent implements OnInit {
   public teachers;
   public teachingCourses;
   public timeSlots;
+  public endTimestampList: Array<number> = []
   // arrange
   public isDraggableFlag = true;
 
@@ -60,10 +61,11 @@ export class TrialModalComponent implements OnInit {
   @Input() coursesTeachingByWhichTeacher;  // this.coursesService.getLessonsByTeacherId(teacherId)
   // => start end
   // arrange
-  @Input() duration;
+  @Input() durationId;
   @Input() arrangeCourseInstance;
 
   @Input() notDraggable;
+  @Input() duration
 
   @ViewChild('fullcalendar') fullcalendar: CalendarComponent;
   options: OptionsInput;
@@ -71,14 +73,14 @@ export class TrialModalComponent implements OnInit {
   @Output() userSelectedTime: EventEmitter<any> = new EventEmitter();
 
   constructor(public activeModal: NgbActiveModal,
-              private modalService: NgbModal,
-              private coursesService: CoursesService,
-              private teachersService: TeachersService,
-              private learnersService: LearnersService) { }
+    private modalService: NgbModal,
+    private coursesService: CoursesService,
+    private teachersService: TeachersService,
+    private learnersService: LearnersService) { }
 
   ngOnInit() {
     this.currentDay = this.transferTimestampToTime(new Date().getTime(), 1);
-    if (this.notDraggable || this.duration) {
+    if (this.notDraggable || this.durationId) {
       this.isDraggableFlag = false;
     }
     this.prepareData();
@@ -122,7 +124,6 @@ export class TrialModalComponent implements OnInit {
       if (!this.coursesTeachingByWhichTeacher) {
         this.coursesTeachingByWhichTeacher = res[index].Data;
         index++;
-        console.log(this.coursesTeachingByWhichTeacher);
       }
 
       this.studentFullName = this.learner.FirstName + ' ' + this.learner.LastName;
@@ -186,13 +187,15 @@ export class TrialModalComponent implements OnInit {
     let array = [];
     array = this.getAvailableTime(array, this.termPeriod);
     array = this.addOccupiedTime(array);
-    array.sort();
+    array.sort()
     const newObjArr = [];
     for (let i = 0; i < array.length; i += 2) {
       if (array[i + 1] - array[i] >= this.timeInterval30Min) {
+        this.endTimestampList.push(array[i + 1])
         newObjArr.push({ start: this.transferTimestampToTime(array[i]), end: this.transferTimestampToTime(array[i + 1]), rendering: 'background' });
       }
     }
+    console.log(newObjArr)
     return newObjArr;
   }
 
@@ -236,6 +239,7 @@ export class TrialModalComponent implements OnInit {
         }
       }
     }
+    console.log(this.availableDOW)
     return array;
   }
 
@@ -255,65 +259,80 @@ export class TrialModalComponent implements OnInit {
     return array;
   }
 
+  checkTimeConflict(startTimestamp) {
+    for (let endTimestamp of this.endTimestampList) {
+      if (startTimestamp < endTimestamp && startTimestamp + this.duration > endTimestamp) {
+        return false
+      }
+    }
+    return true
+  }
+
   /*
     events handler when user select grids on calendar
   */
   selectCallBack(info) {
     const startTimestamp = Date.parse(info.startStr);
     let endTimestamp = Date.parse(info.endStr);
-
     // arrange
     if (!this.isDraggableFlag) {
       if (endTimestamp - startTimestamp >= this.timeInterval30Min) {
         alert('Please select a start time');
+      } else if (!this.checkTimeConflict(startTimestamp)) {
+        alert('There is a time conflict with existed course, please select another  start time');
       } else {
-        if (this.duration) {
-          this.prepareCourse(this.duration);
-          endTimestamp = this.transferEndTime(startTimestamp, this.duration);
+        if (this.durationId) {
+          this.prepareCourse(this.durationId);
+          endTimestamp = this.transferEndTime(startTimestamp, this.durationId);
           this.popUpConfirmModal(startTimestamp, endTimestamp);
-        }
-        if (this.prepareCourse(this.duration)) {
-          this.userSelectedTime.emit(this.transferTimestampToTime(startTimestamp));
+        } else {
+          const durationId = this.durationFormatting(0, this.duration);
+          if (this.prepareCourse(durationId, startTimestamp)) {
+            this.userSelectedTime.emit(this.transferTimestampToTime(startTimestamp));
+            this.activeModal.close()
+          }
         }
       }
     } else {
       if (endTimestamp - startTimestamp < this.timeInterval30Min) {
-        alert('Sorry, course duration can not less than 30 min.');
+        alert('Sorry, course durationId can not less than 30 min.');
       } else if (endTimestamp - startTimestamp > 2 * this.timeInterval30Min) {
-        alert('Sorry, course duration can not more than 1 hour.');
+        alert('Sorry, course durationId can not more than 1 hour.');
       } else {
-        const duration = this.durationFormatting(startTimestamp, endTimestamp);
-        if (this.prepareCourse(duration)) {
+        const durationId = this.durationFormatting(startTimestamp, endTimestamp);
+        if (this.prepareCourse(durationId)) {
           this.popUpConfirmModal(startTimestamp, endTimestamp);
         }
       }
     }
   }
 
-  prepareCourse(duration) {
+  prepareCourse(durationId, startTimestamp?) {
+    let count = 0
     for (const i of this.courses) {
-      console.log(i.Duration, duration);
-      if (i.CourseType === 1 && this.teacherDetails.Level === i.TeacherLevel && i.Duration === duration && i.Level === this.LearnerLevel) {
+      console.log(count)
+      // console.log(i.CourseType === 1, this.teacherDetails.Level === i.TeacherLevel, i.Duration, durationId, i.Duration === durationId, i.Level === this.LearnerLevel, (!this.cateId || i.CourseCategoryId === this.cateId))
+      if (i.CourseType === 1 && this.teacherDetails.Level === i.TeacherLevel && i.Duration === durationId && i.Level === this.LearnerLevel && (!this.cateId || i.CourseCategoryId === this.cateId)) {
+        count++
         this.course = i;
         this.coursePrice = i.Price;
         this.courseId = i.CourseId;
       }
     }
-    console.log(this.courses);
-    // if (!this.course) {
-    //   alert('Sorry, we do not have such course, please select another one.');
-    //   return false;
-    // }
+    if (!this.course) {
+      alert('Sorry, we do not have such course, please select another one.');
+      return false;
+    }
     return true;
   }
 
-  transferEndTime(startTimestamp, duration) {
+  transferEndTime(startTimestamp, durationId) {
     let endTimestamp = startTimestamp;
-    if (duration === 1) {
+    if (durationId === 1) {
       endTimestamp += this.timeInterval30Min;
-    } else if (duration === 2) {
+    } else if (durationId === 2) {
       endTimestamp += this.timeInterval45Min;
-    } else if (duration === 3) {
+    } else if (durationId === 3) {
       endTimestamp += this.timeInterval60Min;
     }
     return endTimestamp;

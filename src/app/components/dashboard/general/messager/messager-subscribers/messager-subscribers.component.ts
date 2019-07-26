@@ -12,15 +12,17 @@ import { environment } from 'src/environments/environment.prod';
 })
 export class MessagerSubscribersComponent implements OnInit {
   public groupChatSwitchFlag: boolean = true;
-  public subsOfTeacher:Array<object>;
-  public subsOfStudents: Array<object>;
-  public subsOfStaffs:Array<object>;
+  public TeacherList:Array<object>;
+  public LearnerList: Array<object>;
+  public StaffList:Array<object>;
   public notiNum = 0;
   public photoUrl:any = environment.photoUrl;
 
   @Output() onChattingWith = new EventEmitter();
 
-  constructor(private messagerService:MessagerService) { }
+  constructor(private messagerService:MessagerService) { 
+    
+  }
 
   ngOnInit() {
     let that = this;
@@ -37,9 +39,11 @@ export class MessagerSubscribersComponent implements OnInit {
   */
   getSubscribers(){
     let subscribers = this.messagerService.getSubscribers();
-    this.subsOfStaffs = subscribers.StaffList;
-    this.subsOfTeacher = subscribers.TeacherList;
-    this.subsOfStudents = subscribers.LearnerList;
+    let {StaffList,TeacherList,LearnerList} = subscribers;
+   
+    this.StaffList = StaffList;
+    this.TeacherList = TeacherList;
+    this.LearnerList = LearnerList;
   }
 
   /*

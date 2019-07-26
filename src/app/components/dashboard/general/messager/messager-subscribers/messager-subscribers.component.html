@@ -25,7 +25,7 @@
       <!--ngif-->
       <div class='col-12' id='group_teachers' style="display: none">
         <!--ngfor-->
-        <div *ngFor='let i of subsOfTeacher' class='row m_s_subscribers' (dblclick)='chattingWithHandler($event,i)'>
+        <div *ngFor='let i of TeacherList' class='row m_s_subscribers' (dblclick)='chattingWithHandler($event,i)'>
           <div class='col-3'>
             <div class='m_s_subscribers_photo'>
               <img [src]="photoUrl + i.Photo" alt="" onerror="this.src='../../../../../../assets/images/shared/default-employer-profile.png'">
@@ -50,7 +50,7 @@
       <!--ngif-->
       <div class='col-12' id='group_students' style="display: none">
         <!--ngfor-->
-        <div *ngFor='let i of subsOfStudents' class='row m_s_subscribers' (dblclick)='chattingWithHandler($event,i)'>
+        <div *ngFor='let i of LearnerList' class='row m_s_subscribers' (dblclick)='chattingWithHandler($event,i)'>
           <div class='col-3'>
             <div class='m_s_subscribers_photo'>
               <img [src]="photoUrl + i.Photo" alt="" onerror="this.src='../../../../../../assets/images/shared/default-employer-profile.png'">
@@ -74,7 +74,7 @@
       <!--ngif-->
       <div class='col-12' id='group_staffs' style="display: none">
         <!--ngfor-->
-        <div *ngFor='let i of subsOfStaffs' class='row m_s_subscribers' (dblclick)='chattingWithHandler($event,i)'>
+        <div *ngFor='let i of StaffList' class='row m_s_subscribers' (dblclick)='chattingWithHandler($event,i)'>
           <div class='col-3'>
             <div class='m_s_subscribers_photo'>
               <img [src]="photoUrl + i.Photo" alt="" onerror="this.src='../../../../../../assets/images/shared/default-employer-profile.png'">

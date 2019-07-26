@@ -27,7 +27,7 @@ export class TrialConfirmComponent implements OnInit {
   @Input() courseId;
   @Input() studentFullName;
   // arrange
-  @Input() arrangeFlag;
+  @Input() isDraggableFlag;
   @Input() arrangeCourseInstance;
 
   @ViewChildren('radios') radios;
@@ -46,12 +46,12 @@ export class TrialConfirmComponent implements OnInit {
   private isPayNow = true;
 
   constructor(public activeModal: NgbActiveModal,
-              private modalService: NgbModal,
-              private lookupsService: LookUpsService,
-              private CoursesService: CoursesService,
-              private activatedRoute: ActivatedRoute,
-              private router: Router,
-              private downloadPDFService: DownloadPDFService
+    private modalService: NgbModal,
+    private lookupsService: LookUpsService,
+    private CoursesService: CoursesService,
+    private activatedRoute: ActivatedRoute,
+    private router: Router,
+    private downloadPDFService: DownloadPDFService
   ) { }
 
   ngOnInit() {
@@ -85,7 +85,6 @@ export class TrialConfirmComponent implements OnInit {
     const length = allAvaliableRoom.length;
     const randomNum = Math.floor(Math.random() * length) + 1;
     this.avaliableRoom = allAvaliableRoom[randomNum];
-    // console.log(this.avaliableRoom)
   }
 
   getExtraFee(extraFee) {
@@ -109,7 +108,7 @@ export class TrialConfirmComponent implements OnInit {
   }
 
   onSubmit() {
-    if ((this.paymentMethodValue == null && this.isPayNow) && !this.arrangeFlag) {
+    if ((this.paymentMethodValue == null && this.isPayNow) && this.isDraggableFlag) {
       this.error = true;
       return;
     } else {
@@ -117,7 +116,7 @@ export class TrialConfirmComponent implements OnInit {
     }
 
     this.loadingGifFlag = true;
-    if (this.arrangeFlag) {
+    if (!this.isDraggableFlag) {
       const dataToSubmit = this.prepareArrangeData();
       console.log(dataToSubmit);
       this.CoursesService.arrangeCourse(localStorage.userID, dataToSubmit).subscribe(
@@ -182,9 +181,9 @@ export class TrialConfirmComponent implements OnInit {
   closeModal() {
     this.closeModalFlag.emit(true);
     this.activeModal.close('Cross click');
-    if (!this.arrangeFlag) {
+    if (this.isDraggableFlag) {
       this.router.navigate(['/learner/list']);
-    } else if (this.arrangeFlag) {
+    } else if (!this.isDraggableFlag) {
       this.router.navigate(['/learner/credit/', this.learnerId]);
     }
   }

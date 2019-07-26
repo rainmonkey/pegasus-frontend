@@ -24,6 +24,7 @@ export class SessionDetailEditModalComponent implements OnInit {
   BranchSelects: any;
   RoomSelects: any;
   TeacherSelects: any;
+  duration: number
   constructor(
     public activeModal: NgbActiveModal,
     private fb: FormBuilder,
@@ -100,7 +101,6 @@ export class SessionDetailEditModalComponent implements OnInit {
 
   getTeachers = (branchId: number) => {
     this.TeacherSelects = this.BranchSelects.filter(s => s.OrgId === branchId)[0].Teacher;
-    console.log(this.TeacherSelects, this.BranchSelects);
   }
 
   // confirm Modal
@@ -121,14 +121,18 @@ export class SessionDetailEditModalComponent implements OnInit {
     const orgId: number = +this.SessionForm.get('Branch').value;
     const orgName: string = this.BranchSelects.find(branch => branch.OrgId === orgId).OrgName;
     const teacherId = +this.SessionForm.get('Teacher').value;
+    this.duration = new Date(this.LessonModel.EndTime).getTime() - new Date(this.LessonModel.BeginTime).getTime()
+
     const modalRef = this.modalService.open(TrialModalComponent, { size: 'lg', backdrop: 'static', keyboard: false });
     modalRef.componentInstance.LearnerId = this.LessonModel.LearnerId;
     modalRef.componentInstance.TeacherId = teacherId;
     modalRef.componentInstance.orgName = orgName;
     modalRef.componentInstance.orgId = orgId;
     modalRef.componentInstance.notDraggable = true;
+    modalRef.componentInstance.duration = this.duration;
     modalRef.componentInstance.userSelectedTime.subscribe(res => {
-      console.log(res);
+      console.log(res)
+      this.SessionForm.get("BeginTime").patchValue(res)
     });
   }
 
