@@ -14,8 +14,21 @@
   padding: 20px;
 }
 
+.fc td, .fc th {
+  border-color: #b0b0b0 !important;
+}
+
+.fc-today {
+  background: none !important;
+}
+
 .fc-content{
   color: aliceblue;
+}
+@media (min-width: 1200px) {
+  #tutorScheduler {
+    max-width: 100%;
+  }
 }
 .fc-title{
   font-size: 10px;
@@ -30,7 +43,7 @@ th{
 }
 
 .fc-time-grid .fc-slats td{
-  height: 1.2em;
+  height: 2em;
 }
 
 .container .loaderLarge{
