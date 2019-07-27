@@ -88,6 +88,7 @@ export class LearnerRegistrationFormComponent implements OnInit, DoCheck, AfterV
   showErrorW = false;
   showErrorH = false;
   touchNext = false;
+  learnerValid = true;
   // photo thumbnail
   photoObj;
   // for add more selection
@@ -945,8 +946,14 @@ selectLocation(id, i) {
   }
 
   next(value: string) {
+    console.log(this.learnerForm)
+    this.learnerValid = true;
+    if (value == 'parentForm') {
+      this.learnerForm.valid ? this.learnerValid = true : this.learnerValid = false;
+    }
     // this.getErrorW === false ? this.showErrorW = true : this.showErrorW = false;
     // this.getErrorH === false ? this.showErrorH = true : this.showErrorH = false;
+    if(this.learnerValid){
     this.touchNext = true;
     if (value === 'parentForm') { this.confirmLearner(); }
     // if ((this.getErrorH === true) && (this.getErrorW === true)) {
@@ -957,8 +964,9 @@ selectLocation(id, i) {
       document.getElementById('learnerForm').style.display = 'none';
       document.getElementById('parentForm').style.display = 'none';
       document.getElementById('courseForm').style.display = 'none';
-      document.getElementById(value).style.display = 'block';
+      document.getElementById(value).style.display = 'block';}
   }
+
   setParentForm() {
     if (!this.whichLearner) {
       this.parentForm.push(
