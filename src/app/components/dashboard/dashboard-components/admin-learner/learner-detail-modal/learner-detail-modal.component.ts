@@ -236,7 +236,7 @@ export class LearnerDetailModalComponent implements OnInit {
   getOthersUrl() {
     // console.log(this.whichLearner.OtherfileUrl)
     if (this.whichLearner.OtherfileUrl !== null) {
-      this.othersmsg = 'Download Other Files'
+      this.othersmsg = 'View'
       return this.otherFileUrl = this.photoUrl + this.whichLearner.OtherfileUrl;
     }
   }
