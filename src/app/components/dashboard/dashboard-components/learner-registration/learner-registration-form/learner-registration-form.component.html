@@ -59,7 +59,7 @@
             </div>
             <div class="col-sm-6 col-md-6">
               <label for="birthday">Date of Birth</label>
-              <input class="form-control" formControlName="birthday" type="date" id="birthday">
+              <input class="form-control" formControlName="birthday" type="date" id="birthday" (blur)="handleIsUnder18($event.target.value)">
             </div>
           </div>
           <div class="enrollmentDate-location row">
@@ -308,7 +308,7 @@
             </table>
             <div class="text-right">
               <button *ngIf="addCourse == undefined" class="btn_back mx-3 btn btn-info" (click)="next('parentForm')">Back</button>
-              <button *ngIf="!addCourse" [disabled]="registrationForm.invalid" (click)="onSubmit()" class="btn_submit btn btn-primary" type="submit">Submit</button>
+              <button *ngIf="!addCourse" (click)="onSubmit()" class="btn_submit btn btn-primary" type="submit">Submit</button>
               <button *ngIf="addCourse" (click)="onSubmit()" class="btn_submit btn btn-primary" type="submit">Submit Group Courses</button>
             </div>
           </div>
@@ -347,7 +347,7 @@
                   <option *ngFor="let cInstance of locListArray[i].locItemArray;" [value]="cInstance.OrgId">{{cInstance.OrgName}}</option>
                 </select>
               </div>
-              <div class="col-sm-6 col-md-6" *ngIf="notPiano == 1 || whichLearner">
+              <div class="col-sm-6 col-md-6" *ngIf="notPiano[i] == 1">
                 <label for="teacherLevel">Teacher Level</label>
                 <select class="form-control" formControlName="teacherLevel" id="teacherLevel" (change)="selectTl($event.target.value, i)">
                   <option selected>Choose..</option>
