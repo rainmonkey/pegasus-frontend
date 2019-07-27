@@ -76,7 +76,6 @@ export class SessionsCalendarViewAdminComponent implements OnInit {
           FullScreenButton: {
             text: 'Fullscreen',
             click: () => {
-
             }
           }
         },
@@ -118,6 +117,9 @@ export class SessionsCalendarViewAdminComponent implements OnInit {
             buttonText: 'Day',
             slotDuration: '00:15'
           }
+        },
+        windowResize: () => {
+          this.fullcalendar.calendar.setOption('height', window.innerHeight - 110);
         },
         header: {
           left: 'today prev,next DayPickerButton title',
