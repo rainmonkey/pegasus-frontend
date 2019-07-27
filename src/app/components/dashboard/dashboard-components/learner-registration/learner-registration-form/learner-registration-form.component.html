@@ -411,7 +411,7 @@
           </div>
         </div>
         <div class="text-right">
-          <button class="btn_add btn btn-info" (click)="addCustomCourse()"><b>Add more courses</b></button>
+          <button class="btn_add btn btn-info ml-1" (click)="addCustomCourse()"><b>Add more courses</b></button>
           <button *ngIf="!addCourse" [disabled]="customCourse.invalid || customCourse.untouched" (click)="onSubmit()" class="btn_submit btn btn-primary" type="submit">Submit</button>
           <button *ngIf="addCourse" [disabled]="customCourse.invalid || customCourse.untouched" (click)="onSubmit()" class="btn_submit btn btn-primary" type="submit">Submit One-on-One Course</button>
         </div>
