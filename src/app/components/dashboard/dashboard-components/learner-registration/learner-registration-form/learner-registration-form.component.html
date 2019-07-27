@@ -186,7 +186,7 @@
           </div>
           <!-- <small *ngIf="showErrorH && touchNext" class='text-danger'>Please Select At Least One Option</small> -->
           <div class="button text-right">
-            <button class="btn_next my-3 btn btn-info" [disabled]="learnerForm.invalid" (click)="next('parentForm')">Next</button>
+            <button class="btn_next my-3 btn btn-info"  (click)="next('parentForm')">Next</button>
           </div>
         </div>
       </div>
@@ -249,7 +249,7 @@
             </div>
             <div class="parentForm__button my-3 d-flex justify-content-end">
               <button class="btn_back mx-3 btn btn-info" (click)="next('learnerForm')">Back</button>
-              <button *ngIf="!whichLearner" class="btn_next" [disabled]="parentForm.invalid && !this.learnerForm.value.isUnder18" (click)="next('courseForm')">Next</button>
+              <button *ngIf="!whichLearner" class="btn_next mx-3 btn btn-info" [disabled]="parentForm.invalid && !this.learnerForm.value.isUnder18" (click)="next('courseForm')">Next</button>
               <button class="btn_next btn btn-primary" [disabled]="parentForm.invalid && !this.learnerForm.value.isUnder18" (click)="onSubmit()">Submit</button>
             </div>
           </div>
