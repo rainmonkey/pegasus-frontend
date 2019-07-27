@@ -51,7 +51,7 @@ export class InventoriesService {
 
   /* post data  */
   postProduct(product: PostProduct): Observable<any>{
-    return this.http.post(this.baseUrl+'StockApplication',product)
+    return this.http.post(this.baseUrl + 'StockApplication', product)
            .pipe(
              catchError(this.errorHandler)
            );
@@ -59,5 +59,10 @@ export class InventoriesService {
   // throw error to component
   errorHandler(error: HttpErrorResponse) {
     return throwError(error);
+  }
+
+  /* delete data */
+  deleteProduct(applicationId: number):  Observable<any> {
+    return this.http.delete(this.baseUrl + `StockApplication/${applicationId}`)
   }
 }

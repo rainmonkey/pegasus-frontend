@@ -60,7 +60,7 @@ import { SessionsCalendarViewAdminComponent } from './components/dashboard/dashb
 import { SessionsCalendarViewTutorComponent } from './components/dashboard/dashboard-components/sessions/sessions-views/sessions-calendar-view-tutor/sessions-calendar-view-tutor.component';
 import { SessionsListViewComponent } from './components/dashboard/dashboard-components/sessions/sessions-views/sessions-list-view/sessions-list-view.component';
 import { StockApplicationListComponent } from './components/dashboard/dashboard-components/inventory/inventory-stock-application/stock-application-list/stock-application-list.component';
-import { StockApplicationAddModalComponent } from './components/dashboard/dashboard-components/inventory/inventory-stock-application/stock-application-add-modal/stock-application-add-modal.component';
+import { StockApplicationUpdateModalComponent } from './components/dashboard/dashboard-components/inventory/inventory-stock-application/stock-application-update-modal/stock-application-update-modal.component';
 import { StockApplicationDetailModalComponent } from './/components/dashboard/dashboard-components/inventory/inventory-stock-application/stock-application-detail-modal/stock-application-detail-modal.component';
 import { StockApplicationDeleteModalComponent } from './components/dashboard/dashboard-components/inventory/inventory-stock-application/stock-application-delete-modal/stock-application-delete-modal.component';
 import { ChangePasswordModalComponent } from './components/dashboard/dashboard-components/support/change-password-modal/change-password-modal.component';
@@ -247,7 +247,7 @@ import { InvoicePDFDownloadTableComponent } from './components/dashboard/dashboa
     RemindPanelComponent,
     StaffListComponent,
     StockApplicationListComponent,
-    StockApplicationAddModalComponent,
+    StockApplicationUpdateModalComponent,
     StockApplicationDetailModalComponent,
     StockApplicationDeleteModalComponent,
     SimplifyOrgPipe,
@@ -360,7 +360,7 @@ import { InvoicePDFDownloadTableComponent } from './components/dashboard/dashboa
     StaffDeleteModalComponent,
     StaffDetailModalComponent,
     StaffEditModalComponent,
-    StockApplicationAddModalComponent,
+    StockApplicationUpdateModalComponent,
     StockApplicationDetailModalComponent,
     StockApplicationDeleteModalComponent,
     InventoryDetailModalComponent,

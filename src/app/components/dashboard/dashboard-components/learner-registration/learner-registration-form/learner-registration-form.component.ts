@@ -153,11 +153,11 @@ export class LearnerRegistrationFormComponent implements OnInit, DoCheck, AfterV
       teacherLevel: [''],
       teacherName: ['',Validators.required],
       location: [''],
-      room: ['',Validators.required],
+      room: [''],
       beginDate: [this.myDate()],
       endDate: [''],
       schedule: this.fb.group({
-        dayOfWeek: ['6'],
+        dayOfWeek: [''],
         beginTime: [this.time, ngtimepickerValidator],
         durationType: ['']
       }),
@@ -561,6 +561,7 @@ export class LearnerRegistrationFormComponent implements OnInit, DoCheck, AfterV
     this.prepareTeaLevListArray[i].prepareTeaLevItemArray = [];
     this.prepareRoomListArray[i].prepareRoomItemArray = [];
     this.prepareTeaNameListArray[i].prepareTeaNameItemArray = [];
+    this.teaListOutArray[i].teaListToDatePick = [];
   }
   emptySelectionCour(i) {
 
@@ -580,6 +581,7 @@ export class LearnerRegistrationFormComponent implements OnInit, DoCheck, AfterV
 
   // select course category
   selectCategory(id, i) {
+    console.log(this.teaListOutArray)
     // let courseTemp = [];
     this.emptySelectionCat(i);
     this.notPiano = id;
@@ -657,6 +659,7 @@ selectLocation(id, i) {
 
   // init Array
   initArrays() {
+    // empty item
     this.courseItemArray = [];
     this.locItemArray = [];
     this.selectedLocItemArray = [];
@@ -665,10 +668,8 @@ selectLocation(id, i) {
     this.selectedprepareTeaLevInOrgObjItemArray = [];
     this.prepareTeaNameInLevObjItemArray = [];
     this.prepareTeaNameItemArray = [];
-    // to date pick
-    this.teaListOutArray= []
-    this.teaListOutArray.push(this.teaListToDatePick);
-
+    this.teaListToDatePick = [];
+    // add more list
     this.courseListArray.push(this.courseItemArray)
     this.locListArray.push(this.locItemArray);
     this.selectedLocListArray.push(this.selectedLocItemArray);
@@ -677,6 +678,8 @@ selectLocation(id, i) {
     this.selectedprepareTeaLevInOrgObjListArray.push(this.selectedprepareTeaLevInOrgObjItemArray);
     this.prepareTeaNameInLevObjListArray.push(this.prepareTeaNameInLevObjItemArray);
     this.prepareTeaNameListArray.push(this.prepareTeaNameItemArray);
+    // to date pick
+    this.teaListOutArray.push(this.teaListToDatePick);
   }
   // give 0 for time if less than 10
   transformTime(n:number){
@@ -761,6 +764,7 @@ selectLocation(id, i) {
     // active modal waiting for decision
     this.openConfirm();
   }
+
   resetLearner() {
     this.learnerForm.reset();
     if (this.photoObj)
@@ -795,7 +799,7 @@ selectLocation(id, i) {
     this.selectedprepareTeaLevInOrgObjListArray[i].selectedprepareTeaLevInOrgObjItemArray = [];
     this.prepareTeaNameInLevObjListArray[i].prepareTeaNameInLevObjItemArray = [];
     this.prepareTeaNameListArray[i].prepareTeaNameItemArray = [];
-
+    this.teaListOutArray[i].teaListToDatePick = [];
   }
   deleteCustomCourse(i) {
     this.customCourse.removeAt(i);
@@ -809,6 +813,7 @@ selectLocation(id, i) {
     this.prepareTeaNameListArray.splice(i, 1);
 
     this.catListArray.splice(i, 1);
+    this.teaListOutArray.splice(i, 1);
   }
   addCustomCourse(): void {
     this.emptyForAddButton();
@@ -839,7 +844,7 @@ selectLocation(id, i) {
     this.timePickArrayNumber = i;
     this.modalRefTimePicker.componentInstance.beginTimeTo.subscribe(
       (res) =>{
-        this.getTimePickerInfo(res.BeginTime,i);
+        this.getTimePickerInfo(res,i);
       },
       (err) => {
         console.log(err)
@@ -848,16 +853,42 @@ selectLocation(id, i) {
 
   }
   getTimePickerInfo(time,i){
-    let timeArray = time.split(':');
+    console.log(time)
+    let timeArray = time.BeginTime.split(':');
+    let dayOfWeek = time.DayOfWeek
+    let day
+    switch (dayOfWeek){
+      case 'Monday':
+        day = '1';
+        break;
+      case 'Tuesday':
+        day = '2';
+        break;
+      case 'Wednesday':
+        day = '3';
+        break;
+      case 'Thursday':
+        day = '4';
+        break;
+      case 'Friday':
+        day = '5';
+        break;
+      case 'Saturday':
+        day = '6';
+        break;
+      case 'Sunday':
+        day = '7';
+        break;
+    }
     let timeTrans: NgbTimeStruct = { hour: Number(timeArray[0]), minute: Number(timeArray[1]), second: 0 };
     this.customCourse.controls[i].patchValue({
-      schedule: {beginTime:timeTrans, dayOfWeek:'6',durationType:''}
-    })
+      schedule: { beginTime: timeTrans, dayOfWeek: day, durationType:''}
+    });
   }
   // // ng-activeModal for confirm submit
   openConfirm() {
     console.log(this.addCourse)
-    this.modalRefConfirm = this.modalService.open(LearnerRegistrationConfirmModalComponent);
+    this.modalRefConfirm = this.modalService.open(LearnerRegistrationConfirmModalComponent,{backdrop:'static', keyboard:false});
     this.modalRefConfirm.componentInstance.fdObj = this.fd;
     if (this.whichLearner && !this.addCourse){
       this.modalRefConfirm.componentInstance.command = 2;  //edit

@@ -41,10 +41,11 @@ export class SessionsCalendarViewTutorComponent implements OnInit {
     this.getTeachers();
     this.options = {
       editable: true,
-      height: 700,
-      displayEventTime: false,
+      height: window.innerHeight - 110,
+      displayEventTime: true,
       maxTime: '22:00',
       minTime: '08:00',
+      allDaySlot: false,
       scrollTime: '08:00',
       header: {
         left: 'prev,next today DayPickerButton',
