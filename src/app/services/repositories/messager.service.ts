@@ -11,11 +11,12 @@ export class MessagerService {
   public baseUrl: any = environment.baseUrl;
   public isSubscriberListsGotError: boolean = false;
 
-  public userIdsOfTeachers: object = {};
-  public userIdsOfStaffs: object = {};
-  public userIdsOfLearners: object = {};
+  public listOfTeachersId: object = {};
+  public listOfLearnersId: object = {};
+  public listOfStaffsId: object = {};
 
   public subscribersNoti: object = {};
+  
   public teachersNotiNum: number = 0;
   public teacherNoti$ = new Subject();
   public staffsNotiNum: number = 0;
@@ -61,9 +62,15 @@ export class MessagerService {
    * @param {object} data - object of subscribers lists
    */
   saveSubscriberLists(data) {
-    let LearnerList = data['Data'].LearnerList;
-    let StaffList = data['Data'].StaffList;
-    let TeacherList = data['Data'].TeacherList;
+    let LearnerList = data['Data'].LearnerList.map((val) => {
+      this.getListOfIds(val, 0);
+    });
+    let StaffList = data['Data'].StaffList.map((val) => {
+      this.getListOfIds(val, 0);
+    })
+    let TeacherList = data['Data'].TeacherList.map((val) => {
+      this.getListOfIds(val, 0);
+    })
     //store the subscirbers list in session storage
     sessionStorage.setItem('LearnerList', JSON.stringify(LearnerList));
     sessionStorage.setItem('StaffList', JSON.stringify(StaffList));
@@ -81,33 +88,33 @@ export class MessagerService {
     };
   }
 
-
-  getDefaultNotifications() {
-    return {
-      teachersNotiNum: Number(sessionStorage.getItem('teachersNotiNum')),
-      staffsNotiNum: Number(sessionStorage.getItem('staffsNotiNum')),
-      learnersNotiNum: Number(sessionStorage.getItem('learnersNotiNum'))
-    }
-  }
-
-  /*
-    @param: val: value to map  
-            groupIndex: groups 0:Learners  1:Staffs  2:Teachers
-  */
-  subscribersMap(val, groupIndex) {
-    val.newMessage = 0;
-    let userId = val.UserId;
-    console.log(userId)
-    switch (groupIndex) {
+  /**
+   * A call back function of map()
+   * @param val - val to map
+   * @param groupIndex - cate of subscribers
+   */
+  getListOfIds(val:object, cateOfSubscriber:number) {
+    let userId = val['UserId'];
+    switch (cateOfSubscriber) {
       case 0:
-        this.userIdsOfLearners[userId] = val.UserId;
+        this.listOfLearnersId[userId] = val['UserId'];
       case 1:
-        this.userIdsOfStaffs[userId] = val.UserId;
+        this.listOfStaffsId[userId] = val['UserId'];
       case 2:
-        this.userIdsOfTeachers[userId] = val.UserId;
+        this.listOfTeachersId[userId] = val['UserId'];
     }
     return val;
   }
+
+
+  // getDefaultNotifications() {
+  //   return {
+  //     teachersNotiNum: Number(sessionStorage.getItem('teachersNotiNum')),
+  //     staffsNotiNum: Number(sessionStorage.getItem('staffsNotiNum')),
+  //     learnersNotiNum: Number(sessionStorage.getItem('learnersNotiNum'))
+  //   }
+  // }
+
 
   /**
     *@param {number} subscriberUserId - sender's userId 

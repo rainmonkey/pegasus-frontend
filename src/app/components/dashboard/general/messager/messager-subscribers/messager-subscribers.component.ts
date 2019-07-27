@@ -35,6 +35,7 @@ export class MessagerSubscribersComponent implements OnInit {
     //   console.log(that.notiNum)
     // },1000,that)
     this.getSubscribers();
+    
     this.messagerService.staffNoti$.subscribe(
       (res:number)=> {this.staffsNotiNum = res;
       console.log(res)}
@@ -58,16 +59,16 @@ export class MessagerSubscribersComponent implements OnInit {
     this.StaffList = StaffList;
     this.TeacherList = TeacherList;
     this.LearnerList = LearnerList;
-    console.log(this.messagerService.userIdsOfLearners)
+    //console.log(this.messagerService.userIdsOfLearners)
   }
 
-  getDefaultNotifications(){
-    let {teachersNotiNum,staffsNotiNum,learnersNotiNum}  = this.messagerService.getDefaultNotifications();
-    console.log(teachersNotiNum)
-    this.teachersNotiNum = teachersNotiNum;
-    this.staffsNotiNum = staffsNotiNum;
-    this.learnersNotiNum =learnersNotiNum;
-  }
+  // getDefaultNotifications(){
+  //   let {teachersNotiNum,staffsNotiNum,learnersNotiNum}  = this.messagerService.getDefaultNotifications();
+  //   console.log(teachersNotiNum)
+  //   this.teachersNotiNum = teachersNotiNum;
+  //   this.staffsNotiNum = staffsNotiNum;
+  //   this.learnersNotiNum =learnersNotiNum;
+  // }
 
   /*
     switch between subscribers and group chat

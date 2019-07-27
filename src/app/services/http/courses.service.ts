@@ -103,7 +103,7 @@ export class CoursesService {
   }
   /*------------------------ For Edwin testing ----------------------------------*/
   getoioi(): any {
-    return this.http.get(this.baseUrl + 'payment');
+    return this.http.get(this.baseUrl + 'Term');
   }
   postoioi(TermId): any {
     return this.http.post(this.baseUrl + 'payment/Generateone2oneInvoice/' + TermId+'/', '')

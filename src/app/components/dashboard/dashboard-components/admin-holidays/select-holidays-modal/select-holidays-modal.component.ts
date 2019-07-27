@@ -75,33 +75,7 @@ export class SelectHolidaysModalComponent implements OnInit {
     return
   }
 
-  OnSubmit() {
-    // this.submit=true
-    // this.newInfo.HolidayDate=this.date.dateStr
-    // this.newInfo.HolidayName=this.myForm.value.HolidayName
-    // console.log(this.newInfo)
 
-
-    // if (this.myForm.invalid) {
-    //   this.errorMessage = 'Please fill all inputs.'
-    //   this.success = false;
-    //   return
-    // }
-    // else {
-    //   this.HolidaysService.addHoliday(this.newInfo).subscribe(
-    //     (res)=>{
-    //       console.log(res)
-
-    //     },
-    //     (err)=>{
-    //       console.log(err)
-    //     }
-    //   )
-
-    //   this.success = true;
-    //   this.successMessage="Holiday Saved"
-    // }
-  }
   OnClose() {
     if (this.myForm.dirty == true) {
       this.refreshFlag.emit(true);

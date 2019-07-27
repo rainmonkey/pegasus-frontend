@@ -21,15 +21,18 @@
           <div class="button text-right">
             <button class="btn_reset my-3 btn btn-info" (click)="resetLearner()">Reset</button>
           </div>
-          <div class="learnerPhoto">
-            <label for="photo"></label>
+          <div class="learnerPhoto col-3">
+            <label for="photo" class='custom-file-label'>Choose a photo <span><i class="fas fa-file-upload"></i></span></label>
             <img src="" id='photoID' style='height: 64px' alt="ID preview...">
-            <input formControlName="photo" type="file" (change)="uploadPhoto($event)" id="photo" accept="image/*">
+            <input formControlName="photo" type="file" (change)="uploadPhoto($event)" class='custom-file-input' id="photo" accept="image/*">
           </div>
           <div class="learnerName row">
             <div class="col-sm-4 col-md-4">
-              <label for="firstName">First Name</label>
+              <label for="firstName">First Name *</label>
               <input class="form-control" formControlName="firstName" type="text" id="firstName">
+              <!-- <div *ngIf="firstName.invalid && (firstName.dirty || firstName.touched)" class="text-danger">
+                <small *ngIf="firstName.errors.required"> First name is required</small>
+              </div> -->
               <div *ngIf="firstName.invalid && (firstName.dirty || firstName.touched)" class="text-danger">
                 <small *ngIf="firstName.errors.required"> First name is required</small>
               </div>
@@ -39,7 +42,7 @@
               <input class="form-control" formControlName="middleName" type="text" id="middleName">
             </div>
             <div class="col-sm-4 col-md-4">
-              <label for="lastName">Last Name</label>
+              <label for="lastName">Last Name *</label>
               <input class="form-control" formControlName="lastName" type="text" id="lastName">
               <div *ngIf="lastName.invalid && (lastName.dirty || lastName.touched)" class="text-danger">
                 <small *ngIf="lastName.errors.required">Last name is required</small>
@@ -48,7 +51,7 @@
           </div>
           <div class="learnerGender-Birthday row">
             <div class="col-sm-6 col-md-6">
-              <label for="gender">Gender</label>
+              <label for="gender">Gender *</label>
               <select class="form-control" formControlName="gender" id="gender">
                 <option value="1">male</option>
                 <option value="2">female</option>
@@ -59,7 +62,7 @@
             </div>
             <div class="col-sm-6 col-md-6">
               <label for="birthday">Date of Birth</label>
-              <input class="form-control" formControlName="birthday" type="date" id="birthday">
+              <input class="form-control" formControlName="birthday" type="date" id="birthday" (blur)="handleIsUnder18($event.target.value)">
             </div>
           </div>
           <div class="enrollmentDate-location row">
@@ -68,7 +71,7 @@
               <input class="form-control" formControlName="enrollmentDate" type="date" id="enrollmentDate">
             </div>
             <div class="col-sm-6 col-md-6">
-              <label for="location">Location</label>
+              <label for="location">Location *</label>
               <select class="form-control" formControlName="location" id="location">
                 <option *ngFor="let location of locations" [value]="location.OrgId">{{location.OrgName}}</option>
               </select>
@@ -80,7 +83,7 @@
               <input class="form-control" formControlName="contactNum" type="tel" id="contactPhone" (blur)="handleNumChange($event.target.value)">
             </div>
             <div class="col-sm-6 col-md-6">
-              <label for="email">Email</label>
+              <label for="email">Email *</label>
               <input class="form-control" formControlName="email" type="email" id="email" (blur)="handleEmailChange($event.target.value)">
               <div *ngIf="email.invalid && (email.dirty || email.touched)" class="text-danger">
                 <small *ngIf="email.errors.required">Email is required</small>
@@ -94,7 +97,7 @@
               <input class="form-control" formControlName="address" type="text" id="address">
             </div>
             <div class="col-sm-6 col-md-6">
-              <label for="learnerLevel">Your Current Level</label>
+              <label for="learnerLevel">Your Current Level *</label>
               <select class="form-control" formControlName="learnerLevel" (change)="selectLearnerLevelFun($event.target.value)">
                 <option *ngFor="let llevel of learnerLevel" [value]="llevel.PropValue">{{llevel.PropName}}</option>
               </select>
@@ -133,18 +136,20 @@
               <textarea style='height:150px;' name="Comment" id="Comment" class='col-12 t_mf_input' formControlName='Comment' maxlength="1000"></textarea>
             </div>
           </div>
-          <div class="grade my-3">
-            <label for="grade">If you have ABRSM Theory Grade 5, please upload.</label>
-            <img src="" id='certificate' style='height: 64px' alt="Certificate preview...">
-            <input formControlName="grade" type="file" (change)="uploadGrade($event)" id="grade" accept="image/*">
-          </div>
-          <div class="grade my-3">
-            <label for="grade">Enrollment Agreement Upload</label>
-            <input formControlName="grade" type="file" (change)="uploadAgreement($event)" id="grade" accept="application/msword,application/pdf,image/*">
-          </div>
-          <div class="grade my-3">
-            <label for="grade">Other File Upload</label>
-            <input formControlName="grade" type="file" (change)="uploadOther($event)" id="grade" accept="application/msword,application/pdf,image/*">
+            <div class="grade my-3 col-6">
+              <label for="grade" class='custom-file-label'>If you have ABRSM Theory Grade 5, please upload.. <span><i class="fas fa-file-upload"></i></span></label>
+              <img src="" id='certificate' style='height: 64px' alt="Certificate preview...">
+              <input formControlName="grade" type="file" (change)="uploadGrade($event)" id="grade" class='custom-file-input' accept="image/*">
+            </div>
+            <div class='row'>
+              <div class="grade my-3 col-5 mr-2">
+                <label for="grade" class='custom-file-label'>Enrollment Agreement Upload.. <span><i class="fas fa-file-upload"></i></span></label>
+                <input formControlName="grade" type="file" (change)="uploadAgreement($event)" id="grade" class='custom-file-input' accept="application/msword,application/pdf,image/*">
+              </div>
+              <div class="grade my-3 col-5">
+                <label for="grade" class='custom-file-label'>Other File Upload.. <span><i class="fas fa-file-upload"></i></span></label>
+                <input formControlName="grade" type="file" (change)="uploadOther($event)" id="grade" class='custom-file-input' accept="application/msword,application/pdf,image/*">
+              </div>
           </div>
           <div class="under 18">
             <span class="text-primary">Above 18 years old?</span><br>
@@ -186,8 +191,9 @@
           </div>
           <!-- <small *ngIf="showErrorH && touchNext" class='text-danger'>Please Select At Least One Option</small> -->
           <div class="button text-right">
-            <button class="btn_next my-3 btn btn-info" [disabled]="learnerForm.invalid" (click)="next('parentForm')">Next</button>
+            <button class="btn_next my-3 btn btn-info"  (click)="next('parentForm')">Next</button>
           </div>
+          <small *ngIf="!learnerValid" class='text-danger text-right'>Please Fill All Required (*) Field</small>
         </div>
       </div>
     </div>
@@ -247,16 +253,16 @@
                 </div>
               </div>
             </div>
-            <div class="parentForm__button my-3 d-flex justify-content-end">
-              <button class="btn_back mx-3 btn btn-info" (click)="next('learnerForm')">Back</button>
-              <button *ngIf="!whichLearner" class="btn_next" [disabled]="parentForm.invalid && !this.learnerForm.value.isUnder18" (click)="next('courseForm')">Next</button>
-              <button class="btn_next btn btn-primary" [disabled]="parentForm.invalid && !this.learnerForm.value.isUnder18" (click)="onSubmit()">Submit</button>
-            </div>
           </div>
         </div>
       </div>
       <div class="button text-right">
         <button class="btn_add btn btn-info" (click)="addParent()"><b>Add more parent or guardian</b></button>
+      </div>
+      <div class="parentForm__button my-3 d-flex justify-content-end">
+        <button class="btn_back mx-3 btn btn-info" (click)="next('learnerForm')">Back</button>
+        <button *ngIf="!whichLearner" class="btn_next mx-3 btn btn-info" [disabled]="parentForm.invalid && !this.learnerForm.value.isUnder18" (click)="next('courseForm')">Next</button>
+        <button class="btn_next btn btn-primary" [disabled]="parentForm.invalid && !this.learnerForm.value.isUnder18" (click)="onSubmit()">Submit</button>
       </div>
     </div>
     <!-- -----courseForm html----- -->
@@ -308,7 +314,7 @@
             </table>
             <div class="text-right">
               <button *ngIf="addCourse == undefined" class="btn_back mx-3 btn btn-info" (click)="next('parentForm')">Back</button>
-              <button *ngIf="!addCourse" [disabled]="registrationForm.invalid" (click)="onSubmit()" class="btn_submit btn btn-primary" type="submit">Submit</button>
+              <button *ngIf="!addCourse" (click)="onSubmit()" class="btn_submit btn btn-primary" type="submit">Submit</button>
               <button *ngIf="addCourse" (click)="onSubmit()" class="btn_submit btn btn-primary" type="submit">Submit Group Courses</button>
             </div>
           </div>
@@ -347,7 +353,7 @@
                   <option *ngFor="let cInstance of locListArray[i].locItemArray;" [value]="cInstance.OrgId">{{cInstance.OrgName}}</option>
                 </select>
               </div>
-              <div class="col-sm-6 col-md-6" *ngIf="notPiano == 1 || whichLearner">
+              <div class="col-sm-6 col-md-6" *ngIf="notPiano[i] == 1">
                 <label for="teacherLevel">Teacher Level</label>
                 <select class="form-control" formControlName="teacherLevel" id="teacherLevel" (change)="selectTl($event.target.value, i)">
                   <option selected>Choose..</option>
@@ -411,7 +417,7 @@
           </div>
         </div>
         <div class="text-right">
-          <button class="btn_add btn btn-info" (click)="addCustomCourse()"><b>Add more courses</b></button>
+          <button class="btn_add btn btn-info mr-2" (click)="addCustomCourse()"><b>Add more courses</b></button>
           <button *ngIf="!addCourse" [disabled]="customCourse.invalid || customCourse.untouched" (click)="onSubmit()" class="btn_submit btn btn-primary" type="submit">Submit</button>
           <button *ngIf="addCourse" [disabled]="customCourse.invalid || customCourse.untouched" (click)="onSubmit()" class="btn_submit btn btn-primary" type="submit">Submit One-on-One Course</button>
         </div>

@@ -151,6 +151,7 @@ import { ConflictCheckComponent } from './components/dashboard/dashboard-compone
 import { ProcessStatusPipe } from './shared/pipes/process-status.pipe';
 import { StockApplicationFormComponent } from './components/dashboard/dashboard-components/inventory/inventory-stock-application/stock-application-form/stock-application-form.component';
 
+
 @NgModule({
   declarations: [
     PageGroupFormComponent,
@@ -287,7 +288,7 @@ import { StockApplicationFormComponent } from './components/dashboard/dashboard-
     ConflictCheckComponent,
     ProcessStatusPipe,
     StockApplicationFormComponent,
-  
+
 
   ],
   imports: [
