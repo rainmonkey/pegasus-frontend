@@ -5,7 +5,7 @@ import 'jspdf-autotable';
   providedIn: 'root'
 })
 export class DownloadPDFService {
-
+  // logo='../../../assets/images/loginpage/logo.png'
   constructor() { }
 
   downloadPDF(learnerName: IInvoiceLearnerName, invoice: IInvoice) {
@@ -13,6 +13,8 @@ export class DownloadPDFService {
     let body=[]
     let currentHeight: number = 60
     let interval: number = 10
+
+
     // Landscape export, 2×4 inches
     // let doc = new jsPDF({
     //   orientation: 'landscape',
@@ -41,7 +43,8 @@ export class DownloadPDFService {
 
     // title
     doc.setFontSize(20);
-    doc.text(`Able Music Studio`, 75, 20);
+    // logo等着
+    // doc.addImage(this.logo,75, 20);
     // detail
     doc.setFontSize(12);
     doc.text(`Invoice To: ${learnerName.firstName}  ${learnerName.lastName}`, 20, 30);
