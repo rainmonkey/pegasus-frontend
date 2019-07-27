@@ -1,15 +1,16 @@
 import { Injectable } from '@angular/core';
 import * as jsPDF from "jspdf"
-
+import 'jspdf-autotable';
 @Injectable({
   providedIn: 'root'
 })
 export class DownloadPDFService {
-  list=[1,2,1,3,4,5,9,8]
-  header=['11111','sssssss','dddddddd','gggggggg']
+
   constructor() { }
 
   downloadPDF(learnerName: IInvoiceLearnerName, invoice: IInvoice) {
+    let table_header=[['Description',"Quantity",'Fee','others']]
+    let body=[]
     let currentHeight: number = 60
     let interval: number = 10
     // Landscape export, 2×4 inches
@@ -49,27 +50,31 @@ export class DownloadPDFService {
       doc.text(`Due Date: ${invoice.DueDate.split("T")[0]}`, 140, 40);
     }
 
-    doc.line(10, 42, 190, 42);
+    // doc.line(10, 42, 190, 42);
 
-    doc.setFontSize(12)
-    doc.text(`Description`, 30, 50);
-    doc.setFontSize(10)
-    doc.text(`${invoice.LessonQuantity} Lessons of ${invoice.CourseName}`, 20, 60);
+    // doc.setFontSize(12)
+    // doc.text(`Description`, 30, 50);
+    // doc.setFontSize(10)
+    // doc.text(`${invoice.LessonQuantity} Lessons of ${invoice.CourseName}`, 20, 60);
 
-    doc.setFontSize(12)
-    doc.text(`Fee`, 90, 50);
-    doc.setFontSize(10)
-    doc.text(`$${invoice.LessonFee}`, 90, 60);
+    // doc.setFontSize(12)
+    // doc.text(`Fee`, 90, 50);
+    // doc.setFontSize(10)
+    // doc.text(`$${invoice.LessonFee}`, 90, 60);
 
-    doc.setFontSize(12)
-    doc.text(`Others`, 140, 50);
-    doc.setFontSize(10)
-    doc.text(`From the Date ${invoice.BeginDate.slice(0, 10)}`, 130, 60)
+    // doc.setFontSize(12)
+    // doc.text(`Others`, 140, 50);
+    // doc.setFontSize(10)
+    // doc.text(`From the Date ${invoice.BeginDate.slice(0, 10)}`, 130, 60)
+
+
+    body.push([invoice.CourseName,invoice.LessonQuantity,invoice.LessonFee,invoice.BeginDate.slice(0, 10)])
 
     if (invoice.ConcertFee) {
       currentHeight += interval
       doc.text(`${invoice.ConcertFeeName}`, 20, currentHeight);
       doc.text(`$${invoice.ConcertFee}`, 90, currentHeight);
+
     }
 
     if (invoice.NoteFee) {
@@ -96,8 +101,15 @@ export class DownloadPDFService {
       doc.text(`$${invoice.Other3Fee}`, 90, currentHeight)
     }
 
-    doc.autoTable(this.list, this.header)
+
     doc.setFontSize(16);
+    doc.autoTable({head: table_header,body,
+      // body: [
+      //   ['','David', 'david@example.com', 'Sweden'],
+      //   ['','Castille', 'castille@example.com', 'Norway']
+      // ],
+      startY: 50
+    });
     currentHeight += interval * 2
     doc.text(`TOTAL:$ ${invoice.TotalFee}`, 20, currentHeight);
 

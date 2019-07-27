@@ -150,7 +150,7 @@ import { MessagerNotificationComponent } from './components/dashboard/general/me
 import { ConflictCheckComponent } from './components/dashboard/dashboard-components/conflict-check/conflict-check/conflict-check.component';
 import { ProcessStatusPipe } from './shared/pipes/process-status.pipe';
 import { StockApplicationFormComponent } from './components/dashboard/dashboard-components/inventory/inventory-stock-application/stock-application-form/stock-application-form.component';
-import { InvoicePDFDownloadTableComponent } from './components/dashboard/dashboard-components/admin-payment/invoicePDF-download-table/invoicePDF-download-table.component';
+
 
 @NgModule({
   declarations: [
@@ -289,7 +289,7 @@ import { InvoicePDFDownloadTableComponent } from './components/dashboard/dashboa
     ProcessStatusPipe,
     StockApplicationFormComponent,
 
-    InvoicePDFDownloadTableComponent
+
   ],
   imports: [
     NgbModule,

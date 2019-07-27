@@ -47,7 +47,7 @@ import{PageGroupDetailsComponent} from './components/dashboard/dashboard-compone
 import { ConflictCheckComponent } from './components/dashboard/dashboard-components/conflict-check/conflict-check/conflict-check.component';
 import { StockApplicationListComponent } from './components/dashboard/dashboard-components/inventory/inventory-stock-application/stock-application-list/stock-application-list.component';
 import { AdminLearnerTimetableComponent } from './components/dashboard/dashboard-components/admin-learner/admin-learner-timetable/admin-learner-timetable.component';
-import { InvoicePDFDownloadTableComponent } from './components/dashboard/dashboard-components/admin-payment/invoicePDF-download-table/invoicePDF-download-table.component';
+
 
 
 //canActivate: [DashboardRestrictGuard],
@@ -181,7 +181,6 @@ const routes: Routes = [
       { path: 'corporate-order-application', component: CoporateOrderApplicationComponent },
       { path: 'conflict-Check', component: ConflictCheckComponent },
 
-      {path:'InvoicePDF',component:InvoicePDFDownloadTableComponent}
     ]
   },
   { path: 'login', component: LoginComponent },
