@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, AfterViewInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { LearnersService } from 'src/app/services/http/learners.service';
 import { environment } from 'src/environments/environment.prod';
@@ -236,7 +236,7 @@ export class LearnerDetailModalComponent implements OnInit {
   getOthersUrl() {
     // console.log(this.whichLearner.OtherfileUrl)
     if (this.whichLearner.OtherfileUrl !== null) {
-      this.othersmsg = 'Download Other Files'
+      this.othersmsg = 'View'
       return this.otherFileUrl = this.photoUrl + this.whichLearner.OtherfileUrl;
     }
   }

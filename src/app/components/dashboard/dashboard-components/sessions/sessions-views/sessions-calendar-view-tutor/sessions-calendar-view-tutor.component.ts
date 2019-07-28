@@ -41,6 +41,9 @@ export class SessionsCalendarViewTutorComponent implements OnInit {
     this.getTeachers();
     this.options = {
       editable: true,
+      windowResize: () => {
+        this.fullcalendar.calendar.setOption('height', window.innerHeight - 110);
+      },
       height: window.innerHeight - 110,
       displayEventTime: true,
       maxTime: '22:00',
