@@ -90,7 +90,7 @@ export class DownloadPDFService {
       currentHeight += interval
       // doc.text(`${invoice.Other3FeeName}`, 20, currentHeight)
       // doc.text(`$${invoice.Other3Fee}`, 90, currentHeight)
-      body.push([])
+      body.push([invoice.Other3FeeName,'',invoice.Other3Fee,''])
     }
 
 
