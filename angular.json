@@ -34,7 +34,9 @@
               "node_modules/popper.js/dist/umd/popper.min.js",
               "node_modules/bootstrap/dist/js/bootstrap.js",
               "node_modules/jspdf/dist/jspdf.min.js",
-              "node_modules/sweetalert2/dist/sweetalert2.min.js"
+              "node_modules/sweetalert2/dist/sweetalert2.min.js",
+              "node_modules/jspdf-autotable/dist/jspdf.plugin.autotable.js"
+
             ]
           },
           "configurations": {

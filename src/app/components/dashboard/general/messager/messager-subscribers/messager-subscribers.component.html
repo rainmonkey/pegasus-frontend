@@ -21,6 +21,7 @@
     <div class='row'>
       <div class='col-12 m_s_subscribers_label' (click)='displayGroup($event,"group_teachers")'>
         &nbsp;Teachers
+        <app-messager-notification *ngIf='teachersNotiNum' [notiNum]='teachersNotiNum'></app-messager-notification>
       </div>
       <!--ngif-->
       <div class='col-12' id='group_teachers' style="display: none">
@@ -35,7 +36,7 @@
             <div class='m_s_subscribers_name' title='{{i.FirstName + i.LastName}}'>
               {{i.FirstName}} {{i.LastName}}
             </div>
-            <app-messager-notification [notiNum]="notiNum"></app-messager-notification>
+            <app-messager-notification *ngIf='getNotifications(i.UserId)' [notiNum]="notiNum"></app-messager-notification>
             <div class='col-12 m_s_subscribers_signature'>
               个性签名
             </div>
@@ -46,6 +47,7 @@
       <!--students-->
       <div class='col-12 m_s_subscribers_label' (click)='displayGroup($event,"group_students")'>
           &nbsp;Students
+          <app-messager-notification *ngIf='teachersNotiNum' [notiNum]='teachersNotiNum'></app-messager-notification>
       </div>
       <!--ngif-->
       <div class='col-12' id='group_students' style="display: none">
@@ -70,6 +72,7 @@
       <!--staffs-->
       <div class='col-12 m_s_subscribers_label' (click)='displayGroup($event,"group_staffs")'>
           &nbsp;Staffs
+          <app-messager-notification *ngIf='teachersNotiNum' [notiNum]='teachersNotiNum'></app-messager-notification>
       </div>
       <!--ngif-->
       <div class='col-12' id='group_staffs' style="display: none">

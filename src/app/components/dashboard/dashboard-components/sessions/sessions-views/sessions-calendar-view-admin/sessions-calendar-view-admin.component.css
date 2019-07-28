@@ -12,12 +12,32 @@
   padding: 20px;
 }
 
-/*.fc-slats table tbody tr:nth-child(2n){*/
-/*  border: 1px solid rgba(59, 59, 69, 0.93);*/
-/*}*/
+@media (min-width: 1200px) {
+  #adminScheduler {
+    max-width: 100%
+  }
+}
+
+
+.fc td, .fc th {
+  border-color: #b0b0b0 !important;
+}
+
+.fc-content span{
+  font-size: 13px;
+}
+
 
 .fc-event {
   border-width: 2px;
+}
+
+.fc-today {
+  background: none !important;
+}
+
+.fc-toolbar h2 {
+  font-size: 2.2em;
 }
 
 
@@ -37,7 +57,7 @@ th{
 }
 
 .fc-time-grid .fc-slats td{
-  height: 1.2em;
+  height: 2.5em;
 }
 
 .container .loaderLarge{
