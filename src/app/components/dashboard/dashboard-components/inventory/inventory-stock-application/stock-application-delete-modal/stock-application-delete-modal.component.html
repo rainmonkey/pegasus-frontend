@@ -1,6 +1,6 @@
 <div class="modal-header">
   <h4 class="modal-title">Remove Order</h4>
-  <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
+  <button class="close" aria-label="Close" (click)="onClose()">
     <span aria-hidden="true">&times;</span>
   </button>
 </div>
@@ -8,17 +8,25 @@
   <div *ngIf="isShow">
     <div class="text-center">
       <p>Are you sure to remove the following products?</p>
-      <li class="text-danger" *ngFor="let order of orderDetail.ApplicationDetails"> {{ order.Product.ProductName }}</li>
+      <li class="text-danger" *ngFor="let order of orderDetail.ApplicationDetails">
+        {{ order.Product.ProductName }}
+      </li>
     </div>
   </div>
   <div *ngIf="!isShow && isDeleted">
     <p *ngIf="isDeleted" class="text-success text-center">Delete Success!</p>
   </div>
-  <div *ngIf="!isShow && !isDeleted ">
-    <p *ngIf="!isDeleted" class="text-danger text-center">Sorry! Deletion failed! {{errMsg}}</p>
+  <div *ngIf="!isShow && !isDeleted">
+    <p *ngIf="!isDeleted" class="text-danger text-center">
+      Sorry! Deletion failed! {{ errMsg }}
+    </p>
   </div>
 </div>
 <div class="modal-footer">
-  <button type="button" [disabled]="!isShow" class="btn btn-outline-dark" (click)="delete()">Delete</button>
-  <button type="button" class="btn btn-outline-dark" (click)="activeModal.close('Close click')">Close</button>
+  <button type="button" [disabled]="!isShow" class="btn btn-outline-dark" (click)="delete()">
+    Delete
+  </button>
+  <button type="button" class="btn btn-outline-dark" (click)="onClose()">
+    Close
+  </button>
 </div>

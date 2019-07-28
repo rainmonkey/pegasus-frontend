@@ -12,68 +12,58 @@ import { map, takeUntil, concatMap, delay, skip, tap } from 'rxjs/operators';
   Animations.personalPanelAnimation]
 })
 export class MessagerModalComponent implements OnInit {
-  //数组里的顺序和名字要和HTML里的一致
-  public functionalBtnNames: Array<string> = ['subscribers', 'recently', 'chatting'];
-  //previoud btn user clicked
-  public previousBtnName: string = 'subscribers';
-  //current btn user clicked
+
+  public windowResize$: Observable<any>;
+  /**@property {Subscription} windowResizeSubscription - subscription of windowResize$ */
+  public windowResizeSubscription: Subscription;
+  /**@property {string} modalTitle - modal's title */
+  public modalTitle: string = '';
+  /**@property {number} customThemeIndex - index of custom theme */
+  public customThemeIndex: number;
+  /**@property {number} currentBtnIndex - index of btn */
   public currentBtnIndex: number = 0;
-  //display personalLabel or not
-  public personalLabelDisplayFlag: boolean = true;
-  public subscribersDisplayFlag: boolean = true;
-  public recentlyDisplayFlag: boolean = false;
-  public chattingDisplayFlag: boolean = false;
-  public settingDisaplayFlag: boolean = false;
+  public isSettingPanelDisplay: boolean = false;
   public isErrorFlag: boolean = false;
-  public themeChangeFlag: string = 'theme1';
-  public preBtnSelectedObj: any = null;
-  public chattingWithStr: string = '';
+  /**@property {number} modalHeight - modal's height, can resize with browsers' */
+  public modalHeight: number = (window.outerHeight <= 750) ? (window.outerHeight - 110) : 650;
   public styleList: Array<object> = [{ background: 'linear-gradient(135deg, pink, white)' },
   { background: 'linear-gradient(135deg, lightgreen, lightblue)' },
   { background: 'linear-gradient(135deg, black, white)' },
   { background: 'linear-gradient(135deg, red, lightblue)' },
   { background: 'linear-gradient(135deg, lightblue, pink)' }];
-  public leftPos;
-  public topPos;
-  public mouseEnter = false;
-  //browser's height
-  public browserHeight: number = (window.outerHeight <= 750) ? (window.outerHeight - 100) : 650;
-  public windowResize$: Observable<any>;
-  public windowResizeSubscription: Subscription;
 
   @Output() onCloseChattingModal = new EventEmitter();
-  constructor(private messagerService: MessagerService) { }
+
+  constructor(
+    private messagerService: MessagerService
+  ) { }
 
   ngOnInit() {
     this.eventHandlers();
-    //if failed read data.
+    //if subscribers got failed.
     this.isErrorFlag = this.messagerService.isSubscriberListsGotError;
-    //set init modal title
     this.setChattingModalTitle();
-    //get custom theme.
-    this.getCustomTheme();
-    //get init preBtnSelectOnj
-    this.preBtnSelectedObj = document.getElementById('initSelected');
+    this.setCustomModalTheme();
   }
 
   ngAfterViewInit() {
-    this.draggable();
+    this.dragMessagerModal();
   }
 
   ngOnDestory() {
     this.windowResizeSubscription.unsubscribe();
   }
 
-  /*
-    event handlers
-  */
+  /**
+   * event handlers
+   */
   eventHandlers() {
     this.resizeEventHandler();
   }
 
-  /*
-    window resize event handler - chatting modal height can resize with window size
-  */
+  /**
+   * Messager modal's height can resize with window size
+   */
   resizeEventHandler() {
     this.windowResize$ = fromEvent(window, 'resize').pipe(
       map((val) => {
@@ -82,15 +72,39 @@ export class MessagerModalComponent implements OnInit {
 
     this.windowResizeSubscription = this.windowResize$.subscribe(
       (res) => {
-        this.browserHeight = (res <= 750) ? (res - 100) : 650;
+        this.modalHeight = (res <= 750) ? (res - 110) : 650;
       }
     )
   }
 
-  /*
-    user can drag chatting modal
-  */
-  draggable() {
+  /**
+   * Set chatting modal title.
+   */
+  setChattingModalTitle() {
+    let subObj = this.messagerService.getSubscriberChattingWith();
+    if (subObj) {
+      this.modalTitle = 'Chatting with ' + subObj.FirstName + ' ' + subObj.LastName;
+    }
+  }
+
+  /**
+   * Set custom modal theme.
+   * @param [themeIndex] - index of theme
+   */
+  setCustomModalTheme(themeIndex?: number) {
+    this.customThemeIndex = themeIndex ? themeIndex : (
+      (this.messagerService.getCustomizedTheme() ? this.messagerService.getCustomizedTheme() : 1)
+    )
+
+    if (themeIndex) {
+      this.messagerService.saveCustomizedTheme(themeIndex);
+    }
+  }
+
+  /**
+   * Drag messager modal withn browser
+   */
+  dragMessagerModal() {
     const mouseDown$ = fromEvent(document.querySelector('#draggable'), 'mousedown');
     const mouseMove$ = fromEvent(document, 'mousemove');
     const mouseUp$ = fromEvent(document, 'mouseup');
@@ -112,102 +126,36 @@ export class MessagerModalComponent implements OnInit {
     })
   }
 
-  /*
-    set modal title.
-  */
-  setChattingModalTitle() {
-    let subObj = this.messagerService.getSubscriberChattingWith();
-    if (subObj) {
-      this.chattingWithStr = 'Chatting with ' + subObj.FirstName + ' ' + subObj.LastName;
-    }
-  }
-
-  /*
-    get custom theme setting.
-  */
-  getCustomTheme() {
-    this.themeChangeFlag = localStorage.getItem('themeIndex') ? this.messagerService.getCustomizedTheme() : 'theme1';
-  }
-
-  /*
-    display/hide configration panel
-  */
+  /**
+   * Display config panel.
+   */
   displayConfigPanel() {
-    this.settingDisaplayFlag = !this.settingDisaplayFlag;
+    this.isSettingPanelDisplay = !this.isSettingPanelDisplay;
   }
 
-  /*
-    custom personl theme
-  */
-  customizeTheme(index) {
-    this.themeChangeFlag = 'theme' + index;
-    //save custom theme in local storage.
-    this.messagerService.saveCustomizedTheme(this.themeChangeFlag);
+  /**
+   * Switch which modal to display.
+   * @param selectedBtnIndex - index of which btn selected 
+   */
+  switchDisplayedModal(selectedBtnIndex) {
+    this.currentBtnIndex = selectedBtnIndex;
   }
 
-  /*
-    0: subscribers
-    1: recently
-    2: now chatting
-  */
-  switchDisplayView(selectId) {
-    //如果点击的是当前页的btn 则不发生任何事情
-    if (selectId == this.currentBtnIndex) {
-      return;
-    }
-    else {
-      this.currentBtnIndex = selectId;
-      if (selectId == 2) {
-        this.personalLabelDisplayFlag = false;
-      }
-      else {
-        this.personalLabelDisplayFlag = true;
-      }
-      this.viewDisplayHandler(selectId);
-    }
+  /**
+   * Start a new Chatting.
+   * @param event - emit from child component
+   */
+  startANewChat(event) {
+    this.setChattingModalTitle();
+    //可能有bug
+    this.currentBtnIndex = 2;
   }
 
-  /*
-    display/hide views
-  */
-  viewDisplayHandler(selectId) {
-    let currentflag = this.functionalBtnNames[selectId] + 'DisplayFlag';
-    let previousFlag = this.previousBtnName + 'DisplayFlag';
-    this[previousFlag] = false;
-    this[currentflag] = true;
-    this.previousBtnName = this.functionalBtnNames[selectId];
+  /**
+   * Close messager modal.
+   */
+  closeChattingModal() {
+    this.onCloseChattingModal.emit(true);
   }
-
-  /*
-    选择聊天对象后 跳转到聊天界面
-    event == true: a subscriber is selected, start chatting now
-    event == false: no subscriber selected
-  */
-  startChattingWith(event) {
-    if (event == true) {
-      this.setChattingModalTitle();
-      this.switchDisplayView(2);
-    }
-    else {
-      this.switchDisplayView(0);
-    }
-  }
-
-  /*
-    fire emit to parent component to close chatting modal(minimize)
-  */
-  closeChattingModal(event) {
-    this.onCloseChattingModal.emit('true');
-    return false;
-  }
-
-  // mouseEnterHandler() {
-  //   this.mouseEnter = true;
-  //   console.log(this.mouseEnter)
-  // }
-  // mouseLeaveHandler() {
-  //   this.mouseEnter = false;
-  //   console.log(this.mouseEnter)
-  // }
 
 }

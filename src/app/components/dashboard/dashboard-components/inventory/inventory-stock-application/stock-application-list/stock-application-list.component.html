@@ -1,119 +1,146 @@
-<div class='container tl_body'>
-  <div class="row">
-    <div class='col-12 t_info_title'>
-      Stock Application
-    </div>
-    <div class="col-12">
-      <!-- select a period of time -->
-      <div class="row">
-        <div class="col-9">
-          <!-- select a period of time -->
-          <span>Select a period of date:</span>
-          <div class="d-inline-flex">
-            <div class="input-group input__datebar">
-              <input class="form-control" style="height: 30px;" placeholder="yyyy-mm-dd" ngbDatepicker
-                #beginDate="ngbDatepicker" (dateSelect)="onBeginDateSelect($event)">
-              <div class="input-group-append">
-                <button class="btn btn-outline-secondary calendar" style="height: 30px; line-height: 0;"
-                  (click)="beginDate.toggle()">
-                  <i class="far fa-calendar-alt"></i>
-                </button>
-              </div>
-            </div>
-            <div class="m-1">To</div>   
-            <div class="input-group input__datebar">
-              <input class="form-control" style="height: 30px;" placeholder="yyyy-mm-dd" ngbDatepicker
-                #endDate="ngbDatepicker" (dateSelect)="onEndDateSelect($event)">
-              <div class="input-group-append">
-                <button class="btn btn-outline-secondary calendar" style="height: 30px; line-height: 0;"
-                  (click)="endDate.toggle()">
-                  <i class="far fa-calendar-alt"></i>
-                </button>
-              </div>
-            </div>
-            <button class='btn btn-info btn__search--right' (click)="selectPeriod()">
-              <i class='fas fa-search'></i>Search
+<div class="container">
+  <div class="title--center">
+    Stock Application
+  </div>
+  <p class="selection__text">Select a period of date:</p>
+  <div class="d-flex">
+    <form [formGroup]="dateForm">
+      <div class="d-flex form"> 
+        <!-- begin date -->
+        <div class="input-group input__datebar">
+          <input class="form-control" style="height: 30px;" placeholder="yyyy-mm-dd" ngbDatepicker
+            #beginDate="ngbDatepicker" (dateSelect)="onBeginDateSelect($event)" formControlName="beginDate">
+          <div class="input-group-append">
+            <button class="btn btn-outline-secondary calendar" style="height: 30px;"
+              (click)="beginDate.toggle()">
+              <i class="far fa-calendar-alt"></i>
             </button>
           </div>
         </div>
-        <!--add more btn-->
-        <div class="col-3">
-          <button class="btn btn-info btn__add--right" (click)="updateModal(command, whichOrder)">
-            + Add More
-          </button>
+        <!-- validator  -->
+        <!-- <div *ngIf="dateForm.invalid && (dateForm.dirty || dateForm.touched)">
+          <small *ngIf="dateForm.get('beginDate').errors?.pattern" class="text-danger">
+            Date should be in "yyyy-mm-dd" format.
+          </small>
+        </div> -->
+        <!-- To -->
+        <div style="margin-left: 10px; margin-right: 10px;">To</div>
+        <!-- end date -->
+        <div class="input-group input__datebar">
+          <input class="form-control" style="height: 30px;" placeholder="yyyy-mm-dd" ngbDatepicker
+            #endDate="ngbDatepicker" (dateSelect)="onEndDateSelect($event)" formControlName="endDate">
+          <div class="input-group-append">
+            <button class="btn btn-outline-secondary calendar" style="height: 30px; line-height: 0;"
+              (click)="endDate.toggle()">
+              <i class="far fa-calendar-alt"></i>
+            </button>
+          </div>
         </div>
+        <!-- validator  -->
+        <!-- <div *ngIf="dateForm.invalid && (dateForm.dirty || dateForm.touched)">
+          <small *ngIf="dateForm.get('endDate').errors?.pattern" class="text-danger">
+            Date should be in "yyyy-mm-dd" format.
+          </small>
+        </div> -->
+        <!-- select button -->
+        <button class="btn btn-info btn__search--right" (click)="selectPeriod()">
+          <i class="fas fa-search"></i>Search
+        </button>
       </div>
-    </div>
-    <div *ngIf='loadingFlag' class="loaderLarge"></div>
-    <div *ngIf='!loadingFlag' class='t_mf_form'>
-      <div class='col-12'>
-        <table class='table table-striped' style="text-align: center;">
-          <thead>
-            <tr>
-              <th scope='col' class='tl_body_table_head' style="width:5rem;">#</th>
-              <th scope='col' class='tl_body_table_head sorting_item' style="width:10rem" (click)='onSort("StaffName")'>
-                Staff Name
-              </th>
-              <th scope='col' class='tl_body_table_head sorting_item' style="width:10rem" (click)='onSort("Org")'>
-                Location
-              </th>
-              <th scope='col' class='tl_body_table_head sorting_item' style="width:10rem" (click)='onSort("ApplyAt")'>
-                Apply At
-              </th>
-              <th scope='col' class='tl_body_table_head sorting_item' style="width:10rem" (click)='onSort("ApplyReason")'>
-                Apply Reason
-              </th>
-              <th scope='col' class='tl_body_table_head sorting_item' style="width:10rem" (click)='onSort("ProductType")'>
-                Product Name
-              </th>
-              <th scope='col' class='tl_body_table_head sorting_item' style="width:10rem" (click)='onSort("ProductQuantity")'>
-                Product QTY
-              </th>
-              <th scope='col' class='tl_body_table_head sorting_item' style="width:10rem" (click)='onSort("ProcessStatus")'>
-                Process Status
-              </th>
-              <th scope='col' class='tl_body_table_head sorting_item' style="width:10rem">Edit & Delete</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr *ngFor="let item of stockApplications; let i = index">
-              <th scope="row">{{ item.id }}</th>
-              <td>
-                {{ item.ApplyStaff.FirstName }}
-              </td>
-              <td>{{ item.Org.OrgName }}</td>
-              <td>{{ item.ApplyAt | date:'shortDate' }}</td>
-              <td>{{ item.ApplyReason }}</td>
-              <td>
-                <li *ngFor="let detail of item.ApplicationDetails">{{ detail.Product.ProductName }}</li>
-              </td>
-              <td>
-                <li *ngFor="let detail of item.ApplicationDetails">{{ detail.AppliedQty }}</li>
-              </td>
-              <td>{{ item.ProcessStatus | processStatus}}</td>
-              <td>
-                <span class='tl_body_table_btn' style="margin-right: 1rem;" (click)="detailModal(1, item.id)">
-                  <i class='fas fa-info-circle'></i>
-                </span>
-                <span class='tl_body_table_btn' style="margin-right: 1rem;" (click)="updateModal(2, item.id)">
-                  <i class='fas fa-pen'></i>
-                </span>
-                <span class='tl_body_table_btn' (click)="deleteModal(3, item)">
-                  <i class='fas fa-trash-alt'></i>
-                </span>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-      <!--body pagination-->
-      <div class='col-12'>
-        <ngb-pagination  #pagination [collectionSize]='stockApplication.length' [(page)]='page' [pageSize]='pageSize'
-        (click)='getCurrentPage()'>
-        </ngb-pagination>
-      </div>
+    </form>
+    <!-- add more btn -->
+    <div class="ml-auto">
+      <button class="btn btn-info btn__add--right" (click)="updateModal(command, whichOrder)">
+        + Add More
+      </button>
     </div>
   </div>
+
+  <!-- loading -->
+  <div *ngIf="loadingFlag" class="loaderLarge"></div>
+
+  <!-- after fetch data success -->
+  <div *ngIf="!loadingFlag">
+    <!-- delete message -->
+    <div *ngIf="isDeleted" class="text-center undo__msg">
+      <i class="fa fa-check-circle"></i>
+      <span class="text-danger m-1">This order has already removed.
+        <a class="text-primary font-weight-bold" (click)="undo()">Undo</a>
+      </span>
+    </div>
+    <!-- delete failure -->
+    <div *ngIf="deleteFail">
+      <p class="text-danger">{{ errorMessage }}</p>
+    </div>
+    <!-- table info -->
+    <div>
+      <table class="table table-striped" style="text-align: center;">
+        <thead>
+          <tr>
+            <th scope="col" class="table__header--cursor" style="width:5rem;">#</th>
+            <th scope="col" class="table__header--cursor sorting--cursor" style="width:10rem" (click)="onSort('StaffName')">
+              Staff Name
+            </th>
+            <th scope="col" class="table__header--cursor sorting--cursor" style="width:10rem" (click)="onSort('Org')">
+              Location
+            </th>
+            <th scope="col" class="table__header--cursor sorting--cursor" style="width:10rem" (click)="onSort('ApplyAt')">
+              Apply At
+            </th>
+            <th scope="col" class="table__header--cursor sorting--cursor" style="width:10rem" (click)="onSort('ApplyReason')">
+              Apply Reason
+            </th>
+            <th scope="col" class="table__header--cursor sorting--cursor" style="width:10rem" (click)="onSort('ProductType')">
+              Product Name
+            </th>
+            <th scope="col" class="table__header--cursor sorting--cursor" style="width:10rem"
+              (click)="onSort('ProductQuantity')">
+              Product QTY
+            </th>
+            <th scope="col" class="table__header--cursor sorting--cursor" style="width:10rem"
+              (click)="onSort('ProcessStatus')">
+              Process Status
+            </th>
+            <th scope="col" class="table__header--cursor sorting--cursor" style="width:10rem">Edit & Delete</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="table__row--hover" *ngFor="let item of stockApplications; let i = index" [ngClass]="{'table_row--highlight': isDeleted}">
+            <th scope="row">{{ item.id }}</th>
+            <td>
+              {{ item.ApplyStaff.FirstName }}
+            </td>
+            <td>{{ item.Org.OrgName }}</td>
+            <td>{{ item.ApplyAt | date:"shortDate" }}</td>
+            <td>{{ item.ApplyReason }}</td>
+            <td>
+              <li *ngFor="let detail of item.ApplicationDetails">{{ detail.Product.ProductName }}</li>
+            </td>
+            <td>
+              <li *ngFor="let detail of item.ApplicationDetails">{{ detail.AppliedQty }}</li>
+            </td>
+            <td>{{ item.ProcessStatus | processStatus}}</td>
+            <td>
+              <span class="table__btn--cursor" style="margin-right: 1rem;" (click)="detailModal(1, item.id)">
+                <i class='fas fa-info-circle'></i>
+              </span>
+              <span class="table__btn--cursor" style="margin-right: 1rem;" (click)="updateModal(2, item.id)">
+                <i class='fas fa-pen'></i>
+              </span>
+              <span class="table__btn--cursor" (click)="delete(item)">
+                <i class="fas fa-trash-alt"></i>
+              </span>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <!-- pagination -->
+    <div>
+      <ngb-pagination #pagination [collectionSize]="stockApplication.length" [(page)]="page" [pageSize]="pageSize"
+        (click)="getCurrentPage()">
+      </ngb-pagination>
+    </div>
+  </div>
+
 </div>
-
-

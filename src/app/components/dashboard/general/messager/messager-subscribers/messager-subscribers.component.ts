@@ -23,9 +23,9 @@ export class MessagerSubscribersComponent implements OnInit {
 
   @Output() onChattingWith = new EventEmitter();
 
-  constructor(private messagerService: MessagerService) {
-
-  }
+  constructor(
+    private messagerService: MessagerService
+  ) {}
 
   ngOnInit() {
 
@@ -35,16 +35,19 @@ export class MessagerSubscribersComponent implements OnInit {
     //   console.log(that.notiNum)
     // },1000,that)
     this.getSubscribers();
-    
+    this.messagerService.notice();
+
     this.messagerService.staffNoti$.subscribe(
-      (res:number)=> {this.staffsNotiNum = res;
-      console.log(res)}
+      (res: number) => {
+      this.staffsNotiNum = res;
+        console.log(res)
+      }
     )
     this.messagerService.teacherNoti$.subscribe(
-      (res:number)=>this.teachersNotiNum = res
+      (res: number) => this.teachersNotiNum = res
     )
     this.messagerService.learnersNoti$.subscribe(
-      (res:number)=>this.learnersNotiNum = res
+      (res: number) => this.learnersNotiNum = res
     )
   }
 
@@ -107,6 +110,7 @@ export class MessagerSubscribersComponent implements OnInit {
 
   getNotifications(subsciberUserId) {
     //console.log(subsciberUserId)
+    return 0
   }
 
 }

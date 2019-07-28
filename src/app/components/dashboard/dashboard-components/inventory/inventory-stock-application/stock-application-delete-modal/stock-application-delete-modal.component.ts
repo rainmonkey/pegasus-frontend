@@ -11,7 +11,7 @@ export class StockApplicationDeleteModalComponent implements OnInit {
   /* form StockApplicationListComponent */
   @Input() orderDetail: any;
   /* to StockApplicationListComponent */
-  @Output() sendDeleteResult = new EventEmitter<boolean>();
+  @Output() sendDeleteResult = new EventEmitter<any>();
 
   public orderId: number;
   /* render various info in HTML(modal-body) according to condition */
@@ -33,7 +33,6 @@ export class StockApplicationDeleteModalComponent implements OnInit {
         console.log('delete res', res);
         this.isShow = false;
         this.isDeleted = true;
-        this.sendDeleteResult.emit(this.isDeleted)
       },
       err => {
         console.log('delete err', err)
@@ -41,6 +40,12 @@ export class StockApplicationDeleteModalComponent implements OnInit {
         this.isShow = false;
         this.isDeleted = false;
       }
+    )
+  }
+  onClose() {
+    return (
+      this.activeModal.close(),
+      this.sendDeleteResult.emit([this.isDeleted, this.orderId])
     )
   }
 }

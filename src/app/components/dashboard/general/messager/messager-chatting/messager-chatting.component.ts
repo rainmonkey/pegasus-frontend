@@ -94,11 +94,11 @@ export class MessagerChattingComponent implements OnInit {
       let createAt = new Date();
 
       let messageObj = {
-        subscriberId: this.subscriber['UserId'],
-        message: message,
-        leftOrRight: 'right',
+        senderId: this.subscriber['UserId'],
+        messageBody: message,
+        isIncomingMessage: false,
         isError: false,
-        createTime: createAt,
+        createAt: createAt,
         isResend: false,
         createTimeStamp: createAt.getTime()
       }
@@ -117,14 +117,16 @@ export class MessagerChattingComponent implements OnInit {
       ReceiverUserId: this.subscriber['UserId'],
       SenderUserId: Number(localStorage.getItem('userID')),
       MessageBody: messageToSend,
-      ChatGroupId: null
+      ChatGroupId: null,
+      RoleName: 'Staff'
     }
 
-    this.chattingService.sendMessage(messageObj)
+    this.chattingService.sendMessageOneToOne(messageObj)
       .subscribe(
         null,
         (err) => {
           console.log('message sent error')
+          console.log(err)
           //message send failed handler
           this.messagerService.messageSendFailedHandler(createAt.getTime(), this.subscriber['UserId']);
         }
@@ -214,8 +216,12 @@ export class MessagerChattingComponent implements OnInit {
     }
   }
 
-  showPhotoIcon(leftOrRight) {
-    let src = (leftOrRight == 'left') ? this.photoUrl + this.subscriber['Photo'] : this.photoUrl + localStorage.getItem('photo');
+  /**
+   * Display photos.
+   * @param isIncomingMessage - is incoming message?
+   */
+  showPhotoIcon(isIncomingMessage:boolean) {
+    let src = isIncomingMessage? this.photoUrl + this.subscriber['Photo'] : this.photoUrl + localStorage.getItem('photo');
     return src;
   }
 
