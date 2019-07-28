@@ -12,7 +12,7 @@ export class MessagerService {
   public isSubscriberListsGotError: boolean = false;
 
   public subscribersNoti: object = {};
-  public totalNotiNum :number= 0;
+  public totalNotiNum: number = 0;
   public teachersNotiNum: number = 0;
   public teacherNoti$ = new Subject();
   public staffsNotiNum: number = 0;
@@ -54,7 +54,7 @@ export class MessagerService {
    * save subscibers list to session storage
    * @param {object} data - object of subscribers lists
    */
-  saveSubscriberLists(data:object) {
+  saveSubscriberLists(data: object) {
     //console.log(data)
     //store the subscirbers list in session storage
     sessionStorage.setItem('LearnerList', JSON.stringify(data['Data'].LearnerList));
@@ -71,13 +71,6 @@ export class MessagerService {
       StaffList: JSON.parse(sessionStorage.getItem('StaffList')),
       TeacherList: JSON.parse(sessionStorage.getItem('TeacherList'))
     };
-  }
- 
-
-  notify() {
-    this.learnersNoti$.next(this.learnersNotiNum);
-    this.teacherNoti$.next(this.teachersNotiNum);
-    this.staffNoti$.next(this.staffsNotiNum);
   }
 
 
@@ -139,7 +132,7 @@ export class MessagerService {
   /*
     get custom personl theme in local storage
   */
-  getCustomizedTheme():number {
+  getCustomizedTheme(): number {
     return JSON.parse(localStorage.getItem('customThemeIndex'));
   }
 
@@ -150,21 +143,20 @@ export class MessagerService {
    * @param createTime - create time
    * @param role - sender's role
    */
-  processIncomingMessage(senderId: number, message: string, createTime: string, role:string) {
+  processIncomingMessage(senderId: number, message: string, createTime: string, role: string) {
 
-    this.simulateNotifications(1,role);
+    this.simulateNotifications(1, role);
 
+    //message object to save
     let messageObj = {
       senderId: senderId,
       messageBody: message,
       isIncomingMessage: true,
       isResend: false,
       isError: false,
-      createAt:createTime
-      //numberOfNotifications
+      createAt: createTime
     }
     this.saveChattingHistory(messageObj);
-
   }
 
   /**
@@ -172,12 +164,27 @@ export class MessagerService {
     *@param imcomingNumberOfNotifications - how many notifications to simulate
     *@param role - role of sender
   */
-  simulateNotifications(imcomingNumberOfNotifications:number,role:string) {
-    switch(role){
+  simulateNotifications(incomingNumberOfNotifications: number, role: string) {
+    let isPass = true;
+    switch (role) {
       case 'receptionist':
-        this.staffsNotiNum += imcomingNumberOfNotifications;
+        this.staffsNotiNum += incomingNumberOfNotifications;
+        break;
+      default:
+        isPass = false;
         break;
     }
+
+    if (isPass) {
+      this.totalNotiNum += incomingNumberOfNotifications;
+      this.notice();
+    }
+  }
+
+  notice() {
+    this.learnersNoti$.next(this.learnersNotiNum);
+    this.teacherNoti$.next(this.teachersNotiNum);
+    this.staffNoti$.next(this.staffsNotiNum);
   }
 
   /*
@@ -267,14 +274,14 @@ export class MessagerService {
    * Save connection status to session storage.
    * @param isConnected connected or not
    */
-  saveConnectionStatus(isConnected){
-    sessionStorage.setItem('connectionStatus',isConnected);
+  saveConnectionStatus(isConnected) {
+    sessionStorage.setItem('connectionStatus', isConnected);
   }
 
   /**
    * Read connection status from session storage.
    */
-  readConnectionStatus(){
+  readConnectionStatus() {
     return JSON.parse(sessionStorage.getItem('connectionStatus'));
   }
 }
