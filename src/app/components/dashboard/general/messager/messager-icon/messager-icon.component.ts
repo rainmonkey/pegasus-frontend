@@ -11,10 +11,9 @@ import { Animations } from '../../../../../../animation/chatting-animation';
 })
 export class MessagerIconComponent implements OnInit {
   public isModalDisplayed: boolean = false;
-  //animation state
-  public unReadAnimationStatus: boolean = false;
-
-  public msgNotificationTimer;
+  //animation trigger
+  public notificationsTrigger: boolean = false;
+  public interval: any;
 
   constructor(
     private messagerService: MessagerService,
@@ -27,39 +26,39 @@ export class MessagerIconComponent implements OnInit {
     //build a chatting connection
     this.chattingService.startConnection(localStorage.userID);
     //发送请求 看看有没有未读消息 把未读消息存到数据库 【未完成】
-    //if(sessionStorage.getItem('chattingInit'))
-    //如果有未读消息或者有新消息 但是聊天框最小化了
-    this.setMessageNoticeAnimationState();
+
+    //如果有未读消息
+    this.notificationAnimationHandler(true);
   }
 
-  /*
-    set message notice animation state.
-  */
-  setMessageNoticeAnimationState() {
-    let that = this;
-    this.msgNotificationTimer = setInterval(function (that) {
-      that.unReadAnimationStatus = !that.unReadAnimationStatus;
-    }, 500, that)
-  }
-
-  /*
-    display messager chatting component
-      --> when user click messager icon, display component 
-  */
-  displayMessager() {
-    this.unReadAnimationStatus = false;
-    clearInterval(this.msgNotificationTimer);
-    this.isModalDisplayed = true;
-  }
-
-  /*
-    close messager chatting component
-      --> when user click close sign, hide component 
-  */
-  hideMessager(event) {
-    if (event == 'true') {
-      this.isModalDisplayed = false;
+  /**
+   * Notification's animation handler.
+   * @param state - State of nitifications. 
+   * true: have notifications  false: no notifications
+   */
+  notificationAnimationHandler(state: boolean) {
+    if (state) {
+      this.interval = setInterval(() => {
+        this.notificationsTrigger = !this.notificationsTrigger;
+      }, 500)
+    }
+    else {
+      this.interval.clearInterval();
     }
   }
 
+  /**
+   * Display messager modal when messager icon clicked.
+   */
+  displayMessagerModal() {
+    this.isModalDisplayed = true;
+  }
+
+  /**
+   * Close messager modal when close icon clicked. 
+   * @param event - param emiter from child component, close modal if true
+   */
+  closeMessagerModal(event:boolean) {
+    this.isModalDisplayed = !event;
+  }
 }

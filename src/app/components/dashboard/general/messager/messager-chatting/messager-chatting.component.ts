@@ -117,14 +117,16 @@ export class MessagerChattingComponent implements OnInit {
       ReceiverUserId: this.subscriber['UserId'],
       SenderUserId: Number(localStorage.getItem('userID')),
       MessageBody: messageToSend,
-      ChatGroupId: null
+      ChatGroupId: null,
+      RoleName: 'Staff'
     }
 
-    this.chattingService.sendMessage(messageObj)
+    this.chattingService.sendMessageOneToOne(messageObj)
       .subscribe(
         null,
         (err) => {
           console.log('message sent error')
+          console.log(err)
           //message send failed handler
           this.messagerService.messageSendFailedHandler(createAt.getTime(), this.subscriber['UserId']);
         }
