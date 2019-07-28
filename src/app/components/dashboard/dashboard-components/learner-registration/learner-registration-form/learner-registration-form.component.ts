@@ -583,12 +583,12 @@ export class LearnerRegistrationFormComponent implements OnInit, DoCheck, AfterV
 
   // select course category
   selectCategory(id, i) {
-    console.log(this.teaListOutArray)
     // let courseTemp = [];
     this.emptySelectionCat(i);
     this.notPiano [i] = Number(id);
     this.courseListArray[i].courseItemArray = this.catListArray[i].filter(item => item.CourseCategoryId === Number(id));
     console.log("this.courseListArray", this.courseListArray);
+    console.log(this.teaListOutArray[i].teaListToDatePick)
   }
 
   selectCourse(value, i) {
