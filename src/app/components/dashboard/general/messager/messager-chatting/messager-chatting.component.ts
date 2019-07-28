@@ -94,11 +94,11 @@ export class MessagerChattingComponent implements OnInit {
       let createAt = new Date();
 
       let messageObj = {
-        subscriberId: this.subscriber['UserId'],
-        message: message,
-        leftOrRight: 'right',
+        senderId: this.subscriber['UserId'],
+        messageBody: message,
+        isIncomingMessage: false,
         isError: false,
-        createTime: createAt,
+        createAt: createAt,
         isResend: false,
         createTimeStamp: createAt.getTime()
       }
