@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from '../../../environments/environment.prod';
-import { of, from } from 'rxjs'
+import { of, from, Subject } from 'rxjs'
 import { map, filter } from 'rxjs/operators'
 
 @Injectable({
@@ -9,45 +9,128 @@ import { map, filter } from 'rxjs/operators'
 })
 export class MessagerService {
   public baseUrl: any = environment.baseUrl;
-  public subsOfStaffs;
-  public subsOfTeachers;
-  public subsOfStudents;
-  public errorFlag: boolean;
+  public isSubscriberListsGotError: boolean = false;
+
+  public listOfTeachersId: object = {};
+  public listOfLearnersId: object = {};
+  public listOfStaffsId: object = {};
+
+  public subscribersNoti: object = {};
+  
+  public teachersNotiNum: number = 0;
+  public teacherNoti$ = new Subject();
+  public staffsNotiNum: number = 0;
+  public staffNoti$ = new Subject();
+  public learnersNotiNum: number = 0;
+  public learnersNoti$ = new Subject();
+  public subscriberChattingWith: object = {};
+
+
 
   constructor(private http: HttpClient) {
+    console.log('messager service')
   }
 
-  //get subscribers list from server
-  getSubscribersList(userId) {
+  /**
+   * Get user's subscriber lists from server and saved to session storage.
+   * @param {number} userId - user ID 
+  */
+  getSubscribersList(userId: number) {
+    //console.log("111")
     //To avoid dulplicated data transfer, when the web initiate, call api from server once
     //refresh, render or re-render don't call api
-    if (sessionStorage.chattingInit == 'true') {
+    if (JSON.parse(sessionStorage.getItem('chattingInit'))) {
+      console.log('aaa')
       return;
     }
-    else {
-      this.http.get(this.baseUrl + 'Chat/GetChattingList/' + userId).subscribe(
+
+    this.http.get(this.baseUrl + 'Chat/GetChattingList/' + userId)
+      .subscribe(
         (res) => {
-          let subsStr = JSON.stringify(res['Data']);
-          //store the subscirbers list in session storage
-          sessionStorage.setItem('subscribers', subsStr);
-          //set 'true' as a sign
-          sessionStorage.setItem('chattingInit', 'true');
+          sessionStorage.setItem('chattingInit', JSON.stringify(true));
+          this.saveSubscriberLists(res);
         },
         (err) => {
           //console.log(err)
-          this.errorFlag = true;
+          this.isSubscriberListsGotError = true;
         }
       )
-    }
   }
 
-  /*
-    return the subscribers stored in local session storage,
-      -->为了代码整洁 把从sessionStorage里面获取数据放在了service里面
-  */
-  getSubscribers() {
-    return JSON.parse(sessionStorage.getItem('subscribers'));
+  /**
+   * save subscibers list to session storage
+   * @param {object} data - object of subscribers lists
+   */
+  saveSubscriberLists(data) {
+    let LearnerList = data['Data'].LearnerList.map((val) => {
+      this.getListOfIds(val, 0);
+    });
+    let StaffList = data['Data'].StaffList.map((val) => {
+      this.getListOfIds(val, 0);
+    })
+    let TeacherList = data['Data'].TeacherList.map((val) => {
+      this.getListOfIds(val, 0);
+    })
+    //store the subscirbers list in session storage
+    sessionStorage.setItem('LearnerList', JSON.stringify(LearnerList));
+    sessionStorage.setItem('StaffList', JSON.stringify(StaffList));
+    sessionStorage.setItem('TeacherList', JSON.stringify(TeacherList));
   }
+
+  /**
+   * @returns {object} - return subscriber lists stored in session storage
+  */
+  readSubscriberLists() {
+    return {
+      LearnerList: JSON.parse(sessionStorage.getItem('LearnerList')),
+      StaffList: JSON.parse(sessionStorage.getItem('StaffList')),
+      TeacherList: JSON.parse(sessionStorage.getItem('TeacherList'))
+    };
+  }
+
+  /**
+   * A call back function of map()
+   * @param val - val to map
+   * @param groupIndex - cate of subscribers
+   */
+  getListOfIds(val:object, cateOfSubscriber:number) {
+    let userId = val['UserId'];
+    switch (cateOfSubscriber) {
+      case 0:
+        this.listOfLearnersId[userId] = val['UserId'];
+      case 1:
+        this.listOfStaffsId[userId] = val['UserId'];
+      case 2:
+        this.listOfTeachersId[userId] = val['UserId'];
+    }
+    return val;
+  }
+
+
+  // getDefaultNotifications() {
+  //   return {
+  //     teachersNotiNum: Number(sessionStorage.getItem('teachersNotiNum')),
+  //     staffsNotiNum: Number(sessionStorage.getItem('staffsNotiNum')),
+  //     learnersNotiNum: Number(sessionStorage.getItem('learnersNotiNum'))
+  //   }
+  // }
+
+
+  /**
+    *@param {number} subscriberUserId - sender's userId 
+    *@param {boolean} isAdd - true: add notifications  false: minus notifications
+  */
+  calculateNotifications(subscriberUserId: number, isAdd: boolean) {
+
+  }
+
+
+  notify() {
+    this.learnersNoti$.next(this.learnersNotiNum);
+    this.teacherNoti$.next(this.teachersNotiNum);
+    this.staffNoti$.next(this.staffsNotiNum);
+  }
+
 
   /*
     save the subscriber's object now chatting in session storage 
@@ -63,6 +146,7 @@ export class MessagerService {
   */
   getSubscriberChattingWith() {
     let subscriberObj = sessionStorage.getItem('subscriberChattingWith') ? JSON.parse(sessionStorage.getItem('subscriberChattingWith')) : null;
+    this.subscriberChattingWith = subscriberObj;
     return subscriberObj;
   }
 
@@ -115,7 +199,7 @@ export class MessagerService {
      --> save chatting messages to the local storage when user push the send button,
          but if message sent failed(async), update info of message's history (push a new message with isError prop and delete the failed message) 
   */
-  saveChattingHistory(messageObj: { subscriberId: number, message: string, leftOrRight: string, createTime: any, isError: boolean, isResend:boolean,createTimeStamp?: number }) {
+  saveChattingHistory(messageObj: { subscriberId: number, message: string, leftOrRight: string, createTime: any, isError: boolean, isResend: boolean, createTimeStamp?: number }) {
     let historyKeyName = messageObj.subscriberId + 'History';
     //messageObj.createTime = messageObj.createTime.toLocaleString();
     //if histroy exist with a subscriber, push new message to local storage
@@ -133,7 +217,7 @@ export class MessagerService {
             failedIndex = index;
             return true;
           }
-        },failedIndex);
+        }, failedIndex);
         //update message info to failed status
         historyObj[failedIndex] = messageObj;
       }
@@ -163,7 +247,7 @@ export class MessagerService {
   /*
     find a specific message with index
   */
-  getSpecificChattingMessageHistory(subscriberUserId,index){
+  getSpecificChattingMessageHistory(subscriberUserId, index) {
     let history = this.getChattingHistory(subscriberUserId);
     return history[index];
   }
@@ -183,7 +267,7 @@ export class MessagerService {
               leftOrRight: res['leftOrRight'],
               createTime: res['createTime'],
               isError: true,
-              isResend:false,
+              isResend: false,
               createTimeStamp: res['createTimeStamp']
             }
             //@params: message object

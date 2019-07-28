@@ -292,15 +292,12 @@ export class AdminLearnerPaymentInvoiceComponent implements OnInit, OnDestroy {
       console.log(element.CourseName)
     });
   }
-// WEASRTDYUFGIYJTREFWDFRTDYUGKJRFEWDFRTHUJGGYTRFEWDQSETGLHIOGUJTRFEWDFRTHULHIOUYTREFWDFRTHUYJTREFWDQ
-// EWRTYREWDFRGTHYHGREFWJUGRFEGRTHJHTREFRGTHTRGEFGTHJYTREGJHTGRTHUJYTRETHYUYTRGE
-// ERTFETHTREFGHGRGHJTGRNHTGRHJTGRTHRF
-// EWFRGTHTGEFRTGREFWFRGBEFGBERGTHTREFGREWFRGEFRSGBEFASG
-// WEFRTSEWFRSGBFERGBREFSGBHRFESBGCHSBRFFERGEFRSG
-// RFESGBRFEGBERGBFREFSGBHERSGBHRGTHJUYIKLILKIUYJHGRFEDWSADCFGHJUIYTREWDSa
-// EDRFGTHNFJKUIOLPJIHUGYJFTDRSFEDSCGFBHJKIGUYJFTDGRFDZ
+  // delete tab section if only one invoice
   getSingleTab(){
-    document.querySelector('.nav-pills')
+    // question how to check whether we have a d-none class
+    document.querySelector('.nav-pills').classList.remove('d-none');
+    if (this.dataInvoice.length == 1){
+    document.querySelector('.nav-pills').classList.add('d-none');}
   }
 
   ngOnInit() {
@@ -316,7 +313,7 @@ export class AdminLearnerPaymentInvoiceComponent implements OnInit, OnDestroy {
       this.payInvoiceService(this.learnerId);
     }
     this.nameSubejct();
-
+    this.getSingleTab();
   }
 
   payInvoiceService(id) {

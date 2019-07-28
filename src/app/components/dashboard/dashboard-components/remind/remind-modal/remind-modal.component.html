@@ -10,7 +10,7 @@
 <!--modal body-->
 <div class="modal-body">
   <div class="row">
-    <form> 
+    <form>
       <!--title-->
       <div class="form-group col-12" >
        <span ><h4>Title: <strong>{{ whichRemind.RemindTitle }}</strong> </h4></span>
@@ -36,10 +36,10 @@
       </div>
       <div class="form-row col-12">
         <label>Message:</label>
-        <span class="remindContent"
-        ><p>{{ whichRemind.RemindContent }}</p></span>
+        <span class="remindContent">
+        <p [innerHTML]='remindContent'></p></span>
       </div>
-      
+
     </form>
   </div>
 </div>

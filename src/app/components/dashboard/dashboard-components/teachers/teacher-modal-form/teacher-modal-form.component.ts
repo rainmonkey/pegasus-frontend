@@ -305,6 +305,9 @@ export class TeacherModalFormComponent implements OnInit {
     get days that teacher available of one week
   */
   getAvailableDays() {
+    if(!this.whichTeacher){
+      return
+    }
     if (this.whichTeacher.AvailableDays.length !== 0) {
       this.isAvailableDaysNull = false;
       let availableDays: Array<number> = []
@@ -326,6 +329,9 @@ export class TeacherModalFormComponent implements OnInit {
 
   setDefaultDayOfWeek() {
     //console.log(this.whichTeacher)
+    if(!this.whichTeacher){
+      return
+    }
     this.whichTeacher.AvailableDays.map(val => {
       this.DayOfWeek[val.DayOfWeek - 1].push({ "OrgId": val.OrgId, "RoomId": val.RoomId })
     })

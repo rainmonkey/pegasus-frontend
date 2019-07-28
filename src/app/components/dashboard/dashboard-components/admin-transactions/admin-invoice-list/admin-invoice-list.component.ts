@@ -185,5 +185,7 @@ export class AdminInvoiceListComponent implements OnInit {
     learnerName.lastName = learner.LastName;
     const invoice: IInvoice = learner.Invoice;
     this.downloadPDFService.downloadPDF(learnerName, invoice);
+
+
   }
 }

@@ -1,7 +1,7 @@
 import { MessagerService } from '../../../../../services/repositories/messager.service';
 import { Component, OnInit, Output, Input, EventEmitter } from '@angular/core';
 import { Animations } from '../../../../../../animation/chatting-animation'
-import { fromEvent } from 'rxjs';
+import { fromEvent, Observable, Subscription } from 'rxjs';
 import { map, takeUntil, concatMap, delay, skip, tap } from 'rxjs/operators';
 
 @Component({
@@ -36,14 +36,18 @@ export class MessagerModalComponent implements OnInit {
   public leftPos;
   public topPos;
   public mouseEnter = false;
+  //browser's height
+  public browserHeight: number = (window.outerHeight <= 750) ? (window.outerHeight - 100) : 650;
+  public windowResize$: Observable<any>;
+  public windowResizeSubscription: Subscription;
 
-  @Input() browserHeight;
   @Output() onCloseChattingModal = new EventEmitter();
   constructor(private messagerService: MessagerService) { }
 
   ngOnInit() {
+    this.eventHandlers();
     //if failed read data.
-    this.isErrorFlag = this.messagerService.errorFlag;
+    this.isErrorFlag = this.messagerService.isSubscriberListsGotError;
     //set init modal title
     this.setChattingModalTitle();
     //get custom theme.
@@ -56,6 +60,33 @@ export class MessagerModalComponent implements OnInit {
     this.draggable();
   }
 
+  ngOnDestory() {
+    this.windowResizeSubscription.unsubscribe();
+  }
+
+  /*
+    event handlers
+  */
+  eventHandlers() {
+    this.resizeEventHandler();
+  }
+
+  /*
+    window resize event handler - chatting modal height can resize with window size
+  */
+  resizeEventHandler() {
+    this.windowResize$ = fromEvent(window, 'resize').pipe(
+      map((val) => {
+        return val.target['outerHeight'];
+      }));
+
+    this.windowResizeSubscription = this.windowResize$.subscribe(
+      (res) => {
+        this.browserHeight = (res <= 750) ? (res - 100) : 650;
+      }
+    )
+  }
+
   /*
     user can drag chatting modal
   */
@@ -66,7 +97,7 @@ export class MessagerModalComponent implements OnInit {
 
     mouseDown$.pipe(
       concatMap(mouseDownEvent => mouseMove$.pipe(
-        tap(mouseMoveEvent =>{
+        tap(mouseMoveEvent => {
           mouseMoveEvent.preventDefault();
         }),
         map(mouseMoveEvent => ({
@@ -79,15 +110,6 @@ export class MessagerModalComponent implements OnInit {
       document.querySelector('.m_m_skeleton')['style'].left = position.left + 'px';
       document.querySelector('.m_m_skeleton')['style'].top = position.top + 'px';
     })
-  }
-
-  /*
-    called by template.
-    set browser's height, respose in diffrent size of browsers
-  */
-  setChattingModalHeight() {
-    let modalHeight = (this.browserHeight <= 750) ? 550 : null;
-    return modalHeight;
   }
 
   /*
