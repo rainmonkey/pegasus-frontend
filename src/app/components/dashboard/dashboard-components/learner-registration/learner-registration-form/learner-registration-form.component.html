@@ -295,9 +295,15 @@
                 </tr>
               </thead>
               <tbody>
+
                 <tr formArrayName="groupCourse" *ngFor="let groupCourse of groupCourseInstance; let i = index">
-                  <td><input type="checkbox" [checked]="groupCourse.isChecked" (click)="selectCheckboxes(i, $event)">
-                    {{groupCourse.Course.CourseName}}</td>
+                  <td class='input-group'>
+                    <div class="input-group-text">
+                      <input type="checkbox" [checked]="groupCourse.isChecked" (click)="selectCheckboxes(i, $event)" >
+                      {{groupCourse.Course.CourseName}}
+                    </div>
+                  </td>
+
                   <td>
                     <p *ngFor="let schedule of groupCourse.schedule">{{schedule.DayOfWeek | weekFormat}}: {{schedule.BeginTime}}-{{schedule.EndTime}}</p>
                   </td>
@@ -306,9 +312,13 @@
                     <div><i class="fas fa-street-view"></i>{{groupCourse.Room.RoomName}}</div>
                   </td>
                   <!-- <td>{{groupCourse.Room.RoomName}}</td>-->
-                  <td>{{groupCourse.Teacher.FirstName}}</td>
-                  <td><input type="date" [ngModelOptions]="{standalone: true}" [(ngModel)]="groupCourseInstance[i].beginDate"></td>
-                  <td><input type="text" [ngModelOptions]="{standalone: true}" [(ngModel)]="groupCourseInstance[i].comments"></td>
+                  <td class='input-group'>
+                    <div class="input-group-text">
+                    {{groupCourse.Teacher.FirstName}}
+                    </div>
+                  </td>
+                  <td><input type="date" [ngModelOptions]="{standalone: true}" [(ngModel)]="groupCourseInstance[i].beginDate" class='form-control'></td>
+                  <td><input type="text" [ngModelOptions]="{standalone: true}" [(ngModel)]="groupCourseInstance[i].comments" class='form-control'></td>
                 </tr>
               </tbody>
             </table>
