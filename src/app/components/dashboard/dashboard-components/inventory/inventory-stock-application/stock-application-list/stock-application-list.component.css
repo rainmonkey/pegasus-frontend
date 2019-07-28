@@ -1,82 +1,57 @@
 .loaderLarge {
-    position: fixed;
-    top: 40%;
-    left: 50%;
-  }
-  .btn__add--right {
-    height: 30px;
-    width: 130px;
-    position: relative;
-    left: 120px;
-    top: 25px;
-  }
-  .btn__search--right {
-    height: 30px;
-    width: 130px;
-    margin-right: 20px;
-  }
-  .input__datebar {
-    width: 200px;
-    height: 38px;
-    margin-right: 10px;
-    margin-left: 10px;
-  }
-
-  .tl_body {
-    min-height: 800px;
-    overflow: scroll;
-  }
-  
-  .t_info_title {
-    height: 60px;
-    font-size: 30px;
-    font-weight: 330;
-    line-height: 60px;
-    color: grey;
-    text-align: center;
-  }
-  
-  .search_bar {
-    float: left;
-    margin-left: 150px;
-  }
-  
-  .t_info_addmore_btn {
-    height: 30px;
-    width: 100px;
-    line-height: 17px;
-    cursor: pointer;
-  }
-  
-  
-  
-  
-  .t_info_search_bar {
-    float: left;
-    width: 230px;
-  }
-  
-  .t_info_search_icon {
-    float: left;
-    line-height: 33px;
-    margin-left: 5px;
-    cursor: pointer;
-  }
-  
-  .sorting_item:hover {
-    cursor: pointer;
-  }
-  
-  .tl_body_table_btn {
-    font-size: 20px;
-    color: #55554f;
-  }
-  
-  .tl_body_table_btn:hover {
-    cursor: pointer;
-  }
-  li {
-    list-style-type: none;
-    margin: 0px;
-  }
- 
+  position: fixed;
+  top: 40%;
+  left: 50%;
+}
+.container {
+  min-height: 800px;
+  overflow: scroll;
+}
+.btn__add--right {
+  height: 30px;
+  width: 130px;
+  margin-right: 10px;
+}
+.btn__search--right {
+  height: 30px;
+  width: 130px;
+  margin-left: 20px;
+}
+.input__datebar {
+  width: 200px;
+  height: 38px;
+}
+.undo__msg {
+  margin: 20px auto;
+}
+.table__row--fade {
+  color: red;
+}
+a {
+  cursor: pointer;
+}
+.title--center {
+  height: 60px;
+  font-size: 30px;
+  font-weight: 330;
+  line-height: 60px;
+  color: grey;
+  text-align: center;
+}
+li {
+  list-style-type: none;
+  margin: 0px;
+}
+.sorting--cursor:hover,
+.table__btn--cursor:hover, 
+.table__header--cursor:hover
+{
+  cursor: pointer;
+}
+.table_row--highlight {
+  background-color: aquamarine;
+  border: 1px solid rgb(223, 209, 209)
+}
+/* .table__row--hover:hover {
+  background-color: #fff;
+} */
