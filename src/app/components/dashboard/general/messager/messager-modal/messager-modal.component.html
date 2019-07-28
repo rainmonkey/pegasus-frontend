@@ -1,66 +1,66 @@
-<div *ngIf='!isErrorFlag' [ngStyle]="{'height': browserHeight+'px'}" class='m_m_skeleton'>
+<div *ngIf='!isErrorFlag' [ngStyle]="{'height': modalHeight+'px'}" class='m_m_skeleton'>
   <!--header-->
-  <div class='m_m_header' [@themeColorTrigger]='themeChangeFlag'>
-    <span class='m_m_header_icon m_m_header_cog' (click)='displayConfigPanel($event)' >
+  <div class='m_m_header' [@themeColorTrigger]="'theme' + customThemeIndex">
+    <span class='m_m_header_icon m_m_header_cog' (click)="displayConfigPanel($event)" >
       <span class='fas fa-cog'></span>
     </span>
     <span id='draggable'>
-      <span class='m_m_header_chatting_with' [title]='chattingWithStr'>{{chattingWithStr}} </span>
+      <span class='m_m_header_chatting_with' [title]='modalTitle'>{{modalTitle}} </span>
     </span>
-    <span class='m_m_header_icon m_m_header_close' (click)='closeChattingModal($event)'>
+    <span class='m_m_header_icon m_m_header_close' (click)='closeChattingModal()'>
       <span class='fas fa-times'></span>
     </span>
   </div>
 
-  <!--style selection ui-->
-  <div *ngIf='settingDisaplayFlag' class='m_m_style'>
+  <!--theme selection ui-->
+  <div *ngIf='isSettingPanelDisplay' class='m_m_style'>
     <div class='m_m_style_label'>
       Styles:
     </div>
     <div *ngFor='let i of styleList;let index=index' class='m_m_style_color' [ngStyle]="{'background': i.background}"
-      (click)='customizeTheme(index)'></div>
+      (click)='setCustomModalTheme(index)'></div>
   </div>
 
   <!--personal label ui-->
-  <app-messager-personal-info [@displayPersonalPanelTrigger]='personalLabelDisplayFlag?"display":"hide"' [themeChangeFlag]='themeChangeFlag'>
+  <app-messager-personal-info [@displayPersonalPanelTrigger]='(currentBtnIndex==0 || currentBtnIndex==1)?"display":"hide"' [customThemeIndex]='customThemeIndex'>
   </app-messager-personal-info>
 
   <!--subscribers ui-->
-  <div *ngIf='subscribersDisplayFlag' [ngStyle]="{'height': browserHeight -170 + 'px'}"
+  <div *ngIf="currentBtnIndex == 0" [ngStyle]="{'height': modalHeight -170 + 'px'}"
     class='m_m_subscribers' id='subscribers'>
-    <app-messager-subscribers (onChattingWith)='startChattingWith($event)'></app-messager-subscribers>
+    <app-messager-subscribers (onChattingWith)='startANewChat($event)'></app-messager-subscribers>
   </div>
 
   <!--recently chatting ui-->
-  <div *ngIf='recentlyDisplayFlag' [ngStyle]="{'height': browserHeight -170 + 'px'}" class='m_m_recently'
+  <div *ngIf="currentBtnIndex == 1" [ngStyle]="{'height': modalHeight -170 + 'px'}" class='m_m_recently'
     id='recently'>
-    <app-messager-recently (onChattingWith)='startChattingWith($event)'></app-messager-recently>
+    <app-messager-recently (onChattingWith)='startANewChat($event)'></app-messager-recently>
   </div>
 
   <!--chatting ui-->
-  <div *ngIf='chattingDisplayFlag' [ngStyle]="{'height': browserHeight -70 + 'px'}" class='m_m_chatting'
+  <div *ngIf="currentBtnIndex == 2" [ngStyle]="{'height': modalHeight -70 + 'px'}" class='m_m_chatting'
     id='chatting'>
-    <app-messager-chatting [modalHeight]='browserHeight-70' (onStartChatting)='startChattingWith($event)'>
+    <app-messager-chatting [modalHeight]='modalHeight-70' (onStartChatting)='switchDisplayedModal(0)'>
     </app-messager-chatting>
   </div>
 
-  <div class='m_m_selection_btns' [@themeColorTrigger]="themeChangeFlag">
+  <div class='m_m_selection_btns' [@themeColorTrigger]="'theme' + customThemeIndex">
     <div class='row'>
       <div class='col-4 m_m_selection_btn_a'>
         <span class='m_m_selection_btn'><span class='far fa-user unlock'></span></span>
-        <span (click)='switchDisplayView(0)' class='m_m_selection_btn' id='initSelected'>
+        <span (click)='switchDisplayedModal(0)' class='m_m_selection_btn' id='initSelected'>
           <span class='fas fa-user lock' title='subscribers'></span>
         </span>
       </div>
       <div class='col-4 m_m_selection_btn_b'>
         <span class='m_m_selection_btn'><span class='far fa-circle unlock'></span></span>
-        <span (click)='switchDisplayView(1)' class='m_m_selection_btn'>
+        <span (click)='switchDisplayedModal(1)' class='m_m_selection_btn'>
           <span class='fas fa-circle lock' title='recently chatting'></span>
         </span>
       </div>
       <div class='col-4 m_m_selection_btn_c'>
         <span class='m_m_selection_btn'><span class='far fa-comments unlock'></span></span>
-        <span (click)='switchDisplayView(2)' class='m_m_selection_btn'>
+        <span (click)='switchDisplayedModal(2)' class='m_m_selection_btn'>
           <span class='fas fa-comments lock' title='chatting'></span>
         </span>
       </div>
