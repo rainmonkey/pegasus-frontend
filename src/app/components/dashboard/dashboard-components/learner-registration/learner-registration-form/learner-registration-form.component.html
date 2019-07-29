@@ -278,7 +278,7 @@
       </div>
 
 
-      <div class="card" *ngIf="isGroupCourse">
+      <div class="card" *ngIf="isGroupCourse" >
         <div class="select-group-course card-body ">
           <div class="guitar">
             <table class="table ">
@@ -300,11 +300,11 @@
                   <td class='input-group'>
                       <label [for]="i" class="input-group-text">{{groupCourse.Course.CourseName}}
                       <input class='ml-1' type="checkbox" [id]='i' [checked]="groupCourse.isChecked" (click)="selectCheckboxes(i, $event)" >
-                    </label>
+                      </label>
                   </td>
 
                   <td>
-                    <p *ngFor="let schedule of groupCourse.schedule">{{schedule.DayOfWeek | weekFormat}}: {{schedule.BeginTime}}-{{schedule.EndTime}}</p>
+                    <p *ngFor="let schedule of groupCourse.schedule" >{{schedule.DayOfWeek | weekFormat}}: {{schedule.BeginTime}}-{{schedule.EndTime}}</p>
                   </td>
                   <td>
                     <div>{{groupCourse.Org.OrgName}}</div>
@@ -414,9 +414,9 @@
                 <label for="customTime">Course Time</label>
                 <!-- <input class="form-control" type="text"  value="15:30:00" routerLink="/timePicker" routerLinkActive="active"> -->
                 <ngb-timepicker formControlName="beginTime" [size]="'small'" [hourStep]="hourStep" [minuteStep]="minuteStep"></ngb-timepicker>
-                <small class="text-danger" *ngIf="this.customCourse.controls[0].get('schedule').get('beginTime').invalid">Please Select a Valid Time</small>
+                <small class="text-danger" *ngIf="this.customCourse?.controls[0]?.get('schedule').get('beginTime').invalid">Please Select a Valid Time</small>
               </div>
-              <div class='col-sm-3 col-md-3 mt-3'  *ngIf="this.teaListOutArray[i].teaListToDatePick!== undefined && this.teaListOutArray[i]?.teaListToDatePick?.length !== 0">
+              <div class='col-sm-3 col-md-3 mt-3'  *ngIf="this.teaListOutArray[i]?.teaListToDatePick!== undefined && this.teaListOutArray[i]?.teaListToDatePick?.length !== 0">
                 <button class='btn btn-primary' (click)="open(i)">Pick Course Time by Calendar</button>
               </div>
             </div>
