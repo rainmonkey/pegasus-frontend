@@ -89,6 +89,7 @@ export class LearnerRegistrationFormComponent implements OnInit, DoCheck, AfterV
   showErrorH = false;
   touchNext = false;
   learnerValid = true;
+  canAddGroup = true;
   // photo thumbnail
   photoObj;
   // for add more selection
@@ -756,7 +757,15 @@ selectLocation(id, i) {
   }
 
   onSubmit() {
-
+    this.canAddGroup = true;
+    console.log(this.groupCourseInstance, this.oneOnOneCourse)
+    let checkGroup = []
+    this.groupCourseInstance.forEach(ele => {
+      if (ele.isChecked == true){
+        checkGroup.push(1)
+      }
+    });
+    if(checkGroup.length !==0 || this.oneOnOneCourse.length !==0){
     this.confirmGroupCourse();
     this.confirmCustomCourse();
     console.log(this.courseGroup);
@@ -776,7 +785,9 @@ selectLocation(id, i) {
     console.log(this.fd)
     // console.log('form data', this.fd);
     // active modal waiting for decision
-    this.openConfirm();
+    this.openConfirm();}else{
+      this.canAddGroup = false;
+    }
   }
 
   resetLearner() {
