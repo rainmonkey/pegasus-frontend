@@ -1,5 +1,5 @@
 <!--选择聊天对象时-->
-<div *ngIf='chattingDisplayFlag'>
+<div *ngIf='subscriber'>
   <div class='m_c_person_label'>
     <!--展示聊天对象的label 
     数据动态获取-->
@@ -76,7 +76,7 @@
 </div>
 
 <!--没有选择聊天对象时-->
-<div *ngIf='!chattingDisplayFlag'>
+<div *ngIf='!subscriber'>
   <div class='m_c_start_chatting'>
     <span (click)='startNewChatting()'>start chatting now...</span>
   </div>

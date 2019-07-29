@@ -53,6 +53,7 @@ export class ChattingService {
     this.hubConnection
       //when lost connetion after connection started
       .onclose(() => {
+        console.log('lost connection');
         this.processConnectionStatus(false);
       })
   }
@@ -126,6 +127,7 @@ export class ChattingService {
    * @param isConnected connected or disconnected
    */
   processConnectionStatus(isConnected: boolean) {
+    console.log(isConnected)
     this.isBuild = isConnected;
     this.isConnected$.next(isConnected);
     this.messagerService.saveConnectionStatus(isConnected);

@@ -81,7 +81,7 @@ export class MessagerModalComponent implements OnInit {
    * Set chatting modal title.
    */
   setChattingModalTitle() {
-    let subObj = this.messagerService.getSubscriberChattingWith();
+    let subObj = this.messagerService.readSubscriberNowChattingWith();
     if (subObj) {
       this.modalTitle = 'Chatting with ' + subObj.FirstName + ' ' + subObj.LastName;
     }
