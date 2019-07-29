@@ -9,98 +9,75 @@ export class DownloadPDFService {
   constructor() { }
 
   downloadPDF(learnerName: IInvoiceLearnerName, invoice: IInvoice) {
-    let table_header = [['Description', "Quantity", 'Fee', 'others']]
+    let table_header = [['Description', "Quantity", 'Fee']]
     let body = []
-    let options={columnWidth:'auto'}
+    let options = { columnWidth: 'auto' }
     let currentHeight: number = 90
     let interval: number = 10
-
-
-    // Landscape export, 2×4 inches
-    // let doc = new jsPDF({
-    //   orientation: 'landscape',
-    //   unit: 'mm',
-    //   format: [600, 460]
-    // });
-    // // title
-    // doc.setFontSize(20);
-    // doc.text(`Able Music Studio`, 75, 20);
-    // // detail
-    // doc.setFontSize(12);
-    // doc.text(`Invoice To: ${learnerName.firstName}  ${learnerName.lastName}`, 30, 30);
-
-    // doc.setFontSize(10)
-    // doc.text(`For`, 30, 40);
-
-    // doc.text(`${invoice.LessonQuantity} Lessons of ${invoice.CourseName}`, 35, 46);
-    // doc.text(`$${invoice.LessonFee}`, 170, 50);
-    // doc.text(`From the Date ${invoice.BeginDate.slice(0, 10)}`, 35, 50)
-
-
-    // winnie做的
+    let lineSpacing = { NormalSpacing: 12 }
+    let startY = 80
     let doc = new jsPDF({
       unit: 'mm',
     })
-
     // title
     doc.setFontSize(20);
-    doc.setTextColor(0,0,0)
-    doc.setFillColor(41,128,186)
-    doc.rect(5,20,200,25,'F')
-    doc.addImage(this.logo,'PNG',55, 20);
+    doc.setTextColor(0, 0, 0)
+    doc.setFillColor(41, 128, 186)
+    doc.rect(14, 20, 183, 25, 'F')
+    doc.addImage(this.logo, 'PNG', 55, 20);
     // detail
     doc.setFontSize(12);
-    doc.text(`Invoice To: ${learnerName.firstName}  ${learnerName.lastName}`, 20, 60);
-    doc.text(`From the Date ${invoice.BeginDate.slice(0, 10)}`, 140,60)
+    doc.text(`Invoice To: ${learnerName.firstName}  ${learnerName.lastName}`, 14, 60);
+    doc.text(`From Date ${invoice.BeginDate.slice(0, 10)}`, 140, 60)
     if (invoice.DueDate) {
       doc.text(`Due Date: ${invoice.DueDate.split("T")[0]}`, 140, 70);
     }
 
-    body.push([invoice.CourseName, invoice.LessonQuantity, invoice.LessonFee, invoice.BeginDate.slice(0, 10)])
+    body.push([invoice.CourseName, invoice.LessonQuantity, invoice.LessonFee])
 
     if (invoice.ConcertFee) {
       currentHeight += interval
       // doc.text(`${invoice.ConcertFeeName}`, 20, currentHeight);
       // doc.text(`$${invoice.ConcertFee}`, 90, currentHeight);
-      body.push([invoice.ConcertFeeName,'',invoice.ConcertFee,''])
+      body.push([invoice.ConcertFeeName, '', invoice.ConcertFee])
     }
 
     if (invoice.NoteFee) {
       currentHeight += interval
       // doc.text(`${invoice.LessonNoteFeeName}`, 20, currentHeight);
       // doc.text(`$${invoice.NoteFee}`, 90, currentHeight);
-      body.push([invoice.LessonNoteFeeName,'',invoice.NoteFee,''])
+      body.push([invoice.LessonNoteFeeName, '', invoice.NoteFee])
     }
 
     if (invoice.Other1Fee) {
       currentHeight += interval
       // doc.text(`${invoice.Other1FeeName}`, 20, currentHeight)
       // doc.text(`$${invoice.Other1Fee}`, 90, currentHeight)
-      body.push([invoice.Other1FeeName,'',invoice.Other1Fee,''])
+      body.push([invoice.Other1FeeName, '', invoice.Other1Fee])
     }
 
     if (invoice.Other2Fee) {
       currentHeight += interval
       // doc.text(`${invoice.Other2FeeName}`, 20, currentHeight)
       // doc.text(`$${invoice.Other2Fee}`, 90, currentHeight)
-      body.push([invoice.Other2FeeName,'',invoice.Other2Fee,''])
+      body.push([invoice.Other2FeeName, '', invoice.Other2Fee])
     }
 
     if (invoice.Other3Fee) {
       currentHeight += interval
       // doc.text(`${invoice.Other3FeeName}`, 20, currentHeight)
       // doc.text(`$${invoice.Other3Fee}`, 90, currentHeight)
-      body.push([invoice.Other3FeeName,'',invoice.Other3Fee,''])
+      body.push([invoice.Other3FeeName, '', invoice.Other3Fee])
     }
 
 
     doc.setFontSize(16);
     doc.autoTable({
-      head: table_header, body,options,
-      startY: 80
+      head: table_header, body, options,
+      startY
     });
-    currentHeight += interval * 2
-    doc.text(`TOTAL:$ ${invoice.TotalFee}`, 160, currentHeight);
+    startY = doc.autoTableEndPosY() + 10;
+    doc.text(`TOTAL:$ ${invoice.TotalFee}`, 155, startY += lineSpacing.NormalSpacing);
 
 
 
