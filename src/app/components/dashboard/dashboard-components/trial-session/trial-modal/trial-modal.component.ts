@@ -84,11 +84,9 @@ export class TrialModalComponent implements OnInit {
       this.isDraggableFlag = false;
     }
     this.prepareData();
-    // assign current day as semester begain day.
   }
 
   prepareData() {
-    // timeslot有问题
     const array: Array<any> = [];
 
     array.push(this.learnersService.getLearnerById(this.LearnerId));
@@ -228,6 +226,7 @@ export class TrialModalComponent implements OnInit {
       termPeriod = termPeriod.slice(1);
     }
     termPeriod[0].BeginDate = this.currentDay;
+    console.log(this.currentDay)
     // outer for-loop can support multiple semesters
     for (const j of termPeriod) {
       // check each day of a semester, if it is available, push it in an array, else drop it
