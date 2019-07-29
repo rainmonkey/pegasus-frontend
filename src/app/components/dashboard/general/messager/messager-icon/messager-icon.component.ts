@@ -1,5 +1,5 @@
 import { ChattingService } from './../../../../../services/repositories/chatting.service';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { MessagerService } from 'src/app/services/repositories/messager.service';
 import { Animations } from '../../../../../../animation/chatting-animation';
 
@@ -14,7 +14,6 @@ export class MessagerIconComponent implements OnInit {
   //animation trigger
   public notificationsTrigger: boolean = false;
   public interval: any;
-
   constructor(
     private messagerService: MessagerService,
     private chattingService: ChattingService

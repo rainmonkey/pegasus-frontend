@@ -35,6 +35,7 @@ export class MessagerSubscribersComponent implements OnInit {
     //   console.log(that.notiNum)
     // },1000,that)
     this.getSubscribers();
+    this.messagerService.notice();
 
     this.messagerService.staffNoti$.subscribe(
       (res: number) => {

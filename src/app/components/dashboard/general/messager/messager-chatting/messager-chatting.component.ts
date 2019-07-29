@@ -216,8 +216,12 @@ export class MessagerChattingComponent implements OnInit {
     }
   }
 
-  showPhotoIcon(leftOrRight) {
-    let src = (leftOrRight == 'left') ? this.photoUrl + this.subscriber['Photo'] : this.photoUrl + localStorage.getItem('photo');
+  /**
+   * Display photos.
+   * @param isIncomingMessage - is incoming message?
+   */
+  showPhotoIcon(isIncomingMessage:boolean) {
+    let src = isIncomingMessage? this.photoUrl + this.subscriber['Photo'] : this.photoUrl + localStorage.getItem('photo');
     return src;
   }
 

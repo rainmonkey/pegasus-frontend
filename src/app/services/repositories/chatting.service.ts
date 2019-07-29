@@ -16,6 +16,7 @@ export class ChattingService {
   public reconnectCounter: number = 0;
   public isConnected$ = new Subject();
   public isReconnecting = false;
+  public isBuild = false;
 
 
   constructor(
@@ -29,6 +30,9 @@ export class ChattingService {
    */
   startConnection(userId: number) {
     //build a connection
+   if(this.isBuild){
+     return;
+   }
     this.hubConnection = new signalR.HubConnectionBuilder()
       .withUrl(this.baseUrlForChatting + 'chat?userId=' + userId)
       .build();
@@ -122,6 +126,7 @@ export class ChattingService {
    * @param isConnected connected or disconnected
    */
   processConnectionStatus(isConnected: boolean) {
+    this.isBuild = isConnected;
     this.isConnected$.next(isConnected);
     this.messagerService.saveConnectionStatus(isConnected);
   }
