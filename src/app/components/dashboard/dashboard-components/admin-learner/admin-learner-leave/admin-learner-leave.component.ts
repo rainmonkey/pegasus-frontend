@@ -1,6 +1,6 @@
 import {Component, OnInit, ViewChild, ViewChildren} from '@angular/core';
 import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
-import {FormBuilder} from '@angular/forms';
+import {FormBuilder, Validators} from '@angular/forms';
 import {LearnerDayOff} from '../../../../../models/LearnerDayOff';
 import {LearnersService} from '../../../../../services/http/learners.service';
 import Swal from 'sweetalert2';
@@ -11,6 +11,8 @@ import Swal from 'sweetalert2';
 })
 export class AdminLearnerLeaveComponent implements OnInit {
   learner;
+  hasError = false;
+  errorMessage;
   checkboxArray = [];
   LearnerLeaveForm;
   modal;
@@ -24,13 +26,31 @@ export class AdminLearnerLeaveComponent implements OnInit {
 
   ngOnInit() {
     this.LearnerLeaveForm = this.fb.group({
-      BeginDate: [],
-      EndDate: [],
-      Reason: []
+      BeginDate: ['', Validators.required],
+      EndDate: ['', Validators.required],
+      Reason: ['', Validators.required]
     });
   }
 
+  get BeginDate() {
+    return this.LearnerLeaveForm.get('BeginDate');
+  }
+  get EndDate() {
+    return this.LearnerLeaveForm.get('EndDate');
+  }
+  get Reason() {
+    return this.LearnerLeaveForm.get('Reason');
+  }
+
   Confirm = () => {
+    this.isCancelFailed = false;
+    if (this.LearnerLeaveForm.invalid) {
+      this.CheckAllControllValid();
+      this.hasError = true;
+      this.errorMessage = 'The form is invalid';
+      return;
+    }
+    this.hasError = false;
     this.isloading = true;
     this.isConfirmClick = true;
     const LearnerDayoffModel = new LearnerDayOff(
@@ -54,12 +74,17 @@ export class AdminLearnerLeaveComponent implements OnInit {
   }
 
   checkBoxChange = () => {
-
     this.checkboxArray = [];
     this.checkbox._results.forEach(s => {
         if (s.nativeElement.checked === true) {
           this.checkboxArray.push(Number(s.nativeElement.value));
         }
     });
+  }
+
+  CheckAllControllValid = () => {
+    for (let i in this.LearnerLeaveForm.controls) {
+      this.LearnerLeaveForm.controls[i].touched = true;
+    }
   }
 }

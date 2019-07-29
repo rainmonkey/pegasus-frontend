@@ -89,6 +89,7 @@ export class LearnerRegistrationFormComponent implements OnInit, DoCheck, AfterV
   showErrorH = false;
   touchNext = false;
   learnerValid = true;
+  canAddGroup = true;
   // photo thumbnail
   photoObj;
   // for add more selection
@@ -583,12 +584,12 @@ export class LearnerRegistrationFormComponent implements OnInit, DoCheck, AfterV
 
   // select course category
   selectCategory(id, i) {
-    console.log(this.teaListOutArray)
     // let courseTemp = [];
     this.emptySelectionCat(i);
     this.notPiano [i] = Number(id);
     this.courseListArray[i].courseItemArray = this.catListArray[i].filter(item => item.CourseCategoryId === Number(id));
     console.log("this.courseListArray", this.courseListArray);
+    console.log(this.teaListOutArray[i].teaListToDatePick)
   }
 
   selectCourse(value, i) {
@@ -714,11 +715,7 @@ selectLocation(id, i) {
       this.oneOnOneCourse.push(tempObj);
     };
   }
-
-  onSubmit() {
-    this.confirmGroupCourse();
-    this.confirmCustomCourse();
-    console.log(this.courseGroup);
+  encapsulateLearner(){
     // encapsulate learner form data
     this.learner = [];
     this.learner = this.learnerForm.value;
@@ -739,6 +736,9 @@ selectLocation(id, i) {
     this.fdObj['PaymentPeriod'] = parseInt(this.learner.paymentPeriod);
     this.fdObj['Referrer'] = this.learner.referrer;
     this.fdObj['Comment'] = this.learner.Comment;
+  }
+
+  encapsulateParent(){
     // encapsulate parent form data
     // console.log('submit', this.parentForm.value)
     this.parent = [];
@@ -754,18 +754,40 @@ selectLocation(id, i) {
       // console.log('parent',this.parent);
     }
     this.fdObj['Parent'] = this.parent;
-    if (!this.whichLearner){
-      this.fdObj['LearnerGroupCourse'] = this.learnerGroupCourse;
-      this.fdObj['OneToOneCourseInstance'] = this.oneOnOneCourse;
-    }
-    this.fdObj['LearnerOthers'] = this.learnerOthers;
+  }
+
+  onSubmit() {
+    this.canAddGroup = true;
+    console.log(this.groupCourseInstance, this.oneOnOneCourse)
+    let checkGroup = []
+    this.groupCourseInstance.forEach(ele => {
+      if (ele.isChecked == true){
+        checkGroup.push(1)
+      }
+    });
+    if(checkGroup.length !==0 || this.oneOnOneCourse.length !==0){
+    this.confirmGroupCourse();
+    this.confirmCustomCourse();
+    console.log(this.courseGroup);
+    this.encapsulateLearner();
+    this.encapsulateParent();
+    // if (!this.whichLearner){
+    //   this.fdObj['LearnerGroupCourse'] = this.learnerGroupCourse;
+    //   this.fdObj['OneToOneCourseInstance'] = this.oneOnOneCourse;
+    // }
+
+    if(this.learnerGroupCourse) {this.fdObj['LearnerGroupCourse'] = this.learnerGroupCourse;}
+    if(this.oneOnOneCourse) {this.fdObj['OneToOneCourseInstance'] = this.oneOnOneCourse;}
+    if(this.learnerOthers) {this.fdObj['LearnerOthers'] = this.learnerOthers;}
     console.log(this.fdObj);
     this.fd.delete('details');
     this.fd.append('details', JSON.stringify(this.fdObj));
     console.log(this.fd)
     // console.log('form data', this.fd);
     // active modal waiting for decision
-    this.openConfirm();
+    this.openConfirm();}else{
+      this.canAddGroup = false;
+    }
   }
 
   resetLearner() {

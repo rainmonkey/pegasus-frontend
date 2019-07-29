@@ -16,6 +16,14 @@
           <small class="text-danger" *ngIf="BeginDate.invalid && BeginDate.touched">Please enter the begin date</small>
         </div>
         <div class="col-5">
+          <div>Is Temporary</div>
+          <select formControlName="IsTemporary" (change)="IsTemporaryChange()">
+            <option value="0">No</option>
+            <option value="1">Yes</option>
+          </select>
+          <small class="text-danger" *ngIf="IsTemporary.invalid && IsTemporary.touched">  Please select isTemporary</small>
+        </div>
+        <div class="col-5">
           <div>End Date</div>
           <input type="date" class="form-control" formControlName="EndDate">
         </div>
@@ -39,20 +47,11 @@
 
         </div>
         <div class="col-5">
-          <div>Room Name</div>
-          <div>
-            <select disabled formControlName="RoomId">
-              <option disabled selected value> -- select an option -- </option>
-              <option *ngFor="let room of Rooms" [value]="room.RoomId">{{room.RoomName}}</option>
-            </select>
-          </div>
-          <small class="text-danger" *ngIf="RoomId.invalid && RoomId.touched">Please select Room</small>
-        </div>
-        <div class="col-5">
           <div>Teacher</div>
           <select formControlName="TeacherId">
             <option *ngFor="let teacher of Teachers" [value]="teacher.TeacherId">{{teacher.FirstName}}</option>
           </select>
+          <small class="text-danger" *ngIf="TeacherId.invalid && TeacherId.touched">Please select branch</small>
         </div>
         <div class="col-5">
           <div>Day of week</div>
@@ -70,14 +69,6 @@
           </div>
           <small class="text-danger" *ngIf="DayOfWeek.invalid && DayOfWeek.touched">Please select day of week</small>
         </div>
-        <div class="col-5">
-          <div>Is Temporary</div>
-          <select formControlName="IsTemporary" (change)="IsTemporaryChange()">
-            <option value="0">No</option>
-            <option value="1">Yes</option>
-          </select>
-          <small class="text-danger" *ngIf="IsTemporary.invalid && IsTemporary.touched">Please select isTemporary</small>
-        </div>
         <div class="col-10">
           <div>Reason</div>
           <input type="text" class="form-control" formControlName="reason">
@@ -86,7 +77,7 @@
       </div>
 
       <fieldset *ngFor="let ele of learner.One2oneCourseInstance">
-        <input [value]="ele.CourseInstanceId" type="radio" formControlName="instanceId" (change)="CourseRadioButtonChange()">
+        <input hidden [value]="ele.CourseInstanceId" type="radio" formControlName="instanceId" (change)="CourseRadioButtonChange()">
         <br>
         <div class="card">
           <div class="card-body">
@@ -103,48 +94,41 @@
 
               <div *ngIf='ele.Org' class="col-6">
                 <span class="label" style="font-weight: bold">Location: </span>
-                <span class='text'>{{ele.Org.OrgName}}</span>
-              </div>
-
-              <div class="col-6">
-                <div >
-                  <span class="label" style="font-weight: bold">Room: </span>
-                  <span class='text'> {{ele.Room.RoomName}}</span>
-                </div>
+                <span class='text'>{{ele.Org.Abbr}} - {{ele.Room.RoomName}}</span>
               </div>
 
               <div class="col-6">
                 <span class="label" style="font-weight: bold">Course Start Day: </span>
-                <span class='text'>{{ele.BeginDate}}</span>
+                <span class='text'>{{ele.BeginDate | date: 'yyyy-MM-dd'}}</span>
               </div>
 
               <div class="col-6">
                 <span class="label" style="font-weight: bold">Course End Day: </span>
-                <span class='text'>{{ele.EndDate}}</span>
+                <span class='text'>{{ele.EndDate|date: 'yyyy-MM-dd'}}</span>
               </div>
-
-              <div class="col-6">
-                <span class="label" style="font-weight: bold">Course Sechdule: </span>
-                <fieldset *ngFor='let sechdule of ele.CourseSchedule'>
-                  <input type="radio" [value]="sechdule.CourseScheduleId" (change)="ScheduleRadioButtonChange(sechdule.CourseInstanceId)" formControlName="CourseScheduleId">
-                  <label>
+            </div>
+            <div>
+              <span class="label" style="font-weight: bold">Course Sechdule: </span>
+              <fieldset *ngFor='let sechdule of ele.CourseSchedule'>
+                <input type="radio" [value]="sechdule.CourseScheduleId" (change)="ScheduleRadioButtonChange(sechdule.CourseInstanceId)" formControlName="CourseScheduleId">
+                <label>
                     <span class='text'> {{sechdule.DayOfWeek|weekFormat}}
                       {{sechdule.BeginTime}} -- {{sechdule.EndTime}} </span>
-                  </label>
-                  <div *ngFor="let amendment of ele.Amendment">
-                    <small *ngIf="amendment.IsTemporary==0" class="text-secondary">
-                      The course begins at {{amendment.BeginTime}} from {{amendment.BeginDate| date:'yyyy-MM-dd'}}
-                    </small>
-                    <small *ngIf="amendment.IsTemporary==1" class="text-secondary">
-                      The course begins at {{amendment.BeginTime}} from {{amendment.BeginDate| date:'yyyy-MM-dd'}} to {{amendment.EndDate| date:'yyyy-MM-dd'}}
-                    </small>
-                  </div>
-                </fieldset>
-              </div>
+                </label>
+                <div *ngFor="let amendment of ele.Amendment">
+                  <small *ngIf="amendment.IsTemporary == 0" class="text-secondary">
+                    The course begins at {{amendment.BeginTime}} from {{amendment.BeginDate| date:'yyyy-MM-dd'}} ( Teacher: {{amendment.Teacher.FirstName}} Location : {{amendment.Org.Abbr}} - {{amendment.Room.RoomName}})
+                  </small>
+                  <small *ngIf="amendment.IsTemporary==1" class="text-secondary">
+                    The course begins at {{amendment.BeginTime}} from {{amendment.BeginDate| date:'yyyy-MM-dd'}} to {{amendment.EndDate| date:'yyyy-MM-dd'}} ( Teacher: {{amendment.Teacher.FirstName}} Location : {{amendment.Org.Abbr}} - {{amendment.Room.RoomName}})
+                  </small>
+                </div>
+              </fieldset>
             </div>
           </div>
         </div>
       </fieldset>
+      <small class="text-danger" *ngIf="CourseScheduleId.invalid && CourseScheduleId.touched">Please select one of options</small>
     </div>
   </div>
   <div class='modal-footer'>

@@ -5,6 +5,7 @@
     border: 3px solid #eef5f9;
     border-radius: 50%;
     position: fixed;
+    z-index:500;
     bottom: 1rem;
     right: 1rem;
     text-align: center;
