@@ -1000,18 +1000,29 @@ selectLocation(id, i) {
           email: ['', [Validators.required, Validators.email]]
         })
       );
-    }
-    else {
+    } else {
+      if (this.whichLearner.Parent.length === 0) {
+        this.parentForm.push(
+          this.fb.group({
+            firstName: ['', Validators.required],
+            lastName: ['', Validators.required],
+            relationship: ['', Validators.required],
+            contactPhone: ['', Validators.required],
+            email: ['', [Validators.required, Validators.email]]
+          })
+        );
+      } else {
       this.whichLearner.Parent.map(p => {
         this.parentForm.push(
           this.fb.group({
-            firstName: [p.FirstName, Validators.required],
-            lastName: [p.LastName, Validators.required],
-            relationship: [p.Relationship, Validators.required],
-            contactPhone: [p.ContactNum, Validators.required],
-            email: [p.Email, [Validators.required, Validators.email]]
+            firstName: [p.FirstName?p.FirstName:'', Validators.required],
+            lastName: [p.LastName?p.LastName:'', Validators.required],
+            relationship: [p.Relationship?p.Relationship:'', Validators.required],
+            contactPhone: [p.ContactNum?p.ContactNum:'', Validators.required],
+            email: [p.Email?p.Email:'', [Validators.required, Validators.email]]
           }))
-      })
+        })
+      }
     };
 
   }
