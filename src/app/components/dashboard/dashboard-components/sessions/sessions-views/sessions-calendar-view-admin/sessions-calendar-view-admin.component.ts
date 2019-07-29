@@ -65,17 +65,13 @@ export class SessionsCalendarViewAdminComponent implements OnInit {
       this.options = {
         themeSystem: 'jquery-ui',
         editable: true,
+        eventDurationEditable: false,
         displayEventTime: true,
         customButtons: {
           DayPickerButton: {
             text: 'Search',
             click: () => {
               this.modalService.open(this.content);
-            }
-          },
-          FullScreenButton: {
-            text: 'Fullscreen',
-            click: () => {
             }
           }
         },
