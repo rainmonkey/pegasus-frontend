@@ -199,7 +199,7 @@ export class LearnerRegistrationFormComponent implements OnInit, DoCheck, AfterV
         levelTypeRadio: [this.whichLearner ? this.whichLearner.LevelType: 1],
         paymentPeriod: [this.whichLearner ? this.whichLearner.PaymentPeriod : '1'],
         referrer: [this.whichLearner ? this.whichLearner.Referrer : ''],
-        isUnder18: [this.whichLearner ? this.whichLearner.isUnder18 : 0],
+        isUnder18: [this.whichLearner&&this.whichLearner==1 ? true : false],
         Comment: [this.whichLearner ? this.whichLearner.Comment : ''],
       }),
       parentForm: this.fb.array([]),
