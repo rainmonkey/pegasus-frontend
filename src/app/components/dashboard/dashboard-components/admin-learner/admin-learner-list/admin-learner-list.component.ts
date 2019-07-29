@@ -162,6 +162,8 @@ export class AdminLearnerListComponent implements OnInit {
         break;
       case 10:
         this.periodCourseChangeModal(command, whichLearner);
+      case 11:
+        this.openRegModal(command,whichLearner)
     }
   }
 
@@ -310,7 +312,7 @@ export class AdminLearnerListComponent implements OnInit {
     modalRef.componentInstance.whichLearner = whichLearner;
   }
 
-  openRegModal(){
+  openRegModal(command,whichLearner){
     //@ts-ignore
     const modalRef = this.modalService.open(NewLearnerRegistrationModalComponent, { size:'xl', backdrop: 'static', keyboard: false });
   }
