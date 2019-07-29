@@ -9,6 +9,7 @@ import { AdminLearnerLeaveComponent } from '../admin-learner-leave/admin-learner
 import { AdminLearnerPeriodCourseChangeModalComponent } from '../admin-learner-period-course-change-modal/admin-learner-period-course-change-modal.component';
 import { LearnerAddModalComponent } from '../learner-add-modal/learner-add-modal.component';
 import { LearnerDeleteCourseModalComponent } from '../learner-delete-course-modal/learner-delete-course-modal.component';
+import { NewLearnerRegistrationModalComponent } from '../New-Learner-Registration-modal/New-Learner-Registration-modal.component';
 @Component({
   selector: 'app-admin-learner-list',
   templateUrl: './admin-learner-list.component.html',
@@ -307,5 +308,10 @@ export class AdminLearnerListComponent implements OnInit {
       }
     )
     modalRef.componentInstance.whichLearner = whichLearner;
+  }
+
+  openRegModal(){
+    //@ts-ignore
+    const modalRef = this.modalService.open(NewLearnerRegistrationModalComponent, { size:'xl', backdrop: 'static', keyboard: false });
   }
 }

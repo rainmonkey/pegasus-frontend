@@ -325,6 +325,8 @@
               <button *ngIf="addCourse == undefined" class="btn_back mx-3 btn btn-info" (click)="next('parentForm')">Back</button>
               <button *ngIf="!addCourse" (click)="onSubmit()" class="btn_submit btn btn-primary" type="submit">Submit</button>
               <button *ngIf="addCourse" (click)="onSubmit()" class="btn_submit btn btn-primary" type="submit">Submit Group Courses</button>
+
+              <small *ngIf="!canAddGroup" class='text-danger row justify-content-end'>You Have To Select At Least One Course</small>
             </div>
           </div>
         </div>
