@@ -23,7 +23,7 @@ export class MessagerRecentlyComponent implements OnInit {
   点击选择和谁聊天
   */
   chattingWithHandler(subscriber) {
-    this.messagerService.saveSubscriberChattingWith(subscriber);
+    this.messagerService.saveSubscriberNowChattingWith(subscriber);
     this.onChattingWith.emit(true);
   }
 }

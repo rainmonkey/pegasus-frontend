@@ -35,8 +35,11 @@ export class MessagerSubscribersComponent implements OnInit {
     //   that.notiNum ++;
     //   console.log(that.notiNum)
     // },1000,that)
+    this.getNotifications();
     this.getSubscribers();
+  }
 
+  getNotifications(){
     this.messagerService.staffNoti$.subscribe(
       (res: number) => {this.staffsNotiNum = res}
     )
@@ -48,6 +51,11 @@ export class MessagerSubscribersComponent implements OnInit {
     )
     this.messagerService.totalNoti$.subscribe(
       (res:number)=>this.totalNotiNum = res
+    )
+    this.messagerService.refreshSubs$.subscribe(
+      (res) =>{
+        this.getSubscribers();
+      }
     )
 
     this.messagerService.notice();
@@ -66,14 +74,6 @@ export class MessagerSubscribersComponent implements OnInit {
     this.LearnerList = LearnerList;
     //console.log(this.messagerService.userIdsOfLearners)
   }
-
-  // getDefaultNotifications(){
-  //   let {teachersNotiNum,staffsNotiNum,learnersNotiNum}  = this.messagerService.getDefaultNotifications();
-  //   console.log(teachersNotiNum)
-  //   this.teachersNotiNum = teachersNotiNum;
-  //   this.staffsNotiNum = staffsNotiNum;
-  //   this.learnersNotiNum =learnersNotiNum;
-  // }
 
   /*
     switch between subscribers and group chat
@@ -100,19 +100,25 @@ export class MessagerSubscribersComponent implements OnInit {
     }
   }
 
-  /*
-    double click to start a new chatting
-  */
-  chattingWithHandler(event, subscriber) {
+  /**
+   * Double click to start a new chat.
+   * @param event 
+   * @param subscriber 
+   * @param cate 
+   */
+  chattingWithHandler(event, subscriber:object,cate:string) {
     //save the subscriber now chatting with.
-    this.messagerService.saveSubscriberChattingWith(subscriber);
+    this.messagerService.saveSubscriberNowChattingWith(subscriber);
+    this.messagerService.processNotifications(subscriber['UserId'],-1,cate)
     //fire emit to parent component to notice need view switch
     this.onChattingWith.emit(true);
   }
 
-  getNotifications(subsciberUserId) {
-    //console.log(subsciberUserId)
-    return 0
+  /**
+   * Track by function.
+   * @param index 
+   */
+  trackByFunction(index){
+    return index;
   }
-
 }
