@@ -26,7 +26,7 @@
       <!--ngif-->
       <div class='col-12' id='group_teachers' style="display: none">
         <!--ngfor-->
-        <div *ngFor='let i of TeacherList' class='row m_s_subscribers' (dblclick)='chattingWithHandler($event,i)'>
+        <div *ngFor='let i of TeacherList;trackBy:trackByFunction' class='row m_s_subscribers' (dblclick)='chattingWithHandler($event,i,"Teacher")'>
           <div class='col-3'>
             <div class='m_s_subscribers_photo'>
               <img [src]="photoUrl + i.Photo" alt="" onerror="this.src='../../../../../../assets/images/shared/default-employer-profile.png'">
@@ -36,7 +36,7 @@
             <div class='m_s_subscribers_name' title='{{i.FirstName + i.LastName}}'>
               {{i.FirstName}} {{i.LastName}}
             </div>
-            <app-messager-notification></app-messager-notification>
+            <app-messager-notification *ngIf='i.notiNum' [notiNum]='i.notiNum'></app-messager-notification>
             <div class='col-12 m_s_subscribers_signature'>
               个性签名
             </div>
@@ -52,14 +52,14 @@
       <!--ngif-->
       <div class='col-12' id='group_students' style="display: none">
         <!--ngfor-->
-        <div *ngFor='let i of LearnerList' class='row m_s_subscribers' (dblclick)='chattingWithHandler($event,i)'>
+        <div *ngFor='let i of LearnerList; trackBy:trackByFunction' class='row m_s_subscribers' (dblclick)='chattingWithHandler($event,i,"Learner")'>
           <div class='col-3'>
             <div class='m_s_subscribers_photo'>
               <img [src]="photoUrl + i.Photo" alt="" onerror="this.src='../../../../../../assets/images/shared/default-employer-profile.png'">
             </div>
           </div>
           <div class='col-9'>
-            <div class='col-12 m_s_subscribers_name' title='{{i.FirstName + i.LastName}}'>
+            <div class='m_s_subscribers_name' title='{{i.FirstName + i.LastName}}'>
               {{i.FirstName}} {{i.LastName}}
             </div>
             <div class='col-12 m_s_subscribers_signature'>
@@ -77,16 +77,17 @@
       <!--ngif-->
       <div class='col-12' id='group_staffs' style="display: none">
         <!--ngfor-->
-        <div *ngFor='let i of StaffList' class='row m_s_subscribers' (dblclick)='chattingWithHandler($event,i)'>
+        <div *ngFor='let i of StaffList;trackBy:trackByFunction' class='row m_s_subscribers' (dblclick)='chattingWithHandler($event,i,"receptionist")'>
           <div class='col-3'>
             <div class='m_s_subscribers_photo'>
               <img [src]="photoUrl + i.Photo" alt="" onerror="this.src='../../../../../../assets/images/shared/default-employer-profile.png'">
             </div>
           </div>
           <div class='col-9'>
-            <div class='col-12 m_s_subscribers_name' title='{{i.FirstName + i.LastName}}'>
+            <div class='m_s_subscribers_name' title='{{i.FirstName + i.LastName}}'>
               {{i.FirstName}} {{i.LastName}}
             </div>
+            <app-messager-notification *ngIf='i.notiNum' [notiNum]='i.notiNum'></app-messager-notification>
             <div class='col-12 m_s_subscribers_signature'>
               奥克兰吴彦祖 奥克兰陈冠希 奥克兰王力宏
             </div>

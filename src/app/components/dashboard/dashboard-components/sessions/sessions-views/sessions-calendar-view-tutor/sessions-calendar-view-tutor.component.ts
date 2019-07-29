@@ -12,6 +12,7 @@ import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {MondayDateInWeekByDatePipe} from '../../../../../../shared/pipes/monday-date-in-week-by-date.pipe';
 import { CoursesService } from '../../../../../../services/http/courses.service';
 import {debounce} from '../../../../../../shared/utils/debounce';
+import {SessionEdit} from '../../../../../../models/SessionEdit';
 
 @Component({
   selector: 'app-sessions-calendar-view-tutor',
@@ -21,15 +22,20 @@ import {debounce} from '../../../../../../shared/utils/debounce';
 })
 export class SessionsCalendarViewTutorComponent implements OnInit {
   debounce = debounce();
+  IsConfirmEditSuccess = false;
+  isloadingSmall = false;
   options: OptionsInput;
   isloading = false;
   @ViewChild('fullcalendar') fullcalendar: CalendarComponent;
+  @ViewChild('confirmModal') confirmModal;
   @ViewChild('content') content;
   @ViewChild('teacher') teacher;
   dateOfLesson;
   teachers;
   teacherId;
   AvailableDays = [];
+  sessionEditModel;
+  reason = '';
   teacherSelected;
   eventsModel: any;
   t = null;
@@ -56,7 +62,25 @@ export class SessionsCalendarViewTutorComponent implements OnInit {
         right: ''
       },
       eventDrop: (info) => {
-        console.log(info)
+        this.IsConfirmEditSuccess = false;
+        const Date = this.datePipe.transform(this.fullcalendar.calendar.getDate(), 'yyyy-MM-dd')
+        const newStartTime = this.datePipe.transform(info.event.start, 'yyyy-MM-dd HH:mm');
+        const newEndTime = this.datePipe.transform(info.event.end, 'yyyy-MM-dd HH:mm');
+        const RoomId = info.event.extendedProps.RoomId;
+        const OrgId = info.event.extendedProps.OrgId;
+        const LessonId = info.event.extendedProps.LessonId;
+        const LearnerId = info.event.extendedProps.LearnerId;
+
+        this.sessionEditModel = new SessionEdit(
+          LessonId, LearnerId, RoomId, this.teacherId, OrgId, this.reason, newStartTime
+        )
+        console.log(this.sessionEditModel)
+        const modalRef = this.modalService.open(this.confirmModal);
+        modalRef.result.then(() => {
+          this.GetEventData(Date);
+        }, () => {
+          this.GetEventData(Date);
+        });
       },
       slotDuration: '00:15',
       customButtons: {
@@ -79,6 +103,23 @@ export class SessionsCalendarViewTutorComponent implements OnInit {
     };
     this.InitialiseEventData();
   }
+
+  ConfirmEdit = () => {
+    this.isloadingSmall = true;
+    this.sessionEditModel.reason = this.reason;
+    this.sessionsService.SessionEdit(this.sessionEditModel).subscribe(res => {
+      this.IsConfirmEditSuccess = true;
+      this.isloadingSmall = false;
+    }, err => {
+      this.isloadingSmall = false;
+      Swal.fire({
+        type: 'error',
+        title: 'Oops...',
+        text: err.error.ErrorMessage
+      });
+    });
+  }
+
   getTeachers = () => {
     this.coursesService.getTeachers().subscribe(res => {
       this.teachers = res.Data;
@@ -88,10 +129,12 @@ export class SessionsCalendarViewTutorComponent implements OnInit {
     data.forEach(s => {
       if (s.IsCanceled == 1) {
         s.color = 'grey';
+        s.editable = false;
       }
 
       if (s.IsConfirm == 1) {
         s.color = 'green';
+        s.editable = false;
       }
       s.title = s.orgAbbr + ' ( ' + s.title + ' )\n';
       s.title += s.student.length === 1 ? s.student[0] : null;

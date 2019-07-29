@@ -16,7 +16,11 @@
     cursor: pointer;
     animation: iconHover 0.3s;
 }
-
+.notification{
+    position: absolute;
+    top:-16px;
+    left:24px;
+}
 
 
 

@@ -14,6 +14,7 @@ export class MessagerIconComponent implements OnInit {
   //animation trigger
   public notificationsTrigger: boolean = false;
   public interval: any;
+  public totalNotiNum: number = 0;
   constructor(
     private messagerService: MessagerService,
     private chattingService: ChattingService
@@ -25,9 +26,13 @@ export class MessagerIconComponent implements OnInit {
     //build a chatting connection
     this.chattingService.startConnection(localStorage.userID);
     //发送请求 看看有没有未读消息 把未读消息存到数据库 【未完成】
-
+    this.messagerService.totalNoti$.subscribe(
+      (res:number) =>{
+        this.totalNotiNum = res;
+      }
+    )
+    this.messagerService.notice();
     //如果有未读消息
-    this.notificationAnimationHandler(true);
   }
 
   /**
@@ -51,13 +56,14 @@ export class MessagerIconComponent implements OnInit {
    */
   displayMessagerModal() {
     this.isModalDisplayed = true;
+    this.notificationAnimationHandler(false);
   }
 
   /**
    * Close messager modal when close icon clicked. 
    * @param event - param emiter from child component, close modal if true
    */
-  closeMessagerModal(event:boolean) {
+  closeMessagerModal(event: boolean) {
     this.isModalDisplayed = !event;
   }
 }
