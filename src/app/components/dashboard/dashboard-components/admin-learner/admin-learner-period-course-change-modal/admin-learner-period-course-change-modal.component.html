@@ -35,10 +35,10 @@
             <small *ngIf="BeginTime.errors?.forbidden" class="text-danger">{{BeginTime.errors?.forbidden.value}}</small>
           </div>
         </div>
-        <div class="col-6">
+        <div class="col-5">
           <div>Org Name</div>
           <div>
-            <select formControlName="OrgId" (change)="GetRoom($event.target.value)">
+            <select formControlName="OrgId" (change)="GetTeachers()">
               <option disabled selected value> -- select an option -- </option>
               <option *ngFor="let org of Orgs" [value]="org.OrgId">{{org.OrgName}}</option>
             </select>
@@ -47,16 +47,9 @@
 
         </div>
         <div class="col-5">
-          <div>Teacher</div>
-          <select formControlName="TeacherId">
-            <option *ngFor="let teacher of Teachers" [value]="teacher.TeacherId">{{teacher.FirstName}}</option>
-          </select>
-          <small class="text-danger" *ngIf="TeacherId.invalid && TeacherId.touched">Please select branch</small>
-        </div>
-        <div class="col-5">
           <div>Day of week</div>
           <div>
-            <select formControlName="DayOfWeek">
+            <select formControlName="DayOfWeek" (change)="GetTeachers()">
               <option disabled selected value> -- select an option -- </option>
               <option value="1">Monday</option>
               <option value="2">Tuesday</option>
@@ -68,6 +61,13 @@
             </select>
           </div>
           <small class="text-danger" *ngIf="DayOfWeek.invalid && DayOfWeek.touched">Please select day of week</small>
+        </div>
+        <div class="col-6">
+          <div>Teacher</div>
+          <select formControlName="TeacherId">
+            <option *ngFor="let teacher of Teachers" [value]="teacher.TeacherId">{{teacher.Teacher.FirstName}} {{teacher.Teacher.LastName}}</option>
+          </select>
+          <small class="text-danger" *ngIf="TeacherId.invalid && TeacherId.touched">Please select branch</small>
         </div>
         <div class="col-10">
           <div>Reason</div>

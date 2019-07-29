@@ -27,7 +27,6 @@ export class AdminLearnerPeriodCourseChangeModalComponent implements OnInit {
               private service: LearnersService) { }
 
   ngOnInit() {
-    this.GetTeachers()
     this.GetOrg();
     this.PeriodCourseChangeForm = this.fb.group({
       BeginDate: ['', Validators.required],
@@ -87,12 +86,6 @@ export class AdminLearnerPeriodCourseChangeModalComponent implements OnInit {
     });
   }
 
-  GetTeachers = () =>{
-    this.service.getTeachers().subscribe(res=>{
-      // @ts-ignore
-      this.Teachers = res.Data;
-    });
-  }
 
   submit = () => {
     if (this.PeriodCourseChangeForm.invalid) {
@@ -152,6 +145,18 @@ export class AdminLearnerPeriodCourseChangeModalComponent implements OnInit {
       this.PeriodCourseChangeForm.get('EndDate').disable();
     } else {
       this.PeriodCourseChangeForm.get('EndDate').enable();
+    }
+  }
+
+  GetTeachers = () => {
+    if (!this.OrgId.invalid && !this.DayOfWeek.invalid) {
+      this.service.GetTeacherRoomByOrgDayOfWeek(this.PeriodCourseChangeForm.get('OrgId').value, this.PeriodCourseChangeForm.get('DayOfWeek').value)
+        .subscribe(res => {
+          // @ts-ignore
+          this.Teachers = res.Data;
+      }, err => {
+        console.log(err);
+      });
     }
   }
 }
