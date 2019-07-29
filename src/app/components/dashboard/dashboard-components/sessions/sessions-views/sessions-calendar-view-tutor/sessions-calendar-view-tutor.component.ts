@@ -55,13 +55,16 @@ export class SessionsCalendarViewTutorComponent implements OnInit {
         center: 'title',
         right: ''
       },
+      eventDrop: (info) => {
+        console.log(info)
+      },
       slotDuration: '00:15',
       customButtons: {
         DayPickerButton: {
           text: 'Search',
           click: () => {
             this.modalService.open(this.content);
-        }
+          }
         }
       },
       eventClick: (info) => {
@@ -72,7 +75,7 @@ export class SessionsCalendarViewTutorComponent implements OnInit {
           }
         );
       },
-      plugins: [timeGridPlugin]
+      plugins: [timeGridPlugin, interactionPlugin]
     };
     this.InitialiseEventData();
   }
