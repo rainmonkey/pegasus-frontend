@@ -714,11 +714,7 @@ selectLocation(id, i) {
       this.oneOnOneCourse.push(tempObj);
     };
   }
-
-  onSubmit() {
-    this.confirmGroupCourse();
-    this.confirmCustomCourse();
-    console.log(this.courseGroup);
+  encapsulateLearner(){
     // encapsulate learner form data
     this.learner = [];
     this.learner = this.learnerForm.value;
@@ -739,6 +735,9 @@ selectLocation(id, i) {
     this.fdObj['PaymentPeriod'] = parseInt(this.learner.paymentPeriod);
     this.fdObj['Referrer'] = this.learner.referrer;
     this.fdObj['Comment'] = this.learner.Comment;
+  }
+
+  encapsulateParent(){
     // encapsulate parent form data
     // console.log('submit', this.parentForm.value)
     this.parent = [];
@@ -754,11 +753,23 @@ selectLocation(id, i) {
       // console.log('parent',this.parent);
     }
     this.fdObj['Parent'] = this.parent;
-    if (!this.whichLearner){
-      this.fdObj['LearnerGroupCourse'] = this.learnerGroupCourse;
-      this.fdObj['OneToOneCourseInstance'] = this.oneOnOneCourse;
-    }
-    this.fdObj['LearnerOthers'] = this.learnerOthers;
+  }
+
+  onSubmit() {
+
+    this.confirmGroupCourse();
+    this.confirmCustomCourse();
+    console.log(this.courseGroup);
+    this.encapsulateLearner();
+    this.encapsulateParent();
+    // if (!this.whichLearner){
+    //   this.fdObj['LearnerGroupCourse'] = this.learnerGroupCourse;
+    //   this.fdObj['OneToOneCourseInstance'] = this.oneOnOneCourse;
+    // }
+
+    if(this.learnerGroupCourse) {this.fdObj['LearnerGroupCourse'] = this.learnerGroupCourse;}
+    if(this.oneOnOneCourse) {this.fdObj['OneToOneCourseInstance'] = this.oneOnOneCourse;}
+    if(this.learnerOthers) {this.fdObj['LearnerOthers'] = this.learnerOthers;}
     console.log(this.fdObj);
     this.fd.delete('details');
     this.fd.append('details', JSON.stringify(this.fdObj));

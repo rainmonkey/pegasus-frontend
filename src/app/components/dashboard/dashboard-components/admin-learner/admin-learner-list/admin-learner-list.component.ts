@@ -224,7 +224,8 @@ export class AdminLearnerListComponent implements OnInit {
     Edit modal
   */
   EditModal(command, whichLearner) {
-    const modalRef = this.modalService.open(LearnerEditModalComponent, { windowClass: 'my-class', backdrop: 'static', keyboard: false });
+    //@ts-ignore
+    const modalRef = this.modalService.open(LearnerEditModalComponent, { size:'xl', backdrop: 'static', keyboard: false });
 
     let that = this;
     modalRef.result.then(
