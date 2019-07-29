@@ -11,8 +11,8 @@ import { GeneralRepoService } from '../../../../../services/repositories/general
   styleUrls: ['./learner-credit-details.component.css']
 })
 export class LearnerCreditDetailsComponent implements OnInit {
-// get learner id from model template component
-@Input() whichLearner;
+  // get learner id from model template component
+  @Input() whichLearner;
   public learner: any
   public learnerId: number
   public remainingCourseData: any

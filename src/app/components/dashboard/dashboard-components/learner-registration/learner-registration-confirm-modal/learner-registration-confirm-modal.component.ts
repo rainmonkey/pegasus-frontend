@@ -35,7 +35,7 @@ export class LearnerRegistrationConfirmModalComponent implements OnInit {
     // return console.log(this.fdObj)
     this.isloading = true;
     this.isConfirmClick = true;
-    console.log(this.command, this.learnerId);
+    console.log(this.command, this.learnerId, this.isloading);
     let fun;
     if (this.command === 1) {
       fun= this.registrationService.postStudent(this.fdObj);
@@ -90,7 +90,6 @@ export class LearnerRegistrationConfirmModalComponent implements OnInit {
       }
     )
 
-    this.activeModal.dismiss();
   }
 
 }

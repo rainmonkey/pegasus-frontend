@@ -2,10 +2,9 @@ import { environment } from './../../../environments/environment.prod';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import * as signalR from '@aspnet/signalr';
-import { retry, delay } from 'rxjs/operators'
+import { take } from 'rxjs/operators'
 import { MessagerService } from './messager.service';
-import { throwError, from, forkJoin, Observable, of, Subject } from 'rxjs';
-import { tap } from 'rxjs/operators';
+import { from, Subject, timer } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -14,93 +13,123 @@ export class ChattingService {
   public hubConnection: signalR.HubConnection;
   public baseUrlForChatting: any = environment.baseUrlForChatting;
   public baseUrl: any = environment.baseUrl;
-  public reconnectCounter:number = 0;
-  public manualReconnectFlag:boolean = false;
-  public disconnectFlag$ = new Subject();
+  public reconnectCounter: number = 0;
+  public isConnected$ = new Subject();
+  public isReconnecting = false;
+  public isBuild = false;
 
-  constructor(private http: HttpClient,
-    private messagerService: MessagerService) { }
 
-  //start connection
-  //如果连接失败 重连5次 如果中途短线 会自动保持15s连接状态
+  constructor(
+    private http: HttpClient,
+    private messagerService: MessagerService
+  ) { }
+
+  /**
+   * Start chatting connection with server by using SignalR.
+   * @param userId - user's ID
+   */
   startConnection(userId: number) {
+    //build a connection
+   if(this.isBuild){
+     return;
+   }
     this.hubConnection = new signalR.HubConnectionBuilder()
       .withUrl(this.baseUrlForChatting + 'chat?userId=' + userId)
       .build();
-    
+
     this.hubConnection
       .start()
       .then(() => {
         console.log('connection started');
-        this.reconnectCounter = 0;
-        this.manualReconnectFlag = false;
-        this.listenMessage();
+        this.isReconnecting = false;
+        this.processConnectionStatus(true);
+        this.listenMessageOneToOne();
       })
-      //当connect连接出现错误(连接失败)
+      //when connection failed
       .catch(err => {
-        this.disconnectFlag$.next(true);
-        console.log('11111')
-        this.reconnect(userId);
+        this.reconnect(userId, 3000, 5);
       });
 
     this.hubConnection
-    //当连接成功后 断线(连接断开)
-      .onclose(() =>{
-        this.reconnectCounter = 0;
-        this.disconnectFlag$.next(true);
-        // if(!this.manualReconnectFlag){
-        //   this.reconnect(userId);
-        // }
-        // console.log('------');
-        // return;
+      //when lost connetion after connection started
+      .onclose(() => {
+        console.log('lost connection');
+        this.processConnectionStatus(false);
       })
   }
 
-  reconnect(userId){
-    //重连5次后放弃  
-    if(this.reconnectCounter > 4){
-      this.reconnectCounter = 0;
-      return;
+  /**
+   * Reconnect.
+   * @param userId - user's ID
+   * @param timeInterval - time interval between reconnection
+   * @param reconnectTimes - max times to reconnect
+   */
+  reconnect(userId, timeInterval, reconnectTimes) {
+    if (!this.isReconnecting) {
+      this.isReconnecting = true;
+      this.processConnectionStatus(false);
+      let reconnectionTimer$ = timer(timeInterval, timeInterval);
+      reconnectionTimer$.pipe(
+        take(reconnectTimes)
+      )
+        .subscribe(
+          () => {
+            this.startConnection(userId);
+          },
+          null,
+          () => {
+            this.isReconnecting = false;
+          }
+        )
     }
-    let reconnectTimeInterval = this.reconnectCounter === 0? 0 : 5000;
-  
-    setTimeout(()=>{
-      this.startConnection(userId)
-    },reconnectTimeInterval)
-
-    this.reconnectCounter ++;
   }
 
-  closeConnection(){
-    this.manualReconnectFlag = true;
-    console.log('close')
+  /**
+   * Close a connection.
+   */
+  closeConnection() {
     this.hubConnection.stop()
-    .then(()=>{
-      this.disconnectFlag$.next(true);
-    })
+      .then(() => {
+        this.processConnectionStatus(false);
+      })
   }
 
-  //send message
-  sendMessage(messageObj) {
-    //return from(this.hubConnection.invoke('SendMessageOneToOne', messageObj));
-    return forkJoin(
-      from(this.hubConnection.invoke('SendMessageOneToOne', messageObj)),
-      //放后台吧这个东西
-      // this.http.post(this.baseUrl + 'chat', messageObj).pipe(
-      //   retry(2)
-      // )
-    )
+  /**
+   * Send message with mode 1 to 1.
+   * @param messageObj - message object to send
+   */
+  sendMessageOneToOne(messageObj) {
+    return from(this.hubConnection.invoke('SendMessageOneToOne', messageObj))
+    //放后台吧这个东西
+    // this.http.post(this.baseUrl + 'chat', messageObj).pipe(
+    //   retry(2)
+    // )
+
   }
 
-  //listen on the message
-  listenMessage() {
+  /**
+   * Listen the incoming message in 1 to 1 mode.
+   */
+  listenMessageOneToOne() {
     this.hubConnection.on('SendMessageOneToOne',
-      (id, message, messageTime) => {
+      (id, message, messageTime, role) => {
         //接收信息处理
-        this.messagerService.saveChattingHistory({ subscriberId: id, message: message, leftOrRight: 'left', createTime: messageTime, isError: false, isResend: false })
+        console.log(id, message, messageTime, role)
+        this.messagerService.processIncomingMessage(id, message, messageTime,role)
       }),
       (err) => {
         console.log(err)
       }
+  }
+
+  /**
+   * Online status processor.
+   * @param isConnected connected or disconnected
+   */
+  processConnectionStatus(isConnected: boolean) {
+    console.log(isConnected)
+    this.isBuild = isConnected;
+    this.isConnected$.next(isConnected);
+    this.messagerService.saveConnectionStatus(isConnected);
   }
 }

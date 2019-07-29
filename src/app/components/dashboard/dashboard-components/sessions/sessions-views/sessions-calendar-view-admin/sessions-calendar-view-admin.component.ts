@@ -65,13 +65,15 @@ export class SessionsCalendarViewAdminComponent implements OnInit {
       this.options = {
         themeSystem: 'jquery-ui',
         editable: true,
+        eventDurationEditable: false,
+        displayEventTime: true,
         customButtons: {
           DayPickerButton: {
             text: 'Search',
             click: () => {
               this.modalService.open(this.content);
             }
-          },
+          }
         },
         ////////
         eventClick: (info) => {
@@ -98,26 +100,27 @@ export class SessionsCalendarViewAdminComponent implements OnInit {
           });
         },
         resources: this.resourceData,
-        displayEventTime: false,
         events: this.eventData,
-        aspectRatio: 1.8,
         allDaySlot: false,
         defaultView: 'resourceTimeGridDay',
         schedulerLicenseKey: 'GPL-My-Project-Is-Open-Source',
         minTime: '08:00',
         maxTime: '21:00',
         scrollTime: '08:00',
-        height: 660,
+        height: window.innerHeight - 110,
         views: {
           resourceTimeGridDay: {
             buttonText: 'Day',
             slotDuration: '00:15'
           }
         },
+        windowResize: () => {
+          this.fullcalendar.calendar.setOption('height', window.innerHeight - 110);
+        },
         header: {
-          left: 'today prev,next DayPickerButton',
-          center: 'title',
-          right: 'testButton'
+          left: 'today prev,next DayPickerButton title',
+          center: '',
+          right: ''
         },
         plugins: [timeslot, interactionPlugin]
       };
@@ -172,7 +175,7 @@ export class SessionsCalendarViewAdminComponent implements OnInit {
 
       const type = '(' + s.title + ')';
       s.title = '';
-      s.title += s.teacher + ' ' + type;
+      s.title += 'Tutor: ' + s.teacher + ' ' + type;
       if (s.IsGroup == false) {
         s.title += '\nLearner: ' + s.learner[0].FirstName;
       }

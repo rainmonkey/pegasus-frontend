@@ -13,13 +13,18 @@
       <div class="row">
         <div class="col-5">
           <div>Begin Date</div>
-          <input type="date" class="form-control" formControlName="BeginDate">
+          <input [class.is-invalid]="BeginDate.invalid && BeginDate.touched" type="date" class="form-control" formControlName="BeginDate">
+          <small class="text-danger" *ngIf="BeginDate.invalid && BeginDate.touched">Please enter begin date</small>
         </div>
         <div class="col-5">
           <div>End Date</div>
-          <input type="date" class="form-control" formControlName="EndDate">
+          <input [class.is-invalid]="EndDate.invalid && EndDate.touched" type="date" class="form-control" formControlName="EndDate">
+          <small class="text-danger" *ngIf="EndDate.invalid && EndDate.touched">Please enter end date</small>
         </div>
       </div>
+      <div>Reason</div>
+      <input [class.is-invalid]="Reason.invalid && Reason.touched" type="text" class="form-control" formControlName="Reason">
+      <small class="text-danger" *ngIf="Reason.invalid && Reason.touched">Reason is required.</small>
       <div *ngFor="let ele of learner.One2oneCourseInstance">
         <input #checkbox (change)="checkBoxChange()"  [value]="ele.CourseInstanceId" type="checkbox">
         <br>
@@ -50,12 +55,12 @@
 
               <div class="col-6">
                 <span class="label" style="font-weight: bold">Course Start Day: </span>
-                <span class='text'>{{ele.BeginDate}}</span>
+                <span class='text'>{{ele.BeginDate | date:'yyyy-MM-dd'}}</span>
               </div>
 
               <div class="col-6">
                 <span class="label" style="font-weight: bold">Course End Day: </span>
-                <span class='text'>{{ele.EndDate}}</span>
+                <span class='text'>{{ele.EndDate | date:'yyyy-MM-dd'}}</span>
               </div>
 
               <div class="col-6">
@@ -69,11 +74,11 @@
           </div>
         </div>
       </div>
-      <div>Reason</div>
-      <input type="text" class="form-control" formControlName="Reason">
+      <small class="text-danger" *ngIf="checkboxArray.length ==0 && hasError">please choose at least one option</small>
     </div>
   </div>
   <div class='modal-footer'>
+    <span *ngIf="hasError" class="text-danger">{{errorMessage}}</span>
     <span *ngIf='isCancelSuccess' class='text-success'>Cancel Success </span>
     <span *ngIf='isCancelFailed' class='text-danger'>Cancel Fail </span>
     <div *ngIf="isloading" class="loaderSmall"></div>

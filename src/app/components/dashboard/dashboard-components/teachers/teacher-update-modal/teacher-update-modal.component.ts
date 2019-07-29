@@ -23,6 +23,7 @@ export class TeacherUpdateModalComponent implements OnInit {
   constructor(public activeModal: NgbActiveModal, private teachersService: TeachersService) { }
 
   ngOnInit() {
+    console.log(this.modalUpdateFormComponentObj)
   }
 
   onClose(){
@@ -78,11 +79,13 @@ export class TeacherUpdateModalComponent implements OnInit {
     this method is used to convert data to correct type.
   */
   prepareSubmitData(valueToSubmit) {
+    console.log(valueToSubmit)
     valueToSubmit.Gender = this.checkGender();
     valueToSubmit.Language = this.checkLanguages();
-    valueToSubmit.DayOfWeek = this.checkOrgs();
+    valueToSubmit.DayOfWeek = this.modalUpdateFormComponentObj.DayOfWeek;
     valueToSubmit.Qualificatiion = this.checkQualifications(valueToSubmit);
     valueToSubmit.IDType = Number(valueToSubmit.IDType);
+    console.log(valueToSubmit)
     return valueToSubmit;
   }
 
@@ -170,37 +173,37 @@ export class TeacherUpdateModalComponent implements OnInit {
   }
 
 
-  checkOrgs() {
-    let temBranches = this.modalUpdateFormComponentObj.branchesCheckBox._results;
-    let temBranchesList = [[], [], [], [], [], [], []];
+  // checkOrgs() {
+  //   let temBranches = this.modalUpdateFormComponentObj.branchesCheckBox._results;
+  //   let temBranchesList = [[], [], [], [], [], [], []];
 
-    for (let i of temBranches) {
-      if (i.nativeElement.checked == true) {
-        if (i.nativeElement.name == 'Monday') {
-          temBranchesList[0].push(Number(i.nativeElement.defaultValue))
-        }
-        if (i.nativeElement.name == 'Tuesday') {
-          temBranchesList[1].push(Number(i.nativeElement.defaultValue))
-        }
-        if (i.nativeElement.name == 'Wednesday') {
-          temBranchesList[2].push(Number(i.nativeElement.defaultValue))
-        }
-        if (i.nativeElement.name == 'Thursday') {
-          temBranchesList[3].push(Number(i.nativeElement.defaultValue))
-        }
-        if (i.nativeElement.name == 'Friday') {
-          temBranchesList[4].push(Number(i.nativeElement.defaultValue))
-        }
-        if (i.nativeElement.name == 'Saturday') {
-          temBranchesList[5].push(Number(i.nativeElement.defaultValue))
-        }
-        if (i.nativeElement.name == 'Sunday') {
-          temBranchesList[6].push(Number(i.nativeElement.defaultValue))
-        }
-      }
-    }
-    return temBranchesList;
-  }
+  //   for (let i of temBranches) {
+  //     if (i.nativeElement.checked == true) {
+  //       if (i.nativeElement.name == 'Monday') {
+  //         temBranchesList[0].push(Number(i.nativeElement.defaultValue))
+  //       }
+  //       if (i.nativeElement.name == 'Tuesday') {
+  //         temBranchesList[1].push(Number(i.nativeElement.defaultValue))
+  //       }
+  //       if (i.nativeElement.name == 'Wednesday') {
+  //         temBranchesList[2].push(Number(i.nativeElement.defaultValue))
+  //       }
+  //       if (i.nativeElement.name == 'Thursday') {
+  //         temBranchesList[3].push(Number(i.nativeElement.defaultValue))
+  //       }
+  //       if (i.nativeElement.name == 'Friday') {
+  //         temBranchesList[4].push(Number(i.nativeElement.defaultValue))
+  //       }
+  //       if (i.nativeElement.name == 'Saturday') {
+  //         temBranchesList[5].push(Number(i.nativeElement.defaultValue))
+  //       }
+  //       if (i.nativeElement.name == 'Sunday') {
+  //         temBranchesList[6].push(Number(i.nativeElement.defaultValue))
+  //       }
+  //     }
+  //   }
+  //   return temBranchesList;
+  // }
 
   checkQualifications(valueToSubmit) {
     let checkQualificationsList = [];

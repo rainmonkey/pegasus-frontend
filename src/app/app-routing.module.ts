@@ -49,6 +49,7 @@ import { StockApplicationListComponent } from './components/dashboard/dashboard-
 import { AdminLearnerTimetableComponent } from './components/dashboard/dashboard-components/admin-learner/admin-learner-timetable/admin-learner-timetable.component';
 
 
+
 //canActivate: [DashboardRestrictGuard],
 const routes: Routes = [
   {
@@ -178,7 +179,8 @@ const routes: Routes = [
       // Below to be rearranged
       { path: 'holidays', component: HolidayCalendarComponent },
       { path: 'corporate-order-application', component: CoporateOrderApplicationComponent },
-      { path: 'conflict-Check', component: ConflictCheckComponent }
+      { path: 'conflict-Check', component: ConflictCheckComponent },
+
     ]
   },
   { path: 'login', component: LoginComponent },

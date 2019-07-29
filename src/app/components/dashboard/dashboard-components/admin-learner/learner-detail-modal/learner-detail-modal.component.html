@@ -170,7 +170,7 @@
                   Enrollment Agreement: &nbsp;
                 </h5>
                 <div *ngIf="this.whichLearner.FormUrl !== null" class='download'>
-                  <span (click)='clickFormUrl()' download>{{othersmsg}}</span>
+                  <span (click)='clickFormUrl()' download>{{agreeFormMsg}}</span>
                 </div>
                 <div *ngIf="this.whichLearner.FormUrl == null">
                   <span>No Files</span>
@@ -224,42 +224,42 @@
           </div>
 
           <div *ngIf='whichLearner.LearnerGroupCourse.length !== 0 '>
-          <div *ngFor='let groupCourse of whichLearner.LearnerGroupCourse '>
-            <br>
-            <div class="card">
-              <div class="card-body">
-                <div class="row">
-                  <div class="col-7">
-                    <span class="label">Course: </span>
-                    <span class='text'>{{groupCourse.GroupCourseInstance.Course.CourseName}}</span>
-                  </div>
+            <div *ngFor='let groupCourse of whichLearner.LearnerGroupCourse '>
+              <br>
+              <div class="card">
+                <div class="card-body">
+                  <div class="row">
+                    <div class="col-7">
+                      <span class="label">Course: </span>
+                      <span class='text'>{{groupCourse.GroupCourseInstance.Course.CourseName}}</span>
+                    </div>
 
-                  <div class="col-5">
-                    <span class="label">Teacher: </span>
-                    <span class='text'>{{groupCourse.GroupCourseInstance.Teacher.FirstName}}
-                      {{groupCourse.GroupCourseInstance.Teacher.LastName}}
-                    </span>
-                  </div>
+                    <div class="col-5">
+                      <span class="label">Teacher: </span>
+                      <span class='text'>{{groupCourse.GroupCourseInstance.Teacher.FirstName}}
+                        {{groupCourse.GroupCourseInstance.Teacher.LastName}}
+                      </span>
+                    </div>
 
-                  <div class="col-12">
-                    <span class="label">Location: </span>
-                    <span class='text'>
-                      {{groupCourse.GroupCourseInstance.OrgId|orgFormat}}
-                      {{groupCourse.GroupCourseInstance.Room.RoomName}}
-                    </span>
-                  </div>
+                    <div class="col-12">
+                      <span class="label">Location: </span>
+                      <span class='text'>
+                        {{groupCourse.GroupCourseInstance.OrgId|orgFormat}}
+                        {{groupCourse.GroupCourseInstance.Room.RoomName}}
+                      </span>
+                    </div>
 
-                  <div class="col-12">
-                    <span class="label">Schedule: </span>
-                    <span *ngFor='let time of groupCourse.GroupCourseInstance.CourseSchedule'>
-                      <span class='text'>{{time.DayOfWeek|weekFormat}}
-                        {{time.BeginTime}} -- {{time.EndTime}}</span>
-                    </span>
+                    <div class="col-12">
+                      <span class="label">Schedule: </span>
+                      <span *ngFor='let time of groupCourse.GroupCourseInstance.CourseSchedule'>
+                        <span class='text'>{{time.DayOfWeek|weekFormat}}
+                          {{time.BeginTime}} -- {{time.EndTime}}</span>
+                      </span>
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
-          </div>
           </div>
         </div>
       </ng-template>
@@ -918,6 +918,13 @@
           aria-label="Default pagination" [pageSize]='pageSize'>
         </ngb-pagination>
 
+      </ng-template>
+    </ngb-tab>
+
+    <ngb-tab title="Time Table">
+      <ng-template ngbTabContent>
+        <br>
+        <app-admin-learner-timetable></app-admin-learner-timetable>
       </ng-template>
     </ngb-tab>
 

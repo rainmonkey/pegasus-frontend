@@ -1,8 +1,9 @@
-<div class='m_p_person_info' [@themeImgTrigger] = 'themeChangeFlag'>
+<div class='m_p_person_info' [@themeImgTrigger] = "'theme' + customThemeIndex">
   <div class='m_p_photo_outer'>
     <div class='m_p_photo_inner'>
       <!-- <img src="../../../../../../assets/images/usersimg/userphoto.jpg" alt=""> -->
-      <img [src]="photoUrl + userPhoto" alt=""  onerror="this.src='../../../../../../assets/images/shared/default-employer-profile.png'">
+      <img [src]="photoUrl + userPhoto" alt=""  onerror="this.src='../../../../../../assets/images/shared/default-employer-profile.png'"
+      [@greyFilterTrigger]="connectionStatus?'online':'offline'">
     </div>
   </div>
   <div class='m_p_info'>
@@ -27,5 +28,5 @@
   </div>
 
   <!--online status btn--> 
-  <div class='m_p_online_status' title='onlineStatus' [@onlineStatusTrigger]='onlineStatus' (click)='changeOnlineStatusStyle($event)'></div>
+  <div class='m_p_online_status' title="connectionStatus?'online':'offline'" [@onlineStatusTrigger]="connectionStatus?'online':'offline'"></div>
 </div>

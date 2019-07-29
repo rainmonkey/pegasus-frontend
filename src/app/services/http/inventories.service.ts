@@ -35,7 +35,9 @@ export class InventoriesService {
   getStockApplication(beginDate: any, endDate: any ): Observable<any> {
     return this.http.get(this.baseUrl + `StockApplication/${beginDate}/${endDate}`);
   }
-
+  getNewStockApplication(applicationId: number) {
+    return this.http.get(this.baseUrl + `StockApplication/getById/${applicationId}`);
+  }
   /* for stock-application-detail-modal dropdown options */
   getProdCats(): Observable<any> {
     return this.http.get(this.baseUrl + `Product/GetCat`);
@@ -49,7 +51,7 @@ export class InventoriesService {
 
   /* post data  */
   postProduct(product: PostProduct): Observable<any>{
-    return this.http.post(this.baseUrl+'StockApplication',product)
+    return this.http.post(this.baseUrl + 'StockApplication', product)
            .pipe(
              catchError(this.errorHandler)
            );
@@ -57,5 +59,10 @@ export class InventoriesService {
   // throw error to component
   errorHandler(error: HttpErrorResponse) {
     return throwError(error);
+  }
+
+  /* delete data */
+  deleteProduct(applicationId: number):  Observable<any> {
+    return this.http.delete(this.baseUrl + `StockApplication/${applicationId}`)
   }
 }

@@ -16,7 +16,7 @@ import Swal from 'sweetalert2';
 export class RemindModalComponent implements OnInit {
   public remindsList:Array<any>;
   whichRemind;
-
+  remindContent
   constructor(
     private router: Router,
     private modalService: NgbModal,
@@ -29,10 +29,11 @@ export class RemindModalComponent implements OnInit {
    }
 
 
-  ngOnInit() { 
+  ngOnInit() {
     console.log(this.whichRemind)
+    this.remindContent=this.whichRemind.RemindContent
   }
-  
+
 
 
 }

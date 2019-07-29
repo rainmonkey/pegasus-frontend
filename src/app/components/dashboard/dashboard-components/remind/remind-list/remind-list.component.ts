@@ -29,7 +29,7 @@ export class RemindListComponent implements OnInit {
   public detail:Array<string> = [
     'Type', 'Teacher', 'Course', 'RemindTitle', 'Info'
   ]
-  
+
   @ViewChild('pagination') pagination;
 
 
@@ -41,7 +41,7 @@ export class RemindListComponent implements OnInit {
     private datePipe: DatePipe,
   ) { }
 
-  ngOnInit():any{ 
+  ngOnInit():any{
     var today = new Date().toISOString().split('T')[0];
     // console.log(today);
 
@@ -77,7 +77,7 @@ export class RemindListComponent implements OnInit {
     var endDate = this.searchEndDate;
     this.getRemindData(beginDate, endDate);
   }
- 
+
   remindModal(data){
     // console.log(data)
     let madalRef = this.modalService.open(RemindModalComponent, {size:'lg'})
