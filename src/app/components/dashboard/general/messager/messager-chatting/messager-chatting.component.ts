@@ -137,28 +137,26 @@ export class MessagerChattingComponent implements OnInit {
     this.onStartChatting.emit(false);
   }
 
-  /*
-    called by template event
-    message send failed handler
+ /**
+  * Resend message when user click resend button.
+  * @param event - template event
+  * @param messageIndex - message index
   */
-  resentMessage(event, index) {
-    //get the failed message object from storage 
-    let msg = this.messagerService.getSpecificChattingMessageHistory(this.subscriber['UserId'], index);
-    //set isError to false
+  resentMessage(event, messageIndex) {
+    let msg = this.messagerService.readChattingHistory(this.subscriber['UserId'], messageIndex);
+    //set isError as false
     msg.isError = false;
-    //set isResend to true
+    //set isResend as true
     msg.isResend = true;
     let createAt = new Date(msg['createTimeStamp'])
-    //save(update) resend message to storage
     this.messagerService.saveChattingHistory(msg);
-    //resend to subscriber   
+    //resend message   
     this.sendMessageToServer(msg['messageBody'], createAt);
   }
 
-  /*
-    called by tempalte event
-    display/hide emoji picker panel
-  */
+  /**
+   * Emoji picker display handler.
+   */
   displayEmojiPicker() {
     this.emojiPickerDisplayFlag = !this.emojiPickerDisplayFlag;
   }
