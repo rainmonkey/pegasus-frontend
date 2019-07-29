@@ -19,7 +19,7 @@ export class MessagerService {
   public staffNoti$ = new Subject();
   public learnersNotiNum: number = 0;
   public learnersNoti$ = new Subject();
-  public subscriberChattingWith: object = {};
+  public totalNoti$ = new Subject();
 
   constructor(private http: HttpClient) {
     console.log('messager service')
@@ -73,23 +73,20 @@ export class MessagerService {
     };
   }
 
-
   /*
-    save the subscriber's object now chatting in session storage 
-  */
+   save the subscriber's object now chatting in session storage 
+ */
   saveSubscriberChattingWith(subscriber) {
     let subscriberStr = JSON.stringify(subscriber);
     sessionStorage.setItem('subscriberChattingWith', subscriberStr);
     this.saveRecentSubscribers(subscriber);
   }
 
-  /*
-    get the subscriber's now chatting Object from session storage
-  */
-  getSubscriberChattingWith() {
-    let subscriberObj = sessionStorage.getItem('subscriberChattingWith') ? JSON.parse(sessionStorage.getItem('subscriberChattingWith')) : null;
-    this.subscriberChattingWith = subscriberObj;
-    return subscriberObj;
+  /**
+   * Read from session storage to get the subscriber that user now chatting with.
+   */
+  readSubscriberNowChattingWith() {
+    return JSON.parse(sessionStorage.getItem('subscriberChattingWith'));
   }
 
   /*
@@ -145,11 +142,11 @@ export class MessagerService {
    */
   processIncomingMessage(senderId: number, message: string, createTime: string, role: string) {
 
-    this.simulateNotifications(1, role);
+    this.processNotifications(1, role);
 
     //message object to save
     let messageObj = {
-      senderId: senderId,
+      subscriberId: senderId,
       messageBody: message,
       isIncomingMessage: true,
       isResend: false,
@@ -160,15 +157,14 @@ export class MessagerService {
   }
 
   /**
-    *@param senderId - sender's userId 
     *@param imcomingNumberOfNotifications - how many notifications to simulate
     *@param role - role of sender
   */
-  simulateNotifications(incomingNumberOfNotifications: number, role: string) {
+  processNotifications(incomingNumberOfNotifications: number, role: string) {
     let isPass = true;
     switch (role) {
       case 'receptionist':
-        this.staffsNotiNum += incomingNumberOfNotifications;
+        this.calculateNotifications('Staff', incomingNumberOfNotifications);
         break;
       default:
         isPass = false;
@@ -176,99 +172,117 @@ export class MessagerService {
     }
 
     if (isPass) {
-      this.totalNotiNum += incomingNumberOfNotifications;
+      this.calculateNotifications('Total', incomingNumberOfNotifications)
       this.notice();
     }
   }
 
+  calculateNotifications(cate: string, notiNum: number) {
+    let number = this.readNotificationNumbers(cate);
+    number = number + notiNum;
+    this.saveNotificationNumbers(cate, number);
+  }
+
+  /**
+   * Read the number of notifications from session storage.
+   * @param cate - categories: Teacher, Staff, Learner, Total
+   */
+  readNotificationNumbers(cate: string) {
+    return JSON.parse(sessionStorage.getItem(cate + 'NotiNum'));
+  }
+
+  /**
+   * Save the number of notifications to session storage.
+   * @param cate - categories: Teacher, Staff, Learner, Total
+   * @param notiNum - numbers of updated notifications
+   */
+  saveNotificationNumbers(cate: string, notiNum: number) {
+    sessionStorage.setItem(cate + 'NotiNum', JSON.stringify(notiNum));
+  }
+
+  /**
+   * Notice that the notifications changed(how many new messages incoming)
+   */
   notice() {
     this.learnersNoti$.next(this.learnersNotiNum);
     this.teacherNoti$.next(this.teachersNotiNum);
-    this.staffNoti$.next(this.staffsNotiNum);
+    this.staffNoti$.next(this.readNotificationNumbers('Staff'));
+    this.totalNoti$.next(this.readNotificationNumbers('Total'));
   }
 
-  /*
-    save chatting history
-     --> save chatting messages to the local storage when user push the send button,
-         but if message sent failed(async), update info of message's history (push a new message with isError prop and delete the failed message) 
-  */
-  saveChattingHistory(messageObj: { senderId: number, messageBody: string, isIncomingMessage: boolean, createAt: any, isError: boolean, isResend: boolean, createTimeStamp?: number }) {
-    let historyKeyName = messageObj.senderId + 'History';
-    //messageObj.createTime = messageObj.createTime.toLocaleString();
-    //if histroy exist with a subscriber, push new message to local storage
-    if (sessionStorage.getItem(historyKeyName)) {
-      let historyObj = JSON.parse(sessionStorage.getItem(historyKeyName));
+  /**
+   * Save chatting history to session storage.
+   * @param messageObj - message object
+   */
+  saveChattingHistory(messageObj: MessageObject) {
+    let key = messageObj.subscriberId + 'History';
+    //push new message if history exist
+    if (sessionStorage.getItem(key)) {
+      let historyObj = JSON.parse(sessionStorage.getItem(key));
 
-      //message sent failed or resend handler
-      //if any message sent failed or resend, update message info to failed status
+      //if error or resend
       if (messageObj.isError || messageObj.isResend) {
-        //@param: index of failed message
-        let failedIndex;
-        //get the index of failed message
+        let errorMessageIndex;
         historyObj.filter((item, index) => {
           if (item.createTimeStamp == messageObj.createTimeStamp) {
-            failedIndex = index;
+            errorMessageIndex = index;
             return true;
           }
-        }, failedIndex);
-        //update message info to failed status
-        historyObj[failedIndex] = messageObj;
+        }, errorMessageIndex);
+        //update message
+        historyObj[errorMessageIndex] = messageObj;
       }
       //if normal message, just push it to local storage
       else {
         historyObj.push(messageObj);
       }
-      sessionStorage.setItem(historyKeyName, JSON.stringify(historyObj));
+      sessionStorage.setItem(key, JSON.stringify(historyObj));
     }
 
-    //if history of a subscriber does not exist, create a new one
+    //create a new history if not exist
     else {
-      sessionStorage.setItem(historyKeyName, JSON.stringify([messageObj]));
+      sessionStorage.setItem(key, JSON.stringify([messageObj]));
     }
   }
 
-  getChattingHistory(subscriberUserId) {
-    let historyKeyName = subscriberUserId + 'History';
-    if (sessionStorage.getItem(historyKeyName)) {
-      return JSON.parse(sessionStorage.getItem(historyKeyName));
-    }
-    else {
-      return [];
-    }
+  /**
+   * Read chatting history from session storage.
+   * @param subscriberUserId - subscriber's Id as key
+   */
+  readChattingHistory(subscriberUserId) {
+    let key = subscriberUserId + 'History';
+    return JSON.parse(sessionStorage.getItem(key));
+  }
+
+  /**
+   * When message send failed, handle it.
+   * @param timeStamp - time stamp of message create
+   * @param subscriberUserId - subscriber's Id
+   */
+  sendMessageFailed(timeStamp: number, subscriberUserId: number) {
+    let localChattingHistory$ = from(this.readChattingHistory(subscriberUserId)).pipe(
+      //find failed message
+      filter(i => i['createTimeStamp'] == timeStamp)
+    )
+      .subscribe(
+        (res: MessageObject) => {
+          if (res) {
+            //mark it as error
+            res['isError'] = true;
+            this.saveChattingHistory(res);
+          }
+        }
+      )
   }
 
   /*
     find a specific message with index
   */
   getSpecificChattingMessageHistory(subscriberUserId, index) {
-    let history = this.getChattingHistory(subscriberUserId);
+    let history = this.readChattingHistory(subscriberUserId);
     return history[index];
   }
-  /*
-    @timeStamp: message sent time stamp, use it as the key in chatting history.
-  */
-  messageSendFailedHandler(timeStamp, subscriberUserId) {
-    let localChattingHistory$ = from(this.getChattingHistory(subscriberUserId)).pipe(
-      filter(i => i['createTimeStamp'] == timeStamp)
-    )
-      .subscribe(
-        (res) => {
-          if (res) {
-            let obj = {
-              senderId: res['subscriberId'],
-              messageBody: res['message'],
-              isIncomingMessage: res['leftOrRight'],
-              createAt: res['createTime'],
-              isError: true,
-              isResend: false,
-              createTimeStamp: res['createTimeStamp']
-            }
-            //@params: message object
-            this.saveChattingHistory(obj);
-          }
-        }
-      )
-  }
+
 
   /**
    * Save connection status to session storage.
@@ -284,4 +298,14 @@ export class MessagerService {
   readConnectionStatus() {
     return JSON.parse(sessionStorage.getItem('connectionStatus'));
   }
+}
+
+export interface MessageObject {
+  subscriberId: number,
+  messageBody: string,
+  isIncomingMessage: boolean,
+  createAt: any,
+  isError: boolean,
+  isResend: boolean,
+  createTimeStamp?: number
 }
