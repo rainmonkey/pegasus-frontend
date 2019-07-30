@@ -6,12 +6,12 @@
 </div>
 <div class="modal-body">
   <app-stock-application-form [command]="command" [whichOrder]="whichOrder" 
-   (isValid)="applicationForm = $event"> 
+   (sendApplicationForm)="applicationForm = $event"> 
   </app-stock-application-form>
 </div>
 <div class="modal-footer">
-    <!-- [disabled]="isFormValid()" -->
-  <button type="button" class="btn btn-outline-dark" [disabled]="isFormValid()" (click)="handleSubmit()">Submit</button>
+    <!-- [disabled]="checkFormValid()"  -->
+  <button type="button" class="btn btn-outline-dark" [disabled]="checkFormValid()" (click)="handleSubmit()">Submit</button>
   <button type="button" class="btn btn-outline-dark" (click)="activeModal.close('Close click')">Close</button>
 </div>
 <!-- <div class='modal-footer'>

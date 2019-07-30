@@ -34,87 +34,112 @@
                 </div>
               </div>
 
-              <div class="col-4">
-                <span class="label">First Name: </span>
-                <span class='text'>{{whichLearner.FirstName}}</span>
+              <div class='col-6'>
+                <div style='font-size:21px; font-weight: 500'>Student Details</div>
+                <div class="row">
+                  <div class="col-12">
+                    <span class="label">Name: </span>
+                    <span class='text'>{{whichLearner.FirstName}} </span>
+                    <span class='text' *ngIf='whichLearner.MiddleName'>{{whichLearner.MiddleName}} </span>
+                    <span class='text'>{{whichLearner.LastName}}</span>
+                  </div>
+
+                  <div class="col-12">
+                    <span class="label">Gender: </span>
+                    <span class='text'>{{whichLearner.Gender | gender}}</span>
+                  </div>
+
+                  <div class="col-12">
+                    <span class="label">Phone: </span>
+                    <span class='text'>{{whichLearner.ContactNum}}</span>
+                  </div>
+
+                  <div class="col-12">
+                    <span class="label">Email: </span>
+                    <span class='text'>{{whichLearner.Email}}</span>
+                  </div>
+
+                  <div class="col-12">
+                    <span class="label">DOB: </span>
+                    <span class='text'>{{whichLearner.Dob.slice(0,10)}}</span>
+                  </div>
+
+                  <div class="col-12">
+                    <span class="label">Physical Address: </span>
+                    <span class='text'>{{whichLearner.Address}}</span>
+                  </div>
+                </div>
               </div>
 
-              <div class="col-4" *ngIf='whichLearner.MiddleName'>
-                <span class="label">Middle Name: </span>
-                <span class='text'>{{whichLearner.MiddleName}}</span>
-              </div>
-
-              <div class="col-4">
-                <span class="label">Last Name: </span>
-                <span class='text'>{{whichLearner.LastName}}</span>
-              </div>
-
-              <div class="col-4">
-                <span class="label">Gender: </span>
-                <span class='text'>{{whichLearner.Gender | gender}}</span>
-              </div>
-
-              <div class="col-4">
-                <span class="label">Date of Birth: </span>
-                <span class='text'>{{whichLearner.Dob}}</span>
-              </div>
 
 
-              <div class="col-4">
-                <span class="label">Date of Enrollment: </span>
-                <span class='text'>{{whichLearner.EnrollDate.replace('T', ' ')}}</span>
-              </div>
 
+              <div class='col-6'>
+                <div style='font-size:21px; font-weight: 500'>Enrollment Details</div>
+                <div class="row">
+                  <div class="col-12">
+                    <span class="label">Date of Enrollment: </span>
+                    <span class='text'>{{whichLearner.EnrollDate.slice(0,10)}}</span>
+                  </div>
 
-              <!-- <div *ngIf='whichLearner.Org' class="col-4">
-              <span class="label">Location: </span>
-              <span class='text'>{{whichLearner.Org.OrgName}}</span>
-            </div> -->
+                  <div class="col-12">
+                    <span class="label">Learner Level: </span>
+                    <span class='text'>
+                      {{whichLearner.levelTypeName}} {{whichLearner.learnerLevelName}}
+                    </span>
+                  </div>
 
-              <div class="col-4">
-                <span class="label">Contact Phone: </span>
-                <span class='text'>{{whichLearner.ContactNum}}</span>
-              </div>
+                  <div class="col-12">
+                    <span class="label">Payment Period: </span>
+                    <span class='text'>{{whichLearner.PaymentPeriod | paymentPeriod}}</span>
+                  </div>
 
-              <div class="col-4">
-                <span class="label">Email: </span>
-                <span class='text'>{{whichLearner.Email}}</span>
-              </div>
+                  <div class="col-12">
+                    <span class="label">Referrer: </span>
+                    <span class='text'>{{whichLearner.Referrer}}</span>
+                  </div>
 
-              <div class="col-4">
-                <span class="label">Physical Address: </span>
-                <span class='text'>{{whichLearner.Address}}</span>
-              </div>
+                  <div class="col-12">
+                    <span class="label">Is under 18?: </span>
+                    <span class='text'>{{whichLearner.IsUnder18 | isUnder18}}</span>
+                  </div>
 
-              <div class="col-4">
-                <span class="label">Current Level: </span>
-                <span class='text'>
-                  {{whichLearner.learnerLevelName}}
-                </span>
-              </div>
-
-              <div class="col-4">
-                <span class="label">Level Type: </span>
-                <span class='text'>
-                  {{whichLearner.levelTypeName}}
-                </span>
-              </div>
-
-              <div class="col-4">
-                <span class="label">Payment Period: </span>
-                <span class='text'>{{whichLearner.PaymentPeriod | paymentPeriod}}</span>
-              </div>
-
-              <div class="col-4">
-                <span class="label">Referrer: </span>
-                <span class='text'>{{whichLearner.Referrer}}</span>
-              </div>
-
-              <div class="col-4">
-                <span class="label">Is under 18?: </span>
-                <span class='text'>{{whichLearner.IsUnder18 | isUnder18}}</span>
+                  <div class="col-12">
+                    <span class="label">Comment: </span>
+                    <span class='text'>{{whichLearner.Comment}}</span>
+                  </div>
+                </div>
               </div>
             </div>
+
+
+            <hr>
+            <!-- parent information -->
+            <div>
+              <h4>Parent Information</h4>
+              <div class="row" *ngFor="let learnerParent of whichLearner.Parent">
+                <div class="col-6">
+                  <span class="label">Name: </span>
+                  <span class='text'>{{learnerParent.FirstName}} {{learnerParent.LastName}}</span>
+                </div>
+
+                <div class="col-6">
+                  <span class="label">Relationship: </span>
+                  <span class='text'>{{learnerParent.Relationship | relationship}}</span>
+                </div>
+
+                <div class="col-6">
+                  <span class="label">Guardian's Phone: </span>
+                  <span class='text'>{{learnerParent.ContactNum}}</span>
+                </div>
+
+                <div class="col-6">
+                  <span class="label">Email: </span>
+                  <span class='text'>{{learnerParent.Email}}</span>
+                </div>
+              </div>
+            </div>
+
 
             <hr>
             <!-- Others -->
@@ -177,33 +202,6 @@
                 </div>
               </div>
 
-            </div>
-          </div>
-        </div>
-
-        <hr>
-        <!-- parent information -->
-        <div style='margin:20px;'>
-          <h4>Parent Information</h4>
-          <div class="row" *ngFor="let learnerParent of whichLearner.Parent">
-            <div class="col-6">
-              <span class="label">Name: </span>
-              <span class='text'>{{learnerParent.FirstName}} {{learnerParent.LastName}}</span>
-            </div>
-
-            <div class="col-6">
-              <span class="label">Relationship: </span>
-              <span class='text'>{{learnerParent.Relationship | relationship}}</span>
-            </div>
-
-            <div class="col-6">
-              <span class="label">Guardian's Phone: </span>
-              <span class='text'>{{learnerParent.ContactNum}}</span>
-            </div>
-
-            <div class="col-6">
-              <span class="label">Email: </span>
-              <span class='text'>{{learnerParent.Email}}</span>
             </div>
           </div>
         </div>
@@ -623,6 +621,120 @@
           aria-label="Default pagination" [pageSize]='pageSize'>
         </ngb-pagination>
 
+      </ng-template>
+    </ngb-tab>
+
+    <!-- waiting invoice -->
+    <ngb-tab title="Waiting Confirm Invoice">
+      <ng-template ngbTabContent>
+        <div *ngIf='waitingInvoice == null'>
+          No Invoice Record
+        </div>
+
+        <div *ngIf='waitingInvoice !== null'>
+          <div
+            *ngFor='let i of waitingInvoice | slice: (currentPage-1)* pageSize : (currentPage-1) * pageSize + pageSize'>
+            <br>
+
+            <div class='card'>
+              <div class="card-body">
+                <div class='row'>
+                    <div class='col-lg-4 col-sm-6'>
+                        <span class='label'>Invoice Number: </span>
+                        <span class='text' *ngIf='i.InvoiceNum'>{{i.InvoiceNum}}</span>
+                      </div>
+
+                      <div class='col-lg-5 col-sm-6'>
+                          <span class='label'>Period: </span>
+                          <span class='text' *ngIf='i.InvoiceWaitingConfirm.BeginDate && i.InvoiceWaitingConfirm.EndDate'>{{i.InvoiceWaitingConfirm.BeginDate.replace('T', ' ')}} ~
+                            {{i.InvoiceWaitingConfirm.EndDate.replace('T',' ')}}</span>
+                        </div>
+
+                        <div class='col-lg-4 col-sm-6'>
+                            <span class='label'>Course: </span>
+                            <span class='text' *ngIf='i.InvoiceWaitingConfirm.CourseName'>{{i.InvoiceWaitingConfirm.CourseName}}</span>
+                          </div>
+
+                          <div class='col-lg-5 col-sm-6'>
+                            <span class='label'>Course Quantity: </span>
+                            <span class='text' *ngIf='i.InvoiceWaitingConfirm.LessonQuantity'>{{i.InvoiceWaitingConfirm.LessonQuantity}}</span>
+                          </div>
+
+                          <div class='col-lg-3 col-sm-6'>
+                              <span class='label'>Is Paid: </span>
+                              <span class='text' *ngIf='i.InvoiceWaitingConfirm.IsPaid !== null'>{{i.InvoiceWaitingConfirm.IsPaid|IsTemporary}}</span>
+                            </div>
+
+                            <div class='col-lg-2 col-sm-6'>
+                                <span class='label'>Paid Fee: </span>
+                                <span class='text' *ngIf='i.InvoiceWaitingConfirm.PaidFee'>${{i.InvoiceWaitingConfirm.PaidFee}}</span>
+                              </div>
+
+                              <div class='col-lg-2 col-sm-6'>
+                                <span class='label'>Owing Fee: </span>
+                                <span class='text' *ngIf='i.InvoiceWaitingConfirm.OwingFee'>${{i.InvoiceWaitingConfirm.OwingFee}}</span>
+                              </div>
+
+                              <div class='col-lg-2 col-sm-6'>
+                                <span class='label'>Total Fee: </span>
+                                <span class='text' *ngIf='i.InvoiceWaitingConfirm.TotalFee'>${{i.InvoiceWaitingConfirm.TotalFee}}</span>
+                              </div>
+
+                              <div class='col-lg-12 col-sm-12'>
+                                  <span class='label'>Comment: </span>
+                                  <span class='text' *ngIf='i.InvoiceWaitingConfirm.Comment'>{{i.InvoiceWaitingConfirm.Comment}}</span>
+                                </div>
+
+
+                                <!--fees details  -->
+                                <div class='col-12'>
+                                  <button type="button" class="btn btn-outline-primary btn-sm" data-toggle='collapse'
+                                    data-target="#fees">Fees Details</button>
+                                  <div id="fees" class="collapse">
+                                    <div class="row">
+                                      <div class='col-lg-2 col-sm-6'>
+                                        <span class='label'>Course Fee: </span>
+                                        <span class='text' *ngIf='i.InvoiceWaitingConfirm.LessonFee'>${{i.InvoiceWaitingConfirm.LessonFee}}</span>
+                                      </div>
+
+                                      <div class='col-lg-2 col-sm-6'>
+                                        <span class='label'>Concert Fee: </span>
+                                        <span class='text' *ngIf='i.InvoiceWaitingConfirm.ConcertFee'>${{i.InvoiceWaitingConfirm.ConcertFee}}</span>
+                                      </div>
+
+                                      <div class='col-lg-2 col-sm-6'>
+                                        <span class='label'>Note Fee: </span>
+                                        <span class='text' *ngIf='i.InvoiceWaitingConfirm.NoteFee'>${{i.InvoiceWaitingConfirm.NoteFee}}</span>
+                                      </div>
+
+                                      <div *ngIf='i.Other1Fee !== null && i.Other1Fee !== 0' class='col-lg-2 col-sm-6'>
+                                        <span class='label'>Other Fee 1: </span>
+                                        <span class='text'>${{i.InvoiceWaitingConfirm.Other1Fee}}</span>
+                                      </div>
+
+                                      <div *ngIf='i.Other2Fee !== null && i.Other2Fee !== 0' class='col-lg-2 col-sm-6'>
+                                        <span class='label'>Other Fee 2: </span>
+                                        <span class='text'>${{i.InvoiceWaitingConfirm.Other2Fee}}</span>
+                                      </div>
+
+                                      <div *ngIf='i.Other3Fee !== null && i.Other3Fee !== 0 ' class='col-lg-2 col-sm-6'>
+                                        <span class='label'>Other Fee 3: </span>
+                                        <span class='text'>${{i.InvoiceWaitingConfirm.Other3Fee}}</span>
+                                      </div>
+
+                                    </div>
+                                  </div>
+                                </div>
+
+                </div>
+              </div>
+            </div>
+          </div>
+          </div>
+
+          <ngb-pagination [collectionSize]="waitingInvoicelength" [(page)]='currentPage' [maxSize]='10'
+            aria-label="Default pagination" [pageSize]='pageSize'>
+          </ngb-pagination>
       </ng-template>
     </ngb-tab>
 

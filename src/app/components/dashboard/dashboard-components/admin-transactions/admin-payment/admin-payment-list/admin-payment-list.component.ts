@@ -76,10 +76,11 @@ export class AdminPaymentListComponent implements OnInit {
   onSubmit() {
     let valueToSubmit = this.searchForm.value;
     let vailadValue = this.checkInputVailad(valueToSubmit);
-    if (vailadValue !== null) {
+    if (vailadValue !== null) {      
       let begin = vailadValue.BeginDate.year + "-" + vailadValue.BeginDate.month + "-" + vailadValue.BeginDate.day;
       let end = vailadValue.EndDate.year + "-" + vailadValue.EndDate.month + "-" + vailadValue.EndDate.day;
-      if (begin > end) {
+      const enddate = new NgbDate(vailadValue.EndDate.year, vailadValue.EndDate.month, vailadValue.EndDate.day)
+      if (enddate.before(vailadValue.BeginDate)) {
         Swal.fire({
           title: 'End Date must be later than Begin Date!',
           type: 'error',
@@ -153,7 +154,6 @@ export class AdminPaymentListComponent implements OnInit {
             }
           }
         });
-        console.log(res['Data'])
       },
       (err) => {
         Swal.fire({

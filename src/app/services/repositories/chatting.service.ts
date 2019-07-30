@@ -40,7 +40,7 @@ export class ChattingService {
     this.hubConnection
       .start()
       .then(() => {
-        console.log('connection started');
+        // console.log('connection started');
         this.isReconnecting = false;
         this.processConnectionStatus(true);
         this.listenMessageOneToOne();
@@ -127,7 +127,7 @@ export class ChattingService {
    * @param isConnected connected or disconnected
    */
   processConnectionStatus(isConnected: boolean) {
-    console.log(isConnected)
+    // console.log(isConnected)
     this.isBuild = isConnected;
     this.isConnected$.next(isConnected);
     this.messagerService.saveConnectionStatus(isConnected);

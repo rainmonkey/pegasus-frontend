@@ -1,21 +1,25 @@
-<div class='t_mf_form'>
-  <form [formGroup]='applicationForm'>
+<!--loading-->
+<div *ngIf='loadingFlag' class="loaderLarge"></div>
+
+<div *ngIf="!loadingFlag">
+  <form [formGroup] = "applicationForm">
     <!-- staff name and location -->
     <div class="row">
       <div class="col-6">
-        <label class="label__style" >Staff Name:</label>
-        <input type="text" class="col-12 input__style" [value]="staffName" formControlName="staffId" readonly>
+        <label class="label__style">Staff Name:</label>
+        <input type="text" class="col-12 input__style" [value]="staffName" formControlName="staff" readonly>
       </div>
       <div class="col-6">
         <label class="label__style">Location:</label>&nbsp;
-        <input type="text" class="col-12 input__style" [value]="orgName" formControlName="orgId" readonly>
+        <input type="text" class="col-12 input__style" [value]="orgName" formControlName="org" readonly>
       </div>
     </div>
     <!-- apply reason -->
     <div class="row">
       <div class="col-12">
         <label class="label__style col-12 p-0">Apply Reason:</label>
-        <input type="textarea" class="col-12 input__textarea--style" formControlName='applyReason'>
+        <input *ngIf="hiddenFlag" type="textarea" formControlName="applyReason" style="height: 50px;" class="col-12 detail__modal--input">
+        <input *ngIf="!hiddenFlag" type="textarea" class="col-12 input__textarea--style" formControlName='applyReason'>
         <!-- validator required -->
         <div *ngIf="applyReason.invalid && (applyReason.dirty || applyReason.touched)">
           <small *ngIf="applyReason.errors.required" class="alert__message--red">
@@ -27,7 +31,8 @@
     <!-- productIdQty: FormArray -->
     <div formArrayName="productIdQty" *ngFor="let prods of applicationForm.get('productIdQty').controls; let i = index">
       <div [formGroupName]="i">
-        <div class="d-flex justify-content-end">
+        <div *ngIf="hiddenFlag" class="p-4 label__style text-center">Product {{ i+1 }}</div>
+        <div *ngIf="!hiddenFlag" class="d-flex justify-content-end">
           <button class="btn btn-info my-2" [disabled]="isDeleted[i]" (click)="deleteForm(i)">
             <i class='fas fa-trash-alt'></i>
           </button>
@@ -36,7 +41,8 @@
         <div class="row">
           <div class="col-6">
             <label class="label__style">Product Category:</label>&nbsp;
-            <select class="col-12 select__style" formControlName="prodCat"
+            <input *ngIf="hiddenFlag" type="text" formControlName="prodCat" class="col-12 detail__modal--input">
+            <select *ngIf="!hiddenFlag" class="col-12 select__style" formControlName="prodCat"
               (change)="getProdTypeByCat($event.target.value, i)">
               <option value="" selected disabled hidden>choose..</option>
               <option *ngFor='let prodCat of prodCats[i]' [value]="prodCat.ProdCatId">{{prodCat.ProdCatName}}</option>
@@ -50,7 +56,8 @@
           </div>
           <div class="col-6">
             <label class="label__style">Product Type:</label>&nbsp;
-            <select class="col-12 select__style" formControlName="prodType"
+            <input *ngIf="hiddenFlag" type="text" formControlName="prodType" class="col-12 detail__modal--input">
+            <select *ngIf="!hiddenFlag" class="col-12 select__style" formControlName="prodType"
               (change)="getProdByType($event.target.value, i)">
               <option disabled>choose Product Category first</option>
               <option *ngFor="let prodType of prodTypes[i]" [value]="prodType.ProdTypeId">{{prodType.ProdTypeName}}
@@ -69,7 +76,8 @@
         <div class="row">
           <div class="col-6">
             <label class="label__style">Product Name:</label>&nbsp;
-            <select class="col-12 select__style" formControlName="prod">
+            <input *ngIf="hiddenFlag" type="text" formControlName="prod" class="col-12 detail__modal--input">
+            <select *ngIf="!hiddenFlag" class="col-12 select__style" formControlName="prod">
               <option disabled>choose Product Type first</option>
               <option *ngFor='let prodName of prodNames[i]' [value]="prodName.ProductId">{{prodName.ProductName}}
               </option>
@@ -83,18 +91,19 @@
           </div>
           <div class="col-6">
             <label class="label__style">Product Quantity:</label>&nbsp;
-            <div class="col-12 p-0 d-inline-flex justify-content-around arithmetic__btn">
-              <button class="minus__btn" (click)="minusProd(i)">-</button>
+            <input *ngIf="hiddenFlag" type="text" class="col-12 detail__modal--input" formControlName="appliedQty">
+            <div *ngIf="!hiddenFlag" class="col-12 p-0 d-inline-flex justify-content-around arithmetic__btn">
+              <button class="minus__btn" (click)="minusQty(i)">-</button>
               <input type="text" class="input__number--style" formControlName="appliedQty">
-              <button class="increase__btn" (click)="increaseProd(i)">+</button>
+              <button class="increase__btn" (click)="increaseQty(i)">+</button>
             </div>
             <!-- validator required -->
             <div
               *ngIf="prods.get('appliedQty').invalid && (prods.get('appliedQty').dirty || prods.get('appliedQty').touched)">
-              <small *ngIf="prods.get('appliedQty').errors.required" class="alert__message--red">
+              <small *ngIf="prods.get('appliedQty').errors?.required" class="alert__message--red">
                 Product Quantity is required.
               </small>
-              <small *ngIf="prods.get('appliedQty').errors.pattern" class="alert__message--red">
+              <small *ngIf="prods.get('appliedQty').errors?.pattern" class="alert__message--red">
                 Product Quantity must be a positive number
               </small>
             </div>
@@ -103,7 +112,8 @@
       </div>
     </div>
     <!-- add new product btn  -->
-    <div class="d-flex justify-content-end" style="margin-top: 10px">
+    <div *ngIf="hiddenFlag" class="p-3"></div>
+    <div *ngIf="!hiddenFlag" class="d-flex justify-content-end" style="margin-top: 10px">
       <button class="btn btn-info t_info_addmore_btn" [disabled]="productIdQty.invalid" (click)="addNewProd(i)">
         <i class="fas fa-plus-circle"></i>
       </button>

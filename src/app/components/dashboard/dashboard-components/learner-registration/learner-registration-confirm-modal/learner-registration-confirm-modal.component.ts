@@ -33,6 +33,7 @@ export class LearnerRegistrationConfirmModalComponent implements OnInit {
   }
   onSubmit(){
     // return console.log(this.fdObj)
+    console.log(this.groupCourse)
     this.isloading = true;
     this.isConfirmClick = true;
     console.log(this.command, this.learnerId, this.isloading);
