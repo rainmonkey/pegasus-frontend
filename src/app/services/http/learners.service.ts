@@ -94,5 +94,9 @@ export class LearnersService {
     return this.http.get(this.baseUrl+'Session/'+'GetMakeupSessions/'+learnerId)
   }
 
+  GetTeacherRoomByOrgDayOfWeek(orgId, dayofweek) {
+    return this.http.get(this.baseUrl + 'teacher/GetTeacherRoomByOrgDayOfWeek/' + orgId + '/' +  dayofweek);
+  }
+
 
 }
