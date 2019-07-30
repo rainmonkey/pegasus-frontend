@@ -1,8 +1,10 @@
-<div *ngIf='!isModalDisplayed' class='m_i_icon' [@unReadTrigger]='unReadAnimationStatus?"on":"off"'>
-  <span (click)='displayMessager()'>
+<!--messager icon-->
+<div *ngIf='!isModalDisplayed' class='m_i_icon' [@notificationsTrigger]="notificationsTrigger?'true':'false'">
+  <span (click)='displayMessagerModal()'>
     <span class="fas fa-comment"></span>
   </span>
+  <app-messager-notification *ngIf='totalNotiNum' class='notification' [notiNum] = 'totalNotiNum'></app-messager-notification>
 </div>
 
 <!--messager modal skeleton-->
-<app-messager-modal *ngIf='isModalDisplayed'  (onCloseChattingModal)='hideMessager($event)'></app-messager-modal>
+<app-messager-modal *ngIf='isModalDisplayed'  (onCloseChattingModal)='closeMessagerModal($event)'></app-messager-modal>

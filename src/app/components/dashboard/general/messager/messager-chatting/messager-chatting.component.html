@@ -1,5 +1,5 @@
 <!--选择聊天对象时-->
-<div *ngIf='chattingDisplayFlag'>
+<div *ngIf='subscriber'>
   <div class='m_c_person_label'>
     <!--展示聊天对象的label 
     数据动态获取-->
@@ -28,23 +28,23 @@
     <div [ngStyle]="{'height': modalHeight - 200 + 'px'}" class='m_c_chatting_panel' id='m_c_chatting_panel'>
       <!--聊天内容-->
       <div *ngFor='let i of getChattingHistory(); let last = last; let count = count; let index = index' class='clearfix' style="margin-bottom: 5px">
-        <div class='m_c_chatting_messagers' [class.m_c_chatting_messagers_left]='i.leftOrRight == "left"'
-          [class.m_c_chatting_messagers_right]='i.leftOrRight == "right"'>
-          <img [src]="showPhotoIcon(i.leftOrRight)" alt="" [class.m_c_chatting_messagers_left]='i.leftOrRight == "left"'
-            [class.m_c_chatting_messagers_right]='i.leftOrRight == "right"'>
-          <div [class.m_c_chatting_messagers_left]='i.leftOrRight == "left"'
-            [class.m_c_chatting_messagers_right]='i.leftOrRight == "right"'>
-            <div class='m_c_time_stamp' [class.m_c_time_stamp_left]='i.leftOrRight == "left"'
-              [class.m_c_time_stamp_right]='i.leftOrRight == "right"'>{{i.createTime.toLocaleString()}}
+        <div class='m_c_chatting_messagers' [class.m_c_chatting_messagers_left]='i.isIncomingMessage'
+          [class.m_c_chatting_messagers_right]='!i.isIncomingMessage'>
+          <img [src]="showPhotoIcon(i.isIncomingMessage)" alt="" [class.m_c_chatting_messagers_left]='i.isIncomingMessage'
+            [class.m_c_chatting_messagers_right]='!i.isIncomingMessage'>
+          <div [class.m_c_chatting_messagers_left]='i.isIncomingMessage'
+            [class.m_c_chatting_messagers_right]='!i.isIncomingMessage'>
+            <div class='m_c_time_stamp' [class.m_c_time_stamp_left]='i.isIncomingMessage'
+              [class.m_c_time_stamp_right]='!i.isIncomingMessage'>{{i.createAt.toLocaleString()}}
             </div>
             <!--message sent failed sign-->
             <div *ngIf='i.isError' class='m_c_message_sent_failed' (click)='resentMessage($event,index)'><span class='fas fa-exclamation-circle'></span></div>
-            <div class='m_c_chatting_text' [class.m_c_chatting_messagers_left]='i.leftOrRight == "left"'
-              [class.m_c_chatting_text_left]='i.leftOrRight == "left"'
-              [class.m_c_chatting_messagers_right]='i.leftOrRight == "right"'
-              [class.m_c_chatting_text_left]='i.leftOrRight == "left"'
-              [class.m_c_chatting_text_right]='i.leftOrRight == "right"'>
-              {{i.message}} {{last ? scrollToBottom(count) : ''}}
+            <div class='m_c_chatting_text' [class.m_c_chatting_messagers_left]='i.isIncomingMessage'
+              [class.m_c_chatting_text_left]='i.isIncomingMessage'
+              [class.m_c_chatting_messagers_right]='!i.isIncomingMessage'
+              [class.m_c_chatting_text_left]='i.isIncomingMessage'
+              [class.m_c_chatting_text_right]='!i.isIncomingMessage'>
+              {{i.messageBody}} {{last ? scrollToBottom(count) : ''}}
             </div>
           </div>
         </div>
@@ -76,7 +76,7 @@
 </div>
 
 <!--没有选择聊天对象时-->
-<div *ngIf='!chattingDisplayFlag'>
+<div *ngIf='!subscriber'>
   <div class='m_c_start_chatting'>
     <span (click)='startNewChatting()'>start chatting now...</span>
   </div>

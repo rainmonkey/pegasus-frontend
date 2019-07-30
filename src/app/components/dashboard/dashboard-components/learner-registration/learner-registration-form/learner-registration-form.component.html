@@ -141,14 +141,14 @@
               <img src="" id='certificate' style='height: 64px' alt="Certificate preview...">
               <input formControlName="grade" type="file" (change)="uploadGrade($event)" id="grade" class='custom-file-input' accept="image/*">
             </div>
-            <div class='row'>
+            <div class='row pl-3'>
               <div class="grade my-3 col-5 mr-2">
                 <label for="grade" class='custom-file-label'>Enrollment Agreement Upload.. <span><i class="fas fa-file-upload"></i></span></label>
-                <input formControlName="grade" type="file" (change)="uploadAgreement($event)" id="grade" class='custom-file-input' accept="application/msword,application/pdf,image/*">
+                <input formControlName="agreement" type="file" (change)="uploadAgreement($event)" id="grade" class='custom-file-input' accept="application/msword,application/pdf,image/*">
               </div>
               <div class="grade my-3 col-5">
                 <label for="grade" class='custom-file-label'>Other File Upload.. <span><i class="fas fa-file-upload"></i></span></label>
-                <input formControlName="grade" type="file" (change)="uploadOther($event)" id="grade" class='custom-file-input' accept="application/msword,application/pdf,image/*">
+                <input formControlName="others" type="file" (change)="uploadOther($event)" id="grade" class='custom-file-input' accept="application/msword,application/pdf,image/*">
               </div>
           </div>
           <div class="under 18">
@@ -262,7 +262,7 @@
       <div class="parentForm__button my-3 d-flex justify-content-end">
         <button class="btn_back mx-3 btn btn-info" (click)="next('learnerForm')">Back</button>
         <button *ngIf="!whichLearner" class="btn_next mx-3 btn btn-info" [disabled]="parentForm.invalid && !this.learnerForm.value.isUnder18" (click)="next('courseForm')">Next</button>
-        <button class="btn_next btn btn-primary" [disabled]="parentForm.invalid && !this.learnerForm.value.isUnder18" (click)="onSubmit()">Submit</button>
+        <button class="btn_next btn btn-primary" [disabled]="parentForm.invalid && !this.learnerForm.value.isUnder18" (click)="submitInfo()">Submit</button>
       </div>
     </div>
     <!-- -----courseForm html----- -->
@@ -278,54 +278,55 @@
       </div>
 
 
-      <div class="card" *ngIf="isGroupCourse">
-        <div class="select-group-course card-body ">
+      <div class="card" *ngIf="isGroupCourse" >
+        <div class="select-group-course card-body">
           <div class="guitar">
             <table class="table ">
               <thead>
                 <tr>
                   <!-- <th class="">Please Check</th> -->
-                  <th class="table">Course</th>
-                  <th class="table ">Schedule</th>
-                  <th class="table ">Location</th>
+                  <th class="table" style='width: 200px'>Course</th>
+                  <th class="table" style='width: 200px'>Schedule</th>
+                  <th class="table" style='width: 100px'>Location</th>
                   <!-- <th class="table ">Room</th>-->
-                  <th class="table">Teacher</th>
-                  <th class="table ">Begin Time</th>
-                  <th class="table ">How to know us</th>
+                  <th class="table"style='width: 100px'>Teacher</th>
+                  <th class="table"style='width: 150px'>Begin Time</th>
+                  <th class="table">How to know us</th>
                 </tr>
               </thead>
               <tbody>
 
                 <tr formArrayName="groupCourse" *ngFor="let groupCourse of groupCourseInstance; let i = index">
-                  <td class='input-group'>
-                    <div class="input-group-text">
-                      <input type="checkbox" [checked]="groupCourse.isChecked" (click)="selectCheckboxes(i, $event)" >
-                      {{groupCourse.Course.CourseName}}
-                    </div>
+                  <td class='input-group col-3'>
+                      <label [for]="i" class="input-group-text gourpFontSize">{{groupCourse.Course.CourseName}}
+                      <input class='ml-1' type="checkbox" [id]='i' [checked]="groupCourse.isChecked" (click)="selectCheckboxes(i, $event)" >
+                      </label>
                   </td>
 
                   <td>
-                    <p *ngFor="let schedule of groupCourse.schedule">{{schedule.DayOfWeek | weekFormat}}: {{schedule.BeginTime}}-{{schedule.EndTime}}</p>
+                    <p *ngFor="let schedule of groupCourse.schedule" class='gourpFontSize' gourpFontSize>{{schedule.DayOfWeek | weekFormat}}: {{schedule.BeginTime}}-{{schedule.EndTime}}</p>
                   </td>
                   <td>
-                    <div>{{groupCourse.Org.OrgName}}</div>
-                    <div><i class="fas fa-street-view"></i>{{groupCourse.Room.RoomName}}</div>
+                    <div class='gourpFontSize'>{{groupCourse.Org.OrgName}}</div>
+                    <div class='gourpFontSize'><i class="fas fa-street-view"></i>{{groupCourse.Room.RoomName}}</div>
                   </td>
                   <!-- <td>{{groupCourse.Room.RoomName}}</td>-->
                   <td class='input-group'>
-                    <div class="input-group-text">
+                    <div class="input-group-text gourpFontSize">
                     {{groupCourse.Teacher.FirstName}}
                     </div>
                   </td>
-                  <td><input type="date" [ngModelOptions]="{standalone: true}" [(ngModel)]="groupCourseInstance[i].beginDate" class='form-control'></td>
-                  <td><input type="text" [ngModelOptions]="{standalone: true}" [(ngModel)]="groupCourseInstance[i].comments" class='form-control'></td>
+                  <td><input type="date" [ngModelOptions]="{standalone: true}" [(ngModel)]="groupCourseInstance[i].beginDate" class='form-control gourpFontSize'></td>
+                  <td><input type="text" [ngModelOptions]="{standalone: true}" [(ngModel)]="groupCourseInstance[i].comments" class='form-control gourpFontSize'></td>
                 </tr>
               </tbody>
             </table>
             <div class="text-right">
-              <button *ngIf="addCourse == undefined" class="btn_back mx-3 btn btn-info" (click)="next('parentForm')">Back</button>
-              <button *ngIf="!addCourse" (click)="onSubmit()" class="btn_submit btn btn-primary" type="submit">Submit</button>
-              <button *ngIf="addCourse" (click)="onSubmit()" class="btn_submit btn btn-primary" type="submit">Submit Group Courses</button>
+              <button *ngIf="addCourse == undefined" class="btn_back mx-3 btn btn-info gourpFontSize" (click)="next('parentForm')">Back</button>
+              <button *ngIf="!addCourse" (click)="onSubmit()" class="btn_submit btn btn-primary gourpFontSize" type="submit">Submit</button>
+              <button *ngIf="addCourse" (click)="onSubmit()" class="btn_submit btn btn-primary gourpFontSize" type="submit">Submit Group Courses</button>
+
+              <small *ngIf="!canAddGroup" class='text-danger row justify-content-end gourpFontSize'>You Have To Select At Least One Course</small>
             </div>
           </div>
         </div>
@@ -415,9 +416,9 @@
                 <label for="customTime">Course Time</label>
                 <!-- <input class="form-control" type="text"  value="15:30:00" routerLink="/timePicker" routerLinkActive="active"> -->
                 <ngb-timepicker formControlName="beginTime" [size]="'small'" [hourStep]="hourStep" [minuteStep]="minuteStep"></ngb-timepicker>
-                <small class="text-danger" *ngIf="this.customCourse.controls[0].get('schedule').get('beginTime').invalid">Please Select a Valid Time</small>
+                <small class="text-danger" *ngIf="this.customCourse?.controls[0]?.get('schedule').get('beginTime').invalid">Please Select a Valid Time</small>
               </div>
-              <div class='col-sm-3 col-md-3 mt-3'>
+              <div class='col-sm-3 col-md-3 mt-3'  *ngIf="this.teaListOutArray[i]?.teaListToDatePick!== undefined && this.teaListOutArray[i]?.teaListToDatePick?.length !== 0">
                 <button class='btn btn-primary' (click)="open(i)">Pick Course Time by Calendar</button>
               </div>
             </div>

@@ -94,5 +94,12 @@ export class LearnersService {
     return this.http.get(this.baseUrl+'Session/'+'GetMakeupSessions/'+learnerId)
   }
 
+  getWaitingInvoice(learnerId){
+    return this.http.get(this.baseUrl+'InvoiceWaitingConfirms/'+learnerId)
+  }
+  GetTeacherRoomByOrgDayOfWeek(orgId, dayofweek) {
+    return this.http.get(this.baseUrl + 'teacher/GetTeacherRoomByOrgDayOfWeek/' + orgId + '/' +  dayofweek);
+  }
+
 
 }

@@ -5,6 +5,7 @@
     border: 3px solid #eef5f9;
     border-radius: 50%;
     position: fixed;
+    z-index:500;
     bottom: 1rem;
     right: 1rem;
     text-align: center;
@@ -15,7 +16,11 @@
     cursor: pointer;
     animation: iconHover 0.3s;
 }
-
+.notification{
+    position: absolute;
+    top:-16px;
+    left:24px;
+}
 
 
 

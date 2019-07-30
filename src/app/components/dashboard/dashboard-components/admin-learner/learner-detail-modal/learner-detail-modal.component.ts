@@ -63,10 +63,16 @@ export class LearnerDetailModalComponent implements OnInit {
   // makeUp lesson
   public makeupSession=[]
   makeupSessionLength
-  constructor(public activeModal: NgbActiveModal, private LearnerListService: LearnersService, private modalService: NgbModal, ) {
 
+  //Waiting Invoice
+  public waitingInvoice=[]
+  waitingInvoicelength
+
+  constructor(
+    public activeModal: NgbActiveModal,
+    private LearnerListService: LearnersService,
+     private modalService: NgbModal, ) {
   }
-
   ngOnInit() {
     this.getData()
     this.getOthersUrl()
@@ -74,7 +80,6 @@ export class LearnerDetailModalComponent implements OnInit {
     this.getAmendmentList()
 
   }
-
 
   getData() {
     let learnerListData = this.LearnerListService.getLearnerList();
@@ -88,7 +93,9 @@ export class LearnerDetailModalComponent implements OnInit {
     let learnerPayment = this.LearnerListService.getLearnerPayment(this.whichLearner.LearnerId)
     let learnerSession = this.LearnerListService.getLearnerLesson(this.whichLearner.LearnerId)
     let makeUpSession = this.LearnerListService.getMakeUpLesson(this.whichLearner.LearnerId)
-    forkJoin([learnerListData, lookUpData2, lookUpData3, lookUpData4, lookUpData5, lookUpData7, learnerInvoice, learnerPayment, learnerSession, lookUpData14,makeUpSession]).subscribe(
+    let waitingInvoice=this.LearnerListService.getWaitingInvoice(this.whichLearner.LearnerId)
+
+    forkJoin([learnerListData, lookUpData2, lookUpData3, lookUpData4, lookUpData5, lookUpData7, learnerInvoice, learnerPayment, learnerSession, lookUpData14,makeUpSession,waitingInvoice]).subscribe(
       (res) => {
 
         console.log(res)
@@ -118,6 +125,11 @@ export class LearnerDetailModalComponent implements OnInit {
         this.makeupSession=(res[10]['Data'])
         if(this.makeupSession !== null){
           this.makeupSessionLength=this.makeupSession.length
+
+        this.waitingInvoice=(res[11]['Data'])
+        if(this.waitingInvoice !== null){
+          this.waitingInvoicelength=this.waitingInvoice.length
+        }
         }
       },
 
@@ -126,6 +138,7 @@ export class LearnerDetailModalComponent implements OnInit {
       }
     )
   }
+
 
   sortLearnerSession(learnerSessionList) {
     for (let i of learnerSessionList)
@@ -279,6 +292,7 @@ export class LearnerDetailModalComponent implements OnInit {
     const modalRef = this.modalService.open(AmendmentHistoryModalComponent, { size: 'lg', backdrop: 'static', keyboard: false });
     modalRef.componentInstance.whichCourse = ele
   }
+
 
 
 

@@ -3,87 +3,103 @@
 </div>
 
 <div *ngIf='!loadingFlag'>
-<div class="container">
-  <div class="row">
-    <!-- page Header -->
+  <div class="container">
+    <div class="row">
+      <!-- page Header -->
 
-    <div class='col-12 t_info_title'>
-      Learner Information
-
-
-    </div>
-    <!-- page search -->
-    <div class='col-12' style="margin-top:-50px;margin-bottom: 10px">
-      <div class='col-12 t_info_search'>
-        <input id='searchingInput' type="text" placeholder="Search by..." (keydown)='onSearch($event)'>
+      <div class='col-12 t_info_title'>
+        Learner Information
+        <div>
+          <button type="button" class="btn btn-outline-primary t_info_addnew_btn" (click)='openRegModal(1,null)'>+
+            Learner Registration</button>
+        </div>
       </div>
 
-      <div class='col-12 t_info_search_option'>
-        <select name="searchOption" id='searchOption'>
-          <option *ngFor='let i of columnsToShow' value={{i}}>{{i}}</option>
-        </select>
+      <!-- page search -->
+      <div class='col-6' style="margin-top:-50px;margin-bottom: 10px">
+        <div class='col-12 t_info_search'>
+          <input id='searchingInput' type="text" placeholder="Search by..." (keydown)='onSearch($event)'>
+        </div>
+
+        <div class='col-12 t_info_search_option'>
+          <select name="searchOption" id='searchOption'>
+            <option *ngFor='let i of columnsToShow' value={{i}}>{{i}}</option>
+          </select>
+        </div>
+
+        <div class='t_info_search_by'>
+          <span id='searchingSelection' (click)='onSearch(null)'><span class='fas fa-search'></span></span>
+        </div>
       </div>
 
-      <div class='t_info_search_by'>
-        <span id='searchingSelection' (click)='onSearch(null)'><span
-            class='fas fa-search'></span></span>
-      </div>
-    </div>
 
 
-    <!--info page table-->
-    <div class='col-12'>
-      <table class='table table-striped'>
-        <!--table header-->
-        <thead>
-          <tr>
-            <th scope='col' style='width: 50px'>#</th>
-            <th *ngFor='let i of columnsToShow' scope='col' (click)='onSort(i)' counter='0'
-              style='width: 60px' class='t_sort_title'>
-              {{AddSpaceInString(i)}}</th>
-              <th *ngFor='let i of columnsToShow1' scope='col' (click)='onSort(i)' counter='0'
-              style='width: 110px' class='t_sort_title'>
-              {{AddSpaceInString(i)}}</th>
-            <th scope='col' style='width: 100px; padding-right:0px'> Profile & Enrollment</th>
-            <th scope='col' style='width: 100px; padding-left: 0px;'>Trial Session& Change Schedule</th>
-          </tr>
-        </thead>
-        <!--table body-->
-        <tbody>
-          <!--pagination is here-->
-          <tr
-            *ngFor='let i of learnerList | slice: (currentPage-1)* pageSize : (currentPage-1) * pageSize + pageSize; let index = index'>
-            <th scope="row">{{index + 1}}</th>
-            <td *ngFor='let j of columnsToShow' style='width: 60px'><app-learner-item [learner]=i [whichName]=j></app-learner-item></td>
-            <td *ngFor='let j of columnsToShow1' style='width: 110px'>{{i[j]}}</td>
-            <td  style='width: 100px; padding-right:0px;'>
-              <span class='t_info_table_btn' (click)='popUpModal(1,i)' title='Student Profile'><span class='fa fa-id-card'></span></span>
-              <span class='t_info_table_btn' (click)='popUpModal(2,i)' title='Edit Student Profile'><span class='fas fa-pen'></span></span>
-              <span class='t_info_table_btn' (click)='popUpModal(0,i)' title='Book a Course'><span class="fas fa-folder-plus"></span></span>
-              <span class='t_info_table_btn' (click)='popUpModal(4,i)' title='Quit a Course'><span class="fas fa-folder-minus"></span></span>
 
-            </td>
-            <td style='width: 100px; padding-left:0px'>
+
+      <!--info page table-->
+      <div class='col-12'>
+        <table class='table table-striped'>
+          <!--table header-->
+          <thead>
+            <tr>
+              <th scope='col' style='width: 50px'>#</th>
+              <th *ngFor='let i of columnsToShow' scope='col' (click)='onSort(i)' counter='0' style='width: 60px'
+                class='t_sort_title'>
+                {{AddSpaceInString(i)}}</th>
+              <th *ngFor='let i of columnsToShow1' scope='col' (click)='onSort(i)' counter='0' style='width: 110px'
+                class='t_sort_title'>
+                {{AddSpaceInString(i)}}</th>
+              <th scope='col' style='width: 100px; padding-right:0px'> Profile & Enrollment</th>
+              <th scope='col' style='width: 100px; padding-left: 0px;'>Trial Session& Change Schedule</th>
+            </tr>
+          </thead>
+          <!--table body-->
+          <tbody>
+            <!--pagination is here-->
+            <tr
+              *ngFor='let i of learnerList | slice: (currentPage-1)* pageSize : (currentPage-1) * pageSize + pageSize; let index = index'>
+              <th scope="row">{{index + 1}}</th>
+              <td *ngFor='let j of columnsToShow' style='width: 60px'>
+                <app-learner-item [learner]=i [whichName]=j></app-learner-item>
+              </td>
+              <td *ngFor='let j of columnsToShow1' style='width: 110px'>{{i[j]}}</td>
+              <td style='width: 100px; padding-right:0px;'>
+                <span class='t_info_table_btn' (click)='popUpModal(1,i)' title='Student Profile'><span
+                    class='fa fa-id-card'></span></span>
+                <span class='t_info_table_btn' (click)='popUpModal(2,i)' title='Edit Student Profile'><span
+                    class='fas fa-pen'></span></span>
+                <span class='t_info_table_btn' (click)='popUpModal(0,i)' title='Book a Course'><span
+                    class="fas fa-folder-plus"></span></span>
+                <span class='t_info_table_btn' (click)='popUpModal(4,i)' title='Quit a Course'><span
+                    class="fas fa-folder-minus"></span></span>
+                <span class='t_info_table_btn' (click)='openRegModal(2,i)' title='New Edit'><span
+                    class="fas fa-kiwi-bird"></span></span>
+
+              </td>
+              <td style='width: 100px; padding-left:0px'>
                 <!--calendar icon功能跳转至 trial course 页面-->
-                <span class='t_info_table_btn' (click)='jumpToTrialCoursePage()' title='Trial Course' routerLink='/learner/trial' [queryParams] = '{LearnerId:i.LearnerId}'><a class="fas fa-vial"></a></span>
-              <!--              请假-->
-              <span class='t_info_table_btn' (click)="popUpModal(9,i)" title='Ask for Off'><span class='fas fa-plane' ></span></span>
-              <!--              永久改课时间-->
-              <span class='t_info_table_btn' (click)="popUpModal(10,i)" title='Change Schedule
+                <span class='t_info_table_btn' (click)='jumpToTrialCoursePage()' title='Trial Course'
+                  routerLink='/learner/trial' [queryParams]='{LearnerId:i.LearnerId}'><a class="fas fa-vial"></a></span>
+                <!--              请假-->
+                <span class='t_info_table_btn' (click)="popUpModal(9,i)" title='Ask for Off'><span
+                    class='fas fa-plane'></span></span>
+                <!--              永久改课时间-->
+                <span class='t_info_table_btn' (click)="popUpModal(10,i)" title='Change Schedule
               '><span class='fas fa-calendar-alt'></span></span>
-              <span class='t_info_table_btn' (click)='popUpModal(3,i)' title='Delete Student Record'><span class='fas fa-trash-alt'></span></span>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
+                <span class='t_info_table_btn' (click)='popUpModal(3,i)' title='Delete Student Record'><span
+                    class='fas fa-trash-alt'></span></span>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
 
-    <!--info page pagination-->
-    <div class='col-12'>
-      <!--pagination is here-->
-      <ngb-pagination [collectionSize]='learnerListLength' [(page)]='currentPage' [pageSize]='pageSize'>
-      </ngb-pagination>
+      <!--info page pagination-->
+      <div class='col-12'>
+        <!--pagination is here-->
+        <ngb-pagination [collectionSize]='learnerListLength' [(page)]='currentPage' [pageSize]='pageSize'>
+        </ngb-pagination>
+      </div>
     </div>
   </div>
-</div>
 </div>

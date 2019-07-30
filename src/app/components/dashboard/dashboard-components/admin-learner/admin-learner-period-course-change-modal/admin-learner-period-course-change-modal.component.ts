@@ -20,7 +20,6 @@ export class AdminLearnerPeriodCourseChangeModalComponent implements OnInit {
   learner;
   Orgs;
   Teachers;
-  Rooms;
   PeriodCourseChangeForm;
 
   @Input() whichLearner;
@@ -28,9 +27,7 @@ export class AdminLearnerPeriodCourseChangeModalComponent implements OnInit {
               private service: LearnersService) { }
 
   ngOnInit() {
-    console.log('lllll',this.whichLearner)
-    this.GetTeachers()
-    this.GetOrgRoom();
+    this.GetOrg();
     this.PeriodCourseChangeForm = this.fb.group({
       BeginDate: ['', Validators.required],
       EndDate: ['', Validators.required],
@@ -38,7 +35,6 @@ export class AdminLearnerPeriodCourseChangeModalComponent implements OnInit {
       reason: ['', Validators.required],
       instanceId: ['', Validators.required],
       OrgId: ['', Validators.required],
-      RoomId: [''],
       DayOfWeek: ['', Validators.required],
       IsTemporary: ['', Validators.required],
       CourseScheduleId: ['', Validators.required],
@@ -56,10 +52,6 @@ export class AdminLearnerPeriodCourseChangeModalComponent implements OnInit {
 
   get OrgId() {
     return this.PeriodCourseChangeForm.get('OrgId');
-  }
-
-  get RoomId() {
-    return this.PeriodCourseChangeForm.get('RoomId');
   }
 
   get DayOfWeek() {
@@ -81,8 +73,11 @@ export class AdminLearnerPeriodCourseChangeModalComponent implements OnInit {
   get TeacherId() {
     return this.PeriodCourseChangeForm.get('TeacherId');
   }
+  get CourseScheduleId() {
+    return this.PeriodCourseChangeForm.get('CourseScheduleId');
+  }
 
-  GetOrgRoom = () => {
+  GetOrg = () => {
     this.service.GetOrgRoom().subscribe(res => {
       // @ts-ignore
       this.Orgs = res.Data;
@@ -91,19 +86,10 @@ export class AdminLearnerPeriodCourseChangeModalComponent implements OnInit {
     });
   }
 
-  GetTeachers = () =>{
-    this.service.getTeachers().subscribe(res=>{
-      // @ts-ignore
-      this.Teachers = res.Data;
-    });
-  }
-
-  GetRoom = (OrgId) => {
-    this.Rooms = this.Orgs.filter(s => s.OrgId == OrgId)[0].Rooms;
-  }
 
   submit = () => {
     if (this.PeriodCourseChangeForm.invalid) {
+      this.checkInputVailad();
       this.errorMessage = 'The form is Invalid';
       this.IsformError = true;
       return;
@@ -116,14 +102,13 @@ export class AdminLearnerPeriodCourseChangeModalComponent implements OnInit {
       this.PeriodCourseChangeForm.value.EndDate,
       this.PeriodCourseChangeForm.value.reason, this.PeriodCourseChangeForm.value.instanceId, this.PeriodCourseChangeForm.value.OrgId,
       this.PeriodCourseChangeForm.value.DayOfWeek, this.PeriodCourseChangeForm.value.BeginTime, this.PeriodCourseChangeForm.value.EndTime,
-      this.PeriodCourseChangeForm.value.RoomId, this.PeriodCourseChangeForm.value.IsTemporary,
+      1, this.PeriodCourseChangeForm.value.IsTemporary,
       this.PeriodCourseChangeForm.value.CourseScheduleId, this.PeriodCourseChangeForm.value.TeacherId
     )
     this.service.PeriodCourseChange(model).subscribe(res => {
       this.isEditFail = false;
       this.isloading = false;
       this.isEditSuccess = true;
-      console.log(res);
     }, err => {
       this.isConfirmClick = false;
       this.isEditFail = true;
@@ -134,6 +119,12 @@ export class AdminLearnerPeriodCourseChangeModalComponent implements OnInit {
         text: err.error.ErrorMessage,
       });
     });
+  }
+
+  checkInputVailad = () => {
+    for (let i in this.PeriodCourseChangeForm.controls) {
+      this.PeriodCourseChangeForm.controls[i].touched = true;
+    }
   }
 
   CourseRadioButtonChange = () => {
@@ -154,6 +145,18 @@ export class AdminLearnerPeriodCourseChangeModalComponent implements OnInit {
       this.PeriodCourseChangeForm.get('EndDate').disable();
     } else {
       this.PeriodCourseChangeForm.get('EndDate').enable();
+    }
+  }
+
+  GetTeachers = () => {
+    if (!this.OrgId.invalid && !this.DayOfWeek.invalid) {
+      this.service.GetTeacherRoomByOrgDayOfWeek(this.PeriodCourseChangeForm.get('OrgId').value, this.PeriodCourseChangeForm.get('DayOfWeek').value)
+        .subscribe(res => {
+          // @ts-ignore
+          this.Teachers = res.Data;
+      }, err => {
+        console.log(err);
+      });
     }
   }
 }

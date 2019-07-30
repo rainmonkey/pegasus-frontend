@@ -89,6 +89,7 @@ export class LearnerRegistrationFormComponent implements OnInit, DoCheck, AfterV
   showErrorH = false;
   touchNext = false;
   learnerValid = true;
+  canAddGroup = true;
   // photo thumbnail
   photoObj;
   // for add more selection
@@ -190,6 +191,8 @@ export class LearnerRegistrationFormComponent implements OnInit, DoCheck, AfterV
         address: [this.whichLearner ? this.whichLearner.Address : ''],
         photo: [''],
         grade: [''],
+        agreement:[''],
+        others:[''],
         //learnPurpose: [this.whichLearner?this.whichLearner.learnPurpose:''],
         //infoFrom: [this.whichLearner?this.whichLearner.infoFrom:''],
         learnerLevel: [this.whichLearner ? this.whichLearner.LearnerLevel : this.selectLearnerLevel, Validators.required],
@@ -198,7 +201,7 @@ export class LearnerRegistrationFormComponent implements OnInit, DoCheck, AfterV
         levelTypeRadio: [this.whichLearner ? this.whichLearner.LevelType: 1],
         paymentPeriod: [this.whichLearner ? this.whichLearner.PaymentPeriod : '1'],
         referrer: [this.whichLearner ? this.whichLearner.Referrer : ''],
-        isUnder18: [this.whichLearner ? this.whichLearner.isUnder18 : 0],
+        isUnder18: [this.whichLearner&&Number(this.whichLearner.IsUnder18)==1 ? true : false],
         Comment: [this.whichLearner ? this.whichLearner.Comment : ''],
       }),
       parentForm: this.fb.array([]),
@@ -583,12 +586,12 @@ export class LearnerRegistrationFormComponent implements OnInit, DoCheck, AfterV
 
   // select course category
   selectCategory(id, i) {
-    console.log(this.teaListOutArray)
     // let courseTemp = [];
     this.emptySelectionCat(i);
     this.notPiano [i] = Number(id);
     this.courseListArray[i].courseItemArray = this.catListArray[i].filter(item => item.CourseCategoryId === Number(id));
     console.log("this.courseListArray", this.courseListArray);
+    console.log(this.teaListOutArray[i].teaListToDatePick)
   }
 
   selectCourse(value, i) {
@@ -714,11 +717,7 @@ selectLocation(id, i) {
       this.oneOnOneCourse.push(tempObj);
     };
   }
-
-  onSubmit() {
-    this.confirmGroupCourse();
-    this.confirmCustomCourse();
-    console.log(this.courseGroup);
+  encapsulateLearner(){
     // encapsulate learner form data
     this.learner = [];
     this.learner = this.learnerForm.value;
@@ -739,6 +738,9 @@ selectLocation(id, i) {
     this.fdObj['PaymentPeriod'] = parseInt(this.learner.paymentPeriod);
     this.fdObj['Referrer'] = this.learner.referrer;
     this.fdObj['Comment'] = this.learner.Comment;
+  }
+
+  encapsulateParent(){
     // encapsulate parent form data
     // console.log('submit', this.parentForm.value)
     this.parent = [];
@@ -754,18 +756,55 @@ selectLocation(id, i) {
       // console.log('parent',this.parent);
     }
     this.fdObj['Parent'] = this.parent;
-    if (!this.whichLearner){
-      this.fdObj['LearnerGroupCourse'] = this.learnerGroupCourse;
-      this.fdObj['OneToOneCourseInstance'] = this.oneOnOneCourse;
-    }
+  }
+
+  //submit infomation not including course data
+  submitInfo(){
+    this.encapsulateLearner();
+    this.encapsulateParent();
+    this.confirmGroupCourse();
+    this.confirmCustomCourse();
+    this.fdObj['LearnerGroupCourse'] = this.learnerGroupCourse;
+    this.fdObj['OneToOneCourseInstance'] = this.oneOnOneCourse;
     this.fdObj['LearnerOthers'] = this.learnerOthers;
+    this.fd.delete('details');
+    this.fd.append('details', JSON.stringify(this.fdObj));
+    this.openConfirm();
+  }
+
+  // submit all
+  onSubmit() {
+    this.confirmGroupCourse();
+    this.confirmCustomCourse();
+    this.canAddGroup = true;
+    console.log(this.groupCourseInstance, this.oneOnOneCourse);
+    let checkGroup = [];
+    this.groupCourseInstance.forEach(ele => {
+      if (ele.isChecked == true){
+        checkGroup.push(1)
+      }
+    });
+    if(checkGroup.length !==0 || this.oneOnOneCourse.length !==0){
+
+    console.log(this.courseGroup);
+    this.encapsulateLearner();
+    this.encapsulateParent();
+    // if (!this.whichLearner){
+    //   this.fdObj['LearnerGroupCourse'] = this.learnerGroupCourse;
+    //   this.fdObj['OneToOneCourseInstance'] = this.oneOnOneCourse;
+    // }
+
+    if(this.learnerGroupCourse) {this.fdObj['LearnerGroupCourse'] = this.learnerGroupCourse;}
+    if(this.oneOnOneCourse) {this.fdObj['OneToOneCourseInstance'] = this.oneOnOneCourse;}
+    if(this.learnerOthers) {this.fdObj['LearnerOthers'] = this.learnerOthers;}
     console.log(this.fdObj);
     this.fd.delete('details');
     this.fd.append('details', JSON.stringify(this.fdObj));
-    console.log(this.fd)
     // console.log('form data', this.fd);
     // active modal waiting for decision
-    this.openConfirm();
+    this.openConfirm();}else{
+      this.canAddGroup = false;
+    }
   }
 
   resetLearner() {
@@ -978,18 +1017,29 @@ selectLocation(id, i) {
           email: ['', [Validators.required, Validators.email]]
         })
       );
-    }
-    else {
+    } else {
+      if (this.whichLearner.Parent.length === 0) {
+        this.parentForm.push(
+          this.fb.group({
+            firstName: ['', Validators.required],
+            lastName: ['', Validators.required],
+            relationship: ['', Validators.required],
+            contactPhone: ['', Validators.required],
+            email: ['', [Validators.required, Validators.email]]
+          })
+        );
+      } else {
       this.whichLearner.Parent.map(p => {
         this.parentForm.push(
           this.fb.group({
-            firstName: [p.FirstName, Validators.required],
-            lastName: [p.LastName, Validators.required],
-            relationship: [p.Relationship, Validators.required],
-            contactPhone: [p.ContactNum, Validators.required],
-            email: [p.Email, [Validators.required, Validators.email]]
+            firstName: [p.FirstName?p.FirstName:'', Validators.required],
+            lastName: [p.LastName?p.LastName:'', Validators.required],
+            relationship: [p.Relationship?p.Relationship:'', Validators.required],
+            contactPhone: [p.ContactNum?p.ContactNum:'', Validators.required],
+            email: [p.Email?p.Email:'', [Validators.required, Validators.email]]
           }))
-      })
+        })
+      }
     };
 
   }

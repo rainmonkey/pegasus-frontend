@@ -150,6 +150,8 @@ import { MessagerNotificationComponent } from './components/dashboard/general/me
 import { ConflictCheckComponent } from './components/dashboard/dashboard-components/conflict-check/conflict-check/conflict-check.component';
 import { ProcessStatusPipe } from './shared/pipes/process-status.pipe';
 import { StockApplicationFormComponent } from './components/dashboard/dashboard-components/inventory/inventory-stock-application/stock-application-form/stock-application-form.component';
+import { NewLearnerRegistrationModalComponent } from './components/dashboard/dashboard-components/admin-learner/New-Learner-Registration-modal/New-Learner-Registration-modal.component';
+import { NewRegistrationFormComponent } from './components/dashboard/dashboard-components/admin-learner/New-Registration-Form/New-Registration-Form.component';
 
 
 @NgModule({
@@ -289,7 +291,9 @@ import { StockApplicationFormComponent } from './components/dashboard/dashboard-
     ProcessStatusPipe,
     StockApplicationFormComponent,
 
-
+  //  new registration
+  NewLearnerRegistrationModalComponent,
+  NewRegistrationFormComponent
   ],
   imports: [
     NgbModule,
@@ -373,7 +377,10 @@ import { StockApplicationFormComponent } from './components/dashboard/dashboard-
     SelectHolidaysModalComponent,
 
     TimePickerComponent,
-    TrialSearchComponent
+    TrialSearchComponent,
+
+    NewLearnerRegistrationModalComponent
+
   ],
   exports: [AppComponent],
   bootstrap: [AppComponent]

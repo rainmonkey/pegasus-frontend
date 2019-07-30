@@ -91,6 +91,11 @@ export class CoursesService {
   getTeachers(): any {
     return this.http.get(this.baseUrl + 'teacher');
   }
+
+  getAvailableDays(teacherId): any {
+    return this.http.get(this.baseUrl + 'teacher/GetTeacherAvailableDaysDayById/' + teacherId);
+  }
+
   getLocations(): any {
     return this.http.get(this.baseUrl + 'orgs');
   }

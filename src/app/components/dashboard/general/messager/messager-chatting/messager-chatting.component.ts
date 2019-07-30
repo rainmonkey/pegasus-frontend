@@ -8,7 +8,7 @@ import { Animations } from '../../../../../../animation/chatting-animation';
 import { environment } from 'src/environments/environment.prod';
 
 @Component({
-    
+
   selector: 'app-messager-chatting',
   templateUrl: './messager-chatting.component.html',
   styleUrls: ['./messager-chatting.component.css',
@@ -26,8 +26,8 @@ export class MessagerChattingComponent implements OnInit {
   //how many messagers in current chatting panel 
   public chattingAreaMessageCounter: number = 0;
 
-  //得到组件的高度 这种写法很傻逼 学会SASS再优化
-  @Input() modalHeight;
+  /**@property {number} - get modal's height, too stupid, simplify it after learned SASS */
+  @Input() modalHeight: number;
   @Output() onStartChatting = new EventEmitter();
   @ViewChild('m_c_text_area') textArea;
 
@@ -37,138 +37,126 @@ export class MessagerChattingComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.getSubscriberChattingWith();
+    this.getSubscriberNowChattingWith();
   }
 
-  /*
-    get subscriber now chatting
-      --> subObj:true   chatting with a subscriber
-          subObj:false  no one selected
-  */
-  getSubscriberChattingWith() {
-    let subObj = this.messagerService.getSubscriberChattingWith();
-    if (subObj) {
-      this.chattingDisplayFlag = true;
-      this.subscriber = subObj;
-    }
-    else {
-      this.chattingDisplayFlag = false;
-    }
+  /**
+   * Get subscriber now chatting.
+   */
+  getSubscriberNowChattingWith() {
+    this.subscriber = this.messagerService.readSubscriberNowChattingWith();
   }
 
-  /*
-    called by template event 
-    keys combination(control + enter) to send message
-  */
+  /**
+   * Keys down event handler, press control and enter to send message.
+   * @param event - key's down event
+   */
   keysDownEventHandler(event) {
     this.saveMessageToLocal(event.target.value);
     this.clearInputArea();
   }
 
-  /*
-    clear input area
-  */
+  /**
+   * Clear input area.
+   */
   clearInputArea() {
     this.textArea.nativeElement.value = '';
   }
 
-  /*
-    called by template event
-    scroll scroll bar to bottom
-      --> if messages are too many to show the scroll bar, when push a new message, scroll to this new message
-  */
-  scrollToBottom(count) {
-    //if counter changed(that means new messages pushed on the view), scrolled to bottom, to avoid *ngFor automatically checking
-    if (!(count == this.chattingAreaMessageCounter)) {
-      document.getElementById('scroll_anchor').scrollIntoView()
+  /**
+   * Scroll the scroll bar to bottom.
+   * @param counter - counter of chatting messages
+   */
+  scrollToBottom(counter) {
+    //if counter changed(that means new messages pushed on the view, scrolled to bottom, to avoid *ngFor automatically checking
+    if (counter !== this.chattingAreaMessageCounter) {
+      document.getElementById('scroll_anchor').scrollIntoView();
     }
-    this.chattingAreaMessageCounter = count;
+    this.chattingAreaMessageCounter = counter;
   }
 
-  /*
-    save the message to local storage
-  */
-  saveMessageToLocal(message) {
-    if (message !== '') {
-      //message create time
+  /**
+   * Save messages history.
+   * @param messageBody - message content
+   */
+  saveMessageToLocal(messageBody:string) {
+    console.log(messageBody)
+    if (messageBody) {
       let createAt = new Date();
-
       let messageObj = {
         subscriberId: this.subscriber['UserId'],
-        message: message,
-        leftOrRight: 'right',
+        messageBody: messageBody,
+        isIncomingMessage: false,
         isError: false,
-        createTime: createAt,
+        createAt:  new Date(),
         isResend: false,
         createTimeStamp: createAt.getTime()
       }
 
       this.messagerService.saveChattingHistory(messageObj);
-      this.sendMessageToServer(message, createAt);
+      this.sendMessageToServer(messageBody, createAt);
     }
   }
 
-  /*
-    send message to server 这一步应该后台来完成,没必要放在前台
+ /**
+  * Send message to server with SignalR.
+  * @param messageBody - message content to send
+  * @param createAt - create time
   */
-  sendMessageToServer(messageToSend, createAt) {
-    console.log(createAt)
+  sendMessageToServer(messageBody, createAt) {
     let messageObj = {
       ReceiverUserId: this.subscriber['UserId'],
       SenderUserId: Number(localStorage.getItem('userID')),
-      MessageBody: messageToSend,
-      ChatGroupId: null
+      MessageBody: messageBody,
+      ChatGroupId: null,
     }
 
-    this.chattingService.sendMessage(messageObj)
+    this.chattingService.sendMessageOneToOne(messageObj)
       .subscribe(
         null,
         (err) => {
           console.log('message sent error')
           //message send failed handler
-          this.messagerService.messageSendFailedHandler(createAt.getTime(), this.subscriber['UserId']);
+          this.messagerService.sendMessageFailed(createAt.getTime(), this.subscriber['UserId']);
         }
       )
   }
 
-  /*
-    get chatting history from service
-  */
+  /**
+   * Get chatting history List.
+   * @return - chatting history list
+   */
   getChattingHistory() {
-    return this.messagerService.getChattingHistory(this.subscriber['UserId']);
+    return this.messagerService.readChattingHistory(this.subscriber['UserId']);
   }
 
-  /*
-    called by template event
-    if no subscriber selected and now click chatting icon
-  */
+  /**
+   * Return to main menu to start a new chatting if no subscriber selected.
+   */
   startNewChatting() {
-    this.onStartChatting.emit(false)
+    this.onStartChatting.emit(false);
   }
 
-  /*
-    called by template event
-    message send failed handler
+ /**
+  * Resend message when user click resend button.
+  * @param event - template event
+  * @param messageIndex - message index
   */
-  resentMessage(event, index) {
-    console.log('???')
-    //get the failed message object from storage 
-    let msg = this.messagerService.getSpecificChattingMessageHistory(this.subscriber['UserId'], index);
-    //set isError to false
+  resentMessage(event, messageIndex) {
+    let msg = this.messagerService.readChattingHistory(this.subscriber['UserId'], messageIndex);
+    //set isError as false
     msg.isError = false;
-    //set isResend to true
+    //set isResend as true
     msg.isResend = true;
     let createAt = new Date(msg['createTimeStamp'])
-    //save(update) resend message to storage
     this.messagerService.saveChattingHistory(msg);
-    //resend to subscriber   
-    this.sendMessageToServer(msg['message'], createAt);
+    //resend message   
+    this.sendMessageToServer(msg['messageBody'], createAt);
   }
 
-  /*
-    called by tempalte event
-    display/hide emoji picker panel
-  */
+  /**
+   * Emoji picker display handler.
+   */
   displayEmojiPicker() {
     this.emojiPickerDisplayFlag = !this.emojiPickerDisplayFlag;
   }
@@ -214,8 +202,12 @@ export class MessagerChattingComponent implements OnInit {
     }
   }
 
-  showPhotoIcon(leftOrRight) {
-    let src = (leftOrRight == 'left') ? this.photoUrl + this.subscriber['Photo'] : this.photoUrl + localStorage.getItem('photo');
+  /**
+   * Display photos.
+   * @param isIncomingMessage - is incoming message?
+   */
+  showPhotoIcon(isIncomingMessage: boolean) {
+    let src = isIncomingMessage ? this.photoUrl + this.subscriber['Photo'] : this.photoUrl + localStorage.getItem('photo');
     return src;
   }
 

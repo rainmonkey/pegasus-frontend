@@ -78,10 +78,16 @@ export class SessionDetailEditModalComponent implements OnInit {
           const EditEndTime = new Date(this.SessionForm.value.BeginTime);
           console.log(EditBeginTime.getMinutes().toString().length);
           EditEndTime.setMinutes(EditBeginTime.getMinutes() + (dateDiff / 60 / 1000));
-          const BeginTime = EditBeginTime.getFullYear() + '-' + (EditBeginTime.getMonth() + 1) + '-' + EditBeginTime.getDate() + 'T' +
-            EditBeginTime.getHours() + ':' + (EditBeginTime.getMinutes().toString().length === 1 ? '0' + EditBeginTime.getMinutes().toString() : EditBeginTime.getMinutes());
-          const EndTime = EditEndTime.getFullYear() + '-' + (EditEndTime.getMonth() + 1) + '-' + EditEndTime.getDate() + 'T' +
-            EditEndTime.getHours() + ':' + (EditEndTime.getMinutes().toString().length === 1 ? '0' + EditEndTime.getMinutes().toString() : EditEndTime.getMinutes());
+          const BeginTime = EditBeginTime.getFullYear() + '-' +
+            ((EditBeginTime.getMonth() + 1).toString().length === 1 ? '0' + (EditBeginTime.getMonth() + 1).toString() : (EditBeginTime.getMonth() + 1).toString())  +
+            '-' + EditBeginTime.getDate() + 'T' +
+            (EditBeginTime.getHours().toString().length === 1 ? '0' + EditBeginTime.getHours().toString() : EditBeginTime.getHours().toString())
+            + ':' + (EditBeginTime.getMinutes().toString().length === 1 ? '0' + EditBeginTime.getMinutes().toString() : EditBeginTime.getMinutes());
+          const EndTime = EditEndTime.getFullYear() + '-' +
+            ((EditEndTime.getMonth() + 1) .toString().length === 1 ? '0' + (EditEndTime.getMonth() + 1) .toString() : (EditEndTime.getMonth() + 1) .toString())
+            + '-' + EditEndTime.getDate() + 'T' +
+            (EditEndTime.getHours().toString().length === 1 ? '0' + EditEndTime.getHours().toString() : EditEndTime.getHours().toString())
+            + ':' + (EditEndTime.getMinutes().toString().length === 1 ? '0' + EditEndTime.getMinutes().toString() : EditEndTime.getMinutes());
           this.sessionsService.GetSessionEditRoomTwo(this.SessionForm.value.Branch, BeginTime, EndTime).subscribe(data => {
             this.RoomSelects = data.Data;
           });

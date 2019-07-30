@@ -12,6 +12,7 @@ import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {MondayDateInWeekByDatePipe} from '../../../../../../shared/pipes/monday-date-in-week-by-date.pipe';
 import { CoursesService } from '../../../../../../services/http/courses.service';
 import {debounce} from '../../../../../../shared/utils/debounce';
+import {SessionEdit} from '../../../../../../models/SessionEdit';
 
 @Component({
   selector: 'app-sessions-calendar-view-tutor',
@@ -21,15 +22,20 @@ import {debounce} from '../../../../../../shared/utils/debounce';
 })
 export class SessionsCalendarViewTutorComponent implements OnInit {
   debounce = debounce();
+  IsConfirmEditSuccess = false;
+  isloadingSmall = false;
   options: OptionsInput;
   isloading = false;
   @ViewChild('fullcalendar') fullcalendar: CalendarComponent;
+  @ViewChild('confirmModal') confirmModal;
   @ViewChild('content') content;
   @ViewChild('teacher') teacher;
   dateOfLesson;
   teachers;
   teacherId;
   AvailableDays = [];
+  sessionEditModel;
+  reason = '';
   teacherSelected;
   eventsModel: any;
   t = null;
@@ -55,13 +61,34 @@ export class SessionsCalendarViewTutorComponent implements OnInit {
         center: 'title',
         right: ''
       },
+      eventDrop: (info) => {
+        this.IsConfirmEditSuccess = false;
+        const Date = this.datePipe.transform(this.fullcalendar.calendar.getDate(), 'yyyy-MM-dd')
+        const newStartTime = this.datePipe.transform(info.event.start, 'yyyy-MM-dd HH:mm');
+        const newEndTime = this.datePipe.transform(info.event.end, 'yyyy-MM-dd HH:mm');
+        const RoomId = info.event.extendedProps.RoomId;
+        const OrgId = info.event.extendedProps.OrgId;
+        const LessonId = info.event.extendedProps.LessonId;
+        const LearnerId = info.event.extendedProps.LearnerId;
+
+        this.sessionEditModel = new SessionEdit(
+          LessonId, LearnerId, RoomId, this.teacherId, OrgId, this.reason, newStartTime
+        )
+        console.log(this.sessionEditModel)
+        const modalRef = this.modalService.open(this.confirmModal);
+        modalRef.result.then(() => {
+          this.GetEventData(Date);
+        }, () => {
+          this.GetEventData(Date);
+        });
+      },
       slotDuration: '00:15',
       customButtons: {
         DayPickerButton: {
           text: 'Search',
           click: () => {
             this.modalService.open(this.content);
-        }
+          }
         }
       },
       eventClick: (info) => {
@@ -72,10 +99,27 @@ export class SessionsCalendarViewTutorComponent implements OnInit {
           }
         );
       },
-      plugins: [timeGridPlugin]
+      plugins: [timeGridPlugin, interactionPlugin]
     };
     this.InitialiseEventData();
   }
+
+  ConfirmEdit = () => {
+    this.isloadingSmall = true;
+    this.sessionEditModel.reason = this.reason;
+    this.sessionsService.SessionEdit(this.sessionEditModel).subscribe(res => {
+      this.IsConfirmEditSuccess = true;
+      this.isloadingSmall = false;
+    }, err => {
+      this.isloadingSmall = false;
+      Swal.fire({
+        type: 'error',
+        title: 'Oops...',
+        text: err.error.ErrorMessage
+      });
+    });
+  }
+
   getTeachers = () => {
     this.coursesService.getTeachers().subscribe(res => {
       this.teachers = res.Data;
@@ -85,10 +129,12 @@ export class SessionsCalendarViewTutorComponent implements OnInit {
     data.forEach(s => {
       if (s.IsCanceled == 1) {
         s.color = 'grey';
+        s.editable = false;
       }
 
       if (s.IsConfirm == 1) {
         s.color = 'green';
+        s.editable = false;
       }
       s.title = s.orgAbbr + ' ( ' + s.title + ' )\n';
       s.title += s.student.length === 1 ? s.student[0] : null;
@@ -141,6 +187,7 @@ export class SessionsCalendarViewTutorComponent implements OnInit {
       this.debounce( () => {
         this.GetEventData(date);
       }, 500);
+      this.headerChangeColorHandler();
     }
     if (model.buttonType === 'today') {
 
@@ -149,8 +196,8 @@ export class SessionsCalendarViewTutorComponent implements OnInit {
       this.debounce( () => {
         this.GetEventData(this.datePipe.transform(beginDate, 'yyyy-MM-dd'));
       }, 500);
+      this.headerChangeColorHandler();
     }
-    this.headerChangeColorHandler();
   }
 
   GetEventData = (beginDate) => {
@@ -172,7 +219,7 @@ export class SessionsCalendarViewTutorComponent implements OnInit {
   }
 
   search = () => {
-
+    this.fullcalendar.calendar.removeAllEvents();
     if (this.dateOfLesson === '' || this.dateOfLesson === null || this.dateOfLesson === undefined) {
       Swal.fire({
         type: 'error',
@@ -189,11 +236,19 @@ export class SessionsCalendarViewTutorComponent implements OnInit {
     const beginDate = this.mondayDatePipe.transform(datetoshow);
     this.fullcalendar.calendar.gotoDate(beginDate);
     this.GetEventData(this.datePipe.transform(beginDate, 'yyyy-MM-dd'));
-    this.AvailableDays =  this.teachers.filter(teacher => teacher.TeacherId == this.teacherId)[0].AvailableDays;
-    this.headerChangeColorHandler();
+    this.coursesService.getAvailableDays(this.teacherId).subscribe(res => {
+      this.AvailableDays = res.Data;
+      this.headerChangeColorHandler();
+    }, err => {
+      console.log(err);
+    });
   }
 
   headerChangeColorHandler = () => {
+    const org = document.querySelectorAll('#Org');
+    org.forEach(s => {
+      s.remove();
+    })
     // @ts-ignore
     document.querySelector('.fc-mon').style.background = '';
     // @ts-ignore
@@ -211,36 +266,71 @@ export class SessionsCalendarViewTutorComponent implements OnInit {
     this.AvailableDays.map(s => {
       if (s.DayOfWeek == 1) {
         // @ts-ignore
-        document.querySelector('.fc-mon').style.background = 'green';
+        document.querySelector('.fc-mon').style.background = '#36bf36';
+        const div = document.createElement('div');
+        div.setAttribute('id', 'Org');
+        div.innerText = s.Abbr;
+        div.style.cssText = 'font-style:italic'
+        document.querySelector('.fc-mon').appendChild(div);
       }
       if (s.DayOfWeek == 2) {
         // @ts-ignore
-        document.querySelector('.fc-tue').style.background = 'green';
+        document.querySelector('.fc-tue').style.background = '#36bf36';
+        const div = document.createElement('div');
+        div.setAttribute('id', 'Org');
+        div.style.cssText = 'font-style:italic'
+        div.innerText = s.Abbr;
+        document.querySelector('.fc-tue').appendChild(div);
       }
 
       if (s.DayOfWeek == 3) {
         // @ts-ignore
-        document.querySelector('.fc-wed').style.background = 'green';
+        document.querySelector('.fc-wed').style.background = '#36bf36';
+        const div = document.createElement('div');
+        div.setAttribute('id', 'Org');
+        div.style.cssText = 'font-style:italic'
+        div.innerText = s.Abbr;
+        document.querySelector('.fc-wed').appendChild(div);
       }
 
       if (s.DayOfWeek == 4) {
         // @ts-ignore
-        document.querySelector('.fc-thu').style.background = 'green';
+        document.querySelector('.fc-thu').style.background = '#36bf36';
+        const div = document.createElement('div');
+        div.setAttribute('id', 'Org');
+        div.style.cssText = 'font-style:italic'
+        div.innerText = s.Abbr;
+        document.querySelector('.fc-thu').appendChild(div);
       }
 
       if (s.DayOfWeek == 5) {
         // @ts-ignore
-        document.querySelector('.fc-fri').style.background = 'green';
+        document.querySelector('.fc-fri').style.background = '#36bf36';
+        const div = document.createElement('div');
+        div.setAttribute('id', 'Org');
+        div.style.cssText = 'font-style:italic'
+        div.innerText = s.Abbr;
+        document.querySelector('.fc-fri').appendChild(div);
       }
 
       if (s.DayOfWeek == 6) {
         // @ts-ignore
-        document.querySelector('.fc-sat').style.background = 'green';
+        document.querySelector('.fc-sat').style.background = '#36bf36';
+        const div = document.createElement('div');
+        div.setAttribute('id', 'Org');
+        div.style.cssText = 'font-style:italic'
+        div.innerText = s.Abbr;
+        document.querySelector('.fc-sat').appendChild(div);
       }
 
       if (s.DayOfWeek == 7) {
         // @ts-ignore
-        document.querySelector('.fc-sun').style.background = 'green';
+        document.querySelector('.fc-sun').style.background = '#36bf36';
+        const div = document.createElement('div');
+        div.setAttribute('id', 'Org');
+        div.style.cssText = 'font-style:italic'
+        div.innerText = s.Abbr;
+        document.querySelector('.fc-sun').appendChild(div);
       }
     });
   }
