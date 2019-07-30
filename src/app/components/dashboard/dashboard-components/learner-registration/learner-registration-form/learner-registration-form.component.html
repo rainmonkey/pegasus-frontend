@@ -7,7 +7,6 @@
     <li><a class="nav-link" data-toggle="tab" href="#parentForm">Guardian</a></li>
     <li><a class="nav-link" data-toggle="tab" href="#courseForm">Course</a></li>
   </ul> -->
-
   <!-- ----LearnerForm HTML---- -->
   <div class="tab-content">
     <div id="learnerForm" *ngIf="addCourse == undefined">
@@ -277,9 +276,8 @@
         <button (click)="chooseCustomCourse()" class='btn btn-outline-primary'>One-on-One Course</button>
       </div>
 
-
       <div class="card" *ngIf="isGroupCourse" >
-        <div class="select-group-course card-body">
+        <div class="select-group-course container">
           <div class="guitar">
             <table class="table ">
               <thead>
