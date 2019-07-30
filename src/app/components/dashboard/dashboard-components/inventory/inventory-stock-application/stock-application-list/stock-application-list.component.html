@@ -1,4 +1,8 @@
-<div class="container">
+ <!-- loading -->
+<div *ngIf="loadingFlag" class="loaderLarge"></div>
+
+ <!-- after fetch data success -->
+<div class="container" *ngIf="!loadingFlag">
   <div class="title--center">
     Stock Application
   </div>
@@ -50,21 +54,17 @@
     </form>
     <!-- add more btn -->
     <div class="ml-auto">
-      <button class="btn btn-info btn__add--right" (click)="updateModal(command, whichOrder)">
+      <button class="btn btn-info btn__add--right" (click)="updateModal(2, null)">
         + Add More
       </button>
     </div>
   </div>
 
-  <!-- loading -->
-  <div *ngIf="loadingFlag" class="loaderLarge"></div>
-
-  <!-- after fetch data success -->
-  <div *ngIf="!loadingFlag">
+  <div>
     <!-- delete message -->
     <div *ngIf="isDeleted" class="text-center undo__msg">
       <i class="fa fa-check-circle"></i>
-      <span class="text-danger m-1">This order has already removed.
+      <span class="font-weight-bold m-1">This order has already removed.
         <a class="text-primary font-weight-bold" (click)="undo()">Undo</a>
       </span>
     </div>
@@ -105,7 +105,10 @@
           </tr>
         </thead>
         <tbody>
-          <tr class="table__row--hover" *ngFor="let item of stockApplications; let i = index" [ngClass]="{'table_row--highlight': isDeleted}">
+          <tr class="table__row--hover" 
+            *ngFor="let item of stockApplication | 
+            slice: (page-1)* pageSize : (page-1) * pageSize + pageSize; let i = index" 
+            [ngClass]="{'tr--highlight': item.ApplicationId == applicationId}">
             <th scope="row">{{ item.id }}</th>
             <td>
               {{ item.ApplyStaff.FirstName }}
@@ -121,10 +124,10 @@
             </td>
             <td>{{ item.ProcessStatus | processStatus}}</td>
             <td>
-              <span class="table__btn--cursor" style="margin-right: 1rem;" (click)="detailModal(1, item.id)">
+              <span class="table__btn--cursor" style="margin-right: 1rem;" (click)="detailModal(1, item)">
                 <i class='fas fa-info-circle'></i>
               </span>
-              <span class="table__btn--cursor" style="margin-right: 1rem;" (click)="updateModal(2, item.id)">
+              <span class="table__btn--cursor" style="margin-right: 1rem;" (click)="updateModal(2, item)">
                 <i class='fas fa-pen'></i>
               </span>
               <span class="table__btn--cursor" (click)="delete(item)">

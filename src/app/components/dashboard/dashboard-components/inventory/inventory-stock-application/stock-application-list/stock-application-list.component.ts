@@ -25,7 +25,7 @@ export class StockApplicationListComponent implements OnInit {
   /* loading */
   public loadingFlag: boolean = true;
   public page: number = 1;
-  public pageSize: number = 8;
+  public pageSize: number = 6;
   public dateForm: FormGroup;
   /* props for after loading, display default data of three months */
   public previousDate: any;
@@ -38,6 +38,7 @@ export class StockApplicationListComponent implements OnInit {
   public endDate: any;
   /* props for accepting data from server */
   public stockApplication: Array<any>;
+  public stockApplicationCopy: Array<any>;
   public errorMessage: string;
   /* all about route of URL */
   public queryParams: object = {};
@@ -45,8 +46,7 @@ export class StockApplicationListComponent implements OnInit {
   public timeout: any;
   public isDeleted: boolean = false;
   public deleteFailed: boolean = false;
-  // public isHighlight: boolean = false;
-
+  public applicationId: number;
 
   constructor(
     private router: Router,
@@ -83,9 +83,10 @@ export class StockApplicationListComponent implements OnInit {
     this.inventoriesService.getStockApplication(previousDate, currentDate).subscribe(
       (res) => {
         console.log('res', res.Data);
-        this.stockApplication = res.Data;
+        this.stockApplicationCopy = res.Data;
+        this.stockApplication = this.renderOrders(res.Data)
         this.loadingFlag = false;
-         console.log('this.stockApplication', this.stockApplication)
+        console.log('this.stockApplication', this.stockApplication)
       },
       (err) => {
         this.errorHandler(err);
@@ -93,14 +94,10 @@ export class StockApplicationListComponent implements OnInit {
     )
   }
   /* slice specific part of data to display in table of HTML */
-  get stockApplications(): any[] {
-    // console.log('sddsfasdfsaf', this.stockApplication)
-    if (!this.loadingFlag) {
-      // console.log('sddsfasdfsaf', this.stockApplication)
-      return this.stockApplication.reverse()
-        .map((stockInfo, i) => ({ id: i + 1, ...stockInfo }))
-        .slice((this.page - 1) * this.pageSize, (this.page - 1) * this.pageSize + this.pageSize);
-    }
+  renderOrders(orderList) {
+    // console.log('renderOrder', orderList);
+    return orderList.reverse()
+      .map((stockInfo, i) => ({ id: i + 1, ...stockInfo }))
   }
   /* Validate EndDate > BeginDate */
   onBeginDateSelect(beginDate: NgbDate) {
@@ -159,56 +156,68 @@ export class StockApplicationListComponent implements OnInit {
   }
   /* update modal */
   updateModal(command: number, whichOrder: number) {
-    console.log('update command', command, 'whichOrder', whichOrder)
+    // console.log('update command', command, 'whichOrder', whichOrder)
     const modalRef = this.modalService.open(StockApplicationUpdateModalComponent, { size: 'lg', centered: true, backdrop: 'static', keyboard: false });
     modalRef.componentInstance.command = command;
     modalRef.componentInstance.whichOrder = whichOrder;
-    modalRef.componentInstance.passProduct.subscribe((applicationId: number) => {
-      this.loadingFlag = true;
-      this.inventoriesService.getNewStockApplication(applicationId).subscribe(
-        res => {
-          console.log('receivedProduct', res['Data']);
-          this.stockApplication.push(res['Data']);
-          // console.log('stockApplications',this.stockApplications);
-          this.loadingFlag = false;
-          modalRef.close();
-        },
-        err => this.errorHandler(err)
-      )
-    })
+    this.postStockApplication(modalRef);
+    
+  }
+  postStockApplication(modalRef) {
+    modalRef.componentInstance.passApplicationId.subscribe(
+      (applicationId: number) => {
+        this.loadingFlag = true;
+        // console.log('receive application id', applicationId);
+        this.inventoriesService.getNewStockApplication(applicationId).subscribe(
+          res => {
+            console.log('post success', res['Data']);
+            this.stockApplication.unshift(res['Data']);
+            this.stockApplication.map((item, i) => {
+              item.id = i + 1;
+            });
+            this.loadingFlag = false;
+            this.applicationId = applicationId;
+            setTimeout(() => {
+              this.applicationId = null;
+            }, 2000)
+            modalRef.close();
+          },
+          err => this.errorHandler(err)
+        )
+      }
+    )
   }
   /* detail modal */
   detailModal(command: number, whichOrder: number) {
     console.log('detail command', command, 'whichOrder', whichOrder)
     const modalRef = this.modalService.open(StockApplicationDetailModalComponent, { size: 'lg', centered: true, backdrop: 'static', keyboard: false });
     modalRef.componentInstance.command = command;
-    modalRef.componentInstance.whichOrder = whichOrder;
+    modalRef.componentInstance.orderDetail = whichOrder;
   }
   /* delete method */
   delete(whichOrder) {
-    // document.querySelector('.table_row--highlight').style.backgroundColor = "red";
-    let applicationId = whichOrder.ApplicationId;
+    this.applicationId = whichOrder.ApplicationId;
     this.isDeleted = true;
-    whichOrder.isHighlight = true;
+    clearTimeout(this.timeout);
     this.timeout = setTimeout(() => {
-      this.inventoriesService.deleteProduct(applicationId).subscribe(
+      this.inventoriesService.deleteProduct(this.applicationId).subscribe(
         res => {
           console.log('delete res', res);
           this.isDeleted = false;
-          let index = this.stockApplication.indexOf(applicationId);
-          this.stockApplication.splice(index, 1);
-          whichOrder.isHighlight = false;
-          document.querySelector('.table_row--highlight')['style'].background = "";
+          let index = this.stockApplicationCopy.indexOf(this.applicationId);
+          this.stockApplicationCopy.splice(index, 1);
+          this.stockApplication = this.renderOrders(this.stockApplicationCopy);
         },
         err => {
           this.deleteFailed = true;
           this.errorHandler(err);
         }
       )
-    }, 500000)
+    }, 3000)
   }
   undo() {
     this.isDeleted = false;
+    this.applicationId = null;
     clearTimeout(this.timeout);
   }
   /* reusable function */
@@ -221,7 +230,7 @@ export class StockApplicationListComponent implements OnInit {
     }
   }
   /* validate dateForm input */
-  
-  
- 
+
+
+
 }
