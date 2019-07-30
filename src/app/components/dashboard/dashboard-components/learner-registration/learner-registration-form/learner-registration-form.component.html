@@ -141,7 +141,7 @@
               <img src="" id='certificate' style='height: 64px' alt="Certificate preview...">
               <input formControlName="grade" type="file" (change)="uploadGrade($event)" id="grade" class='custom-file-input' accept="image/*">
             </div>
-            <div class='row'>
+            <div class='row pl-2'>
               <div class="grade my-3 col-5 mr-2">
                 <label for="grade" class='custom-file-label'>Enrollment Agreement Upload.. <span><i class="fas fa-file-upload"></i></span></label>
                 <input formControlName="grade" type="file" (change)="uploadAgreement($event)" id="grade" class='custom-file-input' accept="application/msword,application/pdf,image/*">
@@ -434,7 +434,7 @@
         </div>
       </div>
     </div>
-    <pre>{{registrationForm.value| json}}</pre>
   </div>
+  <pre>{{registrationForm.value|json}}</pre>
 </form>
 <!-- <app-time-picker (beginTime)="beginTime($event)"></app-time-picker> -->

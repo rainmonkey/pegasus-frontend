@@ -772,17 +772,18 @@ selectLocation(id, i) {
 
   // submit all
   onSubmit() {
+    this.confirmGroupCourse();
+    this.confirmCustomCourse();
     this.canAddGroup = true;
-    console.log(this.groupCourseInstance, this.oneOnOneCourse)
-    let checkGroup = []
+    console.log(this.groupCourseInstance, this.oneOnOneCourse);
+    let checkGroup = [];
     this.groupCourseInstance.forEach(ele => {
       if (ele.isChecked == true){
         checkGroup.push(1)
       }
     });
     if(checkGroup.length !==0 || this.oneOnOneCourse.length !==0){
-    this.confirmGroupCourse();
-    this.confirmCustomCourse();
+
     console.log(this.courseGroup);
     this.encapsulateLearner();
     this.encapsulateParent();
