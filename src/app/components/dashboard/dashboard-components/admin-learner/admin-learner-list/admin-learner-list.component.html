@@ -10,7 +10,8 @@
       <div class='col-12 t_info_title'>
         Learner Information
         <div>
-          <button type="button" class="btn btn-outline-primary t_info_addnew_btn" (click)='openRegModal()'>+ Learner Registration</button>
+          <button type="button" class="btn btn-outline-primary t_info_addnew_btn" (click)='openRegModal(1,null)'>+
+            Learner Registration</button>
         </div>
       </div>
 
@@ -71,8 +72,8 @@
                     class="fas fa-folder-plus"></span></span>
                 <span class='t_info_table_btn' (click)='popUpModal(4,i)' title='Quit a Course'><span
                     class="fas fa-folder-minus"></span></span>
-                    <span class='t_info_table_btn' (click)='popUpModal(11,i)' title='Quit a Course'><span
-                      class="fas fa-kiwi-bird"></span></span>
+                <span class='t_info_table_btn' (click)='openRegModal(2,i)' title='New Edit'><span
+                    class="fas fa-kiwi-bird"></span></span>
 
               </td>
               <td style='width: 100px; padding-left:0px'>
