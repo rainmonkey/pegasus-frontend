@@ -191,6 +191,8 @@ export class LearnerRegistrationFormComponent implements OnInit, DoCheck, AfterV
         address: [this.whichLearner ? this.whichLearner.Address : ''],
         photo: [''],
         grade: [''],
+        agreement:[''],
+        others:[''],
         //learnPurpose: [this.whichLearner?this.whichLearner.learnPurpose:''],
         //infoFrom: [this.whichLearner?this.whichLearner.infoFrom:''],
         learnerLevel: [this.whichLearner ? this.whichLearner.LearnerLevel : this.selectLearnerLevel, Validators.required],
