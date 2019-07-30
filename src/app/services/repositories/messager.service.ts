@@ -22,7 +22,7 @@ export class MessagerService {
   public totalNoti$ = new Subject();
 
   constructor(private http: HttpClient) {
-    console.log('messager service')
+    // console.log('messager service')
   }
 
   /**
@@ -34,7 +34,7 @@ export class MessagerService {
     //To avoid dulplicated data transfer, when the web initiate, call api from server once
     //refresh, render or re-render don't call api
     if (JSON.parse(sessionStorage.getItem('chattingInit'))) {
-      console.log('aaa')
+      // console.log('aaa')
       return;
     }
 
