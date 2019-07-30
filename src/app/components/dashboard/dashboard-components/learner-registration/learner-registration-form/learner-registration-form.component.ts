@@ -191,6 +191,8 @@ export class LearnerRegistrationFormComponent implements OnInit, DoCheck, AfterV
         address: [this.whichLearner ? this.whichLearner.Address : ''],
         photo: [''],
         grade: [''],
+        agreement:[''],
+        others:[''],
         //learnPurpose: [this.whichLearner?this.whichLearner.learnPurpose:''],
         //infoFrom: [this.whichLearner?this.whichLearner.infoFrom:''],
         learnerLevel: [this.whichLearner ? this.whichLearner.LearnerLevel : this.selectLearnerLevel, Validators.required],
@@ -772,17 +774,18 @@ selectLocation(id, i) {
 
   // submit all
   onSubmit() {
+    this.confirmGroupCourse();
+    this.confirmCustomCourse();
     this.canAddGroup = true;
-    console.log(this.groupCourseInstance, this.oneOnOneCourse)
-    let checkGroup = []
+    console.log(this.groupCourseInstance, this.oneOnOneCourse);
+    let checkGroup = [];
     this.groupCourseInstance.forEach(ele => {
       if (ele.isChecked == true){
         checkGroup.push(1)
       }
     });
     if(checkGroup.length !==0 || this.oneOnOneCourse.length !==0){
-    this.confirmGroupCourse();
-    this.confirmCustomCourse();
+
     console.log(this.courseGroup);
     this.encapsulateLearner();
     this.encapsulateParent();
