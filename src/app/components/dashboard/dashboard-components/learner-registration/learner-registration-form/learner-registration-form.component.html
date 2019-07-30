@@ -295,7 +295,7 @@
               <tbody>
 
                 <tr formArrayName="groupCourse" *ngFor="let groupCourse of groupCourseInstance; let i = index">
-                  <td class='input-group col-3'>
+                  <td class='input-group'>
                       <label [for]="i" class="input-group-text gourpFontSize">{{groupCourse.Course.CourseName}}
                       <input class='ml-1' type="checkbox" [id]='i' [checked]="groupCourse.isChecked" (click)="selectCheckboxes(i, $event)" >
                       </label>
