@@ -75,6 +75,7 @@ export class LearnerRegistrationConfirmModalComponent implements OnInit {
         this.addCourse = false;
       },
       error => {
+        console.log(error)
         this.isloading = false;
         this.isConfirmClick = false;
         this.isGroupCourse = false;

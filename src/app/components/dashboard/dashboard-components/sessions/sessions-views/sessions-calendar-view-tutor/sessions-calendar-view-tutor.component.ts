@@ -187,6 +187,7 @@ export class SessionsCalendarViewTutorComponent implements OnInit {
       this.debounce( () => {
         this.GetEventData(date);
       }, 500);
+      this.headerChangeColorHandler();
     }
     if (model.buttonType === 'today') {
 
@@ -195,8 +196,8 @@ export class SessionsCalendarViewTutorComponent implements OnInit {
       this.debounce( () => {
         this.GetEventData(this.datePipe.transform(beginDate, 'yyyy-MM-dd'));
       }, 500);
+      this.headerChangeColorHandler();
     }
-    this.headerChangeColorHandler();
   }
 
   GetEventData = (beginDate) => {
@@ -218,7 +219,7 @@ export class SessionsCalendarViewTutorComponent implements OnInit {
   }
 
   search = () => {
-
+    this.fullcalendar.calendar.removeAllEvents();
     if (this.dateOfLesson === '' || this.dateOfLesson === null || this.dateOfLesson === undefined) {
       Swal.fire({
         type: 'error',
@@ -235,11 +236,19 @@ export class SessionsCalendarViewTutorComponent implements OnInit {
     const beginDate = this.mondayDatePipe.transform(datetoshow);
     this.fullcalendar.calendar.gotoDate(beginDate);
     this.GetEventData(this.datePipe.transform(beginDate, 'yyyy-MM-dd'));
-    this.AvailableDays =  this.teachers.filter(teacher => teacher.TeacherId == this.teacherId)[0].AvailableDays;
-    this.headerChangeColorHandler();
+    this.coursesService.getAvailableDays(this.teacherId).subscribe(res => {
+      this.AvailableDays = res.Data;
+      this.headerChangeColorHandler();
+    }, err => {
+      console.log(err);
+    });
   }
 
   headerChangeColorHandler = () => {
+    const org = document.querySelectorAll('#Org');
+    org.forEach(s => {
+      s.remove();
+    })
     // @ts-ignore
     document.querySelector('.fc-mon').style.background = '';
     // @ts-ignore
@@ -257,36 +266,71 @@ export class SessionsCalendarViewTutorComponent implements OnInit {
     this.AvailableDays.map(s => {
       if (s.DayOfWeek == 1) {
         // @ts-ignore
-        document.querySelector('.fc-mon').style.background = 'green';
+        document.querySelector('.fc-mon').style.background = '#36bf36';
+        const div = document.createElement('div');
+        div.setAttribute('id', 'Org');
+        div.innerText = s.Abbr;
+        div.style.cssText = 'font-style:italic'
+        document.querySelector('.fc-mon').appendChild(div);
       }
       if (s.DayOfWeek == 2) {
         // @ts-ignore
-        document.querySelector('.fc-tue').style.background = 'green';
+        document.querySelector('.fc-tue').style.background = '#36bf36';
+        const div = document.createElement('div');
+        div.setAttribute('id', 'Org');
+        div.style.cssText = 'font-style:italic'
+        div.innerText = s.Abbr;
+        document.querySelector('.fc-tue').appendChild(div);
       }
 
       if (s.DayOfWeek == 3) {
         // @ts-ignore
-        document.querySelector('.fc-wed').style.background = 'green';
+        document.querySelector('.fc-wed').style.background = '#36bf36';
+        const div = document.createElement('div');
+        div.setAttribute('id', 'Org');
+        div.style.cssText = 'font-style:italic'
+        div.innerText = s.Abbr;
+        document.querySelector('.fc-wed').appendChild(div);
       }
 
       if (s.DayOfWeek == 4) {
         // @ts-ignore
-        document.querySelector('.fc-thu').style.background = 'green';
+        document.querySelector('.fc-thu').style.background = '#36bf36';
+        const div = document.createElement('div');
+        div.setAttribute('id', 'Org');
+        div.style.cssText = 'font-style:italic'
+        div.innerText = s.Abbr;
+        document.querySelector('.fc-thu').appendChild(div);
       }
 
       if (s.DayOfWeek == 5) {
         // @ts-ignore
-        document.querySelector('.fc-fri').style.background = 'green';
+        document.querySelector('.fc-fri').style.background = '#36bf36';
+        const div = document.createElement('div');
+        div.setAttribute('id', 'Org');
+        div.style.cssText = 'font-style:italic'
+        div.innerText = s.Abbr;
+        document.querySelector('.fc-fri').appendChild(div);
       }
 
       if (s.DayOfWeek == 6) {
         // @ts-ignore
-        document.querySelector('.fc-sat').style.background = 'green';
+        document.querySelector('.fc-sat').style.background = '#36bf36';
+        const div = document.createElement('div');
+        div.setAttribute('id', 'Org');
+        div.style.cssText = 'font-style:italic'
+        div.innerText = s.Abbr;
+        document.querySelector('.fc-sat').appendChild(div);
       }
 
       if (s.DayOfWeek == 7) {
         // @ts-ignore
-        document.querySelector('.fc-sun').style.background = 'green';
+        document.querySelector('.fc-sun').style.background = '#36bf36';
+        const div = document.createElement('div');
+        div.setAttribute('id', 'Org');
+        div.style.cssText = 'font-style:italic'
+        div.innerText = s.Abbr;
+        document.querySelector('.fc-sun').appendChild(div);
       }
     });
   }

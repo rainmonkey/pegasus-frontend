@@ -97,5 +97,9 @@ export class LearnersService {
   getWaitingInvoice(learnerId){
     return this.http.get(this.baseUrl+'InvoiceWaitingConfirms/'+learnerId)
   }
+  GetTeacherRoomByOrgDayOfWeek(orgId, dayofweek) {
+    return this.http.get(this.baseUrl + 'teacher/GetTeacherRoomByOrgDayOfWeek/' + orgId + '/' +  dayofweek);
+  }
+
 
 }
