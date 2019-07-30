@@ -191,6 +191,8 @@ export class LearnerRegistrationFormComponent implements OnInit, DoCheck, AfterV
         address: [this.whichLearner ? this.whichLearner.Address : ''],
         photo: [''],
         grade: [''],
+        agreement:[''],
+        others:[''],
         //learnPurpose: [this.whichLearner?this.whichLearner.learnPurpose:''],
         //infoFrom: [this.whichLearner?this.whichLearner.infoFrom:''],
         learnerLevel: [this.whichLearner ? this.whichLearner.LearnerLevel : this.selectLearnerLevel, Validators.required],
@@ -199,7 +201,7 @@ export class LearnerRegistrationFormComponent implements OnInit, DoCheck, AfterV
         levelTypeRadio: [this.whichLearner ? this.whichLearner.LevelType: 1],
         paymentPeriod: [this.whichLearner ? this.whichLearner.PaymentPeriod : '1'],
         referrer: [this.whichLearner ? this.whichLearner.Referrer : ''],
-        isUnder18: [this.whichLearner ? this.whichLearner.isUnder18 : 0],
+        isUnder18: [this.whichLearner&&Number(this.whichLearner.IsUnder18)==1 ? true : false],
         Comment: [this.whichLearner ? this.whichLearner.Comment : ''],
       }),
       parentForm: this.fb.array([]),
@@ -756,18 +758,34 @@ selectLocation(id, i) {
     this.fdObj['Parent'] = this.parent;
   }
 
+  //submit infomation not including course data
+  submitInfo(){
+    this.encapsulateLearner();
+    this.encapsulateParent();
+    this.confirmGroupCourse();
+    this.confirmCustomCourse();
+    this.fdObj['LearnerGroupCourse'] = this.learnerGroupCourse;
+    this.fdObj['OneToOneCourseInstance'] = this.oneOnOneCourse;
+    this.fdObj['LearnerOthers'] = this.learnerOthers;
+    this.fd.delete('details');
+    this.fd.append('details', JSON.stringify(this.fdObj));
+    this.openConfirm();
+  }
+
+  // submit all
   onSubmit() {
+    this.confirmGroupCourse();
+    this.confirmCustomCourse();
     this.canAddGroup = true;
-    console.log(this.groupCourseInstance, this.oneOnOneCourse)
-    let checkGroup = []
+    console.log(this.groupCourseInstance, this.oneOnOneCourse);
+    let checkGroup = [];
     this.groupCourseInstance.forEach(ele => {
       if (ele.isChecked == true){
         checkGroup.push(1)
       }
     });
     if(checkGroup.length !==0 || this.oneOnOneCourse.length !==0){
-    this.confirmGroupCourse();
-    this.confirmCustomCourse();
+
     console.log(this.courseGroup);
     this.encapsulateLearner();
     this.encapsulateParent();
@@ -782,7 +800,6 @@ selectLocation(id, i) {
     console.log(this.fdObj);
     this.fd.delete('details');
     this.fd.append('details', JSON.stringify(this.fdObj));
-    console.log(this.fd)
     // console.log('form data', this.fd);
     // active modal waiting for decision
     this.openConfirm();}else{

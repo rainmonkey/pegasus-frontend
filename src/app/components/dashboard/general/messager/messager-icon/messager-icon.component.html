@@ -3,6 +3,7 @@
   <span (click)='displayMessagerModal()'>
     <span class="fas fa-comment"></span>
   </span>
+  <app-messager-notification *ngIf='totalNotiNum' class='notification' [notiNum] = 'totalNotiNum'></app-messager-notification>
 </div>
 
 <!--messager modal skeleton-->

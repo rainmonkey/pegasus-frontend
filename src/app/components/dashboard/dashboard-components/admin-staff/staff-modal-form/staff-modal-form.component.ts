@@ -35,6 +35,7 @@ export class StaffModalFormComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    console.log(this.whichStaff)
     this.setReadOnly();
     this.getStaffType();
     this.getOrg();

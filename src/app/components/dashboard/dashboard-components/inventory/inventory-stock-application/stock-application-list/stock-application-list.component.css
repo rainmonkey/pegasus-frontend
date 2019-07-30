@@ -24,9 +24,6 @@
 .undo__msg {
   margin: 20px auto;
 }
-.table__row--fade {
-  color: red;
-}
 a {
   cursor: pointer;
 }
@@ -48,10 +45,13 @@ li {
 {
   cursor: pointer;
 }
-.table_row--highlight {
-  background-color: aquamarine;
-  border: 1px solid rgb(223, 209, 209)
-}
-/* .table__row--hover:hover {
+.table__row--hover:hover,
+.table__row--hover:focus {
   background-color: #fff;
-} */
+}
+.tr--highlight {
+  box-shadow: 0 0 6px #17a2b8;
+}
+.fa-check-circle {
+  color: green;
+}

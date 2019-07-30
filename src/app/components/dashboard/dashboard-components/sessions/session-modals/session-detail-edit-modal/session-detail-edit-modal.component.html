@@ -52,6 +52,7 @@
           <label class="mt-2">Room</label>
           <select [class.is-invalid]="Room.invalid && Room.touched" class="form-control" type="text" formControlName='Room'>
             <!--              <option selected disabled [value]="LessonModel.Room">{{LessonModel.Room}}</option>-->
+            <option>please select one of these options</option>
             <option *ngFor="let room of RoomSelects" [value]="room.RoomId">{{room.RoomName}}</option>
           </select>
           <small class="text-danger" *ngIf="Room.invalid && Room.touched">Please select the Room</small>

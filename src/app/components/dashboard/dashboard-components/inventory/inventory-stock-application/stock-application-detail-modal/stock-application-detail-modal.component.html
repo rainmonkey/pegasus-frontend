@@ -5,7 +5,7 @@
     </button>
   </div>
   <div class="modal-body">
-     
+     <app-stock-application-form [command]="command" [whichOrder]="orderDetail"></app-stock-application-form>
   </div>
   <div class="modal-footer">
     <button type="button" class="btn btn-outline-dark" (click)="activeModal.close('Close click')">Close</button>

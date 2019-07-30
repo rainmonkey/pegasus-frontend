@@ -47,7 +47,7 @@
                   {{groupCourse.GroupCourseInstance.Teacher.LastName}}
                 </span>
                 <p class='text'>Edit End Day:</p>
-                <input type="date" (change)='changeGroupDate($event,i)' required>
+                <input class='form-control' type="date" (change)='changeGroupDate($event,i)' required>
               </div>
 
               <div class="col-6">
@@ -58,7 +58,7 @@
                 </div>
               </div>
               <div class='col-6'>
-                <button (click)='onSubmit(groupCourse,i)'>Submit End Date</button>
+                <button (click)='onSubmit(groupCourse,i)' class='btn btn-danger'>Submit End Date</button>
               </div>
             </div>
           </div>
@@ -109,10 +109,10 @@
                 <span class="label">Course End Day: </span>
                 <span class='text'>{{ele.EndDate}}</span>
                 <p class='text'>Edit End Day:</p>
-                <input type="date" formControlName="OneEnd">
+                <input class='form-control' type="date" formControlName="OneEnd">
               </div>
               <div class='col-6'>
-                <button (click)='onSubmit(ele, j)'>Submit End Date</button>
+                <button (click)='onSubmit(ele, j)' class='btn btn-danger'>Submit End Date</button>
               </div>
 
               <div class="col-6">
