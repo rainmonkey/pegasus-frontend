@@ -32,7 +32,7 @@
   border-width: 2px;
 }
 
-.fc-today {
+#adminScheduler .fc-today {
   background: none !important;
 }
 

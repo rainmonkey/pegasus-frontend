@@ -98,14 +98,10 @@
               </div>
 
               <div class="col-6">
-                <span class="label" style="font-weight: bold">Course Start Day: </span>
-                <span class='text'>{{ele.BeginDate | date: 'yyyy-MM-dd'}}</span>
+                <span class="label" style="font-weight: bold">From </span>
+                <span class='text'>{{ele.BeginDate | date: 'yyyy-MM-dd'}} to {{ele.EndDate|date: 'yyyy-MM-dd'}}</span>
               </div>
 
-              <div class="col-6">
-                <span class="label" style="font-weight: bold">Course End Day: </span>
-                <span class='text'>{{ele.EndDate|date: 'yyyy-MM-dd'}}</span>
-              </div>
             </div>
             <div>
               <span class="label" style="font-weight: bold">Course Sechdule: </span>
