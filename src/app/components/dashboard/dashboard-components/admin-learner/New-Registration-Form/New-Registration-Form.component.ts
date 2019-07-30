@@ -1,6 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { Command } from 'protractor';
-import { FormBuilder, Validators } from '@angular/forms';
+import { FormBuilder, Validators, FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'app-New-Registration-Form',
@@ -8,6 +8,8 @@ import { FormBuilder, Validators } from '@angular/forms';
   styleUrls: ['./New-Registration-Form.component.css']
 })
 export class NewRegistrationFormComponent implements OnInit {
+  public registrationForm: FormGroup
+
   @Input() command
   @Input() whichLearner
   constructor(
@@ -16,7 +18,7 @@ export class NewRegistrationFormComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.formBuild()
+    this.registrationForm = this.fb.group(this.formBuild());
   }
 
   formBuild(){
@@ -48,8 +50,32 @@ export class NewRegistrationFormComponent implements OnInit {
       }
     }
     else if(this.command==2){
+      groupObj={
+        FirstName:[{value:this.whichLearner.FirstName}, Validators.required],
+        MiddleName:[{value:this.whichLearner.MiddleName}],
+        LastName: [{value:this.whichLearner.LastName}, Validators.required],
+        Gender: [{value:this.whichLearner.Gender}, Validators.required],
+        dob: [{value:this.whichLearner.Dob}, Validators.required],
+        EnrollDate: [{value:this.whichLearner.EnrollDate}, Validators.required],
+        ContactNum:[{value:this.whichLearner.ContactNum}, Validators.required],
+        Email:[{value:this.whichLearner.Email}, [Validators.required,Validators.email]],
+        Address:[{value:this.whichLearner.Address}],
+        OrgId:[{value:this.whichLearner.OrgId}, Validators.required],
+        LearnerLevel:[{value:this.whichLearner.LearnerLevel}, Validators.required],
+        LevelType:[{value:this.whichLearner.LevelType}, Validators.required],
+        IsUnder18:[{value:this.whichLearner.IsUnder18}, Validators.required],
+        PaymentPeriod:[{value:this.whichLearner.PaymentPeriod}, Validators.required],
+        Referrer:[{value:this.whichLearner.Referrer}],
+        Comment:[{value:this.whichLearner.Comment}],
 
+        // photo
+        photo:[null],
+        grade:[null],
+        Agreement:[null],
+        OtherFile:[null],
+      }
     }
+    return groupObj
   }
 
 

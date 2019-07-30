@@ -1,1 +1,17 @@
+<div>
+    <form novalidate [formGroup]='registrationForm'>
+      <div class="row">
+          <div class="col-sm-4 col-md-4">
+              <label for="firstName">First Name *</label>
+              <input class="form-control" formControlName="FirstName" type="text" id="firstName">
+              <div *ngIf="registrationForm.controls.FirstName.invalid && (registrationForm.controls.FirstName.dirty ||registrationForm.controls. FirstName.touched)" class="text-danger">
+                <small *ngIf="registrationForm.controls.FirstName.errors.required"> First name is required</small>
+              </div>
+            </div>
 
+      </div>
+
+
+
+      </form>
+</div>
