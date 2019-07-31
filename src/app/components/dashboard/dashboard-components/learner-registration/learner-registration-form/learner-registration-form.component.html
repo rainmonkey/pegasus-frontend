@@ -1,6 +1,6 @@
 <!-- <app-time-picker (messageToEmit)="getMessage($event)"></app-time-picker> -->
 <!-- <pre>{{ parentForm.value | json }}</pre> -->
-<form [formGroup]="registrationForm" class="container">
+<form [formGroup]="registrationForm" class="container" onkeydown='if(event.keyCode==13) return false;'>
   <h1 class="font3">Student's Registration</h1>
   <!-- <ul class="nav nav-tabs">
     <li><a class="nav-link active" data-toggle="tab" href="#learnerForm">Learner</a></li>
