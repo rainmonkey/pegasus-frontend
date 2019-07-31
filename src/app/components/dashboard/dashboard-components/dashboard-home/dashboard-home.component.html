@@ -279,73 +279,21 @@
         </div>
       </div>
       <div class="card-header">
-        <h3 class="h4">Recent Updates</h3>
+        <h3 class="h4">To Do List</h3>
       </div>
       <div class="card-body no-padding">
         <!-- Item-->
-        <div class="item d-flex justify-content-between">
+        <div class="item d-flex justify-content-between" *ngFor="let list of toDoList, let i = index">
           <div class="info d-flex">
             <div class="icon"><i class="far fa-envelope"></i></div>
             <div class="title">
-              <h5>Lorem ipsum dolor sit amet.</h5>
+              <h5>{{list.ListName}}</h5>
               <p>
-                Lorem ipsum dolor sit amet, consectetur adipisicing elit sed.
+               {{list.ListContent}}
               </p>
             </div>
           </div>
-          <div class="date text-right"><strong>24</strong><span>May</span></div>
-        </div>
-        <!-- Item-->
-        <div class="item d-flex justify-content-between">
-          <div class="info d-flex">
-            <div class="icon"><i class="far fa-envelope"></i></div>
-            <div class="title">
-              <h5>Lorem ipsum dolor sit amet.</h5>
-              <p>
-                Lorem ipsum dolor sit amet, consectetur adipisicing elit sed.
-              </p>
-            </div>
-          </div>
-          <div class="date text-right"><strong>24</strong><span>May</span></div>
-        </div>
-        <!-- Item        -->
-        <div class="item d-flex justify-content-between">
-          <div class="info d-flex">
-            <div class="icon"><i class="far fa-envelope"></i></div>
-            <div class="title">
-              <h5>Lorem ipsum dolor sit amet.</h5>
-              <p>
-                Lorem ipsum dolor sit amet, consectetur adipisicing elit sed.
-              </p>
-            </div>
-          </div>
-          <div class="date text-right"><strong>24</strong><span>May</span></div>
-        </div>
-        <!-- Item-->
-        <div class="item d-flex justify-content-between">
-          <div class="info d-flex">
-            <div class="icon"><i class="far fa-envelope"></i></div>
-            <div class="title">
-              <h5>Lorem ipsum dolor sit amet.</h5>
-              <p>
-                Lorem ipsum dolor sit amet, consectetur adipisicing elit sed.
-              </p>
-            </div>
-          </div>
-          <div class="date text-right"><strong>24</strong><span>May</span></div>
-        </div>
-        <!-- Item-->
-        <div class="item d-flex justify-content-between">
-          <div class="info d-flex">
-            <div class="icon"><i class="far fa-envelope"></i></div>
-            <div class="title">
-              <h5>Lorem ipsum dolor sit amet.</h5>
-              <p>
-                Lorem ipsum dolor sit amet, consectetur adipisicing elit sed.
-              </p>
-            </div>
-          </div>
-          <div class="date text-right"><strong>24</strong><span>May</span></div>
+          <div class="date text-right"><strong>{{dayFormat[i]}}</strong><span>{{monthFormat[i]}}</span></div>
         </div>
       </div>
     </div>

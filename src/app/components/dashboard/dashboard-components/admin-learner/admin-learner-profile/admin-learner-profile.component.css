@@ -1,3 +1,8 @@
+::ng-deep .my-class-full .modal-dialog {
+  max-width: 80%;
+  width: 80%;
+}
+
 .t_s_class_title{
   font-weight: bold;
   font-size: 20px;

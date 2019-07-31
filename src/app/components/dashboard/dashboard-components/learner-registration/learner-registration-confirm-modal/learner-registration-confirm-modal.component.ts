@@ -33,15 +33,20 @@ export class LearnerRegistrationConfirmModalComponent implements OnInit {
   }
   onSubmit(){
     // return console.log(this.fdObj)
+    console.log(this.groupCourse)
     this.isloading = true;
     this.isConfirmClick = true;
     console.log(this.command, this.learnerId, this.isloading);
     let fun;
     if (this.command === 1) {
+      // regist new student information may add group course or 121 course in one object
       fun= this.registrationService.postStudent(this.fdObj);
     }else if (this.command === 2) {
+      // delete course
       fun= this.registrationService.putStudent(this.learnerId, this.fdObj);
     }else if (this.command === 3) {
+      // add oneOnOne or group course for exist learner
+      // can only add group course or only add 121 course
       if(this.isGroupCourse){
       let temp = {LearnerGroupCourses: this.groupCourse};
       fun= this.registrationService.addGroupCourse(temp);

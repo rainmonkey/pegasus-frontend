@@ -1,13 +1,12 @@
 <!-- <app-time-picker (messageToEmit)="getMessage($event)"></app-time-picker> -->
 <!-- <pre>{{ parentForm.value | json }}</pre> -->
-<form [formGroup]="registrationForm" class="container">
+<form [formGroup]="registrationForm" class="container" onkeydown='if(event.keyCode==13) return false;'>
   <h1 class="font3">Student's Registration</h1>
   <!-- <ul class="nav nav-tabs">
     <li><a class="nav-link active" data-toggle="tab" href="#learnerForm">Learner</a></li>
     <li><a class="nav-link" data-toggle="tab" href="#parentForm">Guardian</a></li>
     <li><a class="nav-link" data-toggle="tab" href="#courseForm">Course</a></li>
   </ul> -->
-
   <!-- ----LearnerForm HTML---- -->
   <div class="tab-content">
     <div id="learnerForm" *ngIf="addCourse == undefined">
@@ -277,56 +276,55 @@
         <button (click)="chooseCustomCourse()" class='btn btn-outline-primary'>One-on-One Course</button>
       </div>
 
-
       <div class="card" *ngIf="isGroupCourse" >
-        <div class="select-group-course card-body ">
+        <div class="select-group-course container">
           <div class="guitar">
             <table class="table ">
               <thead>
                 <tr>
                   <!-- <th class="">Please Check</th> -->
-                  <th class="table">Course</th>
-                  <th class="table ">Schedule</th>
-                  <th class="table ">Location</th>
+                  <th class="table" style='width: 200px'>Course</th>
+                  <th class="table" style='width: 200px'>Schedule</th>
+                  <th class="table" style='width: 100px'>Location</th>
                   <!-- <th class="table ">Room</th>-->
-                  <th class="table">Teacher</th>
-                  <th class="table ">Begin Time</th>
-                  <th class="table ">How to know us</th>
+                  <th class="table"style='width: 100px'>Teacher</th>
+                  <th class="table"style='width: 150px'>Begin Time</th>
+                  <th class="table">How to know us</th>
                 </tr>
               </thead>
               <tbody>
 
                 <tr formArrayName="groupCourse" *ngFor="let groupCourse of groupCourseInstance; let i = index">
                   <td class='input-group'>
-                      <label [for]="i" class="input-group-text">{{groupCourse.Course.CourseName}}
+                      <label [for]="i" class="input-group-text gourpFontSize">{{groupCourse.Course.CourseName}}
                       <input class='ml-1' type="checkbox" [id]='i' [checked]="groupCourse.isChecked" (click)="selectCheckboxes(i, $event)" >
                       </label>
                   </td>
 
                   <td>
-                    <p *ngFor="let schedule of groupCourse.schedule" >{{schedule.DayOfWeek | weekFormat}}: {{schedule.BeginTime}}-{{schedule.EndTime}}</p>
+                    <p *ngFor="let schedule of groupCourse.schedule" class='gourpFontSize' gourpFontSize>{{schedule.DayOfWeek | weekFormat}}: {{schedule.BeginTime}}-{{schedule.EndTime}}</p>
                   </td>
                   <td>
-                    <div>{{groupCourse.Org.OrgName}}</div>
-                    <div><i class="fas fa-street-view"></i>{{groupCourse.Room.RoomName}}</div>
+                    <div class='gourpFontSize'>{{groupCourse.Org.OrgName}}</div>
+                    <div class='gourpFontSize'><i class="fas fa-street-view"></i>{{groupCourse.Room.RoomName}}</div>
                   </td>
                   <!-- <td>{{groupCourse.Room.RoomName}}</td>-->
                   <td class='input-group'>
-                    <div class="input-group-text">
+                    <div class="input-group-text gourpFontSize">
                     {{groupCourse.Teacher.FirstName}}
                     </div>
                   </td>
-                  <td><input type="date" [ngModelOptions]="{standalone: true}" [(ngModel)]="groupCourseInstance[i].beginDate" class='form-control'></td>
-                  <td><input type="text" [ngModelOptions]="{standalone: true}" [(ngModel)]="groupCourseInstance[i].comments" class='form-control'></td>
+                  <td><input type="date" [ngModelOptions]="{standalone: true}" [(ngModel)]="groupCourseInstance[i].beginDate" class='form-control gourpFontSize'></td>
+                  <td><input type="text" [ngModelOptions]="{standalone: true}" [(ngModel)]="groupCourseInstance[i].comments" class='form-control gourpFontSize'></td>
                 </tr>
               </tbody>
             </table>
             <div class="text-right">
-              <button *ngIf="addCourse == undefined" class="btn_back mx-3 btn btn-info" (click)="next('parentForm')">Back</button>
-              <button *ngIf="!addCourse" (click)="onSubmit()" class="btn_submit btn btn-primary" type="submit">Submit</button>
-              <button *ngIf="addCourse" (click)="onSubmit()" class="btn_submit btn btn-primary" type="submit">Submit Group Courses</button>
+              <button *ngIf="addCourse == undefined" class="btn_back mx-3 btn btn-info gourpFontSize" (click)="next('parentForm')">Back</button>
+              <button *ngIf="!addCourse" (click)="onSubmit()" class="btn_submit btn btn-primary gourpFontSize" type="submit">Submit</button>
+              <button *ngIf="addCourse" (click)="onSubmit()" class="btn_submit btn btn-primary gourpFontSize" type="submit">Submit Group Courses</button>
 
-              <small *ngIf="!canAddGroup" class='text-danger row justify-content-end'>You Have To Select At Least One Course</small>
+              <small *ngIf="!canAddGroup" class='text-danger row justify-content-end gourpFontSize'>You Have To Select At Least One Course</small>
             </div>
           </div>
         </div>

@@ -5,6 +5,7 @@ import { InventoriesService } from 'src/app/services/http/inventories.service';
 import { PostProduct } from 'src/app/models/PostProduct';
 import { ProductIdQty } from 'src/app/models/ProductIdQty';
 import { StockApplicationService } from 'src/app/shared/components/stock-application/stock-application.service';
+import { getWeeksFromInput } from '@fullcalendar/core/datelib/duration';
 
 @Component({
   selector: 'app-stock-application-form',
@@ -13,12 +14,12 @@ import { StockApplicationService } from 'src/app/shared/components/stock-applica
 })
 export class StockApplicationFormComponent implements OnInit {
   @Input() command: number;
-  @Input() whichOrder: number;
-  @Output() isValid = new EventEmitter<any>();
-  @Output() passProduct = new EventEmitter<any>();
+  @Input() whichOrder: any;
+  @Output() sendApplicationForm = new EventEmitter<any>();
 
   //readonly or not
-  public readOnlyFlag: boolean = false;
+  public readonlyFlag: boolean = false;
+  public hiddenFlag: boolean = false;
   //loading flag
   public loadingFlag: boolean = false;
 
@@ -35,6 +36,8 @@ export class StockApplicationFormComponent implements OnInit {
   public errorMessage: string;
   public isDeleted: boolean[] = [];
   public message: string;
+ 
+
   constructor(
     private activeModal: NgbActiveModal,
     private fb: FormBuilder,
@@ -42,41 +45,98 @@ export class StockApplicationFormComponent implements OnInit {
     private stockApplicationService: StockApplicationService) { }
 
   ngOnInit() {
-    this.stockApplicationService.currentForm.subscribe(message => this.message = message)
-    console.log('Form  stockApplicationService', this.message)
-    console.log('form command', this.command)
+    this.loadingFlag = true;
+    console.log('command', this.command, 'whichPrder', this.whichOrder)
     this.getLocalStorage();
     this.getProdCats(0);
-    console.log('isDelete', this.isDeleted)
     this.isDeleted[0] = true;
     this.applicationForm = this.fb.group(this.formGroupAssemble());
-    console.log('prod type', this.prodTypes, 'prod name', this.prodNames)
-    this.onChanges();
+    console.log('this.applicationForm', this.applicationForm)
+    this.onChange();
   }
   /* get form control method */
   get applyReason() { return this.applicationForm.get('applyReason') }
   get productIdQty() { return this.applicationForm.get('productIdQty') as FormArray }
-  // get appliedQty() { return this.productIdQty.get('appliedQty') }
-
+  get appliedQty() { return this.productIdQty.get('appliedQty') }
+  
+ 
   /* form group obj */
   formGroupAssemble() {
-    return {
+    this.readonlyFlag = true;
+    this.loadingFlag = false;
+    let groupObj: any;
+    if(this.command != 1) {
+      groupObj = {
+        staff: [{ value: this.staffName, disabled: this.readonlyFlag }],
+        org: [{ value: this.orgName, disabled: this.readonlyFlag }],
+        applyReason: [null, Validators.required],
+        productIdQty: this.fb.array([this.createProd()])
+      }
+      // this.setUpdateModal(this.command, this.whichOrder, groupObj)
+      // console.log('111', this.setUpdateModal(this.command, this.whichOrder, groupObj))
+    } else if (this.command == 1) {
+      this.hiddenFlag = true;
+      // this.readonlyFlag = true;
+      groupObj = {
+        staff: [{ value: this.staffName, disabled: this.readonlyFlag }],
+        org: [{ value: this.orgName, disabled: this.readonlyFlag }],
+        applyReason: [{ value: this.whichOrder.ApplyReason, disabled: this.readonlyFlag }],
+        productIdQty: this.fb.array(this.setFormArray(this.whichOrder, this.readonlyFlag)),
+      }
+      // this.setDetailModal(this.command, this.whichOrder, groupObj)
+      // console.log('222', this.setDetailModal(this.command, this.whichOrder, groupObj))
+    }
+    return groupObj;
+  }
+  /* set update modal */
+  setUpdateModal(command, whichOrder, groupObj) {
+    console.log('setUpdateModal', command, whichOrder)
+    // let formGroupObj;
+    groupObj = {
       staffId: [''],
       orgId: [''],
       applyReason: ['', Validators.required],
       productIdQty: this.fb.array([this.createProd()])
     }
+    return groupObj;
   }
-  /* get productIdQty: FormArray */
+  /* set detail modal */
+  setDetailModal(command, whichOrder, groupObj) {
+    console.log('setDetailModal', command, whichOrder)
+    // let formGroupObj;
+    this.hiddenFlag = true;
+    this.readonlyFlag = true;
+    groupObj = {
+      staffId: [{ value: this.staffName, disabled: this.readonlyFlag }],
+      orgId: [{ value: this.orgName, disabled: this.readonlyFlag }],
+      applyReason: [{ value: this.whichOrder.ApplyReason, disabled: this.readonlyFlag }],
+      productIdQty: this.fb.array(this.setFormArray(whichOrder, this.readonlyFlag)),
+    }
+    return groupObj;
+  }
   createProd(): FormGroup {
-    return this.fb.group({
+    let prodObj = {
       prodCat: ['', Validators.required],
       prodType: ['', Validators.required],
       prod: ['', Validators.required],
       appliedQty: ['0', [Validators.required, Validators.pattern('[1-9]*')]]
-    })
+    } 
+    return this.fb.group(prodObj);
   }
-
+  setFormArray(whichOrder, readonlyFlag) {
+    let prodFormGroup;
+    let prodFormArr = [];
+    whichOrder.ApplicationDetails.map((prod, i) => {
+      prodFormGroup = {
+        prodCat: [{ value: prod.ProdCat.ProdCatName, disabled: readonlyFlag }],
+        prodType: [{ value: prod.ProdType.ProdTypeName, disabled: readonlyFlag }],
+        prod: [{ value: prod.Product.ProductName, disabled: readonlyFlag }],
+        appliedQty: [{ value: prod.AppliedQty, disabled: readonlyFlag }]
+      }
+      prodFormArr.push(this.fb.group(prodFormGroup))
+    })
+    return prodFormArr;
+  }
   /* get data from local storage */
   getLocalStorage() {
     let orgIdArr = localStorage.getItem('staffId');
@@ -151,61 +211,34 @@ export class StockApplicationFormComponent implements OnInit {
     // console.log('add prodTypes', i, this.prodTypes, 'add prodNames', this.prodNames)
   }
 
-  // post product 
-  dataToPost(): PostProduct {
-    let applyReason = this.applicationForm.get('applyReason').value;
-    let productDetail: Array<ProductIdQty> = [];
-    for (let prod of this.productIdQty.value) {
-      let productId = Number(prod.prod);
-      let appliedQty = prod.appliedQty;
-      let productIdQty = new ProductIdQty(productId, appliedQty);
-      productDetail.push(productIdQty);
-    }
-    let postProduct = new PostProduct(this.orgId, this.staffId, applyReason, productDetail);
-    console.log('dataToPost', postProduct)
-    return postProduct;
-  }
-  postProduct() {
-    this.inventoriesService.postProduct(this.dataToPost()).subscribe(
-      res => {
-        this.getPostProduct = res['Data'];
-        this.passProduct.emit(res['Data'].ApplicationId)
-        console.log('postdata', this.getPostProduct)
-      },
-      err => this.errHandler(err)
-    )
-  }
-  submitOrder() {
-    this.postProduct();
-    this.activeModal.close();
-  }
   /* algorithm for add or minus prod number */
-  minusProd(i: number) {
+  minusQty(i: number) {
     let appliedQty = this.productIdQty.controls[i].get('appliedQty');
     let currentNumber = parseInt(appliedQty.value);
-    // if(String(currentNumber) == '') {
-    //   currentNumber = 0;
-    // } 
     let minusNumber = currentNumber - 1;
     appliedQty.setValue(minusNumber);
+    this.applicationForm.updateValueAndValidity()
     //  console.log('minusNumber', minusNumber)  
   }
-  increaseProd(i: number) {
+  increaseQty(i: number) {
     let appliedQty = this.productIdQty.controls[i].get('appliedQty');
-    let currentNumber = parseInt(appliedQty.value);
-    // if(String(currentNumber) == '') {
-    //   currentNumber = 0;
-    // } 
+    let currentNumber = parseInt(appliedQty.value); 
     let increaseNumber = currentNumber + 1;
     appliedQty.setValue(increaseNumber);
-    //  console.log('increaseNumber', increaseNumber)
+     console.log('increaseNumber', increaseNumber)
   }
-  /* add and  update new data to table */
-  onChanges(): void {
+  calculateQty() {
+    // let currentValue = Number(this.productIdQty.controls[i].get('appliedQty').value);
+    
+  }
+  /* add and update new data to table */
+  onChange(): void {
+    
     this.applicationForm.valueChanges.subscribe(
       () => {
-        // console.log('onchange', this.applicationForm)
-        this.isValid.emit(this.applicationForm)
+        this.sendApplicationForm.emit(this.applicationForm)
       });
   }
+  /* value for detail modal */
+
 }

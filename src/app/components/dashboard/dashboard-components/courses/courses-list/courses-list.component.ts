@@ -72,7 +72,7 @@ export class CoursesListComponent implements OnInit {
   }
 
   /*
-    set the default params when after page refresh
+    the page no change after page refreshing
   */
   refreshPageControl() {
     this.activatedRoute.queryParams.subscribe(res => {
