@@ -21,7 +21,7 @@ export class MyTypePipe implements PipeTransform {
 
       switch (value) {
         case 0:
-        return 'waiting send';
+        return 'awaiting send';
         break;
         default:
         return 'sent';
