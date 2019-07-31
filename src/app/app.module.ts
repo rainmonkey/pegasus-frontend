@@ -152,6 +152,7 @@ import { ProcessStatusPipe } from './shared/pipes/process-status.pipe';
 import { StockApplicationFormComponent } from './components/dashboard/dashboard-components/inventory/inventory-stock-application/stock-application-form/stock-application-form.component';
 import { NewLearnerRegistrationModalComponent } from './components/dashboard/dashboard-components/admin-learner/New-Learner-Registration-modal/New-Learner-Registration-modal.component';
 import { NewRegistrationFormComponent } from './components/dashboard/dashboard-components/admin-learner/New-Registration-Form/New-Registration-Form.component';
+import { TutorsInfomationComponent } from './components/dashboard/dashboard-components/tutors/tutors-infomation/tutors-infomation.component';
 
 
 @NgModule({
@@ -293,7 +294,8 @@ import { NewRegistrationFormComponent } from './components/dashboard/dashboard-c
 
   //  new registration
   NewLearnerRegistrationModalComponent,
-  NewRegistrationFormComponent
+  NewRegistrationFormComponent,
+  TutorsInfomationComponent
   ],
   imports: [
     NgbModule,

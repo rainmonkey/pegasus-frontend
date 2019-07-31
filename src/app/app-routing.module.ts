@@ -47,6 +47,7 @@ import{PageGroupDetailsComponent} from './components/dashboard/dashboard-compone
 import { ConflictCheckComponent } from './components/dashboard/dashboard-components/conflict-check/conflict-check/conflict-check.component';
 import { StockApplicationListComponent } from './components/dashboard/dashboard-components/inventory/inventory-stock-application/stock-application-list/stock-application-list.component';
 import { AdminLearnerTimetableComponent } from './components/dashboard/dashboard-components/admin-learner/admin-learner-timetable/admin-learner-timetable.component';
+import { TutorsInfomationComponent } from './components/dashboard/dashboard-components/tutors/tutors-infomation/tutors-infomation.component';
 
 
 
@@ -65,6 +66,9 @@ const routes: Routes = [
           { path: ':id', component: AdminLearnerPaymentInvoiceComponent, },
           { path: 'success', component: AdminLearnerPaymentSuccessComponent, },
         ]
+      },
+      {
+        path:'tu/list',component: TutorsInfomationComponent
       },
       {
         path: 'payment/product', pathMatch: 'prefix', component: AdminLearnerPaymentPanelComponent, canActivate: [UserAuthGuard],
