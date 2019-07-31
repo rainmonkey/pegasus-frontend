@@ -2,10 +2,6 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { FormBuilder, Validators, Form, FormGroup, FormArray } from '@angular/forms';
 import { InventoriesService } from 'src/app/services/http/inventories.service';
-import { PostProduct } from 'src/app/models/PostProduct';
-import { ProductIdQty } from 'src/app/models/ProductIdQty';
-import { StockApplicationService } from 'src/app/shared/components/stock-application/stock-application.service';
-import { getWeeksFromInput } from '@fullcalendar/core/datelib/duration';
 
 @Component({
   selector: 'app-stock-application-form',
@@ -16,15 +12,14 @@ export class StockApplicationFormComponent implements OnInit {
   @Input() command: number;
   @Input() whichOrder: any;
   @Output() sendApplicationForm = new EventEmitter<any>();
-
-  //readonly or not
-  public readonlyFlag: boolean = false;
-  public hiddenFlag: boolean = false;
-  //loading flag
+  
+  /* loading */
   public loadingFlag: boolean = false;
-
+  /* props for detail modal */
+  public detailFlag: boolean = false;
+  public readonlyFlag: boolean = false;
+  /* props for form group */
   public applicationForm: FormGroup;
-  /* for modal */
   public orgId: number;
   public orgName: string;
   public staffId: number;
@@ -32,128 +27,108 @@ export class StockApplicationFormComponent implements OnInit {
   public prodCats: any[] = [];
   public prodTypes: any[] = [];
   public prodNames: any[] = [];
-  public getPostProduct: any[];
+  public deleteProd: boolean[] = [];
+  /* props for server side */
   public errorMessage: string;
-  public isDeleted: boolean[] = [];
-  public message: string;
- 
+  
+  /* get form control  */
+  get applyReason() { return this.applicationForm.get('applyReason') }
+  get productIdQty() { return this.applicationForm.get('productIdQty') as FormArray }
+  get productIdQtyLength() { return this.productIdQty.length }
 
   constructor(
     private activeModal: NgbActiveModal,
     private fb: FormBuilder,
-    private inventoriesService: InventoriesService,
-    private stockApplicationService: StockApplicationService) { }
+    private inventoriesService: InventoriesService) { }
 
   ngOnInit() {
     this.loadingFlag = true;
-    console.log('command', this.command, 'whichPrder', this.whichOrder)
+    this.deleteProd[0] = true;
     this.getLocalStorage();
     this.getProdCats(0);
-    this.isDeleted[0] = true;
-    this.applicationForm = this.fb.group(this.formGroupAssemble());
-    console.log('this.applicationForm', this.applicationForm)
+    let formGroupAssemble = this.setFromGroup(this.command, this.whichOrder)
+    this.applicationForm = this.fb.group(formGroupAssemble);
     this.onChange();
   }
-  /* get form control method */
-  get applyReason() { return this.applicationForm.get('applyReason') }
-  get productIdQty() { return this.applicationForm.get('productIdQty') as FormArray }
-  get appliedQty() { return this.productIdQty.get('appliedQty') }
-  
- 
-  /* form group obj */
-  formGroupAssemble() {
-    this.readonlyFlag = true;
-    this.loadingFlag = false;
-    let groupObj: any;
-    if(this.command != 1) {
-      groupObj = {
-        staff: [{ value: this.staffName, disabled: this.readonlyFlag }],
-        org: [{ value: this.orgName, disabled: this.readonlyFlag }],
-        applyReason: [null, Validators.required],
-        productIdQty: this.fb.array([this.createProd()])
-      }
-      // this.setUpdateModal(this.command, this.whichOrder, groupObj)
-      // console.log('111', this.setUpdateModal(this.command, this.whichOrder, groupObj))
-    } else if (this.command == 1) {
-      this.hiddenFlag = true;
-      // this.readonlyFlag = true;
-      groupObj = {
-        staff: [{ value: this.staffName, disabled: this.readonlyFlag }],
-        org: [{ value: this.orgName, disabled: this.readonlyFlag }],
-        applyReason: [{ value: this.whichOrder.ApplyReason, disabled: this.readonlyFlag }],
-        productIdQty: this.fb.array(this.setFormArray(this.whichOrder, this.readonlyFlag)),
-      }
-      // this.setDetailModal(this.command, this.whichOrder, groupObj)
-      // console.log('222', this.setDetailModal(this.command, this.whichOrder, groupObj))
-    }
-    return groupObj;
-  }
-  /* set update modal */
-  setUpdateModal(command, whichOrder, groupObj) {
-    console.log('setUpdateModal', command, whichOrder)
-    // let formGroupObj;
-    groupObj = {
-      staffId: [''],
-      orgId: [''],
-      applyReason: ['', Validators.required],
-      productIdQty: this.fb.array([this.createProd()])
-    }
-    return groupObj;
-  }
-  /* set detail modal */
-  setDetailModal(command, whichOrder, groupObj) {
-    console.log('setDetailModal', command, whichOrder)
-    // let formGroupObj;
-    this.hiddenFlag = true;
-    this.readonlyFlag = true;
-    groupObj = {
-      staffId: [{ value: this.staffName, disabled: this.readonlyFlag }],
-      orgId: [{ value: this.orgName, disabled: this.readonlyFlag }],
-      applyReason: [{ value: this.whichOrder.ApplyReason, disabled: this.readonlyFlag }],
-      productIdQty: this.fb.array(this.setFormArray(whichOrder, this.readonlyFlag)),
-    }
-    return groupObj;
-  }
-  createProd(): FormGroup {
-    let prodObj = {
-      prodCat: ['', Validators.required],
-      prodType: ['', Validators.required],
-      prod: ['', Validators.required],
-      appliedQty: ['0', [Validators.required, Validators.pattern('[1-9]*')]]
-    } 
-    return this.fb.group(prodObj);
-  }
-  setFormArray(whichOrder, readonlyFlag) {
-    let prodFormGroup;
-    let prodFormArr = [];
-    whichOrder.ApplicationDetails.map((prod, i) => {
-      prodFormGroup = {
-        prodCat: [{ value: prod.ProdCat.ProdCatName, disabled: readonlyFlag }],
-        prodType: [{ value: prod.ProdType.ProdTypeName, disabled: readonlyFlag }],
-        prod: [{ value: prod.Product.ProductName, disabled: readonlyFlag }],
-        appliedQty: [{ value: prod.AppliedQty, disabled: readonlyFlag }]
-      }
-      prodFormArr.push(this.fb.group(prodFormGroup))
-    })
-    return prodFormArr;
-  }
-  /* get data from local storage */
-  getLocalStorage() {
+   /* get data from local storage */
+   getLocalStorage() {
     let orgIdArr = localStorage.getItem('staffId');
     this.orgId = parseInt(orgIdArr[0]);
     this.orgName = localStorage.getItem('organisations');
     this.staffId = parseInt(localStorage.getItem('staffId'));
     this.staffName = localStorage.getItem('userFirstName');
   }
-  /* get data from server */
-  errHandler(err: any) {
-    console.warn(err);
-    if (err.ErrorMessage != null) {
-      this.errorMessage = err.ErrorMessage;
-    } else {
-      this.errorMessage = 'Error! Can Not Catch Data!';
+  /* 
+    define applicationForm according to condition 
+      1) command === 1 means open detail modal can be read only
+      2) command === 2 means open update modal
+        => whichOrder === null, can add new stock application
+        => whichOrder !== null, can edit current stock application
+  */
+  setFromGroup(command: number, whichOrder: any) {
+    this.loadingFlag = false;
+    this.readonlyFlag = true;
+    let formGroupObj: any;
+    if(command !== 1) {
+      return this.setUpdateModal(whichOrder, formGroupObj)
+    } else if (command === 1) {
+      return this.setDetailModal(whichOrder, formGroupObj)
     }
   }
+  /* define applicationForm of update modal */
+  setUpdateModal(whichOrder: any, formGroupObj: any) {
+    formGroupObj = {
+      staff: [{ value: this.staffName, disabled: this.readonlyFlag }],
+      org: [{ value: this.orgName, disabled: this.readonlyFlag }],
+      applyReason: [whichOrder? whichOrder.ApplyReason : '', Validators.required],
+      productIdQty: whichOrder? this.fb.array(this.setFormArray(whichOrder)) : this.fb.array([this.createProd()])
+    }
+    return formGroupObj;
+  }
+  /*  define applicationForm of detail modal */
+  setDetailModal(whichOrder: any, formGroupObj: any) {
+    this.detailFlag = true;
+    formGroupObj = {
+      staff: [{ value: this.staffName, disabled: this.readonlyFlag }],
+      org: [{ value: this.orgName, disabled: this.readonlyFlag }],
+      applyReason: [{ value: this.whichOrder.ApplyReason, disabled: this.readonlyFlag }],
+      productIdQty: this.fb.array(this.setFormArray(whichOrder))
+    }
+    return formGroupObj;
+  }
+  /*  
+    define applicationForm of productIdQty: FormArray according to open which modal
+       1) this.detialFlag === true => open detail modal
+       2) this.detialFlag === false => open update modal
+  */
+  setFormArray(whichOrder: any) {
+    let prodFormGroup: any;
+    let prodFormArr = [];
+    whichOrder.ApplicationDetails.map((prod, i) => {
+      this.getProdCats(i);
+      this.getProdTypeByCat(prod.ProdCat.ProdCatId, i)
+      this.getProdByType(prod.ProdType.ProdTypeId, i);
+      prodFormGroup = {
+        prodCat: [ this.detailFlag? prod.ProdCat.ProdCatName : prod.ProdCat.ProdCatId, Validators.required ],
+        prodType: [ this.detailFlag? prod.ProdType.ProdTypeName : prod.ProdType.ProdTypeId, Validators.required ],
+        prod: [ this.detailFlag? prod.Product.ProductName: prod.Product.ProductId, Validators.required],
+        appliedQty: [ prod.AppliedQty, [Validators.required, Validators.pattern('^[1-9][0-9]*$')]]
+      }
+      prodFormArr.push(this.fb.group(prodFormGroup))
+    })
+    return prodFormArr;
+  }
+  /* define productIdQty: FormArray when whichOrder === null after open update modal */
+  createProd(): FormGroup {
+    let prodObj = {
+      prodCat: ['', Validators.required],
+      prodType: ['', Validators.required],
+      prod: ['', Validators.required],
+      appliedQty: ['0', [Validators.required, Validators.pattern('^[1-9][0-9]*$')]]
+    } 
+    return this.fb.group(prodObj);
+  }
+  /* get product data from server */
   getProdCats(i: number) {
     this.inventoriesService.getProdCats().subscribe(
       res => {
@@ -167,7 +142,7 @@ export class StockApplicationFormComponent implements OnInit {
     this.inventoriesService.getProdTypeByCat(cateId).subscribe(
       res => {
         this.prodTypes[i] = res['Data'][0].ProdType;
-        console.log('prodTypes', i, this.prodTypes)
+        // console.log('prodTypes', i, this.prodTypes)
       },
       err => this.errHandler(err)
     )
@@ -176,69 +151,61 @@ export class StockApplicationFormComponent implements OnInit {
     this.inventoriesService.getProdByType(typeId).subscribe(
       res => {
         this.prodNames[i] = res['Data'];
-        console.log('prodName', i, this.prodNames)
+        // console.log('prodName', i, this.prodNames)
       },
       err => this.errHandler(err)
     )
   }
-  /* event form HTML */
+  /* handle error from server */
+  errHandler(err: any) {
+    console.warn(err);
+    if (err.ErrorMessage != null) {
+      this.errorMessage = err.ErrorMessage;
+    } else {
+      this.errorMessage = 'Error! Can Not Catch Data!';
+    }
+  }
+ 
+  /* user interaction: event triggered form HTML */
   deleteForm(i: number) {
+    // reset prodTypes and prodNames at the same time
     this.prodTypes.splice(i, 1);
-    this.prodNames.splice(i, 1)
-    console.log('delete prodTypes', i, this.prodTypes, 'delete prodNames', this.prodNames)
+    this.prodNames.splice(i, 1);
     this.productIdQty.removeAt(i);
-    let prodLength = this.productIdQty.length;
-    if (prodLength == 1) {
-      for (let i in this.productIdQty.value) {
-        console.log('i', i)
-        this.isDeleted[i] = true;
-      }
-    }
+    this.checkProductIdQtyLength();
   }
-  addNewProd(): void {
-    let prodLength = this.productIdQty.length;
-    console.log('prodLength', prodLength);
-    this.getProdCats(prodLength);
+  addProduct(): void {
+    this.getProdCats(this.productIdQtyLength);
     this.productIdQty.push(this.createProd());
-    console.log('add productIdQty',this.productIdQty )
-    // this.checkProductIdQty()
-    if (prodLength > 1 || prodLength == 1) {
-      for (let i in this.productIdQty.value) {
-        console.log('i', i)
-        this.isDeleted[i] = false;
-      }
-    }
-    // console.log('add prodTypes', i, this.prodTypes, 'add prodNames', this.prodNames)
+    this.checkProductIdQtyLength();
   }
-
-  /* algorithm for add or minus prod number */
+  /* 
+    1) productIdQtyLength > 1 =>    delete button is actived
+    2) productIdQtyLength === 1 =>  delete button is disabled
+  */
+  checkProductIdQtyLength = () => {
+    this.productIdQty.value.map(
+      (_, i) => this.productIdQtyLength > 1 ? this.deleteProd[i] = false : this.deleteProd[i] = true
+    )
+  }
+  /* algorithm for add or minus prod quantity */
   minusQty(i: number) {
-    let appliedQty = this.productIdQty.controls[i].get('appliedQty');
-    let currentNumber = parseInt(appliedQty.value);
-    let minusNumber = currentNumber - 1;
-    appliedQty.setValue(minusNumber);
-    this.applicationForm.updateValueAndValidity()
-    //  console.log('minusNumber', minusNumber)  
+    this.calculateQty(i, 'minus')
   }
   increaseQty(i: number) {
+    this.calculateQty(i, 'increase')
+  }
+  calculateQty(i: number, algorithm: string) {
     let appliedQty = this.productIdQty.controls[i].get('appliedQty');
     let currentNumber = parseInt(appliedQty.value); 
-    let increaseNumber = currentNumber + 1;
-    appliedQty.setValue(increaseNumber);
-     console.log('increaseNumber', increaseNumber)
+    algorithm === "increase"? appliedQty.patchValue( `${currentNumber + 1}`) : appliedQty.patchValue( `${currentNumber - 1}`);
   }
-  calculateQty() {
-    // let currentValue = Number(this.productIdQty.controls[i].get('appliedQty').value);
-    
-  }
-  /* add and update new data to table */
+  /* send current application form to modal ( submit button ) for validation */
   onChange(): void {
-    
     this.applicationForm.valueChanges.subscribe(
       () => {
         this.sendApplicationForm.emit(this.applicationForm)
       });
   }
-  /* value for detail modal */
-
+  
 }

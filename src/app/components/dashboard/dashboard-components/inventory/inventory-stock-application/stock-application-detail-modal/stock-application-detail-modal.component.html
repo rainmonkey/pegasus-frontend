@@ -1,11 +1,11 @@
 <div class="modal-header">
-    <h4 class="modal-title">Details of Order</h4>
+    <h4 class="modal-title">Details of Stock Application</h4>
     <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
       <span aria-hidden="true">&times;</span>
     </button>
   </div>
   <div class="modal-body">
-     <app-stock-application-form [command]="command" [whichOrder]="orderDetail"></app-stock-application-form>
+     <app-stock-application-form [command]="command" [whichOrder]="whichOrder"></app-stock-application-form>
   </div>
   <div class="modal-footer">
     <button type="button" class="btn btn-outline-dark" (click)="activeModal.close('Close click')">Close</button>
