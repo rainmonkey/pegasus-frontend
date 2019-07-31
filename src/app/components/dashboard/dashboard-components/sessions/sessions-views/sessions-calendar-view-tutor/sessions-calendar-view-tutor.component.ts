@@ -57,8 +57,8 @@ export class SessionsCalendarViewTutorComponent implements OnInit {
       allDaySlot: false,
       scrollTime: '08:00',
       header: {
-        left: 'prev,next today DayPickerButton',
-        center: 'title',
+        left: 'prev,next today DayPickerButton title',
+        center: '',
         right: ''
       },
       eventDrop: (info) => {

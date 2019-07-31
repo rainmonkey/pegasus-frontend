@@ -1,13 +1,12 @@
 <!-- <app-time-picker (messageToEmit)="getMessage($event)"></app-time-picker> -->
 <!-- <pre>{{ parentForm.value | json }}</pre> -->
-<form [formGroup]="registrationForm" class="container">
+<form [formGroup]="registrationForm" class="container" onkeydown='if(event.keyCode==13) return false;'>
   <h1 class="font3">Student's Registration</h1>
   <!-- <ul class="nav nav-tabs">
     <li><a class="nav-link active" data-toggle="tab" href="#learnerForm">Learner</a></li>
     <li><a class="nav-link" data-toggle="tab" href="#parentForm">Guardian</a></li>
     <li><a class="nav-link" data-toggle="tab" href="#courseForm">Course</a></li>
   </ul> -->
-
   <!-- ----LearnerForm HTML---- -->
   <div class="tab-content">
     <div id="learnerForm" *ngIf="addCourse == undefined">
@@ -277,9 +276,8 @@
         <button (click)="chooseCustomCourse()" class='btn btn-outline-primary'>One-on-One Course</button>
       </div>
 
-
       <div class="card" *ngIf="isGroupCourse" >
-        <div class="select-group-course card-body">
+        <div class="select-group-course container">
           <div class="guitar">
             <table class="table ">
               <thead>
@@ -297,7 +295,7 @@
               <tbody>
 
                 <tr formArrayName="groupCourse" *ngFor="let groupCourse of groupCourseInstance; let i = index">
-                  <td class='input-group col-3'>
+                  <td class='input-group'>
                       <label [for]="i" class="input-group-text gourpFontSize">{{groupCourse.Course.CourseName}}
                       <input class='ml-1' type="checkbox" [id]='i' [checked]="groupCourse.isChecked" (click)="selectCheckboxes(i, $event)" >
                       </label>

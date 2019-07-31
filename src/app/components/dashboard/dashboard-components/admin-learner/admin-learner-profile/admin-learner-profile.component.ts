@@ -257,7 +257,7 @@ export class AdminLearnerProfileComponent implements OnInit {
   */
   addModal(command, whichLearner) {
     //@ts-ignore
-    const modalRef = this.modalService.open(LearnerAddModalComponent, { size:'xl', backdrop: 'static', keyboard: false });
+    const modalRef = this.modalService.open(LearnerAddModalComponent, { windowClass:'my-class-full', backdrop: 'static', keyboard: false });
     let that = this;
     modalRef.result.then(
       (res) => {
