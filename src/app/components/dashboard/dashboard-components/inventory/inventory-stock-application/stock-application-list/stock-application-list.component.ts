@@ -1,16 +1,15 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
+import { DatePipe } from '@angular/common';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { InventoriesService } from 'src/app/services/http/inventories.service';
-import { NgbootstraptableService } from 'src/app/services/others/ngbootstraptable.service';
 import { NgbDate } from '@ng-bootstrap/ng-bootstrap';
 import Swal from 'sweetalert2';
 
+import { InventoriesService } from 'src/app/services/http/inventories.service';
+import { NgbootstraptableService } from 'src/app/services/others/ngbootstraptable.service';
 import { StockApplicationUpdateModalComponent } from 'src/app/components/dashboard/dashboard-components/inventory/inventory-stock-application/stock-application-update-modal/stock-application-update-modal.component';
 import { StockApplicationDetailModalComponent } from 'src/app/components/dashboard/dashboard-components/inventory/inventory-stock-application/stock-application-detail-modal/stock-application-detail-modal.component';
-import { DatePipe } from '@angular/common';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-
 
 @Component({
   selector: 'app-stock-application-list',
@@ -26,10 +25,10 @@ export class StockApplicationListComponent implements OnInit {
   public loadingFlag: boolean = true;
   public page: number = 1;
   public pageSize: number = 6;
-  public dateForm: FormGroup;
   /* props for after loading, display default data of three months */
   public previousDate: any;
   public currentDate: any;
+  public dateForm: FormGroup;
   /* props for validating EndDate > BeginDate */
   public fromDate: NgbDate;
   public toDate: NgbDate;
@@ -38,11 +37,10 @@ export class StockApplicationListComponent implements OnInit {
   public endDate: any;
   /* props for accepting data from server */
   public stockApplication: Array<any>;
-  public stockApplicationCopy: Array<any>;
   public errorMessage: string;
   /* all about route of URL */
   public queryParams: object = {};
-  /* delete method */
+  /* props for modal */
   public timeout: any;
   public isDeleted: boolean = false;
   public deleteFailed: boolean = false;
@@ -82,20 +80,26 @@ export class StockApplicationListComponent implements OnInit {
   getStockApplication(previousDate: any, currentDate: any) {
     this.inventoriesService.getStockApplication(previousDate, currentDate).subscribe(
       (res) => {
-        console.log('res', res.Data);
-        this.stockApplicationCopy = res.Data;
-        this.stockApplication = this.renderOrders(res.Data)
+        // console.log('res', res['Data']);
+        this.stockApplication = this.renderOrderList(res['Data']);
         this.loadingFlag = false;
-        console.log('this.stockApplication', this.stockApplication)
       },
       (err) => {
         this.errorHandler(err);
       }
     )
   }
+  /* err handler */
+  errorHandler(err: any) {
+    console.warn(err);
+    if (err.error.ErrorMessage != null) {
+      this.errorMessage = err.error.ErrorMessage;
+    } else {
+      this.errorMessage = 'Error! Can not catch Data!';
+    }
+  }
   /* slice specific part of data to display in table of HTML */
-  renderOrders(orderList) {
-    // console.log('renderOrder', orderList);
+  renderOrderList(orderList: any[]) {
     return orderList.reverse()
       .map((stockInfo, i) => ({ id: i + 1, ...stockInfo }))
   }
@@ -155,31 +159,20 @@ export class StockApplicationListComponent implements OnInit {
     });
   }
   /* update modal */
-  updateModal(command: number, whichOrder: number) {
-    // console.log('update command', command, 'whichOrder', whichOrder)
-    const modalRef = this.modalService.open(StockApplicationUpdateModalComponent, { size: 'lg', centered: true, backdrop: 'static', keyboard: false });
-    modalRef.componentInstance.command = command;
-    modalRef.componentInstance.whichOrder = whichOrder;
-    this.postStockApplication(modalRef);
-    
-  }
-  postStockApplication(modalRef) {
+  postStockApplication(modalRef: any) {
     modalRef.componentInstance.passApplicationId.subscribe(
       (applicationId: number) => {
         this.loadingFlag = true;
-        // console.log('receive application id', applicationId);
         this.inventoriesService.getNewStockApplication(applicationId).subscribe(
           res => {
             console.log('post success', res['Data']);
             this.stockApplication.unshift(res['Data']);
-            this.stockApplication.map((item, i) => {
-              item.id = i + 1;
-            });
-            this.loadingFlag = false;
+            this.stockApplication.map((item, i) => item.id = i + 1);
             this.applicationId = applicationId;
             setTimeout(() => {
               this.applicationId = null;
             }, 2000)
+            this.loadingFlag = false;
             modalRef.close();
           },
           err => this.errorHandler(err)
@@ -187,50 +180,43 @@ export class StockApplicationListComponent implements OnInit {
       }
     )
   }
+  updateModal(command: number, whichOrder?) {
+    const modalRef = this.modalService.open(StockApplicationUpdateModalComponent, { size: 'lg', centered: true, backdrop: 'static', keyboard: false });
+    modalRef.componentInstance.command = command;
+    modalRef.componentInstance.whichOrder = whichOrder;
+    this.postStockApplication(modalRef);
+  }
   /* detail modal */
-  detailModal(command: number, whichOrder: number) {
-    console.log('detail command', command, 'whichOrder', whichOrder)
+  detailModal(command: number, whichOrder: any) {
     const modalRef = this.modalService.open(StockApplicationDetailModalComponent, { size: 'lg', centered: true, backdrop: 'static', keyboard: false });
     modalRef.componentInstance.command = command;
-    modalRef.componentInstance.orderDetail = whichOrder;
+    modalRef.componentInstance.whichOrder = whichOrder;
   }
-  /* delete method */
-  delete(whichOrder) {
-    this.applicationId = whichOrder.ApplicationId;
+  /* delete modal */
+  delete(whichOrder: any) {
     this.isDeleted = true;
+    this.applicationId = whichOrder.ApplicationId;
     clearTimeout(this.timeout);
     this.timeout = setTimeout(() => {
       this.inventoriesService.deleteProduct(this.applicationId).subscribe(
         res => {
           console.log('delete res', res);
           this.isDeleted = false;
-          let index = this.stockApplicationCopy.indexOf(this.applicationId);
-          this.stockApplicationCopy.splice(index, 1);
-          this.stockApplication = this.renderOrders(this.stockApplicationCopy);
+          let index = this.stockApplication.indexOf(whichOrder);
+          this.stockApplication.splice(index, 1);
+          this.stockApplication.map((item, i) => item.id = i + 1);
         },
         err => {
           this.deleteFailed = true;
           this.errorHandler(err);
         }
       )
-    }, 3000)
+    }, 2000)
   }
   undo() {
     this.isDeleted = false;
     this.applicationId = null;
     clearTimeout(this.timeout);
   }
-  /* reusable function */
-  errorHandler(err: any) {
-    console.warn(err);
-    if (err.error.ErrorMessage != null) {
-      this.errorMessage = err.error.ErrorMessage;
-    } else {
-      this.errorMessage = 'Error! Can not catch Data!';
-    }
-  }
-  /* validate dateForm input */
-
-
 
 }

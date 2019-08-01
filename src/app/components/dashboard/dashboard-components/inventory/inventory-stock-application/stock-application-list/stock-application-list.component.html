@@ -1,7 +1,7 @@
- <!-- loading -->
+<!-- loading -->
 <div *ngIf="loadingFlag" class="loaderLarge"></div>
 
- <!-- after fetch data success -->
+<!-- after fetch data success -->
 <div class="container" *ngIf="!loadingFlag">
   <div class="title--center">
     Stock Application
@@ -9,24 +9,17 @@
   <p class="selection__text">Select a period of date:</p>
   <div class="d-flex">
     <form [formGroup]="dateForm">
-      <div class="d-flex form"> 
+      <div class="d-flex form">
         <!-- begin date -->
         <div class="input-group input__datebar">
           <input class="form-control" style="height: 30px;" placeholder="yyyy-mm-dd" ngbDatepicker
             #beginDate="ngbDatepicker" (dateSelect)="onBeginDateSelect($event)" formControlName="beginDate">
           <div class="input-group-append">
-            <button class="btn btn-outline-secondary calendar" style="height: 30px;"
-              (click)="beginDate.toggle()">
+            <button class="btn btn-outline-secondary calendar" style="height: 30px;" (click)="beginDate.toggle()">
               <i class="far fa-calendar-alt"></i>
             </button>
           </div>
         </div>
-        <!-- validator  -->
-        <!-- <div *ngIf="dateForm.invalid && (dateForm.dirty || dateForm.touched)">
-          <small *ngIf="dateForm.get('beginDate').errors?.pattern" class="text-danger">
-            Date should be in "yyyy-mm-dd" format.
-          </small>
-        </div> -->
         <!-- To -->
         <div style="margin-left: 10px; margin-right: 10px;">To</div>
         <!-- end date -->
@@ -40,12 +33,6 @@
             </button>
           </div>
         </div>
-        <!-- validator  -->
-        <!-- <div *ngIf="dateForm.invalid && (dateForm.dirty || dateForm.touched)">
-          <small *ngIf="dateForm.get('endDate').errors?.pattern" class="text-danger">
-            Date should be in "yyyy-mm-dd" format.
-          </small>
-        </div> -->
         <!-- select button -->
         <button class="btn btn-info btn__search--right" (click)="selectPeriod()">
           <i class="fas fa-search"></i>Search
@@ -59,91 +46,89 @@
       </button>
     </div>
   </div>
-
-  <div>
-    <!-- delete message -->
-    <div *ngIf="isDeleted" class="text-center undo__msg">
-      <i class="fa fa-check-circle"></i>
-      <span class="font-weight-bold m-1">This order has already removed.
-        <a class="text-primary font-weight-bold" (click)="undo()">Undo</a>
-      </span>
-    </div>
-    <!-- delete failure -->
-    <div *ngIf="deleteFail">
-      <p class="text-danger">{{ errorMessage }}</p>
-    </div>
-    <!-- table info -->
-    <div>
-      <table class="table table-striped" style="text-align: center;">
-        <thead>
-          <tr>
-            <th scope="col" class="table__header--cursor" style="width:5rem;">#</th>
-            <th scope="col" class="table__header--cursor sorting--cursor" style="width:10rem" (click)="onSort('StaffName')">
-              Staff Name
-            </th>
-            <th scope="col" class="table__header--cursor sorting--cursor" style="width:10rem" (click)="onSort('Org')">
-              Location
-            </th>
-            <th scope="col" class="table__header--cursor sorting--cursor" style="width:10rem" (click)="onSort('ApplyAt')">
-              Apply At
-            </th>
-            <th scope="col" class="table__header--cursor sorting--cursor" style="width:10rem" (click)="onSort('ApplyReason')">
-              Apply Reason
-            </th>
-            <th scope="col" class="table__header--cursor sorting--cursor" style="width:10rem" (click)="onSort('ProductType')">
-              Product Name
-            </th>
-            <th scope="col" class="table__header--cursor sorting--cursor" style="width:10rem"
-              (click)="onSort('ProductQuantity')">
-              Product QTY
-            </th>
-            <th scope="col" class="table__header--cursor sorting--cursor" style="width:10rem"
-              (click)="onSort('ProcessStatus')">
-              Process Status
-            </th>
-            <th scope="col" class="table__header--cursor sorting--cursor" style="width:10rem">Edit & Delete</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr class="table__row--hover" 
-            *ngFor="let item of stockApplication | 
-            slice: (page-1)* pageSize : (page-1) * pageSize + pageSize; let i = index" 
-            [ngClass]="{'tr--highlight': item.ApplicationId == applicationId}">
-            <th scope="row">{{ item.id }}</th>
-            <td>
-              {{ item.ApplyStaff.FirstName }}
-            </td>
-            <td>{{ item.Org.OrgName }}</td>
-            <td>{{ item.ApplyAt | date:"shortDate" }}</td>
-            <td>{{ item.ApplyReason }}</td>
-            <td>
-              <li *ngFor="let detail of item.ApplicationDetails">{{ detail.Product.ProductName }}</li>
-            </td>
-            <td>
-              <li *ngFor="let detail of item.ApplicationDetails">{{ detail.AppliedQty }}</li>
-            </td>
-            <td>{{ item.ProcessStatus | processStatus}}</td>
-            <td>
-              <span class="table__btn--cursor" style="margin-right: 1rem;" (click)="detailModal(1, item)">
-                <i class='fas fa-info-circle'></i>
-              </span>
-              <span class="table__btn--cursor" style="margin-right: 1rem;" (click)="updateModal(2, item)">
-                <i class='fas fa-pen'></i>
-              </span>
-              <span class="table__btn--cursor" (click)="delete(item)">
-                <i class="fas fa-trash-alt"></i>
-              </span>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-    <!-- pagination -->
-    <div>
-      <ngb-pagination #pagination [collectionSize]="stockApplication.length" [(page)]="page" [pageSize]="pageSize"
-        (click)="getCurrentPage()">
-      </ngb-pagination>
-    </div>
+  <!-- delete message -->
+  <div *ngIf="isDeleted" class="text-center undo__msg">
+    <i class="fa fa-check-circle"></i>
+    <span class="font-weight-bold m-1">This order has already removed.
+      <a class="text-primary font-weight-bold" (click)="undo()">Undo</a>
+    </span>
   </div>
-
+  <!-- delete failure -->
+  <div *ngIf="deleteFailed">
+    <p class="text-danger">{{ errorMessage }}</p>
+  </div>
+  <!-- table info -->
+  <div>
+    <table class="table table-striped" style="text-align: center;">
+      <thead>
+        <tr class="table__header--cursor">
+          <th scope="col" style="width:5rem;">#</th>
+          <th scope="col" class="sorting--cursor" style="width:10rem"
+            (click)="onSort('StaffName')">
+            Staff Name
+          </th>
+          <th scope="col" class="sorting--cursor" style="width:10rem" (click)="onSort('Org')">
+            Location
+          </th>
+          <th scope="col" class="sorting--cursor" style="width:10rem" (click)="onSort('ApplyAt')">
+            Apply At
+          </th>
+          <th scope="col" class="sorting--cursor" style="width:10rem"
+            (click)="onSort('ApplyReason')">
+            Apply Reason
+          </th>
+          <th scope="col" class="sorting--cursor" style="width:10rem"
+            (click)="onSort('ProductType')">
+            Product Name
+          </th>
+          <th scope="col" class="sorting--cursor" style="width:10rem"
+            (click)="onSort('ProductQuantity')">
+            Product QTY
+          </th>
+          <th scope="col" class="sorting--cursor" style="width:10rem"
+            (click)="onSort('ProcessStatus')">
+            Process Status
+          </th>
+          <th scope="col" class="sorting--cursor" style="width:10rem">Edit & Delete</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="table__row--hover" *ngFor="let item of stockApplication | 
+            slice: (page-1)* pageSize : (page-1) * pageSize + pageSize; let i = index"
+          [ngClass]="{'tr--highlight': item.ApplicationId == applicationId}">
+          <th scope="row">{{ item.id }}</th>
+          <td>
+            {{ item.ApplyStaff.FirstName }}
+          </td>
+          <td>{{ item.Org.OrgName }}</td>
+          <td>{{ item.ApplyAt | date:"shortDate" }}</td>
+          <td>{{ item.ApplyReason }}</td>
+          <td>
+            <li *ngFor="let detail of item.ApplicationDetails">{{ detail.Product.ProductName }}</li>
+          </td>
+          <td>
+            <li *ngFor="let detail of item.ApplicationDetails">{{ detail.AppliedQty }}</li>
+          </td>
+          <td>{{ item.ProcessStatus | processStatus}}</td>
+          <td>
+            <span class="table__btn--cursor" style="margin-right: 1rem;" (click)="detailModal(1, item)">
+              <i class='fas fa-info-circle'></i>
+            </span>
+            <span class="table__btn--cursor" style="margin-right: 1rem;" (click)="updateModal(2, item)">
+              <i class='fas fa-pen'></i>
+            </span>
+            <span class="table__btn--cursor" (click)="delete(item)">
+              <i class="fas fa-trash-alt"></i>
+            </span>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <!-- pagination -->
+  <div>
+    <ngb-pagination #pagination [collectionSize]="stockApplication.length" [(page)]="page" [pageSize]="pageSize"
+      (click)="getCurrentPage()">
+    </ngb-pagination>
+  </div>
 </div>

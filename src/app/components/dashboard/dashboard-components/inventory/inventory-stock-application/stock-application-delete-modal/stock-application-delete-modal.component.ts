@@ -9,12 +9,11 @@ import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 })
 export class StockApplicationDeleteModalComponent implements OnInit {
   /* form StockApplicationListComponent */
-  @Input() orderDetail: any;
+  @Input() whichOrder: any;
   /* to StockApplicationListComponent */
   @Output() sendDeleteResult = new EventEmitter<any>();
 
   public orderId: number;
-  /* render various info in HTML(modal-body) according to condition */
   public isDeleted: boolean = false;
   public isShow: boolean = true;
   public errMsg: string;
@@ -23,9 +22,8 @@ export class StockApplicationDeleteModalComponent implements OnInit {
     private activeModal: NgbActiveModal) { }
 
   ngOnInit() {
-    // console.log('orderDetail', this.orderDetail)
     /* get param which will be passed to server in order to delete order */
-    this.orderId = this.orderDetail.ApplicationId;
+    this.orderId = this.whichOrder.ApplicationId;
   }
   delete() {
     this.inventoriesService.deleteProduct(this.orderId).subscribe(
@@ -45,7 +43,7 @@ export class StockApplicationDeleteModalComponent implements OnInit {
   onClose() {
     return (
       this.activeModal.close(),
-      this.sendDeleteResult.emit([this.isDeleted, this.orderId])
+      this.sendDeleteResult.emit(this.orderId)
     )
   }
 }
