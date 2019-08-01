@@ -20,11 +20,15 @@
           <div class="button text-right">
             <button class="btn_reset my-3 btn btn-info" (click)="resetLearner()">Reset</button>
           </div>
+          <div class='row ml-1'>
           <div class="learnerPhoto col-3">
             <label for="photo" class='custom-file-label'>Choose a photo <span><i class="fas fa-file-upload"></i></span></label>
-            <img src="" id='photoID' style='height: 64px' alt="ID preview...">
             <input formControlName="photo" type="file" (change)="uploadPhoto($event)" class='custom-file-input' id="photo" accept="image/*">
           </div>
+          <div class='col-3'>
+            <img src="" id='photoID' style='height: 64px' alt="ID preview...">
+          </div>
+        </div>
           <div class="learnerName row">
             <div class="col-sm-4 col-md-4">
               <label for="firstName">First Name *</label>
@@ -135,11 +139,16 @@
               <textarea style='height:150px;' name="Comment" id="Comment" class='col-12 t_mf_input' formControlName='Comment' maxlength="1000"></textarea>
             </div>
           </div>
+          <div class='row ml-1'>
             <div class="grade my-3 col-6">
               <label for="grade" class='custom-file-label'>If you have ABRSM Theory Grade 5, please upload.. <span><i class="fas fa-file-upload"></i></span></label>
-              <img src="" id='certificate' style='height: 64px' alt="Certificate preview...">
+
               <input formControlName="grade" type="file" (change)="uploadGrade($event)" id="grade" class='custom-file-input' accept="image/*">
             </div>
+            <div class='col-3'>
+                <img src="" id='certificate' style='height: 64px' alt="Certificate preview...">
+            </div>
+          </div>
             <div class='row pl-3'>
               <div class="grade my-3 col-5 mr-2">
                 <label for="grade" class='custom-file-label'>Enrollment Agreement Upload.. <span><i class="fas fa-file-upload"></i></span></label>
