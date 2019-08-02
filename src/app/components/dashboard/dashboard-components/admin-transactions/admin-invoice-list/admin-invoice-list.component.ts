@@ -213,9 +213,15 @@ export class AdminInvoiceListComponent implements OnInit {
   downloadPDFReady(index, page) {
     const learner = this.myArray[(page - 1) * this.pageSize + index];
     const learnerName = {} as IInvoiceLearnerName;
+    let invoice;
     learnerName.firstName = learner.FirstName;
     learnerName.lastName = learner.LastName;
-    const invoice: IInvoice = learner.Invoice;
+
+    if (learner.Invoice.InvoiceId == 0) {
+      invoice = learner.InvoiceWaitingConfirm;
+    } else {
+      invoice = learner.Invoice;
+    }
     this.downloadPDFService.downloadPDF(learnerName, invoice);
   }
 }
