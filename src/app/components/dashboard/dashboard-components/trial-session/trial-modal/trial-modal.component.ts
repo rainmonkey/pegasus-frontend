@@ -311,7 +311,13 @@ export class TrialModalComponent implements OnInit {
     for (const i of this.courses) {
       console.log(count)
       // console.log(i.CourseType === 1, this.teacherDetails.Level === i.TeacherLevel, i.Duration, durationId, i.Duration === durationId, i.Level === this.LearnerLevel, (!this.cateId || i.CourseCategoryId === this.cateId))
-      if (i.CourseType === 1 && this.teacherDetails.Level === i.TeacherLevel && i.Duration === durationId && i.Level === this.LearnerLevel && (!this.cateId || i.CourseCategoryId === this.cateId)) {
+      if ((i.cateId === 1 && i.CourseType === 1 && this.teacherDetails.Level === i.TeacherLevel 
+          && i.Duration === durationId && i.Level === this.LearnerLevel 
+          && (!this.cateId || i.CourseCategoryId === this.cateId)) ||  //for piano
+          (i.cateId != 1 && i.CourseType === 1  
+            && i.Duration === durationId && i.Level === this.LearnerLevel 
+            && (!this.cateId || i.CourseCategoryId === this.cateId)))
+        {
         count++
         this.course = i;
         this.coursePrice = i.Price;
