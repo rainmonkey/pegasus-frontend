@@ -111,7 +111,8 @@
         <span>Address:</span>
       </span>
       <span class='col-sm-4 col-md-4'>
-        <input class="form-control l-input" formControlName="Address" type="text" id="Address" placeholder="Physical Address">
+        <input class="form-control l-input" formControlName="Address" type="text" id="Address"
+          placeholder="Physical Address">
       </span>
 
 
@@ -120,10 +121,32 @@
         <span>Date of Enrollment:</span>
       </span>
       <span class='col-sm-4 col-md-4'>
-        <input class="form-control l-input" formControlName="EnrollDate" type="date" id="enrollDate" >
+        <input class="form-control l-input" formControlName="EnrollDate" type="date" id="enrollDate">
       </span>
     </div>
+    <br>
 
+    <div class="row">
+      <span class='col-sm-1 col-md-1' style='text-align: right'>
+        <span>Location:</span>
+      </span>
+      <span class='col-sm-4 col-md-4'>
+
+        <span *ngIf='command ==1'>
+          <select class="form-control l-input" formControlName="OrgId" id="location">
+            <option value="null" disabled="true" [selected]="true">Location*</option>
+            <option *ngFor="let location of locations" [value]="location.OrgId">{{location.OrgName}}</option>
+          </select>
+        </span>
+
+
+        <span *ngIf='command == 2'>
+          <select class="form-control l-input" formControlName="OrgId" id="location">
+            <option *ngFor="let location of locations" [value]="location.OrgId">{{location.OrgName}}</option>
+          </select>
+        </span>
+      </span>
+    </div>
 
 
 

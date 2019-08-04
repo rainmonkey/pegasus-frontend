@@ -1,6 +1,8 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { Command } from 'protractor';
 import { FormBuilder, Validators, FormGroup } from '@angular/forms';
+import { CoursesService } from 'src/app/services/http/courses.service';
+
 
 @Component({
   selector: 'app-New-Registration-Form',
@@ -9,17 +11,18 @@ import { FormBuilder, Validators, FormGroup } from '@angular/forms';
 })
 export class NewRegistrationFormComponent implements OnInit {
   public registrationForm: FormGroup
+  public locations: Array<any>
 
   @Input() command
   @Input() whichLearner
   constructor(
     private fb: FormBuilder,
-
+    private coursesService: CoursesService,
   ) { }
 
   ngOnInit() {
     this.registrationForm = this.fb.group(this.formBuild());
-
+   this.getLocationFromServer()
 
   }
 
@@ -97,5 +100,12 @@ export class NewRegistrationFormComponent implements OnInit {
     this.registrationForm.get("IsUnder18").patchValue(isUnder18);
     console.log(isUnder18)
   }
-
+  getLocationFromServer() {
+    this.coursesService.getOrgs().subscribe(
+      (res) => {
+        this.locations = res['Data'];
+        console.log(this.locations)
+      }
+    )
+  }
 }
