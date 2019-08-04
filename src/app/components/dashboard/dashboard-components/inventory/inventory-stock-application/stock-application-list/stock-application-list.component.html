@@ -6,9 +6,9 @@
   <div class="title--center">
     Stock Application
   </div>
-  <p class="selection__text">Select a period of date:</p>
   <div class="d-flex">
     <form [formGroup]="dateForm">
+      <p class="selection__text">Select a period of date:</p>
       <div class="d-flex form">
         <!-- begin date -->
         <div class="input-group input__datebar">
@@ -39,8 +39,12 @@
         </button>
       </div>
     </form>
+    <!-- search bar -->
+    <div *ngIf="headOfficeRole" class="ml-auto">
+      <input type="text" [(ngModel)]="searchBy" (keyup)="keyup()" class="search__bar" placeholder="search by name or location" >
+    </div>
     <!-- add more btn -->
-    <div class="ml-auto">
+    <div class="ml-auto" *ngIf="!headOfficeRole">
       <button class="btn btn-info btn__add--right" (click)="updateModal(2, null)">
         + Add More
       </button>
@@ -89,7 +93,7 @@
             (click)="onSort('ProcessStatus')">
             Process Status
           </th>
-          <th scope="col" class="sorting--cursor" style="width:10rem">Edit & Delete</th>
+          <th scope="col" class="sorting--cursor" style="width:10rem"></th>
         </tr>
       </thead>
       <tbody>
@@ -97,10 +101,8 @@
             slice: (page-1)* pageSize : (page-1) * pageSize + pageSize; let i = index"
           [ngClass]="{'tr--highlight': item.ApplicationId == applicationId}">
           <th scope="row">{{ item.id }}</th>
-          <td>
-            {{ item.ApplyStaff.FirstName }}
-          </td>
-          <td>{{ item.Org.OrgName }}</td>
+          <td><ngb-highlight [result]="item.ApplyStaff.FirstName" [term]="searchBy"></ngb-highlight></td>
+          <td><ngb-highlight [result]="item.Org.OrgName" [term]="searchBy"></ngb-highlight></td>
           <td>{{ item.ApplyAt | date:"shortDate" }}</td>
           <td>{{ item.ApplyReason }}</td>
           <td>
@@ -110,15 +112,36 @@
             <li *ngFor="let detail of item.ApplicationDetails">{{ detail.AppliedQty }}</li>
           </td>
           <td>{{ item.ProcessStatus | processStatus}}</td>
-          <td>
-            <span class="table__btn--cursor" style="margin-right: 1rem;" (click)="detailModal(1, item)">
+          <td *ngIf="headOfficeRole">
+            <div class="d-flex justify-content-around">
+              <span class="table__btn--cursor" (click)="detailModal(1, item)">
+                <i class='fas fa-info-circle'></i>
+              </span>
+              <span class="table__btn--cursor" (click)="replyModal(3, item)">
+                <i class="fas fa-comment"></i>
+              </span>
+            </div>
+            <div c class="d-flex justify-content-around">
+              <span class="table__btn--cursor" (click)="deliver(4, item)">
+                <i class="fas fa-truck"></i>
+              </span>
+              <span class="table__btn--cursor" (click)="delete(item)">
+                <i class="fas fa-comments"></i>
+              </span>
+            </div>
+          </td>
+          <td *ngIf="!headOfficeRole">
+            <span class="table__btn--cursor" (click)="detailModal(1, item)">
               <i class='fas fa-info-circle'></i>
             </span>
-            <span class="table__btn--cursor" style="margin-right: 1rem;" (click)="updateModal(2, item)">
+            <span class="table__btn--cursor" (click)="updateModal(2, item)">
               <i class='fas fa-pen'></i>
             </span>
             <span class="table__btn--cursor" (click)="delete(item)">
               <i class="fas fa-trash-alt"></i>
+            </span>
+            <span class="table__btn--cursor" (click)="delete(item)">
+              <i class="fas fa-comments"></i>
             </span>
           </td>
         </tr>

@@ -379,6 +379,7 @@ export class TrialModalComponent implements OnInit {
             }
           },
           () => {
+            console.log('err')
             return;
           });
       }
