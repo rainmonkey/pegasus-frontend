@@ -30,7 +30,7 @@ export class NewRegistrationFormComponent implements OnInit {
         FirstName: [null, Validators.required],
         MiddleName: [null],
         LastName: [null, Validators.required],
-        Gender: [null, Validators.required],
+        Gender: ['', Validators.required],
         dob: [null],
         EnrollDate: [null],
         ContactNum: [null],
@@ -52,8 +52,7 @@ export class NewRegistrationFormComponent implements OnInit {
       }
     }
     else {
-      console.log(this.whichLearner.FirstName)
-      console.log(typeof(this.whichLearner.FirstName))
+
       groupObj = {
         FirstName: [this.whichLearner.FirstName , Validators.required],
         MiddleName: [ this.whichLearner.MiddleName ? this.whichLearner.MiddleName : ' ' ],
@@ -82,5 +81,14 @@ export class NewRegistrationFormComponent implements OnInit {
     return groupObj
   }
 
+  handleIsUnder18(DOB){
+    console.log(DOB);
+    let nowYear =new Date().getFullYear();
+    let birthYear = Number(DOB.substring(0,4));
+    let isUnder18 = nowYear - birthYear <= 18? 0 : 1;
+
+    this.registrationForm.get("IsUnder18").patchValue(isUnder18);
+    console.log(isUnder18)
+  }
 
 }

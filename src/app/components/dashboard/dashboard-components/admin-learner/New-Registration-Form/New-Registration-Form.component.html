@@ -1,7 +1,7 @@
 <div>
   <form novalidate [formGroup]='registrationForm'>
-    <div class="row">
 
+    <div class="row">
       <!-- Name -->
       <span class="col-sm-1 col-md-1">
         <span for="firstName">Name: </span>
@@ -40,14 +40,14 @@
 
     <div class="row">
       <span class="col-sm-1 col-md-1">
-        <span for="firstName">Gender: </span>
+        <span>Gender: </span>
       </span>
 
       <span class='col-sm-3 col-md-3'>
         <select type="text" class='form-control l-input' formControlName='Gender'
           [class.error_border]='registrationForm.get("Gender").invalid && registrationForm.get("Gender").touched'>
-          <option value=" " disabled selected>Gender *</option>
-          <option value="1" >Male</option>
+          <option value="null" disabled="true" [selected]="true">Gender*</option>
+          <option value="1">Male</option>
           <option value="2">Female</option>
         </select>
         <div
@@ -57,7 +57,25 @@
         </div>
       </span>
 
+      <span class='col-sm-3 col-md-3' style='text-align: right'>
+        <span>Date of Birth:</span>
+      </span>
+      <span class='col-sm-3 col-md-3'>
+        <input class="form-control l-input" formControlName="dob" type="date" id="birthday"
+          (blur)="handleIsUnder18($event.target.value)">
+      </span>
+    </div>
+<br>
 
+    <div class="row">
+      <span class='col-sm-1 col-md-1'>
+        <span>Phone: </span>
+      </span>
+
+      <span class='col-sm-3 col-md-3'>
+        <input class="form-control l-input" formControlName="ContactNum" type="text" id="contactNum"
+          placeholder="Contact number">
+      </span>
     </div>
 
 
@@ -70,6 +88,5 @@
 
 
 
-
-  </form>
+    </form>
 </div>
