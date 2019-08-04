@@ -12,7 +12,6 @@ export class StockApplicationFormComponent implements OnInit {
   @Input() command: number;
   @Input() whichOrder: any;
   @Output() sendApplicationForm = new EventEmitter<any>();
-  // @ViewChild('prodTypeCrtl') public prodTypeCrtl;
   
   /* loading */
   public loadingFlag: boolean = false;
@@ -34,7 +33,8 @@ export class StockApplicationFormComponent implements OnInit {
   public default: string[] = [];
   /* props for server side */
   public errorMessage: string = '';
-
+  /* props for update model */
+  public editFlag: boolean = false;
   
   /* get form control  */
   get applyReason() { return this.applicationForm.get('applyReason') }
@@ -58,8 +58,8 @@ export class StockApplicationFormComponent implements OnInit {
   }
    /* get data from local storage */
    getLocalStorage() {
-    let orgIdArr = localStorage.getItem('staffId');
-    this.orgId = parseInt(orgIdArr[0]);
+    let orgIdArr = localStorage.getItem('OrgId');
+    this.orgId = parseInt(orgIdArr[1]);
     this.orgName = localStorage.getItem('organisations');
     this.staffId = parseInt(localStorage.getItem('staffId'));
     this.staffName = localStorage.getItem('userFirstName');
@@ -112,8 +112,9 @@ export class StockApplicationFormComponent implements OnInit {
     let prodFormArr = [];
     whichOrder.ApplicationDetails.map((prod, i) => {
       this.getProdCats(i);
-      this.getProdTypeByCat(prod.ProdCat.ProdCatId, i)
+      this.getProdTypeByCat(prod.ProdCat.ProdCatId, i);
       this.getProdByType(prod.ProdType.ProdTypeId, i);
+      this.editFlag = true;
       prodFormGroup = {
         prodCat: [ this.detailFlag? {value: prod.ProdCat.ProdCatName, disabled: this.readonlyFlag} : prod.ProdCat.ProdCatId, Validators.required ],
         prodType: [ this.detailFlag? {value: prod.ProdType.ProdTypeName, disabled: this.readonlyFlag} : prod.ProdType.ProdTypeId, Validators.required ],
@@ -139,25 +140,30 @@ export class StockApplicationFormComponent implements OnInit {
     this.inventoriesService.getProdCats().subscribe(
       res => {
         this.prodCats[i] = res['Data']
-        console.log('prodCat', i, this.prodCats[i])
+        // console.log('prodCat', i, this.prodCats[i])
       },
       err => this.errHandler(err)
     )
   }
   getProdTypeByCat(cateId: number, i: number) {
-    this.productIdQty.controls[i].get('prodType').setValue('default');
+    this.editFlag = false;
     this.inventoriesService.getProdTypeByCat(cateId).subscribe(
       res => {
         this.prodTypes[i] = res['Data'][0].ProdType;
+        if(!this.editFlag) {
+          this.productIdQty.controls[i].get('prodType').setValue('default');
+          this.productIdQty.controls[i].get('prod').setValue('default');
+        }
       },
       err => this.errHandler(err)
     )
+   
   }
   getProdByType(typeId: number, i: number) {
-    this.productIdQty.controls[i].get('prod').setValue('default');
     this.inventoriesService.getProdByType(typeId).subscribe(
       res => {
         this.prodNames[i] = res['Data'];
+        if(!this.editFlag) this.productIdQty.controls[i].get('prod').setValue('default');
       },
       err => this.errHandler(err)
     )

@@ -1,0 +1,33 @@
+<div class="modal-header">
+  <h4 class="modal-title">Deliver</h4>
+  <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<div class="modal-body">
+  <!-- <app-stock-application-form [command]="command" [whichOrder]="whichOrder"></app-stock-application-form> -->
+  <div class="deliver__info">
+    <p class="deliver__title">Deliver products as following: </p>
+    <table class="table table-bordered deliver__table">
+      <thead>
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">Product Name</th>
+          <th scope="col">Quantity</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let order of whichOrder.ApplicationDetails; let i = index">
+          <th scope="row">{{ i + 1 }}</th>
+          <td>{{order.Product.ProductName}}</td>
+          <td>{{order.AppliedQty}}</td>
+        </tr>
+      </tbody>
+    </table>
+    <p class="deliver__title">Deliver To:</p>
+    <p class="deliver__org">{{whichOrder.Org.OrgName}}</p>
+  </div>
+</div>
+<div class="modal-footer">
+  <button type="button" class="btn btn-outline-dark" (click)="deliver()">Close</button>
+</div>
