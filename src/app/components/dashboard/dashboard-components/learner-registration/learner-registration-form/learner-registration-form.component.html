@@ -20,13 +20,15 @@
           <div class="button text-right">
             <button class="btn_reset my-3 btn btn-info" (click)="resetLearner()">Reset</button>
           </div>
-          <div class='row ml-1'>
-          <div class="learnerPhoto col-3">
-            <label for="photo" class='custom-file-label'>Choose a photo <span><i class="fas fa-file-upload"></i></span></label>
-            <input formControlName="photo" type="file" (change)="uploadPhoto($event)" class='custom-file-input' id="photo" accept="image/*">
-          </div>
-          <div class='col-3'>
-            <img src="" id='photoID' style='height: 64px' alt="ID preview...">
+
+        <div class='card col-3 img-border'>
+          <div class="card-body">
+            <div class="learnerPhoto">
+              <label for="photo" style='cursor: pointer; margin-left: -35%' class='custom-file-label'>Choose a photo <span><i class="fas fa-file-upload"></i></span></label>
+              <input formControlName="photo" style='cursor: pointer' type="file" (change)="uploadPhoto($event)" class='custom-file-input' id="photo" accept="image/*">
+
+              <img src="../../../../../../assets/images/shared/default-employer-profile.png" id='photoID'  alt="ID preview...">
+            </div>
           </div>
         </div>
           <div class="learnerName row">
