@@ -1,0 +1,17 @@
+.t_info_top{
+    margin-top:1rem;
+}
+.t_info_title{
+    height: 6rem;
+    line-height: 5rem;
+    text-align: center;
+    font-size: 2rem;
+    font-weight: 300;
+    color:grey;
+}
+.t_info_btn_add:hover{
+    cursor: pointer;
+}
+.t_info_table_title{
+    
+}
