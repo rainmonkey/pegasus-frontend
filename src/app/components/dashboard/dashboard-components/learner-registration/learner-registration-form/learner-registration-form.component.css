@@ -3,6 +3,17 @@
   width: 80%;
 }
 
+.img-border{
+  width: 15rem;
+  height: 15rem;
+  text-align: center!important;
+  overflow: hidden;
+}
+.img-border img{
+  max-width: 100%;
+  max-height: 60%;
+}
+
 /* .gourpFontSize{
   font-size: 10px
 } */
