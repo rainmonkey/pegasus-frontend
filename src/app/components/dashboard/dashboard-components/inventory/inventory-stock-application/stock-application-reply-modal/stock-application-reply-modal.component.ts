@@ -2,11 +2,11 @@ import { Component, OnInit, Input } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
-  selector: 'app-stock-application-detail-modal',
-  templateUrl: './stock-application-detail-modal.component.html',
-  styleUrls: ['./stock-application-detail-modal.component.css']
+  selector: 'app-stock-application-reply-modal',
+  templateUrl: './stock-application-reply-modal.component.html',
+  styleUrls: ['./stock-application-reply-modal.component.css']
 })
-export class StockApplicationDetailModalComponent implements OnInit {
+export class StockApplicationReplyModalComponent implements OnInit {
   @Input() command: number;
   @Input() whichOrder: any;
 

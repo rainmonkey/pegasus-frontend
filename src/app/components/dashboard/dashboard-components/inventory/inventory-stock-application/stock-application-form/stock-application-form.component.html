@@ -2,24 +2,27 @@
 <div *ngIf='loadingFlag' class="loaderLarge"></div>
 
 <div *ngIf="!loadingFlag">
+  <!-- applicationForm: FormGroup -->
   <form [formGroup] = "applicationForm">
-    <!-- staff name and location -->
+    <!-- line 1 -->
     <div class="row">
       <div class="col-6">
         <label class="label__style">Staff Name:</label>
-        <input type="text" class="col-12 input__style" [value]="staffName" formControlName="staff" readonly>
+        <input type="text" class="col-12 input__style" formControlName="staff">
       </div>
       <div class="col-6">
         <label class="label__style">Location:</label>&nbsp;
-        <input type="text" class="col-12 input__style" [value]="orgName" formControlName="org" readonly>
+        <input type="text" class="col-12 input__style" formControlName="org">
       </div>
     </div>
-    <!-- apply reason -->
+    <!-- line 2 -->
     <div class="row">
       <div class="col-12">
         <label class="label__style col-12 p-0">Apply Reason:</label>
-        <input *ngIf="hiddenFlag" type="textarea" formControlName="applyReason" style="height: 50px;" class="col-12 detail__modal--input">
-        <input *ngIf="!hiddenFlag" type="textarea" class="col-12 input__textarea--style" formControlName='applyReason'>
+        <!-- detail modal -->
+        <input *ngIf="detailFlag" type="textarea" formControlName="applyReason" style="height: 50px;" class="col-12 detail__modal--input">
+        <!-- update modal -->
+        <input *ngIf="!detailFlag" type="textarea" class="col-12 input__textarea--style" formControlName='applyReason'>
         <!-- validator required -->
         <div *ngIf="applyReason.invalid && (applyReason.dirty || applyReason.touched)">
           <small *ngIf="applyReason.errors.required" class="alert__message--red">
@@ -31,18 +34,22 @@
     <!-- productIdQty: FormArray -->
     <div formArrayName="productIdQty" *ngFor="let prods of applicationForm.get('productIdQty').controls; let i = index">
       <div [formGroupName]="i">
-        <div *ngIf="hiddenFlag" class="p-4 label__style text-center">Product {{ i+1 }}</div>
-        <div *ngIf="!hiddenFlag" class="d-flex justify-content-end">
-          <button class="btn btn-info my-2" [disabled]="isDeleted[i]" (click)="deleteForm(i)">
+        <!-- detail modal -->
+        <div *ngIf="detailFlag" class="p-4 label__style text-center">Product {{ i+1 }}</div>
+        <!-- update modal -->
+        <div *ngIf="!detailFlag" class="d-flex justify-content-end">
+          <button class="btn btn-info my-2" [disabled]="deleteProd[i]" (click)="deleteForm(i)">
             <i class='fas fa-trash-alt'></i>
           </button>
         </div>
-        <!-- product category and product type -->
+        <!-- line 3 -->
         <div class="row">
           <div class="col-6">
             <label class="label__style">Product Category:</label>&nbsp;
-            <input *ngIf="hiddenFlag" type="text" formControlName="prodCat" class="col-12 detail__modal--input">
-            <select *ngIf="!hiddenFlag" class="col-12 select__style" formControlName="prodCat"
+            <!-- detail modal -->
+            <input *ngIf="detailFlag" type="text" formControlName="prodCat" class="col-12 detail__modal--input">
+            <!-- update modal -->
+            <select *ngIf="!detailFlag" class="col-12 select__style" formControlName="prodCat" 
               (change)="getProdTypeByCat($event.target.value, i)">
               <option value="" selected disabled hidden>choose..</option>
               <option *ngFor='let prodCat of prodCats[i]' [value]="prodCat.ProdCatId">{{prodCat.ProdCatName}}</option>
@@ -56,10 +63,12 @@
           </div>
           <div class="col-6">
             <label class="label__style">Product Type:</label>&nbsp;
-            <input *ngIf="hiddenFlag" type="text" formControlName="prodType" class="col-12 detail__modal--input">
-            <select *ngIf="!hiddenFlag" class="col-12 select__style" formControlName="prodType"
+            <!-- detial modal -->
+            <input *ngIf="detailFlag" type="text" formControlName="prodType" class="col-12 detail__modal--input">
+            <!-- update modal -->
+            <select *ngIf="!detailFlag" class="col-12 select__style" formControlName="prodType"
               (change)="getProdByType($event.target.value, i)">
-              <option disabled>choose Product Category first</option>
+              <option value="default" disabled hidden>choose Product Category first</option>
               <option *ngFor="let prodType of prodTypes[i]" [value]="prodType.ProdTypeId">{{prodType.ProdTypeName}}
               </option>
             </select>
@@ -72,13 +81,15 @@
             </div>
           </div>
         </div>
-        <!-- product name and product quantity -->
+        <!-- line 4-->
         <div class="row">
           <div class="col-6">
             <label class="label__style">Product Name:</label>&nbsp;
-            <input *ngIf="hiddenFlag" type="text" formControlName="prod" class="col-12 detail__modal--input">
-            <select *ngIf="!hiddenFlag" class="col-12 select__style" formControlName="prod">
-              <option disabled>choose Product Type first</option>
+            <!-- detail modal -->
+            <input *ngIf="detailFlag" type="text" formControlName="prod" class="col-12 detail__modal--input">
+            <!-- update modal -->
+            <select *ngIf="!detailFlag" class="col-12 select__style" formControlName="prod">
+              <option value="default" disabled>choose Product Type first</option>
               <option *ngFor='let prodName of prodNames[i]' [value]="prodName.ProductId">{{prodName.ProductName}}
               </option>
             </select>
@@ -91,30 +102,33 @@
           </div>
           <div class="col-6">
             <label class="label__style">Product Quantity:</label>&nbsp;
-            <input *ngIf="hiddenFlag" type="text" class="col-12 detail__modal--input" formControlName="appliedQty">
-            <div *ngIf="!hiddenFlag" class="col-12 p-0 d-inline-flex justify-content-around arithmetic__btn">
+            <!-- detail modal -->
+            <input *ngIf="detailFlag" type="text" class="col-12 detail__modal--input" formControlName="appliedQty">
+            <!-- update modal -->
+            <div *ngIf="!detailFlag" class="col-12 p-0 d-inline-flex justify-content-around arithmetic__btn">
               <button class="minus__btn" (click)="minusQty(i)">-</button>
               <input type="text" class="input__number--style" formControlName="appliedQty">
               <button class="increase__btn" (click)="increaseQty(i)">+</button>
-            </div>
-            <!-- validator required -->
+            </div> 
             <div
               *ngIf="prods.get('appliedQty').invalid && (prods.get('appliedQty').dirty || prods.get('appliedQty').touched)">
               <small *ngIf="prods.get('appliedQty').errors?.required" class="alert__message--red">
-                Product Quantity is required.
+                Quantity is required.
               </small>
               <small *ngIf="prods.get('appliedQty').errors?.pattern" class="alert__message--red">
-                Product Quantity must be a positive number
+                Quantity must be number greater than 0.
               </small>
             </div>
           </div>
         </div>
       </div>
     </div>
-    <!-- add new product btn  -->
-    <div *ngIf="hiddenFlag" class="p-3"></div>
-    <div *ngIf="!hiddenFlag" class="d-flex justify-content-end" style="margin-top: 10px">
-      <button class="btn btn-info t_info_addmore_btn" [disabled]="productIdQty.invalid" (click)="addNewProd(i)">
+    <!-- add more btn  -->
+    <!-- detail modal -->
+    <div *ngIf="detailFlag" class="p-3"></div>
+    <!-- update modal -->
+    <div *ngIf="!detailFlag" class="d-flex justify-content-end" style="margin-top: 10px">
+      <button class="btn btn-info t_info_addmore_btn" [disabled]="productIdQty.invalid" (click)="addProduct(i)">
         <i class="fas fa-plus-circle"></i>
       </button>
     </div>

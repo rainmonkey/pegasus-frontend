@@ -1,0 +1,19 @@
+.deliver__info {
+    margin-left: 70px;
+}
+.deliver__title {
+    font-size: 18px;
+}
+.deliver__org {
+    border: 0.5px solid #075663;
+    border-radius: 10px;
+    padding: 10px;
+    width: 600px;
+    text-align: center;
+    overflow: auto;
+}
+.deliver__table {
+    width: 400px;
+    text-align: center;
+    overflow: auto;
+}

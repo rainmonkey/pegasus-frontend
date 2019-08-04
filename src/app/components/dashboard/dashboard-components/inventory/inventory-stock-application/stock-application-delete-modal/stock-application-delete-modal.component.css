@@ -1,7 +1,3 @@
-/* .delete-modal-size {
-    width: 200px;
-    height: 500px;
-} */
 ::ng-deep .delete-modal-size .modal-dialog {
     max-width: 80%;
     width: 60%;
