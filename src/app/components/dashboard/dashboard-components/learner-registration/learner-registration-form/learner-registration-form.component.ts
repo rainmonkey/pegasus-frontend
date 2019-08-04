@@ -90,6 +90,8 @@ export class LearnerRegistrationFormComponent implements OnInit, DoCheck, AfterV
   touchNext = false;
   learnerValid = true;
   canAddGroup = true;
+  // boolean of font awsome
+  showFontOfDoc = true;
   // photo thumbnail
   photoObj;
   // for add more selection
@@ -197,7 +199,7 @@ export class LearnerRegistrationFormComponent implements OnInit, DoCheck, AfterV
         //infoFrom: [this.whichLearner?this.whichLearner.infoFrom:''],
         learnerLevel: [this.whichLearner ? this.whichLearner.LearnerLevel : this.selectLearnerLevel, Validators.required],
         location: [this.whichLearner ? this.whichLearner.OrgId : this.orgId, Validators.required],
-        levelType: [this.whichLearner ? this.whichLearner.LevelType : '0'],
+        levelType: [this.whichLearner ? this.whichLearner.LearnerLevel : '0'],
         levelTypeRadio: [this.whichLearner ? this.whichLearner.LevelType: 1],
         paymentPeriod: [this.whichLearner ? this.whichLearner.PaymentPeriod : '1'],
         referrer: [this.whichLearner ? this.whichLearner.Referrer : ''],
@@ -234,6 +236,7 @@ export class LearnerRegistrationFormComponent implements OnInit, DoCheck, AfterV
   }
 
   ngAfterViewInit(){
+    console.log('/1@#$%',this.whichLearner)
         // initialize card display
         if(this.addCourse == undefined){
           document.getElementById('learnerForm').style.display = 'block';
@@ -291,8 +294,9 @@ export class LearnerRegistrationFormComponent implements OnInit, DoCheck, AfterV
     let that = this;
     let reader = new FileReader();
     reader.onloadend = function () {
-      console.log(this.result)
       that.photoObj.setAttribute("src", this.result.toString());
+      this.result?that.showFontOfDoc = false: that.showFontOfDoc = true;
+      console.log(that.showFontOfDoc)
     }
     reader.readAsDataURL(photoRender);
   }
