@@ -61,7 +61,7 @@
 
                   <div class="col-12">
                     <span class="label">DOB: </span>
-                    <span class='text'>{{whichLearner.Dob.slice(0,10)}}</span>
+                    <span *ngIf ='whichLearner.Dob' class='text'>{{whichLearner.Dob.slice(0,10)}}</span>
                   </div>
 
                   <div class="col-12">
