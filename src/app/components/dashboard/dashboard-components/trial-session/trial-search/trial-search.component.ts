@@ -26,6 +26,7 @@ export class TrialSearchComponent implements OnInit {
   public teachersLevel;
   public teacherExistsFlag: boolean = true
   public waitingDataFlag: boolean = true
+  public dayOfWeek = ['Monday','Tuesday','Wednsday','Thursday','Friday','Saturday','Sunday'];
 
   @Input() courses;
   @Input() coursesCate;
@@ -112,7 +113,19 @@ export class TrialSearchComponent implements OnInit {
     } else {
       this.teacherExistsFlag = true
     }
-    return array1;
+
+    let arr = [[],[],[],[],[],[],[]]
+    for(let i of array1){
+      //console.log(i)
+      for (let j of i.AvailableDays){
+        if(arr[j.DayOfWeek - 1].indexOf(i) == -1){
+          arr[j.DayOfWeek - 1].push(i);
+        }
+      }
+    }
+
+    //console.log(arr)
+    return arr;
   }
 
   /*
@@ -208,14 +221,18 @@ export class TrialSearchComponent implements OnInit {
       }
     }
     //★★★★★ stop event propagation ★★★★★//
-    event.stopPropagation();
+    //event.stopPropagation();
   }
 
   popUpModal(teacherDetails) {
+  
     let teacherId = teacherDetails.TeacherId;
     this.coursesService.getLessonsByTeacherId(teacherId).subscribe(
       (res) => {
         this.popUpModalReady(teacherDetails, res.Data);
+      },
+      (err)=>{
+        console.log(err)
       }
     )
   }
@@ -235,6 +252,7 @@ export class TrialSearchComponent implements OnInit {
     pop up FullCalendar modal
   */
   popUpModalReady(teacherDetails, coursesTeachingByWhichTeacher) {
+    console.log('aaaaa')
     const modalRef = this.modalService.open(TrialModalComponent, { size: 'lg', backdrop: 'static', keyboard: false });
     modalRef.componentInstance.termPeriod = this.termPeriod;
     modalRef.componentInstance.cateName = this.filters['CategoriesName'];
@@ -250,5 +268,5 @@ export class TrialSearchComponent implements OnInit {
       modalRef.componentInstance.durationId = this.arrangeCourseDetails.Duration
     }
   }
-
+  
 }
