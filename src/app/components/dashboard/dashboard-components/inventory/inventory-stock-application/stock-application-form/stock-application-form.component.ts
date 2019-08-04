@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, ViewChild } from '@angular/core';
 import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { FormBuilder, Validators, Form, FormGroup, FormArray } from '@angular/forms';
 import { InventoriesService } from 'src/app/services/http/inventories.service';
@@ -28,8 +28,13 @@ export class StockApplicationFormComponent implements OnInit {
   public prodTypes: any[] = [];
   public prodNames: any[] = [];
   public deleteProd: boolean[] = [];
+  public prodTypeValue: string[] = [];
+  public prodNameValue: string[] = [];
+  public default: string[] = [];
   /* props for server side */
-  public errorMessage: string;
+  public errorMessage: string = '';
+  /* props for update model */
+  public editFlag: boolean = false;
   
   /* get form control  */
   get applyReason() { return this.applicationForm.get('applyReason') }
@@ -42,18 +47,19 @@ export class StockApplicationFormComponent implements OnInit {
     private inventoriesService: InventoriesService) { }
 
   ngOnInit() {
+    // console.log('nogodel', this.prodTypeValue, this.prodNameValue)
     this.loadingFlag = true;
     this.deleteProd[0] = true;
     this.getLocalStorage();
     this.getProdCats(0);
     let formGroupAssemble = this.setFromGroup(this.command, this.whichOrder)
     this.applicationForm = this.fb.group(formGroupAssemble);
-    this.onChange();
+    this.formValueChanges();
   }
    /* get data from local storage */
    getLocalStorage() {
-    let orgIdArr = localStorage.getItem('staffId');
-    this.orgId = parseInt(orgIdArr[0]);
+    let orgIdArr = localStorage.getItem('OrgId');
+    this.orgId = parseInt(orgIdArr[1]);
     this.orgName = localStorage.getItem('organisations');
     this.staffId = parseInt(localStorage.getItem('staffId'));
     this.staffName = localStorage.getItem('userFirstName');
@@ -106,13 +112,14 @@ export class StockApplicationFormComponent implements OnInit {
     let prodFormArr = [];
     whichOrder.ApplicationDetails.map((prod, i) => {
       this.getProdCats(i);
-      this.getProdTypeByCat(prod.ProdCat.ProdCatId, i)
+      this.getProdTypeByCat(prod.ProdCat.ProdCatId, i);
       this.getProdByType(prod.ProdType.ProdTypeId, i);
+      this.editFlag = true;
       prodFormGroup = {
-        prodCat: [ this.detailFlag? prod.ProdCat.ProdCatName : prod.ProdCat.ProdCatId, Validators.required ],
-        prodType: [ this.detailFlag? prod.ProdType.ProdTypeName : prod.ProdType.ProdTypeId, Validators.required ],
-        prod: [ this.detailFlag? prod.Product.ProductName: prod.Product.ProductId, Validators.required],
-        appliedQty: [ prod.AppliedQty, [Validators.required, Validators.pattern('^[1-9][0-9]*$')]]
+        prodCat: [ this.detailFlag? {value: prod.ProdCat.ProdCatName, disabled: this.readonlyFlag} : prod.ProdCat.ProdCatId, Validators.required ],
+        prodType: [ this.detailFlag? {value: prod.ProdType.ProdTypeName, disabled: this.readonlyFlag} : prod.ProdType.ProdTypeId, Validators.required ],
+        prod: [ this.detailFlag? {value: prod.Product.ProductName, disabled: this.readonlyFlag} : prod.Product.ProductId, Validators.required],
+        appliedQty: [ this.detailFlag? {value: prod.AppliedQty, disabled: this.readonlyFlag} : prod.AppliedQty,[Validators.required, Validators.pattern('^[1-9][0-9]*$')]]
       }
       prodFormArr.push(this.fb.group(prodFormGroup))
     })
@@ -139,19 +146,24 @@ export class StockApplicationFormComponent implements OnInit {
     )
   }
   getProdTypeByCat(cateId: number, i: number) {
+    this.editFlag = false;
     this.inventoriesService.getProdTypeByCat(cateId).subscribe(
       res => {
         this.prodTypes[i] = res['Data'][0].ProdType;
-        // console.log('prodTypes', i, this.prodTypes)
+        if(!this.editFlag) {
+          this.productIdQty.controls[i].get('prodType').setValue('default');
+          this.productIdQty.controls[i].get('prod').setValue('default');
+        }
       },
       err => this.errHandler(err)
     )
+   
   }
-  getProdByType(typeId: number, i) {
+  getProdByType(typeId: number, i: number) {
     this.inventoriesService.getProdByType(typeId).subscribe(
       res => {
         this.prodNames[i] = res['Data'];
-        // console.log('prodName', i, this.prodNames)
+        if(!this.editFlag) this.productIdQty.controls[i].get('prod').setValue('default');
       },
       err => this.errHandler(err)
     )
@@ -159,11 +171,8 @@ export class StockApplicationFormComponent implements OnInit {
   /* handle error from server */
   errHandler(err: any) {
     console.warn(err);
-    if (err.ErrorMessage != null) {
-      this.errorMessage = err.ErrorMessage;
-    } else {
-      this.errorMessage = 'Error! Can Not Catch Data!';
-    }
+    if (err.ErrorMessage != null) this.errorMessage = err.ErrorMessage
+    else this.errorMessage = 'Error! Can Not Catch Data!'
   }
  
   /* user interaction: event triggered form HTML */
@@ -201,7 +210,7 @@ export class StockApplicationFormComponent implements OnInit {
     algorithm === "increase"? appliedQty.patchValue( `${currentNumber + 1}`) : appliedQty.patchValue( `${currentNumber - 1}`);
   }
   /* send current application form to modal ( submit button ) for validation */
-  onChange(): void {
+  formValueChanges(): void {
     this.applicationForm.valueChanges.subscribe(
       () => {
         this.sendApplicationForm.emit(this.applicationForm)

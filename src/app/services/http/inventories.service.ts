@@ -56,6 +56,10 @@ export class InventoriesService {
              catchError(this.errorHandler)
            );
   }
+  /* put data */
+  putProduct(applicationId: number, product: PostProduct):  Observable<any> {
+    return this.http.put(this.baseUrl + 'StockApplication/'+applicationId, product)
+  }
   // throw error to component
   errorHandler(error: HttpErrorResponse) {
     return throwError(error);

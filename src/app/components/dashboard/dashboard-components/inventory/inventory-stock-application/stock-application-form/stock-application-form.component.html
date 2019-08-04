@@ -68,7 +68,7 @@
             <!-- update modal -->
             <select *ngIf="!detailFlag" class="col-12 select__style" formControlName="prodType"
               (change)="getProdByType($event.target.value, i)">
-              <option disabled>choose Product Category first</option>
+              <option value="default" disabled hidden>choose Product Category first</option>
               <option *ngFor="let prodType of prodTypes[i]" [value]="prodType.ProdTypeId">{{prodType.ProdTypeName}}
               </option>
             </select>
@@ -89,7 +89,7 @@
             <input *ngIf="detailFlag" type="text" formControlName="prod" class="col-12 detail__modal--input">
             <!-- update modal -->
             <select *ngIf="!detailFlag" class="col-12 select__style" formControlName="prod">
-              <option disabled>choose Product Type first</option>
+              <option value="default" disabled>choose Product Type first</option>
               <option *ngFor='let prodName of prodNames[i]' [value]="prodName.ProductId">{{prodName.ProductName}}
               </option>
             </select>

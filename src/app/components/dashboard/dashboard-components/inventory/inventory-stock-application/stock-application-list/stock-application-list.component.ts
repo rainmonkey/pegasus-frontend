@@ -10,7 +10,8 @@ import { InventoriesService } from 'src/app/services/http/inventories.service';
 import { NgbootstraptableService } from 'src/app/services/others/ngbootstraptable.service';
 import { StockApplicationUpdateModalComponent } from 'src/app/components/dashboard/dashboard-components/inventory/inventory-stock-application/stock-application-update-modal/stock-application-update-modal.component';
 import { StockApplicationDetailModalComponent } from 'src/app/components/dashboard/dashboard-components/inventory/inventory-stock-application/stock-application-detail-modal/stock-application-detail-modal.component';
-
+import { StockApplicationReplyModalComponent } from 'src/app/components/dashboard/dashboard-components/inventory/inventory-stock-application/stock-application-reply-modal/stock-application-reply-modal.component';
+import { StockApplicationDeliverModalComponent } from 'src/app/components/dashboard/dashboard-components/inventory/inventory-stock-application/stock-application-deliver-modal/stock-application-deliver-modal.component';
 @Component({
   selector: 'app-stock-application-list',
   templateUrl: './stock-application-list.component.html',
@@ -20,7 +21,7 @@ import { StockApplicationDetailModalComponent } from 'src/app/components/dashboa
 export class StockApplicationListComponent implements OnInit {
   /* get props from HTML # template reference variable */
   @ViewChild('pagination') pagination: any;
-
+ 
   /* loading */
   public loadingFlag: boolean = true;
   public page: number = 1;
@@ -37,6 +38,7 @@ export class StockApplicationListComponent implements OnInit {
   public endDate: any;
   /* props for accepting data from server */
   public stockApplication: Array<any>;
+  public stockApplicationCopy: Array<any>;
   public errorMessage: string;
   /* all about route of URL */
   public queryParams: object = {};
@@ -45,6 +47,10 @@ export class StockApplicationListComponent implements OnInit {
   public isDeleted: boolean = false;
   public deleteFailed: boolean = false;
   public applicationId: number;
+  /* props for result of returned checkRole() */
+  public headOfficeRole: boolean = false;
+  /* for search method */
+  public searchBy: string;
 
   constructor(
     private router: Router,
@@ -57,6 +63,7 @@ export class StockApplicationListComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    this.headOfficeRole = this.checkRole()
     /* before get data from server, renders loading flag */
     this.loadingFlag = true;
     /* get three months data from server the first time accesses the web page */
@@ -67,7 +74,19 @@ export class StockApplicationListComponent implements OnInit {
       endDate: ['', Validators.pattern('^\d{4}\-(0[1-9]|1[012])\-(0[1-9]|[12][0-9]|3[01])$')]
     })
   }
-
+ 
+  /* 
+    check role from local storage, various roles show various info 
+      1) if role === 3, then display branch pages
+      2) if role === 9, then display head office pages
+  */
+  checkRole() {
+    // now role is just hardcode, will get it from real value after creat a head office account
+    let role = 9
+    // let role = + localStorage.getstockInfo('Role');
+    if(role === 9) return true
+    else return false
+  }
   /* get previous three months */
   getThreeMonths() {
     let today = new Date();
@@ -78,25 +97,37 @@ export class StockApplicationListComponent implements OnInit {
   }
   /* get stock application data from server */
   getStockApplication(previousDate: any, currentDate: any) {
-    this.inventoriesService.getStockApplication(previousDate, currentDate).subscribe(
-      (res) => {
-        // console.log('res', res['Data']);
-        this.stockApplication = this.renderOrderList(res['Data']);
-        this.loadingFlag = false;
-      },
-      (err) => {
-        this.errorHandler(err);
-      }
-    )
+    if(this.checkRole()) {
+      this.inventoriesService.getStockApplication(previousDate, currentDate).subscribe(
+        (res) => {
+          // console.log('res', res['Data']);
+          this.stockApplication = this.renderOrderList(res['Data']);
+          this.stockApplicationCopy = res['Data'].map((stockInfo, i) => ({ id: i + 1, ...stockInfo }));
+          this.loadingFlag = false;
+        },
+        (err) => {
+          this.errorHandler(err);
+        }
+      )
+    } else {
+      this.inventoriesService.getStockApplication(previousDate, currentDate).subscribe(
+        (res) => {
+          // console.log('res', res['Data']);
+          let orgId = +localStorage.getItem('OrgId')[1];
+          this.stockApplication = this.renderOrderList(res['Data']).filter((stockInfo) => stockInfo.Org.OrgId === orgId);
+          this.loadingFlag = false;
+        },
+        (err) => {
+          this.errorHandler(err);
+        }
+      )
+    }
   }
   /* err handler */
   errorHandler(err: any) {
     console.warn(err);
-    if (err.error.ErrorMessage != null) {
-      this.errorMessage = err.error.ErrorMessage;
-    } else {
-      this.errorMessage = 'Error! Can not catch Data!';
-    }
+    if (err.error.ErrorMessage != null) this.errorMessage = err.error.ErrorMessage
+    else this.errorMessage = 'Error! Can not catch Data!'
   }
   /* slice specific part of data to display in table of HTML */
   renderOrderList(orderList: any[]) {
@@ -162,12 +193,12 @@ export class StockApplicationListComponent implements OnInit {
   postStockApplication(modalRef: any) {
     modalRef.componentInstance.passApplicationId.subscribe(
       (applicationId: number) => {
-        this.loadingFlag = true;
+        // this.loadingFlag = true;
         this.inventoriesService.getNewStockApplication(applicationId).subscribe(
           res => {
             console.log('post success', res['Data']);
             this.stockApplication.unshift(res['Data']);
-            this.stockApplication.map((item, i) => item.id = i + 1);
+            this.stockApplication.map((stockInfo, i) => stockInfo.id = i + 1);
             this.applicationId = applicationId;
             setTimeout(() => {
               this.applicationId = null;
@@ -180,11 +211,23 @@ export class StockApplicationListComponent implements OnInit {
       }
     )
   }
+  putStockApplication(modalRef: any) {
+    modalRef.componentInstance.updateApplication.subscribe(
+      (res) => {
+        // this.loadingFlag = true;
+        console.log('put success', res);
+
+        modalRef.close();
+      },
+      (err) => this.errorHandler(err)
+    )
+  }
   updateModal(command: number, whichOrder?) {
     const modalRef = this.modalService.open(StockApplicationUpdateModalComponent, { size: 'lg', centered: true, backdrop: 'static', keyboard: false });
     modalRef.componentInstance.command = command;
     modalRef.componentInstance.whichOrder = whichOrder;
     this.postStockApplication(modalRef);
+    this.putStockApplication(modalRef);
   }
   /* detail modal */
   detailModal(command: number, whichOrder: any) {
@@ -204,7 +247,7 @@ export class StockApplicationListComponent implements OnInit {
           this.isDeleted = false;
           let index = this.stockApplication.indexOf(whichOrder);
           this.stockApplication.splice(index, 1);
-          this.stockApplication.map((item, i) => item.id = i + 1);
+          this.stockApplication.map((stockInfo, i) => stockInfo.id = i + 1);
         },
         err => {
           this.deleteFailed = true;
@@ -217,6 +260,30 @@ export class StockApplicationListComponent implements OnInit {
     this.isDeleted = false;
     this.applicationId = null;
     clearTimeout(this.timeout);
+  }
+  /* reply modal */
+  replyModal(command: number, whichOrder: any) {
+    const modalRef = this.modalService.open(StockApplicationReplyModalComponent, { size: 'lg', centered: true, backdrop: 'static', keyboard: false });
+    modalRef.componentInstance.command = command;
+    modalRef.componentInstance.whichOrder = whichOrder;
+  }
+  /* deliver */
+  deliver(command: number, whichOrder: any) {
+    const modalRef = this.modalService.open(StockApplicationDeliverModalComponent, { size: 'lg', centered: true, backdrop: 'static', keyboard: false });
+    modalRef.componentInstance.command = command;
+    modalRef.componentInstance.whichOrder = whichOrder;
+  }
+  /* search staff name and location */
+  search(text: string) {
+    this.stockApplication = this.stockApplicationCopy;
+    return this.stockApplication.filter(order => {
+      const term = text.toLowerCase().trim();
+      return order.ApplyStaff.FirstName.toLowerCase().includes(term)
+          || order.Org.OrgName.toLowerCase().includes(term);
+    });
+  }
+  keyup() {
+    this.searchBy === ''? this.stockApplication = this.stockApplicationCopy: this.stockApplication = this.search(this.searchBy);
   }
 
 }
