@@ -40,6 +40,9 @@ li {
   list-style-type: none;
   margin: 0px;
 }
+.table__btn--cursor {
+  margin-right: 1rem;
+}
 .sorting--cursor:hover,
 .table__btn--cursor:hover, 
 .table__header--cursor:hover
