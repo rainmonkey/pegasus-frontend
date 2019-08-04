@@ -58,8 +58,8 @@ export class NewRegistrationFormComponent implements OnInit {
         MiddleName: [ this.whichLearner.MiddleName ? this.whichLearner.MiddleName : ' ' ],
         LastName: [this.whichLearner.LastName, Validators.required],
         Gender: [ this.whichLearner.Gender, Validators.required],
-        dob: [this.whichLearner.Dob ],
-        EnrollDate: [ this.whichLearner.EnrollDate ],
+        dob: [this.getDateFormat(this.whichLearner.Dob) ],
+        EnrollDate: [ this.getDateFormat(this.whichLearner.EnrollDate) ],
         ContactNum: [this.whichLearner.ContactNum ],
         Email: [this.whichLearner.Email,[Validators.required, Validators.email]],
         Address: [this.whichLearner.Address ],
@@ -79,6 +79,13 @@ export class NewRegistrationFormComponent implements OnInit {
       }
     }
     return groupObj
+  }
+
+  getDateFormat(date) {
+    if (date !== null) {
+      return (date.substring(0, 10))
+    }
+    return null;
   }
 
   handleIsUnder18(DOB){
