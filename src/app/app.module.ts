@@ -153,6 +153,7 @@ import { StockApplicationFormComponent } from './components/dashboard/dashboard-
 import { NewLearnerRegistrationModalComponent } from './components/dashboard/dashboard-components/admin-learner/New-Learner-Registration-modal/New-Learner-Registration-modal.component';
 import { NewRegistrationFormComponent } from './components/dashboard/dashboard-components/admin-learner/New-Registration-Form/New-Registration-Form.component';
 import { TutorsInfomationComponent } from './components/dashboard/dashboard-components/tutors/tutors-infomation/tutors-infomation.component';
+import { StockApplicationReplyModalComponent } from './components/dashboard/dashboard-components/inventory/inventory-stock-application/stock-application-reply-modal/stock-application-reply-modal.component';
 
 
 @NgModule({
@@ -295,7 +296,8 @@ import { TutorsInfomationComponent } from './components/dashboard/dashboard-comp
   //  new registration
   NewLearnerRegistrationModalComponent,
   NewRegistrationFormComponent,
-  TutorsInfomationComponent
+  TutorsInfomationComponent,
+  StockApplicationReplyModalComponent
   ],
   imports: [
     NgbModule,
