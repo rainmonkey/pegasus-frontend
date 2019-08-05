@@ -90,8 +90,10 @@ export class LearnerRegistrationFormComponent implements OnInit, DoCheck, AfterV
   touchNext = false;
   learnerValid = true;
   canAddGroup = true;
-  // boolean of font awsome
+  // boolean of font awsome for certificate image
   showFontOfDoc = true;
+  // style of image for certificate
+  imgTextStyle;
   // photo thumbnail
   photoObj;
   // for add more selection
@@ -300,7 +302,7 @@ export class LearnerRegistrationFormComponent implements OnInit, DoCheck, AfterV
     reader.onloadend = function () {
       that.photoObj.setAttribute("src", this.result.toString());
       this.result?that.showFontOfDoc = false: that.showFontOfDoc = true;
-      console.log(that.showFontOfDoc, that)
+      that.imgTextStyle = '-40px'
     }
     reader.readAsDataURL(photoRender);
   }
