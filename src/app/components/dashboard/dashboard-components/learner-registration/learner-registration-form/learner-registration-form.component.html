@@ -154,8 +154,8 @@
 
               <input formControlName="grade" type="file" (change)="uploadGrade($event)" id="grade" class='custom-file-input' accept="image/*">
             </div>
-            <div class='col-3 row'>
-              <img class='mr-1' src="" id='certificate' style='height: 64px' alt="Certificate preview..."> <div *ngIf="showFontOfDoc"><i  class="far fa-file"></i></div>
+            <div class='col-3 row ml-1' [ngStyle]="{'padding-top': imgTextStyle? '0px': '20px'}">
+              <img class='mr-1' src="" id='certificate'style='height: 64px;' alt="Certificate preview..."> <div *ngIf="showFontOfDoc"><i  class="far fa-file"></i></div>
             </div>
           </div>
             <div class='row'>

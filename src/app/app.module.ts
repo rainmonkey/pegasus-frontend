@@ -75,7 +75,6 @@ import { TeacherModalFormComponent } from './components/dashboard/dashboard-comp
 import { TeacherPanelComponent } from './components/dashboard/dashboard-components/teachers/teacher-panel/teacher-panel.component';
 import { TeacherUpdateModalComponent } from './components/dashboard/dashboard-components/teachers/teacher-update-modal/teacher-update-modal.component';
 import { TimePickerComponent } from './components/dashboard/dashboard-components/time-picker/time-picker.component';
-import { TrialInfoComponent } from './components/dashboard/dashboard-components/trial-session/trial-info/trial-info.component';
 import { TrialPanelComponent } from './components/dashboard/dashboard-components/trial-session/trial-panel/trial-panel.component';
 import { TrialSearchComponent } from './components/dashboard/dashboard-components/trial-session/trial-search/trial-search.component';
 import { TrialModalComponent } from './components/dashboard/dashboard-components/trial-session/trial-modal/trial-modal.component';
@@ -157,6 +156,9 @@ import { StockApplicationReplyModalComponent } from './components/dashboard/dash
 import { StockApplicationDeliverModalComponent } from './components/dashboard/dashboard-components/inventory/inventory-stock-application/stock-application-deliver-modal/stock-application-deliver-modal.component';
 import { StockApplicationReceiveModalComponent } from './components/dashboard/dashboard-components/inventory/inventory-stock-application/stock-application-receive-modal/stock-application-receive-modal.component';
 import { StockApplicationProcessStatusComponent } from './components/dashboard/dashboard-components/inventory/inventory-stock-application/stock-application-process-status/stock-application-process-status.component';
+import { TrialInfoComponent } from './components/dashboard/dashboard-components/trial-course/trial-info/trial-info.component';
+import { TrialFilterComponent } from './components/dashboard/dashboard-components/trial-course/trial-filter/trial-filter.component';
+import { PayListComponent } from './components/dashboard/dashboard-components/admin-staff/pay-list/pay-list.component';
 
 
 @NgModule({
@@ -295,6 +297,7 @@ import { StockApplicationProcessStatusComponent } from './components/dashboard/d
     ConflictCheckComponent,
     ProcessStatusPipe,
     StockApplicationFormComponent,
+    PayListComponent,
 
   //  new registration
   NewLearnerRegistrationModalComponent,
@@ -303,7 +306,8 @@ import { StockApplicationProcessStatusComponent } from './components/dashboard/d
   StockApplicationReplyModalComponent,
   StockApplicationDeliverModalComponent,
   StockApplicationReceiveModalComponent,
-  StockApplicationProcessStatusComponent
+  StockApplicationProcessStatusComponent,
+  TrialFilterComponent
   ],
   imports: [
     NgbModule,
