@@ -1,5 +1,6 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { InventoriesService } from 'src/app/services/http/inventories.service';
 
 @Component({
   selector: 'app-stock-application-deliver-modal',
@@ -9,24 +10,41 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 export class StockApplicationDeliverModalComponent implements OnInit {
   @Input() command: number;
   @Input() whichOrder: any;
-  
-  constructor(public activeModal: NgbActiveModal) { }
+  @Output() sendDeliverRes = new EventEmitter<any>();
+
+  public errorMessage: string;
+
+  constructor(public activeModal: NgbActiveModal, private inventoriesService: InventoriesService) { }
 
   ngOnInit() {
-    console.log('deliver modal', this.whichOrder)
   }
-  deliver() {
+
+
+  dataToDeliver() {
     let deliverObj = {};
     let tempObj = {};
-    deliverObj['ApplicationId'] = this.whichOrder.ApplicationId;
-    deliverObj['ApplicationDetailsIdMapQty'] = 
     this.whichOrder.ApplicationDetails.map((order, i) => {
-      let productId = order.Product.productId;
+      let productId = order.Product.ProductId
       let quantity = order.AppliedQty;
-      tempObj = {
-        productId: quantity
-      }
-      console.log('aaa', tempObj)
-    })
+      tempObj[productId] = quantity
+    });
+    deliverObj['ApplicationId'] = this.whichOrder.ApplicationId;
+    deliverObj['ApplicationDetailsIdMapQty'] = tempObj;
+    return deliverObj
+  }
+  deliver() {
+    this.inventoriesService.deliverProduct(this.dataToDeliver()).subscribe(
+      res => {
+        // console.log('res', res['Data'])
+        this.sendDeliverRes.emit(res['Data'])
+      },
+      err => this.errHandler(err)
+    )
+  }
+   /* handle error from server */
+   errHandler(err: any) {
+    console.warn(err);
+    if (err.ErrorMessage != null) this.errorMessage = err.ErrorMessage
+    else this.errorMessage = 'Deliver failed!'
   }
 }

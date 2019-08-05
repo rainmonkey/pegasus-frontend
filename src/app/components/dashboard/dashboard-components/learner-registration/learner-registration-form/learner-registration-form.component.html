@@ -150,12 +150,12 @@
           </div>
           <div class='row'>
             <div class="grade my-3 col-6">
-              <label for="grade" class='custom-file-label'>If you have ABRSM Theory Grade 5, please upload.. <span><i class="fas fa-file-upload"></i></span></label>
+              <label for="grade" class='custom-file-label'>If you have ABRSM Theory Grade 5, please upload.. <span class="fas fa-file-upload"></span></label>
 
               <input formControlName="grade" type="file" (change)="uploadGrade($event)" id="grade" class='custom-file-input' accept="image/*">
             </div>
-            <div class='col-3'>
-              <img class='mr-1' src="" id='certificate' style='height: 64px' alt="Certificate preview..."><i class="far fa-file"></i>
+            <div class='col-3 row ml-1' [ngStyle]="{'padding-top': imgTextStyle? '0px': '20px'}">
+              <img class='mr-1' src="" id='certificate'style='height: 64px;' alt="Certificate preview..."> <div *ngIf="showFontOfDoc"><i  class="far fa-file"></i></div>
             </div>
           </div>
             <div class='row'>
@@ -164,7 +164,7 @@
                 <input formControlName="agreement" type="file" (change)="uploadAgreement($event)" id="grade" class='custom-file-input' accept="application/msword,application/pdf,image/*">
               </div>
               <div class="grade my-3 col-5">
-                <label for="grade" class='custom-file-label'>Other File Upload.. <span><i class="fas fa-file-upload"></i></span></label>
+                <label for="grade" class='custom-file-label'>Other File Upload.. <span class="fas fa-file-upload"></span></label>
                 <input formControlName="others" type="file" (change)="uploadOther($event)" id="grade" class='custom-file-input' accept="application/msword,application/pdf,image/*">
               </div>
           </div>
