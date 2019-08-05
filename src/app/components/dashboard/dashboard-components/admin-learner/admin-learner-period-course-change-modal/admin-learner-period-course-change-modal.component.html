@@ -62,11 +62,20 @@
           </div>
           <small class="text-danger" *ngIf="DayOfWeek.invalid && DayOfWeek.touched">Please select day of week</small>
         </div>
-        <div class="col-6">
+        <div class="col-5">
           <div>Teacher</div>
           <select formControlName="TeacherId">
             <option disabled selected value>-- select an option --</option>
             <option *ngFor="let teacher of Teachers" [value]="teacher.TeacherId">{{teacher.Teacher.FirstName}} {{teacher.Teacher.LastName}}</option>
+          </select>
+          <small class="text-danger" *ngIf="TeacherId.invalid && TeacherId.touched">Please select teacher</small>
+        </div>
+        <div class="col-5">
+          <div>Is Invoice Change</div>
+          <select formControlName="IsInvoiceChange">
+            <option disabled selected value>-- select an option --</option>
+            <option value="0">No</option>
+            <option value="1">Yes</option>
           </select>
           <small class="text-danger" *ngIf="TeacherId.invalid && TeacherId.touched">Please select teacher</small>
         </div>
