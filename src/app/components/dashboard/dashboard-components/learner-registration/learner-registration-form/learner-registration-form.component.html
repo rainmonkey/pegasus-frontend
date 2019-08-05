@@ -21,74 +21,67 @@
             <button class="btn_reset my-3 btn btn-info" (click)="resetLearner()">Reset</button>
           </div>
 
-        <div class='row'>
-          <div class='col-3'>
-            <div class='card img-border'>
-              <div class="card-body">
-                <div class="learnerPhoto">
-                  <label for="photo" style='cursor: pointer; margin-left: -35%' class='custom-file-label'>Choose a photo <span><i class="fas fa-file-upload"></i></span></label>
-                  <input formControlName="photo" style='cursor: pointer' type="file" (change)="uploadPhoto($event)" class='custom-file-input' id="photo" accept="image/*">
+        <div class='card col-3 img-border'>
+          <div class="card-body">
+            <div class="learnerPhoto">
+              <label for="photo" style='cursor: pointer; margin-left: -35%' class='custom-file-label'>Choose a photo <span><i class="fas fa-file-upload"></i></span></label>
+              <input formControlName="photo" style='cursor: pointer' type="file" (change)="uploadPhoto($event)" class='custom-file-input' id="photo" accept="image/*">
 
-                  <img src="../../../../../../assets/images/shared/default-employer-profile.png" id='photoID'  alt="ID preview...">
-                </div>
-              </div>
-            </div>
-        </div>
-
-          <div class="col-9">
-            <div class="learnerName row">
-              <div class="col-sm-4 col-md-4">
-                <label for="firstName">First Name *</label>
-                <input class="form-control" formControlName="firstName" type="text" id="firstName">
-                <!-- <div *ngIf="firstName.invalid && (firstName.dirty || firstName.touched)" class="text-danger">
-                  <small *ngIf="firstName.errors.required"> First name is required</small>
-                </div> -->
-                <div *ngIf="firstName.invalid && (firstName.dirty || firstName.touched)" class="text-danger">
-                  <small *ngIf="firstName.errors.required"> First name is required</small>
-                </div>
-              </div>
-              <div class="col-sm-4 col-md-4">
-                <label for="middleName">Middle Name</label>
-                <input class="form-control" formControlName="middleName" type="text" id="middleName">
-              </div>
-              <div class="col-sm-4 col-md-4">
-                <label for="lastName">Last Name *</label>
-                <input class="form-control" formControlName="lastName" type="text" id="lastName">
-                <div *ngIf="lastName.invalid && (lastName.dirty || lastName.touched)" class="text-danger">
-                  <small *ngIf="lastName.errors.required">Last name is required</small>
-                </div>
-              </div>
-            </div>
-            <div class="learnerGender-Birthday row">
-              <div class="col-sm-6 col-md-6">
-                <label for="gender">Gender *</label>
-                <select class="form-control" formControlName="gender" id="gender">
-                  <option value="1">male</option>
-                  <option value="2">female</option>
-                </select>
-                <div *ngIf="gender.invalid && (gender.dirty || gender.touched)" class="text-danger">
-                  <small>Gender is required</small>
-                </div>
-              </div>
-              <div class="col-sm-6 col-md-6">
-                <label for="birthday">Date of Birth</label>
-                <input class="form-control" formControlName="birthday" type="date" id="birthday" (blur)="handleIsUnder18($event.target.value)">
-              </div>
-            </div>
-            <div class="enrollmentDate-location row">
-              <div class="col-sm-6 col-md-6">
-                <label for="enrollmentDate">Date of Enrollment</label>
-                <input class="form-control" formControlName="enrollmentDate" type="date" id="enrollmentDate">
-              </div>
-              <div class="col-sm-6 col-md-6">
-                <label for="location">Location *</label>
-                <select class="form-control" formControlName="location" id="location">
-                  <option *ngFor="let location of locations" [value]="location.OrgId">{{location.OrgName}}</option>
-                </select>
-              </div>
+              <img src="../../../../../../assets/images/shared/default-employer-profile.png" id='photoID'  alt="ID preview...">
             </div>
           </div>
         </div>
+          <div class="learnerName row">
+            <div class="col-sm-4 col-md-4">
+              <label for="firstName">First Name *</label>
+              <input class="form-control" formControlName="firstName" type="text" id="firstName">
+              <!-- <div *ngIf="firstName.invalid && (firstName.dirty || firstName.touched)" class="text-danger">
+                <small *ngIf="firstName.errors.required"> First name is required</small>
+              </div> -->
+              <div *ngIf="firstName.invalid && (firstName.dirty || firstName.touched)" class="text-danger">
+                <small *ngIf="firstName.errors.required"> First name is required</small>
+              </div>
+            </div>
+            <div class="col-sm-4 col-md-4">
+              <label for="middleName">Middle Name</label>
+              <input class="form-control" formControlName="middleName" type="text" id="middleName">
+            </div>
+            <div class="col-sm-4 col-md-4">
+              <label for="lastName">Last Name *</label>
+              <input class="form-control" formControlName="lastName" type="text" id="lastName">
+              <div *ngIf="lastName.invalid && (lastName.dirty || lastName.touched)" class="text-danger">
+                <small *ngIf="lastName.errors.required">Last name is required</small>
+              </div>
+            </div>
+          </div>
+          <div class="learnerGender-Birthday row">
+            <div class="col-sm-6 col-md-6">
+              <label for="gender">Gender *</label>
+              <select class="form-control" formControlName="gender" id="gender">
+                <option value="1">male</option>
+                <option value="2">female</option>
+              </select>
+              <div *ngIf="gender.invalid && (gender.dirty || gender.touched)" class="text-danger">
+                <small>Gender is required</small>
+              </div>
+            </div>
+            <div class="col-sm-6 col-md-6">
+              <label for="birthday">Date of Birth</label>
+              <input class="form-control" formControlName="birthday" type="date" id="birthday" (blur)="handleIsUnder18($event.target.value)">
+            </div>
+          </div>
+          <div class="enrollmentDate-location row">
+            <div class="col-sm-6 col-md-6">
+              <label for="enrollmentDate">Date of Enrollment</label>
+              <input class="form-control" formControlName="enrollmentDate" type="date" id="enrollmentDate">
+            </div>
+            <div class="col-sm-6 col-md-6">
+              <label for="location">Location *</label>
+              <select class="form-control" formControlName="location" id="location">
+                <option *ngFor="let location of locations" [value]="location.OrgId">{{location.OrgName}}</option>
+              </select>
+            </div>
+          </div>
           <div class="contactPhone-email row">
             <div class="col-sm-6 col-md-6">
               <label for="contactNum">Contact Phone</label>
@@ -148,17 +141,16 @@
               <textarea style='height:150px;' name="Comment" id="Comment" class='col-12 t_mf_input' formControlName='Comment' maxlength="1000"></textarea>
             </div>
           </div>
-          <div class='row'>
+          <div class='row ml-1'>
             <div class="grade my-3 col-6">
               <label for="grade" class='custom-file-label'>If you have ABRSM Theory Grade 5, please upload.. <span><i class="fas fa-file-upload"></i></span></label>
-
               <input formControlName="grade" type="file" (change)="uploadGrade($event)" id="grade" class='custom-file-input' accept="image/*">
             </div>
             <div class='col-3'>
-              <img class='mr-1' src="" id='certificate' style='height: 64px' alt="Certificate preview..."><i class="far fa-file"></i>
+                <img src="" id='certificate' style='height: 64px' alt="Certificate preview...">
             </div>
           </div>
-            <div class='row'>
+            <div class='row pl-3'>
               <div class="grade my-3 col-5 mr-2">
                 <label for="grade" class='custom-file-label'>Enrollment Agreement Upload.. <span><i class="fas fa-file-upload"></i></span></label>
                 <input formControlName="agreement" type="file" (change)="uploadAgreement($event)" id="grade" class='custom-file-input' accept="application/msword,application/pdf,image/*">
