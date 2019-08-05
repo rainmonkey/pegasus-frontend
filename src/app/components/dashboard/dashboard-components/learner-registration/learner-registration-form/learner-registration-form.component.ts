@@ -90,6 +90,10 @@ export class LearnerRegistrationFormComponent implements OnInit, DoCheck, AfterV
   touchNext = false;
   learnerValid = true;
   canAddGroup = true;
+  // boolean of font awsome for certificate image
+  showFontOfDoc = true;
+  // style of image for certificate
+  imgTextStyle;
   // photo thumbnail
   photoObj;
   // for add more selection
@@ -197,8 +201,11 @@ export class LearnerRegistrationFormComponent implements OnInit, DoCheck, AfterV
         //infoFrom: [this.whichLearner?this.whichLearner.infoFrom:''],
         learnerLevel: [this.whichLearner ? this.whichLearner.LearnerLevel : this.selectLearnerLevel, Validators.required],
         location: [this.whichLearner ? this.whichLearner.OrgId : this.orgId, Validators.required],
+
+        // levelType & levelTypeRadio are same control.
         levelType: [this.whichLearner ? this.whichLearner.LevelType : '0'],
         levelTypeRadio: [this.whichLearner ? this.whichLearner.LevelType: 1],
+
         paymentPeriod: [this.whichLearner ? this.whichLearner.PaymentPeriod : '1'],
         referrer: [this.whichLearner ? this.whichLearner.Referrer : ''],
         isUnder18: [this.whichLearner&&Number(this.whichLearner.IsUnder18)==1 ? true : false],
@@ -234,6 +241,7 @@ export class LearnerRegistrationFormComponent implements OnInit, DoCheck, AfterV
   }
 
   ngAfterViewInit(){
+    console.log('/1@#$%',this.whichLearner)
         // initialize card display
         if(this.addCourse == undefined){
           document.getElementById('learnerForm').style.display = 'block';
@@ -289,10 +297,12 @@ export class LearnerRegistrationFormComponent implements OnInit, DoCheck, AfterV
     let photoRender = this.selectedGrade;
     this.photoObj = document.querySelector('#certificate');
     let that = this;
+    console.log(that)
     let reader = new FileReader();
     reader.onloadend = function () {
-      console.log(this.result)
       that.photoObj.setAttribute("src", this.result.toString());
+      this.result?that.showFontOfDoc = false: that.showFontOfDoc = true;
+      that.imgTextStyle = '-40px'
     }
     reader.readAsDataURL(photoRender);
   }

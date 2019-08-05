@@ -1,1 +1,135 @@
+<div>
+  <form novalidate [formGroup]='registrationForm'>
 
+    <div class="row">
+      <!-- Name -->
+      <span class="col-sm-1 col-md-1">
+        <span for="firstName">Name: </span>
+      </span>
+
+      <span class='col-sm-3 col-md-3'>
+        <input class="form-control l-input" formControlName="FirstName" type="text" id="firstName"
+          placeholder="First Name *"
+          [class.error_border]='registrationForm.get("FirstName").invalid && registrationForm.get("FirstName").touched'>
+        <div
+          *ngIf="registrationForm.controls.FirstName.invalid && (registrationForm.controls.FirstName.dirty ||registrationForm.controls.FirstName.touched)"
+          class="text-danger">
+          <small *ngIf="registrationForm.controls.FirstName.errors?.required"> First name is required</small>
+
+        </div>
+      </span>
+
+
+      <span class='col-sm-3 col-md-3'>
+        <input class="form-control l-input" formControlName="MiddleName" type="text" id="middleName"
+          placeholder="Middle Name ">
+      </span>
+
+      <span class='col-sm-3 col-md-3'>
+        <input class="form-control l-input" formControlName="LastName" type="text" id="lastName"
+          placeholder="Last Name *"
+          [class.error_border]='registrationForm.get("LastName").invalid && registrationForm.get("LastName").touched'>
+        <div
+          *ngIf="registrationForm.controls.LastName.invalid && (registrationForm.controls.LastName.dirty ||registrationForm.controls.LastName.touched)"
+          class="text-danger">
+          <small *ngIf="registrationForm.controls.LastName.errors?.required"> Last name is required</small>
+        </div>
+      </span>
+    </div>
+    <br>
+
+    <div class="row">
+      <span class="col-sm-1 col-md-1">
+        <span>Gender: </span>
+      </span>
+
+      <span class='col-sm-4 col-md-4'>
+        <span *ngIf='command == 1'>
+          <select type="text" class='form-control l-input' formControlName='Gender'
+            [class.error_border]='registrationForm.get("Gender").invalid && registrationForm.get("Gender").touched'>
+            <option value="null" disabled="true" [selected]="true">Gender*</option>
+            <option value="1">Male</option>
+            <option value="0">Female</option>
+          </select>
+        </span>
+
+        <span *ngIf='command == 2'>
+          <select type="text" class='form-control l-input' formControlName='Gender'
+            [class.error_border]='registrationForm.get("Gender").invalid && registrationForm.get("Gender").touched'>
+            <option value="1">Male</option>
+            <option value="0">Female</option>
+          </select>
+        </span>
+
+
+        <div
+          *ngIf="registrationForm.controls.Gender.invalid && (registrationForm.controls.Gender.dirty ||registrationForm.controls.Gender.touched)"
+          class="text-danger">
+          <small *ngIf="registrationForm.controls.Gender.errors?.required"> Gender is required</small>
+        </div>
+      </span>
+
+      <span class='col-sm-2 col-md-2' style='text-align: right'>
+        <span>Date of Birth:</span>
+      </span>
+      <span class='col-sm-4 col-md-4'>
+        <input class="form-control l-input" formControlName="dob" type="date" id="birthday"
+          (blur)="handleIsUnder18($event.target.value)">
+      </span>
+    </div>
+    <br>
+
+    <div class="row">
+      <span class='col-sm-1 col-md-1'>
+        <span>Phone: </span>
+      </span>
+
+      <span class='col-sm-4 col-md-4'>
+        <input class="form-control l-input" formControlName="ContactNum" type="text" id="contactNum"
+          placeholder="Contact number">
+      </span>
+
+      <span class='col-sm-2 col-md-2' style='text-align: right'>
+        <span>Email:</span>
+      </span>
+      <span class='col-sm-4 col-md-4'>
+        <input class="form-control l-input" formControlName="Email" type="text" id="email" placeholder="Email *"
+          [class.error_border]='registrationForm.get("Email").invalid && registrationForm.get("Email").touched'>
+        <div
+          *ngIf="registrationForm.controls.Email.invalid && (registrationForm.controls.Email.dirty ||registrationForm.controls.Email.touched)"
+          class="text-danger">
+          <small *ngIf="registrationForm.controls.Email.errors?.required"> Email is required</small>
+
+        </div>
+
+      </span>
+    </div>
+    <br>
+
+    <div class="row">
+      <span class='col-sm-1 col-md-1' style='text-align: right'>
+        <span>Address:</span>
+      </span>
+      <span class='col-sm-4 col-md-4'>
+        <input class="form-control l-input" formControlName="Address" type="text" id="Address" placeholder="Physical Address">
+      </span>
+
+
+
+      <span class='col-sm-2 col-md-2' style='text-align: right'>
+        <span>Date of Enrollment:</span>
+      </span>
+      <span class='col-sm-4 col-md-4'>
+        <input class="form-control l-input" formControlName="EnrollDate" type="date" id="enrollDate" >
+      </span>
+    </div>
+
+
+
+
+
+
+
+
+  </form>
+</div>

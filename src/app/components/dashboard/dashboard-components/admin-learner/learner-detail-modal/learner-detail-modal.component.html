@@ -61,7 +61,7 @@
 
                   <div class="col-12">
                     <span class="label">DOB: </span>
-                    <span class='text'>{{whichLearner.Dob.slice(0,10)}}</span>
+                    <span *ngIf ='whichLearner.Dob' class='text'>{{whichLearner.Dob.slice(0,10)}}</span>
                   </div>
 
                   <div class="col-12">
@@ -1035,8 +1035,8 @@
 
     <ngb-tab title="Time Table">
       <ng-template ngbTabContent>
-        <br>
-        <app-admin-learner-timetable></app-admin-learner-timetable>
+        <br>  
+        <app-admin-learner-timetable [whichLearner]='whichLearner.LearnerId'></app-admin-learner-timetable>
       </ng-template>
     </ngb-tab>
 

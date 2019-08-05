@@ -152,6 +152,9 @@ import { ProcessStatusPipe } from './shared/pipes/process-status.pipe';
 import { StockApplicationFormComponent } from './components/dashboard/dashboard-components/inventory/inventory-stock-application/stock-application-form/stock-application-form.component';
 import { NewLearnerRegistrationModalComponent } from './components/dashboard/dashboard-components/admin-learner/New-Learner-Registration-modal/New-Learner-Registration-modal.component';
 import { NewRegistrationFormComponent } from './components/dashboard/dashboard-components/admin-learner/New-Registration-Form/New-Registration-Form.component';
+import { TutorsInfomationComponent } from './components/dashboard/dashboard-components/tutors/tutors-infomation/tutors-infomation.component';
+import { StockApplicationReplyModalComponent } from './components/dashboard/dashboard-components/inventory/inventory-stock-application/stock-application-reply-modal/stock-application-reply-modal.component';
+import { StockApplicationDeliverModalComponent } from './components/dashboard/dashboard-components/inventory/inventory-stock-application/stock-application-deliver-modal/stock-application-deliver-modal.component';
 
 
 @NgModule({
@@ -293,7 +296,10 @@ import { NewRegistrationFormComponent } from './components/dashboard/dashboard-c
 
   //  new registration
   NewLearnerRegistrationModalComponent,
-  NewRegistrationFormComponent
+  NewRegistrationFormComponent,
+  TutorsInfomationComponent,
+  StockApplicationReplyModalComponent,
+  StockApplicationDeliverModalComponent
   ],
   imports: [
     NgbModule,
@@ -367,6 +373,8 @@ import { NewRegistrationFormComponent } from './components/dashboard/dashboard-c
     StockApplicationUpdateModalComponent,
     StockApplicationDetailModalComponent,
     StockApplicationDeleteModalComponent,
+    StockApplicationReplyModalComponent,
+    StockApplicationDeliverModalComponent,
     InventoryDetailModalComponent,
     InventoryReceiptModalComponent,
     // AddHolidaysModalComponent,

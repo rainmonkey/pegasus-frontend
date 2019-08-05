@@ -1,6 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { Command } from 'protractor';
-import { FormBuilder, Validators } from '@angular/forms';
+import { FormBuilder, Validators, FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'app-New-Registration-Form',
@@ -8,6 +8,8 @@ import { FormBuilder, Validators } from '@angular/forms';
   styleUrls: ['./New-Registration-Form.component.css']
 })
 export class NewRegistrationFormComponent implements OnInit {
+  public registrationForm: FormGroup
+
   @Input() command
   @Input() whichLearner
   constructor(
@@ -16,41 +18,84 @@ export class NewRegistrationFormComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.formBuild()
+    this.registrationForm = this.fb.group(this.formBuild());
+
+
   }
 
-  formBuild(){
+  formBuild() {
     let groupObj: any;
-    if(this.command == 1 ){
-      groupObj={
-        FirstName:[null, Validators.required],
-        MiddleName:[null],
+    if (this.command == 1) {
+      groupObj = {
+        FirstName: [null, Validators.required],
+        MiddleName: [null],
         LastName: [null, Validators.required],
-        Gender: [null, Validators.required],
-        dob: [null, Validators.required],
-        EnrollDate: [null, Validators.required],
-        ContactNum:[null, Validators.required],
-        Email:[null, [Validators.required,Validators.email]],
-        Address:[null],
-        OrgId:[null, Validators.required],
-        LearnerLevel:[null, Validators.required],
-        LevelType:[null, Validators.required],
-        IsUnder18:[null, Validators.required],
-        PaymentPeriod:[null, Validators.required],
-        Referrer:[null],
-        Comment:[null],
+        Gender: ['', Validators.required],
+        dob: [null],
+        EnrollDate: [null],
+        ContactNum: [null],
+        Email: [null, [Validators.required, Validators.email]],
+        Address: [null],
+        OrgId: [null, Validators.required],
+        LearnerLevel: [null, Validators.required],
+        LevelType: [null],
+        IsUnder18: [null],
+        PaymentPeriod: [null],
+        Referrer: [null],
+        Comment: [null],
 
         // photo
-        photo:[null],
-        grade:[null],
-        Agreement:[null],
-        OtherFile:[null],
+        photo: [null],
+        grade: [null],
+        Agreement: [null],
+        OtherFile: [null],
       }
     }
-    else if(this.command==2){
+    else {
 
+      groupObj = {
+        FirstName: [this.whichLearner.FirstName , Validators.required],
+        MiddleName: [ this.whichLearner.MiddleName ? this.whichLearner.MiddleName : ' ' ],
+        LastName: [this.whichLearner.LastName, Validators.required],
+        Gender: [ this.whichLearner.Gender, Validators.required],
+        dob: [this.getDateFormat(this.whichLearner.Dob) ],
+        EnrollDate: [ this.getDateFormat(this.whichLearner.EnrollDate) ],
+        ContactNum: [this.whichLearner.ContactNum ],
+        Email: [this.whichLearner.Email,[Validators.required, Validators.email]],
+        Address: [this.whichLearner.Address ],
+        OrgId: [this.whichLearner.OrgId , Validators.required],
+        LearnerLevel: [ this.whichLearner.LearnerLevel , Validators.required],
+        LevelType: [this.whichLearner.LevelType ],
+        IsUnder18: [ this.whichLearner.IsUnder18 ],
+        PaymentPeriod: [this.whichLearner.PaymentPeriod ],
+        Referrer: [this.whichLearner.Referrer],
+        Comment: [this.whichLearner.Comment ],
+
+        // photo
+        photo: [null],
+        grade: [null],
+        Agreement: [null],
+        OtherFile: [null],
+      }
     }
+    return groupObj
   }
 
+  getDateFormat(date) {
+    if (date !== null) {
+      return (date.substring(0, 10))
+    }
+    return null;
+  }
+
+  handleIsUnder18(DOB){
+    console.log(DOB);
+    let nowYear =new Date().getFullYear();
+    let birthYear = Number(DOB.substring(0,4));
+    let isUnder18 = nowYear - birthYear <= 18? 0 : 1;
+
+    this.registrationForm.get("IsUnder18").patchValue(isUnder18);
+    console.log(isUnder18)
+  }
 
 }

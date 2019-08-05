@@ -1,17 +1,17 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
+import { DatePipe } from '@angular/common';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { InventoriesService } from 'src/app/services/http/inventories.service';
-import { NgbootstraptableService } from 'src/app/services/others/ngbootstraptable.service';
 import { NgbDate } from '@ng-bootstrap/ng-bootstrap';
 import Swal from 'sweetalert2';
 
+import { InventoriesService } from 'src/app/services/http/inventories.service';
+import { NgbootstraptableService } from 'src/app/services/others/ngbootstraptable.service';
 import { StockApplicationUpdateModalComponent } from 'src/app/components/dashboard/dashboard-components/inventory/inventory-stock-application/stock-application-update-modal/stock-application-update-modal.component';
 import { StockApplicationDetailModalComponent } from 'src/app/components/dashboard/dashboard-components/inventory/inventory-stock-application/stock-application-detail-modal/stock-application-detail-modal.component';
-import { DatePipe } from '@angular/common';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-
-
+import { StockApplicationReplyModalComponent } from 'src/app/components/dashboard/dashboard-components/inventory/inventory-stock-application/stock-application-reply-modal/stock-application-reply-modal.component';
+import { StockApplicationDeliverModalComponent } from 'src/app/components/dashboard/dashboard-components/inventory/inventory-stock-application/stock-application-deliver-modal/stock-application-deliver-modal.component';
 @Component({
   selector: 'app-stock-application-list',
   templateUrl: './stock-application-list.component.html',
@@ -21,15 +21,15 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 export class StockApplicationListComponent implements OnInit {
   /* get props from HTML # template reference variable */
   @ViewChild('pagination') pagination: any;
-
+ 
   /* loading */
   public loadingFlag: boolean = true;
   public page: number = 1;
   public pageSize: number = 6;
-  public dateForm: FormGroup;
   /* props for after loading, display default data of three months */
   public previousDate: any;
   public currentDate: any;
+  public dateForm: FormGroup;
   /* props for validating EndDate > BeginDate */
   public fromDate: NgbDate;
   public toDate: NgbDate;
@@ -42,11 +42,15 @@ export class StockApplicationListComponent implements OnInit {
   public errorMessage: string;
   /* all about route of URL */
   public queryParams: object = {};
-  /* delete method */
+  /* props for modal */
   public timeout: any;
   public isDeleted: boolean = false;
   public deleteFailed: boolean = false;
   public applicationId: number;
+  /* props for result of returned checkRole() */
+  public headOfficeFlag: boolean = false;
+  /* for search method */
+  public searchBy: string;
 
   constructor(
     private router: Router,
@@ -59,6 +63,7 @@ export class StockApplicationListComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    this.headOfficeFlag = this.checkRole()
     /* before get data from server, renders loading flag */
     this.loadingFlag = true;
     /* get three months data from server the first time accesses the web page */
@@ -68,8 +73,21 @@ export class StockApplicationListComponent implements OnInit {
       beginDate: ['', Validators.pattern('^\d{4}\-(0[1-9]|1[012])\-(0[1-9]|[12][0-9]|3[01])$')],
       endDate: ['', Validators.pattern('^\d{4}\-(0[1-9]|1[012])\-(0[1-9]|[12][0-9]|3[01])$')]
     })
+    
   }
-
+ 
+  /* 
+    check role from local storage, various roles show various info 
+      1) if role === 3, then display branch pages
+      2) if role === 9, then display head office pages
+  */
+  checkRole() {
+    // now role is just hardcode, will get it from real value after creat a head office account
+    let role = 9
+    // let role = + localStorage.getorder('Role');
+    if(role === 9) return true
+    else return false
+  }
   /* get previous three months */
   getThreeMonths() {
     let today = new Date();
@@ -80,24 +98,43 @@ export class StockApplicationListComponent implements OnInit {
   }
   /* get stock application data from server */
   getStockApplication(previousDate: any, currentDate: any) {
-    this.inventoriesService.getStockApplication(previousDate, currentDate).subscribe(
-      (res) => {
-        console.log('res', res.Data);
-        this.stockApplicationCopy = res.Data;
-        this.stockApplication = this.renderOrders(res.Data)
-        this.loadingFlag = false;
-        console.log('this.stockApplication', this.stockApplication)
-      },
-      (err) => {
-        this.errorHandler(err);
-      }
-    )
+    if(this.checkRole()) {
+      this.inventoriesService.getStockApplication(previousDate, currentDate).subscribe(
+        (res) => {
+          // console.log('res', res['Data']);
+          this.stockApplication = this.renderOrderList(res['Data']);
+          console.log('this.stockApplication', this.stockApplication)
+          this.stockApplicationCopy = res['Data'].map((order, i) => ({ id: i + 1, ...order }));
+          this.loadingFlag = false;
+        },
+        (err) => {
+          this.errorHandler(err);
+        }
+      )
+    } else {
+      this.inventoriesService.getStockApplication(previousDate, currentDate).subscribe(
+        (res) => {
+          // console.log('res', res['Data']);
+          let orgId = +localStorage.getItem('OrgId')[1];
+          this.stockApplication = this.renderOrderList(res['Data']).filter((order) => order.Org.OrgId === orgId);
+          this.loadingFlag = false;
+        },
+        (err) => {
+          this.errorHandler(err);
+        }
+      )
+    }
+  }
+  /* err handler */
+  errorHandler(err: any) {
+    console.warn(err);
+    if (err.error.ErrorMessage != null) this.errorMessage = err.error.ErrorMessage
+    else this.errorMessage = 'Error! Can not catch Data!'
   }
   /* slice specific part of data to display in table of HTML */
-  renderOrders(orderList) {
-    // console.log('renderOrder', orderList);
+  renderOrderList(orderList: any[]) {
     return orderList.reverse()
-      .map((stockInfo, i) => ({ id: i + 1, ...stockInfo }))
+      .map((order, i) => ({ id: i + 1, ...order }))
   }
   /* Validate EndDate > BeginDate */
   onBeginDateSelect(beginDate: NgbDate) {
@@ -155,31 +192,20 @@ export class StockApplicationListComponent implements OnInit {
     });
   }
   /* update modal */
-  updateModal(command: number, whichOrder: number) {
-    // console.log('update command', command, 'whichOrder', whichOrder)
-    const modalRef = this.modalService.open(StockApplicationUpdateModalComponent, { size: 'lg', centered: true, backdrop: 'static', keyboard: false });
-    modalRef.componentInstance.command = command;
-    modalRef.componentInstance.whichOrder = whichOrder;
-    this.postStockApplication(modalRef);
-    
-  }
-  postStockApplication(modalRef) {
+  postStockApplication(modalRef: any) {
     modalRef.componentInstance.passApplicationId.subscribe(
       (applicationId: number) => {
-        this.loadingFlag = true;
-        // console.log('receive application id', applicationId);
+        // this.loadingFlag = true;
         this.inventoriesService.getNewStockApplication(applicationId).subscribe(
           res => {
             console.log('post success', res['Data']);
             this.stockApplication.unshift(res['Data']);
-            this.stockApplication.map((item, i) => {
-              item.id = i + 1;
-            });
-            this.loadingFlag = false;
+            this.stockApplication.map((order, i) => order.id = i + 1);
             this.applicationId = applicationId;
             setTimeout(() => {
               this.applicationId = null;
             }, 2000)
+            this.loadingFlag = false;
             modalRef.close();
           },
           err => this.errorHandler(err)
@@ -187,50 +213,117 @@ export class StockApplicationListComponent implements OnInit {
       }
     )
   }
+  putStockApplication(modalRef: any, whichOrder) {
+    modalRef.componentInstance.updateApplication.subscribe(
+      (res) => {
+        // this.loadingFlag = true;
+        // console.log('put success', res);
+        // let index = this.stockApplication.indexOf(whichOrder);
+        // res.ApplyStaff = { FirstName : staffName };
+        // res.Org = { OrgName: orgName };
+        // Array1 = Array2.slice(0);
+        // arr1.map(obj => arr2.find(o => o.id === obj.id) || obj);
+        // this.stockApplication.map((order)=> {
+        //   if(order.ApplicationId === res.ApplicationId) {
+        //     order = {id: index + 1, ...res}
+        //     console.log('.....', order)
+        //   }
+        // })
+        // console.log('aaa', this.stockApplication)
+        // this.stockApplication = this.renderOrderList(updateArr)
+        this.inventoriesService.getNewStockApplication(res.ApplicationId).subscribe(
+          res => {
+            let index = this.stockApplication.indexOf(whichOrder);
+            let updateRes = { id: index + 1, ...res['Data']}
+            // console.log('res', res['Data'])
+            this.stockApplication.splice(index, 1, updateRes);
+            // console.log('aaa', this.stockApplication)
+          },
+          err => console.log('err', err)
+        )
+        modalRef.close();
+      },
+      (err) => this.errorHandler(err)
+    )
+  }
+  updateModal(command: number, whichOrder?) {
+    const modalRef = this.modalService.open(StockApplicationUpdateModalComponent, { size: 'lg', centered: true, backdrop: 'static', keyboard: false });
+    modalRef.componentInstance.command = command;
+    modalRef.componentInstance.whichOrder = whichOrder;
+    this.postStockApplication(modalRef);
+    this.putStockApplication(modalRef, whichOrder);
+  }
   /* detail modal */
-  detailModal(command: number, whichOrder: number) {
-    console.log('detail command', command, 'whichOrder', whichOrder)
+  detailModal(command: number, whichOrder: any) {
     const modalRef = this.modalService.open(StockApplicationDetailModalComponent, { size: 'lg', centered: true, backdrop: 'static', keyboard: false });
     modalRef.componentInstance.command = command;
-    modalRef.componentInstance.orderDetail = whichOrder;
+    modalRef.componentInstance.whichOrder = whichOrder;
   }
-  /* delete method */
-  delete(whichOrder) {
-    this.applicationId = whichOrder.ApplicationId;
+  /* delete modal */
+  delete(whichOrder: any) {
     this.isDeleted = true;
+    this.applicationId = whichOrder.ApplicationId;
     clearTimeout(this.timeout);
     this.timeout = setTimeout(() => {
       this.inventoriesService.deleteProduct(this.applicationId).subscribe(
         res => {
           console.log('delete res', res);
           this.isDeleted = false;
-          let index = this.stockApplicationCopy.indexOf(this.applicationId);
-          this.stockApplicationCopy.splice(index, 1);
-          this.stockApplication = this.renderOrders(this.stockApplicationCopy);
+          let index = this.stockApplication.indexOf(whichOrder);
+          this.stockApplication.splice(index, 1);
+          this.stockApplication.map((order, i) => order.id = i + 1);
         },
         err => {
           this.deleteFailed = true;
           this.errorHandler(err);
         }
       )
-    }, 3000)
+    }, 2000)
   }
   undo() {
     this.isDeleted = false;
     this.applicationId = null;
     clearTimeout(this.timeout);
   }
-  /* reusable function */
-  errorHandler(err: any) {
-    console.warn(err);
-    if (err.error.ErrorMessage != null) {
-      this.errorMessage = err.error.ErrorMessage;
-    } else {
-      this.errorMessage = 'Error! Can not catch Data!';
-    }
+  /* reply modal */
+  replyModal(command: number, whichOrder: any) {
+    const modalRef = this.modalService.open(StockApplicationReplyModalComponent, { size: 'lg', centered: true, backdrop: 'static', keyboard: false });
+    modalRef.componentInstance.command = command;
+    modalRef.componentInstance.whichOrder = whichOrder;
+    modalRef.componentInstance.headOfficeFlag = this.headOfficeFlag;
   }
-  /* validate dateForm input */
-
-
+  /* deliver */
+  deliver(command: number, whichOrder: any) {
+    const modalRef = this.modalService.open(StockApplicationDeliverModalComponent, { size: 'lg', centered: true, backdrop: 'static', keyboard: false });
+    modalRef.componentInstance.command = command;
+    modalRef.componentInstance.whichOrder = whichOrder;
+    this.updateDeliverStatus(modalRef);
+  }
+  updateDeliverStatus(modalRef) {
+    modalRef.componentInstance.sendDeliverRes.subscribe(
+      res => {
+        console.log('update deliver', res)
+        this.stockApplication.map((order) => {
+          if(order.ApplicationId === res.ApplicationId) {
+            order.ProcessStatus = res.ProcessStatus
+          }
+        })
+        modalRef.close();
+      },
+      err => this.errorHandler(err)
+    )
+  }
+  /* search staff name and location */
+  search(text: string) {
+    this.stockApplication = this.stockApplicationCopy;
+    return this.stockApplication.filter(order => {
+      const term = text.toLowerCase().trim();
+      return order.ApplyStaff.FirstName.toLowerCase().includes(term)
+          || order.Org.OrgName.toLowerCase().includes(term);
+    });
+  }
+  keyup() {
+    this.searchBy === ''? this.stockApplication = this.stockApplicationCopy: this.stockApplication = this.search(this.searchBy);
+  }
 
 }

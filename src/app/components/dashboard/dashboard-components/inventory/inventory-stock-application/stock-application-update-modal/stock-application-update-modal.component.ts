@@ -1,13 +1,10 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { StockApplicationService } from 'src/app/shared/components/stock-application/stock-application.service';
-import { Observable } from 'rxjs';
 import { PostProduct } from 'src/app/models/PostProduct';
 import { InventoriesService } from 'src/app/services/http/inventories.service';
 import { FormGroup, FormArray } from '@angular/forms';
 import { ProductIdQty } from 'src/app/models/ProductIdQty';
  
-
 @Component({
   selector: 'app-stock-application-update-modal',
   templateUrl: './stock-application-update-modal.component.html',
@@ -17,8 +14,9 @@ export class StockApplicationUpdateModalComponent implements OnInit {
   @Input() command: number;
   @Input() whichOrder: any;
   @Output() passApplicationId = new EventEmitter<number>();
+  @Output() updateApplication = new EventEmitter<any>();
 
-  /* get appicationForm value by valueChange and event emit method from StockApplicationFormComponent */
+  /* get appicationForm by valueChanges and event emit method from StockApplicationFormComponent */
   public applicationForm: FormGroup;
   /* props will be assigned after subscribing an observable */
   public errorMessage: string;
@@ -36,12 +34,13 @@ export class StockApplicationUpdateModalComponent implements OnInit {
       return false;
     }
   }
- 
   getDataToPost() {
-    let orgId = parseInt(localStorage.getItem('staffId')[0]);
-    let staffId = parseInt(localStorage.getItem('staffId'));
-    let applyReason = this.applicationForm.get('applyReason').value;
-    let productDetail: Array<ProductIdQty> = [];
+    const orgId = +localStorage.getItem('OrgId')[1];
+    const orgName = localStorage.getItem('organisations');
+    const staffId = parseInt(localStorage.getItem('staffId'));
+    const staffName = localStorage.getItem('userFirstName');
+    const applyReason = this.applicationForm.get('applyReason').value;
+    const productDetail: Array<ProductIdQty> = [];
     const productIdQty = this.applicationForm.get('productIdQty');
     for (let prod of productIdQty.value) {
       let productId = Number(prod.prod);
@@ -50,26 +49,33 @@ export class StockApplicationUpdateModalComponent implements OnInit {
       productDetail.push(productIdQty);
     }
     let postProduct = new PostProduct(orgId, staffId, applyReason, productDetail);
-    // console.log('dataToPost', postProduct);
-    return postProduct;
+    if(this.whichOrder) {
+      postProduct['ApplyStaff'] = staffName;
+      postProduct['Org'] = orgName;
+      return postProduct
+    } else return postProduct;
   }
   handleSubmit() {
-    // console.log('submit form', this.applicationForm);
+    !this.whichOrder? this.postProduct() : this.putProduct(this.whichOrder.ApplicationId)
+  }
+  postProduct() {
+    console.log('post', this.getDataToPost())
     this.inventoriesService.postProduct(this.getDataToPost()).subscribe(
-      res => {
-        // console.log('subscribe post res', res['Data']);
-        this.passApplicationId.emit(res['Data'].ApplicationId)
-      },
+      res => this.passApplicationId.emit(res['Data'].ApplicationId),
+      err => this.errHandler(err)
+    )
+  }
+  putProduct(applicationId) {
+    console.log('data to put', this.getDataToPost())
+    this.inventoriesService.putProduct(applicationId, this.getDataToPost()).subscribe(
+      res => this.updateApplication.emit(res['Data']),
       err => this.errHandler(err)
     )
   }
   errHandler(err: any) {
     console.warn(err);
-    if (err.ErrorMessage != null) {
-      this.errorMessage = err.error.ErrorMessage;
-    } else {
-      this.errorMessage = 'Error! Can not catch Data!';
-    }
+    if (err.ErrorMessage != null) this.errorMessage = err.error.ErrorMessage
+    else this.errorMessage = 'Error! Can not catch Data!'
   }
   
 }
