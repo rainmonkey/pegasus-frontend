@@ -73,12 +73,13 @@ export class AdminPaymentListComponent implements OnInit {
     }
   }
   // click the search
-  onSubmit() {
+  onSubmit() {    
+    console.log(this.searchForm)
     let valueToSubmit = this.searchForm.value;
     let vailadValue = this.checkInputVailad(valueToSubmit);
     if (vailadValue !== null) {      
       let begin = vailadValue.BeginDate.year + "-" + vailadValue.BeginDate.month + "-" + vailadValue.BeginDate.day;
-      let end = vailadValue.EndDate.year + "-" + vailadValue.EndDate.month + "-" + vailadValue.EndDate.day;
+      let end = vailadValue.EndDate.year + "-" + vailadValue.EndDate.month + "-" + (vailadValue.EndDate.day+1);
       const enddate = new NgbDate(vailadValue.EndDate.year, vailadValue.EndDate.month, vailadValue.EndDate.day)
       if (enddate.before(vailadValue.BeginDate)) {
         Swal.fire({

@@ -1,44 +1,45 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, ViewChild, AfterViewChecked } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { InventoriesService } from 'src/app/services/http/inventories.service';
-import * as moment from 'moment/moment.js'
 import { Subscription } from 'rxjs';
+import Swal from 'sweetalert2';
+import { StockApplicationProcessStatusComponent } from '../stock-application-process-status/stock-application-process-status.component';
+
 @Component({
   selector: 'app-stock-application-reply-modal',
   templateUrl: './stock-application-reply-modal.component.html',
   styleUrls: ['./stock-application-reply-modal.component.css']
 })
-export class StockApplicationReplyModalComponent implements OnInit {
+export class StockApplicationReplyModalComponent implements OnInit, AfterViewChecked {
   @Input() command: number;
   @Input() whichOrder: any;
-  @Input() headOfficeFlag: boolean;
-  
+  @ViewChild(StockApplicationProcessStatusComponent) stockApplicationProcessStatusComponent;
+
   public replyFlag: boolean = false;
-  /* behavior subject */
   public replyMsg: string;
-  public subscription: Subscription;
 
   constructor(public activeModal: NgbActiveModal, private inventoriesService: InventoriesService) { }
 
   ngOnInit() {
-    this.subscription = this.inventoriesService.replyMsg$
-      .subscribe(msg => this.replyMsg = msg)
+    this.replyFlag = true;
   }
-  ngOnDestroy() {
-    // prevent memory leak when component is destroyed
-    this.subscription.unsubscribe();
+  ngAfterViewChecked() {
+    this.replyMsg = this.stockApplicationProcessStatusComponent.replyMsg
   }
   sendReplyMsg() {
     let applicationId = this.whichOrder.ApplicationId;
-    console.log('reply msg', this.replyMsg)
-    let applyAt = moment().format().slice(0,19);
+    let applyAt = this.whichOrder.ApplyAt;
     this.inventoriesService.replyContent(applicationId, this.replyMsg, applyAt).subscribe(
       res => {
-        console.log('reply', res)
+        console.log('reply', res['Data'])
+        Swal.fire({
+          title: 'Successfully sent!',
+          type: 'success',
+          showConfirmButton: true,
+        });
+        this.activeModal.close();
       },
-      err => {
-        console.log('err', err)
-      }
+      err => console.log('err', err)
     )
   }
   

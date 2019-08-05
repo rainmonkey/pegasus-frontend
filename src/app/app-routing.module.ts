@@ -1,3 +1,4 @@
+import { TrialInfoComponent } from './components/dashboard/dashboard-components/trial-course/trial-info/trial-info.component';
 import { Routes, RouterModule } from '@angular/router';
 import { DashboardRestrictGuard } from './guards/dashboard-restrict.guard';
 import { UserAuthGuard } from './guards/user-auth.guard';
@@ -35,7 +36,6 @@ import { TeacherInfoComponent } from './components/dashboard/dashboard-component
 import { TestoneComponent } from './components/testcomponent/testone/testone.component';
 import { CourseClassListComponent } from './components/dashboard/dashboard-components/courses/course-class-list/course-class-list.component';
 import { DashboardHomeComponent } from './components/dashboard/dashboard-components/dashboard-home/dashboard-home.component';
-import { TrialInfoComponent } from './components/dashboard/dashboard-components/trial-session/trial-info/trial-info.component';
 import { RemindListComponent } from './components/dashboard/dashboard-components/remind/remind-list/remind-list.component';
 import { RemindPanelComponent } from './components/dashboard/dashboard-components/remind/remind-panel/remind-panel.component';
 import { StaffListComponent } from './components/dashboard/dashboard-components/admin-staff/Staff-list/Staff-list.component';
@@ -48,6 +48,7 @@ import { ConflictCheckComponent } from './components/dashboard/dashboard-compone
 import { StockApplicationListComponent } from './components/dashboard/dashboard-components/inventory/inventory-stock-application/stock-application-list/stock-application-list.component';
 import { AdminLearnerTimetableComponent } from './components/dashboard/dashboard-components/admin-learner/admin-learner-timetable/admin-learner-timetable.component';
 import { TutorsInfomationComponent } from './components/dashboard/dashboard-components/tutors/tutors-infomation/tutors-infomation.component';
+import { PayListComponent } from './components/dashboard/dashboard-components/admin-staff/pay-list/pay-list.component';
 
 
 
@@ -90,6 +91,7 @@ const routes: Routes = [
           { path: 'success', component: AdminLearnerPaymentSuccessComponent, },
         ]
       },
+      { path: 'trial', component: TrialInfoComponent, },
       // Transaction Area
       {
         path: 'transaction', component: TransactionsPanelComponent,
@@ -176,6 +178,7 @@ const routes: Routes = [
       },
       //Staff Area
       { path: 'staff/list', component: StaffListComponent },
+      {path: 'staff/paylist', component: PayListComponent},
 
       //pagegroup area
       { path:'pageGroup',component:PageGroupDetailsComponent},
