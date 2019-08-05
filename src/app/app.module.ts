@@ -75,7 +75,6 @@ import { TeacherModalFormComponent } from './components/dashboard/dashboard-comp
 import { TeacherPanelComponent } from './components/dashboard/dashboard-components/teachers/teacher-panel/teacher-panel.component';
 import { TeacherUpdateModalComponent } from './components/dashboard/dashboard-components/teachers/teacher-update-modal/teacher-update-modal.component';
 import { TimePickerComponent } from './components/dashboard/dashboard-components/time-picker/time-picker.component';
-import { TrialInfoComponent } from './components/dashboard/dashboard-components/trial-session/trial-info/trial-info.component';
 import { TrialPanelComponent } from './components/dashboard/dashboard-components/trial-session/trial-panel/trial-panel.component';
 import { TrialSearchComponent } from './components/dashboard/dashboard-components/trial-session/trial-search/trial-search.component';
 import { TrialModalComponent } from './components/dashboard/dashboard-components/trial-session/trial-modal/trial-modal.component';
@@ -155,6 +154,8 @@ import { NewRegistrationFormComponent } from './components/dashboard/dashboard-c
 import { TutorsInfomationComponent } from './components/dashboard/dashboard-components/tutors/tutors-infomation/tutors-infomation.component';
 import { StockApplicationReplyModalComponent } from './components/dashboard/dashboard-components/inventory/inventory-stock-application/stock-application-reply-modal/stock-application-reply-modal.component';
 import { StockApplicationDeliverModalComponent } from './components/dashboard/dashboard-components/inventory/inventory-stock-application/stock-application-deliver-modal/stock-application-deliver-modal.component';
+import { TrialInfoComponent } from './components/dashboard/dashboard-components/trial-course/trial-info/trial-info.component';
+import { TrialFilterComponent } from './components/dashboard/dashboard-components/trial-course/trial-filter/trial-filter.component';
 
 
 @NgModule({
@@ -299,7 +300,8 @@ import { StockApplicationDeliverModalComponent } from './components/dashboard/da
   NewRegistrationFormComponent,
   TutorsInfomationComponent,
   StockApplicationReplyModalComponent,
-  StockApplicationDeliverModalComponent
+  StockApplicationDeliverModalComponent,
+  TrialFilterComponent
   ],
   imports: [
     NgbModule,
