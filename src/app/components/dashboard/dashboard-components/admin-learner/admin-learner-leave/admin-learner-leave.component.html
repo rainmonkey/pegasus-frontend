@@ -70,6 +70,14 @@
                       {{sechdule.BeginTime}} -- {{sechdule.EndTime}} </span>
                 </div>
               </div>
+              <div class="col-12" *ngFor="let amendment of ele.Amendment">
+                <small *ngIf="amendment.IsTemporary == 0" class="text-secondary">
+                  The course begins at {{amendment.BeginTime}} from {{amendment.BeginDate| date:'yyyy-MM-dd'}} ( Teacher: {{amendment.Teacher.FirstName}} Location : {{amendment.Org.Abbr}} - {{amendment.Room.RoomName}})
+                </small>
+                <small *ngIf="amendment.IsTemporary==1" class="text-secondary">
+                  The course begins at {{amendment.BeginTime}} from {{amendment.BeginDate| date:'yyyy-MM-dd'}} to {{amendment.EndDate| date:'yyyy-MM-dd'}} ( Teacher: {{amendment.Teacher.FirstName}} Location : {{amendment.Org.Abbr}} - {{amendment.Room.RoomName}})
+                </small>
+              </div>
             </div>
           </div>
         </div>

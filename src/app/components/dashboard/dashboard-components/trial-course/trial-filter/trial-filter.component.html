@@ -1,0 +1,46 @@
+<!--filter label-->
+<div class='row'>
+  <div class='col-12 t_f_filters'>
+    <span class='t_f_filters_title'>Filters:&nbsp;&nbsp;</span>
+    <span *ngFor='let i of filterName;let index = index'>
+      <span class='t_f_filters_item t_f_filters_remove' (click)='removeFilters(index)'>{{i}}</span>
+    </span>
+  </div>
+</div>
+
+<!--divider-->
+<div class='divider'></div>
+
+<div class='row t_f_filters_content'>
+  <!--filter Content-->
+  <div class='col-12'>
+    <span *ngFor='let i of filterContent; let index = index' class='row' style="margin-bottom:1rem">
+      <span class='col-12'>
+        {{filterLabel[index]}}&nbsp;&nbsp;
+        <span *ngFor='let j of i;let itemIndex = index'>
+          <span class='t_f_filters_item' id='{{index+1 + "" + itemIndex}}'
+            (click)='processFilters(index + 1,itemIndex,j,index+1 + "" + itemIndex)'>{{j.CourseCategoryName || j.Abbr || (j.FirstName + ' ' + j.LastName)}}</span>
+        </span>
+      </span>
+    </span>
+  </div>
+</div>
+
+<!--divider-->
+<div class='divider'></div>
+
+<!--Teachers display area-->
+<div class='row t_f_teachers'>
+  <div class='col-12'>
+    <span *ngFor='let i of teachersListAfterFilter;let index=index' class='row' style="margin-bottom:0.5rem">
+      <span class='col-1'>
+        {{(index+1) | weekFormat}}
+      </span>
+      <span class='col-11'>
+        <span *ngFor='let j of i;let itemIndex = index' id='{{index+""+itemIndex}}' class='t_f_teachers_tag'>
+          {{j.FirstName}}
+        </span>
+      </span>
+    </span>
+  </div>
+</div>

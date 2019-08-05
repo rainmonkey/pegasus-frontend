@@ -11,6 +11,7 @@ import { InventoriesService } from 'src/app/services/http/inventories.service';
 export class StockApplicationFormComponent implements OnInit {
   @Input() command: number;
   @Input() whichOrder: any;
+  @Input() headOfficeFlag: boolean;
   @Output() sendApplicationForm = new EventEmitter<any>();
   
   /* loading */
@@ -35,6 +36,9 @@ export class StockApplicationFormComponent implements OnInit {
   public errorMessage: string = '';
   /* props for update model */
   public editFlag: boolean = false;
+  /* props for reply modal */
+  public replyFlag: boolean = false;
+  public replyMsg: string;
   
   /* get form control  */
   get applyReason() { return this.applicationForm.get('applyReason') }

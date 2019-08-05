@@ -66,7 +66,7 @@ export class StockApplicationUpdateModalComponent implements OnInit {
     )
   }
   putProduct(applicationId) {
-    console.log('put', this.getDataToPost())
+    console.log('data to put', this.getDataToPost())
     this.inventoriesService.putProduct(applicationId, this.getDataToPost()).subscribe(
       res => this.updateApplication.emit(res['Data']),
       err => this.errHandler(err)

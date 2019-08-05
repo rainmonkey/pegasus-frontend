@@ -12,6 +12,8 @@ import { StockApplicationUpdateModalComponent } from 'src/app/components/dashboa
 import { StockApplicationDetailModalComponent } from 'src/app/components/dashboard/dashboard-components/inventory/inventory-stock-application/stock-application-detail-modal/stock-application-detail-modal.component';
 import { StockApplicationReplyModalComponent } from 'src/app/components/dashboard/dashboard-components/inventory/inventory-stock-application/stock-application-reply-modal/stock-application-reply-modal.component';
 import { StockApplicationDeliverModalComponent } from 'src/app/components/dashboard/dashboard-components/inventory/inventory-stock-application/stock-application-deliver-modal/stock-application-deliver-modal.component';
+import { StockApplicationReceiveModalComponent } from 'src/app/components/dashboard/dashboard-components/inventory/inventory-stock-application/stock-application-receive-modal/stock-application-receive-modal.component';
+
 @Component({
   selector: 'app-stock-application-list',
   templateUrl: './stock-application-list.component.html',
@@ -48,9 +50,12 @@ export class StockApplicationListComponent implements OnInit {
   public deleteFailed: boolean = false;
   public applicationId: number;
   /* props for result of returned checkRole() */
-  public headOfficeRole: boolean = false;
+  public headOfficeFlag: boolean = false;
   /* for search method */
   public searchBy: string;
+  /* branch */
+  public processStatus: number;
+
 
   constructor(
     private router: Router,
@@ -63,7 +68,7 @@ export class StockApplicationListComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.headOfficeRole = this.checkRole()
+    this.headOfficeFlag = this.checkRole()
     /* before get data from server, renders loading flag */
     this.loadingFlag = true;
     /* get three months data from server the first time accesses the web page */
@@ -73,6 +78,7 @@ export class StockApplicationListComponent implements OnInit {
       beginDate: ['', Validators.pattern('^\d{4}\-(0[1-9]|1[012])\-(0[1-9]|[12][0-9]|3[01])$')],
       endDate: ['', Validators.pattern('^\d{4}\-(0[1-9]|1[012])\-(0[1-9]|[12][0-9]|3[01])$')]
     })
+    
   }
  
   /* 
@@ -83,7 +89,7 @@ export class StockApplicationListComponent implements OnInit {
   checkRole() {
     // now role is just hardcode, will get it from real value after creat a head office account
     let role = 9
-    // let role = + localStorage.getstockInfo('Role');
+    // let role = + localStorage.getorder('Role');
     if(role === 9) return true
     else return false
   }
@@ -100,9 +106,11 @@ export class StockApplicationListComponent implements OnInit {
     if(this.checkRole()) {
       this.inventoriesService.getStockApplication(previousDate, currentDate).subscribe(
         (res) => {
-          // console.log('res', res['Data']);
+          console.log('headOfficeRes', res['Data']);
           this.stockApplication = this.renderOrderList(res['Data']);
-          this.stockApplicationCopy = res['Data'].map((stockInfo, i) => ({ id: i + 1, ...stockInfo }));
+           
+          console.log('this.stockApplication', this.stockApplication)
+          this.stockApplicationCopy = res['Data'].map((order, i) => ({ id: i + 1, ...order }));
           this.loadingFlag = false;
         },
         (err) => {
@@ -112,9 +120,9 @@ export class StockApplicationListComponent implements OnInit {
     } else {
       this.inventoriesService.getStockApplication(previousDate, currentDate).subscribe(
         (res) => {
-          // console.log('res', res['Data']);
+          console.log('branchRes', res['Data']);
           let orgId = +localStorage.getItem('OrgId')[1];
-          this.stockApplication = this.renderOrderList(res['Data']).filter((stockInfo) => stockInfo.Org.OrgId === orgId);
+          this.stockApplication = this.renderOrderList(res['Data']).filter((order) => order.Org.OrgId === orgId);
           this.loadingFlag = false;
         },
         (err) => {
@@ -132,7 +140,7 @@ export class StockApplicationListComponent implements OnInit {
   /* slice specific part of data to display in table of HTML */
   renderOrderList(orderList: any[]) {
     return orderList.reverse()
-      .map((stockInfo, i) => ({ id: i + 1, ...stockInfo }))
+      .map((order, i) => ({ id: i + 1, ...order }))
   }
   /* Validate EndDate > BeginDate */
   onBeginDateSelect(beginDate: NgbDate) {
@@ -198,7 +206,7 @@ export class StockApplicationListComponent implements OnInit {
           res => {
             console.log('post success', res['Data']);
             this.stockApplication.unshift(res['Data']);
-            this.stockApplication.map((stockInfo, i) => stockInfo.id = i + 1);
+            this.stockApplication.map((order, i) => order.id = i + 1);
             this.applicationId = applicationId;
             setTimeout(() => {
               this.applicationId = null;
@@ -211,12 +219,21 @@ export class StockApplicationListComponent implements OnInit {
       }
     )
   }
-  putStockApplication(modalRef: any) {
+  putStockApplication(modalRef: any, whichOrder) {
     modalRef.componentInstance.updateApplication.subscribe(
       (res) => {
         // this.loadingFlag = true;
         console.log('put success', res);
-
+        this.inventoriesService.getNewStockApplication(res.ApplicationId).subscribe(
+          res => {
+            let index = this.stockApplication.indexOf(whichOrder);
+            let updateRes = { id: index + 1, ...res['Data']}
+            // console.log('res', res['Data'])
+            this.stockApplication.splice(index, 1, updateRes);
+            // console.log('aaa', this.stockApplication)
+          },
+          err => console.log('err', err)
+        )
         modalRef.close();
       },
       (err) => this.errorHandler(err)
@@ -227,7 +244,7 @@ export class StockApplicationListComponent implements OnInit {
     modalRef.componentInstance.command = command;
     modalRef.componentInstance.whichOrder = whichOrder;
     this.postStockApplication(modalRef);
-    this.putStockApplication(modalRef);
+    this.putStockApplication(modalRef, whichOrder);
   }
   /* detail modal */
   detailModal(command: number, whichOrder: any) {
@@ -247,7 +264,7 @@ export class StockApplicationListComponent implements OnInit {
           this.isDeleted = false;
           let index = this.stockApplication.indexOf(whichOrder);
           this.stockApplication.splice(index, 1);
-          this.stockApplication.map((stockInfo, i) => stockInfo.id = i + 1);
+          this.stockApplication.map((order, i) => order.id = i + 1);
         },
         err => {
           this.deleteFailed = true;
@@ -267,11 +284,26 @@ export class StockApplicationListComponent implements OnInit {
     modalRef.componentInstance.command = command;
     modalRef.componentInstance.whichOrder = whichOrder;
   }
-  /* deliver */
-  deliver(command: number, whichOrder: any) {
+  /* deliver modal */
+  deliverModal(command: number, whichOrder: any) {
     const modalRef = this.modalService.open(StockApplicationDeliverModalComponent, { size: 'lg', centered: true, backdrop: 'static', keyboard: false });
     modalRef.componentInstance.command = command;
     modalRef.componentInstance.whichOrder = whichOrder;
+    this.updateDeliverStatus(modalRef);
+  }
+  updateDeliverStatus(modalRef) {
+    modalRef.componentInstance.sendDeliverRes.subscribe(
+      res => {
+        console.log('update deliver', res)
+        this.stockApplication.map((order) => {
+          if(order.ApplicationId === res.ApplicationId) {
+            order.ProcessStatus = res.ProcessStatus
+          }
+        })
+        modalRef.close();
+      },
+      err => this.errorHandler(err)
+    )
   }
   /* search staff name and location */
   search(text: string) {
@@ -285,5 +317,10 @@ export class StockApplicationListComponent implements OnInit {
   keyup() {
     this.searchBy === ''? this.stockApplication = this.stockApplicationCopy: this.stockApplication = this.search(this.searchBy);
   }
-
+  /* receive modal */
+  receiveModal(command, whichOrder) {
+    const modalRef = this.modalService.open(StockApplicationReceiveModalComponent, { size: 'lg', centered: true, backdrop: 'static', keyboard: false });
+    modalRef.componentInstance.command = command;
+    modalRef.componentInstance.whichOrder = whichOrder;
+  }
 }

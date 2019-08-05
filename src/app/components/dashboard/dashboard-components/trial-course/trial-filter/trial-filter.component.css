@@ -1,0 +1,52 @@
+.t_f_filters{
+    margin-top:0.5rem;
+    margin-bottom:0.5rem;
+}
+.t_f_filters_title{
+    font-weight: bold;
+}
+.t_f_filters_item{
+    margin-right:0.5rem;
+    border:1px solid lightgrey;
+    border-radius:3px;
+    padding:0.1rem 0.2rem;
+}
+.t_f_filters_item:hover{
+    cursor: pointer;
+    border:1px solid #272822;
+    background: lightgray;
+}
+.t_f_filters_content{
+    margin-top: 1rem;
+}
+.t_f_teachers{
+    margin-top:1rem;
+}
+.t_f_teachers_tag{
+    display: inline-block;
+    width: 8rem;
+    height: 11rem;
+    margin-right: 0.7rem;
+    margin-bottom: 0.5rem;
+    text-align: center;
+    border: 1px solid lightgrey;
+    border-radius: 5px;
+}
+.t_f_teachers_tag:hover{
+    cursor: pointer;
+    background: lightgray;
+    border:1px solid #272822;
+}
+.t_f_filters_remove{
+    min-width: 4rem;
+    text-align: center;
+    display: inline-block;
+}
+.t_f_filters_remove:hover{
+    background: rgb(251, 195, 195);
+    color:rgb(246, 63, 63);
+    border:1px solid rgb(246, 63, 63);
+}
+.divider{
+    border-bottom: 2px solid lightgrey;
+}

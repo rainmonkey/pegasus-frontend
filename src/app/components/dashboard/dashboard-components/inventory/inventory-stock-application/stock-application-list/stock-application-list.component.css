@@ -40,11 +40,12 @@ li {
   list-style-type: none;
   margin: 0px;
 }
-.table__btn--cursor {
+.table__btn {
   margin-right: 1rem;
+  border: 0;
+  background-color: transparent;
 }
 .sorting--cursor:hover,
-.table__btn--cursor:hover, 
 .table__header--cursor:hover
 {
   cursor: pointer;
