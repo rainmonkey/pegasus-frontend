@@ -155,6 +155,8 @@ import { NewRegistrationFormComponent } from './components/dashboard/dashboard-c
 import { TutorsInfomationComponent } from './components/dashboard/dashboard-components/tutors/tutors-infomation/tutors-infomation.component';
 import { StockApplicationReplyModalComponent } from './components/dashboard/dashboard-components/inventory/inventory-stock-application/stock-application-reply-modal/stock-application-reply-modal.component';
 import { StockApplicationDeliverModalComponent } from './components/dashboard/dashboard-components/inventory/inventory-stock-application/stock-application-deliver-modal/stock-application-deliver-modal.component';
+import { StockApplicationReceiveModalComponent } from './components/dashboard/dashboard-components/inventory/inventory-stock-application/stock-application-receive-modal/stock-application-receive-modal.component';
+import { StockApplicationProcessStatusComponent } from './components/dashboard/dashboard-components/inventory/inventory-stock-application/stock-application-process-status/stock-application-process-status.component';
 
 
 @NgModule({
@@ -299,7 +301,9 @@ import { StockApplicationDeliverModalComponent } from './components/dashboard/da
   NewRegistrationFormComponent,
   TutorsInfomationComponent,
   StockApplicationReplyModalComponent,
-  StockApplicationDeliverModalComponent
+  StockApplicationDeliverModalComponent,
+  StockApplicationReceiveModalComponent,
+  StockApplicationProcessStatusComponent
   ],
   imports: [
     NgbModule,
@@ -375,6 +379,7 @@ import { StockApplicationDeliverModalComponent } from './components/dashboard/da
     StockApplicationDeleteModalComponent,
     StockApplicationReplyModalComponent,
     StockApplicationDeliverModalComponent,
+    StockApplicationReceiveModalComponent,
     InventoryDetailModalComponent,
     InventoryReceiptModalComponent,
     // AddHolidaysModalComponent,

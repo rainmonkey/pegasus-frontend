@@ -133,15 +133,4 @@
       </button>
     </div>
   </form>
-  <!-- reply modal -->
-  <div *ngIf="detailFlag && headOfficeFlag">
-    <div class="d-flex justify-content-end p-2">
-      <button class="btn-info mr-3 rounded" (click)="approve()">Approve</button>
-      <button class="btn-info mr-1 rounded" (click)="deny()">Deny</button>
-    </div>
-    <div *ngIf="replyFlag" class="reply">
-      <input type="text" class="reply__content" [(ngModel)]="replyMsg" (keyup)="keyupMsg()">
-      <span class="reply__cancel" (click)="cancelReply()">X</span>
-    </div>
-  </div>
 </div>

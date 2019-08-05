@@ -220,17 +220,5 @@ export class StockApplicationFormComponent implements OnInit {
         this.sendApplicationForm.emit(this.applicationForm)
       });
   }
-  /* reply modal */
-  approve() {
-    this.replyFlag = true;
-  }
-  deny() {
-    this.replyFlag = true;
-  }
-  cancelReply() {
-    this.replyFlag = false;
-  }
-  keyupMsg() {
-    this.inventoriesService.changeReplyMsg(this.replyMsg)
-  }
+  
 }

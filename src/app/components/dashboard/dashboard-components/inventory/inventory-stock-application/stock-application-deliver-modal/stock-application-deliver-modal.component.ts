@@ -1,31 +1,39 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, ViewChild, AfterViewChecked } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { InventoriesService } from 'src/app/services/http/inventories.service';
+import { StockApplicationProcessStatusComponent } from 'src/app/components/dashboard/dashboard-components/inventory/inventory-stock-application/stock-application-process-status/stock-application-process-status.component';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-stock-application-deliver-modal',
   templateUrl: './stock-application-deliver-modal.component.html',
   styleUrls: ['./stock-application-deliver-modal.component.css']
 })
-export class StockApplicationDeliverModalComponent implements OnInit {
+export class StockApplicationDeliverModalComponent implements OnInit, AfterViewChecked {
   @Input() command: number;
   @Input() whichOrder: any;
   @Output() sendDeliverRes = new EventEmitter<any>();
+  @ViewChild(StockApplicationProcessStatusComponent) stockApplicationProcessStatusComponent
 
   public errorMessage: string;
+  public deliverFlag: boolean = false;
+  public deliveredQty: number[];
 
   constructor(public activeModal: NgbActiveModal, private inventoriesService: InventoriesService) { }
 
   ngOnInit() {
+    this.deliverFlag = true;
   }
-
+  ngAfterViewChecked() {
+    this.deliveredQty = this.stockApplicationProcessStatusComponent.deliveredQty;
+  }
 
   dataToDeliver() {
     let deliverObj = {};
     let tempObj = {};
     this.whichOrder.ApplicationDetails.map((order, i) => {
       let productId = order.Product.ProductId
-      let quantity = order.AppliedQty;
+      let quantity = this.deliveredQty[i];
       tempObj[productId] = quantity
     });
     deliverObj['ApplicationId'] = this.whichOrder.ApplicationId;
@@ -35,8 +43,14 @@ export class StockApplicationDeliverModalComponent implements OnInit {
   deliver() {
     this.inventoriesService.deliverProduct(this.dataToDeliver()).subscribe(
       res => {
-        // console.log('res', res['Data'])
+        console.log('res', res['Data'])
         this.sendDeliverRes.emit(res['Data'])
+        Swal.fire({
+          title: 'Successfully sent!',
+          type: 'success',
+          showConfirmButton: true,
+        });
+        this.activeModal.close();
       },
       err => this.errHandler(err)
     )

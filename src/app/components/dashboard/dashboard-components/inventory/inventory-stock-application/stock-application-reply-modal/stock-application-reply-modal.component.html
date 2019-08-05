@@ -7,7 +7,9 @@
   </button>
 </div>
 <div class="modal-body">
-  <app-stock-application-form [command]="command" [whichOrder]="whichOrder" [headOfficeFlag]="headOfficeFlag"></app-stock-application-form>
+  <app-stock-application-process-status 
+    [command]="command" [whichOrder]="whichOrder" [replyFlag]="replyFlag">
+  </app-stock-application-process-status>
 <div class="modal-footer">
   <button type="button" class="btn btn-outline-dark" (click)="sendReplyMsg()">Send</button>
   <button type="button" class="btn btn-outline-dark" (click)="activeModal.close('Close click')">Close</button>
