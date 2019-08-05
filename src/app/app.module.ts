@@ -156,6 +156,7 @@ import { StockApplicationReplyModalComponent } from './components/dashboard/dash
 import { StockApplicationDeliverModalComponent } from './components/dashboard/dashboard-components/inventory/inventory-stock-application/stock-application-deliver-modal/stock-application-deliver-modal.component';
 import { TrialInfoComponent } from './components/dashboard/dashboard-components/trial-course/trial-info/trial-info.component';
 import { TrialFilterComponent } from './components/dashboard/dashboard-components/trial-course/trial-filter/trial-filter.component';
+import { PayListComponent } from './components/dashboard/dashboard-components/admin-staff/pay-list/pay-list.component';
 
 
 @NgModule({
@@ -294,6 +295,7 @@ import { TrialFilterComponent } from './components/dashboard/dashboard-component
     ConflictCheckComponent,
     ProcessStatusPipe,
     StockApplicationFormComponent,
+    PayListComponent,
 
   //  new registration
   NewLearnerRegistrationModalComponent,
