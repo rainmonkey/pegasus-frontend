@@ -1,0 +1,16 @@
+.deliver__info {
+    margin-left: 20%;
+}
+.deliver__title {
+    font-size: 18px;
+}
+.reply__content {
+    border: 0.5px solid #075663;
+    border-radius: 10px;
+    padding: 10px;
+    width: 70%;
+}
+.deliver__table {
+    width: 70%;
+    text-align: center;
+}

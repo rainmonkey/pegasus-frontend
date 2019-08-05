@@ -40,11 +40,11 @@
       </div>
     </form>
     <!-- search bar -->
-    <div *ngIf="headOfficeRole" class="ml-auto">
+    <div *ngIf="headOfficeFlag" class="ml-auto">
       <input type="text" [(ngModel)]="searchBy" (keyup)="keyup()" class="search__bar" placeholder="search by name or location" >
     </div>
     <!-- add more btn -->
-    <div class="ml-auto" *ngIf="!headOfficeRole">
+    <div class="ml-auto" *ngIf="!headOfficeFlag">
       <button class="btn btn-info btn__add--right" (click)="updateModal(2, null)">
         + Add More
       </button>
@@ -67,6 +67,10 @@
       <thead>
         <tr class="table__header--cursor">
           <th scope="col" style="width:5rem;">#</th>
+          <th scope="col" class="sorting--cursor" style="width:10rem"
+            (click)="onSort('StaffName')">
+            Application Id
+          </th>
           <th scope="col" class="sorting--cursor" style="width:10rem"
             (click)="onSort('StaffName')">
             Staff Name
@@ -101,6 +105,7 @@
             slice: (page-1)* pageSize : (page-1) * pageSize + pageSize; let i = index"
           [ngClass]="{'tr--highlight': item.ApplicationId == applicationId}">
           <th scope="row">{{ item.id }}</th>
+          <td>{{ item.ApplicationId }}</td>
           <td><ngb-highlight [result]="item.ApplyStaff.FirstName" [term]="searchBy"></ngb-highlight></td>
           <td><ngb-highlight [result]="item.Org.OrgName" [term]="searchBy"></ngb-highlight></td>
           <td>{{ item.ApplyAt | date:"shortDate" }}</td>
@@ -112,12 +117,12 @@
             <li *ngFor="let detail of item.ApplicationDetails">{{ detail.AppliedQty }}</li>
           </td>
           <td>{{ item.ProcessStatus | processStatus}}</td>
-          <td *ngIf="headOfficeRole">
+          <td *ngIf="headOfficeFlag">
             <div class="d-flex justify-content-around">
               <span class="table__btn--cursor" (click)="detailModal(1, item)">
                 <i class='fas fa-info-circle'></i>
               </span>
-              <span class="table__btn--cursor" (click)="replyModal(3, item)">
+              <span class="table__btn--cursor" (click)="replyModal(1, item)">
                 <i class="fas fa-comment"></i>
               </span>
             </div>
@@ -130,7 +135,7 @@
               </span>
             </div>
           </td>
-          <td *ngIf="!headOfficeRole">
+          <td *ngIf="!headOfficeFlag">
             <span class="table__btn--cursor" (click)="detailModal(1, item)">
               <i class='fas fa-info-circle'></i>
             </span>
