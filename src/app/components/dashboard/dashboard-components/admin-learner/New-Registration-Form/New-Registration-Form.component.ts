@@ -1,8 +1,9 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, ViewChild, ElementRef } from '@angular/core';
 import { Command } from 'protractor';
 import { FormBuilder, Validators, FormGroup } from '@angular/forms';
 import { CoursesService } from 'src/app/services/http/courses.service';
 import { LearnerRegistrationService } from 'src/app/services/http/learner-registration.service';
+import { View } from '@fullcalendar/core';
 
 
 @Component({
@@ -16,7 +17,7 @@ export class NewRegistrationFormComponent implements OnInit {
   public learnerLevel: Array<any>;
   public levelType: Array<any>;
   public learnerlevelType = 1;
-  public isSelectedLevel =false;
+  public isSelectedLevel = false;
   public selectedPhoto: File = null;
   public selectedGrade: File = null;
   public selectedAgreement: File = null;
@@ -24,7 +25,9 @@ export class NewRegistrationFormComponent implements OnInit {
   public maxSize: number = 1024;
   photoObj;
 
-
+  @ViewChild("grade") grade;
+  @ViewChild('agreement') agreement;
+  @ViewChild('otherFile') otherFile;
   @Input() command
   @Input() whichLearner
   constructor(
@@ -37,7 +40,7 @@ export class NewRegistrationFormComponent implements OnInit {
     this.registrationForm = this.fb.group(this.formBuild());
     this.getLocationFromServer()
     this.getLookUp()
-   this.editFormSelectLevel()
+    this.editFormSelectLevel()
   }
 
   formBuild() {
@@ -154,13 +157,13 @@ export class NewRegistrationFormComponent implements OnInit {
       );
   }
 
-  isSelectLevel(){
-    this.isSelectedLevel=true
+  isSelectLevel() {
+    this.isSelectedLevel = true
   }
 
-  editFormSelectLevel(){
-    if(this.command == 2){
-      this.isSelectedLevel=true
+  editFormSelectLevel() {
+    if (this.command == 2) {
+      this.isSelectedLevel = true
     }
   }
 
@@ -170,12 +173,13 @@ export class NewRegistrationFormComponent implements OnInit {
     this.photoObj = document.querySelector('#photoID');
     let that = this;
     let fileSize = (Number(<File>event.target.files[0].size)) / 1024;
-    if(this.checkPhotoSize(fileSize)){
-        let reader = new FileReader();
-    reader.onloadend = function () {
-      that.photoObj.setAttribute("src", this.result.toString());
-    }
-    reader.readAsDataURL(photoRender);
+    if (this.checkPhotoSize(fileSize)) {
+      let reader = new FileReader();
+      reader.onloadend = function () {
+        that.photoObj.setAttribute("src", this.result.toString());
+
+      }
+      reader.readAsDataURL(photoRender);
     }
   }
 
@@ -190,26 +194,30 @@ export class NewRegistrationFormComponent implements OnInit {
       that.photoObj.setAttribute("src", this.result.toString());
     }
     reader.readAsDataURL(photoRender);
+    this.grade.nativeElement.innerText=this.selectedGrade.name
+
   }
 
   uploadAgreement(event) {
     this.selectedAgreement = <File>event.target.files[0];
+    this.agreement.nativeElement.innerText=this.selectedAgreement.name
   }
 
   uploadOther(event) {
     this.selectedOther = <File>event.target.files[0];
+    this.otherFile.nativeElement.innerText=this.selectedOther.name
   }
 
-    /*
-    check photo size, photo size can not lager than limit
-  */
- checkPhotoSize(size) {
-  if (size > this.maxSize) {
-    alert("Photo size can not large than 1M");
-    return false;
+  /*
+  check photo size, photo size can not lager than limit
+*/
+  checkPhotoSize(size) {
+    if (size > this.maxSize) {
+      alert("Photo size can not large than 1M");
+      return false;
+    }
+    else {
+      return true;
+    }
   }
-  else {
-    return true;
-  }
-}
 }
