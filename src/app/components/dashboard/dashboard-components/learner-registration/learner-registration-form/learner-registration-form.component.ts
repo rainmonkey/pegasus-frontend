@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter, DoCheck, AfterViewInit } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, DoCheck, AfterViewInit, ElementRef, ViewChild } from '@angular/core';
 import { FormGroup, FormArray, FormBuilder, Validators, FormControl } from '@angular/forms';
 import { LearnerRegistrationService } from '../../../../../services/http/learner-registration.service';
 import { CoursesService } from '../../../../../services/http/courses.service';
@@ -20,6 +20,13 @@ import { isInteger } from '@ng-bootstrap/ng-bootstrap/util/util';
   styleUrls: ['./learner-registration-form.component.css']
 })
 export class LearnerRegistrationFormComponent implements OnInit, DoCheck, AfterViewInit {
+  //get file label element
+  @ViewChild('agreement')
+  agreement: ElementRef;
+
+  @ViewChild('other')
+  other: ElementRef;
+
   // @Input() receivedParentMessage: any;
   // receivedChildMessage: any;
   // courseIntanceGroup: FormGroup;
@@ -308,11 +315,22 @@ export class LearnerRegistrationFormComponent implements OnInit, DoCheck, AfterV
   }
 
   uploadAgreement(event) {
+    let files = event.target.files;
+    console.log('12345',files)
+    console.log(Array.from(files))
+    // if mutiple files
+    //@ts-ignore
+    // this.agreement.nativeElement.innerText = Array.from(files).map(f => f.name).join(',');
+    // single file
+    this.agreement.nativeElement.innerText = files[0].name;
     this.selectedAgreement = <File>event.target.files[0];
     this.fd.append('form', this.selectedAgreement);
   }
 
   uploadOther(event) {
+    let files = event.target.files;
+    console.log(files, this.other)
+    this.other.nativeElement.innerText = files[0].name;
     this.selectedOther = <File>event.target.files[0];
     this.fd.append('OtherFile', this.selectedOther);
   }
