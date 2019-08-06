@@ -53,8 +53,7 @@ export class StaffEditModalComponent implements OnInit {
     this.activeModal.close('Cross click');
   }
 
-  onSubmit() {
-    console.log(this.modalUpdateFormComponentObj.updateForm)
+  onSubmit() {console.log(this.modalUpdateFormComponentObj.updateForm)
     if (this.modalUpdateFormComponentObj.updateForm.dirty == true) {
       this.submitionFlag = false;
       this.infoMessage = 'loading.....'

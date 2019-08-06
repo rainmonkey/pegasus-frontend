@@ -1,6 +1,5 @@
 <div>
   <form novalidate [formGroup]='registrationForm'>
-
     <div class="row">
       <div class='col-4'>
         <div class='card img-border'>
@@ -10,7 +9,6 @@
                     class="fas fa-file-upload"></i></span></label>
               <input formControlName="photo" style='cursor: pointer' type="file" (change)="uploadPhoto($event)"
                 class='custom-file-input' id="photo" accept="image/*">
-
               <img src="../../../../../../assets/images/shared/default-employer-profile.png" id='photoID'
                 alt="ID preview...">
             </div>
@@ -18,12 +16,17 @@
         </div>
       </div>
 
-
       <div class="col-8">
         <div class="row">
+          <div class="col-12">
+            <div class="button text-right">
+              <button class="btn_reset my-3 btn btn-info" (click)="resetLearner()">Reset</button>
+            </div>
+          </div>
+
           <div class="grade my-3 col-8">
-            <label for="grade" #grade class='custom-file-label'>If you have ABRSM Theory Grade 5, please upload.. <span><i
-                  class="fas fa-file-upload"></i></span></label>
+            <label for="grade" #grade class='custom-file-label'>If you have ABRSM Theory Grade 5, please upload..
+              <span><i class="fas fa-file-upload"></i></span></label>
             <input formControlName="grade" type="file" (change)="uploadGrade($event)" id="grade"
               class='custom-file-input' accept="image/*">
           </div>
@@ -44,206 +47,224 @@
           </div>
         </div>
       </div>
-      </div>
-      <br>
+    </div>
+    <br>
 
-      <div class="row">
-        <!-- Name -->
-        <span class="col-sm-1 col-md-1">
-          <span for="firstName">Name: </span>
-        </span>
+    <div class="row">
+      <!-- Name -->
+      <span class="col-sm-1 col-md-1">
+        <span for="firstName">Name: </span>
+      </span>
 
-        <span class='col-sm-3 col-md-3'>
-          <input class="form-control l-input" formControlName="FirstName" type="text" id="firstName"
-            placeholder="First Name *"
-            [class.error_border]='registrationForm.get("FirstName").invalid && registrationForm.get("FirstName").touched'>
-          <div
-            *ngIf="registrationForm.controls.FirstName.invalid && (registrationForm.controls.FirstName.dirty ||registrationForm.controls.FirstName.touched)"
-            class="text-danger">
-            <small *ngIf="registrationForm.controls.FirstName.errors?.required"> First name is required</small>
+      <span class='col-sm-3 col-md-3'>
+        <input class="form-control l-input" formControlName="FirstName" type="text" id="firstName"
+          placeholder="First Name *"
+          [class.error_border]='registrationForm.get("FirstName").invalid && registrationForm.get("FirstName").touched'>
+        <div
+          *ngIf="registrationForm.controls.FirstName.invalid && (registrationForm.controls.FirstName.dirty ||registrationForm.controls.FirstName.touched)"
+          class="text-danger">
+          <small *ngIf="registrationForm.controls.FirstName.errors?.required"> First name is required</small>
+        </div>
+      </span>
 
-          </div>
-        </span>
+      <span class='col-sm-3 col-md-3'>
+        <input class="form-control l-input" formControlName="MiddleName" type="text" id="middleName"
+          placeholder="Middle Name ">
+      </span>
 
+      <span class='col-sm-3 col-md-3'>
+        <input class="form-control l-input" formControlName="LastName" type="text" id="lastName"
+          placeholder="Last Name *"
+          [class.error_border]='registrationForm.get("LastName").invalid && registrationForm.get("LastName").touched'>
+        <div
+          *ngIf="registrationForm.controls.LastName.invalid && (registrationForm.controls.LastName.dirty ||registrationForm.controls.LastName.touched)"
+          class="text-danger">
+          <small *ngIf="registrationForm.controls.LastName.errors?.required"> Last name is required</small>
+        </div>
+      </span>
+    </div>
+    <br>
 
-        <span class='col-sm-3 col-md-3'>
-          <input class="form-control l-input" formControlName="MiddleName" type="text" id="middleName"
-            placeholder="Middle Name ">
-        </span>
+    <div class="row">
+      <span class="col-sm-1 col-md-1">
+        <span>Gender: </span>
+      </span>
 
-        <span class='col-sm-3 col-md-3'>
-          <input class="form-control l-input" formControlName="LastName" type="text" id="lastName"
-            placeholder="Last Name *"
-            [class.error_border]='registrationForm.get("LastName").invalid && registrationForm.get("LastName").touched'>
-          <div
-            *ngIf="registrationForm.controls.LastName.invalid && (registrationForm.controls.LastName.dirty ||registrationForm.controls.LastName.touched)"
-            class="text-danger">
-            <small *ngIf="registrationForm.controls.LastName.errors?.required"> Last name is required</small>
-          </div>
-        </span>
-      </div>
-      <br>
-
-      <div class="row">
-        <span class="col-sm-1 col-md-1">
-          <span>Gender: </span>
-        </span>
-
-        <span class='col-sm-4 col-md-4'>
-          <span *ngIf='command == 1'>
-            <select type="text" class='form-control l-input' formControlName='Gender'
-              [class.error_border]='registrationForm.get("Gender").invalid && registrationForm.get("Gender").touched'>
-              <option value="null" disabled="true" [selected]="true">Gender*</option>
-              <option value="1">Male</option>
-              <option value="0">Female</option>
-            </select>
-          </span>
-
-          <span *ngIf='command == 2'>
-            <select type="text" class='form-control l-input' formControlName='Gender'
-              [class.error_border]='registrationForm.get("Gender").invalid && registrationForm.get("Gender").touched'>
-              <option value="1">Male</option>
-              <option value="0">Female</option>
-            </select>
-          </span>
-
-
-          <div
-            *ngIf="registrationForm.controls.Gender.invalid && (registrationForm.controls.Gender.dirty ||registrationForm.controls.Gender.touched)"
-            class="text-danger">
-            <small *ngIf="registrationForm.controls.Gender.errors?.required"> Gender is required</small>
-          </div>
-        </span>
-
-        <span class='col-sm-2 col-md-2' style='text-align: right'>
-          <span>Date of Birth:</span>
-        </span>
-        <span class='col-sm-4 col-md-4'>
-          <input class="form-control l-input" formControlName="dob" type="date" id="birthday"
-            (blur)="handleIsUnder18($event.target.value)">
-        </span>
-      </div>
-      <br>
-
-      <div class="row">
-        <span class='col-sm-1 col-md-1'>
-          <span>Phone: </span>
-        </span>
-
-        <span class='col-sm-4 col-md-4'>
-          <input class="form-control l-input" formControlName="ContactNum" type="text" id="contactNum"
-            placeholder="Contact number">
-        </span>
-
-        <span class='col-sm-2 col-md-2' style='text-align: right'>
-          <span>Email:</span>
-        </span>
-        <span class='col-sm-4 col-md-4'>
-          <input class="form-control l-input" formControlName="Email" type="text" id="email" placeholder="Email *"
-            [class.error_border]='registrationForm.get("Email").invalid && registrationForm.get("Email").touched'>
-          <div
-            *ngIf="registrationForm.controls.Email.invalid && (registrationForm.controls.Email.dirty ||registrationForm.controls.Email.touched)"
-            class="text-danger">
-            <small *ngIf="registrationForm.controls.Email.errors?.required"> Email is required</small>
-
-          </div>
-
-        </span>
-      </div>
-      <br>
-
-      <div class="row">
-        <span class='col-sm-1 col-md-1' style='text-align: right'>
-          <span>Address:</span>
-        </span>
-        <span class='col-sm-4 col-md-4'>
-          <input class="form-control l-input" formControlName="Address" type="text" id="Address"
-            placeholder="Physical Address">
-        </span>
-
-
-
-        <span class='col-sm-2 col-md-2' style='text-align: right'>
-          <span>Date of Enrollment:</span>
-        </span>
-        <span class='col-sm-4 col-md-4'>
-          <input class="form-control l-input" formControlName="EnrollDate" type="date" id="enrollDate">
-        </span>
-      </div>
-      <br>
-
-      <div class="row">
-        <span class='col-sm-1 col-md-1' style='text-align: right'>
-          <span>Location:</span>
-        </span>
-        <span class='col-sm-4 col-md-4'>
-          <span *ngIf='command ==1'>
-            <select class="form-control l-input" formControlName="OrgId" id="location">
-              <option value="null" disabled="true" [selected]="true">Location*</option>
-              <option *ngFor="let location of locations" [value]="location.OrgId">{{location.OrgName}}</option>
-            </select>
-          </span>
-          <span *ngIf='command == 2'>
-            <select class="form-control l-input" formControlName="OrgId" id="location">
-              <option *ngFor="let location of locations" [value]="location.OrgId">{{location.OrgName}}</option>
-            </select>
-          </span>
-        </span>
-
-        <span class="col-sm-2 col-md-2">
-          <span>Your Current Level: </span>
-        </span>
-        <span class='col-sm-4 col-md-4'>
-          <select class="form-control l-input" formControlName="LearnerLevel" (change)='isSelectLevel()'>
-            <option *ngFor="let llevel of learnerLevel" [value]="llevel.PropValue">{{llevel.PropName}}</option>
+      <span class='col-sm-4 col-md-4'>
+        <span *ngIf='command == 1'>
+          <select type="text" class='form-control l-input' formControlName='Gender'
+            [class.error_border]='registrationForm.get("Gender").invalid && registrationForm.get("Gender").touched'>
+            <option value="null" disabled="true" [selected]="true">Gender*</option>
+            <option value="1">Male</option>
+            <option value="0">Female</option>
           </select>
+        </span>
 
-          <div *ngIf="isSelectedLevel">
-            <span>Did you take an exam before?</span><br>
-            <div class="d-inline-flex" *ngFor="let levelType of levelType; let i=index">
-              <div class="form-check">
-                <input class="form-check-input" (click)="selectLevelType(levelType.PropValue)" type="radio"
-                  [value]="levelType.PropValue" formControlName="levelTypeRadio">
-                <label class="form-check-label" for="levelType">{{levelType.PropName}}</label>
-              </div>
+        <span *ngIf='command == 2'>
+          <select type="text" class='form-control l-input' formControlName='Gender'
+            [class.error_border]='registrationForm.get("Gender").invalid && registrationForm.get("Gender").touched'>
+            <option value="1">Male</option>
+            <option value="0">Female</option>
+          </select>
+        </span>
+
+        <div
+          *ngIf="registrationForm.controls.Gender.invalid && (registrationForm.controls.Gender.dirty ||registrationForm.controls.Gender.touched)"
+          class="text-danger">
+          <small *ngIf="registrationForm.controls.Gender.errors?.required"> Gender is required</small>
+        </div>
+      </span>
+
+      <span class='col-sm-2 col-md-2' style='text-align: right'>
+        <span>Date of Birth:</span>
+      </span>
+      <span class='col-sm-4 col-md-4'>
+        <input class="form-control l-input" formControlName="dob" type="date" id="birthday"
+          (blur)="handleIsUnder18($event.target.value)">
+      </span>
+    </div>
+    <br>
+
+    <div class="row">
+      <span class='col-sm-1 col-md-1'>
+        <span>Phone: </span>
+      </span>
+
+      <span class='col-sm-4 col-md-4'>
+        <input class="form-control l-input" formControlName="ContactNum" type="text" id="contactNum"
+          placeholder="Contact number">
+      </span>
+
+      <span class='col-sm-2 col-md-2' style='text-align: right'>
+        <span>Email:</span>
+      </span>
+      <span class='col-sm-4 col-md-4'>
+        <input class="form-control l-input" formControlName="Email" type="text" id="email" placeholder="Email *"
+          [class.error_border]='registrationForm.get("Email").invalid && registrationForm.get("Email").touched'>
+        <div
+          *ngIf="registrationForm.controls.Email.invalid && (registrationForm.controls.Email.dirty ||registrationForm.controls.Email.touched)"
+          class="text-danger">
+          <small *ngIf="registrationForm.controls.Email.errors?.required"> Email is required</small>
+        </div>
+
+      </span>
+    </div>
+    <br>
+
+    <div class="row">
+      <span class='col-sm-1 col-md-1' style='text-align: right'>
+        <span>Address:</span>
+      </span>
+      <span class='col-sm-4 col-md-4'>
+        <input class="form-control l-input" formControlName="Address" type="text" id="Address"
+          placeholder="Physical Address">
+      </span>
+
+      <span class='col-sm-2 col-md-2' style='text-align: right'>
+        <span>Date of Enrollment:</span>
+      </span>
+      <span class='col-sm-4 col-md-4'>
+        <input class="form-control l-input" formControlName="EnrollDate" type="date" id="enrollDate">
+      </span>
+    </div>
+    <br>
+
+    <div class="row">
+      <span class='col-sm-1 col-md-1' style='text-align: right'>
+        <span>Location:</span>
+      </span>
+      <span class='col-sm-4 col-md-4'>
+        <span *ngIf='command ==1'>
+          <select class="form-control l-input" formControlName="OrgId" id="location">
+            <option value="null" disabled="true" [selected]="true">Location*</option>
+            <option *ngFor="let location of locations" [value]="location.OrgId">{{location.OrgName}}</option>
+          </select>
+        </span>
+        <span *ngIf='command == 2'>
+          <select class="form-control l-input" formControlName="OrgId" id="location">
+            <option *ngFor="let location of locations" [value]="location.OrgId">{{location.OrgName}}</option>
+          </select>
+        </span>
+      </span>
+
+      <span class="col-sm-2 col-md-2">
+        <span>Your Current Level: </span>
+      </span>
+      <span class='col-sm-4 col-md-4'>
+        <select class="form-control l-input" formControlName="LearnerLevel" (change)='isSelectLevel()'>
+          <option *ngFor="let llevel of learnerLevel" [value]="llevel.PropValue">{{llevel.PropName}}</option>
+        </select>
+
+        <div *ngIf="isSelectedLevel">
+          <span>Did you take an exam before?</span><br>
+          <div class="d-inline-flex" *ngFor="let levelType of levelType; let i=index">
+            <div class="form-check">
+              <input class="form-check-input" (click)="selectLevelType(levelType.PropValue)" type="radio"
+                [value]="levelType.PropValue" formControlName="levelTypeRadio">
+              <label class="form-check-label" for="levelType">{{levelType.PropName}}</label>
             </div>
           </div>
-        </span>
+        </div>
+      </span>
+    </div>
+    <br>
+
+    <div class="row">
+      <span class='col-sm-1 col-md-1' style='text-align: right'>
+        <span>Referrer: </span>
+      </span>
+
+      <span class='col-sm-4 col-md-4'>
+        <input class="form-control l-input" type="text" formControlName="Referrer">
+      </span>
+
+      <span class="col-sm-2 col-md-2">
+        <span>Payment Period: </span>
+      </span>
+
+      <span class='col-sm-4 col-md-4'>
+        <select class="form-control l-input" formControlName="PaymentPeriod">
+          <option value="1">Term</option>
+          <option value="2">Week</option>
+        </select>
+      </span>
+    </div>
+    <br>
+
+    <div class="row">
+      <span class="col-sm-12 col-md-12">
+        <span>Comments:</span>
+      </span>
+      <span class='col-12' style="padding-right:50px; padding-left:30px">
+        <textarea name="Comment" id="Comment" class='l-comment col-12' formControlName='Comment'
+          maxlength="1000"></textarea>
+      </span>
+    </div>
+
+    <div class="under18">
+      <span class="text-primary">Above 18 years old?</span><br>
+      <div>
+        <input type="checkbox" #isUnder18 formControlName="IsUnder18" [checked]='setTrue()'>
+        <label>I'm Above 18 years old</label>
       </div>
-      <br>
+    </div>
 
-      <div class="row">
-        <span class='col-sm-1 col-md-1' style='text-align: right'>
-          <span>Referrer: </span>
-        </span>
-
-        <span class='col-sm-4 col-md-4'>
-          <input class="form-control l-input" type="text" formControlName="Referrer">
-        </span>
-
-        <span class="col-sm-2 col-md-2">
-          <span>Payment Period: </span>
-        </span>
-
-        <span class='col-sm-4 col-md-4'>
-          <select class="form-control l-input" formControlName="PaymentPeriod">
-            <option value="1">Term</option>
-            <option value="2">Week</option>
-          </select>
-        </span>
+    <div class="learnPurpose">
+      <span class="text-primary">Why do you learn the piano?</span><br>
+      <div class='d-inline-block' *ngFor="let learnerPurpose of learnerPurpose; let i = index">
+        <input type="checkbox" #learnPurpose [value]="learnerPurpose.PropValue"
+          [checked]='setDefaultPurpose(learnerPurpose.PropValue)'>
+        <label style='margin-right:20px'>{{learnerPurpose.PropName}}</label>
       </div>
-      <br>
+    </div>
 
-      <div class="row">
-        <span class="col-sm-12 col-md-12">
-          <span>Comments:</span>
-        </span>
-        <span class='col-12' style="padding-right:50px; padding-left:30px">
-          <textarea name="Comment" id="Comment" class='l-comment col-12' formControlName='Comment'
-            maxlength="1000"></textarea>
-        </span>
+    <div class="how know us">
+      <span class="text-primary">How do you know about us?</span><br>
+      <div class='d-inline-block' *ngFor="let howKnown of howKnown; let i = index">
+        <input type="checkbox" #howKnow [value]="howKnown.PropValue" [checked]='setDefaultHowKnow(howKnown.PropValue)'>
+        <label style='margin-right:20px'>{{howKnown.PropName}}</label>
       </div>
-
+    </div>
 
   </form>
 </div>
