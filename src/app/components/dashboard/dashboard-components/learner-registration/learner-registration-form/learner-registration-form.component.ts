@@ -314,7 +314,7 @@ export class LearnerRegistrationFormComponent implements OnInit, DoCheck, AfterV
     reader.readAsDataURL(photoRender);
   }
 
-  uploadAgreement(event) {
+  uploadAgreement(event,num) {
     let files = event.target.files;
     console.log('12345',files)
     console.log(Array.from(files))
@@ -322,17 +322,15 @@ export class LearnerRegistrationFormComponent implements OnInit, DoCheck, AfterV
     //@ts-ignore
     // this.agreement.nativeElement.innerText = Array.from(files).map(f => f.name).join(',');
     // single file
+    if(num==1){
     this.agreement.nativeElement.innerText = files[0].name;
     this.selectedAgreement = <File>event.target.files[0];
     this.fd.append('form', this.selectedAgreement);
-  }
-
-  uploadOther(event) {
-    let files = event.target.files;
-    console.log(files, this.other)
+    }else{
     this.other.nativeElement.innerText = files[0].name;
     this.selectedOther = <File>event.target.files[0];
     this.fd.append('OtherFile', this.selectedOther);
+    }
   }
 
   getCoursesFromServer() {
