@@ -12,6 +12,8 @@ import { StockApplicationUpdateModalComponent } from 'src/app/components/dashboa
 import { StockApplicationDetailModalComponent } from 'src/app/components/dashboard/dashboard-components/inventory/inventory-stock-application/stock-application-detail-modal/stock-application-detail-modal.component';
 import { StockApplicationReplyModalComponent } from 'src/app/components/dashboard/dashboard-components/inventory/inventory-stock-application/stock-application-reply-modal/stock-application-reply-modal.component';
 import { StockApplicationDeliverModalComponent } from 'src/app/components/dashboard/dashboard-components/inventory/inventory-stock-application/stock-application-deliver-modal/stock-application-deliver-modal.component';
+import { StockApplicationReceiveModalComponent } from 'src/app/components/dashboard/dashboard-components/inventory/inventory-stock-application/stock-application-receive-modal/stock-application-receive-modal.component';
+
 @Component({
   selector: 'app-stock-application-list',
   templateUrl: './stock-application-list.component.html',
@@ -51,6 +53,9 @@ export class StockApplicationListComponent implements OnInit {
   public headOfficeFlag: boolean = false;
   /* for search method */
   public searchBy: string;
+  /* branch */
+  public processStatus: number;
+
 
   constructor(
     private router: Router,
@@ -101,8 +106,9 @@ export class StockApplicationListComponent implements OnInit {
     if(this.checkRole()) {
       this.inventoriesService.getStockApplication(previousDate, currentDate).subscribe(
         (res) => {
-          // console.log('res', res['Data']);
+          console.log('headOfficeRes', res['Data']);
           this.stockApplication = this.renderOrderList(res['Data']);
+           
           console.log('this.stockApplication', this.stockApplication)
           this.stockApplicationCopy = res['Data'].map((order, i) => ({ id: i + 1, ...order }));
           this.loadingFlag = false;
@@ -114,7 +120,7 @@ export class StockApplicationListComponent implements OnInit {
     } else {
       this.inventoriesService.getStockApplication(previousDate, currentDate).subscribe(
         (res) => {
-          // console.log('res', res['Data']);
+          console.log('branchRes', res['Data']);
           let orgId = +localStorage.getItem('OrgId')[1];
           this.stockApplication = this.renderOrderList(res['Data']).filter((order) => order.Org.OrgId === orgId);
           this.loadingFlag = false;
@@ -217,20 +223,7 @@ export class StockApplicationListComponent implements OnInit {
     modalRef.componentInstance.updateApplication.subscribe(
       (res) => {
         // this.loadingFlag = true;
-        // console.log('put success', res);
-        // let index = this.stockApplication.indexOf(whichOrder);
-        // res.ApplyStaff = { FirstName : staffName };
-        // res.Org = { OrgName: orgName };
-        // Array1 = Array2.slice(0);
-        // arr1.map(obj => arr2.find(o => o.id === obj.id) || obj);
-        // this.stockApplication.map((order)=> {
-        //   if(order.ApplicationId === res.ApplicationId) {
-        //     order = {id: index + 1, ...res}
-        //     console.log('.....', order)
-        //   }
-        // })
-        // console.log('aaa', this.stockApplication)
-        // this.stockApplication = this.renderOrderList(updateArr)
+        console.log('put success', res);
         this.inventoriesService.getNewStockApplication(res.ApplicationId).subscribe(
           res => {
             let index = this.stockApplication.indexOf(whichOrder);
@@ -290,10 +283,9 @@ export class StockApplicationListComponent implements OnInit {
     const modalRef = this.modalService.open(StockApplicationReplyModalComponent, { size: 'lg', centered: true, backdrop: 'static', keyboard: false });
     modalRef.componentInstance.command = command;
     modalRef.componentInstance.whichOrder = whichOrder;
-    modalRef.componentInstance.headOfficeFlag = this.headOfficeFlag;
   }
-  /* deliver */
-  deliver(command: number, whichOrder: any) {
+  /* deliver modal */
+  deliverModal(command: number, whichOrder: any) {
     const modalRef = this.modalService.open(StockApplicationDeliverModalComponent, { size: 'lg', centered: true, backdrop: 'static', keyboard: false });
     modalRef.componentInstance.command = command;
     modalRef.componentInstance.whichOrder = whichOrder;
@@ -325,5 +317,10 @@ export class StockApplicationListComponent implements OnInit {
   keyup() {
     this.searchBy === ''? this.stockApplication = this.stockApplicationCopy: this.stockApplication = this.search(this.searchBy);
   }
-
+  /* receive modal */
+  receiveModal(command, whichOrder) {
+    const modalRef = this.modalService.open(StockApplicationReceiveModalComponent, { size: 'lg', centered: true, backdrop: 'static', keyboard: false });
+    modalRef.componentInstance.command = command;
+    modalRef.componentInstance.whichOrder = whichOrder;
+  }
 }

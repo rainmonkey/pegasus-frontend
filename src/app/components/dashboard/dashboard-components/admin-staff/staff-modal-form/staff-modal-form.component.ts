@@ -99,22 +99,6 @@ export class StaffModalFormComponent implements OnInit {
     }
   }
 
-  // setDefaultBranchSelection(selectOrgId) {
-  //   console.log(selectOrgId)
-  //   if (this.command !== 0) {
-  //     let a = this.whichStaff.StaffOrg.forEach(Org => {
-  //       console.log(Org.OrgId)
-  //       if (selectOrgId == Org.OrgId) {
-  //         return true;
-  //       }
-  //     });
-  //     console.log(a)
-  //   }
-  // }
-
-  /*
-  in detail mode, data can only be read
-*/
   setReadOnly() {
     if (this.command === 1) {
       this.readOnlyFlag = true;

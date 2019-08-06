@@ -12,7 +12,9 @@ export class TimePickerComponent implements OnInit {
   @Input() teaList;
   // transmit begin time picked by user from time-picker to learner-registration-form
   @Output() beginTime = new EventEmitter<any>();
-
+ 
+  // loading
+  public loadingFlag: boolean = false;
   // properties for rendering in HTML
   public weekdays = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
   public hours = [8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20];
@@ -49,6 +51,7 @@ export class TimePickerComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.loadingFlag = true;
     console.log('customCourse', this.customCourse,'teacherList', this.teaList);
     // define yIndex for rendering in HTML
     for(let i = 0; i < 48; i++) {
@@ -84,6 +87,7 @@ export class TimePickerComponent implements OnInit {
         this.setSpecificTime(res.Data);
         this.renderAvailableDay();
         this.renderSlotProp();
+        this.loadingFlag = false;
       },
       (err) => {
         this.backendErrorHandler(err);
@@ -175,7 +179,6 @@ export class TimePickerComponent implements OnInit {
 
 ///////////////////////////////// event triggered in HTML /////////////////////////////////////////////////////////////
   mouseover(x: number, y: number) {
-    // this.tempChangeIsAbleToPick(x, y);
     this.availableDayArr.map((availableObj) => {
       let availableX = availableObj['DayOfWeek']-1;
       if(x == availableX) {
@@ -208,7 +211,6 @@ export class TimePickerComponent implements OnInit {
     outputObj['Index'] = this.teaList[2];
     outputObj['DayOfWeek'] = this.weekdays[x];
     this.beginTime.emit(outputObj);
-    // console.log('confirm', outputObj);
   }
 
 ////////////////////////////// check if teacher's org includes learner's org/////////////////////////////////
@@ -219,7 +221,6 @@ export class TimePickerComponent implements OnInit {
     // availableDay org includes learner org
     if(availableOrgId.includes(this.learnerOrgId)) {
       /* 判断 available org 是否有 arranged */
-      // console.log('availableOrgId.includes(this.learnerOrgId)',availableOrgId.includes(this.learnerOrgId))
       this.checkAvailableHasArranged(x, y, availableObj, availableX);
     } else {
     // availabeDay org not includes learner org
@@ -235,10 +236,8 @@ export class TimePickerComponent implements OnInit {
         // if availableDay has arranged
         if(arrangedX  == availableX) {
           /* 判断 arranged org 是否等于 learner org */
-          // console.log('availableX == arrangedX', availableX == arrangedX)
           this.checkArrangedOrg(x, y, arrangedObj);
         } else {
-          // console.log('availableX != arrangedX')
           this.setDuration('isAvailable', 'ableToPick', x, y)
         }
       })
@@ -250,11 +249,9 @@ export class TimePickerComponent implements OnInit {
     let arrangedOrgId = arrangedObj['OrgId'];
     if(arrangedOrgId == this.learnerOrgId) {
       // arranged 前后可选
-      // console.log('arrangedOrgId == this.learnerOrgId', arrangedOrgId == this.learnerOrgId)
       this.setDuration('isAvailable', 'ableToPick', x, y)
     } else {
       // arranged 前后一小时不能选
-      // console.log('arrangedOrgId != this.learnerOrgId')
       this.aroundArrangedCanNotPick();
       this.setDuration('isAvailable', 'ableToPick', x, y)
     }

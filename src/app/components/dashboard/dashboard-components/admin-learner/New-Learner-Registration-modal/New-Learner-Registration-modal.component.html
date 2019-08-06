@@ -1,7 +1,7 @@
 <div class='modal-header'>
     <h4 class='modal-title'>Learner Registration</h4>
     <button type="button" class='btn btn-sm btn-info t_dm_close_btn' aria-label="Close"
-      (click)="activeModal.close('Cross click')">
+      (click)="onClose()">
       <span aria-hidden="true">&times;</span>
     </button>
   </div>
@@ -14,5 +14,7 @@
 
   <!--modal footer-->
   <div class='modal-footer'>
-      <button type="button" class="btn btn-outline-dark" (click)="activeModal.close('Close click')">Close</button>
+      <span class='m_um_error_msg errorfont' [style.color]="messageColor">{{infoMessage}}</span>
+      <button *ngIf='submitionFlag' type='button' class='btn btn-outline-dark' (click)='onSubmit()'>Save</button>
+      <button type="button" class="btn btn-outline-dark" (click)="onClose()">Close</button>
     </div>
