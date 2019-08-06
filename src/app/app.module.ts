@@ -159,6 +159,7 @@ import { StockApplicationProcessStatusComponent } from './components/dashboard/d
 import { TrialInfoComponent } from './components/dashboard/dashboard-components/trial-course/trial-info/trial-info.component';
 import { TrialFilterComponent } from './components/dashboard/dashboard-components/trial-course/trial-filter/trial-filter.component';
 import { PayListComponent } from './components/dashboard/dashboard-components/admin-staff/pay-list/pay-list.component';
+import { TeacherLevelPipe } from './shared/pipes/teacher-level.pipe';
 
 
 @NgModule({
@@ -307,7 +308,8 @@ import { PayListComponent } from './components/dashboard/dashboard-components/ad
   StockApplicationDeliverModalComponent,
   StockApplicationReceiveModalComponent,
   StockApplicationProcessStatusComponent,
-  TrialFilterComponent
+  TrialFilterComponent,
+  TeacherLevelPipe
   ],
   imports: [
     NgbModule,

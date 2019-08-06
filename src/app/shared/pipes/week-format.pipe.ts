@@ -6,7 +6,7 @@ import { Pipe, PipeTransform } from '@angular/core';
 export class WeekFormatPipe implements PipeTransform {
 // 
   transform(value: any): any {
-    switch(value){
+    switch(Number(value)){
       case 1:
         return "Monday";
         break;
@@ -27,6 +27,9 @@ export class WeekFormatPipe implements PipeTransform {
         break;
       case 7:
         return "Sunday";
+        break;
+      default:
+        return value;
         break;
     }
   }
