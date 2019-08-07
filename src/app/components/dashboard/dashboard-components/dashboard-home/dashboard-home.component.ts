@@ -263,9 +263,16 @@ export class DashboardHomeComponent implements OnInit, AfterViewInit {
       },
       scales: {
         // We use this empty structure as a placeholder for dynamic theming.
-        xAxes: [{}],
+        xAxes: [{
+          gridLines: {
+            display: false
+        }
+        }],
         yAxes: [
           {
+            gridLines: {
+              display: false
+          },
             id: 'y-axis-0',
             position: 'left',
           },
@@ -312,9 +319,15 @@ export class DashboardHomeComponent implements OnInit, AfterViewInit {
             scales:
             {
                 xAxes: [{
+                  gridLines: {
+                    display: false
+                },
                     display: true
                 }],
                 yAxes: [{
+                  gridLines: {
+                    display: false
+                },
                     display: true
                 }],
             },
