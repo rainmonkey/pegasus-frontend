@@ -2,6 +2,8 @@ import { CoursesService } from 'src/app/services/http/courses.service';
 import { Component, OnInit } from '@angular/core';
 import { TeachersService } from 'src/app/services/http/teachers.service';
 import { forkJoin } from 'rxjs';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { TrialCalendarComponent } from '../trial-calendar/trial-calendar.component';
 
 @Component({
   selector: 'app-trial-filter',
@@ -27,7 +29,8 @@ export class TrialFilterComponent implements OnInit {
 
   constructor(
     private coursesService: CoursesService,
-    private teachersService: TeachersService
+    private teachersService: TeachersService,
+    private modalService: NgbModal
   ) { }
 
   ngOnInit() {
@@ -197,7 +200,7 @@ export class TrialFilterComponent implements OnInit {
         }
       }
     );
-   
+
     this.getTeacherListAfterDayOfWeekFilter(array, selectionIndex);
   }
 
@@ -217,6 +220,14 @@ export class TrialFilterComponent implements OnInit {
     }
   }
 
+  /**
+   * Display calendar modal.
+   * @param teacher - teacher selected
+   */
+  popupCalendarModal(teacher: object) {
+    let modalRef = this.modalService.open(TrialCalendarComponent, { size: 'lg', backdrop: 'static', keyboard: false });
+    modalRef.componentInstance.teacher = teacher;
+  }
 
   removeFilters(index) {
     if (index == 0) {

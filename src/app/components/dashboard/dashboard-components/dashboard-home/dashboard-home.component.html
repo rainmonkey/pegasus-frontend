@@ -69,14 +69,61 @@
       </div>
     </div>
   </section>
-  <div class="container-fluid">
-    <div class="row">
-      <div style="margin-bottom: 20px;" class="col-12">
-        <app-charting></app-charting>
+
+  <!-- dashboard chart and list section -->
+  <section class="dashboard-header">
+    <div class="container-fluid">
+      <div class="row">
+        <!-- Statistics -->
+        <div class="statistics col-lg-3 col-12">
+          <div class="statistic d-flex align-items-center bg-white has-shadow">
+            <div class="icon bg-red"><i class="fa fa-tasks"></i></div>
+            <div class="text"><strong>234</strong><br><small>Applications</small></div>
+          </div>
+          <div class="statistic d-flex align-items-center bg-white has-shadow">
+            <div class="icon bg-green"><i class="fa fa-calendar-o"></i></div>
+            <div class="text"><strong>152</strong><br><small>Interviews</small></div>
+          </div>
+          <div class="statistic d-flex align-items-center bg-white has-shadow">
+            <div class="icon bg-orange"><i class="fa fa-paper-plane-o"></i></div>
+            <div class="text"><strong>147</strong><br><small>Forwards</small></div>
+          </div>
+        </div>
+
+        <!-- charts -->
+        <div *ngIf="chart" class="chart col-lg-6">
+          <!-- <div class="font4">{{chart.title}}</div>
+          <div class="font5">{{chart.subTitle}}</div> -->
+          <div class="line-chart bg-white d-flex align-items-center justify-content-center has-shadow">
+          <canvas baseChart [datasets]="chartData" [labels]="chartLabels" [options]="lineChartOptions"
+              [colors]="lineChartColors" [legend]="lineChartLegend" [chartType]="lineChartType" [plugins]="lineChartPlugins">
+          </canvas>
+          <!-- <div class='has-shadow p-4' style="position: relative; height:35vh; width:35vw; background: #fff;">
+          </div> -->
+          </div>
+        </div>
+
+        <div *ngIf="chart" class="chart col-lg-3" style='height: 20%'>
+            <!-- <div class="font4">{{barChart.title}}</div>
+            <div class="font5">{{barChart.subTitle}}</div> -->
+            <div class="bar-chart has-shadow bg-white">
+              <canvas baseChart [datasets]="barChartData" [labels]="barChartLabels" [options]="barChartOptions"
+            [legend]="barChartLegend" [chartType]="barChartType" [plugins]="barChartPlugins">
+            </canvas>
+            </div>
+
+
+    <!-- Numbers-->
+      <div class="statistic d-flex align-items-center bg-white has-shadow">
+        <div class="icon bg-green"><i class="fa fa-line-chart"></i></div>
+        <div class="text"><strong>99.9%</strong><br><small>Success Rate</small></div>
       </div>
     </div>
   </div>
+  </div>
 
+  <!-- dashboard to do list section -->
+  <div class="container-fluid mt-3">
   <div class="row d-none">
     <div class="col-12 col-md-6 col-lg-4">
       <div *ngIf="toDoList" class="card">
@@ -285,7 +332,12 @@
         <!-- Item-->
         <div class="item d-flex justify-content-between" *ngFor="let list of toDoList, let i = index">
           <div class="info d-flex">
-            <div class="icon"><i class="far fa-envelope"></i></div>
+              <input
+              type="checkbox"
+              class="checkbox-template"
+              (click)='ListChecked(i,$event)'
+            />
+            <div class="icon ml-2"><i class="far fa-envelope"></i></div>
             <div class="title">
               <h5>{{list.ListName}}</h5>
               <p>

@@ -2,7 +2,6 @@ import { Component, OnInit, Input, Output, EventEmitter, ViewChild, AfterViewChe
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { InventoriesService } from 'src/app/services/http/inventories.service';
 import { StockApplicationProcessStatusComponent } from 'src/app/components/dashboard/dashboard-components/inventory/inventory-stock-application/stock-application-process-status/stock-application-process-status.component';
-import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-stock-application-deliver-modal',
@@ -32,9 +31,9 @@ export class StockApplicationDeliverModalComponent implements OnInit, AfterViewC
     let deliverObj = {};
     let tempObj = {};
     this.whichOrder.ApplicationDetails.map((order, i) => {
-      let productId = order.Product.ProductId
+      let DetaillsId = order.DetaillsId;
       let quantity = this.deliveredQty[i];
-      tempObj[productId] = quantity
+      tempObj[DetaillsId] = quantity
     });
     deliverObj['ApplicationId'] = this.whichOrder.ApplicationId;
     deliverObj['ApplicationDetailsIdMapQty'] = tempObj;
@@ -45,12 +44,6 @@ export class StockApplicationDeliverModalComponent implements OnInit, AfterViewC
       res => {
         console.log('res', res['Data'])
         this.sendDeliverRes.emit(res['Data'])
-        Swal.fire({
-          title: 'Successfully sent!',
-          type: 'success',
-          showConfirmButton: true,
-        });
-        this.activeModal.close();
       },
       err => this.errHandler(err)
     )

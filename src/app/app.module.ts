@@ -160,6 +160,9 @@ import { TrialInfoComponent } from './components/dashboard/dashboard-components/
 import { TrialFilterComponent } from './components/dashboard/dashboard-components/trial-course/trial-filter/trial-filter.component';
 import { PayListComponent } from './components/dashboard/dashboard-components/admin-staff/pay-list/pay-list.component';
 import { TeacherLevelPipe } from './shared/pipes/teacher-level.pipe';
+import { StockApplicationProcessModalComponent } from './components/dashboard/dashboard-components/inventory/inventory-stock-application/stock-application-process-modal/stock-application-process-modal.component';
+import { StockApplicationDisputeModalComponent } from './components/dashboard/dashboard-components/inventory/inventory-stock-application/stock-application-dispute-modal/stock-application-dispute-modal.component';
+import { TrialCalendarComponent } from './components/dashboard/dashboard-components/trial-course/trial-calendar/trial-calendar.component';
 
 
 @NgModule({
@@ -309,7 +312,10 @@ import { TeacherLevelPipe } from './shared/pipes/teacher-level.pipe';
   StockApplicationReceiveModalComponent,
   StockApplicationProcessStatusComponent,
   TrialFilterComponent,
-  TeacherLevelPipe
+  TeacherLevelPipe,
+  StockApplicationProcessModalComponent,
+  StockApplicationDisputeModalComponent,
+  TrialCalendarComponent
   ],
   imports: [
     NgbModule,
@@ -386,6 +392,7 @@ import { TeacherLevelPipe } from './shared/pipes/teacher-level.pipe';
     StockApplicationReplyModalComponent,
     StockApplicationDeliverModalComponent,
     StockApplicationReceiveModalComponent,
+    StockApplicationProcessModalComponent,
     InventoryDetailModalComponent,
     InventoryReceiptModalComponent,
     // AddHolidaysModalComponent,
@@ -398,7 +405,8 @@ import { TeacherLevelPipe } from './shared/pipes/teacher-level.pipe';
     TimePickerComponent,
     TrialSearchComponent,
 
-    NewLearnerRegistrationModalComponent
+    NewLearnerRegistrationModalComponent,
+    TrialCalendarComponent
 
   ],
   exports: [AppComponent],
