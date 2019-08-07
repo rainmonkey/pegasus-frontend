@@ -332,7 +332,7 @@ export class DashboardHomeComponent implements OnInit, AfterViewInit {
                 }],
             },
             legend: {
-                display: true
+                display: false
             }
     };
     public barChartLabels: Label[] = ["week 8", "week 7", "week 6", "week 5", "week 4", "week 3", "week 2", "week 1"];
