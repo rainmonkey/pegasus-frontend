@@ -13,6 +13,7 @@ import { StockApplicationDetailModalComponent } from 'src/app/components/dashboa
 import { StockApplicationReplyModalComponent } from 'src/app/components/dashboard/dashboard-components/inventory/inventory-stock-application/stock-application-reply-modal/stock-application-reply-modal.component';
 import { StockApplicationDeliverModalComponent } from 'src/app/components/dashboard/dashboard-components/inventory/inventory-stock-application/stock-application-deliver-modal/stock-application-deliver-modal.component';
 import { StockApplicationReceiveModalComponent } from 'src/app/components/dashboard/dashboard-components/inventory/inventory-stock-application/stock-application-receive-modal/stock-application-receive-modal.component';
+import { StockApplicationProcessModalComponent } from 'src/app/components/dashboard/dashboard-components/inventory/inventory-stock-application/stock-application-process-modal/stock-application-process-modal.component';
 
 @Component({
   selector: 'app-stock-application-list',
@@ -23,7 +24,7 @@ import { StockApplicationReceiveModalComponent } from 'src/app/components/dashbo
 export class StockApplicationListComponent implements OnInit {
   /* get props from HTML # template reference variable */
   @ViewChild('pagination') pagination: any;
- 
+
   /* loading */
   public loadingFlag: boolean = true;
   public page: number = 1;
@@ -78,9 +79,9 @@ export class StockApplicationListComponent implements OnInit {
       beginDate: ['', Validators.pattern('^\d{4}\-(0[1-9]|1[012])\-(0[1-9]|[12][0-9]|3[01])$')],
       endDate: ['', Validators.pattern('^\d{4}\-(0[1-9]|1[012])\-(0[1-9]|[12][0-9]|3[01])$')]
     })
-    
+
   }
- 
+
   /* 
     check role from local storage, various roles show various info 
       1) if role === 3, then display branch pages
@@ -90,7 +91,7 @@ export class StockApplicationListComponent implements OnInit {
     // now role is just hardcode, will get it from real value after creat a head office account
     let role = 9
     // let role = + localStorage.getorder('Role');
-    if(role === 9) return true
+    if (role === 9) return true
     else return false
   }
   /* get previous three months */
@@ -103,12 +104,12 @@ export class StockApplicationListComponent implements OnInit {
   }
   /* get stock application data from server */
   getStockApplication(previousDate: any, currentDate: any) {
-    if(this.checkRole()) {
+    if (this.checkRole()) {
       this.inventoriesService.getStockApplication(previousDate, currentDate).subscribe(
         (res) => {
           console.log('headOfficeRes', res['Data']);
           this.stockApplication = this.renderOrderList(res['Data']);
-           
+
           console.log('this.stockApplication', this.stockApplication)
           this.stockApplicationCopy = res['Data'].map((order, i) => ({ id: i + 1, ...order }));
           this.loadingFlag = false;
@@ -227,7 +228,7 @@ export class StockApplicationListComponent implements OnInit {
         this.inventoriesService.getNewStockApplication(res.ApplicationId).subscribe(
           res => {
             let index = this.stockApplication.indexOf(whichOrder);
-            let updateRes = { id: index + 1, ...res['Data']}
+            let updateRes = { id: index + 1, ...res['Data'] }
             // console.log('res', res['Data'])
             this.stockApplication.splice(index, 1, updateRes);
             // console.log('aaa', this.stockApplication)
@@ -283,6 +284,28 @@ export class StockApplicationListComponent implements OnInit {
     const modalRef = this.modalService.open(StockApplicationReplyModalComponent, { size: 'lg', centered: true, backdrop: 'static', keyboard: false });
     modalRef.componentInstance.command = command;
     modalRef.componentInstance.whichOrder = whichOrder;
+    this.updateReplyStatus(modalRef);
+  }
+  updateReplyStatus(modalRef) {
+    modalRef.componentInstance.sendReplyRes.subscribe(
+      res => {
+        console.log('updateReplyStatus', res)
+        this.stockApplication.map((order) => {
+          if (order.ApplicationId === res.ApplicationId) {
+            order.ProcessStatus = res.ProcessStatus;
+            order.ReplyContent = res.ReplyContent;
+            order.ReplyAt = res.ReplyAt;
+          }
+        })
+        Swal.fire({
+          title: 'Successfully sent!',
+          type: 'success',
+          showConfirmButton: true,
+        });
+        modalRef.close();
+      },
+      err => this.errorHandler(err)
+    )
   }
   /* deliver modal */
   deliverModal(command: number, whichOrder: any) {
@@ -294,12 +317,26 @@ export class StockApplicationListComponent implements OnInit {
   updateDeliverStatus(modalRef) {
     modalRef.componentInstance.sendDeliverRes.subscribe(
       res => {
-        console.log('update deliver', res)
+        console.log('updateDeliverStatus', res)
         this.stockApplication.map((order) => {
-          if(order.ApplicationId === res.ApplicationId) {
-            order.ProcessStatus = res.ProcessStatus
+          if (order.ApplicationId === res.ApplicationId) {
+            order.ProcessStatus = res.ProcessStatus;
+            order.DeliverAt = res.DeliverAt;
+            // compare two array of objects and assign value
+            order.ApplicationDetails.map((product) => {
+              res.ApplicationDetails.map((prod) => {
+                if(product.DetaillsId == prod.DetaillsId) {
+                  product.DeliveredQty = prod.DeliveredQty
+                }
+              })
+            })
           }
         })
+        Swal.fire({
+          title: 'Successfully sent!',
+          type: 'success',
+          showConfirmButton: true,
+        });
         modalRef.close();
       },
       err => this.errorHandler(err)
@@ -311,16 +348,68 @@ export class StockApplicationListComponent implements OnInit {
     return this.stockApplication.filter(order => {
       const term = text.toLowerCase().trim();
       return order.ApplyStaff.FirstName.toLowerCase().includes(term)
-          || order.Org.OrgName.toLowerCase().includes(term);
+        || order.Org.OrgName.toLowerCase().includes(term);
     });
   }
   keyup() {
-    this.searchBy === ''? this.stockApplication = this.stockApplicationCopy: this.stockApplication = this.search(this.searchBy);
+    this.searchBy === '' ? this.stockApplication = this.stockApplicationCopy : this.stockApplication = this.search(this.searchBy);
   }
   /* receive modal */
   receiveModal(command, whichOrder) {
     const modalRef = this.modalService.open(StockApplicationReceiveModalComponent, { size: 'lg', centered: true, backdrop: 'static', keyboard: false });
     modalRef.componentInstance.command = command;
     modalRef.componentInstance.whichOrder = whichOrder;
+    this.updateReceiveStatus(modalRef);
+  }
+  updateReceiveStatus(modalRef) {
+    modalRef.componentInstance.sendReceiveRes.subscribe(
+      res => {
+        console.log('updateReceiveStatus', res)
+        this.stockApplication.map((order) => {
+          if (order.ApplicationId === res.ApplicationId) {
+            order.ProcessStatus = res.ProcessStatus;
+            order.RecieveAt = res.RecieveAt;
+            order.ApplicationDetails.map((product) => {
+              res.ApplicationDetails.map((prod) => {
+                if(product.DetaillsId == prod.DetaillsId) {
+                  product.ReceivedQty = prod.ReceivedQty
+                }
+              })
+            })
+          }
+        })
+        Swal.fire({
+          title: 'Successfully sent!',
+          type: 'success',
+          showConfirmButton: true,
+        });
+        modalRef.close();
+      },
+      err => this.errorHandler(err)
+    )
+  }
+  /* process modal */
+  processModal(command, whichOrder) {
+    const modalRef = this.modalService.open(StockApplicationProcessModalComponent, { size: 'lg', centered: true, backdrop: 'static', keyboard: false });
+    modalRef.componentInstance.command = command;
+    modalRef.componentInstance.whichOrder = whichOrder;
+    modalRef.componentInstance.headOfficeFlag = this.headOfficeFlag;
+    this.cancelDispute(modalRef)
+  }
+  cancelDispute(modalRef) {
+    modalRef.componentInstance.sendDispute.subscribe(
+      res => {
+        console.log('cancelDispute', res);
+        this.stockApplication.map((order) =>{
+          order.IsDisputed = res.IsDisputed
+        })
+        Swal.fire({
+          title: 'Successfully solve!',
+          type: 'success',
+          showConfirmButton: true,
+        });
+        modalRef.close()
+      }
+    )
   }
 }

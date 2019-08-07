@@ -121,32 +121,35 @@
               <!-- <span class="table__btn--cursor" (click)="detailModal(1, item)">
                 <i class='fas fa-info-circle'></i>
               </span> -->
-              <button class="table__btn" (click)="replyModal(1, item)" [disabled]="item.ProcessStatus === 2 || item.ProcessStatus === 3 || item.ProcessStatus === 4">
+              <button class="table__btn" (click)="replyModal(1, item)" [disabled]="item.ProcessStatus === 2 || item.ProcessStatus === 3 || item.ProcessStatus === 4 || item.ProcessStatus === 5">
                 <i class="fas fa-comment"></i>
               </button>
-              <button class="table__btn" (click)="deliverModal(2, item)" [disabled]="item.ProcessStatus === 1 || item.ProcessStatus === 4">
+              <button class="table__btn" (click)="deliverModal(2, item)" [disabled]="item.ProcessStatus === 1 || item.ProcessStatus === 3  || item.ProcessStatus === 4 || item.ProcessStatus === 5">
                 <i class="fas fa-truck"></i>
+              </button>
+              <button class="table__btn" (click)="processModal(4, item)" [class.bg-danger]="item.IsDisputed === 1">
+                <i class="fas fa-file-invoice"></i>
               </button>
               <!-- <span class="table__btn--cursor" (click)="delete(item)">
                 <i class="fas fa-comments"></i>
               </span> -->
           </td>
           <td *ngIf="!headOfficeFlag">
-            <span class="table__btn--cursor" (click)="detailModal(1, item)">
+            <button class="table__btn" (click)="detailModal(1, item)">
               <i class='fas fa-info-circle'></i>
-            </span>
-            <span class="table__btn--cursor" (click)="updateModal(2, item)" 
-              *ngIf="item.ProcessStatus === 1">
+            </button>
+            <button class="table__btn" (click)="updateModal(2, item)" [disabled]="item.ProcessStatus !== 1">
               <i class='fas fa-pen'></i>
-            </span>
-            <span class="table__btn--cursor" (click)="delete(item)"
-              *ngIf="item.ProcessStatus === 1">
+            </button>
+            <button class="table__btn" (click)="delete(item)" [disabled]="item.ProcessStatus !== 1">
               <i class="fas fa-trash-alt"></i>
-            </span>
-            <span class="table__btn--cursor" (click)="receiveModal(1, item)"
-              *ngIf="item.ProcessStatus === 4">
+            </button>
+            <button class="table__btn" (click)="receiveModal(3, item)" [disabled]="item.ProcessStatus !== 4">
               <i class="fas fa-check-square"></i>
-            </span>
+            </button>
+            <button class="table__btn" (click)="processModal(4, item)">
+              <i class="fas fa-file-invoice"></i>
+            </button>
           </td>
         </tr>
       </tbody>
