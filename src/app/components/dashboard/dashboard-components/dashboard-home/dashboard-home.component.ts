@@ -94,6 +94,7 @@ export class DashboardHomeComponent implements OnInit, AfterViewInit {
     this.dashboardService.getStatistic(orgString).subscribe(res => {
       console.log(res);
       this.messages = res.Data;
+      this.messages.lowRemain = Number(res.Data.studentWith2RemainLessonsForToday +res.Data.studentWith1RemainLessonForToday +res.Data.studentWith0RemainLessonForToday)
     });
 
     this.userName = localStorage.getItem("userFirstName");
@@ -107,7 +108,7 @@ export class DashboardHomeComponent implements OnInit, AfterViewInit {
   getToDoList() {
     this.userService.getToDoList().subscribe(
       res => {
-        console.log(res);
+
         this.toDoList = res["Data"];
         this.getDate(res["Data"]);
       },
@@ -126,7 +127,6 @@ export class DashboardHomeComponent implements OnInit, AfterViewInit {
       dateSing.push(x.split("-")[1]);
       this.dayFormat.push(x.split("-")[2]);
       this.changeNumberToMonth(dateSing);
-      console.log(this.monthFormat, this.dayFormat);
     });
   }
 
