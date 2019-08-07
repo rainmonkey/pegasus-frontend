@@ -20,4 +20,11 @@ export class TrialCoursesService {
   getTeacherCoursesbyId(teacherId:number){
     return this.http.get(this.baseUrl + 'lesson/GetLessonsTeacherId/' + teacherId);
   }
+
+  /**
+   * Get terms duration time (start time & end time)
+   */
+  getTermsDuration(){
+    return this.http.get(this.baseUrl + 'Term');
+  }
 }
