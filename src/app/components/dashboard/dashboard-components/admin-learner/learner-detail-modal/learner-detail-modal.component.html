@@ -303,7 +303,7 @@
                   <div *ngIf='ele.Amendment.length == 0' class="col-12">
                     <div *ngIf='ele.Org'>
                       <span class="label">Location: </span>
-                      <span class='text'>{{ele.Org.OrgName}} {{ele.Room.RoomName}}</span>
+                      <span *ngIf='ele.Org.OrgName&&ele.Room.RoomName' class='text'>{{ele.Org.OrgName}} {{ele.Room.RoomName}}</span>
                     </div>
                   </div>
 
@@ -498,7 +498,7 @@
       </ng-template>
     </ngb-tab>
 
-    <ngb-tab title="invoice">
+    <ngb-tab title="Invoice">
       <ng-template ngbTabContent>
         <div *ngIf='learnerInvoiceList == null'>
           No Invoice Record
@@ -625,7 +625,7 @@
     </ngb-tab>
 
     <!-- waiting invoice -->
-    <ngb-tab title="Waiting Confirm Invoice">
+    <ngb-tab title="Invoice history">
       <ng-template ngbTabContent>
         <div *ngIf='waitingInvoice == null'>
           No Invoice Record

@@ -25,8 +25,8 @@
           <div>Is Invoice Change</div>
           <select formControlName="IsInvoiceChange">
             <option disabled selected value>-- select an option --</option>
-            <option value="0">No</option>
-            <option value="1">Yes</option>
+            <option value="false">No</option>
+            <option value="true">Yes</option>
           </select>
           <small class="text-danger" *ngIf="IsInvoiceChange.invalid && IsInvoiceChange.touched">Please select IsInvoiceChange</small>
         </div>
@@ -96,8 +96,8 @@
   </div>
   <div class='modal-footer'>
     <span *ngIf="hasError" class="text-danger">{{errorMessage}}</span>
-    <span *ngIf='isCancelSuccess' class='text-success'>Cancel Success </span>
-    <span *ngIf='isCancelFailed' class='text-danger'>Cancel Fail </span>
+    <span *ngIf='isCancelSuccess' class='text-success'>Success </span>
+    <span *ngIf='isCancelFailed' class='text-danger'>Fail </span>
     <div *ngIf="isloading" class="loaderSmall"></div>
     <button  *ngIf="!isConfirmClick" type='button' type="submit" class='btn btn-outline-dark'>Confirm</button>
     <button  type="button" class="btn btn-outline-dark" (click)="activeModal.close('Close click')">Close</button>
