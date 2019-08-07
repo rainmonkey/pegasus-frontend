@@ -1,21 +1,29 @@
 .reply {
-    position: relative;
-    padding: 10px;
+  position: relative;
+  padding: 10px;
 }
 .reply__content {
-    border: 0.5px solid #075663;
-    border-radius: 10px;
-    padding: 10px;
-    width: 100%;
+  border: 0.5px solid #075663;
+  border-radius: 10px;
+  padding: 10px;
+  width: 100%;
 }
 .reply__cancel {
-    position: absolute;
-    right: 20px;
-    color: #17a2b8;
+  position: absolute;
+  right: 20px;
+  color: #17a2b8;
 }
 .reply__cancel:hover {
-    cursor: pointer;
+  cursor: pointer;
 }
 .reply__btn {
-    margin-bottom: 5px;
+  margin-bottom: 5px;
 }
+.label {
+  margin-right: 10px;
+  font-weight: bold;
+}
+.row {
+  padding: 8px 15px;
+}
+
