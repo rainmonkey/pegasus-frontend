@@ -328,7 +328,7 @@ export class DashboardHomeComponent implements OnInit, AfterViewInit {
                   gridLines: {
                     display: false
                 },
-                    display: true
+                    display: false
                 }],
             },
             legend: {
