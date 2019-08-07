@@ -12,7 +12,6 @@ export class StockApplicationReceiveModalComponent implements OnInit, AfterViewC
   @Input() command: number;
   @Input() whichOrder: any;
   @Output() sendReceiveRes: EventEmitter<any> = new EventEmitter;
-
   @ViewChild(StockApplicationProcessStatusComponent) stockApplicationProcessStatusComponent;
   
   public receiveFlag: boolean = false;
@@ -22,7 +21,6 @@ export class StockApplicationReceiveModalComponent implements OnInit, AfterViewC
   
   ngOnInit() {
     this.receiveFlag = true;
-    console.log('ReiceveModalcommand', this.command, 'whichOrder', this.whichOrder)
   }
   ngAfterViewChecked() {
     this.receivedQty = this.stockApplicationProcessStatusComponent.receivedQty;
@@ -43,10 +41,9 @@ export class StockApplicationReceiveModalComponent implements OnInit, AfterViewC
   sendReceiveMsg() {
     this.inventoriesService.receiveProduct(this.dataToReceive()).subscribe(
       res => {
-        console.log('res', res['Data'])
         this.sendReceiveRes.emit(res['Data'])
       },
-      err => console.log('err', err)
+      err => alert('Oops! Receive failed')
     )
   }
   

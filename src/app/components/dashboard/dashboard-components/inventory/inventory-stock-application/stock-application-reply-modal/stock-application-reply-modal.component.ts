@@ -33,10 +33,9 @@ export class StockApplicationReplyModalComponent implements OnInit, AfterViewChe
     let isApproved = this.isApproved;
     this.inventoriesService.replyContent(applicationId, this.replyMsg, applyAt, isApproved).subscribe(
       res => {
-        // console.log('reply', res['Data'])
         this.sendReplyRes.emit(res['Data'])
       },
-      err => console.log('err', err)
+      err => alert('Oops! Reply failed')
     )
   }
 

@@ -12,6 +12,7 @@ export class StockApplicationProcessModalComponent implements OnInit {
   @Input() command: number;
   @Input() whichOrder: any;
   @Input() headOfficeFlag: boolean;
+  @Input() role: number;
   @Output() sendDispute: EventEmitter<any> = new EventEmitter;
 
   public processFlag: boolean = false
@@ -24,10 +25,9 @@ export class StockApplicationProcessModalComponent implements OnInit {
     let applicaitonId = this.whichOrder.ApplicationId;
     this.inventoriesService.solveDispute(applicaitonId).subscribe(
       res => {
-        console.log('res', res['Data'])
         this.sendDispute.emit(res['Data']);
       },
-      err => console.log('err', err)
+      err => alert('Oops, can not cancel dispute')
     )
   }
 }
