@@ -91,36 +91,10 @@
         </div>
 
         <!-- charts -->
-        <div *ngIf="chart" class="chart col-lg-6">
-          <!-- <div class="font4">{{chart.title}}</div>
-          <div class="font5">{{chart.subTitle}}</div> -->
-          <div class="line-chart bg-white d-flex align-items-center justify-content-center has-shadow">
-          <canvas baseChart [datasets]="chartData" [labels]="chartLabels" [options]="lineChartOptions"
-              [colors]="lineChartColors" [legend]="lineChartLegend" [chartType]="lineChartType" [plugins]="lineChartPlugins">
-          </canvas>
-          <!-- <div class='has-shadow p-4' style="position: relative; height:35vh; width:35vw; background: #fff;">
-          </div> -->
-          </div>
-        </div>
-
-        <div *ngIf="chart" class="chart col-lg-3" style='height: 20%'>
-            <!-- <div class="font4">{{barChart.title}}</div>
-            <div class="font5">{{barChart.subTitle}}</div> -->
-            <div class="bar-chart has-shadow bg-white">
-              <canvas baseChart [datasets]="barChartData" [labels]="barChartLabels" [options]="barChartOptions"
-            [legend]="barChartLegend" [chartType]="barChartType" [plugins]="barChartPlugins">
-            </canvas>
-            </div>
-
-
-    <!-- Numbers-->
-      <div class="statistic d-flex align-items-center bg-white has-shadow">
-        <div class="icon bg-green"><i class="fa fa-line-chart"></i></div>
-        <div class="text"><strong>99.9%</strong><br><small>Success Rate</small></div>
-      </div>
-    </div>
+        <div class='col-9'><app-charting></app-charting></div>
   </div>
   </div>
+
 
   <!-- dashboard to do list section -->
   <div class="container-fluid mt-3">
