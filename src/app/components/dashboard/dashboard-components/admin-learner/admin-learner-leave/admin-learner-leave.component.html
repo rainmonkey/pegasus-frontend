@@ -21,6 +21,15 @@
           <input [class.is-invalid]="EndDate.invalid && EndDate.touched" type="date" class="form-control" formControlName="EndDate">
           <small class="text-danger" *ngIf="EndDate.invalid && EndDate.touched">Please enter end date</small>
         </div>
+        <div class="col-5">
+          <div>Is Invoice Change</div>
+          <select formControlName="IsInvoiceChange">
+            <option disabled selected value>-- select an option --</option>
+            <option value="0">No</option>
+            <option value="1">Yes</option>
+          </select>
+          <small class="text-danger" *ngIf="IsInvoiceChange.invalid && IsInvoiceChange.touched">Please select IsInvoiceChange</small>
+        </div>
       </div>
       <div>Reason</div>
       <input [class.is-invalid]="Reason.invalid && Reason.touched" type="text" class="form-control" formControlName="Reason">
