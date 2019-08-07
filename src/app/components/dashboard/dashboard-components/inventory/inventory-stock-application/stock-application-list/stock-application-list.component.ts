@@ -73,23 +73,18 @@ export class StockApplicationListComponent implements OnInit {
     /* get three months data from server the first time accesses the web page */
     this.getThreeMonths();
     this.getStockApplication(this.previousDate, this.currentDate);
-    // don't touch here, will influence rendering
-    this.dateForm = this.fb.group({
-      beginDate: ['', Validators.pattern('^\d{4}\-(0[1-9]|1[012])\-(0[1-9]|[12][0-9]|3[01])$')],
-      endDate: ['', Validators.pattern('^\d{4}\-(0[1-9]|1[012])\-(0[1-9]|[12][0-9]|3[01])$')]
-    })
-
   }
 
   /* 
-    check role from local storage, various roles show various info 
+    check role from local storage, different role has different limit of permissions
       1) if role === 3, then display branch pages
       2) if role === 9 or role === 5, then display head office pages
   */
   checkRole() {
     // this.role = + localStorage.getorder('Role');
-    this.role = 3  // now just hardcode for test
-    if (this.role === 9 || this.role === 5) return true
+    // now just hardcode for test
+    this.role = 3
+    if (this.role === 5 || this.role === 9) return true
     else return false
   }
   /* get previous three months */
@@ -230,6 +225,12 @@ export class StockApplicationListComponent implements OnInit {
             let index = this.stockApplication.indexOf(whichOrder);
             let updateRes = { id: index + 1, ...res['Data'] };
             this.stockApplication.splice(index, 1, updateRes);
+            Swal.fire({
+              title: 'Successfully Update!',
+              type: 'success',
+              showConfirmButton: true,
+            });
+            modalRef.close();
           },
           err => alert('Oops! Update Data failed')
         )
@@ -338,7 +339,6 @@ export class StockApplicationListComponent implements OnInit {
       err => alert('Oops! Deliver failed')
     )
   }
-
   /* receive modal */
   receiveModal(command, whichOrder) {
     const modalRef = this.modalService.open(StockApplicationReceiveModalComponent, { size: 'lg', centered: true, backdrop: 'static', keyboard: false });
@@ -353,6 +353,7 @@ export class StockApplicationListComponent implements OnInit {
           if (order.ApplicationId === res.ApplicationId) {
             order.ProcessStatus = res.ProcessStatus;
             order.RecieveAt = res.RecieveAt;
+            order.IsDisputed = res.IsDisputed;
             order.ApplicationDetails.map((product) => {
               res.ApplicationDetails.map((prod) => {
                 if (product.DetaillsId == prod.DetaillsId) {

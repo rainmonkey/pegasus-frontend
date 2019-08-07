@@ -7,13 +7,13 @@
     Stock Application
   </div>
   <div class="d-flex">
-    <form [formGroup]="dateForm">
+    <form>
       <p class="selection__text">Select a period of date:</p>
       <div class="d-flex form">
         <!-- begin date -->
         <div class="input-group input__datebar">
           <input class="form-control" style="height: 30px;" placeholder="yyyy-mm-dd" ngbDatepicker
-            #beginDate="ngbDatepicker" (dateSelect)="onBeginDateSelect($event)" formControlName="beginDate">
+            #beginDate="ngbDatepicker" (dateSelect)="onBeginDateSelect($event)">
           <div class="input-group-append">
             <button class="btn btn-outline-secondary calendar" style="height: 30px;" (click)="beginDate.toggle()">
               <i class="far fa-calendar-alt"></i>
@@ -25,7 +25,7 @@
         <!-- end date -->
         <div class="input-group input__datebar">
           <input class="form-control" style="height: 30px;" placeholder="yyyy-mm-dd" ngbDatepicker
-            #endDate="ngbDatepicker" (dateSelect)="onEndDateSelect($event)" formControlName="endDate">
+            #endDate="ngbDatepicker" (dateSelect)="onEndDateSelect($event)">
           <div class="input-group-append">
             <button class="btn btn-outline-secondary calendar" style="height: 30px; line-height: 0;"
               (click)="endDate.toggle()">
