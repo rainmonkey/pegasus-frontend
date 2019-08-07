@@ -178,7 +178,7 @@ const routes: Routes = [
       },
       //Staff Area
       { path: 'staff/list', component: StaffListComponent },
-      {path: 'staff/paylist', component: PayListComponent},
+      {path: 'paylist', component: PayListComponent},
 
       //pagegroup area
       { path:'pageGroup',component:PageGroupDetailsComponent},

@@ -47,6 +47,9 @@
     color:rgb(246, 63, 63);
     border:1px solid rgb(246, 63, 63);
 }
+.t_f_teachers_name{
+    margin-bottom: 0.5rem;
+}
 .divider{
     border-bottom: 2px solid lightgrey;
 }
