@@ -163,6 +163,7 @@ import { TeacherLevelPipe } from './shared/pipes/teacher-level.pipe';
 import { StockApplicationProcessModalComponent } from './components/dashboard/dashboard-components/inventory/inventory-stock-application/stock-application-process-modal/stock-application-process-modal.component';
 import { StockApplicationDisputeModalComponent } from './components/dashboard/dashboard-components/inventory/inventory-stock-application/stock-application-dispute-modal/stock-application-dispute-modal.component';
 import { TrialCalendarComponent } from './components/dashboard/dashboard-components/trial-course/trial-calendar/trial-calendar.component';
+import { TrialConfirmationComponent } from './components/dashboard/dashboard-components/trial-course/trial-confirmation/trial-confirmation.component';
 
 
 @NgModule({
@@ -315,7 +316,8 @@ import { TrialCalendarComponent } from './components/dashboard/dashboard-compone
   TeacherLevelPipe,
   StockApplicationProcessModalComponent,
   StockApplicationDisputeModalComponent,
-  TrialCalendarComponent
+  TrialCalendarComponent,
+  TrialConfirmationComponent
   ],
   imports: [
     NgbModule,
@@ -406,7 +408,8 @@ import { TrialCalendarComponent } from './components/dashboard/dashboard-compone
     TrialSearchComponent,
 
     NewLearnerRegistrationModalComponent,
-    TrialCalendarComponent
+    TrialCalendarComponent,
+    TrialConfirmationComponent
 
   ],
   exports: [AppComponent],

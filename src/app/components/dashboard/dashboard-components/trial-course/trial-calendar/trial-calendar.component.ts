@@ -1,3 +1,4 @@
+import { TrialConfirmationComponent } from './../trial-confirmation/trial-confirmation.component';
 import { Component, OnInit, ViewEncapsulation, Input } from '@angular/core';
 import { OptionsInput } from '@fullcalendar/core';
 import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
@@ -16,8 +17,11 @@ export class TrialCalendarComponent implements OnInit {
   public options: OptionsInput;
 
   @Input() teacher: Object;
+  @Input() orgName: string;
+  @Input() orgId:number;
 
   constructor(
+    private modalService: NgbModal,
     private activeModal: NgbActiveModal,
     private trialService: TrialCoursesService
   ) { }
@@ -25,7 +29,6 @@ export class TrialCalendarComponent implements OnInit {
   ngOnInit() {
     this.getDataFromServer().subscribe(
       (res) => {
-        console.log(res);
         let timeSlots = this.calculateAvaliableTimeSlots(res[1]['Data']);
         this.initializeFullCalendar(res[0]['Data'], timeSlots);
       }
@@ -46,6 +49,7 @@ export class TrialCalendarComponent implements OnInit {
   /**
    * calculate avaliable time slots that user can select on calendar.
    * @param terms - terms of a year
+   * @returns {Array<object>} list of avaliable time slots after calculation
    */
   calculateAvaliableTimeSlots(terms: Array<object>) {
     /**@property {Array<number>} dayOfWeek - teacher's avaliable day of one week */
@@ -53,13 +57,15 @@ export class TrialCalendarComponent implements OnInit {
     /**@property {Array<object>} termDuationAfterFilter - a list saved avaliable term duration */
     let termDuationAfterFilter: Array<object> = this.getAvaliableTermDuration(terms);
     const millisecOfOneDay: number = 86400000;
+    /**@property {Array<object>} avaliableTimeSlots - a list saved avaliable time slots and returned at the end of function */
     let avaliableTimeSlots: Array<object> = []
 
+    /**push teacher avaliable days in term durations */
     termDuationAfterFilter.map(
       (val) => {
         let endDateTimeStamp = new Date(val['EndDate']).getTime();
+        //start date is current day
         let startDateTimeStamp = new Date().getTime();
-        //console.log(endDateTimeStamp)
         for (let i = startDateTimeStamp; i < endDateTimeStamp; i += millisecOfOneDay) {
           let date = new Date(i);
 
@@ -68,9 +74,6 @@ export class TrialCalendarComponent implements OnInit {
           let month = date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1;
           let day = date.getDate() < 10 ? '0' + date.getDate() : date.getDate();
 
-          console.log(dayOfWeek)
-          console.log(weekDay)
-          console.log(dayOfWeek.includes(weekDay))
           if (dayOfWeek.includes(weekDay)) {
             avaliableTimeSlots.push({
               start: `${year}-${month}-${day}T00:00:00`,
@@ -81,10 +84,6 @@ export class TrialCalendarComponent implements OnInit {
         }
       }
     )
-    console.log(termDuationAfterFilter)
-    console.log(this.teacher)
-    console.log(dayOfWeek)
-    console.log(avaliableTimeSlots)
     return avaliableTimeSlots;
   }
 
@@ -123,6 +122,7 @@ export class TrialCalendarComponent implements OnInit {
 
 
   initializeFullCalendar(coursesTimeSlots: Array<object>, avaliableDaySlots) {
+    let that = this;
     this.options = {
       allDaySlot: false,
       height: 700,
@@ -132,13 +132,16 @@ export class TrialCalendarComponent implements OnInit {
       slotDuration: '00:15',
       eventSources: [coursesTimeSlots,
         avaliableDaySlots],
-      //events: coursesTimeSlots,
       eventBackgroundColor: 'lightblue',
       selectMirror: true,
       selectOverlap: function (event) {
         return event.rendering === 'background';
       },
+
       selectConstraint: avaliableDaySlots,
+      select(info) {
+        that.selectSlot(info);
+      },
       header: {
         left: 'prev,next today',
         center: 'title',
@@ -148,10 +151,34 @@ export class TrialCalendarComponent implements OnInit {
     }
   }
 
-  timeSlot() {
-    return [{ start: '2019-08-12T09:00:00', end: '2019-06-12T09:30:00' }]
-    // return setTimeout(()=>{
-    //   return [ { start: '2019-08-12T09:00:00', end: '2019-06-12T09:30:00'}]
-    // },3000)
+  /**
+   * Call back function of full calendar select.
+   * @param info - infomation of select event
+   */
+  selectSlot(info) {
+    const milliSecIn30Min = 1800000;
+    const milliSecIn60Min = 3600000;
+    let startStr = info.startStr;
+    let startTimeStamp = new Date(startStr).getTime();
+    let endStr = info.endStr;
+    let endTimeStamp = new Date(endStr).getTime();
+    let differTimeStamp = endTimeStamp - startTimeStamp;
+    if (differTimeStamp >= milliSecIn30Min && differTimeStamp <= milliSecIn60Min)
+      this.popUpConfirmationModal(startTimeStamp, endTimeStamp);
+  }
+
+  popUpConfirmationModal(courseStartTime, courseEndTime) {
+    const modalRef = this.modalService.open(TrialConfirmationComponent, { size: 'lg', backdrop: 'static', keyboard: false });
+    //this.prepareConfirmationData(courseStartTime, courseEndTime);
+    modalRef.componentInstance.confirmationData = {
+      teacherId: this.teacher['TeacherId'],
+      teacherName:  this.teacher['FirstName'] + '  ' + this.teacher['LastName'],
+      startTimeStamp: courseStartTime,
+      endTimeStamp:courseEndTime,
+      orgId:this.orgId,
+      orgName:this.orgName,
+    }
+
+    //this.orgName
   }
 }
