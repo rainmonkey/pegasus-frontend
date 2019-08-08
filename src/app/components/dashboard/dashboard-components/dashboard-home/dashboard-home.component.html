@@ -31,18 +31,6 @@
         <!-- Item -->
         <div class="col-xl-3 col-sm-6">
           <div class="item d-flex align-items-center">
-            <div class="icon bg-red"><i class="fas fa-clone"></i></div>
-            <div class="title">
-              <span>Rearranged<br />Lessons</span>
-            </div>
-            <div class="number" *ngIf="messages">
-              <strong>{{ messages.rearrangedLessonsForToday }}</strong>
-            </div>
-          </div>
-        </div>
-        <!-- Item -->
-        <div class="col-xl-3 col-sm-6">
-          <div class="item d-flex align-items-center">
             <div class="icon bg-green">
               <i class="fas fa-file-invoice-dollar"></i>
             </div>
@@ -66,6 +54,18 @@
             </div>
           </div>
         </div>
+        <!-- Item -->
+        <div class="col-xl-3 col-sm-6">
+          <div class="item d-flex align-items-center">
+            <div class="icon bg-red"><i class="fas fa-clone"></i></div>
+            <div class="title">
+              <span>Trial<br />Lessons</span>
+            </div>
+            <div class="number" *ngIf="messages">
+              <strong>{{ messages.trialLessonsForToday }}</strong>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </section>
@@ -78,15 +78,15 @@
         <div class="statistics col-lg-3 col-12">
           <div class="statistic d-flex align-items-center bg-white has-shadow">
             <div class="icon bg-red"><i class="fa fa-tasks"></i></div>
-            <div class="text"><strong>234</strong><br><small>Applications</small></div>
+            <div class="text" *ngIf="messages"><strong>{{messages.canceledLessonsForToday}}</strong><br><small>Canceled Lessons For Today</small></div>
           </div>
           <div class="statistic d-flex align-items-center bg-white has-shadow">
             <div class="icon bg-green"><i class="fa fa-calendar-o"></i></div>
-            <div class="text"><strong>152</strong><br><small>Interviews</small></div>
+            <div class="text" *ngIf="messages"><strong>{{messages.rearrangedLessonsForToday}}</strong><br><small>Rearranged Lessons For Today</small></div>
           </div>
           <div class="statistic d-flex align-items-center bg-white has-shadow">
             <div class="icon bg-orange"><i class="fa fa-paper-plane-o"></i></div>
-            <div class="text"><strong>147</strong><br><small>Forwards</small></div>
+            <div class="text" *ngIf="messages"><strong>{{messages.lowRemain}}</strong><br><small>Student With Low Remaining Lessons</small></div>
           </div>
         </div>
 

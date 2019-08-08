@@ -30,10 +30,6 @@ export class StockApplicationProcessStatusComponent implements OnInit {
   constructor(private inventoriesService: InventoriesService) { }
 
   ngOnInit() {
-    // console.log('replyFlag', this.replyFlag)
-    // console.log('deliverFlag', this.deliverFlag)
-    // console.log('receiveFlag', this.receiveFlag)
-    console.log('whichOrder', this.whichOrder)
     this.checkQuantity();
   }
   /* check deliveredQty === deliveredQty ? */
@@ -60,6 +56,5 @@ export class StockApplicationProcessStatusComponent implements OnInit {
     this.canReply = false;
     this.replyMsg = '';
   }
-  /* deliver modal */
 
 }
