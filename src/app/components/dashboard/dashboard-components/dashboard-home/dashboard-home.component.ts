@@ -39,7 +39,8 @@ export class DashboardHomeComponent implements OnInit, AfterViewInit {
   formError: string;
   pageloading: boolean = true;
   lookUpList: Subscription;
-
+  //my to do list
+  addListBoolean = false;
   @ViewChild("popOver") public popover: NgbPopover;
   toDoList: {
     id: number;
@@ -215,6 +216,18 @@ export class DashboardHomeComponent implements OnInit, AfterViewInit {
     });
   }
 
+  clickAddList(){
+    this.addListBoolean = !this.addListBoolean;
+    console.log(this.addListBoolean)
+  }
+
+  closePopUp(){
+    this.addListBoolean = !this.addListBoolean;
+  }
+
+  saveList(){
+    console.log('save')
+  }
   // This is called just before the component is destoryed
   ngOnDestory() {
     this.lookUpList.unsubscribe();
