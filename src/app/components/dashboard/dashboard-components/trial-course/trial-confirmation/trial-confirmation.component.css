@@ -1,0 +1,16 @@
+.t_c_row_group{
+    margin:0.5rem 0.5rem 0 0.5rem;
+}
+.t_c_label{
+    line-height: 28px;
+    font-weight: bold;
+}
+
+
+input{
+    background: none;
+    outline: none;
+    border:0px;
+    border:solid 1px lightblue;
+    border-radius:5px;  
+}

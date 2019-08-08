@@ -49,24 +49,19 @@ export class InventoriesService {
     return this.http.get(this.baseUrl + `Product/GetProdByType/${typeId}`);
   }
 
-  /* post data  */
+  /* post method */
   postProduct(product: PostProduct): Observable<any> {
     return this.http.post(this.baseUrl + 'StockApplication', product)
       .pipe(
         catchError(this.errorHandler)
       );
   }
-  /* put data */
+
+  /* put method not only need id as path/header, but also need body, if not, then fill in null */
+
+  /* update */
   putProduct(applicationId: number, product: PostProduct): Observable<any> {
     return this.http.put(this.baseUrl + 'StockApplication/' + applicationId, product)
-  }
-  // throw error to component
-  errorHandler(error: HttpErrorResponse) {
-    return throwError(error);
-  }
-  /* delete data */
-  deleteProduct(applicationId: number): Observable<any> {
-    return this.http.delete(this.baseUrl + `StockApplication/${applicationId}`)
   }
   /* deliver */
   deliverProduct(product) {
@@ -78,10 +73,19 @@ export class InventoriesService {
   }
   /* reply */
   replyContent(applicationId, replyContent, applyAt, isApproved) {
-    return this.http.put(this.baseUrl + `StockApplication/reply/${applicationId}/${replyContent}/${applyAt}/${isApproved}`, replyContent, applyAt)
+    return this.http.put(this.baseUrl + `StockApplication/reply/${applicationId}/${replyContent}/${applyAt}/${isApproved}`, null)
   }
-  /* /api/StockApplication/solveDispute/{stockApplicationId} */
+  /* solveDispute */
   solveDispute(applicationId) {
-    return this.http.put(this.baseUrl + 'StockApplication/solveDispute/'+ applicationId, null)
+    return this.http.put(this.baseUrl +  `StockApplication/reply/${applicationId}`, null)
+  }
+
+  /* delete method */
+  deleteProduct(applicationId: number): Observable<any> {
+    return this.http.delete(this.baseUrl + `StockApplication/${applicationId}`)
+  }
+  // throw error to component
+  errorHandler(error: HttpErrorResponse) {
+    return throwError(error);
   }
 }

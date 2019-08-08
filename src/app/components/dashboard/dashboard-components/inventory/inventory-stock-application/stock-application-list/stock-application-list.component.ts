@@ -29,6 +29,7 @@ export class StockApplicationListComponent implements OnInit {
   public loadingFlag: boolean = true;
   public page: number = 1;
   public pageSize: number = 6;
+  public role: number;
   /* props for after loading, display default data of three months */
   public previousDate: any;
   public currentDate: any;
@@ -48,15 +49,11 @@ export class StockApplicationListComponent implements OnInit {
   /* props for modal */
   public timeout: any;
   public isDeleted: boolean = false;
-  public deleteFailed: boolean = false;
   public applicationId: number;
-  /* props for result of returned checkRole() */
+  public processStatus: number;
   public headOfficeFlag: boolean = false;
   /* for search method */
   public searchBy: string;
-  /* branch */
-  public processStatus: number;
-
 
   constructor(
     private router: Router,
@@ -69,29 +66,25 @@ export class StockApplicationListComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.headOfficeFlag = this.checkRole()
-    /* before get data from server, renders loading flag */
+    /* it will influence what info should render */
+    this.headOfficeFlag = this.checkRole();
+    /* before get data from server, render loading flag */
     this.loadingFlag = true;
     /* get three months data from server the first time accesses the web page */
     this.getThreeMonths();
     this.getStockApplication(this.previousDate, this.currentDate);
-    this.dateForm = this.fb.group({
-      beginDate: ['', Validators.pattern('^\d{4}\-(0[1-9]|1[012])\-(0[1-9]|[12][0-9]|3[01])$')],
-      endDate: ['', Validators.pattern('^\d{4}\-(0[1-9]|1[012])\-(0[1-9]|[12][0-9]|3[01])$')]
-    })
-
   }
 
   /* 
-    check role from local storage, various roles show various info 
+    check role from local storage, different role has different limit of permissions
       1) if role === 3, then display branch pages
-      2) if role === 9, then display head office pages
+      2) if role === 9 or role === 5, then display head office pages
   */
   checkRole() {
-    // now role is just hardcode, will get it from real value after creat a head office account
-    let role = 9
-    // let role = + localStorage.getorder('Role');
-    if (role === 9) return true
+    // this.role = + localStorage.getorder('Role');
+    // now just hardcode for test
+    this.role = 3
+    if (this.role === 5 || this.role === 9) return true
     else return false
   }
   /* get previous three months */
@@ -102,46 +95,32 @@ export class StockApplicationListComponent implements OnInit {
     let previousThreeMonths = today.setMonth(today.getMonth() - 3)
     this.previousDate = this.datePipe.transform(previousThreeMonths, 'yyyy-MM-dd');
   }
+  /* slice specific part of data to display in table of HTML */
+  renderOrderList(orderList: any[]) {
+    return orderList.reverse()
+      .map((order, i) => ({ id: i + 1, ...order }))
+  }
   /* get stock application data from server */
   getStockApplication(previousDate: any, currentDate: any) {
     if (this.checkRole()) {
       this.inventoriesService.getStockApplication(previousDate, currentDate).subscribe(
         (res) => {
-          console.log('headOfficeRes', res['Data']);
           this.stockApplication = this.renderOrderList(res['Data']);
-
-          console.log('this.stockApplication', this.stockApplication)
           this.stockApplicationCopy = res['Data'].map((order, i) => ({ id: i + 1, ...order }));
           this.loadingFlag = false;
         },
-        (err) => {
-          this.errorHandler(err);
-        }
+        (err) => alert('Oops! Can not catch Data Now!')
       )
     } else {
       this.inventoriesService.getStockApplication(previousDate, currentDate).subscribe(
         (res) => {
-          console.log('branchRes', res['Data']);
           let orgId = +localStorage.getItem('OrgId')[1];
           this.stockApplication = this.renderOrderList(res['Data']).filter((order) => order.Org.OrgId === orgId);
           this.loadingFlag = false;
         },
-        (err) => {
-          this.errorHandler(err);
-        }
+        (err) => alert('Oops! Can not catch Data Now!')
       )
     }
-  }
-  /* err handler */
-  errorHandler(err: any) {
-    console.warn(err);
-    if (err.error.ErrorMessage != null) this.errorMessage = err.error.ErrorMessage
-    else this.errorMessage = 'Error! Can not catch Data!'
-  }
-  /* slice specific part of data to display in table of HTML */
-  renderOrderList(orderList: any[]) {
-    return orderList.reverse()
-      .map((order, i) => ({ id: i + 1, ...order }))
   }
   /* Validate EndDate > BeginDate */
   onBeginDateSelect(beginDate: NgbDate) {
@@ -165,7 +144,10 @@ export class StockApplicationListComponent implements OnInit {
       });
     } else {
       this.toDate = endDate;
-      this.endDate = `${endDate.year}-${endDate.month}-${endDate.day}`;
+      let convertToDate = `${endDate.year}-${endDate.month}-${endDate.day}`;
+      let tempConvertToDate = new Date(convertToDate)
+      let tempEndDate = tempConvertToDate.setDate(tempConvertToDate.getDate() + 1)
+      this.endDate = this.datePipe.transform(tempEndDate, 'yyyy-MM-dd')
     }
   }
   /* user interaction: select a period of time */
@@ -198,14 +180,24 @@ export class StockApplicationListComponent implements OnInit {
       relativeTo: this.route
     });
   }
+  /* search staff name and location */
+  search(text: string) {
+    this.stockApplication = this.stockApplicationCopy;
+    return this.stockApplication.filter(order => {
+      const term = text.toLowerCase().trim();
+      return order.ApplyStaff.FirstName.toLowerCase().includes(term)
+        || order.Org.OrgName.toLowerCase().includes(term);
+    });
+  }
+  keyup() {
+    this.searchBy === '' ? this.stockApplication = this.stockApplicationCopy : this.stockApplication = this.search(this.searchBy);
+  }
   /* update modal */
   postStockApplication(modalRef: any) {
     modalRef.componentInstance.passApplicationId.subscribe(
       (applicationId: number) => {
-        // this.loadingFlag = true;
         this.inventoriesService.getNewStockApplication(applicationId).subscribe(
           res => {
-            console.log('post success', res['Data']);
             this.stockApplication.unshift(res['Data']);
             this.stockApplication.map((order, i) => order.id = i + 1);
             this.applicationId = applicationId;
@@ -213,9 +205,14 @@ export class StockApplicationListComponent implements OnInit {
               this.applicationId = null;
             }, 2000)
             this.loadingFlag = false;
+            Swal.fire({
+              title: 'Successfully Add!',
+              type: 'success',
+              showConfirmButton: true,
+            });
             modalRef.close();
           },
-          err => this.errorHandler(err)
+          err => alert('Oops! Update data failed!')
         )
       }
     )
@@ -223,21 +220,23 @@ export class StockApplicationListComponent implements OnInit {
   putStockApplication(modalRef: any, whichOrder) {
     modalRef.componentInstance.updateApplication.subscribe(
       (res) => {
-        // this.loadingFlag = true;
-        console.log('put success', res);
         this.inventoriesService.getNewStockApplication(res.ApplicationId).subscribe(
           res => {
             let index = this.stockApplication.indexOf(whichOrder);
-            let updateRes = { id: index + 1, ...res['Data'] }
-            // console.log('res', res['Data'])
+            let updateRes = { id: index + 1, ...res['Data'] };
             this.stockApplication.splice(index, 1, updateRes);
-            // console.log('aaa', this.stockApplication)
+            Swal.fire({
+              title: 'Successfully Update!',
+              type: 'success',
+              showConfirmButton: true,
+            });
+            modalRef.close();
           },
-          err => console.log('err', err)
+          err => alert('Oops! Update Data failed')
         )
         modalRef.close();
       },
-      (err) => this.errorHandler(err)
+      (err) => alert('Oops! Update Data failed')
     )
   }
   updateModal(command: number, whichOrder?) {
@@ -261,18 +260,19 @@ export class StockApplicationListComponent implements OnInit {
     this.timeout = setTimeout(() => {
       this.inventoriesService.deleteProduct(this.applicationId).subscribe(
         res => {
-          console.log('delete res', res);
           this.isDeleted = false;
           let index = this.stockApplication.indexOf(whichOrder);
           this.stockApplication.splice(index, 1);
           this.stockApplication.map((order, i) => order.id = i + 1);
+          Swal.fire({
+            title: 'Successfully Delete!',
+            type: 'success',
+            showConfirmButton: true,
+          });
         },
-        err => {
-          this.deleteFailed = true;
-          this.errorHandler(err);
-        }
+        err => alert('Oops! Delete Data failed')
       )
-    }, 2000)
+    }, 3000)
   }
   undo() {
     this.isDeleted = false;
@@ -289,7 +289,6 @@ export class StockApplicationListComponent implements OnInit {
   updateReplyStatus(modalRef) {
     modalRef.componentInstance.sendReplyRes.subscribe(
       res => {
-        console.log('updateReplyStatus', res)
         this.stockApplication.map((order) => {
           if (order.ApplicationId === res.ApplicationId) {
             order.ProcessStatus = res.ProcessStatus;
@@ -304,7 +303,7 @@ export class StockApplicationListComponent implements OnInit {
         });
         modalRef.close();
       },
-      err => this.errorHandler(err)
+      err => alert('Oops! Reply Data failed')
     )
   }
   /* deliver modal */
@@ -317,15 +316,13 @@ export class StockApplicationListComponent implements OnInit {
   updateDeliverStatus(modalRef) {
     modalRef.componentInstance.sendDeliverRes.subscribe(
       res => {
-        console.log('updateDeliverStatus', res)
         this.stockApplication.map((order) => {
           if (order.ApplicationId === res.ApplicationId) {
             order.ProcessStatus = res.ProcessStatus;
             order.DeliverAt = res.DeliverAt;
-            // compare two array of objects and assign value
             order.ApplicationDetails.map((product) => {
               res.ApplicationDetails.map((prod) => {
-                if(product.DetaillsId == prod.DetaillsId) {
+                if (product.DetaillsId == prod.DetaillsId) {
                   product.DeliveredQty = prod.DeliveredQty
                 }
               })
@@ -339,20 +336,8 @@ export class StockApplicationListComponent implements OnInit {
         });
         modalRef.close();
       },
-      err => this.errorHandler(err)
+      err => alert('Oops! Deliver failed')
     )
-  }
-  /* search staff name and location */
-  search(text: string) {
-    this.stockApplication = this.stockApplicationCopy;
-    return this.stockApplication.filter(order => {
-      const term = text.toLowerCase().trim();
-      return order.ApplyStaff.FirstName.toLowerCase().includes(term)
-        || order.Org.OrgName.toLowerCase().includes(term);
-    });
-  }
-  keyup() {
-    this.searchBy === '' ? this.stockApplication = this.stockApplicationCopy : this.stockApplication = this.search(this.searchBy);
   }
   /* receive modal */
   receiveModal(command, whichOrder) {
@@ -364,14 +349,14 @@ export class StockApplicationListComponent implements OnInit {
   updateReceiveStatus(modalRef) {
     modalRef.componentInstance.sendReceiveRes.subscribe(
       res => {
-        console.log('updateReceiveStatus', res)
         this.stockApplication.map((order) => {
           if (order.ApplicationId === res.ApplicationId) {
             order.ProcessStatus = res.ProcessStatus;
             order.RecieveAt = res.RecieveAt;
+            order.IsDisputed = res.IsDisputed;
             order.ApplicationDetails.map((product) => {
               res.ApplicationDetails.map((prod) => {
-                if(product.DetaillsId == prod.DetaillsId) {
+                if (product.DetaillsId == prod.DetaillsId) {
                   product.ReceivedQty = prod.ReceivedQty
                 }
               })
@@ -385,7 +370,7 @@ export class StockApplicationListComponent implements OnInit {
         });
         modalRef.close();
       },
-      err => this.errorHandler(err)
+      err => alert('Oops! Receice failed')
     )
   }
   /* process modal */
@@ -394,13 +379,14 @@ export class StockApplicationListComponent implements OnInit {
     modalRef.componentInstance.command = command;
     modalRef.componentInstance.whichOrder = whichOrder;
     modalRef.componentInstance.headOfficeFlag = this.headOfficeFlag;
+    modalRef.componentInstance.role = this.role;
     this.cancelDispute(modalRef)
   }
+  /* handle dispute if exits */
   cancelDispute(modalRef) {
     modalRef.componentInstance.sendDispute.subscribe(
       res => {
-        console.log('cancelDispute', res);
-        this.stockApplication.map((order) =>{
+        this.stockApplication.map((order) => {
           order.IsDisputed = res.IsDisputed
         })
         Swal.fire({
@@ -409,7 +395,8 @@ export class StockApplicationListComponent implements OnInit {
           showConfirmButton: true,
         });
         modalRef.close()
-      }
+      },
+      err => alert('Oops! Can not cancel dispute!')
     )
   }
 }

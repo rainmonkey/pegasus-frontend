@@ -42,16 +42,10 @@ export class StockApplicationDeliverModalComponent implements OnInit, AfterViewC
   deliver() {
     this.inventoriesService.deliverProduct(this.dataToDeliver()).subscribe(
       res => {
-        console.log('res', res['Data'])
         this.sendDeliverRes.emit(res['Data'])
       },
-      err => this.errHandler(err)
+      err => alert('Oops! Deliver failed!')
     )
   }
-   /* handle error from server */
-   errHandler(err: any) {
-    console.warn(err);
-    if (err.ErrorMessage != null) this.errorMessage = err.ErrorMessage
-    else this.errorMessage = 'Deliver failed!'
-  }
+  
 }

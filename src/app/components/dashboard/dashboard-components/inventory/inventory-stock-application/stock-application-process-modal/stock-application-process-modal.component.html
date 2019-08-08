@@ -15,6 +15,6 @@
   </app-stock-application-process-status>
 </div>
 <div class="modal-footer">
-  <button class="btn btn-outline-dark" *ngIf="whichOrder.IsDisputed === 1 && headOfficeFlag" (click)="handleDispute()">Solve</button>
+  <button class="btn btn-outline-dark" *ngIf="whichOrder.IsDisputed === 1 && headOfficeFlag && role === 5" (click)="handleDispute()">Solve</button>
   <button class="btn btn-outline-dark" (click)="activeModal.close('Close click')">Close</button>
 </div>

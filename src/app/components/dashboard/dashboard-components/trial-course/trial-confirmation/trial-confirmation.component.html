@@ -1,0 +1,87 @@
+<!--modal header-->
+<div class='modal-header'>
+  <h4 class='modal-title'>Confirmation</h4>
+  <button type="button" class='btn btn-sm btn-info' aria-label="Close" (click)="activeModal.close('Cross click')">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+
+<!--modal body-->
+<div>
+  <!--row 1-->
+  <div class='row t_c_row_group'>
+    <span class='col-2 t_c_label'>Course Name</span>
+    <input type="text" name="" class='col-10' id="" disabled>
+  </div>
+  <!--row 2-->
+  <div class='row t_c_row_group'>
+    <div class='col-6'>
+      <div class='row t_c_item'>
+        <span class='col-3 t_c_label'>Learner</span>
+        <input type="text" class='col-9' disabled>
+      </div>
+    </div>
+    <div class='col-6'>
+      <div class='row t_c_item'>
+        <span class='col-3 t_c_label' style="text-align: center">Teacher</span>
+        <input type="text" class='col-9' disabled>
+      </div>
+    </div>
+  </div>
+  <!--row 3-->
+  <div class='row t_c_row_group'>
+    <div class='col-6'>
+      <div class='row t_c_item'>
+        <span class='col-3 t_c_label'>Start Time</span>
+        <input type="text" class='col-9' disabled>
+      </div>
+    </div>
+    <div class='col-6'>
+      <div class='row t_c_item'>
+        <span class='col-3 t_c_label' style="text-align: center">End Time</span>
+        <input type="text" class='col-9' disabled>
+      </div>
+    </div>
+  </div>
+  <!--row 4-->
+  <div class='row t_c_row_group'>
+    <div class='col-8'>
+      <div class='row t_c_item'>
+        <span class='col-2 t_c_label'>Location</span>
+        <input type="text" class='col-10' disabled>
+      </div>
+    </div>
+    <div class='col-4'>
+      <div class='row t_c_item'>
+        <span class='col-3 t_c_label' style="text-align: center">Room</span>
+        <input type="text" class='col-9' disabled>
+      </div>
+    </div>
+  </div>
+  <!--row 5-->
+  <div class='row t_c_row_group'>
+    <div class='col-1 t_c_label t_c_price'>$50</div>
+    <div class='col-2'>
+      <button type='button' class='btn btn-info' style="padding: 3px 6px">Pay Now</button>
+    </div>
+
+    <div class='col-9'>
+
+    </div>
+
+    <!-- <div *ngIf='isPayNow'>
+        <span *ngFor='let i of paymentMethods' class='col-3'>
+          <label for={{i.PropName}} style="margin-right:1.5rem">{{i.PropName}}</label>
+          <input #radios type="radio" name="payment" id={{i.PropName}} value={{i.PropValue}} (click)='getRadioValue(i.PropValue)'>
+        </span>
+      </div>
+ -->
+
+  </div>
+</div>
+
+<!--modal footer-->
+<div class='modal-footer'>
+   
+  </div>
+  

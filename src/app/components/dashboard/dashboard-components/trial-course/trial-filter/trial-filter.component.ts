@@ -13,6 +13,7 @@ import { TrialCalendarComponent } from '../trial-calendar/trial-calendar.compone
 export class TrialFilterComponent implements OnInit {
   public filterLabel: Array<string> = ['Categories', 'Orgnizations', 'DayOfWeek'];
   public orgIdFilter: number;
+  public orgName:string;
   public cateIdFilter: number;
 
   /**@property {Array<string>} filterString -  A list stored the filter tags that selected.*/
@@ -82,6 +83,7 @@ export class TrialFilterComponent implements OnInit {
       else {
         this.filterString.push(item['Abbr']);
         this.orgIdFilter = item['OrgId'];
+        this.orgName = item['OrgName'];
         //get&set day of week filter tags
         let dayOfWeek = this.getDayOfWeek();
         this.filterTags.push(dayOfWeek);
@@ -227,6 +229,8 @@ export class TrialFilterComponent implements OnInit {
   popupCalendarModal(teacher: object) {
     let modalRef = this.modalService.open(TrialCalendarComponent, { size: 'lg', backdrop: 'static', keyboard: false });
     modalRef.componentInstance.teacher = teacher;
+    modalRef.componentInstance.orgName = this.orgName;
+    modalRef.componentInstance.orgId = this.orgIdFilter;
   }
 
   removeFilters(index) {
