@@ -114,8 +114,10 @@ export class DashboardHomeComponent implements OnInit, AfterViewInit {
   getToDoList() {
     this.userService.getToDoList().subscribe(
       res => {
-
         this.toDoList = res["Data"];
+        this.toDoList.forEach(ele=>{
+          ele['deleteListBoolean'] = true;
+        })
         this.getDate(res["Data"]);
         console.log(this.toDoList)
       },
@@ -226,7 +228,8 @@ export class DashboardHomeComponent implements OnInit, AfterViewInit {
   popupListFormBuilder(){
     this.popUpForm = this.formBuilder.group({
       title: '',
-      content:''
+      content:'',
+      deleteListBoolean:true
     })
   }
 
@@ -245,10 +248,18 @@ export class DashboardHomeComponent implements OnInit, AfterViewInit {
 
     objNew['ListName'] = this.popUpForm.value.title;
     objNew['ListContent'] = this.popUpForm.value.content;
+    objNew['deleteListBoolean'] = this.popUpForm.value
     this.popUpForm.reset();
     this.toDoList.push(objNew);
-    console.log(this.toDoList)
+    console.log(this.toDoList);
   }
+  deleteList(i,num){
+    this.toDoList[i].deleteListBoolean = !this.toDoList[i].deleteListBoolean;
+    if (num ==1){
+      this.toDoList.splice(i,1);
+    }
+  }
+
   // This is called just before the component is destoryed
   ngOnDestory() {
     this.lookUpList.unsubscribe();

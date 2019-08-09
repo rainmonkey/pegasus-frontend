@@ -240,7 +240,6 @@
               <input
               type="checkbox"
               class="checkbox-template"
-              (click)='ListChecked(i,$event)'
             />
             <div class="icon ml-2"><i class="far fa-envelope"></i></div>
             <div class="title">
@@ -315,11 +314,10 @@
       <div class="card-body no-padding">
         <!-- Item-->
         <div class="item d-flex justify-content-between" *ngFor="let list of toDoList, let i = index">
-          <div class="info d-flex">
+          <div class="info d-flex" *ngIf="list.deleteListBoolean" (click)='deleteList(i)'>
               <input
               type="checkbox"
               class="checkbox-template"
-              (click)='ListChecked(i,$event)'
             />
             <div class="icon ml-2"><i class="far fa-envelope"></i></div>
             <div class="title">
@@ -329,7 +327,11 @@
               </p>
             </div>
           </div>
-          <div class="date text-right"><strong>{{dayFormat[i]}}</strong><span>{{monthFormat[i]}}</span></div>
+          <div *ngIf="!list.deleteListBoolean">
+            <button class='btn mr-2' (click)='deleteList(i,1)'>Delete</button>
+            <button class='btn' (click)='deleteList(i)'>Cancel</button>
+          </div>
+          <!-- <div class="date text-right"><strong>{{dayFormat[i]}}</strong><span>{{monthFormat[i]}}</span></div> -->
         </div>
       </div>
     </div>
