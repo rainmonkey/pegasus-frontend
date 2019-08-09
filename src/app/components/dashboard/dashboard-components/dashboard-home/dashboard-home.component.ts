@@ -41,15 +41,17 @@ export class DashboardHomeComponent implements OnInit, AfterViewInit {
   lookUpList: Subscription;
   //my to do list
   addListBoolean = false;
+  popUpForm: FormGroup;
   @ViewChild("popOver") public popover: NgbPopover;
-  toDoList: {
-    id: number;
-    task: string;
-    origin: string;
-    priority: number;
-    link: string;
-    created_date: string;
-  }[];
+  // toDoList: {
+  //   id: number;
+  //   task: string;
+  //   origin: string;
+  //   priority: number;
+  //   link: string;
+  //   created_date: string;
+  // }[];
+  toDoList =[]
 
   constructor(
     public title: Title,
@@ -100,11 +102,14 @@ export class DashboardHomeComponent implements OnInit, AfterViewInit {
 
     this.userName = localStorage.getItem("userFirstName");
     this.pageloading = false;
+    // build popUpForm
+    this.popupListFormBuilder();
 
     // this.tableService.sorting(this.toDoList, 'priority')
 
     // Get Lookup list
   }
+
   // get to do list from user service
   getToDoList() {
     this.userService.getToDoList().subscribe(
@@ -112,6 +117,7 @@ export class DashboardHomeComponent implements OnInit, AfterViewInit {
 
         this.toDoList = res["Data"];
         this.getDate(res["Data"]);
+        console.log(this.toDoList)
       },
       err => console.warn(err)
     );
@@ -216,9 +222,16 @@ export class DashboardHomeComponent implements OnInit, AfterViewInit {
     });
   }
 
+  //------popup to do list
+  popupListFormBuilder(){
+    this.popUpForm = this.formBuilder.group({
+      title: '',
+      content:''
+    })
+  }
+
   clickAddList(){
     this.addListBoolean = !this.addListBoolean;
-    console.log(this.addListBoolean)
   }
 
   closePopUp(){
@@ -226,7 +239,15 @@ export class DashboardHomeComponent implements OnInit, AfterViewInit {
   }
 
   saveList(){
-    console.log('save')
+    this.addListBoolean = !this.addListBoolean;
+    // push new List
+    let objNew = {};
+
+    objNew['ListName'] = this.popUpForm.value.title;
+    objNew['ListContent'] = this.popUpForm.value.content;
+    this.popUpForm.reset();
+    this.toDoList.push(objNew);
+    console.log(this.toDoList)
   }
   // This is called just before the component is destoryed
   ngOnDestory() {

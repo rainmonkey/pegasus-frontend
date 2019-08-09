@@ -268,17 +268,20 @@
             </div>
           </div>
 
-          <div class='popUpText input-group input-group-sm pl-2 mt-2'>
-              <div class="input-group-prepend">
-                <span style='background: none; border: none;' class='input-group-text'>Title:</span>
-                <input class='popUpText form-control' aria-label="Small" aria-describedby="inputGroup-sizing-sm" type="text" placeholder='Please Enter..'>
-              </div>
+          <div [formGroup]="popUpForm">
+            <div class='popUpText input-group input-group-sm pl-2 mt-2'>
+                <div class="input-group-prepend">
+                  <span style='background: none; border: none;' class='input-group-text'>Title:</span>
+                  <input class='popUpText form-control' type="text" placeholder='Please Enter..' formControlName="title">
+                </div>
+            </div>
+
+            <div class='mt-1 col-12' style='color: #999; border-bottom: 1px solid rgba(134, 142, 150)'>
+            Please Enter The Content..
+            <textarea formControlName="content"  class='form-control mb-2 mr-1' id="NewList" rows=4></textarea>
+            </div>
           </div>
 
-          <div class='mt-1 col-12' style='color: #999; border-bottom: 1px solid rgba(134, 142, 150)'>
-          Please Enter The Message..
-          <textarea  class='form-control mb-2 mr-1' id="NewList" rows=4></textarea>
-          </div>
           <button class='btn mt-1 mr-2' (click)='saveList()' style='float: right;color: #999; border: 1px solid rgba(134, 142, 150)'>Save</button>
         </div>
       <div class="card-close">
