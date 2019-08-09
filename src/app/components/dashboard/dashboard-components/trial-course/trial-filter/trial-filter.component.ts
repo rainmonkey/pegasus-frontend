@@ -15,6 +15,7 @@ export class TrialFilterComponent implements OnInit {
   public orgIdFilter: number;
   public orgName:string;
   public cateIdFilter: number;
+  public cateName:string;
 
   /**@property {Array<string>} filterString -  A list stored the filter tags that selected.*/
   public filterString: Array<string> = [];
@@ -64,6 +65,7 @@ export class TrialFilterComponent implements OnInit {
       else {
         this.filterString.push(item['CourseCategoryName']);
         this.cateIdFilter = item['CourseCategoryId'];
+        this.cateName = item['CourseCategoryName'];
         //get&set orgs filter tags
         this.getOrgs().subscribe(
           (res) => {
@@ -231,6 +233,8 @@ export class TrialFilterComponent implements OnInit {
     modalRef.componentInstance.teacher = teacher;
     modalRef.componentInstance.orgName = this.orgName;
     modalRef.componentInstance.orgId = this.orgIdFilter;
+    modalRef.componentInstance.CourseCategoryId = this.cateIdFilter;
+    modalRef.componentInstance.courseCategoryName = this.cateName;
   }
 
   removeFilters(index) {
