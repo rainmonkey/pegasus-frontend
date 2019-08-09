@@ -240,7 +240,6 @@
               <input
               type="checkbox"
               class="checkbox-template"
-              (click)='ListChecked(i,$event)'
             />
             <div class="icon ml-2"><i class="far fa-envelope"></i></div>
             <div class="title">
@@ -268,17 +267,20 @@
             </div>
           </div>
 
-          <div class='popUpText input-group input-group-sm pl-2 mt-2'>
-              <div class="input-group-prepend">
-                <span style='background: none; border: none;' class='input-group-text'>Title:</span>
-                <input class='popUpText form-control' aria-label="Small" aria-describedby="inputGroup-sizing-sm" type="text" placeholder='Please Enter..'>
-              </div>
+          <div [formGroup]="popUpForm">
+            <div class='popUpText input-group input-group-sm pl-2 mt-2'>
+                <div class="input-group-prepend">
+                  <span style='background: none; border: none;' class='input-group-text'>Title:</span>
+                  <input class='popUpText form-control' type="text" placeholder='Please Enter..' formControlName="title">
+                </div>
+            </div>
+
+            <div class='mt-1 col-12' style='color: #999; border-bottom: 1px solid rgba(134, 142, 150)'>
+            Please Enter The Content..
+            <textarea formControlName="content"  class='form-control mb-2 mr-1' id="NewList" rows=4></textarea>
+            </div>
           </div>
 
-          <div class='mt-1 col-12' style='color: #999; border-bottom: 1px solid rgba(134, 142, 150)'>
-          Please Enter The Message..
-          <textarea  class='form-control mb-2 mr-1' id="NewList" rows=4></textarea>
-          </div>
           <button class='btn mt-1 mr-2' (click)='saveList()' style='float: right;color: #999; border: 1px solid rgba(134, 142, 150)'>Save</button>
         </div>
       <div class="card-close">
@@ -312,11 +314,10 @@
       <div class="card-body no-padding">
         <!-- Item-->
         <div class="item d-flex justify-content-between" *ngFor="let list of toDoList, let i = index">
-          <div class="info d-flex">
+          <div class="info d-flex" *ngIf="list.deleteListBoolean" (click)='deleteList(i)'>
               <input
               type="checkbox"
               class="checkbox-template"
-              (click)='ListChecked(i,$event)'
             />
             <div class="icon ml-2"><i class="far fa-envelope"></i></div>
             <div class="title">
@@ -326,7 +327,11 @@
               </p>
             </div>
           </div>
-          <div class="date text-right"><strong>{{dayFormat[i]}}</strong><span>{{monthFormat[i]}}</span></div>
+          <div *ngIf="!list.deleteListBoolean">
+            <button class='btn mr-2' (click)='deleteList(i,1)'>Delete</button>
+            <button class='btn' (click)='deleteList(i)'>Cancel</button>
+          </div>
+          <!-- <div class="date text-right"><strong>{{dayFormat[i]}}</strong><span>{{monthFormat[i]}}</span></div> -->
         </div>
       </div>
     </div>
