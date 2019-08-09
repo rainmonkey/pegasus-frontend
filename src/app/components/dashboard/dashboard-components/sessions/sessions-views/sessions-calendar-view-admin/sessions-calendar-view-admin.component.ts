@@ -194,6 +194,7 @@ export class SessionsCalendarViewAdminComponent implements OnInit {
       this.eventsModel = this.eventData;
       this.isloading = false;
       this.teacherAvoidDuplicate();
+      console.log(this.eventsModel);
     });
   }
 
