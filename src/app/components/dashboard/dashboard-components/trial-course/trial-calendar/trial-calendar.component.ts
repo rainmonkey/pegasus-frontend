@@ -18,7 +18,9 @@ export class TrialCalendarComponent implements OnInit {
 
   @Input() teacher: Object;
   @Input() orgName: string;
-  @Input() orgId:number;
+  @Input() orgId: number;
+  @Input() courseCategoryName: string;
+  @Input() CourseCategoryId:number;
 
   constructor(
     private modalService: NgbModal,
@@ -127,8 +129,8 @@ export class TrialCalendarComponent implements OnInit {
       allDaySlot: false,
       height: 700,
       selectable: true,
-      minTime: '09:00',
-      maxTime: '20:00',
+      minTime: '00:00',
+      maxTime: '24:00',
       slotDuration: '00:15',
       eventSources: [coursesTimeSlots,
         avaliableDaySlots],
@@ -163,20 +165,40 @@ export class TrialCalendarComponent implements OnInit {
     let endStr = info.endStr;
     let endTimeStamp = new Date(endStr).getTime();
     let differTimeStamp = endTimeStamp - startTimeStamp;
-    if (differTimeStamp >= milliSecIn30Min && differTimeStamp <= milliSecIn60Min)
-      this.popUpConfirmationModal(startTimeStamp, endTimeStamp);
+    if (differTimeStamp >= milliSecIn30Min && differTimeStamp <= milliSecIn60Min){
+      let durationIndex:number;
+      switch(differTimeStamp){
+        case 1800000:
+          durationIndex = 1;
+          break;
+        case 3600000:
+          durationIndex = 3;
+          break;
+        default:
+          durationIndex = 2;
+          break;  
+      }
+      this.popUpConfirmationModal(startTimeStamp, endTimeStamp,durationIndex,startStr,endStr);
+    }
+    console.log(startStr)
   }
 
-  popUpConfirmationModal(courseStartTime, courseEndTime) {
+  popUpConfirmationModal(courseStartTime, courseEndTime,durationIndex,startStr,endStr) {
     const modalRef = this.modalService.open(TrialConfirmationComponent, { size: 'lg', backdrop: 'static', keyboard: false });
     //this.prepareConfirmationData(courseStartTime, courseEndTime);
     modalRef.componentInstance.confirmationData = {
       teacherId: this.teacher['TeacherId'],
-      teacherName:  this.teacher['FirstName'] + '  ' + this.teacher['LastName'],
+      teacherName: this.teacher['FirstName'] + '  ' + this.teacher['LastName'],
       startTimeStamp: courseStartTime,
-      endTimeStamp:courseEndTime,
-      orgId:this.orgId,
-      orgName:this.orgName,
+      endTimeStamp: courseEndTime,
+      orgId: this.orgId,
+      orgName: this.orgName,
+      cateName: this.courseCategoryName,
+      cateId: this.CourseCategoryId,
+      teacher:this.teacher,
+      durationIndex:durationIndex,
+      startStr:startStr,
+      endStr:endStr
     }
 
     //this.orgName
