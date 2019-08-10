@@ -252,8 +252,8 @@
     <div class="learnPurpose">
       <span class="text-primary">Why do you learn the piano?</span><br>
       <div class='d-inline-block' *ngFor="let learnerPurpose of learnerPurpose; let i = index">
-        <input #learnPurpose type="checkbox" (click)='test1(i, $event)' [value]="learnerPurpose.PropValue"
-          [checked]='setDefaultPurpose(learnerPurpose.PropValue)' formControlName='LearnerOthers'>
+        <input #learnPurpose type="checkbox" (click)="selectLearnerPurpose(i, $event)" [value]="learnerPurpose.PropValue"
+          [checked]='learnerPurpose.isChecked' formControlName='LearnerOthers'>
         <label style='margin-right:20px'>{{learnerPurpose.PropName}}</label>
       </div>
     </div>
@@ -261,7 +261,7 @@
     <div class="how know us">
       <span class="text-primary">How do you know about us?</span><br>
       <div class='d-inline-block' *ngFor="let howKnown of howKnown; let i = index">
-        <input #howKnow type="checkbox" [value]="howKnown.PropValue" [checked]='setDefaultHowKnow(howKnown.PropValue)' formControlName='LearnerOthers'>
+        <input #howKnow type="checkbox" (click)="selectHowKnown(i, $event)" [value]="howKnown.PropValue" [checked]='howKnown.isChecked' formControlName='LearnerOthers'>
         <label style='margin-right:20px'>{{howKnown.PropName}}</label>
       </div>
     </div>

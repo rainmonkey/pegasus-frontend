@@ -12,7 +12,7 @@ export class NewLearnerRegistrationModalComponent implements OnInit {
   public messageColor: string;
   public submitionFlag: boolean = true;
   public loadingGifFlag: boolean = false;
-  LearnerOthers = []
+
   getErrorW = false;
   getErrorH = false;
   showErrorW = false;
@@ -76,7 +76,7 @@ export class NewLearnerRegistrationModalComponent implements OnInit {
     valueToSubmit.Gender = Number(valueToSubmit.Gender);
     valueToSubmit.LearnerLevel = Number(valueToSubmit.LearnerLevel);
     valueToSubmit.OrgId = Number(valueToSubmit.OrgId)
-    valueToSubmit.LearnerOthers = this.LearnerOthers
+    valueToSubmit.LearnerOthers = this.updateFormObj.learnerOthers
     return valueToSubmit
   }
 

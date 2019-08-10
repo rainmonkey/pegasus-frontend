@@ -26,11 +26,9 @@ export class NewRegistrationFormComponent implements OnInit {
   public howKnown: Array<any>;
 
   public othersList = []
-  getErrorW = false;
-  getErrorH = false;
-  showErrorW = false;
-  showErrorH = false;
-
+  public learnerOthers = []
+  whyP = []
+  howP = []
   @ViewChild("grade") grade;
   @ViewChild('agreement') agreement;
   @ViewChild('otherFile') otherFile;
@@ -158,7 +156,6 @@ export class NewRegistrationFormComponent implements OnInit {
     this.registrationService.getLookups(2)
       .subscribe(
         data => {
-          console.log('learner purpose');
           this.learnerPurpose = data.Data;
           for (let lP of this.learnerPurpose) {
             lP.isChecked = false;
@@ -177,7 +174,6 @@ export class NewRegistrationFormComponent implements OnInit {
     this.registrationService.getLookups(3)
       .subscribe(
         data => {
-          console.log('how know', data, this.whichLearner);
           this.howKnown = data.Data;
           this.howKnown.map((o, i) => {
             o.isChecked = false;
@@ -252,29 +248,6 @@ export class NewRegistrationFormComponent implements OnInit {
       return true;
     }
   }
-  setDefaultPurpose(selectedValue) {
-    if (this.command !== 1) {
-      for (let i of this.whichLearner.LearnerOthers) {
-        if (i.OthersType == 2) {
-          if (i.OthersValue == selectedValue) {
-            return true
-          }
-        }
-      }
-    }
-  }
-
-  setDefaultHowKnow(selectedValue) {
-    if (this.command !== 1) {
-      for (let i of this.whichLearner.LearnerOthers) {
-        if (i.OthersType == 3) {
-          if (i.OthersValue == selectedValue) {
-            return true
-          }
-        }
-      }
-    }
-  }
 
   setTrue() {
     if (this.command !== 1) {
@@ -290,38 +263,28 @@ export class NewRegistrationFormComponent implements OnInit {
       this.photoObj.setAttribute('src', null);
   }
 
-  test1(i, event) {
-    this.othersList = []
-    let whyP = [];
-    console.log(i + 1)
-    console.log(event)
-    console.log(i.isChecked)
-    for (let learnerPuporse of this.learnerPurpose) {
-      console.log(learnerPuporse)
-      if (learnerPuporse.PropValue == (i + 1) && event.target.checked) {
-        let temObj = {};
-        temObj['OthersType'] = learnerPuporse.LookupType;
-        temObj['OthersValue'] = learnerPuporse.PropValue;
-        this.othersList.push(temObj);
-      }
 
-    } console.log(this.othersList)
+  selectLearnerPurpose(i, event) {
+    this.learnerPurpose[i].isChecked = event.target.checked;
+    this.confirmLearner();
   }
-  sortLearnerOthers() {
-    let LearnerOthers = []
+  selectHowKnown(i, event) {
+    this.howKnown[i].isChecked = event.target.checked;
+    this.confirmLearner();
+  }
+
+  confirmLearner() {
+    this.learnerOthers = []
     let whyP = [];
     let howP = [];
-
-    for (let learnerPuporse of this.learnerPurpose) {
-      console.log(this.learnPurpose)
-      if (learnerPuporse.isChecked) {
-        let temObj = {};
-        temObj['OthersType'] = learnerPuporse.LookupType;
-        temObj['OthersValue'] = learnerPuporse.PropValue;
-        whyP.push(temObj);
+    for (let learnPurpose of this.learnerPurpose) {
+      if (learnPurpose.isChecked) {
+        let tempObj = {};
+        tempObj['OthersType'] = learnPurpose.LookupType;
+        tempObj['OthersValue'] = learnPurpose.PropValue;
+        whyP.push(tempObj);
       }
     }
-
     for (let how of this.howKnown) {
       if (how.isChecked) {
         let tempObj = {};
@@ -329,15 +292,12 @@ export class NewRegistrationFormComponent implements OnInit {
         tempObj['OthersValue'] = how.PropValue;
         howP.push(tempObj);
       }
-    }
-    whyP.length === 0 ? this.getErrorW = false : this.getErrorW = true;
-    howP.length === 0 ? this.getErrorH = false : this.getErrorH = true;
-    this.getErrorW === false ? this.showErrorW = true : this.showErrorW = false;
-    this.getErrorH === false ? this.showErrorH = true : this.showErrorH = false;
-    LearnerOthers = whyP
-    this.registrationForm.get("LearnerOthers").patchValue(LearnerOthers);
-    console.log(LearnerOthers)
-    return LearnerOthers
+    };
+
+    this.learnerOthers = whyP.concat(howP)
+    this.registrationForm.value.LearnerOthers = this.learnerOthers
+    console.log(this.learnerOthers)
+    console.log(this.registrationForm)
   }
 }
 
