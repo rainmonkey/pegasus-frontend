@@ -1,0 +1,105 @@
+<!--modal header-->
+<div class='modal-header'>
+  <h4 class='modal-title'>Confirmation</h4>
+  <button type="button" class='btn btn-sm btn-info' aria-label="Close" (click)="activeModal.close('Cross click')">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+
+<div *ngIf='isLoading' class='loaderLarge loader'></div>
+<div *ngIf='!hasCourse'>Sorry, no course found.</div>
+<div *ngIf='!isLoading'>
+  <!--modal body-->
+  <div>
+    <!--row 1-->
+    <div class='row t_c_row_group'>
+      <!--course name-->
+      <div class='col-12'>
+        <div class='row t_c_item'>
+          <span class='col-2 t_c_label'>Course Name</span>
+          <select name="" id="" class='col-10' (input)='selectCourse($event)'>
+            <option *ngFor='let i of avaliableCourses' value={{i.CourseId}}>
+              {{i.CourseCategory.CourseCategoryName}} Trial Course - Level {{i.LevelName}}
+            </option>
+          </select>
+        </div>
+      </div>
+    </div>
+    <!--row 2-->
+    <div class='row t_c_row_group'>
+      <!--learner-->
+      <div class='col-6'>
+        <div class='row t_c_item'>
+          <span class='col-3 t_c_label'>Learner</span>
+          <input type="text" class='col-9' disabled value={{learnerName}}>
+        </div>
+      </div>
+      <!--teacher-->
+      <div class='col-6'>
+        <div class='row t_c_item'>
+          <span class='col-3 t_c_label' style="text-align: center">Teacher</span>
+          <input type="text" class='col-9' disabled value={{confirmationData.teacherName}}>
+        </div>
+      </div>
+    </div>
+    <!--row 3-->
+    <div class='row t_c_row_group'>
+      <div class='col-6'>
+        <div class='row t_c_item'>
+          <span class='col-3 t_c_label'>Start Time</span>
+          <input type="text" class='col-9' disabled value={{startTimeStr}}>
+        </div>
+      </div>
+      <div class='col-6'>
+        <div class='row t_c_item'>
+          <span class='col-3 t_c_label' style="text-align: center">End Time</span>
+          <input type="text" class='col-9' disabled value={{endTimeStr}}>
+        </div>
+      </div>
+    </div>
+    <!--row 4-->
+    <div class='row t_c_row_group'>
+      <div class='col-8'>
+        <div class='row t_c_item'>
+          <span class='col-2 t_c_label'>Location</span>
+          <input type="text" class='col-10' disabled value={{confirmationData.orgName}}>
+        </div>
+      </div>
+      <div class='col-4'>
+        <div class='row t_c_item'>
+          <span class='col-3 t_c_label' style="text-align: center">Room</span>
+          <select  name="" id="" class='col-9' id='ROOMS'>
+            <option *ngFor='let i of avaliableRoom' value={{i.RoomId}}>{{i.RoomName}}</option>
+          </select>
+          <!-- <input *ngIf='frequencyRoom.length !== 0' type="text" value={{frequencyRoom[0].roomName}} class='col-9'> -->
+        </div>
+      </div>
+    </div>
+    <!--row 5-->
+    <div class='row t_c_row_group' style="margin-bottom: 0.5rem">
+      <div class='col-1 t_c_label t_c_price'>${{coursePrice}}</div>
+      <div class='col-2'>
+        <button type='button' class='btn btn-info' style="padding: 3px 6px" (click)='displayPayment()'>Pay Now</button>
+      </div>
+      <!--payment methods-->
+      <div *ngIf='haspaid' class='col-9'>
+        <span *ngFor='let i of paymentMethods' style="margin-right:2rem">
+          <input type="radio" class='PAYMENTS' name='payment' value={{i.PropValue}} id={{i.PropValue}}
+            style="margin-right:0.5rem">
+          <label class=' t_c_label' style="text-align: center" for={{i.PropValue}}
+            style="line-height: 32px">{{i.PropName}}</label>
+        </span>
+      </div>
+
+    </div>
+  </div>
+
+  <!--modal footer-->
+  <div class='modal-footer'>
+    <span>Sorry, something went wrong, please try it later.</span>
+    <span>Trial course enrolled successfully.</span>
+    <div class="loaderSmall"></div>
+    <button type="button" class="btn btn-outline-dark" (click)="onSubmit()">Confirm</button>
+    <button type="button" class="btn btn-outline-dark" (click)="activeModal.close('Close click')">Cancel</button>
+  </div>
+</div>

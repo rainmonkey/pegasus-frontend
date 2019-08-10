@@ -28,7 +28,8 @@ export class AdminLearnerLeaveComponent implements OnInit {
     this.LearnerLeaveForm = this.fb.group({
       BeginDate: ['', Validators.required],
       EndDate: ['', Validators.required],
-      Reason: ['', Validators.required]
+      Reason: ['', Validators.required],
+      IsInvoiceChange: ['', Validators.required]
     });
   }
 
@@ -40,6 +41,9 @@ export class AdminLearnerLeaveComponent implements OnInit {
   }
   get Reason() {
     return this.LearnerLeaveForm.get('Reason');
+  }
+  get IsInvoiceChange() {
+    return this.LearnerLeaveForm.get('IsInvoiceChange');
   }
 
   Confirm = () => {
@@ -56,7 +60,7 @@ export class AdminLearnerLeaveComponent implements OnInit {
     const LearnerDayoffModel = new LearnerDayOff(
       localStorage.getItem('userID'), this.learner.LearnerId,
       this.LearnerLeaveForm.value.BeginDate, this.LearnerLeaveForm.value.EndDate,
-      this.LearnerLeaveForm.value.Reason, this.checkboxArray
+      this.LearnerLeaveForm.value.Reason, this.checkboxArray, this.LearnerLeaveForm.value.IsInvoiceChange
     );
     this.service.learnerDayOff(LearnerDayoffModel).subscribe(res => {
       this.isloading = false;

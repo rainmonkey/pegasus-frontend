@@ -2,6 +2,8 @@ import { CoursesService } from 'src/app/services/http/courses.service';
 import { Component, OnInit } from '@angular/core';
 import { TeachersService } from 'src/app/services/http/teachers.service';
 import { forkJoin } from 'rxjs';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { TrialCalendarComponent } from '../trial-calendar/trial-calendar.component';
 
 @Component({
   selector: 'app-trial-filter',
@@ -9,79 +11,115 @@ import { forkJoin } from 'rxjs';
   styleUrls: ['./trial-filter.component.css']
 })
 export class TrialFilterComponent implements OnInit {
-  public filterLabel: Array<string> = ['Categories', 'Orgnizations'];
+  public filterLabel: Array<string> = ['Categories', 'Orgnizations', 'DayOfWeek'];
   public orgIdFilter: number;
+  public orgName:string;
   public cateIdFilter: number;
-  public filterName: Array<string> = [];
-  public filterContent: Array<Array<object>> = [];
-  public teachersListAfterFilter: Array<Array<object>> = [];
+  public cateName:string;
+
+  /**@property {Array<string>} filterString -  A list stored the filter tags that selected.*/
+  public filterString: Array<string> = [];
+
+  /**@property {Array<Array<any>>} filterTags - A list stored all filter tags.*/
+  public filterTags: Array<Array<any>> = [];
+
+  /**@property {Array<Array<object>>} teachersList - Teachers list to display */
+  public teachersList: Array<Array<object>> = [];
+  public originalData;
+  public dayOfWeekIndex: number = 0;
+  public nodata = 'No Data Found!';
 
   constructor(
     private coursesService: CoursesService,
-    private teachersService: TeachersService
+    private teachersService: TeachersService,
+    private modalService: NgbModal
   ) { }
 
   ngOnInit() {
-    this.processFilters(0);
+    this.AddFilterString(0);
   }
 
   /**
-   * @param index - filter index
-   * @param itemIndex - item index
-   * @param filters - filter object
-   * Categories processor.
+   * Add a new filter string when user select a filter tag.
+   * @param operationIndex - steps of opreation
+   * @param itemIndex - item index (index of which item was selected)
+   * @param item - item object (which item was selected)
    */
-  processFilters(index: number, itemIndex?: number, filters?: object,id?:string) {
-    //console.log(index)
-    //console.log(itemIndex)
-    if (index == 0) {
+  AddFilterString(operationIndex: number, itemIndex?: number, item?: object) {
+    //init get&set course categories filter tags
+    if (operationIndex == 0) {
       this.getCates().subscribe(
         (res) => {
-          //console.log(res)
-          this.filterContent.push(res['Data']);
+          this.filterTags.push(res['Data']);
         }
       )
     }
 
-    //cate filter
-    if (index == 1) {
+    //course categories filter tags processor
+    if (operationIndex == 1) {
       //if a cate already selected
-      if (this.filterName.length >= 1) {
+      if (this.filterString.length >= 1) {
         return
       }
       //if no cate seleted
       else {
-        this.filterName.push(filters['CourseCategoryName']);
-        this.cateIdFilter = filters['CourseCategoryId'];
+        this.filterString.push(item['CourseCategoryName']);
+        this.cateIdFilter = item['CourseCategoryId'];
+        this.cateName = item['CourseCategoryName'];
+        //get&set orgs filter tags
         this.getOrgs().subscribe(
           (res) => {
-            //console.log(res)
-            this.filterContent.push(res['Data']);
+            this.filterTags.push(res['Data']);
           }
         );
       }
     }
 
-    //org filter
-    if (index == 2) {
-      if (this.filterName.length >= 2) {
+    //orgs filter tags processor
+    if (operationIndex == 2) {
+      //if a org already selected
+      if (this.filterString.length >= 2) {
         return
       }
+      //if no org selected
       else {
-        //console.log(filters)
-        this.filterName.push(filters['Abbr']);
-        this.orgIdFilter = filters['OrgId'];
-        this.getTeachersNTeachingCourses().subscribe(
-          (res) => {
-            this.processTeachersList(res);
-            // console.log(res)
-            // this.filterContent.push(res['Data']);
-          }
-        )
+        this.filterString.push(item['Abbr']);
+        this.orgIdFilter = item['OrgId'];
+        this.orgName = item['OrgName'];
+        //get&set day of week filter tags
+        let dayOfWeek = this.getDayOfWeek();
+        this.filterTags.push(dayOfWeek);
+      }
+    }
+
+    //day of week filter tags processor
+    if (operationIndex == 3) {
+      //if a day of week already selected
+      if (this.filterString.length >= 3) {
+        return
+      }
+      //if no day of week tag selected
+      else {
+        this.filterString.push(item.toString());
+        //get&set teachers (results)
+        //if data already exist, no use to get it again
+        if (this.originalData) {
+          this.processTeachersList(this.originalData, itemIndex);
+          return;
+        }
+        //no data exist, get it from server
+        else {
+          this.getTeachersNTeachingCourses().subscribe(
+            (res) => {
+              this.originalData = res;
+              //process data got
+              this.processTeachersList(res, itemIndex);
+            }
+          )
+        }
       }
     }
   }
-
 
   /**
    * Get course Categories from server.
@@ -97,6 +135,10 @@ export class TrialFilterComponent implements OnInit {
     return this.coursesService.getLocations();
   }
 
+  getDayOfWeek() {
+    return [1, 2, 3, 4, 5, 6, 7, 'All'];
+  }
+
   /**
    * Get teachers from server.
    */
@@ -107,11 +149,11 @@ export class TrialFilterComponent implements OnInit {
   }
 
   /**
-   * Process the data of tachers List
+   * Process the data of tachers with filters
    * @param data - data to process
+   * @param selectionIndex - index of which teacher selected 
    */
-  processTeachersList(data: Array<object>) {
-    console.log(data)
+  processTeachersList(data: Array<object>, selectionIndex: any) {
     /**@property {Array<object>} array1 - array after processing (teachers list that pass org filter)*/
     let array1: Array<object> = [];
     //data[0] - teachers list
@@ -142,43 +184,71 @@ export class TrialFilterComponent implements OnInit {
         }
       }
     )
-    this.teachersListAfterFilter = this.checkTeacherAvailableDays(array2);
-    console.log(this.teachersListAfterFilter)
+    this.checkTeacherAvailableDays(array2, selectionIndex);
+    //console.log(this.teachersListAfterFilter)
   }
 
   /**
    * Distribute teachers in avaliable days.
    * @param teacherList - teachers list to process
    */
-  checkTeacherAvailableDays(teacherList: Array<object>) {
+  checkTeacherAvailableDays(teacherList: Array<object>, selectionIndex: any) {
     /**@property {Array<Array<object>>} array - list after process*/
     let array: Array<Array<object>> = [[], [], [], [], [], [], []];
     teacherList.map(
       (val) => {
         for (let i of val['AvailableDays']) {
-          //remove the reduplicative items
           if (array[i.DayOfWeek - 1].indexOf(val) == -1) {
             array[i.DayOfWeek - 1].push(val);
           }
         }
       }
-    )
-    return array;
+    );
+
+    this.getTeacherListAfterDayOfWeekFilter(array, selectionIndex);
   }
 
-
-  removeFilters(index) {
-    console.log(index)
-    if (index == 0) {
-      this.filterName = [];
-      this.filterContent = [this.filterContent[0]];
+  /**
+   * Get teacher list with different day of week.
+   * @param list - 
+   * @param selectionIndex - index of different day
+   */
+  getTeacherListAfterDayOfWeekFilter(list, selectionIndex: any) {
+    if (selectionIndex == 7) {
+      this.dayOfWeekIndex = null;
+      this.teachersList = list;
     }
     else {
-      this.filterName = this.filterName.slice(0, index);
-      this.filterContent = this.filterContent.slice(0, index + 1);
+      this.dayOfWeekIndex = selectionIndex;
+      this.teachersList = [list[selectionIndex]];
+    }
+  }
+
+  /**
+   * Display calendar modal.
+   * @param teacher - teacher selected
+   */
+  popupCalendarModal(teacher: object) {
+    let modalRef = this.modalService.open(TrialCalendarComponent, { size: 'lg', backdrop: 'static', keyboard: false });
+    modalRef.componentInstance.teacher = teacher;
+    modalRef.componentInstance.orgName = this.orgName;
+    modalRef.componentInstance.orgId = this.orgIdFilter;
+    modalRef.componentInstance.CourseCategoryId = this.cateIdFilter;
+    modalRef.componentInstance.courseCategoryName = this.cateName;
+  }
+
+  removeFilters(index) {
+    if (index == 0) {
+      this.filterString = [];
+      this.filterTags = [this.filterTags[0]];
+    }
+    else {
+      this.filterString = this.filterString.slice(0, index);
+      this.filterTags = this.filterTags.slice(0, index + 1);
     }
 
-    this.teachersListAfterFilter = [];
+    this.teachersList = [];
+    this.dayOfWeekIndex = 0;
   }
 
 }

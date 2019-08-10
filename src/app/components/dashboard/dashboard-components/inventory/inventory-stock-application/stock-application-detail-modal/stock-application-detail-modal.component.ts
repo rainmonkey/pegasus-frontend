@@ -9,7 +9,7 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 export class StockApplicationDetailModalComponent implements OnInit {
   @Input() command: number;
   @Input() whichOrder: any;
-
+  
   constructor(public activeModal: NgbActiveModal) { }
 
   ngOnInit() {

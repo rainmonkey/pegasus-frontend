@@ -1,8 +1,6 @@
-import { Component, OnInit, Input, ViewChild, AfterViewChecked } from '@angular/core';
+import { Component, OnInit, Input, ViewChild, AfterViewChecked, Output, EventEmitter } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { InventoriesService } from 'src/app/services/http/inventories.service';
-import { Subscription } from 'rxjs';
-import Swal from 'sweetalert2';
 import { StockApplicationProcessStatusComponent } from '../stock-application-process-status/stock-application-process-status.component';
 
 @Component({
@@ -13,10 +11,12 @@ import { StockApplicationProcessStatusComponent } from '../stock-application-pro
 export class StockApplicationReplyModalComponent implements OnInit, AfterViewChecked {
   @Input() command: number;
   @Input() whichOrder: any;
+  @Output() sendReplyRes: EventEmitter<any> = new EventEmitter;
   @ViewChild(StockApplicationProcessStatusComponent) stockApplicationProcessStatusComponent;
 
   public replyFlag: boolean = false;
   public replyMsg: string;
+  public isApproved: boolean = false;
 
   constructor(public activeModal: NgbActiveModal, private inventoriesService: InventoriesService) { }
 
@@ -24,23 +24,19 @@ export class StockApplicationReplyModalComponent implements OnInit, AfterViewChe
     this.replyFlag = true;
   }
   ngAfterViewChecked() {
-    this.replyMsg = this.stockApplicationProcessStatusComponent.replyMsg
+    this.replyMsg = this.stockApplicationProcessStatusComponent.replyMsg;
+    this.isApproved = this.stockApplicationProcessStatusComponent.isApproved;
   }
   sendReplyMsg() {
     let applicationId = this.whichOrder.ApplicationId;
     let applyAt = this.whichOrder.ApplyAt;
-    this.inventoriesService.replyContent(applicationId, this.replyMsg, applyAt).subscribe(
+    let isApproved = this.isApproved;
+    this.inventoriesService.replyContent(applicationId, this.replyMsg, applyAt, isApproved).subscribe(
       res => {
-        console.log('reply', res['Data'])
-        Swal.fire({
-          title: 'Successfully sent!',
-          type: 'success',
-          showConfirmButton: true,
-        });
-        this.activeModal.close();
+        this.sendReplyRes.emit(res['Data'])
       },
-      err => console.log('err', err)
+      err => alert('Oops! Reply failed')
     )
   }
-  
+
 }
