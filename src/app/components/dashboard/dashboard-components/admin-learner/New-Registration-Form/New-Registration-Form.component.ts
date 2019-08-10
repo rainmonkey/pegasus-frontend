@@ -25,6 +25,12 @@ export class NewRegistrationFormComponent implements OnInit {
   public learnerPurpose: Array<any>;
   public howKnown: Array<any>;
 
+  public othersList = []
+  getErrorW = false;
+  getErrorH = false;
+  showErrorW = false;
+  showErrorH = false;
+
   @ViewChild("grade") grade;
   @ViewChild('agreement') agreement;
   @ViewChild('otherFile') otherFile;
@@ -43,6 +49,7 @@ export class NewRegistrationFormComponent implements OnInit {
     this.getLocationFromServer()
     this.getLookUp()
     this.editFormSelectLevel()
+
   }
 
   formBuild() {
@@ -53,7 +60,7 @@ export class NewRegistrationFormComponent implements OnInit {
         MiddleName: [null],
         LastName: [null, Validators.required],
         Gender: ['', Validators.required],
-        dob: [null],
+        Dob: [null],
         EnrollDate: [null],
         ContactNum: [null],
         Email: [null, [Validators.required, Validators.email]],
@@ -61,17 +68,12 @@ export class NewRegistrationFormComponent implements OnInit {
         OrgId: [null, Validators.required],
         LearnerLevel: [null, Validators.required],
         LevelType: [null],
-        levelTypeRadio: [null],
         IsUnder18: [null],
         PaymentPeriod: [null],
         Referrer: [null],
         Comment: [null],
         // photo
-        photo: [null],
-        grade: [null],
-        Agreement: [null],
-        OtherFile: [null],
-
+        LearnerOthers: [null],
       }
     }
     else {
@@ -80,7 +82,7 @@ export class NewRegistrationFormComponent implements OnInit {
         MiddleName: [this.whichLearner.MiddleName ? this.whichLearner.MiddleName : ' '],
         LastName: [this.whichLearner.LastName, Validators.required],
         Gender: [this.whichLearner.Gender, Validators.required],
-        dob: [this.getDateFormat(this.whichLearner.Dob)],
+        Dob: [this.getDateFormat(this.whichLearner.Dob)],
         EnrollDate: [this.getDateFormat(this.whichLearner.EnrollDate)],
         ContactNum: [this.whichLearner.ContactNum],
         Email: [this.whichLearner.Email, [Validators.required, Validators.email]],
@@ -88,16 +90,13 @@ export class NewRegistrationFormComponent implements OnInit {
         OrgId: [this.whichLearner.OrgId, Validators.required],
         LearnerLevel: [this.whichLearner.LearnerLevel, Validators.required],
         // LevelType: [this.whichLearner.LevelType],
-        levelTypeRadio: [this.whichLearner.LevelType],
+        LevelType: [this.whichLearner.LevelType],
         IsUnder18: [this.whichLearner.IsUnder18],
         PaymentPeriod: [this.whichLearner.PaymentPeriod],
         Referrer: [this.whichLearner.Referrer],
         Comment: [this.whichLearner.Comment],
         // photo
-        photo: [null],
-        grade: [null],
-        Agreement: [null],
-        OtherFile: [null],
+        LearnerOthers: [this.whichLearner.LearnerOthers],
 
       }
     }
@@ -289,6 +288,56 @@ export class NewRegistrationFormComponent implements OnInit {
     this.registrationForm.reset();
     if (this.photoObj)
       this.photoObj.setAttribute('src', null);
+  }
+
+  test1(i, event) {
+    this.othersList = []
+    let whyP = [];
+    console.log(i + 1)
+    console.log(event)
+    console.log(i.isChecked)
+    for (let learnerPuporse of this.learnerPurpose) {
+      console.log(learnerPuporse)
+      if (learnerPuporse.PropValue == (i + 1) && event.target.checked) {
+        let temObj = {};
+        temObj['OthersType'] = learnerPuporse.LookupType;
+        temObj['OthersValue'] = learnerPuporse.PropValue;
+        this.othersList.push(temObj);
+      }
+
+    } console.log(this.othersList)
+  }
+  sortLearnerOthers() {
+    let LearnerOthers = []
+    let whyP = [];
+    let howP = [];
+
+    for (let learnerPuporse of this.learnerPurpose) {
+      console.log(this.learnPurpose)
+      if (learnerPuporse.isChecked) {
+        let temObj = {};
+        temObj['OthersType'] = learnerPuporse.LookupType;
+        temObj['OthersValue'] = learnerPuporse.PropValue;
+        whyP.push(temObj);
+      }
+    }
+
+    for (let how of this.howKnown) {
+      if (how.isChecked) {
+        let tempObj = {};
+        tempObj['OthersType'] = how.LookupType;
+        tempObj['OthersValue'] = how.PropValue;
+        howP.push(tempObj);
+      }
+    }
+    whyP.length === 0 ? this.getErrorW = false : this.getErrorW = true;
+    howP.length === 0 ? this.getErrorH = false : this.getErrorH = true;
+    this.getErrorW === false ? this.showErrorW = true : this.showErrorW = false;
+    this.getErrorH === false ? this.showErrorH = true : this.showErrorH = false;
+    LearnerOthers = whyP
+    this.registrationForm.get("LearnerOthers").patchValue(LearnerOthers);
+    console.log(LearnerOthers)
+    return LearnerOthers
   }
 }
 
