@@ -74,9 +74,6 @@ import { TeacherModalFormComponent } from './components/dashboard/dashboard-comp
 import { TeacherPanelComponent } from './components/dashboard/dashboard-components/teachers/teacher-panel/teacher-panel.component';
 import { TeacherUpdateModalComponent } from './components/dashboard/dashboard-components/teachers/teacher-update-modal/teacher-update-modal.component';
 import { TimePickerComponent } from './components/dashboard/dashboard-components/time-picker/time-picker.component';
-import { TrialPanelComponent } from './components/dashboard/dashboard-components/trial-session/trial-panel/trial-panel.component';
-import { TrialSearchComponent } from './components/dashboard/dashboard-components/trial-session/trial-search/trial-search.component';
-import { TrialModalComponent } from './components/dashboard/dashboard-components/trial-session/trial-modal/trial-modal.component';
 import { DashboardPanelComponent } from './components/dashboard/general/dashboard-panel/dashboard-panel.component';
 import { HeaderbarComponent } from './components/dashboard/general/headerbar/headerbar.component';
 import { SidebarComponent } from './components/dashboard/general/sidebar/sidebar.component';
@@ -115,7 +112,6 @@ import { AdminLearnerLeaveComponent } from './components/dashboard/dashboard-com
 import { AdminLearnerCourseEditComponent } from './components/dashboard/dashboard-components/admin-learner/admin-learner-course-edit/admin-learner-course-edit.component';
 import { AdminLearnerPeriodCourseChangeModalComponent } from './components/dashboard/dashboard-components/admin-learner/admin-learner-period-course-change-modal/admin-learner-period-course-change-modal.component';
 import { AdminLearnerNameComponent } from './components/dashboard/dashboard-components/admin-learner/admin-learner-name/admin-learner-name.component';
-import { TrialConfirmComponent } from './components/dashboard/dashboard-components/trial-session/trial-confirm/trial-confirm.component';
 import { StaffDeleteModalComponent } from './components/dashboard/dashboard-components/admin-staff/staff-delete-modal/staff-delete-modal.component';
 import { StaffDetailModalComponent } from './components/dashboard/dashboard-components/admin-staff/staff-detail-modal/staff-detail-modal.component';
 import { StaffEditModalComponent } from './components/dashboard/dashboard-components/admin-staff/staff-edit-modal/staff-edit-modal.component';
@@ -154,7 +150,7 @@ import { StockApplicationReplyModalComponent } from './components/dashboard/dash
 import { StockApplicationDeliverModalComponent } from './components/dashboard/dashboard-components/inventory/inventory-stock-application/stock-application-deliver-modal/stock-application-deliver-modal.component';
 import { StockApplicationReceiveModalComponent } from './components/dashboard/dashboard-components/inventory/inventory-stock-application/stock-application-receive-modal/stock-application-receive-modal.component';
 import { StockApplicationProcessStatusComponent } from './components/dashboard/dashboard-components/inventory/inventory-stock-application/stock-application-process-status/stock-application-process-status.component';
-import { TrialInfoComponent } from './components/dashboard/dashboard-components/trial-course/trial-info/trial-info.component';
+
 import { TrialFilterComponent } from './components/dashboard/dashboard-components/trial-course/trial-filter/trial-filter.component';
 import { PayListComponent } from './components/dashboard/dashboard-components/admin-staff/pay-list/pay-list.component';
 import { TeacherLevelPipe } from './shared/pipes/teacher-level.pipe';
@@ -162,6 +158,7 @@ import { StockApplicationProcessModalComponent } from './components/dashboard/da
 import { TrialCalendarComponent } from './components/dashboard/dashboard-components/trial-course/trial-calendar/trial-calendar.component';
 import { TrialConfirmationComponent } from './components/dashboard/dashboard-components/trial-course/trial-confirmation/trial-confirmation.component';
 import { ProcessStatusPipe } from 'src/app/shared/pipes/process-status.pipe';
+import { TrialInfoComponent } from './components/dashboard/dashboard-components/trial-course/trial-info/trial-info.component';
 
 
 @NgModule({
@@ -247,10 +244,7 @@ import { ProcessStatusPipe } from 'src/app/shared/pipes/process-status.pipe';
     RatingModalComponent,
     ForgotPasswordModalComponent,
     ChangePasswordModalComponent,
-    TrialPanelComponent,
     TrialInfoComponent,
-    TrialModalComponent,
-    TrialSearchComponent,
     PaymentPeriodPipe,
     IsUnder18Pipe,
     confirmEqualValidatorDirectie,
@@ -263,7 +257,6 @@ import { ProcessStatusPipe } from 'src/app/shared/pipes/process-status.pipe';
     StockApplicationUpdateModalComponent,
     StockApplicationDetailModalComponent,
     SimplifyOrgPipe,
-    TrialModalComponent,
     LearnerCreditPanelComponent,
     LearnerCreditDetailsComponent,
     OrderbyPipe,
@@ -272,8 +265,6 @@ import { ProcessStatusPipe } from 'src/app/shared/pipes/process-status.pipe';
     AdminLearnerLeaveComponent,
     AdminLearnerCourseEditComponent,
     AdminLearnerPeriodCourseChangeModalComponent,
-    TrialConfirmComponent,
-
     StaffModalFormComponent,
     StaffDeleteModalComponent,
     StaffDetailModalComponent,
@@ -313,7 +304,7 @@ import { ProcessStatusPipe } from 'src/app/shared/pipes/process-status.pipe';
   TeacherLevelPipe,
   StockApplicationProcessModalComponent,
   TrialCalendarComponent,
-  TrialConfirmationComponent
+  TrialConfirmationComponent,
   ],
   imports: [
     NgbModule,
@@ -379,8 +370,6 @@ import { ProcessStatusPipe } from 'src/app/shared/pipes/process-status.pipe';
     LearnerRegistrationModalComponent,
     LearnerRegistrationConfirmModalComponent,
     LearnerRegistrationDeleteModalComponent,
-    TrialModalComponent,
-    TrialConfirmComponent,
     StaffDeleteModalComponent,
     StaffDetailModalComponent,
     StaffEditModalComponent,
@@ -398,10 +387,7 @@ import { ProcessStatusPipe } from 'src/app/shared/pipes/process-status.pipe';
     AdminPaymentConfirmModalComponent,
     // AmendmentHistoryModalComponent,
     SelectHolidaysModalComponent,
-
     TimePickerComponent,
-    TrialSearchComponent,
-
     NewLearnerRegistrationModalComponent,
     TrialCalendarComponent,
     TrialConfirmationComponent

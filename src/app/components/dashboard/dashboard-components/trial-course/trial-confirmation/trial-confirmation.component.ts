@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { TrialCoursesService } from 'src/app/services/http/trial-courses.service';
 import { forkJoin, Observable } from 'rxjs';
@@ -31,8 +31,10 @@ export class TrialConfirmationComponent implements OnInit {
   private isSubmitting: boolean = false;
   private isError: boolean = false;
   private isLoading: boolean = false;
+  private isSuccess: boolean = false;
 
   @Input() confirmationData: IConfirmData;
+  @Output() isClosed = new EventEmitter();
 
   constructor(
     private routerInfo: ActivatedRoute,
@@ -56,22 +58,27 @@ export class TrialConfirmationComponent implements OnInit {
 
   /**
    * Get data from server.
-   * @returns {Observable} array of data (avaliableRoom, frequentlyRoom, learner)
+   * @returns {Observable} array of data (avaliableRoom, frequentlyRoom, learner, courses, extrafee)
    */
   getDataFromServer() {
     let apiRequests: Array<any> = [];
+    //get avaliable room request
     apiRequests.push(this.trialService.getAvailableRoom(
       this.confirmationData.orgId,
-      new Date(this.confirmationData.startTimeStamp).toDateString(),
-      new Date(this.confirmationData.endTimeStamp).toDateString()
+      this.formatDate(this.confirmationData.startStr),
+      this.formatDate(this.confirmationData.endStr)
     ));
+    //get frequently room request
     apiRequests.push(this.trialService.getTeacherFrequentlyRoom(
       this.confirmationData.teacherId,
       this.confirmationData.orgId,
-      new Date(this.confirmationData.startTimeStamp).toDateString()
+      this.formatDate(this.confirmationData.startStr),
     ));
+    //get learner request
     apiRequests.push(this.trialService.getLearnerById(this.learnerId));
+    //get courses request
     apiRequests.push(this.trialService.getCourses());
+    //get extra fee request
     apiRequests.push(this.trialService.getExtraFee());
 
     return forkJoin(apiRequests);
@@ -79,15 +86,16 @@ export class TrialConfirmationComponent implements OnInit {
 
   /**
    * Process data to display.
+   * @param dataFromServer - data
    */
   processData(dataFromServer) {
-    let courses = dataFromServer[3]['Data'];
     //data from parents
     let { startTimeStamp, endTimeStamp, cateName } = this.confirmationData;
     //data from server
     let avaliableRoom = dataFromServer[0]['Data'];
     let frequencyRoom = dataFromServer[1]['Data'];
     let learner = dataFromServer[2]['Data'];
+    let courses = dataFromServer[3]['Data'];
     this.extraFee = Number(dataFromServer[4]['Data'][0]['PropName']);
     this.learnerName = learner['FirstName'] + '  ' + learner['LastName'];
     this.startTimeStr = new Date(startTimeStamp).toLocaleTimeString() + ' ' + new Date(startTimeStamp).toLocaleDateString();
@@ -95,35 +103,31 @@ export class TrialConfirmationComponent implements OnInit {
     this.courseName = cateName + '  ' + 'Trial  Course';
     this.avaliableRoom = avaliableRoom;
 
-    console.log(avaliableRoom)
     // frequencyRoom.map(
     //   (val) => {
     //     this.frequencyRoom.push({ roomId: val['RoomId'], roomName: val['RoomName'] });
     //   }
     // )
-    //console.log(extraFee)
     this.avaliableCourses = this.getAvaliableCourses(courses);
     this.coursePrice = this.avaliableCourses[0]['Price'] + this.extraFee;
     this.trialCourseId = this.avaliableCourses[0]['CourseId'];
-    console.log(this.avaliableCourses)
-
   }
 
   /**
    * Calculate the avaliable courses.
    * @param courses - courses object
-   * @param learner - learner object
    */
   getAvaliableCourses(courses: Array<object>) {
     let array: Array<object> = [];
+    let durationIndex = this.getDurationIndex(this.confirmationData.startTimeStamp, this.confirmationData.endTimeStamp);
     courses.map(
       (val) => {
         if (val['CourseCategory']['CourseCategoryId'] == this.confirmationData.cateId &&
-          val['Duration'] == this.confirmationData.durationIndex) {
+          val['Duration'] == durationIndex) {
           array.push(val);
         }
       })
-
+    //Piano course(cateId == 1), courses must match teacher's level
     if (this.confirmationData.cateId == 1) {
       let arr: Array<object> = [];
       array.map(
@@ -139,7 +143,7 @@ export class TrialConfirmationComponent implements OnInit {
   }
 
   /**
-   * Display payment methods options.
+   * Display payment methods options when user click 'Pay Now' button.
    */
   displayPayment() {
     if (this.haspaid) {
@@ -163,39 +167,37 @@ export class TrialConfirmationComponent implements OnInit {
     let data = this.prepareSubmitionData();
     this.trialService.postTrialCourse(data).subscribe(
       (res) => {
-        console.log('yes')
+        this.isSubmitting = false;
+        this.isError = false;
+        this.isSuccess = true;
       },
       (err) => {
-        console.log(err)
+        this.isSubmitting = false;
+        this.isSuccess = false;
+        this.isError = true;
       }
     )
   }
 
+  /**
+   * Prepare submition data.
+   */
   prepareSubmitionData() {
-    console.log(this.confirmationData.startStr)
-    console.log(this.confirmationData.endStr)
     let data: IData;
     data = {
       LearnerId: Number(this.learnerId),
       RoomId: Number(this.getRoomIdValue()),
       TeacherId: this.confirmationData.teacherId,
       OrgId: this.confirmationData.orgId,
-      BeginTime:this.timeFormatting(this.confirmationData.startStr),
-      // new Date(this.confirmationData.startTimeStamp).toTimeString(),
-      EndTime: this.timeFormatting(this.confirmationData.endStr),
-      //new Date(this.confirmationData.endTimeStamp).toTimeString(),
+      BeginTime: this.formatDate(this.confirmationData.startStr),
+      EndTime: this.formatDate(this.confirmationData.endStr),
       PaymentMethod: this.getPaymentIdValue(),
       Amount: this.coursePrice,
       StaffId: Number(localStorage.userID),
       TrialCourseId: this.trialCourseId,
       IsPayNow: true
     }
-    console.log(data)
     return data;
-  }
-
-  timeFormatting(time) {
-    return time.replace('T', '  ');
   }
 
   getRoomIdValue() {
@@ -204,8 +206,8 @@ export class TrialConfirmationComponent implements OnInit {
     //   return this.frequencyRoom[0]['roomId']
     // }
     // else {
-      let obj = document.getElementById('ROOMS');
-      return obj['value'];
+    let obj = document.getElementById('ROOMS');
+    return obj['value'];
     //}
   }
 
@@ -220,8 +222,32 @@ export class TrialConfirmationComponent implements OnInit {
     return id;
   }
 
+  getDurationIndex(startTimeStamp: number, endTimeStamp: number) {
+    let timeDiffer: number = endTimeStamp - startTimeStamp;
+    let durationIndex: number;
+    switch (timeDiffer) {
+      case 1800000:
+        durationIndex = 1;
+        break;
+      case 3600000:
+        durationIndex = 3;
+        break;
+      default:
+        durationIndex = 2;
+        break;
+    }
+    return durationIndex;
+  }
+
+  formatDate(timeStr: string) {
+    return timeStr.substr(0, 19);
+  }
+
+  /**
+   * Course name selection value changed event handler.
+   * @param event - selection value changed event
+   */
   selectCourse(event) {
-    console.log(event)
     let courseId = Number(event.target.value);
     this.trialCourseId = courseId;
     this.avaliableCourses.map(
@@ -232,7 +258,16 @@ export class TrialConfirmationComponent implements OnInit {
       }
     )
   }
+
+  /**
+   * Close confirmation modal and emit to parents to refresh.
+   */
+  closeConfirmationModal() {
+    this.activeModal.close('Close click');
+    this.isClosed.emit(true);
+  }
 }
+
 
 
 export interface IConfirmData {
@@ -245,9 +280,8 @@ export interface IConfirmData {
   cateName: string,
   cateId: number,
   teacher: object,
-  durationIndex: number,
-  startStr:string,
-  endStr:string
+  startStr: string,
+  endStr: string
 }
 
 export interface IData {

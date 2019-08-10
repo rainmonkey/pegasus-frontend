@@ -7,7 +7,6 @@
 </div>
 
 <div *ngIf='isLoading' class='loaderLarge loader'></div>
-<div *ngIf='!hasCourse'>Sorry, no course found.</div>
 <div *ngIf='!isLoading'>
   <!--modal body-->
   <div>
@@ -96,10 +95,11 @@
 
   <!--modal footer-->
   <div class='modal-footer'>
-    <span>Sorry, something went wrong, please try it later.</span>
-    <span>Trial course enrolled successfully.</span>
-    <div class="loaderSmall"></div>
-    <button type="button" class="btn btn-outline-dark" (click)="onSubmit()">Confirm</button>
-    <button type="button" class="btn btn-outline-dark" (click)="activeModal.close('Close click')">Cancel</button>
+    <span *ngIf='isError' class='text-danger'>Sorry, something went wrong, please try it later.</span>
+    <span *ngIf='isSuccess' class="text-success">Trial course enrolled successfully.</span>
+    <div *ngIf='isLoading' class="loaderSmall"></div>
+    <button *ngIf='!isSuccess' type="button" class="btn btn-outline-dark" (click)="onSubmit()">Confirm</button>
+    <button *ngIf='!isSuccess' type="button" class="btn btn-outline-dark" (click)="activeModal.close('Close click')">Cancel</button>
+    <button *ngIf='isSuccess' type="button" class="btn btn-outline-dark" (click)="closeConfirmationModal()">Close</button>
   </div>
 </div>
