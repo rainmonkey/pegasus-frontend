@@ -41,7 +41,7 @@ export class StaffModalFormComponent implements OnInit {
     this.getOrg();
     // this.getStaffCheckedOrg();
     this.updateForm = this.fb.group(this.formGroupAssemble());
-
+    console.log(this.branchesCheckBox)
   }
 
   getStaffType() {
