@@ -161,6 +161,7 @@ import { TeacherLevelPipe } from './shared/pipes/teacher-level.pipe';
 import { StockApplicationProcessModalComponent } from './components/dashboard/dashboard-components/inventory/inventory-stock-application/stock-application-process-modal/stock-application-process-modal.component';
 import { TrialCalendarComponent } from './components/dashboard/dashboard-components/trial-course/trial-calendar/trial-calendar.component';
 import { ProcessStatusPipe } from 'src/app/shared/pipes/process-status.pipe';
+import { NotificationPopupComponent } from './components/dashboard/general/notifications/notification-popup/notification-popup.component';
 
 
 @NgModule({
@@ -311,7 +312,8 @@ import { ProcessStatusPipe } from 'src/app/shared/pipes/process-status.pipe';
   TrialFilterComponent,
   TeacherLevelPipe,
   StockApplicationProcessModalComponent,
-  TrialCalendarComponent
+  TrialCalendarComponent,
+  NotificationPopupComponent,
   ],
   imports: [
     NgbModule,
@@ -399,7 +401,6 @@ import { ProcessStatusPipe } from 'src/app/shared/pipes/process-status.pipe';
 
     TimePickerComponent,
     TrialSearchComponent,
-
     NewLearnerRegistrationModalComponent,
     TrialCalendarComponent
 

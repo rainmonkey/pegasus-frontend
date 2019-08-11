@@ -38,7 +38,7 @@
         <div *ngIf="detailFlag" class="p-4 label__style text-center">Product {{ i+1 }}</div>
         <!-- update modal -->
         <div *ngIf="!detailFlag" class="d-flex justify-content-end">
-          <button class="btn btn-info my-2" [disabled]="deleteProd[i]" (click)="deleteForm(i)">
+          <button class="btn btn-danger my-2" [disabled]="deleteProd[i]" (click)="deleteForm(i)">
             <i class='fas fa-trash-alt'></i>
           </button>
         </div>

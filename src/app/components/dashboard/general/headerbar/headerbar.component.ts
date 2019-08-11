@@ -1,10 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthenticationService } from '../../../../services/auth/authentication.service';
-import { UserDetail } from '../../../../models/UserDetail';
 import { AppSettingsService } from 'src/app/settings/app-settings.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { ChangePasswordModalComponent } from '../../dashboard-components/support/change-password-modal/change-password-modal.component'
+import { ChangePasswordModalComponent } from '../../dashboard-components/support/change-password-modal/change-password-modal.component';
 import { environment } from 'src/environments/environment.prod';
 
 @Component({
@@ -13,6 +12,8 @@ import { environment } from 'src/environments/environment.prod';
   styleUrls: ['./headerbar.component.css']
 })
 export class HeaderbarComponent implements OnInit {
+
+  public isOpen = false;
   photoUrl: any = environment.photoUrl;
   userDetail =
     {
@@ -20,17 +21,19 @@ export class HeaderbarComponent implements OnInit {
       firstName:'',
       lastName:''
     }
+  public hasNoticed: boolean = false;
 
   constructor(
     private router: Router,
     private authenticationService: AuthenticationService,
     public settingService: AppSettingsService,
-    private modalService: NgbModal,
+    private modalService: NgbModal
     ) {
   }
 
   ngOnInit() {
-    this.getUserDetail()
+    this.getUserDetail();
+    this.hasNoticed = false;
   }
 
   getUserDetail(){
