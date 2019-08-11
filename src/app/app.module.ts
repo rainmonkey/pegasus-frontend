@@ -158,11 +158,8 @@ import { StockApplicationProcessModalComponent } from './components/dashboard/da
 import { TrialCalendarComponent } from './components/dashboard/dashboard-components/trial-course/trial-calendar/trial-calendar.component';
 import { TrialConfirmationComponent } from './components/dashboard/dashboard-components/trial-course/trial-confirmation/trial-confirmation.component';
 import { ProcessStatusPipe } from 'src/app/shared/pipes/process-status.pipe';
-<<<<<<< HEAD
 import { NotificationPopupComponent } from './components/dashboard/general/notifications/notification-popup/notification-popup.component';
-=======
 import { TrialInfoComponent } from './components/dashboard/dashboard-components/trial-course/trial-info/trial-info.component';
->>>>>>> 94833c7d6d65b4040732102783c5fc51d7990aa3
 
 
 @NgModule({
@@ -308,11 +305,8 @@ import { TrialInfoComponent } from './components/dashboard/dashboard-components/
   TeacherLevelPipe,
   StockApplicationProcessModalComponent,
   TrialCalendarComponent,
-<<<<<<< HEAD
   NotificationPopupComponent,
-=======
   TrialConfirmationComponent,
->>>>>>> 94833c7d6d65b4040732102783c5fc51d7990aa3
   ],
   imports: [
     NgbModule,
@@ -396,10 +390,6 @@ import { TrialInfoComponent } from './components/dashboard/dashboard-components/
     // AmendmentHistoryModalComponent,
     SelectHolidaysModalComponent,
     TimePickerComponent,
-<<<<<<< HEAD
-    TrialSearchComponent,
-=======
->>>>>>> 94833c7d6d65b4040732102783c5fc51d7990aa3
     NewLearnerRegistrationModalComponent,
     TrialCalendarComponent,
     TrialConfirmationComponent
