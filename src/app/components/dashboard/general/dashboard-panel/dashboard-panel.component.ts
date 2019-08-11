@@ -1,14 +1,16 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, OnChanges, AfterViewChecked } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { AppSettingsService } from 'src/app/settings/app-settings.service';
 
+import{ HeaderbarComponent } from 'src/app/components/dashboard/general/headerbar/headerbar.component';
 
 @Component({
   selector: 'app-dashboard-panel',
   templateUrl: './dashboard-panel.component.html',
   styleUrls: ['./dashboard-panel.component.css']
 })
-export class DashboardPanelComponent  {
+export class DashboardPanelComponent implements OnInit {
+
   sidebarHide=true
   constructor(
     private router: Router,
@@ -23,5 +25,7 @@ export class DashboardPanelComponent  {
       (res)=>{this.sidebarHide = res}
     )
   }
-
+  ngOnInit() {
+    
+  }
 }

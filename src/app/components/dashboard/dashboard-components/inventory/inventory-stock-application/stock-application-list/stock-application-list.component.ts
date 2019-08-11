@@ -74,7 +74,6 @@ export class StockApplicationListComponent implements OnInit {
     this.getThreeMonths();
     this.getStockApplication(this.previousDate, this.currentDate);
   }
-
   /* 
     check role from local storage, different role has different limit of permissions
       1) if role === 3, then display branch pages

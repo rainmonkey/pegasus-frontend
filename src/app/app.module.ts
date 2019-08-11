@@ -158,6 +158,7 @@ import { StockApplicationProcessModalComponent } from './components/dashboard/da
 import { TrialCalendarComponent } from './components/dashboard/dashboard-components/trial-course/trial-calendar/trial-calendar.component';
 import { TrialConfirmationComponent } from './components/dashboard/dashboard-components/trial-course/trial-confirmation/trial-confirmation.component';
 import { ProcessStatusPipe } from 'src/app/shared/pipes/process-status.pipe';
+import { NotificationPopupComponent } from './components/dashboard/general/notifications/notification-popup/notification-popup.component';
 import { TrialInfoComponent } from './components/dashboard/dashboard-components/trial-course/trial-info/trial-info.component';
 
 
@@ -304,6 +305,7 @@ import { TrialInfoComponent } from './components/dashboard/dashboard-components/
   TeacherLevelPipe,
   StockApplicationProcessModalComponent,
   TrialCalendarComponent,
+  NotificationPopupComponent,
   TrialConfirmationComponent,
   ],
   imports: [
