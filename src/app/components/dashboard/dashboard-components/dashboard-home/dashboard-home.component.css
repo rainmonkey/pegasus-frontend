@@ -822,6 +822,31 @@ section.dashboard-counts div[class*='col-']:last-of-type .item {
 * ==========================================================
 */
 /*====== Recent Updates Box ======*/
+.toDoList {
+  position: relative;
+}
+.popUp {
+  margin: 0;
+  padding: 0;
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  overflow:auto;
+  height: 280px;
+  background: #fff;
+  box-shadow: 0 0 0.5px 0.5px rgba(134, 142, 150, 0.5);
+  z-index: 10;
+}
+.popUpText{
+ color: #999
+}
+.popUpClose{
+  box-shadow: 1px #666;
+  transition: all 0.4 ease-in;
+}
+.popUpClose:focus{
+  box-shadow: 1px #666;
+}
 .recent-updates .item {
   padding: 20px;
 }

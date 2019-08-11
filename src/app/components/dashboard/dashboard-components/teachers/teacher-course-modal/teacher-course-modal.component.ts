@@ -213,16 +213,16 @@ export class TeacherCourseModalComponent implements OnInit {
     console.log(this.whichTeacher)
     if(this.whichTeacher.TeacherWageRates.length >0 ){
       if(course == 'piano'){
-        return this.whichTeacher.TeacherWageRates.PianoRates;
+        return this.whichTeacher.TeacherWageRates[0].PianoRates;
       }
       else if(course == 'theory'){
-        return this.whichTeacher.TeacherWageRates.TheoryRates;
+        return this.whichTeacher.TeacherWageRates[0].TheoryRates;
       }
       else if(course == 'others'){
-        return this.whichTeacher.TeacherWageRates.OthersRates;
+        return this.whichTeacher.TeacherWageRates[0].OthersRates;
       }
       else if(course == 'group'){
-        return this.whichTeacher.TeacherWageRates.GroupRates;
+        return this.whichTeacher.TeacherWageRates[0].GroupRates;
       }
     }
     else{

@@ -25,6 +25,10 @@ export class NewRegistrationFormComponent implements OnInit {
   public learnerPurpose: Array<any>;
   public howKnown: Array<any>;
 
+  public othersList = []
+  public learnerOthers = []
+  whyP = []
+  howP = []
   @ViewChild("grade") grade;
   @ViewChild('agreement') agreement;
   @ViewChild('otherFile') otherFile;
@@ -43,6 +47,7 @@ export class NewRegistrationFormComponent implements OnInit {
     this.getLocationFromServer()
     this.getLookUp()
     this.editFormSelectLevel()
+
   }
 
   formBuild() {
@@ -53,7 +58,7 @@ export class NewRegistrationFormComponent implements OnInit {
         MiddleName: [null],
         LastName: [null, Validators.required],
         Gender: ['', Validators.required],
-        dob: [null],
+        Dob: [null],
         EnrollDate: [null],
         ContactNum: [null],
         Email: [null, [Validators.required, Validators.email]],
@@ -61,17 +66,12 @@ export class NewRegistrationFormComponent implements OnInit {
         OrgId: [null, Validators.required],
         LearnerLevel: [null, Validators.required],
         LevelType: [null],
-        levelTypeRadio: [null],
         IsUnder18: [null],
         PaymentPeriod: [null],
         Referrer: [null],
         Comment: [null],
         // photo
-        photo: [null],
-        grade: [null],
-        Agreement: [null],
-        OtherFile: [null],
-
+        LearnerOthers: [null],
       }
     }
     else {
@@ -80,7 +80,7 @@ export class NewRegistrationFormComponent implements OnInit {
         MiddleName: [this.whichLearner.MiddleName ? this.whichLearner.MiddleName : ' '],
         LastName: [this.whichLearner.LastName, Validators.required],
         Gender: [this.whichLearner.Gender, Validators.required],
-        dob: [this.getDateFormat(this.whichLearner.Dob)],
+        Dob: [this.getDateFormat(this.whichLearner.Dob)],
         EnrollDate: [this.getDateFormat(this.whichLearner.EnrollDate)],
         ContactNum: [this.whichLearner.ContactNum],
         Email: [this.whichLearner.Email, [Validators.required, Validators.email]],
@@ -88,16 +88,13 @@ export class NewRegistrationFormComponent implements OnInit {
         OrgId: [this.whichLearner.OrgId, Validators.required],
         LearnerLevel: [this.whichLearner.LearnerLevel, Validators.required],
         // LevelType: [this.whichLearner.LevelType],
-        levelTypeRadio: [this.whichLearner.LevelType],
+        LevelType: [this.whichLearner.LevelType],
         IsUnder18: [this.whichLearner.IsUnder18],
         PaymentPeriod: [this.whichLearner.PaymentPeriod],
         Referrer: [this.whichLearner.Referrer],
         Comment: [this.whichLearner.Comment],
         // photo
-        photo: [null],
-        grade: [null],
-        Agreement: [null],
-        OtherFile: [null],
+        LearnerOthers: [this.whichLearner.LearnerOthers],
 
       }
     }
@@ -159,7 +156,6 @@ export class NewRegistrationFormComponent implements OnInit {
     this.registrationService.getLookups(2)
       .subscribe(
         data => {
-          console.log('learner purpose');
           this.learnerPurpose = data.Data;
           for (let lP of this.learnerPurpose) {
             lP.isChecked = false;
@@ -178,7 +174,6 @@ export class NewRegistrationFormComponent implements OnInit {
     this.registrationService.getLookups(3)
       .subscribe(
         data => {
-          console.log('how know', data, this.whichLearner);
           this.howKnown = data.Data;
           this.howKnown.map((o, i) => {
             o.isChecked = false;
@@ -253,29 +248,6 @@ export class NewRegistrationFormComponent implements OnInit {
       return true;
     }
   }
-  setDefaultPurpose(selectedValue) {
-    if (this.command !== 1) {
-      for (let i of this.whichLearner.LearnerOthers) {
-        if (i.OthersType == 2) {
-          if (i.OthersValue == selectedValue) {
-            return true
-          }
-        }
-      }
-    }
-  }
-
-  setDefaultHowKnow(selectedValue) {
-    if (this.command !== 1) {
-      for (let i of this.whichLearner.LearnerOthers) {
-        if (i.OthersType == 3) {
-          if (i.OthersValue == selectedValue) {
-            return true
-          }
-        }
-      }
-    }
-  }
 
   setTrue() {
     if (this.command !== 1) {
@@ -289,6 +261,43 @@ export class NewRegistrationFormComponent implements OnInit {
     this.registrationForm.reset();
     if (this.photoObj)
       this.photoObj.setAttribute('src', null);
+  }
+
+
+  selectLearnerPurpose(i, event) {
+    this.learnerPurpose[i].isChecked = event.target.checked;
+    this.confirmLearner();
+  }
+  selectHowKnown(i, event) {
+    this.howKnown[i].isChecked = event.target.checked;
+    this.confirmLearner();
+  }
+
+  confirmLearner() {
+    this.learnerOthers = []
+    let whyP = [];
+    let howP = [];
+    for (let learnPurpose of this.learnerPurpose) {
+      if (learnPurpose.isChecked) {
+        let tempObj = {};
+        tempObj['OthersType'] = learnPurpose.LookupType;
+        tempObj['OthersValue'] = learnPurpose.PropValue;
+        whyP.push(tempObj);
+      }
+    }
+    for (let how of this.howKnown) {
+      if (how.isChecked) {
+        let tempObj = {};
+        tempObj['OthersType'] = how.LookupType;
+        tempObj['OthersValue'] = how.PropValue;
+        howP.push(tempObj);
+      }
+    };
+
+    this.learnerOthers = whyP.concat(howP)
+    this.registrationForm.value.LearnerOthers = this.learnerOthers
+    console.log(this.learnerOthers)
+    console.log(this.registrationForm)
   }
 }
 

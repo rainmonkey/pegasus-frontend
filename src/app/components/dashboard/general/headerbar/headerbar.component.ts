@@ -5,6 +5,7 @@ import { AppSettingsService } from 'src/app/settings/app-settings.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ChangePasswordModalComponent } from '../../dashboard-components/support/change-password-modal/change-password-modal.component';
 import { environment } from 'src/environments/environment.prod';
+import { WindowScrollController } from '@fullcalendar/core';
 
 @Component({
   selector: 'app-headerbar',
@@ -47,6 +48,7 @@ export class HeaderbarComponent implements OnInit {
   logout() {
     this.authenticationService.logout();
     this.router.navigate(['/login']);
+    location.reload();
   }
   hideSideBar(){
     // console.log('asd')

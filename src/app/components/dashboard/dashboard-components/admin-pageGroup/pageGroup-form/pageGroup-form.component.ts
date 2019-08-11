@@ -12,6 +12,7 @@ import { PageGroupService } from 'src/app/services/http/pageGroup.service';
 export class PageGroupFormComponent implements OnInit {
   public updateForm: FormGroup
   public readOnlyFlag: boolean = false;
+  public loadingFlag: boolean;
  
   @Input() command;
   @Input() whichPageGroup;

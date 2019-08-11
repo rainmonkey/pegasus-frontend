@@ -3,9 +3,9 @@ import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { FormBuilder, Validators } from '@angular/forms';
 import { SessionsService } from '../../../../../../services/http/sessions.service';
 import { SessionEdit } from '../../../../../../models/SessionEdit';
-import { TrialModalComponent } from 'src/app/components/dashboard/dashboard-components/trial-session/trial-modal/trial-modal.component';
 import Swal from 'sweetalert2';
 import { DatePipe } from '@angular/common';
+import { TrialInfoComponent } from '../../../trial-course/trial-info/trial-info.component';
 
 @Component({
   selector: 'app-session-detail-edit-modal',
@@ -129,7 +129,7 @@ export class SessionDetailEditModalComponent implements OnInit {
     const teacherId = +this.SessionForm.get('Teacher').value;
     this.duration = new Date(this.LessonModel.EndTime).getTime() - new Date(this.LessonModel.BeginTime).getTime()
 
-    const modalRef = this.modalService.open(TrialModalComponent, { size: 'lg', backdrop: 'static', keyboard: false });
+    const modalRef = this.modalService.open(TrialInfoComponent, { size: 'lg', backdrop: 'static', keyboard: false });
     modalRef.componentInstance.LearnerId = this.LessonModel.LearnerId;
     modalRef.componentInstance.TeacherId = teacherId;
     modalRef.componentInstance.orgName = orgName;
