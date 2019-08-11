@@ -58,7 +58,7 @@ export class NewRegistrationFormComponent implements OnInit {
         MiddleName: [null],
         LastName: [null, Validators.required],
         Gender: ['', Validators.required],
-        Dob: [null],
+        dob: [null],
         EnrollDate: [null],
         ContactNum: [null],
         Email: [null, [Validators.required, Validators.email]],
@@ -80,7 +80,7 @@ export class NewRegistrationFormComponent implements OnInit {
         MiddleName: [this.whichLearner.MiddleName ? this.whichLearner.MiddleName : ' '],
         LastName: [this.whichLearner.LastName, Validators.required],
         Gender: [this.whichLearner.Gender, Validators.required],
-        Dob: [this.getDateFormat(this.whichLearner.Dob)],
+        dob: [this.getDateFormat(this.whichLearner.Dob)],
         EnrollDate: [this.getDateFormat(this.whichLearner.EnrollDate)],
         ContactNum: [this.whichLearner.ContactNum],
         Email: [this.whichLearner.Email, [Validators.required, Validators.email]],
@@ -222,7 +222,6 @@ export class NewRegistrationFormComponent implements OnInit {
     let that = this;
     let reader = new FileReader();
     reader.onloadend = function () {
-      console.log(this.result)
       that.photoObj.setAttribute("src", this.result.toString());
     }
     reader.readAsDataURL(photoRender);
