@@ -14,7 +14,7 @@ https://bootstrapious.com/p/admin-template
 *     GENERAL STYLES
 * ==========================================================
 */
-body {
+/* body {
   overflow-x: hidden;
 }
 
@@ -33,18 +33,18 @@ i:focus,
 span:hover,
 span:focus {
   text-decoration: none;
-}
+}*/
 
 section {
   padding: 50px 0;
 }
 
-canvas {
+/* canvas {
   -webkit-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
-}
+}  */
 
 .container-fluid {
   padding: 0 30px;
