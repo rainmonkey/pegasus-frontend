@@ -1,9 +1,11 @@
+import { style } from '@angular/animations';
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { TrialCoursesService } from 'src/app/services/http/trial-courses.service';
 import { forkJoin, Observable } from 'rxjs';
 import { start } from 'repl';
 import { ActivatedRoute } from '@angular/router';
+import { DownloadPDFService, IInvoiceLearnerName, IInvoice } from 'src/app/services/others/download-pdf.service';
 
 @Component({
   selector: 'app-trial-confirmation',
@@ -12,13 +14,14 @@ import { ActivatedRoute } from '@angular/router';
     './trial-confirmation.component.css']
 })
 export class TrialConfirmationComponent implements OnInit {
+  private learner;
   private courseName: string;
   private startTimeStr: string;
   private endTimeStr: string;
   private learnerName: string;
   private avaliableRoom;
   private extraFee: number;
-  //private frequencyRoom: Array<any> = [];
+  private frequencyRoom: Array<any> = [];
   private coursePrice: number;
   private trialCourseId: number;
   private avaliableCourses: Array<object>;
@@ -30,16 +33,18 @@ export class TrialConfirmationComponent implements OnInit {
   /**@property {boolean} isSubmitting - is data submitting or not */
   private isSubmitting: boolean = false;
   private isError: boolean = false;
-  private isLoading: boolean = false;
+  public isLoading: boolean = false;
   private isSuccess: boolean = false;
+
 
   @Input() confirmationData: IConfirmData;
   @Output() isClosed = new EventEmitter();
 
   constructor(
     private routerInfo: ActivatedRoute,
-    private activeModal: NgbActiveModal,
-    private trialService: TrialCoursesService
+    public activeModal: NgbActiveModal,
+    private trialService: TrialCoursesService,
+    private downloadPDFService: DownloadPDFService
   ) { }
 
   ngOnInit() {
@@ -95,6 +100,7 @@ export class TrialConfirmationComponent implements OnInit {
     let avaliableRoom = dataFromServer[0]['Data'];
     let frequencyRoom = dataFromServer[1]['Data'];
     let learner = dataFromServer[2]['Data'];
+    this.learner = learner;
     let courses = dataFromServer[3]['Data'];
     this.extraFee = Number(dataFromServer[4]['Data'][0]['PropName']);
     this.learnerName = learner['FirstName'] + '  ' + learner['LastName'];
@@ -103,11 +109,16 @@ export class TrialConfirmationComponent implements OnInit {
     this.courseName = cateName + '  ' + 'Trial  Course';
     this.avaliableRoom = avaliableRoom;
 
-    // frequencyRoom.map(
-    //   (val) => {
-    //     this.frequencyRoom.push({ roomId: val['RoomId'], roomName: val['RoomName'] });
-    //   }
-    // )
+    //判断老师常用教室是否可用
+    if (frequencyRoom.length !== 0) {
+      avaliableRoom.map(
+        (val) => {
+          if (val.RoomId == frequencyRoom[0]['RoomId']) {
+            this.frequencyRoom.push(val);
+          }
+        }
+      )
+    }
     this.avaliableCourses = this.getAvaliableCourses(courses);
     this.coursePrice = this.avaliableCourses[0]['Price'] + this.extraFee;
     this.trialCourseId = this.avaliableCourses[0]['CourseId'];
@@ -162,7 +173,9 @@ export class TrialConfirmationComponent implements OnInit {
   /**
    * When user click confirm button, prepare to submit data.
    */
-  onSubmit() {
+  onSubmit(event) {
+    console.log(event)
+    event.target.disabled = true;
     this.isSubmitting = true;
     let data = this.prepareSubmitionData();
     this.trialService.postTrialCourse(data).subscribe(
@@ -175,6 +188,7 @@ export class TrialConfirmationComponent implements OnInit {
         this.isSubmitting = false;
         this.isSuccess = false;
         this.isError = true;
+        event.target.disabled = false;
       }
     )
   }
@@ -201,14 +215,14 @@ export class TrialConfirmationComponent implements OnInit {
   }
 
   getRoomIdValue() {
-    // if (this.frequencyRoom.length !== 0) {
-    //   console.log(this.frequencyRoom[0]['roomId'])
-    //   return this.frequencyRoom[0]['roomId']
-    // }
-    // else {
-    let obj = document.getElementById('ROOMS');
-    return obj['value'];
-    //}
+    if (this.frequencyRoom.length !== 0) {
+      console.log(this.frequencyRoom[0]['RoomId'])
+      return this.frequencyRoom[0]['RoomId']
+    }
+    else {
+      let obj = document.getElementById('ROOMS');
+      return obj['value'];
+    }
   }
 
   getPaymentIdValue() {
@@ -265,6 +279,26 @@ export class TrialConfirmationComponent implements OnInit {
   closeConfirmationModal() {
     this.activeModal.close('Close click');
     this.isClosed.emit(true);
+  }
+
+  /**
+   * Down load invoice.
+   */
+  downloadInvoice() {
+    const learnerName: IInvoiceLearnerName = {
+      firstName: this.learner.FirstName,
+      lastName: this.learner.LastName
+    };
+    const invoice: IInvoice = {
+      LessonQuantity: 1,
+      CourseName: this.confirmationData.cateName,
+      BeginDate: new Date(this.confirmationData.startTimeStamp).toLocaleDateString(),
+      LessonFee: this.coursePrice,
+      Other1Fee: this.extraFee,
+      Other1FeeName: 'Trial Course Extra',
+      TotalFee: this.coursePrice + this.extraFee,
+    };
+    this.downloadPDFService.downloadPDF(learnerName, invoice);
   }
 }
 

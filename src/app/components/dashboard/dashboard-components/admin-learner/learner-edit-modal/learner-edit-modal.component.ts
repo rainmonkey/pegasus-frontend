@@ -10,6 +10,7 @@ import { LearnersService } from 'src/app/services/http/learners.service';
 export class LearnerEditModalComponent implements OnInit, DoCheck {
   @Input() whichLearner;
   @Output() signalForInit: EventEmitter<any> = new EventEmitter;
+  @Input() command;
   constructor(public activeModal: NgbActiveModal, private LearnerListService: LearnersService, ) {
 
   }

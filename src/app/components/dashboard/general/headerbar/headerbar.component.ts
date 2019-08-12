@@ -14,9 +14,14 @@ import { NotificationPopupComponent } from 'src/app/components/dashboard/general
 })
 export class HeaderbarComponent implements OnInit {
 
+<<<<<<< HEAD
   public isPopup = false;
   public hasNoticed: boolean = false;
 
+=======
+  public isOpen = false;
+  public outside;
+>>>>>>> c8c27c4bad150229c8842ae2b5a9cf1f140e1ccb
   photoUrl: any = environment.photoUrl;
   userDetail =
     {

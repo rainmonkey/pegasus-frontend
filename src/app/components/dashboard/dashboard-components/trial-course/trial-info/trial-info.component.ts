@@ -16,5 +16,6 @@ export class TrialInfoComponent implements OnInit {
   }
 
   returnBack() {
+    this.router.navigateByUrl("/learner/list")
   }
 }

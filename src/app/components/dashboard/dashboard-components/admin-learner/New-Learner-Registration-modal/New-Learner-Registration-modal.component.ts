@@ -18,7 +18,7 @@ export class NewLearnerRegistrationModalComponent implements OnInit {
   showErrorW = false;
   showErrorH = false;
   @Input() command
-  @Input() whichLeaner;
+  @Input() whichLearner;
   @Output() refreshFlag: EventEmitter<any> = new EventEmitter();
   @ViewChild('updateForm') updateFormObj
 
@@ -73,17 +73,16 @@ export class NewLearnerRegistrationModalComponent implements OnInit {
 
   prepareSubmitData(valueToSubmit) {
     console.log(valueToSubmit)
-    valueToSubmit.Gender = Number(valueToSubmit.Gender);
-    valueToSubmit.LearnerLevel = Number(valueToSubmit.LearnerLevel);
-    valueToSubmit.OrgId = Number(valueToSubmit.OrgId)
+    valueToSubmit.PaymentPeriod=Number(valueToSubmit.PaymentPeriod)
     valueToSubmit.LearnerOthers = this.updateFormObj.learnerOthers
+    valueToSubmit.IsUnder18= this.updateFormObj.IsUnder18 ? 1: 0;
     return valueToSubmit
   }
 
   stringifySubmitStr(vailadValue) {
       console.log(vailadValue)
     let submit = new FormData();
-
+    console.log('aaaaa', this.updateFormObj.selectedPhoto, this.updateFormObj.selectedGrade, this.updateFormObj.selectedAgreement,  this.updateFormObj.selectedOther )
     submit.append('details', JSON.stringify(vailadValue));
     submit.append('Photo', this.updateFormObj.selectedPhoto);
     submit.append('G5Certification', this.updateFormObj.selectedGrade);
@@ -130,7 +129,7 @@ export class NewLearnerRegistrationModalComponent implements OnInit {
       this.subscribeHandler(obj);
     }
     else if (this.command == 2) {
-      let obj = this.learnerRegServer.putStudent(this.whichLeaner.LearnerId, submit)
+      let obj = this.learnerRegServer.putStudent(this.whichLearner.LearnerId, submit)
       this.subscribeHandler(obj);
     }
   }

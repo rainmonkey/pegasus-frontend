@@ -24,7 +24,7 @@ export class TrialCalendarComponent implements OnInit {
 
   constructor(
     private modalService: NgbModal,
-    private activeModal: NgbActiveModal,
+    public activeModal: NgbActiveModal,
     private trialService: TrialCoursesService
   ) { }
 

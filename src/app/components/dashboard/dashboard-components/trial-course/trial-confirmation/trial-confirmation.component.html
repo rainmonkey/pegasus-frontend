@@ -67,10 +67,11 @@
       <div class='col-4'>
         <div class='row t_c_item'>
           <span class='col-3 t_c_label' style="text-align: center">Room</span>
-          <select  name="" id="" class='col-9' id='ROOMS'>
+          <select *ngIf='frequencyRoom.length == 0' name="" id="" class='col-9' id='ROOMS'>
             <option *ngFor='let i of avaliableRoom' value={{i.RoomId}}>{{i.RoomName}}</option>
           </select>
-          <!-- <input *ngIf='frequencyRoom.length !== 0' type="text" value={{frequencyRoom[0].roomName}} class='col-9'> -->
+          <!--if teacher has frequency room use this one-->
+          <input *ngIf='frequencyRoom.length !== 0' type="text" value={{frequencyRoom[0].RoomName}} class='col-9' disabled>
         </div>
       </div>
     </div>
@@ -98,7 +99,8 @@
     <span *ngIf='isError' class='text-danger'>Sorry, something went wrong, please try it later.</span>
     <span *ngIf='isSuccess' class="text-success">Trial course enrolled successfully.</span>
     <div *ngIf='isLoading' class="loaderSmall"></div>
-    <button *ngIf='!isSuccess' type="button" class="btn btn-outline-dark" (click)="onSubmit()">Confirm</button>
+    <button *ngIf='!isSuccess' type="button" class="btn btn-outline-dark" (click)="onSubmit($event)">Confirm</button>
+    <button *ngIf='isSuccess' type='button' class='btn btn-outline-dark' (click)="downloadInvoice()">Download Invoice</button>
     <button *ngIf='!isSuccess' type="button" class="btn btn-outline-dark" (click)="activeModal.close('Close click')">Cancel</button>
     <button *ngIf='isSuccess' type="button" class="btn btn-outline-dark" (click)="closeConfirmationModal()">Close</button>
   </div>
