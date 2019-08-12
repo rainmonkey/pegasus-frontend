@@ -1,11 +1,11 @@
-import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, AfterViewChecked, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthenticationService } from '../../../../services/auth/authentication.service';
 import { AppSettingsService } from 'src/app/settings/app-settings.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ChangePasswordModalComponent } from '../../dashboard-components/support/change-password-modal/change-password-modal.component';
 import { environment } from 'src/environments/environment.prod';
-import { WindowScrollController } from '@fullcalendar/core';
+import { NotificationPopupComponent } from 'src/app/components/dashboard/general/notifications/notification-popup/notification-popup.component'
 
 @Component({
   selector: 'app-headerbar',
@@ -14,7 +14,9 @@ import { WindowScrollController } from '@fullcalendar/core';
 })
 export class HeaderbarComponent implements OnInit {
 
-  public isOpen = false;
+  public isPopup = false;
+  public hasNoticed: boolean = false;
+
   photoUrl: any = environment.photoUrl;
   userDetail =
     {
@@ -22,7 +24,7 @@ export class HeaderbarComponent implements OnInit {
       firstName:'',
       lastName:''
     }
-  public hasNoticed: boolean = false;
+ 
 
   constructor(
     private router: Router,
@@ -34,8 +36,8 @@ export class HeaderbarComponent implements OnInit {
 
   ngOnInit() {
     this.getUserDetail();
-    this.hasNoticed = false;
   }
+
 
   getUserDetail(){
     this.userDetail['firstName'] = localStorage.getItem('userFirstName');
@@ -51,11 +53,17 @@ export class HeaderbarComponent implements OnInit {
     location.reload();
   }
   hideSideBar(){
-    // console.log('asd')
     this.settingService.sidebarShowStatus.next(!this.settingService.sidebarShowStatus.value)
   }
 
   changePassword() {
     const modalRef = this.modalService.open(ChangePasswordModalComponent,{size:'lg'})
+  }
+
+
+  /* click bell to toggle popup */
+  showPopup() {
+    this.isPopup = !this.isPopup;
+    console.log('toggel', this.isPopup)
   }
 }

@@ -1,6 +1,18 @@
-<div ngbDropdownMenu aria-labelledby class="msg-box">
-  <div class="bottom-bar">
-    <button>Clear Messages</button>
-    <button>Find More</button>
+<div class="tab-container" [class.d-none]="!isPopup">
+  <div class="tab__header d-flex justify-content-around">
+    <div *ngFor="let tab of tabs; let i = index" class="tab">
+      <input [id]="'nav__'+tab.value" type="radio" class="tab__input" [checked]="tabv==tab.value">
+      <label [for]="'nav__'+tab.value" class="tab__label" (click)="switchTab(tab.value)">{{tab.display}}
+      <span>({{tab.number}})</span></label>
+    </div>
+  </div>
+  <div class="tab__content">
+    <div *ngIf="tabv=='Message'" class="text-info p-4">message</div>
+    <div *ngIf="tabv=='Backlog'" class="text-info p-4">todolist</div>
+  </div>
+  <div class="tab__bottom d-flex justify-content-around p-1">
+    <button class="clear__btn">Clear Msgs</button>
+    <span class="middle__line"></span>
+    <button class="find__btn">Find More</button>
   </div>
 </div>

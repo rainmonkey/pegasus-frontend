@@ -161,7 +161,6 @@ import { ProcessStatusPipe } from 'src/app/shared/pipes/process-status.pipe';
 import { NotificationPopupComponent } from './components/dashboard/general/notifications/notification-popup/notification-popup.component';
 import { TrialInfoComponent } from './components/dashboard/dashboard-components/trial-course/trial-info/trial-info.component';
 
-
 @NgModule({
   declarations: [
     PageGroupFormComponent,
@@ -329,7 +328,7 @@ import { TrialInfoComponent } from './components/dashboard/dashboard-components/
   providers: [
     DatePipe,
     MondayDateInWeekByDatePipe,
-    NgbActiveModal,
+    NgbActiveModal
     // {
     //   provide: ErrorHandler,
     //   useClass: CustomErrorHandler,
