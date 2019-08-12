@@ -33,7 +33,7 @@
 <div class='row t_f_teachers'>
   <div class='col-12'>
     <span *ngFor='let i of teachersList;let index=index' class='row' style="margin-bottom:0.5rem">
-      <span class='col-1'>
+      <span *ngIf='i.length!==0' class='col-1'>
         {{((dayOfWeekIndex?dayOfWeekIndex+1:index+1)) | weekFormat}}
       </span>
       <span class='col-11'>

@@ -13,9 +13,9 @@ import { TrialCalendarComponent } from '../trial-calendar/trial-calendar.compone
 export class TrialFilterComponent implements OnInit {
   public filterLabel: Array<string> = ['Categories', 'Orgnizations', 'DayOfWeek'];
   public orgIdFilter: number;
-  public orgName:string;
+  public orgName: string;
   public cateIdFilter: number;
-  public cateName:string;
+  public cateName: string;
 
   /**@property {Array<string>} filterString -  A list stored the filter tags that selected.*/
   public filterString: Array<string> = [];
@@ -150,77 +150,80 @@ export class TrialFilterComponent implements OnInit {
 
   /**
    * Process the data of tachers with filters
-   * @param data - data to process
-   * @param selectionIndex - index of which teacher selected 
+   * @param data - teacher and courses to process
+   * @param dayOfWeekIndex - index of which day selected 
    */
-  processTeachersList(data: Array<object>, selectionIndex: any) {
-    /**@property {Array<object>} array1 - array after processing (teachers list that pass org filter)*/
-    let array1: Array<object> = [];
-    //data[0] - teachers list
-    data[0]['Data'].map(
-      (val) => {
-        val['AvailableDays'].map(
-          (item) => {
-            if (item.OrgId == this.orgIdFilter) {
-              if (array1.indexOf(val) == -1) {
-                array1.push(val);
-              }
-            }
-          }
-        )
+  processTeachersList(data: Array<object>, dayOfWeekIndex: any) {
+    //按不同的week day划分老师
+    /**@property {Array{any}} array0 - list of teachers filt after org and week day */
+    let array0: Array<any> = this.checkTeacherAvailableDays(data[0]['Data'], dayOfWeekIndex);
+    /**@property {Array<number>} teachersIdOfCate - list of all teacher's ID that can taught selected course category */
+    let teachersIdOfCate:Array<number> = [];
+  
+    
+    for (let i of data[1]['Data']) {
+      if (i.Course.CourseCategory.CourseCategoryId == this.cateIdFilter) {
+        if (teachersIdOfCate.indexOf(i.TeacherId) == -1) {
+          teachersIdOfCate.push(i.TeacherId);
+        }
       }
-    )
-    /**@property {Array<object>} array2 - array after processing (teachers list that pass cate and org filter) */
-    let array2: Array<object> = [];
-    array1.map(
+    }
+
+    //filt teachers with category
+    array0.map(
       (val) => {
-        //data[1] - courses teaching list
-        for (let i of data[1]['Data']) {
-          if (i.Course.CourseCategory.CourseCategoryId == this.cateIdFilter && val['TeacherId'] == i.TeacherId) {
-            if (array2.indexOf(val) == -1) {
-              array2.push(val);
+        if (val.length == 0) {
+          return;
+        }
+        else {
+          for (let i in val) {
+            if (!teachersIdOfCate.includes(val[i].TeacherId)) {
+              val.splice(i, 1)
             }
           }
         }
       }
     )
-    this.checkTeacherAvailableDays(array2, selectionIndex);
-    //console.log(this.teachersListAfterFilter)
+    this.teachersList = array0;
   }
 
   /**
-   * Distribute teachers in avaliable days.
+   * Distribute teachers in avaliable days with specific org.
    * @param teacherList - teachers list to process
    */
-  checkTeacherAvailableDays(teacherList: Array<object>, selectionIndex: any) {
+  checkTeacherAvailableDays(teacherList: Array<object>, dayOfWeekIndex: any) {
     /**@property {Array<Array<object>>} array - list after process*/
     let array: Array<Array<object>> = [[], [], [], [], [], [], []];
     teacherList.map(
       (val) => {
         for (let i of val['AvailableDays']) {
-          if (array[i.DayOfWeek - 1].indexOf(val) == -1) {
-            array[i.DayOfWeek - 1].push(val);
+          if (i.OrgId == this.orgIdFilter) {
+            if (array[i.DayOfWeek - 1].indexOf(val) == -1) {
+              array[i.DayOfWeek - 1].push(val);
+            }
           }
         }
       }
     );
 
-    this.getTeacherListAfterDayOfWeekFilter(array, selectionIndex);
+    return this.getTeacherListAfterDayOfWeekFilter(array, dayOfWeekIndex);
   }
 
   /**
    * Get teacher list with different day of week.
    * @param list - 
-   * @param selectionIndex - index of different day
+   * @param dayOfWeekIndex - index of day
    */
-  getTeacherListAfterDayOfWeekFilter(list, selectionIndex: any) {
-    if (selectionIndex == 7) {
+  getTeacherListAfterDayOfWeekFilter(list, dayOfWeekIndex: any) {
+    //show all
+    if (dayOfWeekIndex == 7) {
       this.dayOfWeekIndex = null;
-      this.teachersList = list;
+      return list;
     }
+    //show specific day
     else {
-      this.dayOfWeekIndex = selectionIndex;
-      this.teachersList = [list[selectionIndex]];
+      this.dayOfWeekIndex = dayOfWeekIndex;
+      return [list[dayOfWeekIndex]];
     }
   }
 

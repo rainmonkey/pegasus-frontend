@@ -1,3 +1,4 @@
+import { style } from '@angular/animations';
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { TrialCoursesService } from 'src/app/services/http/trial-courses.service';
@@ -172,7 +173,9 @@ export class TrialConfirmationComponent implements OnInit {
   /**
    * When user click confirm button, prepare to submit data.
    */
-  onSubmit() {
+  onSubmit(event) {
+    console.log(event)
+    event.target.disabled = true;
     this.isSubmitting = true;
     let data = this.prepareSubmitionData();
     this.trialService.postTrialCourse(data).subscribe(
@@ -185,6 +188,7 @@ export class TrialConfirmationComponent implements OnInit {
         this.isSubmitting = false;
         this.isSuccess = false;
         this.isError = true;
+        event.target.disabled = false;
       }
     )
   }
