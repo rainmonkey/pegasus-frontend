@@ -14,29 +14,26 @@ import { NotificationPopupComponent } from 'src/app/components/dashboard/general
 })
 export class HeaderbarComponent implements OnInit {
 
-<<<<<<< HEAD
   public isPopup = false;
   public hasNoticed: boolean = false;
 
-=======
   public isOpen = false;
   public outside;
->>>>>>> c8c27c4bad150229c8842ae2b5a9cf1f140e1ccb
   photoUrl: any = environment.photoUrl;
   userDetail =
     {
-      img : '../../../../assets/images/usersimg/testimg.jpg',
-      firstName:'',
-      lastName:''
+      img: '../../../../assets/images/usersimg/testimg.jpg',
+      firstName: '',
+      lastName: ''
     }
- 
+
 
   constructor(
     private router: Router,
     private authenticationService: AuthenticationService,
     public settingService: AppSettingsService,
     private modalService: NgbModal
-    ) {
+  ) {
   }
 
   ngOnInit() {
@@ -44,12 +41,12 @@ export class HeaderbarComponent implements OnInit {
   }
 
 
-  getUserDetail(){
+  getUserDetail() {
     this.userDetail['firstName'] = localStorage.getItem('userFirstName');
     this.userDetail['lastName'] = localStorage.getItem('userLastName');
     let photo = localStorage.getItem('photo');
     if (photo)
-      this.userDetail.img=this.photoUrl+photo;
+      this.userDetail.img = this.photoUrl + photo;
   }
 
   logout() {
@@ -57,12 +54,12 @@ export class HeaderbarComponent implements OnInit {
     this.router.navigate(['/login']);
     location.reload();
   }
-  hideSideBar(){
+  hideSideBar() {
     this.settingService.sidebarShowStatus.next(!this.settingService.sidebarShowStatus.value)
   }
 
   changePassword() {
-    const modalRef = this.modalService.open(ChangePasswordModalComponent,{size:'lg'})
+    const modalRef = this.modalService.open(ChangePasswordModalComponent, { size: 'lg' })
   }
 
 
