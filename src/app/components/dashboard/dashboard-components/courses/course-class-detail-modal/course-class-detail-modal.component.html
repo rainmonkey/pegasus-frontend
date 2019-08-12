@@ -73,10 +73,10 @@
         </div>
         <div class="col-6">
           <div class="t_mf_form" formArrayName="CourseSchedule">
-            <div class="row">
+            <div class="row" >
               <div class="col-6" style="margin-right: -1rem;"
-                *ngFor="let sches of updateForm.get('CourseSchedule').controls; let i = index" [formGroupName]="i">
-                <label class='t_mf_label'>Begin Time {{i+1}} :</label>
+                *ngFor="let sches of CourseScheduleFormData.controls; let i = index" [formGroupName]="i">
+                <label class='t_mf_label'>Begin Time11 {{i+1}} :</label>
                 <small class='text-danger errorfontsmall' style='text-align: center'
                   *ngIf='updateForm.get("CourseSchedule").controls[i].get("DayOfWeek").invalid && updateForm.get("CourseSchedule").controls[i].get("DayOfWeek").touched'>required</small>
                 <small class='text-danger errorfontsmall' style='text-align: center'

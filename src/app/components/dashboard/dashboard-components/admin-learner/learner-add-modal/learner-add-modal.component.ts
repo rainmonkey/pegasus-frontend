@@ -10,6 +10,7 @@ export class LearnerAddModalComponent implements OnInit, DoCheck {
   addCourse = true;
   toAddLearnerModal = false;
   @Input() whichLearner;
+  @Input() command;
   @Output() signalForInit: EventEmitter<any> = new EventEmitter;
   constructor(public activeModal: NgbActiveModal ) {
 

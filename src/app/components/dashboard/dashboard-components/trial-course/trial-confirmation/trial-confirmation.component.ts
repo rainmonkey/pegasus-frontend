@@ -32,15 +32,16 @@ export class TrialConfirmationComponent implements OnInit {
   /**@property {boolean} isSubmitting - is data submitting or not */
   private isSubmitting: boolean = false;
   private isError: boolean = false;
-  private isLoading: boolean = false;
+  public isLoading: boolean = false;
   private isSuccess: boolean = false;
+
 
   @Input() confirmationData: IConfirmData;
   @Output() isClosed = new EventEmitter();
 
   constructor(
     private routerInfo: ActivatedRoute,
-    private activeModal: NgbActiveModal,
+    public activeModal: NgbActiveModal,
     private trialService: TrialCoursesService,
     private downloadPDFService: DownloadPDFService
   ) { }

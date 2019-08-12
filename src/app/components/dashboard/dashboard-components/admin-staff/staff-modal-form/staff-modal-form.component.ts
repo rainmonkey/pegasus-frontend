@@ -25,6 +25,7 @@ export class StaffModalFormComponent implements OnInit {
   public orgList: any;
   public staffOrg: any
   public staffType:any;
+  public loadingFlag:boolean= false;
 
   @Input() command;
   @Input() whichStaff;

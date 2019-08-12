@@ -15,6 +15,7 @@ import { WindowScrollController } from '@fullcalendar/core';
 export class HeaderbarComponent implements OnInit {
 
   public isOpen = false;
+  public outside;
   photoUrl: any = environment.photoUrl;
   userDetail =
     {

@@ -21,7 +21,7 @@ export class StockApplicationUpdateModalComponent implements OnInit {
   /* props will be assigned after subscribing an observable */
   public errorMessage: string;
 
-  constructor(private activeModal: NgbActiveModal,
+  constructor(public activeModal: NgbActiveModal,
     private inventoriesService: InventoriesService) { }
 
   ngOnInit() {

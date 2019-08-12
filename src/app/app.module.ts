@@ -49,7 +49,7 @@ import { InventoryPanelComponent } from './components/dashboard/dashboard-compon
 import { LearnerRegistrationFormComponent } from './components/dashboard/dashboard-components/learner-registration/learner-registration-form/learner-registration-form.component';
 import { LearnerRegistrationModalComponent } from './components/dashboard/dashboard-components/learner-registration/learner-registration-modal/learner-registration-modal.component';
 import { LearnerRegistrationConfirmModalComponent } from './components/dashboard/dashboard-components/learner-registration/learner-registration-confirm-modal/learner-registration-confirm-modal.component';
-import { LearnerRegistrationDeleteModalComponent } from './components/dashboard/dashboard-components/learner-registration/learner-registration-delete-modal/learner-registration-delete-modal.component';
+
 import { SessionCancelModalComponent } from './components/dashboard/dashboard-components/sessions/session-modals/session-cancel-modal/session-cancel-modal.component';
 import { SessionCompletedModalComponent } from './components/dashboard/dashboard-components/sessions/session-modals/session-completed-modal/session-completed-modal.component';
 import { SessionDetailEditModalComponent } from './components/dashboard/dashboard-components/sessions/session-modals/session-detail-edit-modal/session-detail-edit-modal.component';
@@ -192,7 +192,7 @@ import { TrialInfoComponent } from './components/dashboard/dashboard-components/
     LearnerRegistrationFormComponent,
     LearnerRegistrationModalComponent,
     LearnerRegistrationConfirmModalComponent,
-    LearnerRegistrationDeleteModalComponent,
+
     CommandFormatPipe,
     SessionsPanelComponent,
     SessionsListViewComponent,
@@ -371,7 +371,7 @@ import { TrialInfoComponent } from './components/dashboard/dashboard-components/
     ChangePasswordModalComponent,
     LearnerRegistrationModalComponent,
     LearnerRegistrationConfirmModalComponent,
-    LearnerRegistrationDeleteModalComponent,
+
     StaffDeleteModalComponent,
     StaffDetailModalComponent,
     StaffEditModalComponent,
