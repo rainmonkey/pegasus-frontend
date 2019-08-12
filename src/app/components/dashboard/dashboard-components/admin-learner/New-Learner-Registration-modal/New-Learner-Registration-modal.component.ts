@@ -12,13 +12,9 @@ export class NewLearnerRegistrationModalComponent implements OnInit {
   public messageColor: string;
   public submitionFlag: boolean = true;
   public loadingGifFlag: boolean = false;
-
-  getErrorW = false;
-  getErrorH = false;
-  showErrorW = false;
-  showErrorH = false;
+  submit=false;
   @Input() command
-  @Input() whichLeaner;
+  @Input() whichLearner;
   @Output() refreshFlag: EventEmitter<any> = new EventEmitter();
   @ViewChild('updateForm') updateFormObj
 
@@ -51,7 +47,7 @@ export class NewLearnerRegistrationModalComponent implements OnInit {
 
   checkInputVailad(valueToSubmit) {
     console.log(valueToSubmit)
-    console.log(this.updateFormObj.registrationForm.status )
+    console.log(this.updateFormObj.registrationForm.status)
     //once click save btn, touch all inputs form with for-loop. In order to trigger Validator
     for (let i in this.updateFormObj.registrationForm.controls) {
       this.updateFormObj.registrationForm.controls[i].touched = true;
@@ -73,16 +69,16 @@ export class NewLearnerRegistrationModalComponent implements OnInit {
 
   prepareSubmitData(valueToSubmit) {
     console.log(valueToSubmit)
-    valueToSubmit.PaymentPeriod=Number(valueToSubmit.PaymentPeriod)
-    valueToSubmit.LearnerOthers = this.updateFormObj.learnerOthers
-    valueToSubmit.IsUnder18= this.updateFormObj.IsUnder18 ? 1: 0;
+    valueToSubmit.PaymentPeriod = Number(valueToSubmit.PaymentPeriod)
+    valueToSubmit.LearnerOthers = this.updateFormObj.confirmLearner()
+    valueToSubmit.IsUnder18 = this.updateFormObj.IsUnder18 ? 1 : 0;
+
     return valueToSubmit
   }
 
   stringifySubmitStr(vailadValue) {
-      console.log(vailadValue)
+    console.log(vailadValue)
     let submit = new FormData();
-    console.log('aaaaa', this.updateFormObj.selectedPhoto, this.updateFormObj.selectedGrade, this.updateFormObj.selectedAgreement,  this.updateFormObj.selectedOther )
     submit.append('details', JSON.stringify(vailadValue));
     submit.append('Photo', this.updateFormObj.selectedPhoto);
     submit.append('G5Certification', this.updateFormObj.selectedGrade);
@@ -91,45 +87,13 @@ export class NewLearnerRegistrationModalComponent implements OnInit {
     this.submitByMode(submit)
   }
 
-  // sortLearnerOthers() {
-  //   this.LearnerOthers = []
-  //   let whyP = [];
-  //   let howP = [];
-  //   console.log(this.updateFormObj.learnPurpose)
-  //   for (let learnerPuporse of this.updateFormObj.learnPurpose) {
-  //     if (learnerPuporse.isChecked) {
-  //       let temObj = {};
-  //       temObj['OthersType'] = learnerPuporse.LookupType;
-  //       temObj['OthersValue'] = learnerPuporse.PropValue;
-  //       whyP.push(temObj);
-  //     }
-  //   }
-
-  //   for (let how of this.updateFormObj.howKnow) {
-  //     if (how.isChecked) {
-  //       let tempObj = {};
-  //       tempObj['OthersType'] = how.LookupType;
-  //       tempObj['OthersValue'] = how.PropValue;
-  //       howP.push(tempObj);
-  //     }
-  //   }
-  //   whyP.length === 0 ? this.getErrorW = false : this.getErrorW = true;
-  //   howP.length === 0 ? this.getErrorH = false : this.getErrorH = true;
-  //   this.getErrorW === false ? this.showErrorW = true : this.showErrorW = false;
-  //   this.getErrorH === false ? this.showErrorH = true : this.showErrorH = false;
-  //   this.LearnerOthers = whyP.concat(howP)
-  //   console.log(this.LearnerOthers)
-  //   return this.LearnerOthers
-
-  // }
-
   submitByMode(submit) {
     if (this.command == 1) {
       let obj = this.learnerRegServer.postStudent(submit)
       this.subscribeHandler(obj);
     }
     else if (this.command == 2) {
-      let obj = this.learnerRegServer.putStudent(this.whichLeaner.LearnerId, submit)
+      let obj = this.learnerRegServer.putStudent(this.whichLearner.LearnerId, submit)
       this.subscribeHandler(obj);
     }
   }
@@ -139,9 +103,10 @@ export class NewLearnerRegistrationModalComponent implements OnInit {
       (res) => {
         this.showInfoMessage('Submit success!', '#28a745', false)
         this.submitionFlag = false;
+        this.submit= true;
       },
       (err) => {
-        if (err.error.ErrorMessage == 'Staff has exist.') {
+        if (err.error.ErrorMessage == 'Learner has exist.') {
           this.showInfoMessage(err.error.ErrorMessage + ' Please check ID Number.', '#dc3545', false);
           this.submitionFlag = true;
         }
@@ -160,9 +125,8 @@ export class NewLearnerRegistrationModalComponent implements OnInit {
     this.messageColor = fontColor;
   }
 
-
   onClose() {
-    if (this.updateFormObj.registrationForm.dirty == true) {
+    if ( this.submit==true ) {
       this.refreshFlag.emit(true);
     }
     else {

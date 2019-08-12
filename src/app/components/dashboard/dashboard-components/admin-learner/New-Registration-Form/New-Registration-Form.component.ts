@@ -29,6 +29,11 @@ export class NewRegistrationFormComponent implements OnInit {
   public learnerOthers = []
   whyP = []
   howP = []
+
+  getErrorW = false;
+  getErrorH = false;
+  showErrorW = false;
+  showErrorH = false;
   @ViewChild("grade") grade;
   @ViewChild('agreement') agreement;
   @ViewChild('otherFile') otherFile;
@@ -47,7 +52,6 @@ export class NewRegistrationFormComponent implements OnInit {
     this.getLocationFromServer()
     this.getLookUp()
     this.editFormSelectLevel()
-
   }
 
   formBuild() {
@@ -60,9 +64,9 @@ export class NewRegistrationFormComponent implements OnInit {
         Gender: ['', Validators.required],
         dob: [null],
         EnrollDate: [null],
-        ContactNum: [null],
+        ContactNum: [null, Validators.required],
         Email: [null, [Validators.required, Validators.email]],
-        Address: [null],
+        Address: [null, Validators.required],
         OrgId: [null, Validators.required],
         LearnerLevel: [null, Validators.required],
         LevelType: [null],
@@ -70,8 +74,7 @@ export class NewRegistrationFormComponent implements OnInit {
         PaymentPeriod: [null],
         Referrer: [null],
         Comment: [null],
-        // photo
-        LearnerOthers: [null],
+
       }
     }
     else {
@@ -82,9 +85,9 @@ export class NewRegistrationFormComponent implements OnInit {
         Gender: [this.whichLearner.Gender, Validators.required],
         dob: [this.getDateFormat(this.whichLearner.Dob)],
         EnrollDate: [this.getDateFormat(this.whichLearner.EnrollDate)],
-        ContactNum: [this.whichLearner.ContactNum],
+        ContactNum: [this.whichLearner.ContactNum, Validators.required],
         Email: [this.whichLearner.Email, [Validators.required, Validators.email]],
-        Address: [this.whichLearner.Address],
+        Address: [this.whichLearner.Address, Validators.required],
         OrgId: [this.whichLearner.OrgId, Validators.required],
         LearnerLevel: [this.whichLearner.LearnerLevel, Validators.required],
         // LevelType: [this.whichLearner.LevelType],
@@ -93,8 +96,6 @@ export class NewRegistrationFormComponent implements OnInit {
         PaymentPeriod: [this.whichLearner.PaymentPeriod],
         Referrer: [this.whichLearner.Referrer],
         Comment: [this.whichLearner.Comment],
-        // photo
-        LearnerOthers: [this.whichLearner.LearnerOthers],
 
       }
     }
@@ -262,7 +263,6 @@ export class NewRegistrationFormComponent implements OnInit {
       this.photoObj.setAttribute('src', null);
   }
 
-
   selectLearnerPurpose(i, event) {
     this.learnerPurpose[i].isChecked = event.target.checked;
     this.confirmLearner();
@@ -292,11 +292,13 @@ export class NewRegistrationFormComponent implements OnInit {
         howP.push(tempObj);
       }
     };
-
+    whyP.length === 0 ? this.getErrorW = false : this.getErrorW = true;
+    howP.length === 0 ? this.getErrorH = false : this.getErrorH = true;
+    this.getErrorW === false ? this.showErrorW = true : this.showErrorW = false;
+    this.getErrorH === false ? this.showErrorH = true : this.showErrorH = false;
     this.learnerOthers = whyP.concat(howP)
-    this.registrationForm.value.LearnerOthers = this.learnerOthers
-    console.log(this.learnerOthers)
-    console.log(this.registrationForm)
+    return this.learnerOthers
+
   }
 }
 
