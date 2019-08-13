@@ -99,7 +99,7 @@
     <span *ngIf='isError' class='text-danger'>Sorry, something went wrong, please try it later.</span>
     <span *ngIf='isSuccess' class="text-success">Trial course enrolled successfully.</span>
     <div *ngIf='isLoading' class="loaderSmall"></div>
-    <button *ngIf='!isSuccess' type="button" class="btn btn-outline-dark" (click)="onSubmit()">Confirm</button>
+    <button *ngIf='!isSuccess' type="button" class="btn btn-outline-dark" (click)="onSubmit($event)">Confirm</button>
     <button *ngIf='isSuccess' type='button' class='btn btn-outline-dark' (click)="downloadInvoice()">Download Invoice</button>
     <button *ngIf='!isSuccess' type="button" class="btn btn-outline-dark" (click)="activeModal.close('Close click')">Cancel</button>
     <button *ngIf='isSuccess' type="button" class="btn btn-outline-dark" (click)="closeConfirmationModal()">Close</button>

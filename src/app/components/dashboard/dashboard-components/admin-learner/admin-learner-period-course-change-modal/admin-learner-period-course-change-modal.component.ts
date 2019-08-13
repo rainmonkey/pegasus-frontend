@@ -23,7 +23,7 @@ export class AdminLearnerPeriodCourseChangeModalComponent implements OnInit {
   PeriodCourseChangeForm;
 
   @Input() whichLearner;
-  constructor(private activeModal: NgbActiveModal, private fb: FormBuilder,
+  constructor(public activeModal: NgbActiveModal, private fb: FormBuilder,
               private service: LearnersService) { }
 
   ngOnInit() {
