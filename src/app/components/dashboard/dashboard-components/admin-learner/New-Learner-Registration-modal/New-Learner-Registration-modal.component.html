@@ -1,5 +1,6 @@
 <div class='modal-header'>
-    <h4 class='modal-title'>Learner Registration</h4>
+    <h4 class='modal-title'>Learner Registration
+    </h4>
     <button type="button" class='btn btn-sm btn-info t_dm_close_btn' aria-label="Close"
       (click)="onClose()">
       <span aria-hidden="true">&times;</span>
@@ -16,5 +17,5 @@
   <div class='modal-footer'>
       <span class='m_um_error_msg errorfont' [style.color]="messageColor">{{infoMessage}}</span>
       <button *ngIf='submitionFlag' type='button' class='btn btn-outline-dark' (click)='onSubmit()'>Save</button>
-      <button type="button" class="btn btn-outline-dark" (click)="onClose()">Close</button>
+      <button type="button" class="btn btn-outline-dark" (click)="onClose(command, whichLearner)">Close</button>
     </div>

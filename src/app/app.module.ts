@@ -160,6 +160,8 @@ import { TrialConfirmationComponent } from './components/dashboard/dashboard-com
 import { ProcessStatusPipe } from 'src/app/shared/pipes/process-status.pipe';
 import { NotificationPopupComponent } from './components/dashboard/general/notifications/notification-popup/notification-popup.component';
 import { TrialInfoComponent } from './components/dashboard/dashboard-components/trial-course/trial-info/trial-info.component';
+import { RegistrationToParentComponent } from './components/dashboard/dashboard-components/admin-learner/registration-To-parent/registration-To-parent.component';
+import { ParentRegistrationFormComponent } from './components/dashboard/dashboard-components/admin-learner/parent-Registration-Form/parent-Registration-Form.component';
 
 @NgModule({
   declarations: [
@@ -295,6 +297,8 @@ import { TrialInfoComponent } from './components/dashboard/dashboard-components/
   //  new registration
   NewLearnerRegistrationModalComponent,
   NewRegistrationFormComponent,
+  RegistrationToParentComponent,
+  ParentRegistrationFormComponent,
   TutorsInfomationComponent,
   StockApplicationReplyModalComponent,
   StockApplicationDeliverModalComponent,
@@ -391,7 +395,8 @@ import { TrialInfoComponent } from './components/dashboard/dashboard-components/
     TimePickerComponent,
     NewLearnerRegistrationModalComponent,
     TrialCalendarComponent,
-    TrialConfirmationComponent
+    TrialConfirmationComponent,
+    RegistrationToParentComponent
 
   ],
   exports: [AppComponent],

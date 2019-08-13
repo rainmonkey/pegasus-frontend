@@ -1,0 +1,18 @@
+<div class='modal-header'>
+  <h4 class='modal-title'>Add Guardian
+  </h4>
+  <button type="button" class='btn btn-sm btn-info t_dm_close_btn' aria-label="Close" (click)="onClose()">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+
+<!-- Form -->
+<div class="modal-body">
+  <app-parent-Registration-Form #registrationForm [command]='command' [whichLearner]='whichLearner' [newLearner]='newLearner'> </app-parent-Registration-Form>
+</div>
+<!--modal footer-->
+<div class='modal-footer'>
+  <span class='m_um_error_msg errorfont' [style.color]="messageColor">{{infoMessage}}</span>
+  <button *ngIf='submitionFlag' type='button' class='btn btn-outline-dark'>Save</button>
+  <button type="button" class="btn btn-outline-dark" (click)="onClose()">Close</button>
+</div>
