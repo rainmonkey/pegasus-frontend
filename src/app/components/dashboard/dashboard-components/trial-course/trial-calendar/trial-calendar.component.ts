@@ -312,3 +312,39 @@ export class TrialCalendarComponent implements OnInit {
     });
   }
 }
+
+//  * @param data - data to process
+//  * @param selectionIndex - index of which teacher selected
+//  */
+// processTeachersList(data: Array<object>, selectionIndex: any) {
+//   /**@property {Array<object>} array1 - array after processing (teachers list that pass org filter)*/
+//   const array1: Array<object> = [];
+//   // data[0] - teachers list
+//   data[0]["Data"].map(val => {
+//     val["AvailableDays"].map(item => {
+//       if (item.OrgId == this.orgIdFilter) {
+//         if (array1.indexOf(val) == -1) {
+//           array1.push(val);
+//         }
+//       }
+//     });
+//   });
+//   /**@property {Array<object>} array2 - array after processing (teachers list that pass cate and org filter) */
+//   let array2: Array<object> = [];
+//   array1.map(val => {
+//     // data[1] - courses teaching list
+//     for (const i of data[1]["Data"]) {
+//       if (
+//         i.Course.CourseCategory.CourseCategoryId == this.cateIdFilter &&
+//         val["TeacherId"] == i.TeacherId
+//       ) {
+//         if (array2.indexOf(val) == -1) {
+//           array2.push(val);
+//         }
+//       }
+//     }
+//   });
+//   array2 = array2.filter(
+//     el => el["Level"] === this.arrangeCourseDetails.Course.TeacherLevel
+//   );
+//   this.checkTeacherAvailableDays(array2, selectionIndex);

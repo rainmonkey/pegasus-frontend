@@ -113,7 +113,7 @@ export class InventoryDetailModalComponent implements OnInit {
   }
 
   /* Post form */
-  onSubmit() {
+  onSubmit(updateForm) {
     let valueToSubmit = this.updateForm.value;
     let vailadValue = this.checkInputVailad(valueToSubmit);
     if (vailadValue !== null && this.updateForm.dirty) {

@@ -18,7 +18,7 @@ export class NewLearnerRegistrationModalComponent implements OnInit {
   showErrorW = false;
   showErrorH = false;
   @Input() command
-  @Input() whichLeaner;
+  @Input() whichLearner;
   @Output() refreshFlag: EventEmitter<any> = new EventEmitter();
   @ViewChild('updateForm') updateFormObj
 
@@ -129,7 +129,7 @@ export class NewLearnerRegistrationModalComponent implements OnInit {
       this.subscribeHandler(obj);
     }
     else if (this.command == 2) {
-      let obj = this.learnerRegServer.putStudent(this.whichLeaner.LearnerId, submit)
+      let obj = this.learnerRegServer.putStudent(this.whichLearner.LearnerId, submit)
       this.subscribeHandler(obj);
     }
   }
