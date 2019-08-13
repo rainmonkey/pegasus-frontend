@@ -1,6 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 import { Router, ActivatedRoute } from "@angular/router";
 
+
 @Component({
   selector: "app-trial-info",
   templateUrl: "./trial-info.component.html",

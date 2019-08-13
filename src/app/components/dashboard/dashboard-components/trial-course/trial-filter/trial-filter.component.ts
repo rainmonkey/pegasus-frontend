@@ -1,5 +1,5 @@
 import { CoursesService } from "src/app/services/http/courses.service";
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit ,Input} from "@angular/core";
 import { TeachersService } from "src/app/services/http/teachers.service";
 import { forkJoin } from "rxjs";
 import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
@@ -20,6 +20,7 @@ export class TrialFilterComponent implements OnInit {
   public orgName: string;
   public cateIdFilter: number;
   public cateName: string;
+  @Input() arrangeFlag;
 
   /**@property {Array<string>} filterString -  A list stored the filter tags that selected.*/
   public filterString: Array<string> = [];

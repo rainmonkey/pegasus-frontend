@@ -11,6 +11,9 @@ export class RegistrationToParentComponent implements OnInit {
   @Input() command
   @Input() newLearner;
   @Input() whichLearner;
+  messageColor:any;
+  infoMessage:any;
+  submitionFlag:any;
   constructor(public activeModal: NgbActiveModal,) { }
 
   ngOnInit() {
