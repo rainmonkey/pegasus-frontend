@@ -17,5 +17,5 @@
   <div class='modal-footer'>
       <span class='m_um_error_msg errorfont' [style.color]="messageColor">{{infoMessage}}</span>
       <button *ngIf='submitionFlag' type='button' class='btn btn-outline-dark' (click)='onSubmit()'>Save</button>
-      <button type="button" class="btn btn-outline-dark" (click)="onClose()">Close</button>
+      <button type="button" class="btn btn-outline-dark" (click)="onClose(command, whichLearner)">Close</button>
     </div>

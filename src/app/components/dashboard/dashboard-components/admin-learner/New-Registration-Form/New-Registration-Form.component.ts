@@ -62,8 +62,8 @@ export class NewRegistrationFormComponent implements OnInit {
         MiddleName: [null],
         LastName: [null, Validators.required],
         Gender: ['', Validators.required],
-        dob: [null],
-        EnrollDate: [null],
+        dob: [null, Validators.required],
+        EnrollDate: [null,Validators.required],
         ContactNum: [null, Validators.required],
         Email: [null, [Validators.required, Validators.email]],
         Address: [null, Validators.required],
@@ -83,8 +83,8 @@ export class NewRegistrationFormComponent implements OnInit {
         MiddleName: [this.whichLearner.MiddleName ? this.whichLearner.MiddleName : ' '],
         LastName: [this.whichLearner.LastName, Validators.required],
         Gender: [this.whichLearner.Gender, Validators.required],
-        dob: [this.getDateFormat(this.whichLearner.Dob)],
-        EnrollDate: [this.getDateFormat(this.whichLearner.EnrollDate)],
+        dob: [this.getDateFormat(this.whichLearner.Dob),  Validators.required],
+        EnrollDate: [this.getDateFormat(this.whichLearner.EnrollDate),Validators.required],
         ContactNum: [this.whichLearner.ContactNum, Validators.required],
         Email: [this.whichLearner.Email, [Validators.required, Validators.email]],
         Address: [this.whichLearner.Address, Validators.required],
@@ -251,7 +251,7 @@ export class NewRegistrationFormComponent implements OnInit {
 
   setTrue() {
     if (this.command !== 1) {
-      if (this.whichLearner.IsUnder18 == 0) {
+      if (this.whichLearner.IsUnder18 == 1) {
         return true
       }
     }

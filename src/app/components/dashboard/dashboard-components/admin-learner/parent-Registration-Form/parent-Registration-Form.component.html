@@ -1,0 +1,7 @@
+<div *ngIf='newLearner.value.IsUnder18 == 0'>
+    Your age is under 18, need to add at least one guardian.
+</div>
+
+<div *ngIf='newLearner.value.IsUnder18 == 1'>
+  Your age is 18+, choose to add guardian.
+</div>

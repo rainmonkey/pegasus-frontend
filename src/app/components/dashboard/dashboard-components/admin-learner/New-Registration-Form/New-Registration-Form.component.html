@@ -116,11 +116,11 @@
       </span>
 
       <span class='col-sm-2 col-md-2' style='text-align: right'>
-        <span>Date of Birth:</span>
+        <span>Date of Birth*:</span>
       </span>
       <span class='col-sm-4 col-md-4'>
         <input class="form-control l-input" formControlName="dob" type="date" id="birthday"
-          (blur)="handleIsUnder18($event.target.value)">
+          (blur)="handleIsUnder18($event.target.value)" [class.error_border]='registrationForm.get("dob").invalid && registrationForm.get("dob").touched'>
       </span>
     </div>
     <br>
@@ -160,10 +160,10 @@
       </span>
 
       <span class='col-sm-2 col-md-2' style='text-align: right'>
-        <span>Date of Enrollment:</span>
+        <span>Date of Enrollment*:</span>
       </span>
       <span class='col-sm-4 col-md-4'>
-        <input class="form-control l-input" formControlName="EnrollDate" type="date" id="enrollDate">
+        <input class="form-control l-input" formControlName="EnrollDate" type="date" id="enrollDate" [class.error_border]='registrationForm.get("EnrollDate").invalid && registrationForm.get("EnrollDate").touched'>
       </span>
     </div>
     <br>
