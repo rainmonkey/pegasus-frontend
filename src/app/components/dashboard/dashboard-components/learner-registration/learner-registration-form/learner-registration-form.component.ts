@@ -680,11 +680,13 @@ selectLocation(id, i) {
 
   //select a particular teacher
   selectTeacher(id, i){
+    console.log(i);
     this.teaListOutArray[i].teaListToDatePick = [];
     this.teaList = this.prepareTeaNameListArray[i].prepareTeaNameItemArray;
     this.teaList = this.teaList.filter((item)=> item.TeacherId == Number(id));
     this.teaList = this.teaList.concat(this.toDatePickCourseDuration)
     this.teaList.push(i);
+    console.log(this.teaList);
     this.teaListOutArray[i].teaListToDatePick = this.teaList
   }
 
@@ -953,6 +955,8 @@ selectLocation(id, i) {
     this.customCourse.controls[i].patchValue({
       schedule: { beginTime: timeTrans, dayOfWeek: day, durationType:''}
     });
+    console.log(this.customCourse);
+    console.log(this.customCourse.controls[i]);
   }
   // // ng-activeModal for confirm submit
   openConfirm() {

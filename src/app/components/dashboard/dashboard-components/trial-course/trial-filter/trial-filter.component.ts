@@ -22,8 +22,7 @@ export class TrialFilterComponent implements OnInit {
   public orgName: string;
   public cateIdFilter: number;
   public cateName: string;
-
-  @Input() arrangeFlag: boolean;
+  @Input() arrangeFlag;
 
   /**@property {Array<string>} filterString -  A list stored the filter tags that selected.*/
   public filterString: Array<string> = [];
