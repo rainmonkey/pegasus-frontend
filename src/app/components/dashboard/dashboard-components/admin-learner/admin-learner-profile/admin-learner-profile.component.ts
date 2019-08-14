@@ -89,7 +89,7 @@ export class AdminLearnerProfileComponent implements OnInit {
   constructor(
     private learnersService: LearnersService,
     private modalService: NgbModal,
-    private activeModal: NgbActiveModal,
+    public activeModal: NgbActiveModal,
   ) { }
 
   ngOnInit() {

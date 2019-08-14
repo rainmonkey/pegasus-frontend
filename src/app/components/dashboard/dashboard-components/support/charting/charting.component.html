@@ -1,27 +1,32 @@
-<div class='row mt-2 justify-content-around' style= 'padding: 15px 5px;
-margin: 0;'>
+<div class='row'>
 
-    <div *ngIf="chart" class="card-body chart col-5 has-shadow" style='background: #fff; '>
+    <div *ngIf="chart" class="chart col-lg-8">
         <!-- <div class="font4">{{chart.title}}</div>
         <div class="font5">{{chart.subTitle}}</div> -->
-
+        <div class="line-chart bg-white d-flex align-items-center justify-content-center has-shadow">
         <canvas baseChart [datasets]="chartData" [labels]="chartLabels" [options]="lineChartOptions"
             [colors]="lineChartColors" [legend]="lineChartLegend" [chartType]="lineChartType" [plugins]="lineChartPlugins">
         </canvas>
         <!-- <div class='has-shadow p-4' style="position: relative; height:35vh; width:35vw; background: #fff;">
         </div> -->
+        </div>
     </div>
 
 
-  <div *ngIf="chart" class="card-body chart col-5 has-shadow" style='background: #fff; '>
+  <div *ngIf="chart" class="chart col-lg-4">
       <!-- <div class="font4">{{barChart.title}}</div>
       <div class="font5">{{barChart.subTitle}}</div> -->
-
-
+      <div class="bar-chart has-shadow bg-white">
         <canvas baseChart [datasets]="barChartData" [labels]="barChartLabels" [options]="barChartOptions"
-       [legend]="barChartLegend" [chartType]="barChartType" [plugins]="barChartPlugins">
-    </canvas>
+       [legend]="barChartLegend" [chartType]="barChartType" [plugins]="barChartPlugins" height="200rem">
+       </canvas>
+       </div>
 
+  <!-- Numbers-->
+  <div class="statistic d-flex align-items-center bg-white has-shadow">
+    <div class="icon bg-green"><i class="fas fa-user-check"></i></div>
+    <div class="text"><strong>99.9%</strong><br><small>Attendance Rate</small></div>
   </div>
 
+  </div>
 </div>

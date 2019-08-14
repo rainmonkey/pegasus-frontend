@@ -269,6 +269,8 @@ export class   PayListComponent implements OnInit {
 
 
 onSearchInfo(event:any){
+  console.log(this.adminPaymentList);
+  console.log(this.adminPaymentList.length)
   this.adminPaymentList=this.adminPaymentListCopy;
    let colunsearch=['LearnerName','StaffName','CreatedAt','CourseName','PaymentTypeName',
   'PaymentMethodName', 'LessonQuantity',]
@@ -310,9 +312,12 @@ onSearchInfo(event:any){
           if(tempvalue.Amount.toString().toLowerCase().search(event.target.value.toLowerCase())!==-1){
               tep.push(this.adminPaymentList[j]);
             }
-          if(tempvalue.PaymentMethodName.toLowerCase().search(event.target.value.toLowerCase())!==-1){
+          if(tempvalue.PaymentMethodName){
+            if(tempvalue.PaymentMethodName.toLowerCase().search(event.target.value.toLowerCase())!==-1){
             tep.push(this.adminPaymentList[j]);
           }
+          }
+          
           if(tempvalue.PaymentTypeName.toLowerCase().search(event.target.value.toLowerCase())!==-1){
             tep.push(this.adminPaymentList[j]);
           }

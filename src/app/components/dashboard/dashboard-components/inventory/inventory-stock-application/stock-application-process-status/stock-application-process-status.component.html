@@ -1,0 +1,103 @@
+<div class="container">
+  <!-- line 1 -->
+  <div class="row">
+    <div class="col-6">
+      <span class="label">Application Id:</span>
+      <span>{{whichOrder.ApplicationId}}</span>
+    </div>
+    <div class="col-6">
+      <span class="label">Process Status:</span>
+      <span>{{whichOrder.ProcessStatus | processStatus}}</span>
+    </div>
+  </div>
+  <!-- line 2 -->
+  <div class="row">
+    <div class="col-6">
+      <span class="label">Applicant:</span>
+      <span>{{whichOrder.ApplyStaff.FirstName}}</span>
+    </div>
+    <div class="col-6">
+      <span class="label">Location:</span>
+      <span>{{whichOrder.Org.OrgName}}</span>
+    </div>
+  </div>
+  <!-- line 3 -->
+  <div class="row">
+    <div class="col-6">
+      <span class="label">Apply Reason:</span>
+      <span>{{whichOrder.ApplyReason}}</span>
+    </div>
+    <div class="col-6">
+      <span class="label">Apply At:</span>
+      <span>{{whichOrder.ApplyAt}}</span>
+    </div>
+  </div>
+  <!-- line 4 -->
+  <div class="row" *ngIf="!replyFlag">
+    <div class="col-6">
+      <span class="label">Reply Content:</span>
+      <span>{{whichOrder.ReplyContent}}</span>
+    </div>
+    <div class="col-6" *ngIf="!replyFlag">
+      <span class="label">Reply At:</span>
+      <span>{{whichOrder.ReplyAt}}</span>
+    </div>
+  </div>
+  <!-- line 5 -->
+  <div class="row" *ngIf="!replyFlag && !deliverFlag || processFlag">
+    <div class="col-6">
+      <span class="label">DeliverAt:</span>
+      <span>{{whichOrder.DeliverAt}}</span>
+    </div>
+    <div class="col-6" *ngIf="disputedFlag">
+      <span class="label">IsDisputed:</span>
+      <span>{{whichOrder.IsDisputed}}</span>
+    </div>
+    <div class="col-6" *ngIf="receiveFlag || processFlag">
+      <span class="label">ReceiveAt:</span>
+      <span>{{whichOrder.RecieveAt}}</span>
+    </div>
+  </div>
+  <!-- table -->
+  <div>
+      <table class="table table-bordered text-center">
+      <thead>
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">Product Name</th>
+          <th scope="col">Quantity</th>
+          <th scope="col" *ngIf="!replyFlag">Deliver Quantity</th>
+          <th scope="col" *ngIf="!replyFlag && !deliverFlag">Receive Quantity</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let order of whichOrder.ApplicationDetails; let i = index">
+          <th scope="row">{{ i + 1 }}</th>
+          <td>{{order.Product.ProductName}}</td>
+          <td>{{order.AppliedQty}}</td>
+          <td *ngIf="!replyFlag && !receiveFlag && !processFlag">
+            <input type="number" min="1" step="1" class="text-center" [(ngModel)]="deliveredQty[i]">
+          </td>
+          <td *ngIf="receiveFlag || processFlag" [class.text-danger]="isDisputed[i]">{{order.DeliveredQty}}</td>
+          <td *ngIf="!replyFlag && !deliverFlag && receiveFlag">
+            <input type="number" min="1" step="1" class="text-center" [(ngModel)]="receivedQty[i]">
+          </td>
+          <td *ngIf="processFlag" [class.text-danger]="isDisputed[i]">{{order.ReceivedQty}}</td>
+        </tr>
+      </tbody>
+      </table>
+    <!-- reply modal -->
+    <div *ngIf="replyFlag">
+      <div class="d-flex justify-content-end reply__btn">
+        <button class="btn-info mr-3 rounded" (click)="approve()">Approve</button>
+        <button class="btn-info mr-1 rounded" (click)="deny()">Deny</button>
+      </div>
+      <div class="reply" *ngIf="canReply">
+        <input type="text" *ngIf="isApproved" class="reply__content" [(ngModel)]="replyMsg"
+          placeholder="Approve Reason">
+        <input type="text" *ngIf="!isApproved" class="reply__content" [(ngModel)]="replyMsg" placeholder="Deny Reason">
+        <span class="reply__cancel" (click)="cancelReply()">X</span>
+      </div>
+    </div>
+  </div>
+</div>

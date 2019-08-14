@@ -21,7 +21,7 @@ export class StockApplicationUpdateModalComponent implements OnInit {
   /* props will be assigned after subscribing an observable */
   public errorMessage: string;
 
-  constructor(private activeModal: NgbActiveModal,
+  constructor(public activeModal: NgbActiveModal,
     private inventoriesService: InventoriesService) { }
 
   ngOnInit() {
@@ -59,23 +59,17 @@ export class StockApplicationUpdateModalComponent implements OnInit {
     !this.whichOrder? this.postProduct() : this.putProduct(this.whichOrder.ApplicationId)
   }
   postProduct() {
-    console.log('post', this.getDataToPost())
     this.inventoriesService.postProduct(this.getDataToPost()).subscribe(
       res => this.passApplicationId.emit(res['Data'].ApplicationId),
-      err => this.errHandler(err)
+      err => alert('Oops! Can not update data!')
     )
   }
   putProduct(applicationId) {
-    console.log('data to put', this.getDataToPost())
     this.inventoriesService.putProduct(applicationId, this.getDataToPost()).subscribe(
       res => this.updateApplication.emit(res['Data']),
-      err => this.errHandler(err)
+      err => alert('Oops! Can not update data!')
     )
   }
-  errHandler(err: any) {
-    console.warn(err);
-    if (err.ErrorMessage != null) this.errorMessage = err.error.ErrorMessage
-    else this.errorMessage = 'Error! Can not catch Data!'
-  }
+
   
 }

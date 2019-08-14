@@ -42,7 +42,7 @@ export class AdminLearnerPeriodCourseChangeModalComponent implements OnInit {
   // timePickArrayNumber: any;
   // teaListOutArray: any;
   // registrationForm: any;
-  constructor(private activeModal: NgbActiveModal, private fb: FormBuilder,
+  constructor(public activeModal: NgbActiveModal, private fb: FormBuilder,
               private service: LearnersService,private modalService: NgbModal,) { }
 
   ngOnInit() {
@@ -62,7 +62,6 @@ export class AdminLearnerPeriodCourseChangeModalComponent implements OnInit {
       IsTemporary: ['', Validators.required],
       CourseScheduleId: ['', Validators.required],
       TeacherId: ['', Validators.required],
-      IsInvoiceChange: ['', Validators.required]
     });
     
   }
@@ -111,9 +110,9 @@ export class AdminLearnerPeriodCourseChangeModalComponent implements OnInit {
   get CourseScheduleId() {
     return this.PeriodCourseChangeForm.get('CourseScheduleId');
   }
-  get IsInvoiceChange() {
-    return this.PeriodCourseChangeForm.get('IsInvoiceChange');
-  }
+  // get IsInvoiceChange() {
+  //   return this.PeriodCourseChangeForm.get('IsInvoiceChange');
+  // }
  
 
   GetOrg = () => {
@@ -146,8 +145,7 @@ export class AdminLearnerPeriodCourseChangeModalComponent implements OnInit {
       this.PeriodCourseChangeForm.value.reason, this.PeriodCourseChangeForm.value.instanceId, this.PeriodCourseChangeForm.value.OrgId,
       this.PeriodCourseChangeForm.value.DayOfWeek, this.PeriodCourseChangeForm.value.BeginTime, this.PeriodCourseChangeForm.value.EndTime,
       1, this.PeriodCourseChangeForm.value.IsTemporary,
-      this.PeriodCourseChangeForm.value.CourseScheduleId, this.PeriodCourseChangeForm.value.TeacherId,
-      this.PeriodCourseChangeForm.value.IsInvoiceChange
+      this.PeriodCourseChangeForm.value.CourseScheduleId, this.PeriodCourseChangeForm.value.TeacherId
     )
     this.service.PeriodCourseChange(model).subscribe(res => {
       this.isEditFail = false;

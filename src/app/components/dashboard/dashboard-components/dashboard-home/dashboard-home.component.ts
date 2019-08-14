@@ -20,7 +20,7 @@ import { AppSettingsService } from "src/app/settings/app-settings.service";
 import { Subscription } from "rxjs";
 import { UsersService } from "src/app/services/http/users.service";
 import { DashboardService } from "../../../../services/http/dashboard.service";
-
+import { SessionsService } from 'src/app/services/http/sessions.service';
 @Component({
   selector: "app-dashboard-home",
   templateUrl: "./dashboard-home.component.html",
@@ -39,16 +39,19 @@ export class DashboardHomeComponent implements OnInit, AfterViewInit {
   formError: string;
   pageloading: boolean = true;
   lookUpList: Subscription;
-
+  //my to do list
+  addListBoolean = false;
+  popUpForm: FormGroup;
   @ViewChild("popOver") public popover: NgbPopover;
-  toDoList: {
-    id: number;
-    task: string;
-    origin: string;
-    priority: number;
-    link: string;
-    created_date: string;
-  }[];
+  // toDoList: {
+  //   id: number;
+  //   task: string;
+  //   origin: string;
+  //   priority: number;
+  //   link: string;
+  //   created_date: string;
+  // }[];
+  toDoList =[]
 
   constructor(
     public title: Title,
@@ -56,7 +59,8 @@ export class DashboardHomeComponent implements OnInit, AfterViewInit {
     public tableService: NgbootstraptableService,
     private settingService: AppSettingsService,
     private userService: UsersService,
-    private dashboardService: DashboardService
+    private dashboardService: DashboardService,
+    public sessionService: SessionsService,
   ) {
     this.title.setTitle("Home");
     this.notices = [
@@ -93,22 +97,29 @@ export class DashboardHomeComponent implements OnInit, AfterViewInit {
     this.dashboardService.getStatistic(orgString).subscribe(res => {
       console.log(res);
       this.messages = res.Data;
+      this.messages.lowRemain = Number(res.Data.studentWith2RemainLessonsForToday +res.Data.studentWith1RemainLessonForToday +res.Data.studentWith0RemainLessonForToday)
     });
 
     this.userName = localStorage.getItem("userFirstName");
     this.pageloading = false;
+    // build popUpForm
+    this.popupListFormBuilder();
 
     // this.tableService.sorting(this.toDoList, 'priority')
 
     // Get Lookup list
   }
+
   // get to do list from user service
   getToDoList() {
     this.userService.getToDoList().subscribe(
       res => {
-        console.log(res);
         this.toDoList = res["Data"];
+        this.toDoList.forEach(ele=>{
+          ele['deleteListBoolean'] = true;
+        })
         this.getDate(res["Data"]);
+        console.log(this.toDoList)
       },
       err => console.warn(err)
     );
@@ -125,7 +136,6 @@ export class DashboardHomeComponent implements OnInit, AfterViewInit {
       dateSing.push(x.split("-")[1]);
       this.dayFormat.push(x.split("-")[2]);
       this.changeNumberToMonth(dateSing);
-      console.log(this.monthFormat, this.dayFormat);
     });
   }
 
@@ -212,6 +222,42 @@ export class DashboardHomeComponent implements OnInit, AfterViewInit {
         this.toDoList.splice(key, 1);
       }
     });
+  }
+
+  //------popup to do list
+  popupListFormBuilder(){
+    this.popUpForm = this.formBuilder.group({
+      title: '',
+      content:'',
+      deleteListBoolean:true
+    })
+  }
+
+  clickAddList(){
+    this.addListBoolean = !this.addListBoolean;
+  }
+
+  closePopUp(){
+    this.addListBoolean = !this.addListBoolean;
+  }
+
+  saveList(){
+    this.addListBoolean = !this.addListBoolean;
+    // push new List
+    let objNew = {};
+
+    objNew['ListName'] = this.popUpForm.value.title;
+    objNew['ListContent'] = this.popUpForm.value.content;
+    objNew['deleteListBoolean'] = this.popUpForm.value
+    this.popUpForm.reset();
+    this.toDoList.push(objNew);
+    console.log(this.toDoList);
+  }
+  deleteList(i,num){
+    this.toDoList[i].deleteListBoolean = !this.toDoList[i].deleteListBoolean;
+    if (num ==1){
+      this.toDoList.splice(i,1);
+    }
   }
 
   // This is called just before the component is destoryed

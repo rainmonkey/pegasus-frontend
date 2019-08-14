@@ -38,7 +38,7 @@
         <div *ngIf="detailFlag" class="p-4 label__style text-center">Product {{ i+1 }}</div>
         <!-- update modal -->
         <div *ngIf="!detailFlag" class="d-flex justify-content-end">
-          <button class="btn btn-info my-2" [disabled]="deleteProd[i]" (click)="deleteForm(i)">
+          <button class="btn btn-danger my-2" [disabled]="deleteProd[i]" (click)="deleteForm(i)">
             <i class='fas fa-trash-alt'></i>
           </button>
         </div>
@@ -123,9 +123,6 @@
         </div>
       </div>
     </div>
-    <!-- add more btn  -->
-    <!-- detail modal -->
-    <!-- <div *ngIf="detailFlag" class="p-3"></div> -->
     <!-- update modal -->
     <div *ngIf="!detailFlag" class="d-flex justify-content-end" style="margin-top: 10px">
       <button class="btn btn-info t_info_addmore_btn" [disabled]="productIdQty.invalid" (click)="addProduct(i)">
@@ -133,15 +130,4 @@
       </button>
     </div>
   </form>
-  <!-- reply modal -->
-  <div *ngIf="detailFlag && headOfficeFlag">
-    <div class="d-flex justify-content-end p-2">
-      <button class="btn-info mr-3 rounded" (click)="approve()">Approve</button>
-      <button class="btn-info mr-1 rounded" (click)="deny()">Deny</button>
-    </div>
-    <div *ngIf="replyFlag" class="reply">
-      <input type="text" class="reply__content" [(ngModel)]="replyMsg" (keyup)="keyupMsg()">
-      <span class="reply__cancel" (click)="cancelReply()">X</span>
-    </div>
-  </div>
 </div>

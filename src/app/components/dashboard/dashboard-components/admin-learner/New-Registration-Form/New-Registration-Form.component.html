@@ -1,5 +1,54 @@
 <div>
   <form novalidate [formGroup]='registrationForm'>
+    <div class="row">
+      <div class='col-4'>
+        <div class='card img-border'>
+          <div class="card-body">
+            <div class="learnerPhoto">
+              <label for="photo" style='cursor: pointer;' class='custom-file-label'>Choose a photo <span><i
+                    class="fas fa-file-upload"></i></span></label>
+              <input style='cursor: pointer' type="file" (change)="uploadPhoto($event)"
+                class='custom-file-input' id="photo" accept="image/*">
+              <img src="../../../../../../assets/images/shared/default-employer-profile.png" id='photoID'
+                alt="ID preview...">
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-8">
+        <div class="row">
+          <div class="col-12">
+            <div class="button text-right">
+              <button class="btn_reset my-3 btn btn-info" (click)="resetLearner()">Reset</button>
+            </div>
+          </div>
+
+          <div class="grade my-3 col-8">
+            <label for="grade" #grade class='custom-file-label'>If you have ABRSM Theory Grade 5, please upload..
+              <span><i class="fas fa-file-upload"></i></span></label>
+            <input  type="file" (change)="uploadGrade($event)" id="grade"
+              class='custom-file-input' accept="image/*">
+          </div>
+
+
+          <div class="grade my-3  col-8 ">
+            <label for="grade" #agreement class='custom-file-label'>Enrollment Agreement Upload.. <span><i
+                  class="fas fa-file-upload"></i></span></label>
+            <input  type="file" (change)="uploadAgreement($event)" id="certificate"
+              class='custom-file-input' accept="application/msword,application/pdf,image/*">
+          </div>
+
+          <div class="grade my-3 col-8">
+            <label for="grade" #otherFile class='custom-file-label'>Other File Upload.. <span><i
+                  class="fas fa-file-upload"></i></span></label>
+            <input type="file" (change)="uploadOther($event)" id="grade"
+              class='custom-file-input' accept="application/msword,application/pdf,image/*">
+          </div>
+        </div>
+      </div>
+    </div>
+    <br>
 
     <div class="row">
       <!-- Name -->
@@ -15,10 +64,8 @@
           *ngIf="registrationForm.controls.FirstName.invalid && (registrationForm.controls.FirstName.dirty ||registrationForm.controls.FirstName.touched)"
           class="text-danger">
           <small *ngIf="registrationForm.controls.FirstName.errors?.required"> First name is required</small>
-
         </div>
       </span>
-
 
       <span class='col-sm-3 col-md-3'>
         <input class="form-control l-input" formControlName="MiddleName" type="text" id="middleName"
@@ -61,7 +108,6 @@
           </select>
         </span>
 
-
         <div
           *ngIf="registrationForm.controls.Gender.invalid && (registrationForm.controls.Gender.dirty ||registrationForm.controls.Gender.touched)"
           class="text-danger">
@@ -70,11 +116,11 @@
       </span>
 
       <span class='col-sm-2 col-md-2' style='text-align: right'>
-        <span>Date of Birth:</span>
+        <span>Date of Birth*:</span>
       </span>
       <span class='col-sm-4 col-md-4'>
         <input class="form-control l-input" formControlName="dob" type="date" id="birthday"
-          (blur)="handleIsUnder18($event.target.value)">
+          (blur)="handleIsUnder18($event.target.value)" [class.error_border]='registrationForm.get("dob").invalid && registrationForm.get("dob").touched'>
       </span>
     </div>
     <br>
@@ -83,10 +129,9 @@
       <span class='col-sm-1 col-md-1'>
         <span>Phone: </span>
       </span>
-
       <span class='col-sm-4 col-md-4'>
         <input class="form-control l-input" formControlName="ContactNum" type="text" id="contactNum"
-          placeholder="Contact number">
+          placeholder="Contact number*" [class.error_border]='registrationForm.get("ContactNum").invalid && registrationForm.get("ContactNum").touched'>
       </span>
 
       <span class='col-sm-2 col-md-2' style='text-align: right'>
@@ -99,7 +144,6 @@
           *ngIf="registrationForm.controls.Email.invalid && (registrationForm.controls.Email.dirty ||registrationForm.controls.Email.touched)"
           class="text-danger">
           <small *ngIf="registrationForm.controls.Email.errors?.required"> Email is required</small>
-
         </div>
 
       </span>
@@ -108,28 +152,118 @@
 
     <div class="row">
       <span class='col-sm-1 col-md-1' style='text-align: right'>
-        <span>Address:</span>
+        <span>Address: </span>
       </span>
       <span class='col-sm-4 col-md-4'>
-        <input class="form-control l-input" formControlName="Address" type="text" id="Address" placeholder="Physical Address">
+        <input class="form-control l-input" formControlName="Address" type="text" id="Address"
+          placeholder="Physical Address*"  [class.error_border]='registrationForm.get("Address").invalid && registrationForm.get("Address").touched'>
       </span>
-
-
 
       <span class='col-sm-2 col-md-2' style='text-align: right'>
-        <span>Date of Enrollment:</span>
+        <span>Date of Enrollment*:</span>
       </span>
       <span class='col-sm-4 col-md-4'>
-        <input class="form-control l-input" formControlName="EnrollDate" type="date" id="enrollDate" >
+        <input class="form-control l-input" formControlName="EnrollDate" type="date" id="enrollDate" [class.error_border]='registrationForm.get("EnrollDate").invalid && registrationForm.get("EnrollDate").touched'>
+      </span>
+    </div>
+    <br>
+
+    <div class="row">
+      <span class='col-sm-1 col-md-1' style='text-align: right'>
+        <span>Location:</span>
+      </span>
+      <span class='col-sm-4 col-md-4'>
+        <span *ngIf='command ==1'>
+          <select class="form-control l-input" formControlName="OrgId" id="location"   [class.error_border]='registrationForm.get("OrgId").invalid && registrationForm.get("OrgId").touched'>
+            <option value="null" disabled="true" [selected]="true">Location*</option>
+            <option *ngFor="let location of locations" [value]="location.OrgId">{{location.OrgName}}</option>
+          </select>
+        </span>
+        <span *ngIf='command == 2'>
+          <select class="form-control l-input" formControlName="OrgId" id="location" [class.error_border]='registrationForm.get("OrgId").invalid && registrationForm.get("OrgId").touched'>
+            <option *ngFor="let location of locations" [value]="location.OrgId">{{location.OrgName}}</option>
+          </select>
+        </span>
+      </span>
+
+      <span class="col-sm-2 col-md-2">
+        <span>Your Current Level*: </span>
+      </span>
+      <span class='col-sm-4 col-md-4'>
+        <select class="form-control l-input" formControlName="LearnerLevel" (change)='isSelectLevel()' [class.error_border]='registrationForm.get("LearnerLevel").invalid && registrationForm.get("LearnerLevel").touched'>
+          <option *ngFor="let llevel of learnerLevel" [value]="llevel.PropValue">{{llevel.PropName}}</option>
+        </select>
+
+        <div *ngIf="isSelectedLevel">
+          <span>Did you take an exam before?</span><br>
+          <div class="d-inline-flex" *ngFor="let levelType of levelType; let i=index">
+            <div class="form-check">
+              <input class="form-check-input" (click)="selectLevelType(levelType.PropValue)" type="radio"
+                [value]="levelType.PropValue" formControlName="LevelType">
+              <label class="form-check-label" for="levelType">{{levelType.PropName}}</label>
+            </div>
+          </div>
+        </div>
+      </span>
+    </div>
+    <br>
+
+    <div class="row">
+      <span class='col-sm-1 col-md-1' style='text-align: right'>
+        <span>Referrer: </span>
+      </span>
+
+      <span class='col-sm-4 col-md-4'>
+        <input class="form-control l-input" type="text" formControlName="Referrer">
+      </span>
+
+      <span class="col-sm-2 col-md-2">
+        <span>Payment Period: </span>
+      </span>
+
+      <span class='col-sm-4 col-md-4'>
+        <select class="form-control l-input" formControlName="PaymentPeriod">
+          <option value="1">Term</option>
+          <option value="2">Week</option>
+        </select>
+      </span>
+    </div>
+    <br>
+
+    <div class="row">
+      <span class="col-sm-12 col-md-12">
+        <span>Comments:</span>
+      </span>
+      <span class='col-12' style="padding-right:50px; padding-left:30px">
+        <textarea name="Comment" id="Comment" class='l-comment col-12' formControlName='Comment'
+          maxlength="1000"></textarea>
       </span>
     </div>
 
+    <div class="under18">
+      <span class="text-primary">Above 18 years old?</span><br>
+      <div>
+        <input type="checkbox" #isUnder18 formControlName="IsUnder18" [checked]='setTrue()'>
+        <label>I'm Above 18 years old</label>
+      </div>
+    </div>
 
+    <div class="learnPurpose">
+      <span class="text-primary">Why do you learn the piano?</span><br>
+      <div class='d-inline-block' *ngFor="let learnerPurpose of learnerPurpose; let i = index">
+        <input #learnPurpose type="checkbox" (click)="selectLearnerPurpose(i, $event)" [value]="learnerPurpose.PropValue"
+          [checked]='learnerPurpose.isChecked' >
+        <label style='margin-right:20px'>{{learnerPurpose.PropName}}</label>
+      </div>
+    </div>
 
-
-
-
-
+    <div class="how know us">
+      <span class="text-primary">How do you know about us?</span><br>
+      <div class='d-inline-block' *ngFor="let howKnown of howKnown; let i = index">
+        <input #howKnow type="checkbox" (click)="selectHowKnown(i, $event)" [value]="howKnown.PropValue" [checked]='howKnown.isChecked' >
+        <label style='margin-right:20px'>{{howKnown.PropName}}</label>
+      </div>
+    </div>
 
   </form>
 </div>

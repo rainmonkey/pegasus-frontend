@@ -36,9 +36,6 @@ export class StockApplicationFormComponent implements OnInit {
   public errorMessage: string = '';
   /* props for update model */
   public editFlag: boolean = false;
-  /* props for reply modal */
-  public replyFlag: boolean = false;
-  public replyMsg: string;
   
   /* get form control  */
   get applyReason() { return this.applicationForm.get('applyReason') }
@@ -220,17 +217,5 @@ export class StockApplicationFormComponent implements OnInit {
         this.sendApplicationForm.emit(this.applicationForm)
       });
   }
-  /* reply modal */
-  approve() {
-    this.replyFlag = true;
-  }
-  deny() {
-    this.replyFlag = true;
-  }
-  cancelReply() {
-    this.replyFlag = false;
-  }
-  keyupMsg() {
-    this.inventoriesService.changeReplyMsg(this.replyMsg)
-  }
+  
 }

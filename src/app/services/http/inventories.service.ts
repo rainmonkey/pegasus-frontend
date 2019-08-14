@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { environment } from '../../../environments/environment.prod';
-import { Observable, BehaviorSubject } from 'rxjs';
+import { Observable } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { throwError } from 'rxjs';
 import { PostProduct } from 'src/app/models/PostProduct';
@@ -11,14 +11,7 @@ import { PostProduct } from 'src/app/models/PostProduct';
 })
 export class InventoriesService {
   private baseUrl: any = environment.baseUrl;
-  // Observable replyMsg source
-  private replyMsgSource = new BehaviorSubject<string>('');
-  // Observable replyMsg stream
-  replyMsg$ = this.replyMsgSource.asObservable();
-  // service command
-  changeReplyMsg(msg) {
-    this.replyMsgSource.next(msg);
-  }
+
   constructor(private http: HttpClient) { }
 
   addNew(data): any {
@@ -39,7 +32,7 @@ export class InventoriesService {
   }
 
   /* get stock-application data from server*/
-  getStockApplication(beginDate: any, endDate: any ): Observable<any> {
+  getStockApplication(beginDate: any, endDate: any): Observable<any> {
     return this.http.get(this.baseUrl + `StockApplication/${beginDate}/${endDate}`);
   }
   getNewStockApplication(applicationId: number) {
@@ -56,31 +49,43 @@ export class InventoriesService {
     return this.http.get(this.baseUrl + `Product/GetProdByType/${typeId}`);
   }
 
-  /* post data  */
-  postProduct(product: PostProduct): Observable<any>{
+  /* post method */
+  postProduct(product: PostProduct): Observable<any> {
     return this.http.post(this.baseUrl + 'StockApplication', product)
-           .pipe(
-             catchError(this.errorHandler)
-           );
+      .pipe(
+        catchError(this.errorHandler)
+      );
   }
-  /* put data */
-  putProduct(applicationId: number, product: PostProduct):  Observable<any> {
-    return this.http.put(this.baseUrl + 'StockApplication/'+ applicationId, product)
+
+  /* put method not only need id as path/header, but also need body, if not, then fill in null */
+
+  /* update */
+  putProduct(applicationId: number, product: PostProduct): Observable<any> {
+    return this.http.put(this.baseUrl + 'StockApplication/' + applicationId, product)
+  }
+  /* deliver */
+  deliverProduct(product) {
+    return this.http.put(this.baseUrl + 'StockApplication/deliver', product)
+  }
+  /* receive */
+  receiveProduct(product) {
+    return this.http.put(this.baseUrl + 'StockApplication/receive', product)
+  }
+  /* reply */
+  replyContent(applicationId, replyContent, applyAt, isApproved) {
+    return this.http.put(this.baseUrl + `StockApplication/reply/${applicationId}/${replyContent}/${applyAt}/${isApproved}`, null)
+  }
+  /* solveDispute */
+  solveDispute(applicationId) {
+    return this.http.put(this.baseUrl +  `StockApplication/reply/${applicationId}`, null)
+  }
+
+  /* delete method */
+  deleteProduct(applicationId: number): Observable<any> {
+    return this.http.delete(this.baseUrl + `StockApplication/${applicationId}`)
   }
   // throw error to component
   errorHandler(error: HttpErrorResponse) {
     return throwError(error);
-  }
-  /* delete data */
-  deleteProduct(applicationId: number):  Observable<any> {
-    return this.http.delete(this.baseUrl + `StockApplication/${applicationId}`)
-  }
-  /* deliver */ 
-  deliverProduct(product) {
-    return this.http.put(this.baseUrl + 'StockApplication/deliver', product)
-  }
-  /* reply */
-  replyContent(applicationId, replyContent, applyAt) {
-    return this.http.put(this.baseUrl + `StockApplication/reply/${applicationId}/${replyContent}/${applyAt}`, replyContent, applyAt)
   }
 }

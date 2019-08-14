@@ -54,9 +54,16 @@ export class ChartingComponent implements OnInit {
     },
     scales: {
       // We use this empty structure as a placeholder for dynamic theming.
-      xAxes: [{}],
+      xAxes: [{
+        gridLines: {
+          display: false
+      }
+      }],
       yAxes: [
         {
+          gridLines: {
+            display: false
+        },
           id: 'y-axis-0',
           position: 'left',
         },
@@ -103,14 +110,20 @@ export class ChartingComponent implements OnInit {
           scales:
           {
               xAxes: [{
+                gridLines: {
+                  display: false
+              },
                   display: true
               }],
               yAxes: [{
-                  display: true
+                gridLines: {
+                  display: false
+              },
+                  display: false
               }],
           },
           legend: {
-              display: true
+              display: false
           }
   };
   public barChartLabels: Label[] = ["week 8", "week 7", "week 6", "week 5", "week 4", "week 3", "week 2", "week 1"];

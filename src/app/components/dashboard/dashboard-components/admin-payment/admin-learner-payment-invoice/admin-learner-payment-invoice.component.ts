@@ -330,11 +330,15 @@ export class AdminLearnerPaymentInvoiceComponent implements OnInit, OnDestroy {
         console.log(this.dataInvoice)
         if (!this.dataInvoice) {
           this.noInvoice = true;
-          Swal.fire({
-            title: 'Error!',
-            text: 'Sorry! ' + "no invoice for this student",
-            type: 'error',
-          });
+          this.errorMsg  = "no invoice for this student";
+          this.errorAlert = true;
+         //alert(this.errorMsg);
+  
+          // Swal.fire({
+          //   title: 'Error!',
+          //   text: 'Sorry! ' + "no invoice for this student",
+          //   type: 'error',
+          // });
         }
         console.log(this.dataInvoice)
         if (this.dataInvoice){
@@ -343,14 +347,14 @@ export class AdminLearnerPaymentInvoiceComponent implements OnInit, OnDestroy {
       }, error => {
         console.log(error);
         this.noInvoice = true;
-        // this.errorMsg =error.error.ErrorMessage;
-        // this.errorAlert = true;
-        //alert(this.errorMsg);
-        Swal.fire({
-          title: 'Error!',
-          text: 'Sorry! ' + error.error.ErrorMessage,
-          type: 'error',
-        });
+        this.errorMsg =error.error.ErrorMessage;
+        this.errorAlert = true;
+        alert(this.errorMsg);
+        // Swal.fire({
+        //   title: 'Error!',
+        //   text: 'Sorry! ' + error.error.ErrorMessage,
+        //   type: 'error',
+        // });
       });
   }
 

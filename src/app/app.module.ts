@@ -49,7 +49,7 @@ import { InventoryPanelComponent } from './components/dashboard/dashboard-compon
 import { LearnerRegistrationFormComponent } from './components/dashboard/dashboard-components/learner-registration/learner-registration-form/learner-registration-form.component';
 import { LearnerRegistrationModalComponent } from './components/dashboard/dashboard-components/learner-registration/learner-registration-modal/learner-registration-modal.component';
 import { LearnerRegistrationConfirmModalComponent } from './components/dashboard/dashboard-components/learner-registration/learner-registration-confirm-modal/learner-registration-confirm-modal.component';
-import { LearnerRegistrationDeleteModalComponent } from './components/dashboard/dashboard-components/learner-registration/learner-registration-delete-modal/learner-registration-delete-modal.component';
+
 import { SessionCancelModalComponent } from './components/dashboard/dashboard-components/sessions/session-modals/session-cancel-modal/session-cancel-modal.component';
 import { SessionCompletedModalComponent } from './components/dashboard/dashboard-components/sessions/session-modals/session-completed-modal/session-completed-modal.component';
 import { SessionDetailEditModalComponent } from './components/dashboard/dashboard-components/sessions/session-modals/session-detail-edit-modal/session-detail-edit-modal.component';
@@ -62,7 +62,6 @@ import { SessionsListViewComponent } from './components/dashboard/dashboard-comp
 import { StockApplicationListComponent } from './components/dashboard/dashboard-components/inventory/inventory-stock-application/stock-application-list/stock-application-list.component';
 import { StockApplicationUpdateModalComponent } from './components/dashboard/dashboard-components/inventory/inventory-stock-application/stock-application-update-modal/stock-application-update-modal.component';
 import { StockApplicationDetailModalComponent } from './/components/dashboard/dashboard-components/inventory/inventory-stock-application/stock-application-detail-modal/stock-application-detail-modal.component';
-import { StockApplicationDeleteModalComponent } from './components/dashboard/dashboard-components/inventory/inventory-stock-application/stock-application-delete-modal/stock-application-delete-modal.component';
 import { ChangePasswordModalComponent } from './components/dashboard/dashboard-components/support/change-password-modal/change-password-modal.component';
 import { ChartingComponent } from './components/dashboard/dashboard-components/support/charting/charting.component';
 import { RatingModalComponent } from './components/dashboard/dashboard-components/support/rating-modal/rating-modal.component';
@@ -75,9 +74,6 @@ import { TeacherModalFormComponent } from './components/dashboard/dashboard-comp
 import { TeacherPanelComponent } from './components/dashboard/dashboard-components/teachers/teacher-panel/teacher-panel.component';
 import { TeacherUpdateModalComponent } from './components/dashboard/dashboard-components/teachers/teacher-update-modal/teacher-update-modal.component';
 import { TimePickerComponent } from './components/dashboard/dashboard-components/time-picker/time-picker.component';
-import { TrialPanelComponent } from './components/dashboard/dashboard-components/trial-session/trial-panel/trial-panel.component';
-import { TrialSearchComponent } from './components/dashboard/dashboard-components/trial-session/trial-search/trial-search.component';
-import { TrialModalComponent } from './components/dashboard/dashboard-components/trial-session/trial-modal/trial-modal.component';
 import { DashboardPanelComponent } from './components/dashboard/general/dashboard-panel/dashboard-panel.component';
 import { HeaderbarComponent } from './components/dashboard/general/headerbar/headerbar.component';
 import { SidebarComponent } from './components/dashboard/general/sidebar/sidebar.component';
@@ -116,7 +112,6 @@ import { AdminLearnerLeaveComponent } from './components/dashboard/dashboard-com
 import { AdminLearnerCourseEditComponent } from './components/dashboard/dashboard-components/admin-learner/admin-learner-course-edit/admin-learner-course-edit.component';
 import { AdminLearnerPeriodCourseChangeModalComponent } from './components/dashboard/dashboard-components/admin-learner/admin-learner-period-course-change-modal/admin-learner-period-course-change-modal.component';
 import { AdminLearnerNameComponent } from './components/dashboard/dashboard-components/admin-learner/admin-learner-name/admin-learner-name.component';
-import { TrialConfirmComponent } from './components/dashboard/dashboard-components/trial-session/trial-confirm/trial-confirm.component';
 import { StaffDeleteModalComponent } from './components/dashboard/dashboard-components/admin-staff/staff-delete-modal/staff-delete-modal.component';
 import { StaffDetailModalComponent } from './components/dashboard/dashboard-components/admin-staff/staff-detail-modal/staff-detail-modal.component';
 import { StaffEditModalComponent } from './components/dashboard/dashboard-components/admin-staff/staff-edit-modal/staff-edit-modal.component';
@@ -147,17 +142,26 @@ import { PageGroupListComponent } from './components/dashboard/dashboard-compone
 import { PageGroupFormComponent } from './components/dashboard/dashboard-components/admin-pageGroup/pageGroup-form/pageGroup-form.component';
 import { MessagerNotificationComponent } from './components/dashboard/general/messager/messager-notification/messager-notification.component';
 import { ConflictCheckComponent } from './components/dashboard/dashboard-components/conflict-check/conflict-check/conflict-check.component';
-import { ProcessStatusPipe } from './shared/pipes/process-status.pipe';
 import { StockApplicationFormComponent } from './components/dashboard/dashboard-components/inventory/inventory-stock-application/stock-application-form/stock-application-form.component';
 import { NewLearnerRegistrationModalComponent } from './components/dashboard/dashboard-components/admin-learner/New-Learner-Registration-modal/New-Learner-Registration-modal.component';
 import { NewRegistrationFormComponent } from './components/dashboard/dashboard-components/admin-learner/New-Registration-Form/New-Registration-Form.component';
 import { TutorsInfomationComponent } from './components/dashboard/dashboard-components/tutors/tutors-infomation/tutors-infomation.component';
 import { StockApplicationReplyModalComponent } from './components/dashboard/dashboard-components/inventory/inventory-stock-application/stock-application-reply-modal/stock-application-reply-modal.component';
 import { StockApplicationDeliverModalComponent } from './components/dashboard/dashboard-components/inventory/inventory-stock-application/stock-application-deliver-modal/stock-application-deliver-modal.component';
-import { TrialInfoComponent } from './components/dashboard/dashboard-components/trial-course/trial-info/trial-info.component';
+import { StockApplicationReceiveModalComponent } from './components/dashboard/dashboard-components/inventory/inventory-stock-application/stock-application-receive-modal/stock-application-receive-modal.component';
+import { StockApplicationProcessStatusComponent } from './components/dashboard/dashboard-components/inventory/inventory-stock-application/stock-application-process-status/stock-application-process-status.component';
+
 import { TrialFilterComponent } from './components/dashboard/dashboard-components/trial-course/trial-filter/trial-filter.component';
 import { PayListComponent } from './components/dashboard/dashboard-components/admin-staff/pay-list/pay-list.component';
-
+import { TeacherLevelPipe } from './shared/pipes/teacher-level.pipe';
+import { StockApplicationProcessModalComponent } from './components/dashboard/dashboard-components/inventory/inventory-stock-application/stock-application-process-modal/stock-application-process-modal.component';
+import { TrialCalendarComponent } from './components/dashboard/dashboard-components/trial-course/trial-calendar/trial-calendar.component';
+import { TrialConfirmationComponent } from './components/dashboard/dashboard-components/trial-course/trial-confirmation/trial-confirmation.component';
+import { ProcessStatusPipe } from 'src/app/shared/pipes/process-status.pipe';
+import { NotificationPopupComponent } from './components/dashboard/general/notifications/notification-popup/notification-popup.component';
+import { TrialInfoComponent } from './components/dashboard/dashboard-components/trial-course/trial-info/trial-info.component';
+import { RegistrationToParentComponent } from './components/dashboard/dashboard-components/admin-learner/registration-To-parent/registration-To-parent.component';
+import { ParentRegistrationFormComponent } from './components/dashboard/dashboard-components/admin-learner/parent-Registration-Form/parent-Registration-Form.component';
 
 @NgModule({
   declarations: [
@@ -189,7 +193,7 @@ import { PayListComponent } from './components/dashboard/dashboard-components/ad
     LearnerRegistrationFormComponent,
     LearnerRegistrationModalComponent,
     LearnerRegistrationConfirmModalComponent,
-    LearnerRegistrationDeleteModalComponent,
+
     CommandFormatPipe,
     SessionsPanelComponent,
     SessionsListViewComponent,
@@ -242,10 +246,7 @@ import { PayListComponent } from './components/dashboard/dashboard-components/ad
     RatingModalComponent,
     ForgotPasswordModalComponent,
     ChangePasswordModalComponent,
-    TrialPanelComponent,
     TrialInfoComponent,
-    TrialModalComponent,
-    TrialSearchComponent,
     PaymentPeriodPipe,
     IsUnder18Pipe,
     confirmEqualValidatorDirectie,
@@ -253,12 +254,11 @@ import { PayListComponent } from './components/dashboard/dashboard-components/ad
     RemindListComponent,
     RemindPanelComponent,
     StaffListComponent,
+    ProcessStatusPipe,
     StockApplicationListComponent,
     StockApplicationUpdateModalComponent,
     StockApplicationDetailModalComponent,
-    StockApplicationDeleteModalComponent,
     SimplifyOrgPipe,
-    TrialModalComponent,
     LearnerCreditPanelComponent,
     LearnerCreditDetailsComponent,
     OrderbyPipe,
@@ -267,8 +267,6 @@ import { PayListComponent } from './components/dashboard/dashboard-components/ad
     AdminLearnerLeaveComponent,
     AdminLearnerCourseEditComponent,
     AdminLearnerPeriodCourseChangeModalComponent,
-    TrialConfirmComponent,
-
     StaffModalFormComponent,
     StaffDeleteModalComponent,
     StaffDetailModalComponent,
@@ -293,17 +291,25 @@ import { PayListComponent } from './components/dashboard/dashboard-components/ad
 
     MessagerNotificationComponent,
     ConflictCheckComponent,
-    ProcessStatusPipe,
     StockApplicationFormComponent,
     PayListComponent,
 
   //  new registration
   NewLearnerRegistrationModalComponent,
   NewRegistrationFormComponent,
+  RegistrationToParentComponent,
+  ParentRegistrationFormComponent,
   TutorsInfomationComponent,
   StockApplicationReplyModalComponent,
   StockApplicationDeliverModalComponent,
-  TrialFilterComponent
+  StockApplicationReceiveModalComponent,
+  StockApplicationProcessStatusComponent,
+  TrialFilterComponent,
+  TeacherLevelPipe,
+  StockApplicationProcessModalComponent,
+  TrialCalendarComponent,
+  NotificationPopupComponent,
+  TrialConfirmationComponent,
   ],
   imports: [
     NgbModule,
@@ -326,7 +332,7 @@ import { PayListComponent } from './components/dashboard/dashboard-components/ad
   providers: [
     DatePipe,
     MondayDateInWeekByDatePipe,
-    NgbActiveModal,
+    NgbActiveModal
     // {
     //   provide: ErrorHandler,
     //   useClass: CustomErrorHandler,
@@ -368,17 +374,16 @@ import { PayListComponent } from './components/dashboard/dashboard-components/ad
     ChangePasswordModalComponent,
     LearnerRegistrationModalComponent,
     LearnerRegistrationConfirmModalComponent,
-    LearnerRegistrationDeleteModalComponent,
-    TrialModalComponent,
-    TrialConfirmComponent,
+
     StaffDeleteModalComponent,
     StaffDetailModalComponent,
     StaffEditModalComponent,
     StockApplicationUpdateModalComponent,
     StockApplicationDetailModalComponent,
-    StockApplicationDeleteModalComponent,
     StockApplicationReplyModalComponent,
     StockApplicationDeliverModalComponent,
+    StockApplicationReceiveModalComponent,
+    StockApplicationProcessModalComponent,
     InventoryDetailModalComponent,
     InventoryReceiptModalComponent,
     // AddHolidaysModalComponent,
@@ -387,11 +392,11 @@ import { PayListComponent } from './components/dashboard/dashboard-components/ad
     AdminPaymentConfirmModalComponent,
     // AmendmentHistoryModalComponent,
     SelectHolidaysModalComponent,
-
     TimePickerComponent,
-    TrialSearchComponent,
-
-    NewLearnerRegistrationModalComponent
+    NewLearnerRegistrationModalComponent,
+    TrialCalendarComponent,
+    TrialConfirmationComponent,
+    RegistrationToParentComponent
 
   ],
   exports: [AppComponent],
