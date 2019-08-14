@@ -39,6 +39,7 @@ export class   PayListComponent implements OnInit {
   public searchValue:any;
   public colunsselect : Array<string>=['LearnerName','StaffName',
 'CreatedAt','Amount','PaymentTypeName','PaymentMethodName','LessonQuantity','IsConfirmed'];
+  myDate: () => string;
   
   constructor(
     private modalService: NgbModal,
@@ -51,21 +52,22 @@ export class   PayListComponent implements OnInit {
   ) { }
   ngOnInit() {
     this.searchForm = this.fb.group(this.formGroupAssemble());
-    
-
-    
+  
 
   }
   formGroupAssemble() {
     let groupObj: any;
-    let Startdate = new NgbDate(2019,7,25);
-    let finishDate= new NgbDate(2019,7,31);
+    const date=new Date();
+    let Startdate = new NgbDate(date.getFullYear(),date.getMonth(),date.getDate());
+    let finishDate=new NgbDate(date.getFullYear(),date.getMonth()+1,date.getDate());
     groupObj = {
       BeginDate: [Startdate, Validators.required],
       EndDate: [finishDate, Validators.required]
     }
     return groupObj;
   }
+ 
+
   // Validate EndDate > BeginDate
   onBeginDateSelection(date: NgbDate) {
     if (date.after(this.toDate)) {
@@ -257,6 +259,8 @@ export class   PayListComponent implements OnInit {
 
 
 onSearchInfo(event:any){
+  console.log(this.adminPaymentList);
+  console.log(this.adminPaymentList.length)
   this.adminPaymentList=this.adminPaymentListCopy;
    let colunsearch=['LearnerName','StaffName','CreatedAt','CourseName','PaymentTypeName',
   'PaymentMethodName', 'LessonQuantity',]
@@ -298,9 +302,12 @@ onSearchInfo(event:any){
           if(tempvalue.Amount.toString().toLowerCase().search(event.target.value.toLowerCase())!==-1){
               tep.push(this.adminPaymentList[j]);
             }
-          if(tempvalue.PaymentMethodName.toLowerCase().search(event.target.value.toLowerCase())!==-1){
+          if(tempvalue.PaymentMethodName){
+            if(tempvalue.PaymentMethodName.toLowerCase().search(event.target.value.toLowerCase())!==-1){
             tep.push(this.adminPaymentList[j]);
           }
+          }
+          
           if(tempvalue.PaymentTypeName.toLowerCase().search(event.target.value.toLowerCase())!==-1){
             tep.push(this.adminPaymentList[j]);
           }
@@ -324,8 +331,7 @@ onSearchInfo(event:any){
 
 }
 
-        
-  
+ 
    //console.log(event.target.value);
   //  for (let i=0;i<this.adminPaymentList.length;i++){
   //    console.log(this.adminPaymentList[0]);

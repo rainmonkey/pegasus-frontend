@@ -4,30 +4,49 @@
       <ng-template ngbPanelContent>
         <!-- First name: {{this.data.FirstName}} -->
         <span *ngIf="remainingDataWaitingFlag">Loading...</span>
-        <table *ngIf="!remainingDataWaitingFlag" class="table table-striped" name="remaningTable">
+        <table
+          *ngIf="!remainingDataWaitingFlag"
+          class="table table-striped"
+          name="remaningTable"
+        >
           <thead>
             <tr>
               <th scope="col">#</th>
               <th scope="col">CourseName</th>
               <th scope="col">Original Date</th>
-              <th scope="col">Operate Time</th>              
+              <th scope="col">Operate Time</th>
               <th scope="col">Expiry Date</th>
-              <th scope="col">Reschedule Date</th>              
+              <th scope="col">Reschedule Date</th>
               <th scope="col">Reschedule</th>
             </tr>
           </thead>
           <tbody>
-            <tr *ngFor="let i of remainingCourseData;let j = index">
-              <th scope="row">{{j+1}}</th>
-              <td>{{i.CourseInstance.CourseName}}</td>
-              <td>{{i.MissedLesson.beginDate}}</td>
-              <td>{{i.CreateAt}}</td>              
-              <td>{{i.ExpiredDate|date:"dd/MM/yyyy"}}</td>
-              <td>{{i.NewLesson.beginDate}}</td>              
+            <tr *ngFor="let i of remainingCourseData; let j = index">
+              <th scope="row">{{ j + 1 }}</th>
+              <td>{{ i.CourseInstance.CourseName }}</td>
               <td>
-                <!-- <span *ngIf="i.Quantity>0" class='t_info_table_btn' title='Book a Course' (click)="navigateToArrange(j)" style="cursor:pointer"><span class="fas fa-folder-plus"></span></span>
-                <span *ngIf="!i.Quantity>0" class='t_info_table_btn' title='Book a Course' (click)="alertForNoRemainingCourse()" style="cursor:pointer"><span class="fas fa-folder-plus"></span></span> -->
-                <span *ngIf="i.IsActive==1" class='t_info_table_btn' title='Reschedule a Session' (click)="navigateToArrange(j)" style="cursor:pointer"><span class="fas fa-calendar-week"></span></span>
+                {{ i.MissedLesson.beginDate | date: "dd/MM/yyyy, h:mm a" }}
+              </td>
+              <td>{{ i.CreateAt | date: "dd/MM/yyyy, h:mm a" }}</td>
+              <td>{{ i.ExpiredDate | date: "dd/MM/yyyy, h:mm a" }}</td>
+              <td>{{ i.NewLesson.beginDate | date: "dd/MM/yyyy, h:mm a" }}</td>
+              <td>
+                <span
+                  *ngIf="i.IsActive"
+                  class="t_info_table_btn"
+                  title="Reschedule a Session"
+                  (click)="navigateToArrange(j)"
+                  style="cursor:pointer"
+                  ><span class="fas fa-calendar-week"></span
+                ></span>
+                <span
+                  *ngIf="!i.IsActive"
+                  class="t_info_table_btn"
+                  title="Reschedule a Session"
+                  (click)="alertForNoRemainingCourse()"
+                  style="cursor:pointer"
+                  ><span class="fas fa-calendar-week"></span
+                ></span>
               </td>
             </tr>
           </tbody>
@@ -38,33 +57,100 @@
       <ng-template ngbPanelContent>
         <!-- Last name: {{this.data.LastName}} -->
         <span *ngIf="arrangeDataWaitingFlag">Loading...</span>
-        <table *ngIf="!arrangeDataWaitingFlag" class="table table-striped" name="arrangedTable">
+        <table
+          *ngIf="!arrangeDataWaitingFlag"
+          class="table table-striped"
+          name="arrangedTable"
+        >
           <thead>
             <tr>
               <th scope="col">#</th>
-              <th scope="col" sortable="teacherFirstName" (click)="onSort('arrangedTable','teacherFirstName')" style="cursor:pointer">Teacher FirstName</th>
-              <th scope="col" sortable="TeacherLastName" (click)="onSort('arrangedTable','TeacherLastName')" style="cursor:pointer">LastName</th>
-              <th scope="col" sortable="learnerFirstName" (click)="onSort('arrangedTable','learnerFirstName')" style="cursor:pointer">First Name</th>
-              <th scope="col" sortable="learnerLastName" (click)="onSort('arrangedTable','learnerLastName')" style="cursor:pointer">Last Name</th>
-              <th scope="col" sortable="courseName" (click)="onSort('arrangedTable','courseName')" style="cursor:pointer">Course Name</th>
-              <th scope="col" sortable="orgName" (click)="onSort('arrangedTable','orgName')" style="cursor:pointer">Branch</th>
-              <th scope="col" sortable="roomName" (click)="onSort('arrangedTable','roomName')" style="cursor:pointer">Room</th>
-              <th scope="col" sortable="start" (click)="onSort('arrangedTable','start')" style="cursor:pointer">Start Date</th>
-              <th scope="col" sortable="end" (click)="onSort('arrangedTable','end')" style="cursor:pointer">End Date</th>
+              <th
+                scope="col"
+                sortable="teacherFirstName"
+                (click)="onSort('arrangedTable', 'teacherFirstName')"
+                style="cursor:pointer"
+              >
+                Teacher FirstName
+              </th>
+              <th
+                scope="col"
+                sortable="TeacherLastName"
+                (click)="onSort('arrangedTable', 'TeacherLastName')"
+                style="cursor:pointer"
+              >
+                LastName
+              </th>
+              <th
+                scope="col"
+                sortable="learnerFirstName"
+                (click)="onSort('arrangedTable', 'learnerFirstName')"
+                style="cursor:pointer"
+              >
+                First Name
+              </th>
+              <th
+                scope="col"
+                sortable="learnerLastName"
+                (click)="onSort('arrangedTable', 'learnerLastName')"
+                style="cursor:pointer"
+              >
+                Last Name
+              </th>
+              <th
+                scope="col"
+                sortable="courseName"
+                (click)="onSort('arrangedTable', 'courseName')"
+                style="cursor:pointer"
+              >
+                Course Name
+              </th>
+              <th
+                scope="col"
+                sortable="orgName"
+                (click)="onSort('arrangedTable', 'orgName')"
+                style="cursor:pointer"
+              >
+                Branch
+              </th>
+              <th
+                scope="col"
+                sortable="roomName"
+                (click)="onSort('arrangedTable', 'roomName')"
+                style="cursor:pointer"
+              >
+                Room
+              </th>
+              <th
+                scope="col"
+                sortable="start"
+                (click)="onSort('arrangedTable', 'start')"
+                style="cursor:pointer"
+              >
+                Start Date
+              </th>
+              <th
+                scope="col"
+                sortable="end"
+                (click)="onSort('arrangedTable', 'end')"
+                style="cursor:pointer"
+              >
+                End Date
+              </th>
             </tr>
           </thead>
           <tbody>
-            <tr *ngFor="let i of arrangedCourseData;let j = index">
-              <th scope="row">{{j+1}}</th>
-              <td>{{i.teacherFirstName}}</td>
-              <td>{{i.TeacherLastName}}</td>
-              <td>{{i.learnerFirstName}}</td>
-              <td>{{i.learnerLastName}}</td>
-              <td>{{i.courseName}}</td>
-              <td>{{i.orgName}}</td>
-              <td>{{i.roomName}}</td>
-              <td>{{i.start|date:"dd/MM/yyyy"}}</td>
-              <td>{{i.end|date:"dd/MM/yyyy"}}</td>
+            <tr *ngFor="let i of arrangedCourseData; let j = index">
+              <th scope="row">{{ j + 1 }}</th>
+              <td>{{ i.teacherFirstName }}</td>
+              <td>{{ i.TeacherLastName }}</td>
+              <td>{{ i.learnerFirstName }}</td>
+              <td>{{ i.learnerLastName }}</td>
+              <td>{{ i.courseName }}</td>
+              <td>{{ i.orgName }}</td>
+              <td>{{ i.roomName }}</td>
+              <td>{{ i.start | date: "dd/MM/yyyy" }}</td>
+              <td>{{ i.end | date: "dd/MM/yyyy" }}</td>
             </tr>
           </tbody>
         </table>

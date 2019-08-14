@@ -1,25 +1,37 @@
 <!--filter label-->
-<div class='row'>
-  <div class='col-12 t_f_filters'>
-    <span class='t_f_filters_title'>Filters:&nbsp;&nbsp;</span>
-    <span *ngFor='let i of filterString;let index = index'>
-      <span class='t_f_filters_item t_f_filters_remove' (click)='removeFilters(index)'>{{(i | weekFormat)}}</span>
+<div class="row">
+  <div class="col-12 t_f_filters">
+    <span class="t_f_filters_title">Filters:&nbsp;&nbsp;</span>
+    <span *ngFor="let i of filterString; let index = index">
+      <span
+        class="t_f_filters_item t_f_filters_remove"
+        (click)="removeFilters(index)"
+        >{{ i | weekFormat }}</span
+      >
     </span>
   </div>
 </div>
 
 <!--divider-->
-<div class='divider'></div>
+<div class="divider"></div>
 
-<div class='row t_f_filters_content'>
+<div class="row t_f_filters_content">
   <!--filter Content-->
-  <div class='col-12'>
-    <span *ngFor='let i of filterTags; let index = index' class='row' style="margin-bottom:1rem">
-      <span class='col-12'>
-        {{filterLabel[index]}}&nbsp;&nbsp;
-        <span *ngFor='let j of i;let itemIndex = index'>
-          <span class='t_f_filters_item' id='{{index+1 + "" + itemIndex}}'
-            (click)='AddFilterString(index + 1,itemIndex,j)'>{{j.CourseCategoryName || j.Abbr || (j | weekFormat)}}</span>
+  <div class="col-12">
+    <span
+      *ngFor="let i of filterTags; let index = index"
+      class="row"
+      style="margin-bottom:1rem"
+    >
+      <span class="col-12">
+        {{ filterLabel[index] }}&nbsp;&nbsp;
+        <span *ngFor="let j of i; let itemIndex = index">
+          <span
+            class="t_f_filters_item"
+            id="{{ index + 1 + '' + itemIndex }}"
+            (click)="AddFilterString(index + 1, itemIndex, j)"
+            >{{ j.CourseCategoryName || j.Abbr || (j | weekFormat) }}</span
+          >
         </span>
       </span>
     </span>
@@ -27,24 +39,35 @@
 </div>
 
 <!--divider-->
-<div class='divider'></div>
+<div class="divider"></div>
 
 <!--Teachers display area-->
-<div class='row t_f_teachers'>
-  <div class='col-12'>
-    <span *ngFor='let i of teachersList;let index=index' class='row' style="margin-bottom:0.5rem">
-      <span *ngIf='i.length!==0' class='col-1'>
-        {{((dayOfWeekIndex?dayOfWeekIndex+1:index+1)) | weekFormat}}
+<div class="row t_f_teachers">
+  <div class="col-12">
+    <span
+      *ngFor="let i of teachersList; let index = index"
+      class="row"
+      style="margin-bottom:0.5rem"
+    >
+      <span *ngIf="i.length !== 0" class="col-1">
+        {{ (dayOfWeekIndex ? dayOfWeekIndex + 1 : index + 1) | weekFormat }}
       </span>
-      <span class='col-11'>
-        <span *ngFor='let j of i;let itemIndex = index' id='{{index+""+itemIndex}}' class='t_f_teachers_tag'
-        (click)='popupCalendarModal(j)'>
-          <span class='row'>
-              <span class='col-12 t_f_teachers_name' style="margin-top: 2rem">{{j.FirstName}}</span>
-              <span class='col-12 t_f_teachers_name'>{{j.LastName}}</span>
-              <span class='col-12 t_f_teachers_name'>{{j.Level | teacherLevel}}</span>
+      <span class="col-11">
+        <span
+          *ngFor="let j of i; let itemIndex = index"
+          id="{{ index + '' + itemIndex }}"
+          class="t_f_teachers_tag"
+          (click)="popupCalendarModal(j)"
+        >
+          <span class="row">
+            <span class="col-12 t_f_teachers_name" style="margin-top: 2rem">{{
+              j.FirstName
+            }}</span>
+            <span class="col-12 t_f_teachers_name">{{ j.LastName }}</span>
+            <span class="col-12 t_f_teachers_name">{{
+              j.Level | teacherLevel
+            }}</span>
           </span>
-    
         </span>
       </span>
     </span>
