@@ -1,11 +1,11 @@
-import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, AfterViewChecked, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthenticationService } from '../../../../services/auth/authentication.service';
 import { AppSettingsService } from 'src/app/settings/app-settings.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ChangePasswordModalComponent } from '../../dashboard-components/support/change-password-modal/change-password-modal.component';
 import { environment } from 'src/environments/environment.prod';
-import { WindowScrollController } from '@fullcalendar/core';
+import { NotificationPopupComponent } from 'src/app/components/dashboard/general/notifications/notification-popup/notification-popup.component'
 
 @Component({
   selector: 'app-headerbar',
@@ -14,36 +14,39 @@ import { WindowScrollController } from '@fullcalendar/core';
 })
 export class HeaderbarComponent implements OnInit {
 
+  public isPopup = false;
+  public hasNoticed: boolean = false;
+
   public isOpen = false;
   public outside;
   photoUrl: any = environment.photoUrl;
   userDetail =
     {
-      img : '../../../../assets/images/usersimg/testimg.jpg',
-      firstName:'',
-      lastName:''
+      img: '../../../../assets/images/usersimg/testimg.jpg',
+      firstName: '',
+      lastName: ''
     }
-  public hasNoticed: boolean = false;
+
 
   constructor(
     private router: Router,
     private authenticationService: AuthenticationService,
     public settingService: AppSettingsService,
     private modalService: NgbModal
-    ) {
+  ) {
   }
 
   ngOnInit() {
     this.getUserDetail();
-    this.hasNoticed = false;
   }
 
-  getUserDetail(){
+
+  getUserDetail() {
     this.userDetail['firstName'] = localStorage.getItem('userFirstName');
     this.userDetail['lastName'] = localStorage.getItem('userLastName');
     let photo = localStorage.getItem('photo');
     if (photo)
-      this.userDetail.img=this.photoUrl+photo;
+      this.userDetail.img = this.photoUrl + photo;
   }
 
   logout() {
@@ -51,12 +54,18 @@ export class HeaderbarComponent implements OnInit {
     this.router.navigate(['/login']);
     location.reload();
   }
-  hideSideBar(){
-    // console.log('asd')
+  hideSideBar() {
     this.settingService.sidebarShowStatus.next(!this.settingService.sidebarShowStatus.value)
   }
 
   changePassword() {
-    const modalRef = this.modalService.open(ChangePasswordModalComponent,{size:'lg'})
+    const modalRef = this.modalService.open(ChangePasswordModalComponent, { size: 'lg' })
+  }
+
+
+  /* click bell to toggle popup */
+  showPopup() {
+    this.isPopup = !this.isPopup;
+    console.log('toggel', this.isPopup)
   }
 }
