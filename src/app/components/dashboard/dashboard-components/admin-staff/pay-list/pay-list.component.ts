@@ -51,33 +51,23 @@ export class   PayListComponent implements OnInit {
     //private searchlist: NgbootstraptableService,
   ) { }
   ngOnInit() {
-    this.getStartDate();
     this.searchForm = this.fb.group(this.formGroupAssemble());
-    
-
-    
+  
 
   }
   formGroupAssemble() {
     let groupObj: any;
-    let Startdate = this.myDate();
-    let finishDate= this.myDate();
+    const date=new Date();
+    let Startdate = new NgbDate(date.getFullYear(),date.getMonth(),date.getDate());
+    let finishDate=new NgbDate(date.getFullYear(),date.getMonth()+1,date.getDate());
     groupObj = {
       BeginDate: [Startdate, Validators.required],
       EndDate: [finishDate, Validators.required]
     }
     return groupObj;
   }
-  getStartDate() {
-    this.myDate = () => {
-      const Dates = new Date();
-      const year: number = Dates.getFullYear();
-      const month: any = (Dates.getMonth() + 1) < 10 ? '0' + (Dates.getMonth() + 1) : (Dates.getMonth() + 1);
-      const day: any = Dates.getDate() < 10 ? '0' + Dates.getDate() : Dates.getDate();
-//      console.log( Dates, year, month,)
-      return year + ',' + month + ',' + day;
-    };
-  }
+ 
+
   // Validate EndDate > BeginDate
   onBeginDateSelection(date: NgbDate) {
     if (date.after(this.toDate)) {
