@@ -39,6 +39,7 @@ export class   PayListComponent implements OnInit {
   public searchValue:any;
   public colunsselect : Array<string>=['LearnerName','StaffName',
 'CreatedAt','Amount','PaymentTypeName','PaymentMethodName','LessonQuantity','IsConfirmed'];
+  myDate: () => string;
   
   constructor(
     private modalService: NgbModal,
@@ -50,6 +51,7 @@ export class   PayListComponent implements OnInit {
     //private searchlist: NgbootstraptableService,
   ) { }
   ngOnInit() {
+    this.getStartDate();
     this.searchForm = this.fb.group(this.formGroupAssemble());
     
 
@@ -58,13 +60,23 @@ export class   PayListComponent implements OnInit {
   }
   formGroupAssemble() {
     let groupObj: any;
-    let Startdate = new NgbDate(2019,7,25);
-    let finishDate= new NgbDate(2019,7,31);
+    let Startdate = this.myDate();
+    let finishDate= this.myDate();
     groupObj = {
       BeginDate: [Startdate, Validators.required],
       EndDate: [finishDate, Validators.required]
     }
     return groupObj;
+  }
+  getStartDate() {
+    this.myDate = () => {
+      const Dates = new Date();
+      const year: number = Dates.getFullYear();
+      const month: any = (Dates.getMonth() + 1) < 10 ? '0' + (Dates.getMonth() + 1) : (Dates.getMonth() + 1);
+      const day: any = Dates.getDate() < 10 ? '0' + Dates.getDate() : Dates.getDate();
+//      console.log( Dates, year, month,)
+      return year + ',' + month + ',' + day;
+    };
   }
   // Validate EndDate > BeginDate
   onBeginDateSelection(date: NgbDate) {
@@ -324,8 +336,7 @@ onSearchInfo(event:any){
 
 }
 
-        
-  
+ 
    //console.log(event.target.value);
   //  for (let i=0;i<this.adminPaymentList.length;i++){
   //    console.log(this.adminPaymentList[0]);

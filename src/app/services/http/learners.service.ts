@@ -51,7 +51,7 @@ export class LearnersService {
 
   //get learn form data
   getLookups(typeId: number): Observable<any> {
-    return this.http.get(this.baseUrl + 'lookups/' + typeId);
+    return this.http.get(this.baseUrl + 'Lookups/' + typeId);
   }
 
   learnerDayOff(dayOffModel) {
