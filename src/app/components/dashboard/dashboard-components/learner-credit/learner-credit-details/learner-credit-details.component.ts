@@ -93,6 +93,6 @@ export class LearnerCreditDetailsComponent implements OnInit {
   }
 
   alertForNoRemainingCourse() {
-    alert("You don't have remaining course");
+    alert("Sorry, you don't have remaining course");
   }
 }

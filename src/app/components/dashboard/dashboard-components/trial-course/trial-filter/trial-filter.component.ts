@@ -1,3 +1,4 @@
+import { filter } from "rxjs/operators";
 import { ActivatedRoute } from "@angular/router";
 import { TransactionService } from "./../../../../../services/http/transaction.service";
 import { Component, OnInit, Input } from "@angular/core";
@@ -6,6 +7,7 @@ import { TeachersService } from "src/app/services/http/teachers.service";
 import { forkJoin } from "rxjs";
 import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
 import { TrialCalendarComponent } from "../trial-calendar/trial-calendar.component";
+import { ClassField } from "@angular/compiler";
 
 @Component({
   selector: "app-trial-filter",
@@ -23,6 +25,7 @@ export class TrialFilterComponent implements OnInit {
   public cateIdFilter: number;
   public cateName: string;
   @Input() arrangeFlag;
+  courseDetail: any;
 
   /**@property {Array<string>} filterString -  A list stored the filter tags that selected.*/
   public filterString: Array<string> = [];
@@ -46,13 +49,15 @@ export class TrialFilterComponent implements OnInit {
 
   ngOnInit() {
     if (this.arrangeFlag) {
-      console.log(this.activatedRoute);
-      this.transactionService.GroupOr121(
-        this.activatedRoute.snapshot.params.courseId,
-        0
-      );
+      this.transactionService
+        .GroupOr121(this.activatedRoute.snapshot.params.courseId, 0)
+        .subscribe(res => {
+          this.courseDetail = res.Data;
+          this.AddFilterString(0);
+        });
+    } else {
+      this.AddFilterString(0);
     }
-    this.AddFilterString(0);
   }
 
   /**
@@ -64,9 +69,21 @@ export class TrialFilterComponent implements OnInit {
   AddFilterString(operationIndex: number, itemIndex?: number, item?: object) {
     // init get&set course categories filter tags
     if (operationIndex === 0) {
-      this.getCates().subscribe(res => {
-        this.filterTags.push(res["Data"]);
-      });
+      if (this.arrangeFlag) {
+        this.getCates().subscribe(res => {
+          this.filterTags.push(
+            res["Data"].filter(
+              el =>
+                el.CourseCategoryId ===
+                this.courseDetail.Course.CourseCategoryId
+            )
+          );
+        });
+      } else {
+        this.getCates().subscribe(res => {
+          this.filterTags.push(res["Data"]);
+        });
+      }
     }
 
     // course categories filter tags processor
@@ -166,7 +183,7 @@ export class TrialFilterComponent implements OnInit {
   processTeachersList(data: Array<object>, dayOfWeekIndex: any) {
     // 按不同的week day划分老师
     /**@property {Array{any}} array0 - list of teachers filt after org and week day */
-    const array0: Array<any> = this.checkTeacherAvailableDays(
+    let array0: Array<any> = this.checkTeacherAvailableDays(
       data[0]["Data"],
       dayOfWeekIndex
     );
@@ -193,6 +210,13 @@ export class TrialFilterComponent implements OnInit {
         }
       }
     });
+
+    if (this.arrangeFlag) {
+      array0[0] = array0[0].filter(
+        el => el.Level === this.courseDetail.Course.TeacherLevel
+      );
+    }
+
     this.teachersList = array0;
   }
 
@@ -249,6 +273,10 @@ export class TrialFilterComponent implements OnInit {
     modalRef.componentInstance.orgId = this.orgIdFilter;
     modalRef.componentInstance.CourseCategoryId = this.cateIdFilter;
     modalRef.componentInstance.courseCategoryName = this.cateName;
+    if (this.arrangeFlag) {
+      modalRef.componentInstance.LearnerId = this.courseDetail.LearnerId;
+      modalRef.componentInstance.durationType = this.courseDetail.Course.Duration;
+    }
   }
 
   removeFilters(index) {
