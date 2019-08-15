@@ -218,58 +218,62 @@ export class TrialCalendarComponent implements OnInit {
         right: "timeGridWeek"
       },
       dateClick: info => {
-        const occupiedStartTimestamps = coursesTimeSlots.map(
-          el => +new Date(el["start"])
-        );
-        if (+Date.now() - +info.date > 0) {
-          alert("This time is not available, please select another time");
-        } else {
-          let diff;
-          for (let i = 0; i < occupiedStartTimestamps.length; i++) {
-            diff = occupiedStartTimestamps[i] - +info.date;
-            if (diff < 3600000 && diff > 0 && diff < this.duration) {
-              break;
-            }
-            diff = 0;
-          }
-          if (diff) {
-            alert(
-              `Your selected time is ${
-                info.dateStr.split("+")[0].split("T")[1]
-              } to ${new Date(
-                +info.date +
-                  this.duration -
-                  new Date().getTimezoneOffset() * 60000
-              )
-                .toISOString()
-                .split("T")[1]
-                .slice(
-                  0,
-                  length - 5
-                )}, which has been occupied by other course, please select another time.`
-            );
+        if (this.arrangeFlag) {
+          const occupiedStartTimestamps = coursesTimeSlots.map(
+            el => +new Date(el["start"])
+          );
+          if (+Date.now() - +info.date > 0) {
+            alert("This time is not available, please select another time");
           } else {
-            if (!this.arrangeFlag) {
-              this.userSelectedTime.emit(info.dateStr.split("+")[0]);
-              this.activeModal.close();
+            let diff;
+            for (let i = 0; i < occupiedStartTimestamps.length; i++) {
+              diff = occupiedStartTimestamps[i] - +info.date;
+              if (diff < 3600000 && diff > 0 && diff < this.duration) {
+                break;
+              }
+              diff = 0;
+            }
+            if (diff) {
+              alert(
+                `Your selected time is ${
+                  info.dateStr.split("+")[0].split("T")[1]
+                } to ${new Date(
+                  +info.date +
+                    this.duration -
+                    new Date().getTimezoneOffset() * 60000
+                )
+                  .toISOString()
+                  .split("T")[1]
+                  .slice(
+                    0,
+                    length - 5
+                  )}, which has been occupied by other course, please select another time.`
+              );
             } else {
-              const offsetDate = new Date(
-                +info.date +
-                  this.duration -
-                  new Date().getTimezoneOffset() * 60000
-              );
-              const dateStr = new Date(+info.date + this.duration)
-                .toString()
-                .split("+")[1]
-                .split(" ")[0];
+              if (!this.arrangeFlag) {
+                this.userSelectedTime.emit(info.dateStr.split("+")[0]);
+                this.activeModal.close();
+              } else {
+                const offsetDate = new Date(
+                  +info.date +
+                    this.duration -
+                    new Date().getTimezoneOffset() * 60000
+                );
+                const dateStr = new Date(+info.date + this.duration)
+                  .toString()
+                  .split("+")[1]
+                  .split(" ")[0];
 
-              const newDateStr = dateStr.slice(0, 2) + ":" + dateStr.slice(2);
-              this.popUpConfirmationModal(
-                +info.date,
-                +info.date + this.duration,
-                info.dateStr,
-                offsetDate.toISOString().slice(0, length - 5) + "+" + newDateStr
-              );
+                const newDateStr = dateStr.slice(0, 2) + ":" + dateStr.slice(2);
+                this.popUpConfirmationModal(
+                  +info.date,
+                  +info.date + this.duration,
+                  info.dateStr,
+                  offsetDate.toISOString().slice(0, length - 5) +
+                    "+" +
+                    newDateStr
+                );
+              }
             }
           }
         }
