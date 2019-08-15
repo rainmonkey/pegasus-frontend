@@ -32,9 +32,9 @@ export class AdminLearnerPeriodCourseChangeModalComponent implements OnInit {
   @Output() toLearnerListEvent: EventEmitter<any> = new EventEmitter;
   teaList: any;
   searchValue: any;
-  customCourse: { "location": any; "beginDate":any;};
+  customCourse: { "location": any; "beginDate":any;"DayOfWeek":any};
   myDate: () => string;
-  toDatePickCourseDuration: {"DurationName":any,"Duration":any};
+  toDatePickCourseDuration: {"DurationName":any,"Duration":any,};
   durationlist=new Array();
   modalRefConfirm: any;
   addCourse: any;
@@ -276,7 +276,7 @@ export class AdminLearnerPeriodCourseChangeModalComponent implements OnInit {
   
   open(){
     this.modalRefTimePicker=this.modalService.open(LearnerRegistrationModalComponent,{ windowClass: 'my-class'});
-    this.customCourse = {"location":this.OrgId.value,"beginDate":this.BeginDate.value};
+    this.customCourse = {"location":this.OrgId.value,"beginDate":this.BeginDate.value,"DayOfWeek":this.DayOfWeek.value};
     console.log(this.BeginDate.value);
     console.log(this.customCourse);
     this.modalRefTimePicker.componentInstance.customCourse = this.customCourse;
