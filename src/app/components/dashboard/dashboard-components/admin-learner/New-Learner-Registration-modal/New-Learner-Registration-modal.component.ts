@@ -19,7 +19,7 @@ export class NewLearnerRegistrationModalComponent implements OnInit {
   @Output() refreshFlag: EventEmitter<any> = new EventEmitter();
   @ViewChild('updateForm') updateFormObj
 
-  test:any
+
   constructor(
     public activeModal: NgbActiveModal,
     private modalService: NgbModal,
@@ -78,7 +78,7 @@ export class NewLearnerRegistrationModalComponent implements OnInit {
     submit.append('G5Certification', this.updateFormObj.selectedGrade);
     submit.append('FormUrl', this.updateFormObj.selectedAgreement);
     submit.append('OtherfileUrl', this.updateFormObj.selectedOther);
-    this.test=submit
+
     this.submitByMode(submit)
   }
 
@@ -124,7 +124,8 @@ export class NewLearnerRegistrationModalComponent implements OnInit {
     if ( this.submit==true || this.updateFormObj.registrationForm.dirty == true) {
       this.refreshFlag.emit(true);
       if(command == 1){
-      const modalRef = this.modalService.open(RegistrationToParentComponent, { size: 'lg', backdrop: 'static', keyboard: false });
+       //@ts-ignore
+      const modalRef = this.modalService.open(RegistrationToParentComponent, { size: 'xl', backdrop: 'static', keyboard: false });
       modalRef.componentInstance.command = command;
       modalRef.componentInstance.newLearner = this.updateFormObj.registrationForm
     }

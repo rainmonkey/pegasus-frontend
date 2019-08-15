@@ -35,6 +35,8 @@ export class TrialCalendarComponent implements OnInit {
   @Input() duration: number;
   @Output() userSelectedTime = new EventEmitter();
   @Input() durationType: number;
+  @Input() LearnerId: number;
+  arrangeFlag: boolean;
 
   constructor(
     private modalService: NgbModal,
@@ -48,15 +50,17 @@ export class TrialCalendarComponent implements OnInit {
       this.selectMode = true;
     }
     if (this.durationType) {
+      this.arrangeFlag = true;
+    }
+    if (this.durationType) {
       if (this.durationType === 1) {
-        this.duration = 180000;
+        this.duration = 1800000;
       } else if (this.durationType === 2) {
-        this.duration = 270000;
+        this.duration = 2700000;
       } else if (this.durationType === 3) {
-        this.duration = 360000;
+        this.duration = 3600000;
       }
     }
-    console.log(this.duration, this.durationType);
     this.getDataFromServer().subscribe(res => {
       if (this.selectMode) {
         this.teacher = res[2]["Data"];
@@ -66,6 +70,7 @@ export class TrialCalendarComponent implements OnInit {
         return val;
       });
       this.timeSlots = this.calculateAvaliableTimeSlots(res[1]["Data"]);
+
       this.initializeFullCalendar(coursesSlots, this.timeSlots);
     });
   }
@@ -213,36 +218,64 @@ export class TrialCalendarComponent implements OnInit {
         right: "timeGridWeek"
       },
       dateClick: info => {
-        const occupiedStartTimestamps = coursesTimeSlots.map(
-          el => +new Date(el["start"])
-        );
-        let diff;
-        for (let i = 0; i < occupiedStartTimestamps.length; i++) {
-          diff = occupiedStartTimestamps[i] - +info.date;
-          if (diff < 3600000 && diff > 0 && diff < this.duration) {
-            break;
-          }
-          diff = 0;
-        }
-        if (diff) {
-          alert(
-            `Your selected time is ${info.dateStr
-              .split("+")[0]
-              .replace("T", " ")} to ${new Date(
-              +info.date +
-                this.duration -
-                new Date().getTimezoneOffset() * 60000
-            )
-              .toISOString()
-              .replace("T", " ")
-              .slice(
-                0,
-                length - 5
-              )}, which has been occupied by other course, please select another time.`
+        if (this.arrangeFlag) {
+          const occupiedStartTimestamps = coursesTimeSlots.map(
+            el => +new Date(el["start"])
           );
-        } else {
-          this.userSelectedTime.emit(info.dateStr.split("+")[0]);
-          this.activeModal.close();
+          if (+Date.now() - +info.date > 0) {
+            alert("This time is not available, please select another time");
+          } else {
+            let diff;
+            for (let i = 0; i < occupiedStartTimestamps.length; i++) {
+              diff = occupiedStartTimestamps[i] - +info.date;
+              if (diff < 3600000 && diff > 0 && diff < this.duration) {
+                break;
+              }
+              diff = 0;
+            }
+            if (diff) {
+              alert(
+                `Your selected time is ${
+                  info.dateStr.split("+")[0].split("T")[1]
+                } to ${new Date(
+                  +info.date +
+                    this.duration -
+                    new Date().getTimezoneOffset() * 60000
+                )
+                  .toISOString()
+                  .split("T")[1]
+                  .slice(
+                    0,
+                    length - 5
+                  )}, which has been occupied by other course, please select another time.`
+              );
+            } else {
+              if (!this.arrangeFlag) {
+                this.userSelectedTime.emit(info.dateStr.split("+")[0]);
+                this.activeModal.close();
+              } else {
+                const offsetDate = new Date(
+                  +info.date +
+                    this.duration -
+                    new Date().getTimezoneOffset() * 60000
+                );
+                const dateStr = new Date(+info.date + this.duration)
+                  .toString()
+                  .split("+")[1]
+                  .split(" ")[0];
+
+                const newDateStr = dateStr.slice(0, 2) + ":" + dateStr.slice(2);
+                this.popUpConfirmationModal(
+                  +info.date,
+                  +info.date + this.duration,
+                  info.dateStr,
+                  offsetDate.toISOString().slice(0, length - 5) +
+                    "+" +
+                    newDateStr
+                );
+              }
+            }
+          }
         }
       },
       plugins: [timeGridPlugin, interactionPlugin]
@@ -305,46 +338,12 @@ export class TrialCalendarComponent implements OnInit {
       cateId: this.CourseCategoryId,
       teacher: this.teacher,
       startStr,
-      endStr
+      endStr,
+      LearnerId: this.LearnerId,
+      arrangeFlag: this.arrangeFlag
     };
     modalRef.componentInstance.isClosed.subscribe(res => {
       this.activeModal.close("Close click");
     });
   }
 }
-
-//  * @param data - data to process
-//  * @param selectionIndex - index of which teacher selected
-//  */
-// processTeachersList(data: Array<object>, selectionIndex: any) {
-//   /**@property {Array<object>} array1 - array after processing (teachers list that pass org filter)*/
-//   const array1: Array<object> = [];
-//   // data[0] - teachers list
-//   data[0]["Data"].map(val => {
-//     val["AvailableDays"].map(item => {
-//       if (item.OrgId == this.orgIdFilter) {
-//         if (array1.indexOf(val) == -1) {
-//           array1.push(val);
-//         }
-//       }
-//     });
-//   });
-//   /**@property {Array<object>} array2 - array after processing (teachers list that pass cate and org filter) */
-//   let array2: Array<object> = [];
-//   array1.map(val => {
-//     // data[1] - courses teaching list
-//     for (const i of data[1]["Data"]) {
-//       if (
-//         i.Course.CourseCategory.CourseCategoryId == this.cateIdFilter &&
-//         val["TeacherId"] == i.TeacherId
-//       ) {
-//         if (array2.indexOf(val) == -1) {
-//           array2.push(val);
-//         }
-//       }
-//     }
-//   });
-//   array2 = array2.filter(
-//     el => el["Level"] === this.arrangeCourseDetails.Course.TeacherLevel
-//   );
-//   this.checkTeacherAvailableDays(array2, selectionIndex);

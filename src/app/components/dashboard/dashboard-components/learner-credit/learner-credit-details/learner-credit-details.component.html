@@ -32,10 +32,18 @@
               <td>{{ i.NewLesson.beginDate | date: "dd/MM/yyyy, h:mm a" }}</td>
               <td>
                 <span
-                  *ngIf="true"
+                  *ngIf="i.IsActive"
                   class="t_info_table_btn"
                   title="Reschedule a Session"
                   (click)="navigateToArrange(j)"
+                  style="cursor:pointer"
+                  ><span class="fas fa-calendar-week"></span
+                ></span>
+                <span
+                  *ngIf="!i.IsActive"
+                  class="t_info_table_btn"
+                  title="Reschedule a Session"
+                  (click)="alertForNoRemainingCourse()"
                   style="cursor:pointer"
                   ><span class="fas fa-calendar-week"></span
                 ></span>

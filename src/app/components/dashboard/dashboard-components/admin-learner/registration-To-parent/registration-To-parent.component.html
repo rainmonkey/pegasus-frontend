@@ -1,18 +1,34 @@
 <div class='modal-header'>
   <h4 class='modal-title'>Add Guardian
   </h4>
-  <button type="button" class='btn btn-sm btn-info t_dm_close_btn' aria-label="Close" (click)="onClose()">
-    <span aria-hidden="true">&times;</span>
-  </button>
+  <div *ngIf='command == 1'>
+    <button type="button" class='btn btn-sm btn-info t_dm_close_btn' aria-label="Close" (click)="onClose()" [disabled]='registrationForm.parentForm.invalid && !newLearner.value.IsUnder18'>
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div *ngIf='command == 2'>
+      <button type="button" class='btn btn-sm btn-info t_dm_close_btn' aria-label="Close" (click)="onClose()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+  </div>
 </div>
 
 <!-- Form -->
 <div class="modal-body">
-  <app-parent-Registration-Form #registrationForm [command]='command' [whichLearner]='whichLearner' [newLearner]='newLearner'> </app-parent-Registration-Form>
+  <app-parent-Registration-Form #registrationForm [command]='command' [whichLearner]='whichLearner'
+    [newLearner]='newLearner'> </app-parent-Registration-Form>
 </div>
 <!--modal footer-->
 <div class='modal-footer'>
   <span class='m_um_error_msg errorfont' [style.color]="messageColor">{{infoMessage}}</span>
-  <button *ngIf='submitionFlag' type='button' class='btn btn-outline-dark'>Save</button>
-  <button type="button" class="btn btn-outline-dark" (click)="onClose()">Close</button>
+<div *ngIf='command == 1'>
+  <button *ngIf='submitionFlag' type='button' class='btn btn-outline-dark' (click)='onSubmit()' [disabled]='registrationForm.parentForm.invalid && !newLearner.value.IsUnder18'>Save</button> &nbsp;&nbsp;
+   <button type="button" class="btn btn-outline-dark" (click)="onClose()" [disabled]=' !newLearner.value.IsUnder18 && !submitSuccess'>Close</button>
+</div>
+
+<div *ngIf='command ==2'>
+    <button *ngIf='submitionFlag' type='button' class='btn btn-outline-dark' (click)='onSubmit()'>Save</button> &nbsp;&nbsp;
+    <button type="button" class="btn btn-outline-dark" (click)="onClose()">Close</button>
+</div>
+
 </div>
