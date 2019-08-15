@@ -269,7 +269,7 @@
 
           <div [formGroup]="popUpForm">
             <div class='popUpText input-group input-group-sm pl-2 mt-2'>
-                <div class="input-group-prepend">
+                <div class="input-group-prepend" id='popUpHeader' (click)='drag()'>
                   <span style='background: none; border: none;' class='input-group-text'>Title:</span>
                   <input class='popUpText form-control' type="text" placeholder='Please Enter..' formControlName="title">
                 </div>
@@ -328,6 +328,7 @@
             </div>
           </div>
           <div *ngIf="!list.deleteListBoolean">
+            <button class='btn mr-2' (click) = 'deleteList(i,0)'>Top</button>
             <button class='btn mr-2' (click)='deleteList(i,1)'>Delete</button>
             <button class='btn' (click)='deleteList(i)'>Cancel</button>
           </div>
