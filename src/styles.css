@@ -41,7 +41,9 @@ body {
   line-height: 1.5;
   background-color: #fff;
 }
-
+.modal-open {
+  padding-right: 0px !important;
+} 
 small,
 .small {
   font-size: 80%;
