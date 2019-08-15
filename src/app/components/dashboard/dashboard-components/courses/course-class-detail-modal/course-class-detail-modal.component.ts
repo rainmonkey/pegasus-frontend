@@ -54,13 +54,16 @@ export class CourseClassDetailModalComponent implements OnInit {
     this.getTeacher();
     this.getLocation();
     this.getRoom();
+
   }
 
   // convenience getter for easy access to form fields
   get f() {
     return this.updateForm.controls;
   }
-
+  get CourseScheduleFormData(){
+    return this.updateForm.get('CourseSchedule') as FormArray;
+  }
   /*********** For Dropdown Options *************************************************/
   getCourseName() {
     this.coursesService.getCourseNames().subscribe(

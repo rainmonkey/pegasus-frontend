@@ -28,17 +28,9 @@
           <input type="date" class="form-control" formControlName="EndDate">
         </div>
         <div class="col-5">
-          <div>Begin Time</div>
-          <input type="time" class="form-control" formControlName="BeginTime">
-          <div *ngIf="BeginTime.invalid && BeginTime.touched">
-            <small *ngIf="BeginTime.errors?.required" class="text-danger">Begin time is required</small>
-            <small *ngIf="BeginTime.errors?.forbidden" class="text-danger">{{BeginTime.errors?.forbidden.value}}</small>
-          </div>
-        </div>
-        <div class="col-5">
-          <div>Org Name</div>
+          <div>Location</div>
           <div>
-            <select formControlName="OrgId" (change)="GetTeachers()">
+            <select formControlName="OrgId" (change)="GetTeachers() ">
               <option disabled selected value> -- select an option -- </option>
               <option *ngFor="let org of Orgs" [value]="org.OrgId">{{org.OrgName}}</option>
             </select>
@@ -64,12 +56,25 @@
         </div>
         <div class="col-5">
           <div>Teacher</div>
-          <select formControlName="TeacherId">
+          <select formControlName="TeacherId" (change)='selectTeacher($event.target.value)' [(ngModel)]='searchValue'>
             <option disabled selected value>-- select an option --</option>
             <option *ngFor="let teacher of Teachers" [value]="teacher.TeacherId">{{teacher.Teacher.FirstName}} {{teacher.Teacher.LastName}}</option>
           </select>
           <small class="text-danger" *ngIf="TeacherId.invalid && TeacherId.touched">Please select teacher</small>
         </div>
+       
+        
+
+        
+        <!-- <div class="col-5">
+          <div>Is Invoice Change</div>
+          <select formControlName="IsInvoiceChange">
+            <option disabled selected value>-- select an option --</option>
+            <option value="0">No</option>
+            <option value="1">Yes</option>
+          </select>
+          <small class="text-danger" *ngIf="TeacherId.invalid && TeacherId.touched">Please select teacher</small>
+        </div> -->
         <div class="col-10">
           <div>Reason</div>
           <input type="text" class="form-control" formControlName="reason">
@@ -108,7 +113,7 @@
               <span class="label" style="font-weight: bold">Course Sechdule: </span>
               <fieldset *ngFor='let sechdule of ele.CourseSchedule'>
                 <input type="radio" [value]="sechdule.CourseScheduleId" (change)="ScheduleRadioButtonChange(sechdule.CourseInstanceId)" formControlName="CourseScheduleId">
-                <label>
+                <label> 
                     <span class='text'> {{sechdule.DayOfWeek|weekFormat}}
                       {{sechdule.BeginTime}} -- {{sechdule.EndTime}} </span>
                 </label>
@@ -125,6 +130,20 @@
           </div>
         </div>
       </fieldset>
+      <div class="col-5">
+        <div>Begin Time:</div>
+        <input type="time" class="form-control" formControlName="BeginTime">
+        <div *ngIf="BeginTime.invalid && BeginTime.touched">
+          <small *ngIf="BeginTime.errors?.required" class="text-danger">Begin time is required</small>
+          <small *ngIf="BeginTime.errors?.forbidden" class="text-danger">{{BeginTime.errors?.forbidden.value}}</small>
+        </div>
+        <div *ngIf="this.PeriodCourseChangeForm.value.OrgId !=='' && 
+        this.PeriodCourseChangeForm.value.DayOfWeek !=='' && this.PeriodCourseChangeForm.value.TeacherId !=='' &&
+        this.PeriodCourseChangeForm.value.CourseScheduleId !== ''">
+          <button (click)=open()>Choose the time</button>
+        </div>
+        
+      </div>
       <small class="text-danger" *ngIf="CourseScheduleId.invalid && CourseScheduleId.touched">Please select one of options</small>
     </div>
   </div>

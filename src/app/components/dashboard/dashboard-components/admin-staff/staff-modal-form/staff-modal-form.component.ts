@@ -25,6 +25,7 @@ export class StaffModalFormComponent implements OnInit {
   public orgList: any;
   public staffOrg: any
   public staffType:any;
+  public loadingFlag:boolean= false;
 
   @Input() command;
   @Input() whichStaff;
@@ -41,7 +42,7 @@ export class StaffModalFormComponent implements OnInit {
     this.getOrg();
     // this.getStaffCheckedOrg();
     this.updateForm = this.fb.group(this.formGroupAssemble());
-
+    console.log(this.branchesCheckBox)
   }
 
   getStaffType() {

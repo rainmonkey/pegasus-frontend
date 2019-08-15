@@ -1,10 +1,14 @@
-import { Component, OnInit, Input } from '@angular/core';
-import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
-import {FormBuilder, Validators} from '@angular/forms';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import {NgbActiveModal, NgbModal, NgbTimeStruct} from '@ng-bootstrap/ng-bootstrap';
+import {FormBuilder, Validators, FormArray} from '@angular/forms';
 import {timePickerValidator} from '../../../../../shared/time-picker.validators';
 import {LearnersService} from '../../../../../services/http/learners.service';
 import {PeriodCourseDurationChange} from '../../../../../models/PeriodCourseDurationChange';
 import Swal from 'sweetalert2';
+import { TimePickerComponent } from '../../time-picker/time-picker.component';
+import { LearnerRegistrationModalComponent } from '../../learner-registration/learner-registration-modal/learner-registration-modal.component';
+import { exists } from 'fs';
+import { LearnerRegistrationConfirmModalComponent } from '../../learner-registration/learner-registration-confirm-modal/learner-registration-confirm-modal.component';
 @Component({
   selector: 'app-admin-learner-period-course-change-modal',
   templateUrl: './admin-learner-period-course-change-modal.component.html',
@@ -21,15 +25,34 @@ export class AdminLearnerPeriodCourseChangeModalComponent implements OnInit {
   Orgs;
   Teachers;
   PeriodCourseChangeForm;
-
+  modalRefTimePicker;
+  public fd=new FormData;
+  
   @Input() whichLearner;
-  constructor(private activeModal: NgbActiveModal, private fb: FormBuilder,
-              private service: LearnersService) { }
+  @Output() toLearnerListEvent: EventEmitter<any> = new EventEmitter;
+  teaList: any;
+  searchValue: any;
+  customCourse: { "location": any; "beginDate":any;"DayOfWeek":any};
+  myDate: () => string;
+  toDatePickCourseDuration: {"DurationName":any,"Duration":any,};
+  durationlist=new Array();
+  modalRefConfirm: any;
+  addCourse: any;
+  // modalRefTimePicker: any;
+  // timePickArrayNumber: any;
+  // teaListOutArray: any;
+  // registrationForm: any;
+  constructor(public activeModal: NgbActiveModal, private fb: FormBuilder,
+              private service: LearnersService,private modalService: NgbModal,) { }
 
   ngOnInit() {
+    
     this.GetOrg();
+    this.getDate();
+    console.log(this.learner);
+    
     this.PeriodCourseChangeForm = this.fb.group({
-      BeginDate: ['', Validators.required],
+      BeginDate: [this.myDate(), Validators.required],
       EndDate: ['', Validators.required],
       BeginTime: ['', [Validators.required, timePickerValidator]],
       reason: ['', Validators.required],
@@ -40,6 +63,17 @@ export class AdminLearnerPeriodCourseChangeModalComponent implements OnInit {
       CourseScheduleId: ['', Validators.required],
       TeacherId: ['', Validators.required],
     });
+    
+  }
+  getDate() {
+    this.myDate = () => {
+      const Dates = new Date();
+      const year: number = Dates.getFullYear();
+      const month: any = (Dates.getMonth() + 1) < 10 ? '0' + (Dates.getMonth() + 1) : (Dates.getMonth() + 1);
+      const day: any = Dates.getDate() < 10 ? '0' + Dates.getDate() : Dates.getDate();
+//      console.log( Dates, year, month,)
+      return year + '-' + month + '-' + day;
+    };
   }
 
   get BeginDate() {
@@ -76,6 +110,10 @@ export class AdminLearnerPeriodCourseChangeModalComponent implements OnInit {
   get CourseScheduleId() {
     return this.PeriodCourseChangeForm.get('CourseScheduleId');
   }
+  // get IsInvoiceChange() {
+  //   return this.PeriodCourseChangeForm.get('IsInvoiceChange');
+  // }
+ 
 
   GetOrg = () => {
     this.service.GetOrgRoom().subscribe(res => {
@@ -85,6 +123,10 @@ export class AdminLearnerPeriodCourseChangeModalComponent implements OnInit {
       console.log(err);
     });
   }
+  
+  
+  
+  
 
 
   submit = () => {
@@ -131,12 +173,59 @@ export class AdminLearnerPeriodCourseChangeModalComponent implements OnInit {
     this.PeriodCourseChangeForm.patchValue({
       CourseScheduleId: null
     });
+    //console.log(this.learner.One2oneCourseInstance);
+    
   }
 
   ScheduleRadioButtonChange = (courseInstanceId) => {
     this.PeriodCourseChangeForm.patchValue({
       instanceId: courseInstanceId
     });
+    
+   // console.log(courseInstanceId);
+    
+    let duration;
+    this.service.getLookups(8).subscribe(res=>{
+         
+         this.durationlist=res.Data;
+         for(let i=0;i<this.learner.One2oneCourseInstance.length;i++){
+            //console.log(this.learner.One2oneCourseInstance[i]);
+            if(this.learner.One2oneCourseInstance[i].CourseInstanceId==courseInstanceId){
+                duration=this.learner.One2oneCourseInstance[i].Course.Duration;
+               
+                
+                for(let i=0;i<this.durationlist.length;i++){
+                   if(this.durationlist[i].PropValue==duration){
+                        this.toDatePickCourseDuration={"DurationName":this.durationlist[i].PropName,
+                      "Duration":duration};
+                        console.log(this.toDatePickCourseDuration);
+                    }
+                }   
+              //this.selectTeacher;
+              // console.log(this.teaList);
+              this.teaList=this.teaList.concat(this.toDatePickCourseDuration);
+             // this.teaList.push(i-1);
+              console.log(this.teaList);
+              
+              
+            }
+          }
+        },err=>{
+          console.log('wrong message')
+        });
+    ;
+    
+    
+
+
+     
+
+    
+    //     console.log(this.learner[i].One2oneCourseInstance.course.price);
+    //     break;
+    //   }
+    // }
+    
   }
 
   IsTemporaryChange = () => {
@@ -149,14 +238,134 @@ export class AdminLearnerPeriodCourseChangeModalComponent implements OnInit {
   }
 
   GetTeachers = () => {
+    let testlist=[];
     if (!this.OrgId.invalid && !this.DayOfWeek.invalid) {
       this.service.GetTeacherRoomByOrgDayOfWeek(this.PeriodCourseChangeForm.get('OrgId').value, this.PeriodCourseChangeForm.get('DayOfWeek').value)
         .subscribe(res => {
           // @ts-ignore
           this.Teachers = res.Data;
+          
+          
       }, err => {
         console.log(err);
       });
     }
   }
+  selectTeacher(id){
+    // this.teaList=[];
+    // console.log(this.Teachers);
+    // for(let i=0; i<this.Teachers.length;i++){
+    //   if(this.Teachers[i].Teacher.TeacherId==this.searchValue){
+    //     //console.log(this.Teachers[i].Teacher);
+    //     this.teaList.push(this.Teachers[i]);
+    //   }    
+    
+    // }
+    // console.log(this.searchValue);
+    // console.log(this.teaList);
+    this.teaList=this.Teachers;
+    this.teaList = this.teaList.filter((item)=> item.TeacherId == Number(id));
+    //this.teaList = this.teaList.concat(this.toDatePickCourseDuration);
+    //
+    
+    //this.teaList.push(this.Teachers.TeacherId);
+    
+    console.log(this.teaList);
+    
+  }
+  
+  open(){
+    this.modalRefTimePicker=this.modalService.open(LearnerRegistrationModalComponent,{ windowClass: 'my-class'});
+    this.customCourse = {"location":this.OrgId.value,"beginDate":this.BeginDate.value,"DayOfWeek":this.DayOfWeek.value};
+    console.log(this.BeginDate.value);
+    console.log(this.customCourse);
+    this.modalRefTimePicker.componentInstance.customCourse = this.customCourse;
+    this.modalRefTimePicker.componentInstance.teaList = this.teaList;//this.teaListOutArray[i].teaListToDatePick;
+  // this.timePickArrayNumber = i;
+  this.modalRefTimePicker.componentInstance.beginTimeTo.subscribe(
+    (res) =>{
+      this.getTimePickerInfo(res);
+    },
+    (err) => {
+      console.log(err)
+    }
+  )
+
+}
+getTimePickerInfo(time){
+   console.log(time)
+   let timeArray = time.BeginTime.split(':');
+   let dayOfWeek = time.DayOfWeek
+   let day
+   switch (dayOfWeek){
+      case 'Monday':
+         day = '1';
+         break;
+      case 'Tuesday':
+         day = '2';
+         break;
+      case 'Wednesday':
+        day = '3';
+        break;
+      case 'Thursday':
+        day = '4';
+        break;
+      case 'Friday':
+         day = '5';
+         break;
+      case 'Saturday':
+        day = '6';
+        break;
+       case 'Sunday':
+         day = '7';
+         break;
+    }
+    // let timeTrans: NgbTimeStruct = { hour: Number(timeArray[0]), minute: Number(timeArray[1]), second: 0 };
+    // this.learner.patchValue({
+    //   schedule: { beginTime: timeTrans, dayOfWeek: day, durationType:''}
+    // });
+    
+    // this.PeriodCourseChangeForm.patchValue({
+
+    // })
+    
+    
+    
+    console.log(this.PeriodCourseChangeForm);
+    
+    this.PeriodCourseChangeForm.patchValue({BeginTime:time.BeginTime.toString().replace(' ','').replace(' ',''), DayOfWeek:day})
+
+
+
+
+    
+  }
+  openConfirm() {
+    console.log(this.addCourse)
+    this.modalRefConfirm = this.modalService.open(LearnerRegistrationConfirmModalComponent,{backdrop:'static', keyboard:false});
+    // this.modalRefConfirm.componentInstance.fdObj = this.fd;
+    // if (this.whichLearner && !this.addCourse){
+    //   this.modalRefConfirm.componentInstance.command = 2;  //edit
+    //   this.modalRefConfirm.componentInstance.learnerId = this.whichLearner.LearnerId;
+    // } else if (this.addCourse){
+    //   this.modalRefConfirm.componentInstance.command = 3; //add
+    //   // this.modalRefConfirm.componentInstance.groupCourse = this.groupCourseForSubmit;
+    //   // this.modalRefConfirm.componentInstance.isGroupCourse = this.isGroupCourse;
+    //   // this.modalRefConfirm.componentInstance.oneOnOneCourse = this.oneOnOneCourse;
+    //   this.modalRefConfirm.componentInstance.learnerId = this.whichLearner.LearnerId;
+    //   this.modalRefConfirm.componentInstance.addCourse = this.addCourse;
+    // }
+    // else
+    //   this.modalRefConfirm.componentInstance.command = 1;   //post
+    //   this.modalRefConfirm.componentInstance.clickConfirm.subscribe(res=>{
+    //     console.log(res)
+    //     if (res == true) {
+    //       this.toLearnerListEvent.emit(true);
+    //     }
+
+    
+    //   })
+
+  }
+  
 }

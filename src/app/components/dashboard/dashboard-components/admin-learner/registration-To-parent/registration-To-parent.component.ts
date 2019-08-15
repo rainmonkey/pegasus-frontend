@@ -1,57 +1,53 @@
 import { Component, OnInit, Input, ViewChild, Output, EventEmitter } from '@angular/core';
-import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { LearnerRegistrationService } from 'src/app/services/http/learner-registration.service';
-import { RegistrationToParentComponent } from '../registration-To-parent/registration-To-parent.component';
 
 @Component({
-  selector: 'app-New-Learner-Registration-modal',
-  templateUrl: './New-Learner-Registration-modal.component.html',
-  styleUrls: ['./New-Learner-Registration-modal.component.css']
+  selector: 'app-registration-To-parent',
+  templateUrl: './registration-To-parent.component.html',
+  styleUrls: ['./registration-To-parent.component.css']
 })
-export class NewLearnerRegistrationModalComponent implements OnInit {
+export class RegistrationToParentComponent implements OnInit {
   public infoMessage: string = '';
-  public messageColor: string;
+  public submitSuccess = false
   public submitionFlag: boolean = true;
   public loadingGifFlag: boolean = false;
-  submit=false;
+  messageColor: string
+  submit=false
   @Input() command
+  @Input() newLearner;
   @Input() whichLearner;
+  @ViewChild('registrationForm') registrationForm
   @Output() refreshFlag: EventEmitter<any> = new EventEmitter();
-  @ViewChild('updateForm') updateFormObj
-
-
-  constructor(
-    public activeModal: NgbActiveModal,
-    private modalService: NgbModal,
-    private learnerRegServer: LearnerRegistrationService) { }
+  constructor(public activeModal: NgbActiveModal, private learnerRegServer: LearnerRegistrationService) { }
 
   ngOnInit() {
-
+    console.log(this.registrationForm)
   }
 
   onSubmit() {
-    console.log(this.updateFormObj.registrationForm)
-    if (this.updateFormObj.registrationForm.value) {
-      this.submitionFlag = false;
-      this.infoMessage = 'loading.....'
-      this.loadingGifFlag = true;
-      let valueToSubmit = this.updateFormObj.registrationForm.value;
-      let vailadValue = this.checkInputVailad(valueToSubmit);
-      if (vailadValue !== null) {
-        // this.sortLearnerOthers()
-        this.stringifySubmitStr(vailadValue)
-
-      }
+    this.submitionFlag = false;
+    this.infoMessage = 'loading.....'
+    this.loadingGifFlag = true;
+    let valueToSubmit = this.registrationForm.parentForm.value;
+    console.log(valueToSubmit)
+    let vailadValue = this.checkInputVailad(valueToSubmit);
+    if (vailadValue !== null) {
+      this.stringifySubmitStr(vailadValue)
+    }
+    else {
+      this.infoMessage = 'Value has not changed.'
+      return;
     }
   }
 
   checkInputVailad(valueToSubmit) {
     //once click save btn, touch all inputs form with for-loop. In order to trigger Validator
-    for (let i in this.updateFormObj.registrationForm.controls) {
-      this.updateFormObj.registrationForm.controls[i].touched = true;
+    for (let i in this.registrationForm.parentForm.controls) {
+      this.registrationForm.parentForm.controls[i].touched = true;
     }
     //when input value pass the check of Validators, there is a [status] attr equal to 'VALID'
-    if (this.updateFormObj.registrationForm.status == 'VALID') {
+    if (this.registrationForm.parentForm.status == 'VALID') {
       return this.prepareSubmitData(valueToSubmit);
     }
     else {
@@ -63,22 +59,16 @@ export class NewLearnerRegistrationModalComponent implements OnInit {
     }
   }
 
-  prepareSubmitData(valueToSubmit) {
-    valueToSubmit.PaymentPeriod = Number(valueToSubmit.PaymentPeriod)
-    valueToSubmit.LearnerOthers = this.updateFormObj.confirmLearner()
-    // valueToSubmit.IsUnder18 = this.updateFormObj.IsUnder18
-
+  prepareSubmitData(valueToSubmit){
+    valueToSubmit.Relationship = Number(valueToSubmit.Relationship)
     return valueToSubmit
   }
 
-  stringifySubmitStr(vailadValue) {
+  stringifySubmitStr(vailadValue){
     let submit = new FormData();
-    submit.append('details', JSON.stringify(vailadValue));
-    submit.append('Photo', this.updateFormObj.selectedPhoto);
-    submit.append('G5Certification', this.updateFormObj.selectedGrade);
-    submit.append('FormUrl', this.updateFormObj.selectedAgreement);
-    submit.append('OtherfileUrl', this.updateFormObj.selectedOther);
 
+
+    submit.append('details', JSON.stringify(vailadValue))
     this.submitByMode(submit)
   }
 
@@ -121,13 +111,13 @@ export class NewLearnerRegistrationModalComponent implements OnInit {
   }
 
   onClose(command,whichLearner) {
-    if ( this.submit==true || this.updateFormObj.registrationForm.dirty == true) {
+    if ( this.submit==true || this.registrationForm.parentForm.dirty == true) {
       this.refreshFlag.emit(true);
       if(command == 1){
        //@ts-ignore
       const modalRef = this.modalService.open(RegistrationToParentComponent, { size: 'xl', backdrop: 'static', keyboard: false });
       modalRef.componentInstance.command = command;
-      modalRef.componentInstance.newLearner = this.updateFormObj.registrationForm
+      modalRef.componentInstance.newLearner = this.registrationForm.parentForm
     }
   }
     else {
@@ -136,3 +126,5 @@ export class NewLearnerRegistrationModalComponent implements OnInit {
     this.activeModal.close('Cross click');
   }
 }
+
+

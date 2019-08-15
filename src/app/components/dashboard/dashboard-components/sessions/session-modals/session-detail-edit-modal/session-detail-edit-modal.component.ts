@@ -1,16 +1,15 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { FormBuilder, Validators } from '@angular/forms';
-import { SessionsService } from '../../../../../../services/http/sessions.service';
-import { SessionEdit } from '../../../../../../models/SessionEdit';
-import { TrialModalComponent } from 'src/app/components/dashboard/dashboard-components/trial-session/trial-modal/trial-modal.component';
-import Swal from 'sweetalert2';
-import { DatePipe } from '@angular/common';
+import { Component, Input, OnInit } from "@angular/core";
+import { NgbActiveModal, NgbModal } from "@ng-bootstrap/ng-bootstrap";
+import { FormBuilder, Validators } from "@angular/forms";
+import { SessionsService } from "../../../../../../services/http/sessions.service";
+import { SessionEdit } from "../../../../../../models/SessionEdit";
+import Swal from "sweetalert2";
+import { TrialCalendarComponent } from "../../../trial-course/trial-calendar/trial-calendar.component";
 
 @Component({
-  selector: 'app-session-detail-edit-modal',
-  templateUrl: './session-detail-edit-modal.component.html',
-  styleUrls: ['./session-detail-edit-modal.component.css'],
+  selector: "app-session-detail-edit-modal",
+  templateUrl: "./session-detail-edit-modal.component.html",
+  styleUrls: ["./session-detail-edit-modal.component.css"]
 })
 export class SessionDetailEditModalComponent implements OnInit {
   @Input() LessonModel;
@@ -24,148 +23,196 @@ export class SessionDetailEditModalComponent implements OnInit {
   BranchSelects: any;
   RoomSelects: any;
   TeacherSelects: any;
-  duration: number
+  duration: number;
   constructor(
     public activeModal: NgbActiveModal,
     private fb: FormBuilder,
     public modalService: NgbModal,
-    private sessionsService: SessionsService,
-    private datePipe: DatePipe,
-  ) {
-
-  }
+    private sessionsService: SessionsService
+  ) {}
 
   // set access porperty of SessionForm
   get Branch() {
-    return this.SessionForm.get('Branch');
+    return this.SessionForm.get("Branch");
   }
 
   get Reason() {
-    return this.SessionForm.get('Reason');
+    return this.SessionForm.get("Reason");
   }
 
   get Room() {
-    return this.SessionForm.get('Room');
+    return this.SessionForm.get("Room");
   }
 
   get Teacher() {
-    return this.SessionForm.get('Teacher');
+    return this.SessionForm.get("Teacher");
   }
 
   ngOnInit() {
     this.SessionForm = this.fb.group({
       CourseName: [this.LessonModel.CourseName],
-      Room: ['', [Validators.required]],
+      Room: ["", [Validators.required]],
       BeginTime: [this.LessonModel.BeginTime],
-      Teacher: ['', [Validators.required]],
-      Branch: ['', [Validators.required]],
-      Reason: ['', [Validators.required]]
+      Teacher: ["", [Validators.required]],
+      Branch: ["", [Validators.required]],
+      Reason: ["", [Validators.required]]
     });
     this.getBranchs();
   }
 
-
   getRooms = () => {
-    // @ts-ignore
-    const dateDiff = Number(new Date(this.LessonModel.EndTime) - new Date(this.LessonModel.BeginTime));
-    if ((!this.Branch.touched || this.Branch.invalid) || (!this.Teacher.touched || this.Teacher.invalid)) {
+    const dateDiff =
+      +new Date(this.LessonModel.EndTime) -
+      +new Date(this.LessonModel.BeginTime);
+    if (
+      !this.Branch.touched ||
+      this.Branch.invalid ||
+      (!this.Teacher.touched || this.Teacher.invalid)
+    ) {
       return;
     }
-    this.sessionsService.GetSessionEditRoom(this.SessionForm.value.Teacher, this.SessionForm.value.Branch,
-      this.SessionForm.value.BeginTime).subscribe(res => {
+    this.sessionsService
+      .GetSessionEditRoom(
+        this.SessionForm.value.Teacher,
+        this.SessionForm.value.Branch,
+        this.SessionForm.value.BeginTime
+      )
+      .subscribe(res => {
         if (res.Data.length === 0) {
           const EditBeginTime = new Date(this.SessionForm.value.BeginTime);
           const EditEndTime = new Date(this.SessionForm.value.BeginTime);
-          console.log(EditBeginTime.getMinutes().toString().length);
-          EditEndTime.setMinutes(EditBeginTime.getMinutes() + (dateDiff / 60 / 1000));
-          const BeginTime = EditBeginTime.getFullYear() + '-' +
-            ((EditBeginTime.getMonth() + 1).toString().length === 1 ? '0' + (EditBeginTime.getMonth() + 1).toString() : (EditBeginTime.getMonth() + 1).toString())  +
-            '-' + EditBeginTime.getDate() + 'T' +
-            (EditBeginTime.getHours().toString().length === 1 ? '0' + EditBeginTime.getHours().toString() : EditBeginTime.getHours().toString())
-            + ':' + (EditBeginTime.getMinutes().toString().length === 1 ? '0' + EditBeginTime.getMinutes().toString() : EditBeginTime.getMinutes());
-          const EndTime = EditEndTime.getFullYear() + '-' +
-            ((EditEndTime.getMonth() + 1) .toString().length === 1 ? '0' + (EditEndTime.getMonth() + 1) .toString() : (EditEndTime.getMonth() + 1) .toString())
-            + '-' + EditEndTime.getDate() + 'T' +
-            (EditEndTime.getHours().toString().length === 1 ? '0' + EditEndTime.getHours().toString() : EditEndTime.getHours().toString())
-            + ':' + (EditEndTime.getMinutes().toString().length === 1 ? '0' + EditEndTime.getMinutes().toString() : EditEndTime.getMinutes());
-          this.sessionsService.GetSessionEditRoomTwo(this.SessionForm.value.Branch, BeginTime, EndTime).subscribe(data => {
-            this.RoomSelects = data.Data;
-          });
+          EditEndTime.setMinutes(
+            EditBeginTime.getMinutes() + dateDiff / 60 / 1000
+          );
+          const BeginTime =
+            EditBeginTime.getFullYear() +
+            "-" +
+            ((EditBeginTime.getMonth() + 1).toString().length === 1
+              ? "0" + (EditBeginTime.getMonth() + 1).toString()
+              : (EditBeginTime.getMonth() + 1).toString()) +
+            "-" +
+            EditBeginTime.getDate() +
+            "T" +
+            (EditBeginTime.getHours().toString().length === 1
+              ? "0" + EditBeginTime.getHours().toString()
+              : EditBeginTime.getHours().toString()) +
+            ":" +
+            (EditBeginTime.getMinutes().toString().length === 1
+              ? "0" + EditBeginTime.getMinutes().toString()
+              : EditBeginTime.getMinutes());
+          const EndTime =
+            EditEndTime.getFullYear() +
+            "-" +
+            ((EditEndTime.getMonth() + 1).toString().length === 1
+              ? "0" + (EditEndTime.getMonth() + 1).toString()
+              : (EditEndTime.getMonth() + 1).toString()) +
+            "-" +
+            EditEndTime.getDate() +
+            "T" +
+            (EditEndTime.getHours().toString().length === 1
+              ? "0" + EditEndTime.getHours().toString()
+              : EditEndTime.getHours().toString()) +
+            ":" +
+            (EditEndTime.getMinutes().toString().length === 1
+              ? "0" + EditEndTime.getMinutes().toString()
+              : EditEndTime.getMinutes());
+          this.sessionsService
+            .GetSessionEditRoomTwo(
+              this.SessionForm.value.Branch,
+              BeginTime,
+              EndTime
+            )
+            .subscribe(data => {
+              this.RoomSelects = data.Data;
+            });
         } else {
           this.RoomSelects = res.Data;
         }
       });
-  }
+  };
 
   getBranchs = () => {
-    this.sessionsService.GetTeachherFilter(this.LessonModel.courseId).subscribe(res => {
-      this.BranchSelects = res.Data;
-    }, err => {
-      alert('Something ERR');
-    });
-  }
+    this.sessionsService.GetTeachherFilter(this.LessonModel.courseId).subscribe(
+      res => {
+        this.BranchSelects = res.Data;
+      },
+      err => {
+        alert("Something ERR");
+      }
+    );
+  };
 
   getTeachers = (branchId: number) => {
-    this.TeacherSelects = this.BranchSelects.filter(s => s.OrgId === branchId)[0].Teacher;
-  }
+    this.TeacherSelects = this.BranchSelects.filter(
+      s => s.OrgId === branchId
+    )[0].Teacher;
+  };
 
   // confirm Modal
   open(confirmModal) {
     if (this.SessionForm.invalid) {
-      this.errorMsg = 'The form is invalid.';
+      this.errorMsg = "The form is invalid.";
       this.hasError = true;
     } else {
       this.hasError = false;
       this.modalService.open(confirmModal);
-
     }
   }
 
   openTimePicker = () => {
-    // 返回正确时间 传入duration
-    console.log(this.LessonModel, this.LessonModel.CourseName.split('-')[0]);
-    const orgId: number = +this.SessionForm.get('Branch').value;
-    const orgName: string = this.BranchSelects.find(branch => branch.OrgId === orgId).OrgName;
-    const teacherId = +this.SessionForm.get('Teacher').value;
-    this.duration = new Date(this.LessonModel.EndTime).getTime() - new Date(this.LessonModel.BeginTime).getTime()
+    const orgId: number = +this.SessionForm.get("Branch").value;
+    const orgName: string = this.BranchSelects.find(
+      branch => branch.OrgId === orgId
+    ).OrgName;
+    const teacherId = +this.SessionForm.get("Teacher").value;
+    this.duration =
+      new Date(this.LessonModel.EndTime).getTime() -
+      new Date(this.LessonModel.BeginTime).getTime();
 
-    const modalRef = this.modalService.open(TrialModalComponent, { size: 'lg', backdrop: 'static', keyboard: false });
-    modalRef.componentInstance.LearnerId = this.LessonModel.LearnerId;
-    modalRef.componentInstance.TeacherId = teacherId;
+    const modalRef = this.modalService.open(TrialCalendarComponent, {
+      size: "lg",
+      backdrop: "static",
+      keyboard: false
+    });
+    modalRef.componentInstance.teacherId = teacherId;
     modalRef.componentInstance.orgName = orgName;
     modalRef.componentInstance.orgId = orgId;
-    modalRef.componentInstance.notDraggable = true;
     modalRef.componentInstance.duration = this.duration;
     modalRef.componentInstance.userSelectedTime.subscribe(res => {
-      console.log(res)
-      this.SessionForm.get("BeginTime").patchValue(res)
+      this.SessionForm.get("BeginTime").patchValue(res);
     });
-  }
+  };
 
   ConfrimEdit = () => {
     this.isloading = true;
     this.ConfirmClick = true;
-    const sessionEdit = new SessionEdit(this.LessonModel.LessonId,
-      this.LessonModel.LearnerId, parseInt(this.SessionForm.value.Room),
-      parseInt(this.SessionForm.value.Teacher), parseInt(this.SessionForm.value.Branch), this.SessionForm.value.Reason,
-      this.SessionForm.value.BeginTime);
+    const sessionEdit = new SessionEdit(
+      this.LessonModel.LessonId,
+      this.LessonModel.LearnerId,
+      +this.SessionForm.value.Room,
+      +this.SessionForm.value.Teacher,
+      +this.SessionForm.value.Branch,
+      this.SessionForm.value.Reason,
+      this.SessionForm.value.BeginTime
+    );
 
-    this.sessionsService.SessionEdit(sessionEdit).subscribe(res => {
-      this.isEditSuccess = true;
-      this.isloading = false;
-      setTimeout(() => {
-        this.activeModal.dismiss('Cross click');
-      }, 1000);
-    },
+    this.sessionsService.SessionEdit(sessionEdit).subscribe(
+      res => {
+        this.isEditSuccess = true;
+        this.isloading = false;
+        setTimeout(() => {
+          this.activeModal.dismiss("Cross click");
+        }, 1000);
+      },
       err => {
         this.isEditFail = true;
         this.isloading = false;
         Swal.fire({
-          type: 'error',
-          title: 'Oops...',
-          text: err.error.ErrorMessage,
+          type: "error",
+          title: "Oops...",
+          text: err.error.ErrorMessage
         });
-      });
-
-  }
+      }
+    );
+  };
 }

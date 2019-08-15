@@ -7,7 +7,7 @@
             <div class="learnerPhoto">
               <label for="photo" style='cursor: pointer;' class='custom-file-label'>Choose a photo <span><i
                     class="fas fa-file-upload"></i></span></label>
-              <input formControlName="photo" style='cursor: pointer' type="file" (change)="uploadPhoto($event)"
+              <input style='cursor: pointer' type="file" (change)="uploadPhoto($event)"
                 class='custom-file-input' id="photo" accept="image/*">
               <img src="../../../../../../assets/images/shared/default-employer-profile.png" id='photoID'
                 alt="ID preview...">
@@ -27,7 +27,7 @@
           <div class="grade my-3 col-8">
             <label for="grade" #grade class='custom-file-label'>If you have ABRSM Theory Grade 5, please upload..
               <span><i class="fas fa-file-upload"></i></span></label>
-            <input formControlName="grade" type="file" (change)="uploadGrade($event)" id="grade"
+            <input  type="file" (change)="uploadGrade($event)" id="grade"
               class='custom-file-input' accept="image/*">
           </div>
 
@@ -35,14 +35,14 @@
           <div class="grade my-3  col-8 ">
             <label for="grade" #agreement class='custom-file-label'>Enrollment Agreement Upload.. <span><i
                   class="fas fa-file-upload"></i></span></label>
-            <input formControlName="Agreement" type="file" (change)="uploadAgreement($event)" id="certificate"
+            <input  type="file" (change)="uploadAgreement($event)" id="certificate"
               class='custom-file-input' accept="application/msword,application/pdf,image/*">
           </div>
 
           <div class="grade my-3 col-8">
             <label for="grade" #otherFile class='custom-file-label'>Other File Upload.. <span><i
                   class="fas fa-file-upload"></i></span></label>
-            <input formControlName="OtherFile" type="file" (change)="uploadOther($event)" id="grade"
+            <input type="file" (change)="uploadOther($event)" id="grade"
               class='custom-file-input' accept="application/msword,application/pdf,image/*">
           </div>
         </div>
@@ -116,11 +116,11 @@
       </span>
 
       <span class='col-sm-2 col-md-2' style='text-align: right'>
-        <span>Date of Birth:</span>
+        <span>Date of Birth*:</span>
       </span>
       <span class='col-sm-4 col-md-4'>
         <input class="form-control l-input" formControlName="dob" type="date" id="birthday"
-          (blur)="handleIsUnder18($event.target.value)">
+          (blur)="handleIsUnder18($event.target.value)" [class.error_border]='registrationForm.get("dob").invalid && registrationForm.get("dob").touched'>
       </span>
     </div>
     <br>
@@ -129,10 +129,9 @@
       <span class='col-sm-1 col-md-1'>
         <span>Phone: </span>
       </span>
-
       <span class='col-sm-4 col-md-4'>
         <input class="form-control l-input" formControlName="ContactNum" type="text" id="contactNum"
-          placeholder="Contact number">
+          placeholder="Contact number*" [class.error_border]='registrationForm.get("ContactNum").invalid && registrationForm.get("ContactNum").touched'>
       </span>
 
       <span class='col-sm-2 col-md-2' style='text-align: right'>
@@ -153,18 +152,18 @@
 
     <div class="row">
       <span class='col-sm-1 col-md-1' style='text-align: right'>
-        <span>Address:</span>
+        <span>Address: </span>
       </span>
       <span class='col-sm-4 col-md-4'>
         <input class="form-control l-input" formControlName="Address" type="text" id="Address"
-          placeholder="Physical Address">
+          placeholder="Physical Address*"  [class.error_border]='registrationForm.get("Address").invalid && registrationForm.get("Address").touched'>
       </span>
 
       <span class='col-sm-2 col-md-2' style='text-align: right'>
-        <span>Date of Enrollment:</span>
+        <span>Date of Enrollment*:</span>
       </span>
       <span class='col-sm-4 col-md-4'>
-        <input class="form-control l-input" formControlName="EnrollDate" type="date" id="enrollDate">
+        <input class="form-control l-input" formControlName="EnrollDate" type="date" id="enrollDate" [class.error_border]='registrationForm.get("EnrollDate").invalid && registrationForm.get("EnrollDate").touched'>
       </span>
     </div>
     <br>
@@ -175,23 +174,23 @@
       </span>
       <span class='col-sm-4 col-md-4'>
         <span *ngIf='command ==1'>
-          <select class="form-control l-input" formControlName="OrgId" id="location">
+          <select class="form-control l-input" formControlName="OrgId" id="location"   [class.error_border]='registrationForm.get("OrgId").invalid && registrationForm.get("OrgId").touched'>
             <option value="null" disabled="true" [selected]="true">Location*</option>
             <option *ngFor="let location of locations" [value]="location.OrgId">{{location.OrgName}}</option>
           </select>
         </span>
         <span *ngIf='command == 2'>
-          <select class="form-control l-input" formControlName="OrgId" id="location">
+          <select class="form-control l-input" formControlName="OrgId" id="location" [class.error_border]='registrationForm.get("OrgId").invalid && registrationForm.get("OrgId").touched'>
             <option *ngFor="let location of locations" [value]="location.OrgId">{{location.OrgName}}</option>
           </select>
         </span>
       </span>
 
       <span class="col-sm-2 col-md-2">
-        <span>Your Current Level: </span>
+        <span>Your Current Level*: </span>
       </span>
       <span class='col-sm-4 col-md-4'>
-        <select class="form-control l-input" formControlName="LearnerLevel" (change)='isSelectLevel()'>
+        <select class="form-control l-input" formControlName="LearnerLevel" (change)='isSelectLevel()' [class.error_border]='registrationForm.get("LearnerLevel").invalid && registrationForm.get("LearnerLevel").touched'>
           <option *ngFor="let llevel of learnerLevel" [value]="llevel.PropValue">{{llevel.PropName}}</option>
         </select>
 
@@ -200,7 +199,7 @@
           <div class="d-inline-flex" *ngFor="let levelType of levelType; let i=index">
             <div class="form-check">
               <input class="form-check-input" (click)="selectLevelType(levelType.PropValue)" type="radio"
-                [value]="levelType.PropValue" formControlName="levelTypeRadio">
+                [value]="levelType.PropValue" formControlName="LevelType">
               <label class="form-check-label" for="levelType">{{levelType.PropName}}</label>
             </div>
           </div>
@@ -252,8 +251,8 @@
     <div class="learnPurpose">
       <span class="text-primary">Why do you learn the piano?</span><br>
       <div class='d-inline-block' *ngFor="let learnerPurpose of learnerPurpose; let i = index">
-        <input type="checkbox" #learnPurpose [value]="learnerPurpose.PropValue"
-          [checked]='setDefaultPurpose(learnerPurpose.PropValue)'>
+        <input #learnPurpose type="checkbox" (click)="selectLearnerPurpose(i, $event)" [value]="learnerPurpose.PropValue"
+          [checked]='learnerPurpose.isChecked' >
         <label style='margin-right:20px'>{{learnerPurpose.PropName}}</label>
       </div>
     </div>
@@ -261,7 +260,7 @@
     <div class="how know us">
       <span class="text-primary">How do you know about us?</span><br>
       <div class='d-inline-block' *ngFor="let howKnown of howKnown; let i = index">
-        <input type="checkbox" #howKnow [value]="howKnown.PropValue" [checked]='setDefaultHowKnow(howKnown.PropValue)'>
+        <input #howKnow type="checkbox" (click)="selectHowKnown(i, $event)" [value]="howKnown.PropValue" [checked]='howKnown.isChecked' >
         <label style='margin-right:20px'>{{howKnown.PropName}}</label>
       </div>
     </div>

@@ -3,21 +3,21 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { DebugElement } from '@angular/core';
 
-import { LearnerRegistrationDeleteModalComponent } from './learner-registration-delete-modal.component';
+import { ParentRegistrationFormComponent } from './parent-Registration-Form.component';
 
-describe('LearnerRegistrationDeleteModalComponent', () => {
-  let component: LearnerRegistrationDeleteModalComponent;
-  let fixture: ComponentFixture<LearnerRegistrationDeleteModalComponent>;
+describe('ParentRegistrationFormComponent', () => {
+  let component: ParentRegistrationFormComponent;
+  let fixture: ComponentFixture<ParentRegistrationFormComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ LearnerRegistrationDeleteModalComponent ]
+      declarations: [ ParentRegistrationFormComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(LearnerRegistrationDeleteModalComponent);
+    fixture = TestBed.createComponent(ParentRegistrationFormComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

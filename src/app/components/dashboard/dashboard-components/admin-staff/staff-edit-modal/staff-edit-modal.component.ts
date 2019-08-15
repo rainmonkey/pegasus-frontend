@@ -89,8 +89,6 @@ export class StaffEditModalComponent implements OnInit {
     }
   }
 
-
-
   prepareSubmitData(valueToSubmit) {
     valueToSubmit.IdType = Number(valueToSubmit.IdType);
     valueToSubmit.Gender = Number(valueToSubmit.Gender);

@@ -11,6 +11,8 @@ export class LearnerRegistrationModalComponent implements OnInit, AfterViewCheck
   timepickerChosen;
   // get data from timepickerComponent
   @ViewChild(TimePickerComponent) timePickerComponent;
+  customCourse;
+  teaList;
 
   // edwin add
   @Input() whichLearner;

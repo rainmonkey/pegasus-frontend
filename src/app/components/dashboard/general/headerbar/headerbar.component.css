@@ -191,3 +191,28 @@ nav.navbar .dropdown-menu h3 {
 .bg-orange:hover {
   color: #fff;
 }
+/* notification icon */
+.nav-item-notification {
+  position: relative;
+  margin: 5px 5px;
+}
+.nav-notice-bell {
+  color: white;
+}
+.nav-notice-bell:hover {
+  cursor: pointer;
+  color: darkgray;
+}
+.nav-notice-msg {
+  height: 15px;
+  width: 15px;
+  border-radius: 50%;
+  background-color: red;
+  position: absolute;
+  left: 20px;
+  bottom: 30px;
+}
+i.nav-notice-bell.dropdown-toggle::after {
+  border: none;
+  content: none;
+}

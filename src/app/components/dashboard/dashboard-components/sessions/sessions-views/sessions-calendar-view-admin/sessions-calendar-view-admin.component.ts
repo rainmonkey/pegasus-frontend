@@ -67,6 +67,7 @@ export class SessionsCalendarViewAdminComponent implements OnInit {
         editable: true,
         eventDurationEditable: false,
         displayEventTime: true,
+        firstDay: 1,
         customButtons: {
           DayPickerButton: {
             text: 'Search',
@@ -194,6 +195,7 @@ export class SessionsCalendarViewAdminComponent implements OnInit {
       this.eventsModel = this.eventData;
       this.isloading = false;
       this.teacherAvoidDuplicate();
+      console.log(this.eventsModel);
     });
   }
 

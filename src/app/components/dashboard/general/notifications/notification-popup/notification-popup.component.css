@@ -1,0 +1,56 @@
+.tab-container {
+    position: fixed;
+    z-index: 999;
+    width: 250px;
+    height: 300px;
+    right: 170px;
+    top: 65px;
+    background-color: rgb(255, 255, 255);
+    border-radius: 3px;
+}
+.tab {
+    font-size: 13px;
+    color: grey;
+    white-space: nowrap;
+    height: 30px;
+}
+.tab__input {
+    position: absolute;
+    opacity: 0;
+}
+.tab__label {
+    cursor: pointer;
+}
+.tab__label:hover {
+    color: rgb(70, 70, 110);
+}
+.tab__input:checked+.tab__label {
+    color: blue;
+    border-bottom: 1px solid blue;
+}
+
+
+.tab__header {
+    margin-top: 10px;
+    border-bottom: 1px solid #e8e8e8;
+}
+.tab__content {
+    height: 225px;
+}
+.tab__bottom {
+    border-top: 1px solid #e8e8e8;
+}
+button {
+    color: grey;
+    border: 0;
+    background-color: transparent;
+}
+button:hover,
+button:focus {
+    color: rgb(70, 70, 110);
+    outline: none;
+    border: none;
+}
+.middle__line {
+    border: 1px solid  #e8e8e8;
+}

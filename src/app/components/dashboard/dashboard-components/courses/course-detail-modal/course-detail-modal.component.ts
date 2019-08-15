@@ -154,7 +154,7 @@ export class CourseDetailModalComponent implements OnInit {
     return groupObj;
   }
 
-  onSubmit() {
+  onSubmit(updateForm) {
     let valueToSubmit = this.updateForm.value;
     let vailadValue = this.checkInputVailad(valueToSubmit);
     // fix this

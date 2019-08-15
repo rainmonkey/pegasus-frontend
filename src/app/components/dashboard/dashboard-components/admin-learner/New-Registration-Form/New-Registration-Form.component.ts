@@ -25,6 +25,15 @@ export class NewRegistrationFormComponent implements OnInit {
   public learnerPurpose: Array<any>;
   public howKnown: Array<any>;
 
+  public othersList = []
+  public learnerOthers = []
+  whyP = []
+  howP = []
+
+  getErrorW = false;
+  getErrorH = false;
+  showErrorW = false;
+  showErrorH = false;
   @ViewChild("grade") grade;
   @ViewChild('agreement') agreement;
   @ViewChild('otherFile') otherFile;
@@ -53,24 +62,18 @@ export class NewRegistrationFormComponent implements OnInit {
         MiddleName: [null],
         LastName: [null, Validators.required],
         Gender: ['', Validators.required],
-        dob: [null],
-        EnrollDate: [null],
-        ContactNum: [null],
+        dob: [null, Validators.required],
+        EnrollDate: [null,Validators.required],
+        ContactNum: [null, Validators.required],
         Email: [null, [Validators.required, Validators.email]],
-        Address: [null],
+        Address: [null, Validators.required],
         OrgId: [null, Validators.required],
         LearnerLevel: [null, Validators.required],
         LevelType: [null],
-        levelTypeRadio: [null],
         IsUnder18: [null],
         PaymentPeriod: [null],
         Referrer: [null],
         Comment: [null],
-        // photo
-        photo: [null],
-        grade: [null],
-        Agreement: [null],
-        OtherFile: [null],
 
       }
     }
@@ -80,24 +83,19 @@ export class NewRegistrationFormComponent implements OnInit {
         MiddleName: [this.whichLearner.MiddleName ? this.whichLearner.MiddleName : ' '],
         LastName: [this.whichLearner.LastName, Validators.required],
         Gender: [this.whichLearner.Gender, Validators.required],
-        dob: [this.getDateFormat(this.whichLearner.Dob)],
-        EnrollDate: [this.getDateFormat(this.whichLearner.EnrollDate)],
-        ContactNum: [this.whichLearner.ContactNum],
+        dob: [this.getDateFormat(this.whichLearner.Dob),  Validators.required],
+        EnrollDate: [this.getDateFormat(this.whichLearner.EnrollDate),Validators.required],
+        ContactNum: [this.whichLearner.ContactNum, Validators.required],
         Email: [this.whichLearner.Email, [Validators.required, Validators.email]],
-        Address: [this.whichLearner.Address],
+        Address: [this.whichLearner.Address, Validators.required],
         OrgId: [this.whichLearner.OrgId, Validators.required],
         LearnerLevel: [this.whichLearner.LearnerLevel, Validators.required],
         // LevelType: [this.whichLearner.LevelType],
-        levelTypeRadio: [this.whichLearner.LevelType],
+        LevelType: [this.whichLearner.LevelType],
         IsUnder18: [this.whichLearner.IsUnder18],
         PaymentPeriod: [this.whichLearner.PaymentPeriod],
         Referrer: [this.whichLearner.Referrer],
         Comment: [this.whichLearner.Comment],
-        // photo
-        photo: [null],
-        grade: [null],
-        Agreement: [null],
-        OtherFile: [null],
 
       }
     }
@@ -159,7 +157,6 @@ export class NewRegistrationFormComponent implements OnInit {
     this.registrationService.getLookups(2)
       .subscribe(
         data => {
-          console.log('learner purpose');
           this.learnerPurpose = data.Data;
           for (let lP of this.learnerPurpose) {
             lP.isChecked = false;
@@ -178,7 +175,6 @@ export class NewRegistrationFormComponent implements OnInit {
     this.registrationService.getLookups(3)
       .subscribe(
         data => {
-          console.log('how know', data, this.whichLearner);
           this.howKnown = data.Data;
           this.howKnown.map((o, i) => {
             o.isChecked = false;
@@ -227,7 +223,6 @@ export class NewRegistrationFormComponent implements OnInit {
     let that = this;
     let reader = new FileReader();
     reader.onloadend = function () {
-      console.log(this.result)
       that.photoObj.setAttribute("src", this.result.toString());
     }
     reader.readAsDataURL(photoRender);
@@ -253,33 +248,10 @@ export class NewRegistrationFormComponent implements OnInit {
       return true;
     }
   }
-  setDefaultPurpose(selectedValue) {
-    if (this.command !== 1) {
-      for (let i of this.whichLearner.LearnerOthers) {
-        if (i.OthersType == 2) {
-          if (i.OthersValue == selectedValue) {
-            return true
-          }
-        }
-      }
-    }
-  }
-
-  setDefaultHowKnow(selectedValue) {
-    if (this.command !== 1) {
-      for (let i of this.whichLearner.LearnerOthers) {
-        if (i.OthersType == 3) {
-          if (i.OthersValue == selectedValue) {
-            return true
-          }
-        }
-      }
-    }
-  }
 
   setTrue() {
     if (this.command !== 1) {
-      if (this.whichLearner.IsUnder18 == 0) {
+      if (this.whichLearner.IsUnder18 == 1) {
         return true
       }
     }
@@ -289,6 +261,44 @@ export class NewRegistrationFormComponent implements OnInit {
     this.registrationForm.reset();
     if (this.photoObj)
       this.photoObj.setAttribute('src', null);
+  }
+
+  selectLearnerPurpose(i, event) {
+    this.learnerPurpose[i].isChecked = event.target.checked;
+    this.confirmLearner();
+  }
+  selectHowKnown(i, event) {
+    this.howKnown[i].isChecked = event.target.checked;
+    this.confirmLearner();
+  }
+
+  confirmLearner() {
+    this.learnerOthers = []
+    let whyP = [];
+    let howP = [];
+    for (let learnPurpose of this.learnerPurpose) {
+      if (learnPurpose.isChecked) {
+        let tempObj = {};
+        tempObj['OthersType'] = learnPurpose.LookupType;
+        tempObj['OthersValue'] = learnPurpose.PropValue;
+        whyP.push(tempObj);
+      }
+    }
+    for (let how of this.howKnown) {
+      if (how.isChecked) {
+        let tempObj = {};
+        tempObj['OthersType'] = how.LookupType;
+        tempObj['OthersValue'] = how.PropValue;
+        howP.push(tempObj);
+      }
+    };
+    whyP.length === 0 ? this.getErrorW = false : this.getErrorW = true;
+    howP.length === 0 ? this.getErrorH = false : this.getErrorH = true;
+    this.getErrorW === false ? this.showErrorW = true : this.showErrorW = false;
+    this.getErrorH === false ? this.showErrorH = true : this.showErrorH = false;
+    this.learnerOthers = whyP.concat(howP)
+    return this.learnerOthers
+
   }
 }
 
