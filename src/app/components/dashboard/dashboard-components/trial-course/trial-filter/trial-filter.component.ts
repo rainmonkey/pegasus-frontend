@@ -1,7 +1,7 @@
 import { filter } from "rxjs/operators";
 import { ActivatedRoute } from "@angular/router";
 import { TransactionService } from "./../../../../../services/http/transaction.service";
-import { Component, OnInit, Input } from "@angular/core";
+import { Component, OnInit, Input, ElementRef } from "@angular/core";
 import { CoursesService } from "src/app/services/http/courses.service";
 import { TeachersService } from "src/app/services/http/teachers.service";
 import { forkJoin } from "rxjs";
@@ -38,14 +38,16 @@ export class TrialFilterComponent implements OnInit {
   public originalData;
   public dayOfWeekIndex: number = 0;
   public nodata = "No Data Found!";
+  public isClickDisabled: boolean = false;
 
   constructor(
     private coursesService: CoursesService,
     private teachersService: TeachersService,
     private modalService: NgbModal,
     private transactionService: TransactionService,
-    private activatedRoute: ActivatedRoute
-  ) {}
+    private activatedRoute: ActivatedRoute,
+    private el: ElementRef
+  ) { }
 
   ngOnInit() {
     if (this.arrangeFlag) {
@@ -123,22 +125,29 @@ export class TrialFilterComponent implements OnInit {
 
     // day of week filter tags processor
     if (operationIndex === 3) {
+
       // if a day of week already selected
       if (this.filterString.length >= 3) {
         return;
       }
       // if no day of week tag selected
       else {
+        if(this.isClickDisabled){
+          return;
+        }
+        this.isClickDisabled = true;
         this.filterString.push(item.toString());
         // get&set teachers (results)
         // if data already exist, no use to get it again
         if (this.originalData) {
+          this.isClickDisabled = false;
           this.processTeachersList(this.originalData, itemIndex);
           return;
         }
         // no data exist, get it from server
         else {
           this.getTeachersNTeachingCourses().subscribe(res => {
+            this.isClickDisabled = false;
             this.originalData = res;
             // process data got
             this.processTeachersList(res, itemIndex);

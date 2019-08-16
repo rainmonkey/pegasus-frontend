@@ -109,25 +109,25 @@ export class TrialCalendarComponent implements OnInit {
    * 3, For each day of avaliable term duration, if teacher is avaliable in this day, push it into an array, else, abandon it.
    * 4, Finally, return the espected result;
    * @param terms - terms of a year
-   * @returns {Array<object>} list of avaliable time slots after calculation
+   * @returns list of avaliable time slots after calculation
    */
   calculateAvaliableTimeSlots(terms: Array<object>) {
-    /**@property {Array<number>} dayOfWeek - teacher's avaliable day of one week */
+    /** teacher's avaliable day of one week */
     const dayOfWeek: Array<number> = this.getDayOfWeek(this.teacher);
-    /**@property {Array<object>} avaliableTermDuration - avaliable term duration*/
+    /** avaliable term duration */
     const avaliableTermDuration: Array<object> = this.getAvaliableTermDuration(
       terms
     );
-    /**@property {Array<object>} avaliableTimeSlots - a list saved avaliable time slots and returned at the end of function */
+    /** a list saved avaliable time slots and returned at the end of function */
     const avaliableTimeSlots: Array<object> = [];
     const millisecOfOneDay: number = 86400000;
 
-    /**To estimate whether a day is avaliable*/
+    /** To estimate whether a day is avaliable */
     avaliableTermDuration.map(val => {
       const endDateTimeStamp = new Date(val["EndDate"]).getTime();
-      //start date is from current day(days before current day are all unavaliable)
+      // start date is from current day(days before current day are all unavaliable)
       const startDateTimeStamp = new Date().getTime();
-      //iterator of term's duration times
+      // iterator of term's duration times
       for (
         let i = startDateTimeStamp;
         i < endDateTimeStamp;
@@ -135,7 +135,7 @@ export class TrialCalendarComponent implements OnInit {
       ) {
         const date = new Date(i);
 
-        const weekDay = date.getDay() == 0 ? 7 : date.getDay();
+        const weekDay = date.getDay() === 0 ? 7 : date.getDay();
         const year = date.getFullYear();
         const month =
           date.getMonth() + 1 < 10
@@ -158,7 +158,7 @@ export class TrialCalendarComponent implements OnInit {
   /**
    * Get teacher avaliable days of one week.
    * @param teacher - teacher's object
-   * @returns {Array<number>} array of avaliable days of one week
+   * @returns array of avaliable days of one week
    */
   getDayOfWeek(teacher: object) {
     const array: Array<number> = [];
@@ -173,10 +173,10 @@ export class TrialCalendarComponent implements OnInit {
    * @param terms - all terms in a year
    */
   getAvaliableTermDuration(terms) {
-    /**@property {number} timeStampOfToday - stamp of today */
+    /** stamp of today */
     const timeStampOfToday: number = new Date().getTime();
     const avaliableTermDuration: Array<object> = terms.filter(val => {
-      /**@property {number} - end date time stamp of each term*/
+      /** end date time stamp of each term */
       const timeStamp: number = new Date(val["EndDate"]).getTime();
       if (timeStamp > timeStampOfToday) {
         return val;
@@ -197,6 +197,7 @@ export class TrialCalendarComponent implements OnInit {
     const that = this;
     this.options = {
       allDaySlot: false,
+      firstDay: 1,
       height: 700,
       selectable: this.selectMode ? false : true,
       minTime: "09:00",
@@ -217,6 +218,7 @@ export class TrialCalendarComponent implements OnInit {
         center: "title",
         right: "timeGridWeek"
       },
+      // 别人的component
       dateClick: info => {
         if (this.arrangeFlag) {
           const occupiedStartTimestamps = coursesTimeSlots.map(
