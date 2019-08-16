@@ -24,7 +24,7 @@
           </span>
           <div class="input-group input_datebar">
             <input class="form-control" style="height: 30px;" placeholder="yyyy-mm-dd" ngbDatepicker
-              #begindate="ngbDatepicker" formControlName="BeginDate" (dateSelect)="onBeginDateSelection($event)">
+              #begindate="ngbDatepicker" formControlName="BeginDate">
             <div class="input-group-append">
               <button class="btn btn-outline-secondary calendar" style="height: 30px; line-height: 0;"
                 (click)="begindate.toggle()" type="button">
@@ -37,7 +37,7 @@
           </span>
           <div class="input-group input_datebar">
             <input class="form-control" style="height: 30px;" placeholder="yyyy-mm-dd" ngbDatepicker
-              #enddate="ngbDatepicker" formControlName="EndDate" (dateSelect)="onEndDateSelection($event)">
+              #enddate="ngbDatepicker" formControlName="EndDate">
             <div class="input-group-append">
               <button class="btn btn-outline-secondary calendar" style="height: 30px; line-height: 0;"
                 (click)="enddate.toggle()" type="button">
@@ -112,21 +112,21 @@
               <td *ngIf="i.LessonQuantity">{{i.LessonQuantity}}</td>
               <!-- Sold Transaction content -->
               <td *ngIf="i.ProductName">
-                <span class='tl_body_table_btn col-4' style="text-align: center;" (click)="open(0, i)">
+                <span class='tl_body_table_btn col-4' style="text-align: center;" (click)="open(0,i)">
                   <i class="fas fa-receipt"></i>
                 </span>
               </td>
-              <td *ngIf="i.ProductName">///</td>
+              <!-- <td *ngIf="i.ProductName == null">///</td> -->
               <!-- other content -->
               <td *ngIf="!i.LessonQuantity && !i.ProductName">null</td>
               <td *ngIf="!i.LessonQuantity && !i.ProductName">null</td>
               <!-- Managers confirm paying -->
               <td *ngIf="i.IsConfirmed == 0">
-                <span class='tl_body_table_btn col-4' style="text-align: center;" (click)="open(1, i)">
+                <span class='tl_body_table_btn col-4' style="text-align: center;" (click)="open(1,i)">
                   <i class="fas fa-times" style="color: red;"></i>
                 </span>
               </td>
-              <td *ngIf="i.IsConfirmed != 0">
+              <td *ngIf="i.IsConfirmed != 0" title="123123">
                 <i class="fas fa-check"></i>
               </td>
             </tr>
@@ -135,7 +135,7 @@
       </div>
       <!--body pagination-->
       <div class='col-12'>
-        <ngb-pagination [collectionSize]='adminPaymentListLength' [(page)]='page' [pageSize]='pageSize'>
+        <ngb-pagination #pagination [collectionSize]='adminPaymentListLength' [(page)]='page' [pageSize]='pageSize' (click)="getCurrentPage()">
         </ngb-pagination>
       </div>
     </div>
