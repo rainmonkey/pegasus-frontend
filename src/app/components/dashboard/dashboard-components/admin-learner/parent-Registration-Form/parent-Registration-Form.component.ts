@@ -1,7 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, FormArray } from '@angular/forms';
 import { group } from '@angular/animations';
-// import { anyKeysRemoved } from '@fullcalendar/core/util/object-similarity';
 
 @Component({
   selector: 'app-parent-Registration-Form',
@@ -19,38 +18,36 @@ export class ParentRegistrationFormComponent implements OnInit {
 
   ngOnInit() {
     this.parentRegForm = this.fb.group({
-      parentForm: this.fb.array([this.test()])
+      parentForm: this.fb.array([])
     });
-    // this.setParentForm();
+    this.setForm()
   }
 
+  setForm() {
+    if (this.command == 1) {
+     this.parentForm.push(
+       this.fb.group({
+        FirstName: ['', Validators.required],
+        LastName: ['', Validators.required],
+        Relationship: ['', Validators.required],
+        ContactNum: ['', Validators.required],
+        Email: ['', [Validators.required, Validators.email]]
+      }));
+    }
+    else if (this.command == 2) {
+     this.whichLearner.Parent.map(p => {
+      this.parentForm.push(
+        this.fb.group({
+          FirstName: [p.FirstName ? p.FirstName : '', Validators.required],
+          LastName: [p.LastName ? p.LastName : '', Validators.required],
+          Relationship: [p.Relationship ? p.Relationship : '', Validators.required],
+          ContactNum: [p.ContactNum ? p.ContactNum : '', Validators.required],
+          Email: [p.Email ? p.Email : '', [Validators.required, Validators.email]]
+        }))
+      })
+     }
 
-  // setParentForm(){
-  //   this.parentForm.push(
-  //     this.fb.group({
-  //       FirstName: ['', Validators.required],
-  //       LastName: ['', Validators.required],
-  //       Relationship: ['', Validators.required],
-  //       ContactNum: ['', Validators.required],
-  //       Email: ['', [Validators.required, Validators.email]]
-  //     })
-  //   )
-  // }
-
-  test() {
-    let tempObj: any
-    tempObj=this.fb.group({
-      FirstName: ['', Validators.required],
-      LastName: ['', Validators.required],
-      Relationship: ['', Validators.required],
-      ContactNum: ['', Validators.required],
-      Email: ['', [Validators.required, Validators.email]]
-    })
-    return tempObj
   }
-
-
-
 
   resetParent() {
     this.parentForm.reset();
