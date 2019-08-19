@@ -67,6 +67,7 @@ export class SessionsCalendarViewAdminComponent implements OnInit {
         editable: true,
         eventDurationEditable: false,
         displayEventTime: true,
+        firstDay: 1,
         customButtons: {
           DayPickerButton: {
             text: 'Search',

@@ -24,6 +24,12 @@
   display: table-cell;
   border: 1px solid #ddd;
 }
+.day-label-test{
+  background-color: rgb(130, 175, 130);
+  padding: 10px;
+  text-align: center;
+  width:10vw;
+}
 .day-label {
   background-color: #eaeaf0;
   padding: 10px;
@@ -35,6 +41,7 @@
   color: rgb(182, 178, 178);
   height: 50px;
 }
+
 .slots {
   border-top: 1px solid rgb(182, 178, 178);
 }

@@ -10,6 +10,7 @@ import { AdminLearnerPeriodCourseChangeModalComponent } from '../admin-learner-p
 import { LearnerAddModalComponent } from '../learner-add-modal/learner-add-modal.component';
 import { LearnerDeleteCourseModalComponent } from '../learner-delete-course-modal/learner-delete-course-modal.component';
 import { NewLearnerRegistrationModalComponent } from '../New-Learner-Registration-modal/New-Learner-Registration-modal.component';
+import { RegistrationToParentComponent } from '../registration-To-parent/registration-To-parent.component';
 @Component({
   selector: 'app-admin-learner-list',
   templateUrl: './admin-learner-list.component.html',
@@ -60,7 +61,6 @@ export class AdminLearnerListComponent implements OnInit {
       (res) => {
         //@ts-ignore
         this.learnerList = res.Data;
-        console.log(this.learnerList)
         //@ts-ignore
         this.learnerListCopy = this.learnerList;
         //@ts-ignore
@@ -239,6 +239,11 @@ export class AdminLearnerListComponent implements OnInit {
     )
     modalRef.componentInstance.command = command;
     modalRef.componentInstance.whichLearner = whichLearner;
+    modalRef.componentInstance.signalForInit.subscribe(res => {
+      if (res == true) {
+        that.ngOnInit();
+      }
+    })
   }
 
   /*
@@ -314,7 +319,28 @@ export class AdminLearnerListComponent implements OnInit {
   openRegModal(command, whichLearner) {
     //@ts-ignore
     const modalRef = this.modalService.open(NewLearnerRegistrationModalComponent, { size: 'xl', backdrop: 'static', keyboard: false });
+    let that = this;
+    modalRef.componentInstance.command = command;
+    modalRef.componentInstance.whichLearner = whichLearner;
+    modalRef.componentInstance.refreshFlag.subscribe(
+      (res) => {
+        modalRef.result.then(
+          function () {
+            if (res == true) {
+              that.ngOnInit();
+            }
+          },
+          function () {
+            return;
+          })
+      }
+    )
+  }
 
+  openParentModal(command,whichLearner){
+    //@ts-ignore
+    const modalRef = this.modalService.open(RegistrationToParentComponent, { size: 'xl', backdrop: 'static', keyboard: false });
+    let that = this;
     modalRef.componentInstance.command = command;
     modalRef.componentInstance.whichLearner = whichLearner;
   }

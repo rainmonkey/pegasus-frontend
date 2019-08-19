@@ -16,8 +16,10 @@
     </div>
     <div class="days">
       <div class="day" *ngFor="let x of xIndex; let i = index">
-        <div class="day-label">{{weekdays[x]}}
-          <div class="location">
+        
+        <div class=day-label [ngClass]="{'bg-success text-dark':x==dayofweek-1}">   
+            {{weekdays[x]}}  
+          <div class="location" [ngClass]="{'bg-success text-light':x== dayofweek-1}">
             <div *ngFor="let availableObj of availableDayArr">
               <div *ngIf="x == availableObj.DayOfWeek-1">
                 <p style="margin:0px; font-size:13px; text-align: center" *ngFor="let org of availableObj.Orgs">

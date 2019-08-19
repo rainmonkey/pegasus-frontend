@@ -40,8 +40,11 @@ body {
   overflow-x: hidden;
   line-height: 1.5;
   background-color: #fff;
+  padding-right: 0 !important;
 }
-
+.modal-open {
+  padding-right: 0px !important;
+} 
 small,
 .small {
   font-size: 80%;

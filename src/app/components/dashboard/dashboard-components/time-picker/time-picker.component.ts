@@ -8,6 +8,7 @@ import { TimePickerService } from 'src/app/services/http/time-picker.service';
 })
 export class TimePickerComponent implements OnInit {
   // get data form one-on-one course of learner-registration-form 
+  
   @Input() customCourse;
   @Input() teaList;
   // transmit begin time picked by user from time-picker to learner-registration-form
@@ -46,6 +47,7 @@ export class TimePickerComponent implements OnInit {
   public tempChangeArr: any[] = [];
   public availableDayArr: any[];
   public errorMessage: string;
+  dayofweek: any;
 
   constructor(private timePickerService: TimePickerService) {
   }
@@ -74,6 +76,7 @@ export class TimePickerComponent implements OnInit {
     this.teacherId = this.teaList[0].TeacherId;
     this.teacherName = this.teaList[0].TeacherName;
     this.duration = this.teaList[1].Duration;
+    this.dayofweek = this.customCourse.DayOfWeek;
 
     // get data from server 
     this.getTeacherAvailable();
@@ -180,10 +183,20 @@ export class TimePickerComponent implements OnInit {
 ///////////////////////////////// event triggered in HTML /////////////////////////////////////////////////////////////
   mouseover(x: number, y: number) {
     this.availableDayArr.map((availableObj) => {
-      let availableX = availableObj['DayOfWeek']-1;
-      if(x == availableX) {
-        this.checkTeacherOrg(x, y, availableObj, availableX);
+      if(this.dayofweek !== undefined){
+        let availableX = this.dayofweek-1; 
+        if(x == availableX) {
+          this.checkTeacherOrg(x, y, availableObj, availableX);
+         }
       }
+      else{
+         let availableX = availableObj['DayOfWeek']-1;
+         if(x == availableX) {
+          this.checkTeacherOrg(x, y, availableObj, availableX);
+        }
+      } 
+     
+     
     })
     // this.tempChangeIsAbleToPick(x, y);
   }
