@@ -541,8 +541,20 @@ export class LearnerRegistrationFormComponent implements OnInit, DoCheck, AfterV
         // this.addCheckboxes();
       },
       err => {
-        err.error? this.errorMsg == err.error.ErrorMessage : this.errorMsg == `Sorry, Something Went Worng, the error code is: ${err}`;
-        Swal.fire({  type: 'error',  title: 'Oops...', text: this.errorMsg});
+        err.error? this.errorMsg == err.error.ErrorMessage : this.errorMsg == `The error code is: ${err}`;
+        Swal.fire({
+          title: "Do you want to try again?",
+          text: 'Can not get the data from server!' + this.errorMsg,
+          type: 'warning',
+          showCancelButton: true,
+          confirmButtonColor: '#3085d6',
+          cancelButtonColor: '#d33',
+          confirmButtonText: 'Try Again'
+        }).then((result) => {
+          if (result.value) {
+            this.getGroupCourseFromServer()
+          }
+        })
       }
     )
   }
@@ -646,8 +658,20 @@ export class LearnerRegistrationFormComponent implements OnInit, DoCheck, AfterV
         this.errorMsgSub = JSON.parse(error.error);
         console.log("Error!", this.errorMsgSub.ErrorCode);
         this.errorAlert = true;
-        error.error? this.errorMsg == error.error.ErrorMessage : this.errorMsg == `Sorry, Something Went Worng, the error code is: ${error}`;
-        Swal.fire({  type: 'error',  title: 'Oops...', text: this.errorMsg});
+        error.error? this.errorMsg == error.error.ErrorMessage : this.errorMsg == `The error code is: ${error}`;
+        Swal.fire({
+          title: "Do you want to try again?",
+          text: 'Can not get the data from server!' + this.errorMsg,
+          type: 'warning',
+          showCancelButton: true,
+          confirmButtonColor: '#3085d6',
+          cancelButtonColor: '#d33',
+          confirmButtonText: 'Try Again'
+        }).then((result) => {
+          if (result.value) {
+            this.selectCourse(value, i)
+          }
+        })
       }
     );
   }
