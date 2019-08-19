@@ -370,6 +370,7 @@
                   <option selected>Choose..</option>
                   <option *ngFor="let course of courseListArray[i].courseItemArray" [value]="course.CourseId">{{course.CourseName}}</option>
                 </select>
+                <div *ngIf="isLoading" class='loaderSmall'></div>
               </div>
             </div>
             <div class="location-teacherLevel row">

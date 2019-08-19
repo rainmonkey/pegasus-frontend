@@ -13,6 +13,7 @@ import { TimePickerComponent } from '../../time-picker/time-picker.component';
 import { ngtimepickerValidator } from './validators';
 import { FindValueSubscriber } from 'rxjs/internal/operators/find';
 import { isInteger } from '@ng-bootstrap/ng-bootstrap/util/util';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-learner-registration-form',
@@ -99,6 +100,8 @@ export class LearnerRegistrationFormComponent implements OnInit, DoCheck, AfterV
   canAddGroup = true;
   // boolean of font awsome for certificate image
   showFontOfDoc = true;
+  // boolean for loading
+  isLoading = false;
   // style of image for certificate
   imgTextStyle;
   // photo thumbnail
@@ -538,7 +541,8 @@ export class LearnerRegistrationFormComponent implements OnInit, DoCheck, AfterV
         // this.addCheckboxes();
       },
       err => {
-        console.log('group course err', err);
+        err.error? this.errorMsg == err.error.ErrorMessage : this.errorMsg == `Sorry, Something Went Worng, the error code is: ${err}`;
+        Swal.fire({  type: 'error',  title: 'Oops...', text: this.errorMsg});
       }
     )
   }
@@ -621,6 +625,7 @@ export class LearnerRegistrationFormComponent implements OnInit, DoCheck, AfterV
   }
 
   selectCourse(value, i) {
+    this.isLoading = true;
     // to date pick
     this.toDatePickCourseDuration = {}
     this.toDatePickCourseDuration = this.courseListArray[i].courseItemArray.filter(item => item.CourseId === Number(value));
@@ -630,6 +635,7 @@ export class LearnerRegistrationFormComponent implements OnInit, DoCheck, AfterV
     this.locListArray[i].locItemArray = [];
     return this.registrationService.getTeacherFilter(value).subscribe(
       res => {
+        this.isLoading = false;
         this.locListArray[i].locItemArray = res.Data;
         console.log(this.locItemArray);
         // if (this.whichLearner)
@@ -640,6 +646,8 @@ export class LearnerRegistrationFormComponent implements OnInit, DoCheck, AfterV
         this.errorMsgSub = JSON.parse(error.error);
         console.log("Error!", this.errorMsgSub.ErrorCode);
         this.errorAlert = true;
+        error.error? this.errorMsg == error.error.ErrorMessage : this.errorMsg == `Sorry, Something Went Worng, the error code is: ${error}`;
+        Swal.fire({  type: 'error',  title: 'Oops...', text: this.errorMsg});
       }
     );
   }
