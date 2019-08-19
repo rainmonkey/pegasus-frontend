@@ -39,6 +39,7 @@ export class TrialConfirmationComponent implements OnInit {
   private paymentMethods: Array<object>;
   /**@property {boolean} haspaid - show payment method or not */
   private haspaid: boolean = false;
+  private isPayNow = false;
   /**@property {boolean} isSubmitting - is data submitting or not */
   private isSubmitting: boolean = false;
   private isError: boolean = false;
@@ -178,6 +179,9 @@ export class TrialConfirmationComponent implements OnInit {
    * Display payment methods options when user click 'Pay Now' button.
    */
   displayPayment() {
+    if(this.isPayNow){
+      this.isPayNow = false;
+    }
     if (this.haspaid) {
       this.haspaid = !this.haspaid;
     } else {
@@ -188,6 +192,13 @@ export class TrialConfirmationComponent implements OnInit {
     }
   }
 
+  /**
+   * Select the payment method
+   * @param event - event obj
+   */
+  selectPaymentMethod(event){
+    this.isPayNow = true;
+  }
   /**
    * When user click confirm button, prepare to submit data.
    */
@@ -226,8 +237,9 @@ export class TrialConfirmationComponent implements OnInit {
       Amount: this.coursePrice,
       StaffId: Number(localStorage.userID),
       TrialCourseId: this.trialCourseId,
-      IsPayNow: true
+      IsPayNow: this.isPayNow
     };
+    console.log(data)
     return data;
   }
 

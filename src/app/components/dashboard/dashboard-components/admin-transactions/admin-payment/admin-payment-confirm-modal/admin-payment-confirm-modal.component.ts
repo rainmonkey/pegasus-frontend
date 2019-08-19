@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AdminpaymentlistService } from '../../../../../../services/http/adminpaymentlist.service';
@@ -11,6 +11,7 @@ import Swal from 'sweetalert2';
 })
 export class AdminPaymentConfirmModalComponent implements OnInit {
   @Input() adminPaymentList;
+  @Output() refreshFlag: EventEmitter<any> = new EventEmitter();
   public updateForm: FormGroup;
   public loadingGifFlag: boolean;
   public errorMessage: string;
@@ -32,23 +33,31 @@ export class AdminPaymentConfirmModalComponent implements OnInit {
     }
     return groupObj;
   }
-  onSubmit(){
+  onSubmit() {
+    // console.log(this.updateForm.value)
     let valueToSubmit = this.updateForm.value;
     if (valueToSubmit !== null && this.updateForm.dirty) {
       this.loadingGifFlag = true;
-      this.submitByMode(valueToSubmit); 
+      this.submitByMode(valueToSubmit);
     }
   }
   submitByMode(formValue) {
+    // 存不进去
+    // console.log(formValue)
     this.adminpaymentlistService.updateConfirm(formValue, this.adminPaymentList.PaymentId).subscribe(
       (res) => {
+        // console.log(res)
         Swal.fire({
           title: 'Successfully Modify!',
-          type: 'success',
-          showConfirmButton: true,
-        });
+          type: 'success'
+        }).then(okay => {
+          if (okay) {
+            this.refreshFlag.emit(true);
+          }
+        }
+        )
         this.activeModal.close();
-        this.adminPaymentList;
+        // this.adminPaymentList;
       },
       (err) => {
         this.backendErrorHandler(err);
