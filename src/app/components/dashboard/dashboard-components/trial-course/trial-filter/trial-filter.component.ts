@@ -219,12 +219,6 @@ export class TrialFilterComponent implements OnInit {
       }
     });
 
-    if (this.arrangeFlag) {
-      array0[0] = array0[0].filter(
-        el => el.Level === this.courseDetail.Course.TeacherLevel
-      );
-    }
-
     this.teachersList = array0;
   }
 

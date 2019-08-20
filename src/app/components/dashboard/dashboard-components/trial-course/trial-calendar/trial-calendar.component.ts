@@ -272,7 +272,7 @@ export class TrialCalendarComponent implements OnInit {
               );
             }
           }
-        } else {
+        } else if (this.selectMode) {
           this.userSelectedTime.emit(info.dateStr.split("+")[0]);
           this.activeModal.close();
         }
