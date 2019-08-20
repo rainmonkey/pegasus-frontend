@@ -14,11 +14,8 @@ import { NotificationPopupComponent } from 'src/app/components/dashboard/general
 })
 export class HeaderbarComponent implements OnInit {
 
-  public isPopup = false;
-  public hasNoticed: boolean = false;
+  public isPopup: boolean = false;
 
-  public isOpen = false;
-  public outside;
   photoUrl: any = environment.photoUrl;
   userDetail =
     {
@@ -64,8 +61,8 @@ export class HeaderbarComponent implements OnInit {
 
 
   /* click bell to toggle popup */
-  showPopup() {
+  handlePopup() {
     this.isPopup = !this.isPopup;
-    console.log('toggel', this.isPopup)
+    console.log('toggele', this.isPopup)
   }
 }

@@ -1,56 +1,53 @@
 <header class="header">
-    <nav class="navbar navbar-expand navbar-light d-flex justify-content-between" style="padding-left:20px;padding-right: 20px;">
-      <ul class="navbar-nav">
-        <li class="nav-item order-0 order-md-0 order-lg-0">
-          <a class="navbar-brand" href="#">
-            Able Music Studio
-          </a>
-        </li>
-        <li class="navbar-itme order-lg-1" (click)="hideSideBar()">
-          <a class="d-none d-lg-block navbar-nav ">
+  <nav class="navbar navbar-expand navbar-light d-flex justify-content-between"
+    style="padding-left:20px;padding-right: 20px;">
+    <ul class="navbar-nav">
+      <li class="nav-item order-0 order-md-0 order-lg-0">
+        <a class="navbar-brand" href="#">
+          Able Music Studio
+        </a>
+      </li>
+      <li class="navbar-itme order-lg-1" (click)="hideSideBar()">
+        <a class="d-none d-lg-block navbar-nav ">
           <i style=" cursor: pointer;" class="fas fa-bars fa-lg "></i>
         </a>
-        </li>
-      </ul>
-        
-      <ul class="nav navbar-nav navbar-right">
-        <!-- user -->
-        <li class="nav-item">
-          <a class="navbar-user" style="float: left; padding-right:4px;">
-            <img src="{{userDetail.img}}" alt="..." class="img-fluid rounded-circle">
+      </li>
+    </ul>
+
+    <ul class="nav navbar-nav navbar-right">
+      <!-- user -->
+      <li class="nav-item">
+        <a class="navbar-user" style="float: left; padding-right:4px;">
+          <img src="{{userDetail.img}}" alt="..." class="img-fluid rounded-circle">
+        </a>
+        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
+          data-target="dropdown-target" aria-haspopup="true" aria-expanded="false">
+          {{userDetail.firstName}} {{userDetail.lastName}}
+          <span class="caret"></span>
+        </a>
+        <div class="dropdown-menu" aria-labelledby="dropdown-target">
+          <a (click)="changePassword()" class="dropdown-item change-pass" style="cursor: pointer;">Change Password</a>
+          <a (click)="logout()" class="dropdown-item logout d-sm-block d-lg-none">
+            <span>Logout</span>
+            <i class="fas fa-sign-out-alt" style="margin-left: 10px;"></i>
           </a>
-          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"  data-target="dropdown-target" aria-haspopup="true" aria-expanded="false">
-              {{userDetail.firstName}} {{userDetail.lastName}} 
-              <span class="caret"></span>
-         </a>  
-         <div class="dropdown-menu" aria-labelledby="dropdown-target">
-           <a (click)="changePassword()" class="dropdown-item change-pass" style="cursor: pointer;">Change Password</a>
-           <a (click)="logout()" class="dropdown-item logout d-sm-block d-lg-none"> 
-              <span>Logout</span>
-              <i class="fas fa-sign-out-alt" style="margin-left: 10px;"></i>
-              </a>
-         </div>
-        </li>
-        <!-- notifications -->
-        <li class="nav-item-notification" ngbDropdown [autoClose]="outside">
-        <!-- <li class="nav-item-notification" ngbDropdown > -->
-          <span *ngIf="hasNoticed" class="nav-notice-msg"></span>
-          <i class="nav-notice-bell" id="msg-box" (click)="showPopup()">
-            <svg viewBox="64 64 896 896" focusable="false" class="" data-icon="bell" width="1.5em" height="1.5em" fill="currentColor" >
-              <path d="M816 768h-24V428c0-141.1-104.3-257.7-240-277.1V112c0-22.1-17.9-40-40-40s-40 17.9-40 40v38.9c-135.7 19.4-240 136-240 277.1v340h-24c-17.7 0-32 14.3-32 32v32c0 4.4 3.6 8 8 8h216c0 61.8 50.2 112 112 112s112-50.2 112-112h216c4.4 0 8-3.6 8-8v-32c0-17.7-14.3-32-32-32zM512 888c-26.5 0-48-21.5-48-48h96c0 26.5-21.5 48-48 48zM304 768V428c0-55.6 21.6-107.8 60.9-147.1S456.4 220 512 220c55.6 0 107.8 21.6 147.1 60.9S720 372.4 720 428v340H304z"></path>
-            </svg>
-          </i>
-          <!-- dropdown menu -->     
-          <app-notification-popup [isPopup]="isPopup"></app-notification-popup>
-        </li>
-        <!-- logout -->
-        <li class="nav-item d-none d-lg-block">
-          <a (click)="logout()" class="nav-link logout"> 
+        </div>
+      </li>
+      <!-- notifications -->
+      <li class="nav-item-notification" ngbDropdown [autoClose]="outside">
+        <a (click)="handlePopup()"><img class="notification-bell"
+            src="../../../../../assets/images/shared/notification-bell.svg" alt="notification-bell"></a>
+        <!-- dropdown menu -->
+        <app-notification-popup [isPopup]="isPopup"></app-notification-popup>
+      </li>
+      <!-- logout -->
+      <li class="nav-item d-none d-lg-block">
+        <a (click)="logout()" class="nav-link logout">
           <span>Logout</span>
           <i class="fas fa-sign-out-alt" style="margin-left: 10px;"></i>
-          </a>     
-        </li>
-      </ul>
-      </nav>
+        </a>
+      </li>
+    </ul>
+  </nav>
 
 </header>

@@ -1,4 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { DashboardService } from "src/app/services/http/dashboard.service";
 
 @Component({
   selector: 'app-notification-popup',
@@ -8,30 +9,29 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 export class NotificationPopupComponent implements OnInit {
   @Input() isPopup: boolean;
 
-  public tabs: Array<any> = [];
-  public tabv: string;
 
-  constructor() { }
+  public messages: any[];
+  public msgNumber: number;
+  // public loadingFlag: boolean = false;
+
+  constructor(private dashboardService: DashboardService) { }
 
   ngOnInit() {
-    this.tabv = "Message"
-    this.tabs=[
-      {
-        display: "Messages",
-        value: "Message",
-        number: 5,
-      },
-      {
-        display: "Backlogs",
-        value: "Backlog",
-        number: 4,
-      }
-    ]
+    // this.loadingFlag = true;
+    this.getMessage()
   }
 
-  switchTab(value: string) {
-    this.tabv = value    
-    console.log(value)
+  getMessage() {
+    this.dashboardService.getMessage().subscribe(
+      res => {
+        console.log('message', res)
+        this.messages = res['data'];
+        // this.msgNumber = res['data'].length;
+        // this.loadingFlag = false;
+      },
+      err => {
+        console.log("err", err);
+      }
+    )
   }
-  
 }
