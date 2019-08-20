@@ -228,7 +228,6 @@ export class TrialConfirmationComponent implements OnInit {
         }
       );
     } else {
-      console.log(data);
       this.courseService
         .rearrangeCourse(localStorage.getItem("userID"), data)
         .subscribe(
