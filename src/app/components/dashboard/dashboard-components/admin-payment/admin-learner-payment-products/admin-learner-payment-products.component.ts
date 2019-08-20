@@ -122,7 +122,7 @@ export class AdminLearnerPaymentProductsComponent implements OnInit {
                 this.router.navigate(['../success'],{relativeTo: this.activatedRouter});
               },
               error => {
-                this.errorMsg = JSON.parse(error.error);
+                this.errorMsg = error.error;
                 console.log("Error!", this.errorMsg.ErrorCode);
                 this.errorAlert = true;
               }
