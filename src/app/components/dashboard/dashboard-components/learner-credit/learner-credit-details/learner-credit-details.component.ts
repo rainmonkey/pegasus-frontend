@@ -55,6 +55,7 @@ export class LearnerCreditDetailsComponent implements OnInit {
     this.learnerService.getRemainingCourses(this.learnerId).subscribe(
       data => {
         this.remainingCourseData = data["Data"];
+        console.log(this.remainingCourseData);
         this.remainingDataWaitingFlag = false;
       },
       error => console.log(error)

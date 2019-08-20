@@ -32,21 +32,23 @@
               <td>{{ i.NewLesson.beginDate | date: "dd/MM/yyyy, h:mm a" }}</td>
               <td>
                 <span
-                  *ngIf="i.IsActive"
+                  class="t_info_table_btn"
+                  title="Reschedule a Session"
+                  (click)="
+                    i.IsActive
+                      ? navigateToArrange(j)
+                      : alertForNoRemainingCourse()
+                  "
+                  style="cursor:pointer"
+                  ><span class="fas fa-calendar-week"></span
+                ></span>
+                <!-- <span
                   class="t_info_table_btn"
                   title="Reschedule a Session"
                   (click)="navigateToArrange(j)"
                   style="cursor:pointer"
                   ><span class="fas fa-calendar-week"></span
-                ></span>
-                <span
-                  *ngIf="!i.IsActive"
-                  class="t_info_table_btn"
-                  title="Reschedule a Session"
-                  (click)="alertForNoRemainingCourse()"
-                  style="cursor:pointer"
-                  ><span class="fas fa-calendar-week"></span
-                ></span>
+                ></span> -->
               </td>
             </tr>
           </tbody>
@@ -55,7 +57,6 @@
     </ngb-panel>
     <ngb-panel id="2" title="Scheduled Sessiones">
       <ng-template ngbPanelContent>
-        <!-- Last name: {{this.data.LastName}} -->
         <span *ngIf="arrangeDataWaitingFlag">Loading...</span>
         <table
           *ngIf="!arrangeDataWaitingFlag"
