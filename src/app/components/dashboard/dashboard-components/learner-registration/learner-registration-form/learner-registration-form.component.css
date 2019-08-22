@@ -29,6 +29,10 @@
   margin: 0px;
 }
 
+.selectedBtn{
+  box-shadow: 0 0 0 0.2rem rgba(121, 106, 238, 0.5);
+}
+
 /* .gourpFontSize{
   font-size: 10px
 } */

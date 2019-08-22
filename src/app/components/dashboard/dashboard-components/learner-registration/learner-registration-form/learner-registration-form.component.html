@@ -11,8 +11,8 @@
   <div class="tab-content">
     <div id="learnerForm" *ngIf="addCourse == undefined">
       <ul class="learnerForm__nav nav nav-tabs my-3">
-        <li><a class="nav-link active">Learner</a></li>
-        <li><a class="nav-link disabled">Guardian</a></li>
+        <li><a class="nav-link active">Student</a></li>
+        <li><a class="nav-link disabled">Parents</a></li>
         <li *ngIf="!whichLearner"><a class="nav-link disabled">Course</a></li>
       </ul>
       <div formGroupName="learnerForm" class="card">
@@ -237,8 +237,8 @@
     <!-- ----parent Form---- -->
     <div id="parentForm" *ngIf='addCourse == undefined'>
       <ul class="parentForm__nav nav nav-tabs my-3">
-        <li><a class="nav-link disabled">Learner</a></li>
-        <li><a class="nav-link active">Guardian</a></li>
+        <li><a class="nav-link disabled">Student</a></li>
+        <li><a class="nav-link active">Parent</a></li>
         <li *ngIf="!whichLearner"><a class="nav-link disabled">Course</a></li>
       </ul>
       <div formArrayName="parentForm">
@@ -314,13 +314,13 @@
     <!-- -----courseForm html----- -->
     <div id="courseForm">
       <ul class="courseForm__nav nav nav-tabs my-3">
-        <li *ngIf='!addCourse'><a class="nav-link disabled">Learner</a></li>
-        <li *ngIf='!addCourse'><a class="nav-link disabled">Guardian</a></li>
+        <li *ngIf='!addCourse'><a class="nav-link disabled">Student</a></li>
+        <li *ngIf='!addCourse'><a class="nav-link disabled">Parents</a></li>
         <li><a class="nav-link active">Course</a></li>
       </ul>
       <div>
-        <button (click)="chooseGroupCourse()" class='btn btn-outline-primary'>Group Course</button>
-        <button (click)="chooseCustomCourse()" class='btn btn-outline-primary'>One-on-One Course</button>
+        <button (click)="chooseGroupCourse()" class='btn btn-outline-primary' [ngStyle]="{'selectedBtn':chooseGroupCourse}">Group Course</button>
+        <button (click)="chooseCustomCourse()" class='btn btn-outline-primary'  [ngStyle]="{'selectedBtn':chooseCustomCourse}">One-on-One Course</button>
       </div>
 
       <div class="card" *ngIf="isGroupCourse">
