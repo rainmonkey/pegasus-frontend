@@ -32,14 +32,7 @@ export class NotificationPopupComponent implements OnInit {
   ngOnInit() {
     this.staffId = +localStorage.getItem("staffId")
     this.getMessages(this.staffId);
-    // this.getCloseNotification();
   }
-  // getCloseNotification() {
-  //   this.subscription = this.dashboardService.popup$.subscribe(
-  //     res => this.closeNotification = res,
-  //     err => alert("Oops, something went wrong!")
-  //   )
-  // }
   getMessages(staffId: number) {
     this.dashboardService.getMessages(staffId).subscribe(
       res => {
