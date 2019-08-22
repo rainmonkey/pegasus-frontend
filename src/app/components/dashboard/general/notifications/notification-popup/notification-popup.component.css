@@ -49,7 +49,7 @@
   padding: 5px 0px 0px 16px;
   display: flex;
   flex-wrap: wrap;
-  max-height: 80px;
+  max-height: 200px;
   color: rgba(0, 0, 0, 0.65);
 }
 .isScroll {
