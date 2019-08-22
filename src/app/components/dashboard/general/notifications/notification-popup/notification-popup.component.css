@@ -49,12 +49,9 @@
   padding: 5px 0px 0px 16px;
   display: flex;
   flex-wrap: wrap;
-  max-height: 200px;
+  max-height: 1000px;
   color: rgba(0, 0, 0, 0.65);
   border-bottom: 0.5px solid rgba(173, 171, 171, 0.5);
-}
-.isScroll {
-  overflow: scroll;
 }
 .tab__content ul:hover {
   cursor: pointer;
