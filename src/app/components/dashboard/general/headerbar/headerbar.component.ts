@@ -15,7 +15,7 @@ import { Subscription } from 'rxjs';
 })
 export class HeaderbarComponent implements OnInit {
   // property from notification-popup component, for clearing red spot in top right corner
-  public isCleared: boolean = true;
+  public isCleared: boolean;
   // show messages number in real time
   public msgNumber: number;
   // get close notification command from behavior subject
@@ -88,7 +88,9 @@ export class HeaderbarComponent implements OnInit {
   getMsgNumber(staffId: number) {
     this.dashboardService.getMessages(staffId).subscribe(
       res => {
+
         this.msgNumber = res['Data'].length;
+        console.log(this.msgNumber)
       },
       err => alert("Oops, something went wrong!")
     )

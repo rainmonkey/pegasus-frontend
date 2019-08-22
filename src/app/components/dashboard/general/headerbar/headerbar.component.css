@@ -200,6 +200,8 @@ nav.navbar .dropdown-menu h3 {
   height: 30px;
   background: white;
   mask-size: cover;
+  position: relative;
+  top: 5px;
 }
 .msg-number {
   display: block;
@@ -208,8 +210,8 @@ nav.navbar .dropdown-menu h3 {
   background: red;
   border-radius: 50%;
   position: relative;
-  bottom: 45px;
-  left: 13px;
+  bottom: 40px;
+  left: 14px;
   text-align: center;
 }
 .icon:hover {
