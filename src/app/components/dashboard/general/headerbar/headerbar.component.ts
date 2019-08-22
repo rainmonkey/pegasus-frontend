@@ -90,7 +90,6 @@ export class HeaderbarComponent implements OnInit {
       res => {
 
         this.msgNumber = res['Data'].length;
-        console.log(this.msgNumber)
       },
       err => alert("Oops, something went wrong!")
     )
