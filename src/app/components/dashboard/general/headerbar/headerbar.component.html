@@ -34,11 +34,15 @@
         </div>
       </li>
       <!-- notifications -->
-      <li class="nav-item-notification" ngbDropdown [autoClose]="outside">
-        <a (click)="handlePopup()"><img class="notification-bell"
-            src="../../../../../assets/images/shared/notification-bell.svg" alt="notification-bell"></a>
+      <li class="nav-item-notification">
+        <a (click)="handleNotificationPopup($event)">
+          <span class="icon icon-bell"></span>
+          <span class="msg-number" [class.invisible]="isCleared">{{msgNumber}}</span>
+        </a>
         <!-- dropdown menu -->
-        <app-notification-popup [isPopup]="isPopup"></app-notification-popup>
+        <app-notification-popup [closeNotification]="closeNotification" (sendMsgNumber)="msgNumber = $event"
+          (sendIsCleared)="isCleared = $event">
+        </app-notification-popup>
       </li>
       <!-- logout -->
       <li class="nav-item d-none d-lg-block">

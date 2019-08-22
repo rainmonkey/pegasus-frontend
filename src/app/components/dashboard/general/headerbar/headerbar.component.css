@@ -48,10 +48,6 @@ nav.navbar .badge {
   width: 42px;
   height: 42px;
 }
-.nav-item-notification img {
-  width: 30px;
-  height: 42px;
-}
 
 nav.navbar a {
   color: inherit;
@@ -196,36 +192,36 @@ nav.navbar .dropdown-menu h3 {
 .bg-orange:hover {
   color: #fff;
 }
-/* notification icon */
-/* .nav-item-notification {
-  position: relative;
-  margin: 5px 5px;
-} */
-/* .nav-notice-bell {
-  color: white;
+
+/* bell icon */
+.icon {
+  display: inline-block;
+  width: 28px;
+  height: 30px;
+  background: white;
+  mask-size: cover;
 }
-.nav-notice-bell:hover {
-  cursor: pointer;
-  color: darkgray;
-}
-.nav-notice-msg {
-  height: 15px;
-  width: 15px;
+.msg-number {
+  display: block;
+  width: 20px;
+  height: 20px;
+  background: red;
   border-radius: 50%;
-  background-color: red;
-  position: absolute;
-  left: 20px;
-  bottom: 30px;
+  position: relative;
+  bottom: 45px;
+  left: 13px;
+  text-align: center;
 }
-i.nav-notice-bell.dropdown-toggle::after {
-  border: none;
-  content: none;
-} */
-.nav-item-notification {
-  width: 40px;
-}
-.nav-item-notification:hover {
+.icon:hover {
+  background: rgb(104, 102, 102);
   cursor: pointer;
 }
-.notification-popup {
+.icon-bell {
+  mask: url("../../../../../assets/images/shared/notification-bell.svg");
+  mask-repeat: no-repeat;
+}
+/* notification */
+.nav-item-notification {
+  max-width: 40px;
+  max-height: 40px;
 }
