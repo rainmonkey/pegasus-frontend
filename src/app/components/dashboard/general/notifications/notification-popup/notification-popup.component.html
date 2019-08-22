@@ -4,7 +4,7 @@
   </div>
   <div *ngIf="!isCleared" class="tab__content">
     <ul *ngFor="let msg of messages; let i = index" (click)="handleIsRead(msg)"
-      [ngClass]="{'isRead': msg.IsRead === 0}">
+      [ngClass]="{'isRead': msg.IsRead === 0, 'isScroll': msg.Notice.length > 28}">
       <li>
         <span>From {{msg.FirstName}}</span>
       </li>
