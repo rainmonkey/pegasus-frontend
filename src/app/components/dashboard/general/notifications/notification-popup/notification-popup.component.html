@@ -1,22 +1,28 @@
-<div class="tab-container" [class.d-none]="!isPopup">
-  <!-- <div *ngIf='loadingFlag'>
-    <div class="loaderLarge"></div>
-  </div> -->
-  <!-- <div *ngIf='!loadingFlag'> -->
-  <div>
-    <div class="tab__header">
-      <span class="tab__label">Messages</span>
-      <span>({{msgNumber}})</span>
-    </div>
-    <div class="tab__content">
-      <div *ngFor="let msg of messages; let i = index">
-        <p>Sender: {{msg.sender}}</p>
-        <p>Content: {{msg.content}}</p>
-        <p>Send At: {{msg.sendAt}}</p>
-      </div>
-    </div>
-    <div class="tab__footer">
-      <button class="clear__btn bg-info">Clear Msgs</button>
-    </div>
+<div class="tab-container" [class.d-none]="closeNotification" (click)="stopCloseNotification($event)">
+  <div class="tab__header">
+    <p class="tab__label">You have {{msgNumber? msgNumber : 0}} new messages</p>
+  </div>
+  <div *ngIf="!isCleared" class="tab__content">
+    <ul *ngFor="let msg of messages; let i = index" (click)="handleIsRead(msg)"
+      [ngClass]="{'isRead': msg.IsRead === 0}">
+      <li>
+        <span>From {{msg.FirstName}}</span>
+      </li>
+      <li class="tab__content__msg d-flex">
+        <span *ngIf="msg.ReadMore">{{msg.SliceMsg? msg.SliceMsg: msg.Notice}}</span>&nbsp;&nbsp;
+        <span *ngIf="msg.ReadMore" (click)="readMore(i)" class="tab__read__more">. . .</span>
+        <span *ngIf="!msg.ReadMore">{{msg.Notice}}</span>
+        <span *ngIf="!msg.ReadMore && msg.SliceMsg" (click)="hiddenRestMsg(i)"
+          class="tab__packup align-self-end">Up&nbsp;&uarr;</span>
+      </li>
+      <li>{{msg.CreatedAt | relativeTime}}</li>
+    </ul>
+  </div>
+  <div *ngIf="isCleared" class="tab__content__clear">
+    <img src="https://gw.alipayobjects.com/zos/rmsportal/sAuJeJzSKbUmHfBQRzmZ.svg" alt="not found">
+    <p>Messages already cleared</p>
+  </div>
+  <div *ngIf="hiddenClearBtn" class="tab__footer">
+    <p class="tab__clear" (click)="clearMsg()">Clear All Messages</p>
   </div>
 </div>
