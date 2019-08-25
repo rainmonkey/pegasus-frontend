@@ -319,8 +319,8 @@
         <li><a class="nav-link active">Course</a></li>
       </ul>
       <div>
-        <button (click)="chooseGroupCourse()" class='btn btn-outline-primary' [ngStyle]="{'selectedBtn':chooseGroupCourse}">Group Course</button>
-        <button (click)="chooseCustomCourse()" class='btn btn-outline-primary'  [ngStyle]="{'selectedBtn':chooseCustomCourse}">One-on-One Course</button>
+        <button (click)="chooseGroupCourse()" class='btn btn-outline-primary mr-2' [ngClass]="{'selectedBtn':isGroupCourse}">Group Course</button>
+        <button (click)="chooseCustomCourse()" class='btn btn-outline-primary'  [ngClass]="{'selectedBtn':isCustomCourse}">One-on-One Course</button>
       </div>
 
       <div class="card" *ngIf="isGroupCourse">

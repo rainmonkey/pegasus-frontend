@@ -30,7 +30,10 @@
 }
 
 .selectedBtn{
-  box-shadow: 0 0 0 0.2rem rgba(121, 106, 238, 0.5);
+  box-shadow: 0 0 0 0.2rem #007BFF;
+  color: white;
+  background-color: #007BFF;
+  border-color: #007BFF;
 }
 
 /* .gourpFontSize{
