@@ -46,7 +46,7 @@ export class SessionTrialModalComponent implements OnInit {
   private isError: boolean = false;
   public isLoading: boolean = false;
   private isSuccess: boolean = false;
-  private teachers: [] ;
+  private teachers:any ;
   private teacherId: number ;
   constructor(
     private routerInfo: ActivatedRoute,
@@ -110,7 +110,6 @@ export class SessionTrialModalComponent implements OnInit {
       " " +
       new Date(endTimeStamp).toLocaleDateString();
     this.courseName = "Trial  Course";
-
 
     this.avaliableCourses = this.getAvaliableCourses(courses);
     this.coursePrice = this.avaliableCourses[0]["Price"] + this.extraFee;
