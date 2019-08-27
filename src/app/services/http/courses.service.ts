@@ -153,4 +153,8 @@ export class CoursesService {
   rearrangeCourse(id, data) {
     return this.http.post(this.baseUrl + "Session/" + id, data);
   }
+  //regist and book course
+  registAndTrial( data) {
+  return this.http.post(this.baseUrl + "TrialLesson/RegistTrial" , data);
+}  
 }
