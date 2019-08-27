@@ -11,6 +11,7 @@ import { LearnerAddModalComponent } from '../learner-add-modal/learner-add-modal
 import { LearnerDeleteCourseModalComponent } from '../learner-delete-course-modal/learner-delete-course-modal.component';
 import { NewLearnerRegistrationModalComponent } from '../New-Learner-Registration-modal/New-Learner-Registration-modal.component';
 import { RegistrationToParentComponent } from '../registration-To-parent/registration-To-parent.component';
+import { LearnerRegistrationFormComponent } from '../../learner-registration/learner-registration-form/learner-registration-form.component'
 @Component({
   selector: 'app-admin-learner-list',
   templateUrl: './admin-learner-list.component.html',
@@ -38,7 +39,9 @@ export class AdminLearnerListComponent implements OnInit {
   public currentPage: number = 1;
   public pageSize: number = 10;
   public loadingFlag: boolean = false;
-
+  // save users searched name
+  public savedName;
+  public savedOpt;
   // // sent active modal confirm satuation to admin learner component;
 
   // @Output() activeModalEvent: EventEmitter<any> = new EventEmitter;
@@ -52,11 +55,12 @@ export class AdminLearnerListComponent implements OnInit {
 
   ngOnInit() {
     this.loadingFlag = true;
-    this.getDataFromServer()
+    this.getDataFromServer();
   }
 
   //get data from server
   getDataFromServer() {
+    console.log('ajfoi')
     this.LearnerListService.getLearnerList().subscribe(
       (res) => {
         //@ts-ignore
@@ -66,6 +70,9 @@ export class AdminLearnerListComponent implements OnInit {
         //@ts-ignore
         this.learnerListLength = res.Data.length;
         this.loadingFlag = false;
+        if(this.savedName){
+          console.log(this.savedName)
+          this.searchAuto();}
       },
       (err) => {
         console.log('b')
@@ -94,15 +101,22 @@ export class AdminLearnerListComponent implements OnInit {
       let searchBy: string;
       let searchingInputObj = document.getElementById('searchingInput');
       let optionsObj = document.getElementById('searchOption');
-
-      (initValue == undefined) ? { searchString, searchBy } = { searchString: searchingInputObj['value'], searchBy: optionsObj['value'] } :
+      this.savedName = searchingInputObj['value'];
+      this.savedOpt = optionsObj['value'];
+      (initValue == undefined) ? { searchString, searchBy } = { searchString: this.savedName, searchBy: optionsObj['value'] } :
         { searchString, searchBy } = initValue;
 
       this.learnerList = this.ngTable.searching(this.learnerListCopy, searchBy, searchString);
       this.learnerListLength = this.learnerList.length;
       optionsObj['value'] = searchBy;
     }
-
+  }
+  // get memory of user searched name
+  searchAuto(){
+    this.learnerList = this.ngTable.searching(this.learnerListCopy, this.savedOpt, this.savedName);
+    this.learnerListLength = this.learnerList.length;
+    this.savedOpt = this.savedOpt;
+    console.log(this.learnerList)
   }
 
   /*
@@ -244,6 +258,7 @@ export class AdminLearnerListComponent implements OnInit {
         that.ngOnInit();
       }
     })
+
   }
 
   /*
@@ -314,6 +329,29 @@ export class AdminLearnerListComponent implements OnInit {
       }
     )
     modalRef.componentInstance.whichLearner = whichLearner;
+  }
+
+  regiModal(command,whichLearner) {
+    //@ts-ignore
+    const modalRef = this.modalService.open(LearnerEditModalComponent, { size: 'xl', backdrop: 'static', keyboard: false });
+
+    let that = this;
+    modalRef.result.then(
+      (res) => {
+        that.ngOnInit()
+      },
+      (err) => {
+        return
+      }
+    )
+    modalRef.componentInstance.command = command;
+    modalRef.componentInstance.whichLearner = whichLearner;
+    modalRef.componentInstance.signalForInit.subscribe(res => {
+      if (res == true) {
+        that.ngOnInit();
+      }
+    })
+
   }
 
   openRegModal(command, whichLearner) {

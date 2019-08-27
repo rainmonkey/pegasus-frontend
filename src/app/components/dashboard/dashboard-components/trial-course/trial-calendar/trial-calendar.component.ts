@@ -37,6 +37,8 @@ export class TrialCalendarComponent implements OnInit {
   @Input() durationType: number;
   @Input() LearnerId: number;
   arrangeFlag: boolean;
+  @Input() courseLevel: number;
+  @Input() courseInstanceId: number;
 
   constructor(
     private modalService: NgbModal,
@@ -70,7 +72,6 @@ export class TrialCalendarComponent implements OnInit {
         return val;
       });
       this.timeSlots = this.calculateAvaliableTimeSlots(res[1]["Data"]);
-
       this.initializeFullCalendar(coursesSlots, this.timeSlots);
     });
   }
@@ -252,32 +253,28 @@ export class TrialCalendarComponent implements OnInit {
                   )}, which has been occupied by other course, please select another time.`
               );
             } else {
-              if (!this.arrangeFlag) {
-                this.userSelectedTime.emit(info.dateStr.split("+")[0]);
-                this.activeModal.close();
-              } else {
-                const offsetDate = new Date(
-                  +info.date +
-                    this.duration -
-                    new Date().getTimezoneOffset() * 60000
-                );
-                const dateStr = new Date(+info.date + this.duration)
-                  .toString()
-                  .split("+")[1]
-                  .split(" ")[0];
+              const offsetDate = new Date(
+                +info.date +
+                  this.duration -
+                  new Date().getTimezoneOffset() * 60000
+              );
+              const dateStr = new Date(+info.date + this.duration)
+                .toString()
+                .split("+")[1]
+                .split(" ")[0];
 
-                const newDateStr = dateStr.slice(0, 2) + ":" + dateStr.slice(2);
-                this.popUpConfirmationModal(
-                  +info.date,
-                  +info.date + this.duration,
-                  info.dateStr,
-                  offsetDate.toISOString().slice(0, length - 5) +
-                    "+" +
-                    newDateStr
-                );
-              }
+              const newDateStr = dateStr.slice(0, 2) + ":" + dateStr.slice(2);
+              this.popUpConfirmationModal(
+                +info.date,
+                +info.date + this.duration,
+                info.dateStr,
+                offsetDate.toISOString().slice(0, length - 5) + "+" + newDateStr
+              );
             }
           }
+        } else if (this.selectMode) {
+          this.userSelectedTime.emit(info.dateStr.split("+")[0]);
+          this.activeModal.close();
         }
       },
       plugins: [timeGridPlugin, interactionPlugin]
@@ -342,7 +339,9 @@ export class TrialCalendarComponent implements OnInit {
       startStr,
       endStr,
       LearnerId: this.LearnerId,
-      arrangeFlag: this.arrangeFlag
+      arrangeFlag: this.arrangeFlag,
+      courseLevel: this.courseLevel,
+      courseInstanceId: this.courseInstanceId
     };
     modalRef.componentInstance.isClosed.subscribe(res => {
       this.activeModal.close("Close click");

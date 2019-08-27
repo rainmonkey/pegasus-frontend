@@ -47,7 +47,7 @@ export class TrialFilterComponent implements OnInit {
     private transactionService: TransactionService,
     private activatedRoute: ActivatedRoute,
     private el: ElementRef
-  ) { }
+  ) {}
 
   ngOnInit() {
     if (this.arrangeFlag) {
@@ -125,14 +125,13 @@ export class TrialFilterComponent implements OnInit {
 
     // day of week filter tags processor
     if (operationIndex === 3) {
-
       // if a day of week already selected
       if (this.filterString.length >= 3) {
         return;
       }
       // if no day of week tag selected
       else {
-        if(this.isClickDisabled){
+        if (this.isClickDisabled) {
           return;
         }
         this.isClickDisabled = true;
@@ -220,12 +219,6 @@ export class TrialFilterComponent implements OnInit {
       }
     });
 
-    if (this.arrangeFlag) {
-      array0[0] = array0[0].filter(
-        el => el.Level === this.courseDetail.Course.TeacherLevel
-      );
-    }
-
     this.teachersList = array0;
   }
 
@@ -284,7 +277,9 @@ export class TrialFilterComponent implements OnInit {
     modalRef.componentInstance.courseCategoryName = this.cateName;
     if (this.arrangeFlag) {
       modalRef.componentInstance.LearnerId = this.courseDetail.LearnerId;
+      modalRef.componentInstance.courseLevel = this.courseDetail.Course.Level;
       modalRef.componentInstance.durationType = this.courseDetail.Course.Duration;
+      modalRef.componentInstance.courseInstanceId = this.courseDetail.CourseInstanceId;
     }
   }
 

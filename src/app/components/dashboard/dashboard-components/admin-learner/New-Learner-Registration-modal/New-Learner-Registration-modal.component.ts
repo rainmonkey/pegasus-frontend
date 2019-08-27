@@ -123,7 +123,7 @@ export class NewLearnerRegistrationModalComponent implements OnInit {
   onClose(command,whichLearner) {
     if ( this.submit==true || this.updateFormObj.registrationForm.dirty == true) {
       this.refreshFlag.emit(true);
-      if(command == 1){
+      if(command == 1 && this.submit == true){
        //@ts-ignore
       const modalRef = this.modalService.open(RegistrationToParentComponent, { size: 'xl', backdrop: 'static', keyboard: false });
       modalRef.componentInstance.command = command;

@@ -1,5 +1,6 @@
 import { style } from "@angular/animations";
 import { Component, OnInit, Input, Output, EventEmitter } from "@angular/core";
+import { CoursesService } from "src/app/services/http/courses.service";
 import { NgbActiveModal } from "@ng-bootstrap/ng-bootstrap";
 import { TrialCoursesService } from "src/app/services/http/trial-courses.service";
 import { forkJoin } from "rxjs";
@@ -51,6 +52,7 @@ export class TrialConfirmationComponent implements OnInit {
     public activeModal: NgbActiveModal,
     private trialService: TrialCoursesService,
     private downloadPDFService: DownloadPDFService,
+    private courseService: CoursesService,
     private router: Router
   ) {}
 
@@ -172,6 +174,11 @@ export class TrialConfirmationComponent implements OnInit {
       });
       array = arr;
     }
+    if (this.confirmationData.arrangeFlag) {
+      array = array.filter(
+        el => el["Level"] === this.confirmationData.courseLevel
+      );
+    }
     return array;
   }
 
@@ -179,7 +186,7 @@ export class TrialConfirmationComponent implements OnInit {
    * Display payment methods options when user click 'Pay Now' button.
    */
   displayPayment() {
-    if(this.isPayNow){
+    if (this.isPayNow) {
       this.isPayNow = false;
     }
     if (this.haspaid) {
@@ -196,7 +203,7 @@ export class TrialConfirmationComponent implements OnInit {
    * Select the payment method
    * @param event - event obj
    */
-  selectPaymentMethod(event){
+  selectPaymentMethod(event) {
     this.isPayNow = true;
   }
   /**
@@ -206,41 +213,70 @@ export class TrialConfirmationComponent implements OnInit {
     event.target.disabled = true;
     this.isSubmitting = true;
     const data = this.prepareSubmitionData();
-    this.trialService.postTrialCourse(data).subscribe(
-      res => {
-        this.isSubmitting = false;
-        this.isError = false;
-        this.isSuccess = true;
-      },
-      err => {
-        this.isSubmitting = false;
-        this.isSuccess = false;
-        this.isError = true;
-        event.target.disabled = false;
-      }
-    );
+    if (!this.confirmationData.arrangeFlag) {
+      this.trialService.postTrialCourse(data).subscribe(
+        res => {
+          this.isSubmitting = false;
+          this.isError = false;
+          this.isSuccess = true;
+        },
+        err => {
+          this.isSubmitting = false;
+          this.isSuccess = false;
+          this.isError = true;
+          event.target.disabled = false;
+        }
+      );
+    } else {
+      this.courseService
+        .rearrangeCourse(localStorage.getItem("userID"), data)
+        .subscribe(
+          res => {
+            this.isSubmitting = false;
+            this.isError = false;
+            this.isSuccess = true;
+          },
+          err => {
+            this.isSubmitting = false;
+            this.isSuccess = false;
+            this.isError = true;
+            event.target.disabled = false;
+          }
+        );
+    }
   }
 
   /**
    * Prepare submition data.
    */
   prepareSubmitionData() {
-    let data: IData;
-    data = {
-      LearnerId: Number(this.learnerId),
-      RoomId: Number(this.getRoomIdValue()),
-      TeacherId: this.confirmationData.teacherId,
-      OrgId: this.confirmationData.orgId,
-      BeginTime: this.formatDate(this.confirmationData.startStr),
-      EndTime: this.formatDate(this.confirmationData.endStr),
-      PaymentMethod: this.getPaymentIdValue(),
-      Amount: this.coursePrice,
-      StaffId: Number(localStorage.userID),
-      TrialCourseId: this.trialCourseId,
-      IsPayNow: this.isPayNow
-    };
-    console.log(data)
-    return data;
+    if (!this.confirmationData.arrangeFlag) {
+      let data: IData;
+      data = {
+        LearnerId: Number(this.learnerId),
+        RoomId: Number(this.getRoomIdValue()),
+        TeacherId: this.confirmationData.teacherId,
+        OrgId: this.confirmationData.orgId,
+        BeginTime: this.formatDate(this.confirmationData.startStr),
+        EndTime: this.formatDate(this.confirmationData.endStr),
+        PaymentMethod: this.getPaymentIdValue(),
+        Amount: this.coursePrice,
+        StaffId: Number(localStorage.userID),
+        TrialCourseId: this.trialCourseId,
+        IsPayNow: this.isPayNow
+      };
+      return data;
+    } else {
+      const data: any = {};
+      data.LearnerId = Number(this.learnerId);
+      data.TeacherId = this.confirmationData.teacherId;
+      data.RoomId = Number(this.getRoomIdValue());
+      data.OrgId = this.confirmationData.orgId;
+      data.BeginTime = this.formatDate(this.confirmationData.startStr);
+      data.Reason = "reschedule";
+      data.CourseInstanceId = this.confirmationData.courseInstanceId;
+      return data;
+    }
   }
 
   getRoomIdValue() {
@@ -348,6 +384,8 @@ export interface IConfirmData {
   endStr: string;
   LearnerId: number;
   arrangeFlag: boolean;
+  courseLevel: number;
+  courseInstanceId: number;
 }
 
 export interface IData {
