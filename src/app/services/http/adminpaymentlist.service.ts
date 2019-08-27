@@ -19,7 +19,7 @@ export class AdminpaymentlistService {
   getPaymentType() {
     return this.http.get(this.baseUrl + 'lookups/14');
   }
-  updateConfirm(data, paymentId):any{
-    return this.http.put(this.baseUrl + 'Payment/'+ paymentId, data);
+  updateConfirm(paymentId, data):any{
+    return this.http.put(this.baseUrl + 'Payment/' + paymentId + '/' + data, null);
   }
 }
