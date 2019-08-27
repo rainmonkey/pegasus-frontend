@@ -162,7 +162,7 @@ import { NotificationPopupComponent } from './components/dashboard/general/notif
 import { TrialInfoComponent } from './components/dashboard/dashboard-components/trial-course/trial-info/trial-info.component';
 import { RegistrationToParentComponent } from './components/dashboard/dashboard-components/admin-learner/registration-To-parent/registration-To-parent.component';
 import { ParentRegistrationFormComponent } from './components/dashboard/dashboard-components/admin-learner/parent-Registration-Form/parent-Registration-Form.component';
-
+import { RelativeTimePipe } from "./shared/pipes/relative-time.pipe";
 @NgModule({
   declarations: [
     PageGroupFormComponent,
@@ -236,6 +236,7 @@ import { ParentRegistrationFormComponent } from './components/dashboard/dashboar
     SessionCompletedModalComponent,
     GenderPipe,
     RelationshipPipe,
+    RelativeTimePipe,
     ColumnTitleFormatPipe,
     MondayDateInWeekByDatePipe,
     CourseClassListComponent,
@@ -294,22 +295,22 @@ import { ParentRegistrationFormComponent } from './components/dashboard/dashboar
     StockApplicationFormComponent,
     PayListComponent,
 
-  //  new registration
-  NewLearnerRegistrationModalComponent,
-  NewRegistrationFormComponent,
-  RegistrationToParentComponent,
-  ParentRegistrationFormComponent,
-  TutorsInfomationComponent,
-  StockApplicationReplyModalComponent,
-  StockApplicationDeliverModalComponent,
-  StockApplicationReceiveModalComponent,
-  StockApplicationProcessStatusComponent,
-  TrialFilterComponent,
-  TeacherLevelPipe,
-  StockApplicationProcessModalComponent,
-  TrialCalendarComponent,
-  NotificationPopupComponent,
-  TrialConfirmationComponent,
+    //  new registration
+    NewLearnerRegistrationModalComponent,
+    NewRegistrationFormComponent,
+    RegistrationToParentComponent,
+    ParentRegistrationFormComponent,
+    TutorsInfomationComponent,
+    StockApplicationReplyModalComponent,
+    StockApplicationDeliverModalComponent,
+    StockApplicationReceiveModalComponent,
+    StockApplicationProcessStatusComponent,
+    TrialFilterComponent,
+    TeacherLevelPipe,
+    StockApplicationProcessModalComponent,
+    TrialCalendarComponent,
+    NotificationPopupComponent,
+    TrialConfirmationComponent
   ],
   imports: [
     NgbModule,

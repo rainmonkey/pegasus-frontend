@@ -11,8 +11,8 @@
   <div class="tab-content">
     <div id="learnerForm" *ngIf="addCourse == undefined">
       <ul class="learnerForm__nav nav nav-tabs my-3">
-        <li><a class="nav-link active">Learner</a></li>
-        <li><a class="nav-link disabled">Guardian</a></li>
+        <li><a class="nav-link active">Student</a></li>
+        <li><a class="nav-link disabled">Parents</a></li>
         <li *ngIf="!whichLearner"><a class="nav-link disabled">Course</a></li>
       </ul>
       <div formGroupName="learnerForm" class="card">
@@ -21,82 +21,88 @@
             <button class="btn_reset my-3 btn btn-info" (click)="resetLearner()">Reset</button>
           </div>
 
-        <div class='row'>
-          <div class='col-3'>
-            <div class='card img-border'>
-              <div class="card-body">
-                <div class="learnerPhoto">
-                  <label for="photo" style='cursor: pointer; margin-left: -35%' class='custom-file-label'>Choose a photo <span><i class="fas fa-file-upload"></i></span></label>
-                  <input formControlName="photo" style='cursor: pointer' type="file" (change)="uploadPhoto($event)" class='custom-file-input' id="photo" accept="image/*">
+          <div class='row'>
+            <div class='col-3'>
+              <div class='card img-border'>
+                <div class="card-body">
+                  <div class="learnerPhoto">
+                    <label for="photo" style='cursor: pointer; margin-left: -35%' class='custom-file-label'>Choose a
+                      photo <span><i class="fas fa-file-upload"></i></span></label>
+                    <input formControlName="photo" style='cursor: pointer' type="file" (change)="uploadPhoto($event)"
+                      class='custom-file-input' id="photo" accept="image/*">
 
-                  <img src="../../../../../../assets/images/shared/default-employer-profile.png" id='photoID'  alt="ID preview...">
+                    <img src="../../../../../../assets/images/shared/default-employer-profile.png" id='photoID'
+                      alt="ID preview...">
+                  </div>
                 </div>
               </div>
             </div>
-        </div>
 
-          <div class="col-9">
-            <div class="learnerName row">
-              <div class="col-sm-4 col-md-4">
-                <label for="firstName">First Name *</label>
-                <input class="form-control" formControlName="firstName" type="text" id="firstName">
-                <!-- <div *ngIf="firstName.invalid && (firstName.dirty || firstName.touched)" class="text-danger">
+            <div class="col-9">
+              <div class="learnerName row">
+                <div class="col-sm-4 col-md-4">
+                  <label for="firstName">First Name *</label>
+                  <input class="form-control" formControlName="firstName" type="text" id="firstName">
+                  <!-- <div *ngIf="firstName.invalid && (firstName.dirty || firstName.touched)" class="text-danger">
                   <small *ngIf="firstName.errors.required"> First name is required</small>
                 </div> -->
-                <div *ngIf="firstName.invalid && (firstName.dirty || firstName.touched)" class="text-danger">
-                  <small *ngIf="firstName.errors.required"> First name is required</small>
+                  <div *ngIf="firstName.invalid && (firstName.dirty || firstName.touched)" class="text-danger">
+                    <small *ngIf="firstName.errors.required"> First name is required</small>
+                  </div>
+                </div>
+                <div class="col-sm-4 col-md-4">
+                  <label for="middleName">Middle Name</label>
+                  <input class="form-control" formControlName="middleName" type="text" id="middleName">
+                </div>
+                <div class="col-sm-4 col-md-4">
+                  <label for="lastName">Last Name *</label>
+                  <input class="form-control" formControlName="lastName" type="text" id="lastName">
+                  <div *ngIf="lastName.invalid && (lastName.dirty || lastName.touched)" class="text-danger">
+                    <small *ngIf="lastName.errors.required">Last name is required</small>
+                  </div>
                 </div>
               </div>
-              <div class="col-sm-4 col-md-4">
-                <label for="middleName">Middle Name</label>
-                <input class="form-control" formControlName="middleName" type="text" id="middleName">
-              </div>
-              <div class="col-sm-4 col-md-4">
-                <label for="lastName">Last Name *</label>
-                <input class="form-control" formControlName="lastName" type="text" id="lastName">
-                <div *ngIf="lastName.invalid && (lastName.dirty || lastName.touched)" class="text-danger">
-                  <small *ngIf="lastName.errors.required">Last name is required</small>
+              <div class="learnerGender-Birthday row">
+                <div class="col-sm-6 col-md-6">
+                  <label for="gender">Gender *</label>
+                  <select class="form-control" formControlName="gender" id="gender">
+                    <option value="1">male</option>
+                    <option value="2">female</option>
+                  </select>
+                  <div *ngIf="gender.invalid && (gender.dirty || gender.touched)" class="text-danger">
+                    <small>Gender is required</small>
+                  </div>
+                </div>
+                <div class="col-sm-6 col-md-6">
+                  <label for="birthday">Date of Birth</label>
+                  <input class="form-control" formControlName="birthday" type="date" id="birthday"
+                    (blur)="handleIsUnder18($event.target.value)">
                 </div>
               </div>
-            </div>
-            <div class="learnerGender-Birthday row">
-              <div class="col-sm-6 col-md-6">
-                <label for="gender">Gender *</label>
-                <select class="form-control" formControlName="gender" id="gender">
-                  <option value="1">male</option>
-                  <option value="2">female</option>
-                </select>
-                <div *ngIf="gender.invalid && (gender.dirty || gender.touched)" class="text-danger">
-                  <small>Gender is required</small>
+              <div class="enrollmentDate-location row">
+                <div class="col-sm-6 col-md-6">
+                  <label for="enrollmentDate">Date of Enrollment</label>
+                  <input class="form-control" formControlName="enrollmentDate" type="date" id="enrollmentDate">
                 </div>
-              </div>
-              <div class="col-sm-6 col-md-6">
-                <label for="birthday">Date of Birth</label>
-                <input class="form-control" formControlName="birthday" type="date" id="birthday" (blur)="handleIsUnder18($event.target.value)">
-              </div>
-            </div>
-            <div class="enrollmentDate-location row">
-              <div class="col-sm-6 col-md-6">
-                <label for="enrollmentDate">Date of Enrollment</label>
-                <input class="form-control" formControlName="enrollmentDate" type="date" id="enrollmentDate">
-              </div>
-              <div class="col-sm-6 col-md-6">
-                <label for="location">Location *</label>
-                <select class="form-control" formControlName="location" id="location">
-                  <option *ngFor="let location of locations" [value]="location.OrgId">{{location.OrgName}}</option>
-                </select>
+                <div class="col-sm-6 col-md-6">
+                  <label for="location">Location *</label>
+                  <select class="form-control" formControlName="location" id="location">
+                    <option *ngFor="let location of locations" [value]="location.OrgId">{{location.OrgName}}</option>
+                  </select>
+                </div>
               </div>
             </div>
           </div>
-        </div>
           <div class="contactPhone-email row">
             <div class="col-sm-6 col-md-6">
               <label for="contactNum">Contact Phone</label>
-              <input class="form-control" formControlName="contactNum" type="tel" id="contactPhone" (blur)="handleNumChange($event.target.value)">
+              <input class="form-control" formControlName="contactNum" type="tel" id="contactPhone"
+                (blur)="handleNumChange($event.target.value)">
             </div>
             <div class="col-sm-6 col-md-6">
               <label for="email">Email *</label>
-              <input class="form-control" formControlName="email" type="email" id="email" (blur)="handleEmailChange($event.target.value)">
+              <input class="form-control" formControlName="email" type="email" id="email"
+                (blur)="handleEmailChange($event.target.value)">
               <div *ngIf="email.invalid && (email.dirty || email.touched)" class="text-danger">
                 <small *ngIf="email.errors.required">Email is required</small>
                 <small *ngIf="email.errors.email">Email is invalid</small>
@@ -110,7 +116,8 @@
             </div>
             <div class="col-sm-6 col-md-6">
               <label for="learnerLevel">Your Current Level *</label>
-              <select class="form-control" formControlName="learnerLevel" (change)="selectLearnerLevelFun($event.target.value)">
+              <select class="form-control" formControlName="learnerLevel"
+                (change)="selectLearnerLevelFun($event.target.value)">
                 <option *ngFor="let llevel of learnerLevel" [value]="llevel.PropValue">{{llevel.PropName}}</option>
               </select>
               <!-- <div *ngIf="learnerLevel.invalid && (learnerLevel.dirty || learnerLevel.touched)" class="text-danger">
@@ -124,7 +131,8 @@
                       <label class="form-check-label" for="ABRSM">ABRSM</label>
                   </div> -->
                   <div class="form-check">
-                    <input class="form-check-input" (click)="selectLevelType(levelType.PropValue)" type="radio" [value]="levelType.PropValue" formControlName="levelTypeRadio">
+                    <input class="form-check-input" (click)="selectLevelType(levelType.PropValue)" type="radio"
+                      [value]="levelType.PropValue" formControlName="levelTypeRadio">
                     <label class="form-check-label" for="levelType">{{levelType.PropName}}</label>
                   </div>
                 </div>
@@ -145,28 +153,37 @@
             </div>
             <div class="col-sm-12 col-md-12">
               <label>Comments:</label>
-              <textarea style='height:150px;' name="Comment" id="Comment" class='col-12 t_mf_input' formControlName='Comment' maxlength="1000"></textarea>
+              <textarea style='height:150px;' name="Comment" id="Comment" class='col-12 t_mf_input'
+                formControlName='Comment' maxlength="1000"></textarea>
             </div>
           </div>
           <div class='row'>
             <div class="grade my-3 col-6">
-              <label for="grade" class='custom-file-label'>If you have ABRSM Theory Grade 5, please upload.. <span class="fas fa-file-upload"></span></label>
+              <label for="grade" class='custom-file-label'>If you have ABRSM Theory Grade 5, please upload.. <span
+                  class="fas fa-file-upload"></span></label>
 
-              <input formControlName="grade" type="file" (change)="uploadGrade($event)" id="grade" class='custom-file-input' accept="image/*">
+              <input formControlName="grade" type="file" (change)="uploadGrade($event)" id="grade"
+                class='custom-file-input' accept="image/*">
             </div>
             <div class='col-3 row ml-1' [ngStyle]="{'padding-top': imgTextStyle? '0px': '20px'}">
-              <img class='mr-1'  src="" id='certificate'style='height: 64px; image-orientation: from-image' alt="Certificate preview..."> <div *ngIf="showFontOfDoc"><i  class="far fa-file"></i></div>
+              <img class='mr-1' src="" id='certificate' style='height: 64px; image-orientation: from-image'
+                alt="Certificate preview...">
+              <div *ngIf="showFontOfDoc"><i class="far fa-file"></i></div>
             </div>
           </div>
-            <div class='row'>
-              <div class="grade my-3 col-5 mr-2">
-                <label for="grade" #agreement class='custom-file-label'>Enrollment Agreement Upload.. <span><i class="fas fa-file-upload"></i></span></label>
-                <input formControlName="agreement" type="file" (change)="uploadAgreement($event,1)" id="grade" class='custom-file-input' accept="application/msword,application/pdf,image/*">
-              </div>
-              <div class="grade my-3 col-5">
-                <label for="grade" #other class='custom-file-label'>Other File Upload.. <span class="fas fa-file-upload"></span></label>
-                <input formControlName="others" type="file" (change)="uploadAgreement($event,2)" id="grade" class='custom-file-input' accept="application/msword,application/pdf,image/*">
-              </div>
+          <div class='row'>
+            <div class="grade my-3 col-5 mr-2">
+              <label for="grade" #agreement class='custom-file-label'>Enrollment Agreement Upload.. <span><i
+                    class="fas fa-file-upload"></i></span></label>
+              <input formControlName="agreement" type="file" (change)="uploadAgreement($event,1)" id="grade"
+                class='custom-file-input' accept="application/msword,application/pdf,image/*">
+            </div>
+            <div class="grade my-3 col-5">
+              <label for="grade" #other class='custom-file-label'>Other File Upload.. <span
+                  class="fas fa-file-upload"></span></label>
+              <input formControlName="others" type="file" (change)="uploadAgreement($event,2)" id="grade"
+                class='custom-file-input' accept="application/msword,application/pdf,image/*">
+            </div>
           </div>
           <div class="under 18">
             <span class="text-primary">Above 18 years old?</span><br>
@@ -179,7 +196,8 @@
           <div class="learn purpose">
             <span class="text-primary">Why do you learn the piano?</span><br>
             <div class="d-inline-block mx-3" *ngFor="let learnerPurpose of learnerPurpose; let i = index">
-              <input type="checkbox" (click)="selectLearnerPurpose(i, $event)" [value]="learnerPurpose.PropValue" [checked]="learnerPurpose.isChecked">&nbsp;&nbsp;
+              <input type="checkbox" (click)="selectLearnerPurpose(i, $event)" [value]="learnerPurpose.PropValue"
+                [checked]="learnerPurpose.isChecked">&nbsp;&nbsp;
               <label>{{learnerPurpose.PropName}}</label>
             </div>
           </div>
@@ -188,7 +206,8 @@
           <div class="how know us">
             <span class="text-primary">How do you know about us?</span><br>
             <div class="d-inline-block mx-3" *ngFor="let howKnown of howKnown; let i = index">
-              <input type="checkbox" (click)="selectHowKnown(i, $event)" [value]="howKnown.PropValue" [checked]="howKnown.isChecked">&nbsp;&nbsp;
+              <input type="checkbox" (click)="selectHowKnown(i, $event)" [value]="howKnown.PropValue"
+                [checked]="howKnown.isChecked">&nbsp;&nbsp;
               <label>{{howKnown.PropName}}</label>
             </div>
             <!-- <br>
@@ -208,7 +227,7 @@
           </div>
           <!-- <small *ngIf="showErrorH && touchNext" class='text-danger'>Please Select At Least One Option</small> -->
           <div class="button text-right">
-            <button class="btn_next my-3 btn btn-info"  (click)="next('parentForm')">Next</button>
+            <button class="btn_next my-3 btn btn-info" (click)="next('parentForm')">Next</button>
           </div>
           <small *ngIf="!learnerValid" class='text-danger text-right'>Please Fill All Required (*) Field</small>
         </div>
@@ -218,8 +237,8 @@
     <!-- ----parent Form---- -->
     <div id="parentForm" *ngIf='addCourse == undefined'>
       <ul class="parentForm__nav nav nav-tabs my-3">
-        <li><a class="nav-link disabled">Learner</a></li>
-        <li><a class="nav-link active">Guardian</a></li>
+        <li><a class="nav-link disabled">Student</a></li>
+        <li><a class="nav-link active">Parent</a></li>
         <li *ngIf="!whichLearner"><a class="nav-link disabled">Course</a></li>
       </ul>
       <div formArrayName="parentForm">
@@ -233,14 +252,18 @@
               <div class="col-sm-4 col-md-4">
                 <label for="firstName">First Name</label>
                 <input class="form-control" formControlName="firstName" type="text" id="firstName">
-                <div *ngIf="parent.get('firstName').invalid && (parent.get('firstName').dirty || parent.get('firstName').touched)" class="text-danger">
+                <div
+                  *ngIf="parent.get('firstName').invalid && (parent.get('firstName').dirty || parent.get('firstName').touched)"
+                  class="text-danger">
                   <small *ngIf="parent.get('firstName').errors.required">First name is required.</small>
                 </div>
               </div>
               <div class="col-sm-4 col-md-4">
                 <label for="lastName">Last Name</label>
                 <input class="form-control" formControlName="lastName" type="text" id="lastName">
-                <div *ngIf="parent.get('lastName').invalid && (parent.get('lastName').dirty || parent.get('lastName').touched)" class="text-danger">
+                <div
+                  *ngIf="parent.get('lastName').invalid && (parent.get('lastName').dirty || parent.get('lastName').touched)"
+                  class="text-danger">
                   <small *ngIf="parent.get('lastName').errors.required">Last name is required.</small>
                 </div>
               </div>
@@ -251,7 +274,9 @@
                   <option value="2">Mother</option>
                   <option value="3">Other</option>
                 </select>
-                <div *ngIf="parent.get('relationship').invalid && (parent.get('relationship').dirty || parent.get('relationship').touched)" class="text-danger">
+                <div
+                  *ngIf="parent.get('relationship').invalid && (parent.get('relationship').dirty || parent.get('relationship').touched)"
+                  class="text-danger">
                   <small *ngIf="parent.get('relationship').errors.required">Relationship is required.</small>
                 </div>
               </div>
@@ -264,7 +289,8 @@
               <div class="col-sm-6 col-md-6">
                 <label for="email">Email</label>
                 <input class="form-control" formControlName="email" type="email" id="email">
-                <div *ngIf="parent.get('email').invalid && (parent.get('email').dirty || parent.get('email').touched)" style="color: red; margin-bottom: 5px;">
+                <div *ngIf="parent.get('email').invalid && (parent.get('email').dirty || parent.get('email').touched)"
+                  style="color: red; margin-bottom: 5px;">
                   <small *ngIf="parent.get('email').errors.required">Email is required.</small>
                   <small *ngIf="parent.get('email').errors.email">Email is invalid</small>
                 </div>
@@ -278,23 +304,26 @@
       </div>
       <div class="parentForm__button my-3 d-flex justify-content-end">
         <button class="btn_back mx-3 btn btn-info" (click)="next('learnerForm')">Back</button>
-        <button *ngIf="!whichLearner" class="btn_next mx-3 btn btn-info" [disabled]="parentForm.invalid && !this.learnerForm.value.isUnder18" (click)="next('courseForm')">Next</button>
-        <button class="btn_next btn btn-primary" [disabled]="parentForm.invalid && !this.learnerForm.value.isUnder18" (click)="submitInfo()">Submit</button>
+        <button *ngIf="!whichLearner" class="btn_next mx-3 btn btn-info"
+          [disabled]="parentForm.invalid && !this.learnerForm.value.isUnder18"
+          (click)="next('courseForm')">Next</button>
+        <button class="btn_next btn btn-primary" [disabled]="parentForm.invalid && !this.learnerForm.value.isUnder18"
+          (click)="submitInfo()">Submit</button>
       </div>
     </div>
     <!-- -----courseForm html----- -->
     <div id="courseForm">
       <ul class="courseForm__nav nav nav-tabs my-3">
-        <li *ngIf='!addCourse'><a class="nav-link disabled">Learner</a></li>
-        <li *ngIf='!addCourse'><a class="nav-link disabled">Guardian</a></li>
+        <li *ngIf='!addCourse'><a class="nav-link disabled">Student</a></li>
+        <li *ngIf='!addCourse'><a class="nav-link disabled">Parents</a></li>
         <li><a class="nav-link active">Course</a></li>
       </ul>
       <div>
-        <button (click)="chooseGroupCourse()" class='btn btn-outline-primary'>Group Course</button>
-        <button (click)="chooseCustomCourse()" class='btn btn-outline-primary'>One-on-One Course</button>
+        <button (click)="chooseGroupCourse()" class='btn btn-outline-primary mr-1' [ngClass]="{'selectedBtn':isGroupCourse}">Group Course</button>
+        <button (click)="chooseCustomCourse()" class='btn btn-outline-primary'  [ngClass]="{'selectedBtn':isCustomCourse}">One-on-One Course</button>
       </div>
 
-      <div class="card" *ngIf="isGroupCourse" >
+      <div class="card" *ngIf="isGroupCourse">
         <div class="select-group-course container">
           <div class="guitar">
             <table class="table ">
@@ -305,8 +334,8 @@
                   <th class="table" style='width: 200px'>Schedule</th>
                   <th class="table" style='width: 100px'>Location</th>
                   <!-- <th class="table ">Room</th>-->
-                  <th class="table"style='width: 100px'>Teacher</th>
-                  <th class="table"style='width: 150px'>Begin Time</th>
+                  <th class="table" style='width: 100px'>Teacher</th>
+                  <th class="table" style='width: 150px'>Begin Time</th>
                   <th class="table">How to know us</th>
                 </tr>
               </thead>
@@ -314,13 +343,15 @@
 
                 <tr formArrayName="groupCourse" *ngFor="let groupCourse of groupCourseInstance; let i = index">
                   <td class='input-group'>
-                      <label [for]="i" class="input-group-text gourpFontSize">{{groupCourse.Course.CourseName}}
-                      <input class='ml-1' type="checkbox" [id]='i' [checked]="groupCourse.isChecked" (click)="selectCheckboxes(i, $event)" >
-                      </label>
+                    <label [for]="i" class="input-group-text gourpFontSize">{{groupCourse.Course.CourseName}}
+                      <input class='ml-1' type="checkbox" [id]='i' [checked]="groupCourse.isChecked"
+                        (click)="selectCheckboxes(i, $event)">
+                    </label>
                   </td>
 
                   <td>
-                    <p *ngFor="let schedule of groupCourse.schedule" class='gourpFontSize' gourpFontSize>{{schedule.DayOfWeek | weekFormat}}: {{schedule.BeginTime}}-{{schedule.EndTime}}</p>
+                    <p *ngFor="let schedule of groupCourse.schedule" class='gourpFontSize' gourpFontSize>
+                      {{schedule.DayOfWeek | weekFormat}}: {{schedule.BeginTime}}-{{schedule.EndTime}}</p>
                   </td>
                   <td>
                     <div class='gourpFontSize'>{{groupCourse.Org.OrgName}}</div>
@@ -329,20 +360,26 @@
                   <!-- <td>{{groupCourse.Room.RoomName}}</td>-->
                   <td class='input-group'>
                     <div class="input-group-text gourpFontSize">
-                    {{groupCourse.Teacher.FirstName}}
+                      {{groupCourse.Teacher.FirstName}}
                     </div>
                   </td>
-                  <td><input type="date" [ngModelOptions]="{standalone: true}" [(ngModel)]="groupCourseInstance[i].beginDate" class='form-control gourpFontSize'></td>
-                  <td><input type="text" [ngModelOptions]="{standalone: true}" [(ngModel)]="groupCourseInstance[i].comments" class='form-control gourpFontSize'></td>
+                  <td><input type="date" [ngModelOptions]="{standalone: true}"
+                      [(ngModel)]="groupCourseInstance[i].beginDate" class='form-control gourpFontSize'></td>
+                  <td><input type="text" [ngModelOptions]="{standalone: true}"
+                      [(ngModel)]="groupCourseInstance[i].comments" class='form-control gourpFontSize'></td>
                 </tr>
               </tbody>
             </table>
             <div class="text-right">
-              <button *ngIf="addCourse == undefined" class="btn_back mx-3 btn btn-info gourpFontSize" (click)="next('parentForm')">Back</button>
-              <button *ngIf="!addCourse" (click)="onSubmit()" class="btn_submit btn btn-primary gourpFontSize" type="submit">Submit</button>
-              <button *ngIf="addCourse" (click)="onSubmit()" class="btn_submit btn btn-primary gourpFontSize" type="submit">Submit Group Courses</button>
+              <button *ngIf="addCourse == undefined" class="btn_back mx-3 btn btn-info gourpFontSize"
+                (click)="next('parentForm')">Back</button>
+              <button *ngIf="!addCourse" (click)="onSubmit()" class="btn_submit btn btn-primary gourpFontSize"
+                type="submit">Submit</button>
+              <button *ngIf="addCourse" (click)="onSubmit()" class="btn_submit btn btn-primary gourpFontSize"
+                type="submit">Submit Group Courses</button>
 
-              <small *ngIf="!canAddGroup" class='text-danger row justify-content-end gourpFontSize'>You Have To Select At Least One Course</small>
+              <small *ngIf="!canAddGroup" class='text-danger row justify-content-end gourpFontSize'>You Have To Select
+                At Least One Course</small>
             </div>
           </div>
         </div>
@@ -359,16 +396,19 @@
             <div class="selectCourse-yourLever row">
               <div class="col-sm-6 col-md-6">
                 <label for="course">Course Category</label>
-                <select class="form-control" formControlName="courseCategory" (change)="selectCategory($event.target.value, i)">
+                <select class="form-control" formControlName="courseCategory"
+                  (change)="selectCategory($event.target.value, i)">
                   <option selected>Choose..</option>
-                  <option *ngFor="let courseCategory of setUniCatListArray[i]" [value]="courseCategory.CourseCategoryId">{{courseCategory.CourseCategoryName}}</option>
+                  <option *ngFor="let courseCategory of setUniCatListArray[i]"
+                    [value]="courseCategory.CourseCategoryId">{{courseCategory.CourseCategoryName}}</option>
                 </select>
               </div>
               <div class="col-sm-6 col-md-6">
                 <label for="course">Course</label>
                 <select class="form-control" (change)="selectCourse($event.target.value, i)" formControlName="course">
                   <option selected>Choose..</option>
-                  <option *ngFor="let course of courseListArray[i].courseItemArray" [value]="course.CourseId">{{course.CourseName}}</option>
+                  <option *ngFor="let course of courseListArray[i].courseItemArray" [value]="course.CourseId">
+                    {{course.CourseName}}</option>
                 </select>
                 <div *ngIf="isLoading" class='loaderSmall'></div>
               </div>
@@ -376,32 +416,39 @@
             <div class="location-teacherLevel row">
               <div class="col-sm-6 col-md-6">
                 <label for="location">Location</label>
-                <select class="form-control" formControlName="location" id="location" (change)="selectLocation($event.target.value, i)">
+                <select class="form-control" formControlName="location" id="location"
+                  (change)="selectLocation($event.target.value, i)">
                   <option selected>Choose..</option>
-                  <option *ngFor="let cInstance of locListArray[i].locItemArray;" [value]="cInstance.OrgId">{{cInstance.OrgName}}</option>
+                  <option *ngFor="let cInstance of locListArray[i].locItemArray;" [value]="cInstance.OrgId">
+                    {{cInstance.OrgName}}</option>
                 </select>
               </div>
               <div class="col-sm-6 col-md-6" *ngIf="notPiano[i] == 1">
                 <label for="teacherLevel">Teacher Level</label>
-                <select class="form-control" formControlName="teacherLevel" id="teacherLevel" (change)="selectTl($event.target.value, i)">
+                <select class="form-control" formControlName="teacherLevel" id="teacherLevel"
+                  (change)="selectTl($event.target.value, i)">
                   <option selected>Choose..</option>
-                  <option *ngFor="let tLevel of prepareTeaLevListArray[i].prepareTeaLevItemArray;" [value]="tLevel.levelId">{{tLevel.levelName}}</option>
+                  <option *ngFor="let tLevel of prepareTeaLevListArray[i].prepareTeaLevItemArray;"
+                    [value]="tLevel.levelId">{{tLevel.levelName}}</option>
                 </select>
               </div>
             </div>
             <div class="courseDay-courseHour row">
               <div class="col-sm-6 col-md-6">
                 <label for="teacherName">Teacher Name</label>
-                <select class="form-control" formControlName="teacherName" id="teacherName" (change)='selectTeacher($event.target.value, i)'>
+                <select class="form-control" formControlName="teacherName" id="teacherName"
+                  (change)='selectTeacher($event.target.value, i)'>
                   <option selected>Choose..</option>
-                  <option *ngFor="let tName of prepareTeaNameListArray[i].prepareTeaNameItemArray;" [value]="tName.TeacherId">{{tName.TeacherName}}</option>
+                  <option *ngFor="let tName of prepareTeaNameListArray[i].prepareTeaNameItemArray;"
+                    [value]="tName.TeacherId">{{tName.TeacherName}}</option>
                 </select>
               </div>
               <div class="col-sm-6 col-md-6 d-none">
                 <label for="room">Room No.</label>
                 <select class="form-control" formControlName="room" name="room" id="room">
                   <option selected>Choose..</option>
-                  <option *ngFor="let cRoom of prepareRoomListArray[i].prepareRoomItemArray" [value]="cRoom.RoomId">{{cRoom.RoomName}}</option>
+                  <option *ngFor="let cRoom of prepareRoomListArray[i].prepareRoomItemArray" [value]="cRoom.RoomId">
+                    {{cRoom.RoomName}}</option>
                 </select>
               </div>
             </div>
@@ -432,22 +479,29 @@
               <div class="col-sm-3 col-md-3">
                 <label for="customTime">Course Time</label>
                 <!-- <input class="form-control" type="text"  value="15:30:00" routerLink="/timePicker" routerLinkActive="active"> -->
-                <ngb-timepicker formControlName="beginTime" [size]="'small'" [hourStep]="hourStep" [minuteStep]="minuteStep"></ngb-timepicker>
-                <small class="text-danger" *ngIf="this.customCourse?.controls[0]?.get('schedule').get('beginTime').invalid">Please Select a Valid Time</small>
+                <ngb-timepicker formControlName="beginTime" [size]="'small'" [hourStep]="hourStep"
+                  [minuteStep]="minuteStep"></ngb-timepicker>
+                <small class="text-danger"
+                  *ngIf="this.customCourse?.controls[0]?.get('schedule').get('beginTime').invalid">Please Select a Valid
+                  Time</small>
               </div>
-              <div class='col-sm-3 col-md-3 mt-3'  *ngIf="this.teaListOutArray[i]?.teaListToDatePick!== undefined && this.teaListOutArray[i]?.teaListToDatePick?.length !== 0">
-                <button class='btn btn-primary' (click)="open(i)">Pick Course Time by Calendar</button>
+              <div class='col-sm-3 col-md-3 mt-3'
+                *ngIf="this.teaListOutArray[i]?.teaListToDatePick!== undefined && this.teaListOutArray[i]?.teaListToDatePick?.length !== 0">
+                <button class='btn btn-primary' (click)="open(1,i)">Pick Course Time by Calendar</button>
               </div>
             </div>
             <div class="d-flex my-3 justify-content-end">
-              <button *ngIf="addCourse == undefined" class="mx-3 btn_back btn btn-info" (click)="next('parentForm')">Back</button>
+              <button *ngIf="addCourse == undefined" class="mx-3 btn_back btn btn-info"
+                (click)="next('parentForm')">Back</button>
             </div>
           </div>
         </div>
         <div class="text-right">
           <button class="btn_add btn btn-info mr-2" (click)="addCustomCourse()"><b>Add more courses</b></button>
-          <button *ngIf="!addCourse" [disabled]="customCourse.invalid || customCourse.untouched" (click)="onSubmit()" class="btn_submit btn btn-primary" type="submit">Submit</button>
-          <button *ngIf="addCourse" [disabled]="customCourse.invalid || customCourse.untouched" (click)="onSubmit()" class="btn_submit btn btn-primary" type="submit">Submit One-on-One Course</button>
+          <button *ngIf="!addCourse" [disabled]="customCourse.invalid || customCourse.untouched" (click)="onSubmit()"
+            class="btn_submit btn btn-primary" type="submit">Submit</button>
+          <button *ngIf="addCourse" [disabled]="customCourse.invalid || customCourse.untouched" (click)="onSubmit()"
+            class="btn_submit btn btn-primary" type="submit">Submit One-on-One Course</button>
         </div>
       </div>
     </div>

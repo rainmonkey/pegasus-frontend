@@ -16,9 +16,9 @@
     </div>
     <div class="days">
       <div class="day" *ngFor="let x of xIndex; let i = index">
-        
-        <div class=day-label [ngClass]="{'bg-success text-dark':x==dayofweek-1}">   
-            {{weekdays[x]}}  
+
+        <div class=day-label [ngClass]="{'bg-success text-dark':x==dayofweek-1}">
+          {{weekdays[x]}}
           <div class="location" [ngClass]="{'bg-success text-light':x== dayofweek-1}">
             <div *ngFor="let availableObj of availableDayArr">
               <div *ngIf="x == availableObj.DayOfWeek-1">
@@ -36,7 +36,6 @@
                         'dayOffIsGray': slot[x][y] == 'isDayOff',
                         'tempChangeIsYellow': slot[x][y] == 'isTempChange',
                         'ableToPickIsGreen': slot[x][y] == 'ableToPick',
-                        'allTeacherAvailableDayUnableToPick': slot[x][y] == 'tOrgNotIncludesLOrg',
                         'oneHourUnableToPick': slot[x][y] == 'oneHourUnableTopick',
                         'isShow': slot[x][y] == 'ableToPick'
                       }" (mouseover)="mouseover(x,y)" (mouseout)="mouseout(x,y)">
