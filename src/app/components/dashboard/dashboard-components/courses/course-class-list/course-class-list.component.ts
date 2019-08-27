@@ -192,7 +192,6 @@ export class CourseClassListComponent implements OnInit {
     else {
       let searchString: string;
       let searchBy: string;
-
       let searchingInputObj = document.getElementById('searchingInput');
 
       (initValue == undefined) ? { searchString, searchBy } =

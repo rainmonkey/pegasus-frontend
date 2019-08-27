@@ -19,17 +19,17 @@ export class SidebarComponent implements OnInit {
     private authenticationService: AuthenticationService,
     private settingService: AppSettingsService
 
-  ) {}
+  ) { }
 
   ngOnInit() {
     // console.log('Sidebar')
     this.settingService.currentSidebarSettings.subscribe(
-      (res)=>{this.navitem = res;}
+      (res) => { this.navitem = res; }
     )
   }
 
   // Method to assign sidebar data
-  processData(res){
+  processData(res) {
     // console.log(res.Data);
     this.navitem = res.Data;
   }
