@@ -23,6 +23,8 @@ export class RegistrationToParentComponent implements OnInit {
 
   ngOnInit() {
     console.log(this.registrationForm)
+    console.log(this.newLearner)
+    console.log(this.whichLearner)
   }
 
   onSubmit() {
@@ -74,12 +76,12 @@ export class RegistrationToParentComponent implements OnInit {
 
   submitByMode(submit) {
     if (this.command == 1) {
-      let obj = this.learnerRegServer.postStudent(submit)
-      this.subscribeHandler(obj);
+      // let obj = this.learnerRegServer.postParent(submit)
+      // this.subscribeHandler(obj);
     }
     else if (this.command == 2) {
-      let obj = this.learnerRegServer.putStudent(this.whichLearner.LearnerId, submit)
-      this.subscribeHandler(obj);
+      let obj = this.learnerRegServer.putParent(this.whichLearner.LearnerId, submit)
+      // this.subscribeHandler(obj);
     }
   }
 
