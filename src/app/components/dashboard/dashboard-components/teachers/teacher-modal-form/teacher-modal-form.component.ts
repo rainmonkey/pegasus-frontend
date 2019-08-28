@@ -221,7 +221,12 @@ export class TeacherModalFormComponent implements OnInit {
     })
     //console.log(this.DayOfWeek)
   }
-
+  getRoomName(id){
+    for (let element of this.rooms){
+      if (element.RoomId==id) return element.RoomName;
+    };
+    return '';
+  }
 
   /*
    display default branches selection
@@ -358,7 +363,7 @@ export class TeacherModalFormComponent implements OnInit {
       for (let i of this.whichTeacher.AvailableDays) {
         if (i.DayOfWeek == whichDay && temOrgs.indexOf(i.OrgId) == -1) {
           console.log(i)
-          temOrgs.push({"orgId":i.OrgId,"roomName":i.Room,"roomId":i.RoomId});
+          temOrgs.push({"orgId":i.OrgId,"roomName":this.getRoomName(i.RoomId),"roomId":i.RoomId});
         }
       }
 

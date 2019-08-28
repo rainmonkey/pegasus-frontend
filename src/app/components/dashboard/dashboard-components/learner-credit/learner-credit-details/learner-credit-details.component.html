@@ -50,7 +50,7 @@
                   title="Change Expiry Date"
                   (click)="
                     i.IsActive
-                      ? ChangeExpiryDate()
+                      ? ChangeExpiryDate(i.awaitId,j)
                       : alertForNoRemainingCourse()
                   "
                   style="cursor:pointer"

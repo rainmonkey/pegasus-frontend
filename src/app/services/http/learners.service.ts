@@ -100,6 +100,8 @@ export class LearnersService {
   GetTeacherRoomByOrgDayOfWeek(orgId, dayofweek) {
     return this.http.get(this.baseUrl + 'teacher/GetTeacherRoomByOrgDayOfWeek/' + orgId + '/' +  dayofweek);
   }
-
+  updateExpiryDate(awaitId,Qty): any {
+    return this.http.put(this.baseUrl + 'LessonRearrange/' + awaitId+'/'+Qty,'');
+  }
 
 }
