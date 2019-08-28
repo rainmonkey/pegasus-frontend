@@ -103,5 +103,7 @@ export class LearnersService {
   updateExpiryDate(awaitId,Qty): any {
     return this.http.put(this.baseUrl + 'LessonRearrange/' + awaitId+'/'+Qty,'');
   }
-
+  makeUpSplitLesson(lessonId,isAfter): any {
+    return this.http.put(this.baseUrl + 'Session/MakeUpSplitLesson/' + lessonId+'/'+isAfter,'');
+  }
 }

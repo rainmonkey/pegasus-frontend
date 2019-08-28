@@ -878,7 +878,7 @@
     </ngb-tab>
 
     <!-- Cancled session -->
-    <ngb-tab title="Cancelled session">
+    <ngb-tab *ngIf='false' title="Cancelled session">
       <ng-template ngbTabContent>
         <div *ngIf='cancledSession.length == 0'>
           No Sessions Record
