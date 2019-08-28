@@ -1112,11 +1112,11 @@ export class LearnerRegistrationFormComponent implements OnInit, DoCheck, AfterV
 
   }
   handleEmailChange(value) {
-    if (!this.whichLearner)
+    if (!this.whichLearner ||this.whichLearner.Parent.length === 0)
       this.parentForm.at(0).get("email").patchValue(value);
   }
   handleNumChange(value) {
-    if (!this.whichLearner)
+    if (!this.whichLearner||this.whichLearner.Parent.length === 0)
       this.parentForm.at(0).get("contactPhone").patchValue(value);
   }
   handleIsUnder18(DOB) {
