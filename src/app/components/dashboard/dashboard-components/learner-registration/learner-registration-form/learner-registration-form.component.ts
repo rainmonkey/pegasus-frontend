@@ -792,7 +792,7 @@ export class LearnerRegistrationFormComponent implements OnInit, DoCheck, AfterV
     this.fdObj['EnrollDate'] = this.learner.enrollmentDate;
     this.fdObj['ContactNum'] = this.learner.contactNum;
     this.fdObj['Email'] = this.learner.email;
-    this.fdObj['Address'] = this.learner.address;
+    this.fdObj['Address'] = this.learner.address?this.learner.address:'';
     this.fdObj['OrgId'] = this.learner.location;
     this.fdObj['LearnerLevel'] = this.learner.learnerLevel;
     this.fdObj['LevelType'] = this.learnerlevelType;
