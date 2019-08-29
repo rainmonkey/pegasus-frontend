@@ -388,6 +388,12 @@ export class LearnerRegistrationFormComponent implements OnInit, DoCheck, AfterV
         // this.setUniCat = tempArray;
         this.setUniCatListArray = [];
         this.setUniCatListArray.push(this.setUniCat);
+        if (!this.selectLearnerLevel)
+          Swal.fire({
+            title: 'Please Complete Student Profile Before Book a Course!',
+            type: 'warning',
+            showConfirmButton: true,
+          });
       });
   }
   getLocationFromServer() {

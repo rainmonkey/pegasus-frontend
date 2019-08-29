@@ -16,6 +16,7 @@
               <th scope="col">Original Date</th>
               <th scope="col">Operate Time</th>
               <th scope="col">Expiry Date</th>
+              <th scope="col">Remaining Quarters</th>
               <th scope="col">Reschedule Date</th>
               <th scope="col">Reschedule</th>
               <th scope="col">Change Expiry Date</th>
@@ -30,6 +31,7 @@
               </td>
               <td>{{ i.CreateAt | date: "dd/MM/yyyy, h:mm a" }}</td>
               <td>{{ i.ExpiredDate | date: "dd/MM/yyyy, h:mm a" }}</td>
+              <td>{{ i.Remaining}}</td>              
               <td>{{ i.NewLesson.beginDate | date: "dd/MM/yyyy, h:mm a" }}</td>
               <td>
                 <span

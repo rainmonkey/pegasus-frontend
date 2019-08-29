@@ -67,7 +67,7 @@ constructor(public activeModal: NgbActiveModal,private learnersService:LearnersS
           //@ts-ignore
           //this.eventsModel = this.putInfo(event.Data);
           Swal.fire({
-            title: 'Your Operation Has Been Done!',
+            title: 'Your Operation Has Been Successfully Completed!',
             type: 'success',
             showConfirmButton: true,
           });
