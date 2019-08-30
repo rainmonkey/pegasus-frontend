@@ -58,6 +58,7 @@ constructor(public activeModal: NgbActiveModal,private learnersService:LearnersS
       cancelButtonColor: '#d33',
       confirmButtonText: 'Yes, do it!'
     }).then((result) => {
+      if (result.value) {
       console.log(this.learnerCourseTimeTable);
       console.log(this.learnerCourseTimeTable.event.extendedProps.lessonId);
       let { lessonId } =this.learnerCourseTimeTable.event.extendedProps;
@@ -78,6 +79,6 @@ constructor(public activeModal: NgbActiveModal,private learnersService:LearnersS
           Swal.fire('error!', errMsg,'error')
           }
       )
-      })
+    }})
   }
 }
