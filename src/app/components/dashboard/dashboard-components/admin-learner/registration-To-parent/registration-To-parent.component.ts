@@ -68,8 +68,6 @@ export class RegistrationToParentComponent implements OnInit {
 
   stringifySubmitStr(vailadValue){
     let submit = new FormData();
-
-
     submit.append('details', JSON.stringify(vailadValue))
     this.submitByMode(submit)
   }
