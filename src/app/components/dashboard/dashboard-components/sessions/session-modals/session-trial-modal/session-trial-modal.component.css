@@ -1,0 +1,32 @@
+.t_c_row_group{
+    margin:0.5rem 0.5rem 0 0.5rem;
+}
+.t_c_label{
+    line-height: 28px;
+    font-weight: bold;
+}
+.t_c_price{
+    font-size: 1.5rem;
+    font-weight: bold;
+    color:rgb(12, 161, 12);
+    line-height: 32px;
+}
+
+input,select{
+    background: none;
+    outline: none;
+    border:0px;
+    border:solid 1px lightblue;
+    border-radius:5px;  
+    text-align: center;
+}
+select{
+    text-align-last: center;
+}
+label{
+    margin:0;
+    padding: 0;
+}
+.loader{
+    margin: 1rem auto;
+}

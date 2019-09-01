@@ -388,6 +388,12 @@ export class LearnerRegistrationFormComponent implements OnInit, DoCheck, AfterV
         // this.setUniCat = tempArray;
         this.setUniCatListArray = [];
         this.setUniCatListArray.push(this.setUniCat);
+        if (this.selectLearnerLevel==undefined)
+          Swal.fire({
+            title: 'Please Complete Student Profile Before Book a Course!',
+            type: 'warning',
+            showConfirmButton: true,
+          });
       });
   }
   getLocationFromServer() {
@@ -792,7 +798,7 @@ export class LearnerRegistrationFormComponent implements OnInit, DoCheck, AfterV
     this.fdObj['EnrollDate'] = this.learner.enrollmentDate;
     this.fdObj['ContactNum'] = this.learner.contactNum;
     this.fdObj['Email'] = this.learner.email;
-    this.fdObj['Address'] = this.learner.address;
+    this.fdObj['Address'] = this.learner.address?this.learner.address:'';
     this.fdObj['OrgId'] = this.learner.location;
     this.fdObj['LearnerLevel'] = this.learner.learnerLevel;
     this.fdObj['LevelType'] = this.learnerlevelType;
@@ -1112,11 +1118,11 @@ export class LearnerRegistrationFormComponent implements OnInit, DoCheck, AfterV
 
   }
   handleEmailChange(value) {
-    if (!this.whichLearner)
+    if (!this.whichLearner ||this.whichLearner.Parent.length === 0)
       this.parentForm.at(0).get("email").patchValue(value);
   }
   handleNumChange(value) {
-    if (!this.whichLearner)
+    if (!this.whichLearner||this.whichLearner.Parent.length === 0)
       this.parentForm.at(0).get("contactPhone").patchValue(value);
   }
   handleIsUnder18(DOB) {

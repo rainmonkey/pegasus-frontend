@@ -130,7 +130,6 @@ export class AdminPaymentListComponent implements OnInit {
     )
     this.adminpaymentlistService.getPaymentViews(begindate, enddate).subscribe(
       (res) => {
-        // console.log(res['Data'])
         this.adminPaymentList = res['Data'];
         this.adminPaymentListCopy = this.adminPaymentList;
         this.adminPaymentListLength = res['Data'].length; //length prop is under Data prop
@@ -178,6 +177,25 @@ export class AdminPaymentListComponent implements OnInit {
     this.setQueryParams('page', this.page);
   }
 
+  open(num, adminPaymentList) {
+    let that = this;
+    if (num == 0) {
+      const modalRef = this.modalService.open(AdminPaymentProductModalComponent);
+      modalRef.componentInstance.adminPaymentList = adminPaymentList;
+    }
+    else if (num == 1) {
+      const modalRef = this.modalService.open(AdminPaymentConfirmModalComponent);
+      modalRef.componentInstance.adminPaymentList = adminPaymentList;
+      modalRef.componentInstance.refreshFlag.subscribe(
+        (res) => {
+          if (res == true) {
+            that.ngOnInit();
+          }
+        }
+      )
+    }
+  }
+
   /*
     items of queryParams:
       1, searchString
@@ -206,31 +224,22 @@ export class AdminPaymentListComponent implements OnInit {
     });
   }
 
-  private getDismissReason(reason: any): string {
-    if (reason === ModalDismissReasons.ESC) {
-      return 'by pressing ESC';
-    } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
-      return 'by clicking on a backdrop';
-    } else {
-      return `with: ${reason}`;
+  // Searching
+  onSearch(event, initValue?) {
+    if (event !== null && !(event.type == 'keydown' && event.key == 'Enter')) {
+      return;
     }
-  }
-  open(num, adminPaymentList) {
-    let that = this;
-    if (num == 0) {
-      const modalRef = this.modalService.open(AdminPaymentProductModalComponent);
-      modalRef.componentInstance.adminPaymentList = adminPaymentList;
-    }
-    else if (num == 1) {
-      const modalRef = this.modalService.open(AdminPaymentConfirmModalComponent);
-      modalRef.componentInstance.adminPaymentList = adminPaymentList;
-      modalRef.componentInstance.refreshFlag.subscribe(
-        (res) => {
-          if (res == true) {
-            that.ngOnInit();
-          }
-        }
-      )
+    else {
+      let searchString: string;
+      let searchBy: string;
+      let searchingInputObj = document.getElementById('searchingInput');
+
+      (initValue == undefined) ? { searchString, searchBy } =
+        { searchString: searchingInputObj['value'], searchBy: 'LearnerName' } :
+        { searchString, searchBy } = initValue;
+      
+      this.adminPaymentList = this.ngTable.searching(this.adminPaymentListCopy, searchBy, searchString);
+      this.adminPaymentListLength = this.adminPaymentList.length;
     }
   }
 }

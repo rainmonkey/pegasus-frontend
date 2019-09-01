@@ -51,6 +51,7 @@ import { LearnerRegistrationModalComponent } from './components/dashboard/dashbo
 import { LearnerRegistrationConfirmModalComponent } from './components/dashboard/dashboard-components/learner-registration/learner-registration-confirm-modal/learner-registration-confirm-modal.component';
 
 import { SessionCancelModalComponent } from './components/dashboard/dashboard-components/sessions/session-modals/session-cancel-modal/session-cancel-modal.component';
+import { SessionTrialModalComponent } from './components/dashboard/dashboard-components/sessions/session-modals/session-trial-modal/session-trial-modal.component';
 import { SessionCompletedModalComponent } from './components/dashboard/dashboard-components/sessions/session-modals/session-completed-modal/session-completed-modal.component';
 import { SessionDetailEditModalComponent } from './components/dashboard/dashboard-components/sessions/session-modals/session-detail-edit-modal/session-detail-edit-modal.component';
 import { SessionDetailModalComponent } from './components/dashboard/dashboard-components/sessions/session-modals/session-detail-modal/session-detail-modal.component';
@@ -232,6 +233,7 @@ import { RelativeTimePipe } from "./shared/pipes/relative-time.pipe";
     AmendmentHistoryModalComponent,
     IsTemporaryPipe,
     SessionCancelModalComponent,
+    SessionTrialModalComponent,
     SessionTutorReportModalComponent,
     SessionCompletedModalComponent,
     GenderPipe,
@@ -362,6 +364,7 @@ import { RelativeTimePipe } from "./shared/pipes/relative-time.pipe";
     LearnerAddModalComponent,
     LearnerDeleteCourseModalComponent,
     SessionCancelModalComponent,
+    SessionTrialModalComponent,
     SessionCompletedModalComponent,
     SessionRescheduleModalComponent,
     RatingModalComponent,

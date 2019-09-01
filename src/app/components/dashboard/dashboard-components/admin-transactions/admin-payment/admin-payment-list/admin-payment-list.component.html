@@ -116,7 +116,7 @@
                   <i class="fas fa-receipt"></i>
                 </span>
               </td>
-              <!-- <td *ngIf="i.ProductName == null">///</td> -->
+              <td *ngIf="i.ProductName">null</td>
               <!-- other content -->
               <td *ngIf="!i.LessonQuantity && !i.ProductName">null</td>
               <td *ngIf="!i.LessonQuantity && !i.ProductName">null</td>
@@ -126,7 +126,7 @@
                   <i class="fas fa-times" style="color: red;"></i>
                 </span>
               </td>
-              <td *ngIf="i.IsConfirmed != 0" title="123123">
+              <td *ngIf="i.IsConfirmed != 0" title="{{i.Comment}}">
                 <i class="fas fa-check"></i>
               </td>
             </tr>
