@@ -24,7 +24,7 @@ export class NewRegistrationFormComponent implements OnInit {
   photoObj;
   public learnerPurpose: Array<any>;
   public howKnown: Array<any>;
-
+  now=new Date()
   public othersList = []
   public learnerOthers = []
   whyP = []
@@ -48,6 +48,7 @@ export class NewRegistrationFormComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    console.log(this.now)
     this.registrationForm = this.fb.group(this.formBuild());
     this.getLocationFromServer()
     this.getLookUp()
@@ -69,7 +70,7 @@ export class NewRegistrationFormComponent implements OnInit {
         Address: ['',],
         OrgId: [null, Validators.required],
         LearnerLevel: [null, Validators.required],
-        LevelType: [null],
+        LevelType: [1],
         IsUnder18: [null],
         PaymentPeriod: [null],
         Referrer: [null],
