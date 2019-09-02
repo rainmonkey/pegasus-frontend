@@ -16,10 +16,10 @@
           <small class="text-danger" *ngIf="BeginDate.invalid && BeginDate.touched">Please enter the begin date</small>
         </div>
         <div class="col-5">
-          <div>Is Temporary</div>
+          <div>Is Permanent</div>
           <select formControlName="IsTemporary" (change)="IsTemporaryChange()">
-            <option value="0">No</option>
-            <option value="1">Yes</option>
+            <option value="0">Yes</option>
+            <option value="1">No</option>
           </select>
           <small class="text-danger" *ngIf="IsTemporary.invalid && IsTemporary.touched">  Please select isTemporary</small>
         </div>
@@ -140,7 +140,11 @@
         <div *ngIf="this.PeriodCourseChangeForm.value.OrgId !=='' && 
         this.PeriodCourseChangeForm.value.DayOfWeek !=='' && this.PeriodCourseChangeForm.value.TeacherId !=='' &&
         this.PeriodCourseChangeForm.value.CourseScheduleId !== ''">
+
           <button type='button' (click)=open()>Choose the time</button>
+
+          <button type="button" (click)=open()>Choose the time</button>
+
         </div>
         
       </div>

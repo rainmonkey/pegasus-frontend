@@ -51,6 +51,7 @@ import { LearnerRegistrationModalComponent } from './components/dashboard/dashbo
 import { LearnerRegistrationConfirmModalComponent } from './components/dashboard/dashboard-components/learner-registration/learner-registration-confirm-modal/learner-registration-confirm-modal.component';
 
 import { SessionCancelModalComponent } from './components/dashboard/dashboard-components/sessions/session-modals/session-cancel-modal/session-cancel-modal.component';
+import { SessionTrialModalComponent } from './components/dashboard/dashboard-components/sessions/session-modals/session-trial-modal/session-trial-modal.component';
 import { SessionCompletedModalComponent } from './components/dashboard/dashboard-components/sessions/session-modals/session-completed-modal/session-completed-modal.component';
 import { SessionDetailEditModalComponent } from './components/dashboard/dashboard-components/sessions/session-modals/session-detail-edit-modal/session-detail-edit-modal.component';
 import { SessionDetailModalComponent } from './components/dashboard/dashboard-components/sessions/session-modals/session-detail-modal/session-detail-modal.component';
@@ -162,10 +163,14 @@ import { NotificationPopupComponent } from './components/dashboard/general/notif
 import { TrialInfoComponent } from './components/dashboard/dashboard-components/trial-course/trial-info/trial-info.component';
 import { RegistrationToParentComponent } from './components/dashboard/dashboard-components/admin-learner/registration-To-parent/registration-To-parent.component';
 import { ParentRegistrationFormComponent } from './components/dashboard/dashboard-components/admin-learner/parent-Registration-Form/parent-Registration-Form.component';
+<<<<<<< HEAD
 import { BookcourseComponent } from './components/dashboard/dashboard-components/learner-registration/bookcourse/bookcourse.component';
 import { BookcoursetestComponent } from './components/dashboard/dashboard-components/bookcourse/bookcoursetest/bookcoursetest.component';
 import { GroupcourseComponent } from './components/dashboard/dashboard-components/bookcourse/groupcourse/groupcourse.component';
 
+=======
+import { RelativeTimePipe } from "./shared/pipes/relative-time.pipe";
+>>>>>>> 15f7f80bc9b40b5afa1e769a713aa9e6853bc81a
 @NgModule({
   declarations: [
     PageGroupFormComponent,
@@ -235,10 +240,12 @@ import { GroupcourseComponent } from './components/dashboard/dashboard-component
     AmendmentHistoryModalComponent,
     IsTemporaryPipe,
     SessionCancelModalComponent,
+    SessionTrialModalComponent,
     SessionTutorReportModalComponent,
     SessionCompletedModalComponent,
     GenderPipe,
     RelationshipPipe,
+    RelativeTimePipe,
     ColumnTitleFormatPipe,
     MondayDateInWeekByDatePipe,
     CourseClassListComponent,
@@ -297,6 +304,7 @@ import { GroupcourseComponent } from './components/dashboard/dashboard-component
     StockApplicationFormComponent,
     PayListComponent,
 
+<<<<<<< HEAD
   //  new registration
   NewLearnerRegistrationModalComponent,
   NewRegistrationFormComponent,
@@ -316,6 +324,24 @@ import { GroupcourseComponent } from './components/dashboard/dashboard-component
   BookcourseComponent,
   BookcoursetestComponent,
   GroupcourseComponent,
+=======
+    //  new registration
+    NewLearnerRegistrationModalComponent,
+    NewRegistrationFormComponent,
+    RegistrationToParentComponent,
+    ParentRegistrationFormComponent,
+    TutorsInfomationComponent,
+    StockApplicationReplyModalComponent,
+    StockApplicationDeliverModalComponent,
+    StockApplicationReceiveModalComponent,
+    StockApplicationProcessStatusComponent,
+    TrialFilterComponent,
+    TeacherLevelPipe,
+    StockApplicationProcessModalComponent,
+    TrialCalendarComponent,
+    NotificationPopupComponent,
+    TrialConfirmationComponent
+>>>>>>> 15f7f80bc9b40b5afa1e769a713aa9e6853bc81a
   ],
   imports: [
     NgbModule,
@@ -367,6 +393,7 @@ import { GroupcourseComponent } from './components/dashboard/dashboard-component
     LearnerAddModalComponent,
     LearnerDeleteCourseModalComponent,
     SessionCancelModalComponent,
+    SessionTrialModalComponent,
     SessionCompletedModalComponent,
     SessionRescheduleModalComponent,
     RatingModalComponent,

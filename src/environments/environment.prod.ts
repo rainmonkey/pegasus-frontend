@@ -1,5 +1,5 @@
 export const environment = {
-  production: false,
+  production: true,
     baseUrl: 'http://45.76.123.59:5000/api/',
    baseUrlForChatting: 'http://45.76.123.59:5000/',
     photoUrl: 'http://gradspace.org:5000/',

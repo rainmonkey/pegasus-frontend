@@ -5,6 +5,7 @@ import { NgbActiveModal } from "@ng-bootstrap/ng-bootstrap";
 import { TrialCoursesService } from "src/app/services/http/trial-courses.service";
 import { forkJoin } from "rxjs";
 import { ActivatedRoute, Router } from "@angular/router";
+import Swal from 'sweetalert2';
 import {
   DownloadPDFService,
   IInvoiceLearnerName,
@@ -12,29 +13,28 @@ import {
 } from "src/app/services/others/download-pdf.service";
 
 @Component({
-  selector: "app-trial-confirmation",
-  templateUrl: "./trial-confirmation.component.html",
+  selector: "app-session-trial-modal",
+  templateUrl: "./session-trial-modal.component.html",
   styleUrls: [
-    "../../../../../shared/css/bootstrap-default-clear.css",
-    "./trial-confirmation.component.css"
+    "../../../../../../shared/css/bootstrap-default-clear.css",
+    "./session-trial-modal.component.css"
   ]
 })
-export class TrialConfirmationComponent implements OnInit {
+export class SessionTrialModalComponent implements OnInit {
   @Input() confirmationData: IConfirmData;
   @Output() isClosed = new EventEmitter();
 
-  private learner;
+  private learner:Ilearner ={firstName:'',lastName:'',contactNum:''};
   private courseName: string;
   private startTimeStr: string;
   private endTimeStr: string;
-  private learnerName: string;
-  private avaliableRoom;
+  // private learnerName: string;
+  // private avaliableRoom;
   private extraFee: number;
-  private frequencyRoom: Array<any> = [];
+  // private frequencyRoom: Array<any> = [];
   private coursePrice: number;
   private trialCourseId: number;
   private avaliableCourses: Array<object>;
-  private learnerId: number;
 
   /**@property {Array<object>} paymentMethods - array saved payment methods */
   private paymentMethods: Array<object>;
@@ -46,7 +46,8 @@ export class TrialConfirmationComponent implements OnInit {
   private isError: boolean = false;
   public isLoading: boolean = false;
   private isSuccess: boolean = false;
-
+  private teachers:any ;
+  private teacherId: number ;
   constructor(
     private routerInfo: ActivatedRoute,
     public activeModal: NgbActiveModal,
@@ -57,15 +58,10 @@ export class TrialConfirmationComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.learnerId = +(
-      this.confirmationData.LearnerId ||
-      this.routerInfo.snapshot.queryParams.LearnerId ||
-      this.routerInfo.snapshot.params.learnerId
-    );
     this.isLoading = true;
     this.getDataFromServer().subscribe(
       res => {
-        this.processData(res);
+       this.processData(res);
         this.isLoading = false;
       },
       err => {
@@ -80,24 +76,10 @@ export class TrialConfirmationComponent implements OnInit {
    */
   getDataFromServer() {
     const apiRequests: Array<any> = [];
-    // get avaliable room request
-    apiRequests.push(
-      this.trialService.getAvailableRoom(
-        this.confirmationData.orgId,
-        this.formatDate(this.confirmationData.startStr),
-        this.formatDate(this.confirmationData.endStr)
-      )
-    );
-    // get frequently room request
-    apiRequests.push(
-      this.trialService.getTeacherFrequentlyRoom(
-        this.confirmationData.teacherId,
-        this.confirmationData.orgId,
-        this.formatDate(this.confirmationData.startStr)
-      )
-    );
-    // get learner request
-    apiRequests.push(this.trialService.getLearnerById(this.learnerId));
+
+    // get teacher request
+    apiRequests.push(this.trialService.getTeacherbyRoomId(this.confirmationData.orgId,
+            this.confirmationData.roomId,this.confirmationData.startStr));
     // get courses request
     apiRequests.push(this.trialService.getCourses());
     // get extra fee request
@@ -112,15 +94,13 @@ export class TrialConfirmationComponent implements OnInit {
    */
   processData(dataFromServer) {
     // data from parents
-    const { startTimeStamp, endTimeStamp, cateName } = this.confirmationData;
+    const { startTimeStamp, endTimeStamp } = this.confirmationData;
     // data from server
-    const avaliableRoom = dataFromServer[0]["Data"];
-    const frequencyRoom = dataFromServer[1]["Data"];
-    const learner = dataFromServer[2]["Data"];
-    this.learner = learner;
-    const courses = dataFromServer[3]["Data"];
-    this.extraFee = Number(dataFromServer[4]["Data"][0]["PropName"]);
-    this.learnerName = learner["FirstName"] + "  " + learner["LastName"];
+
+    this.teachers = dataFromServer[0]["Data"];
+    const courses = dataFromServer[1]["Data"];
+    this.extraFee = Number(dataFromServer[2]["Data"][0]["PropName"]);
+ 
     this.startTimeStr =
       new Date(startTimeStamp).toLocaleTimeString() +
       " " +
@@ -129,20 +109,12 @@ export class TrialConfirmationComponent implements OnInit {
       new Date(endTimeStamp).toLocaleTimeString() +
       " " +
       new Date(endTimeStamp).toLocaleDateString();
-    this.courseName = cateName + "  " + "Trial  Course";
-    this.avaliableRoom = avaliableRoom;
+    this.courseName = "Trial  Course";
 
-    // 判断老师常用教室是否可用
-    if (frequencyRoom.length !== 0) {
-      avaliableRoom.map(val => {
-        if (val.RoomId == frequencyRoom[0]["RoomId"]) {
-          this.frequencyRoom.push(val);
-        }
-      });
-    }
     this.avaliableCourses = this.getAvaliableCourses(courses);
     this.coursePrice = this.avaliableCourses[0]["Price"] + this.extraFee;
     this.trialCourseId = this.avaliableCourses[0]["CourseId"];
+    this.teacherId = this.teachers[0]['TeacherId'];
   }
 
   /**
@@ -157,28 +129,12 @@ export class TrialConfirmationComponent implements OnInit {
     );
     courses.map(val => {
       if (
-        val["CourseCategory"]["CourseCategoryId"] ==
-          this.confirmationData.cateId &&
-        val["Duration"] == durationIndex
+        val["Duration"] == durationIndex && val['CourseType']==1
       ) {
         array.push(val);
       }
     });
-    // Piano course(cateId == 1), courses must match teacher's level
-    if (this.confirmationData.cateId == 1) {
-      const arr: Array<object> = [];
-      array.map(val => {
-        if (val["TeacherLevel"] == this.confirmationData.teacher["Level"]) {
-          arr.push(val);
-        }
-      });
-      array = arr;
-    }
-    if (this.confirmationData.arrangeFlag) {
-      array = array.filter(
-        el => el["Level"] === this.confirmationData.courseLevel
-      );
-    }
+
     return array;
   }
 
@@ -206,30 +162,26 @@ export class TrialConfirmationComponent implements OnInit {
   selectPaymentMethod(event) {
     this.isPayNow = true;
   }
-  /**
-   * When user click confirm button, prepare to submit data.
-   */
+  // /**
+  //  * When user click confirm button, prepare to submit data.
+  //  */
+  checkInput(){
+    if (!(this.learner.firstName)||(this.learner.firstName=='')) return false;
+    if (!(this.learner.lastName)||(this.learner.lastName=='')) return false;
+    if (!(this.learner.contactNum)||(this.learner.contactNum=='')) return false;
+    //if ((this.isPayNow)&&(this.getPaymentIdValue()==0)) return false;
+    return true;
+  }
   onSubmit(event) {
+    if (!this.checkInput()){
+      Swal.fire({title: 'Please check your input!',type: 'warning', showConfirmButton: true});
+      return;
+    }
     event.target.disabled = true;
     this.isSubmitting = true;
     const data = this.prepareSubmitionData();
-    if (!this.confirmationData.arrangeFlag) {
-      this.trialService.postTrialCourse(data).subscribe(
-        res => {
-          this.isSubmitting = false;
-          this.isError = false;
-          this.isSuccess = true;
-        },
-        err => {
-          this.isSubmitting = false;
-          this.isSuccess = false;
-          this.isError = true;
-          event.target.disabled = false;
-        }
-      );
-    } else {
-      this.courseService
-        .rearrangeCourse(localStorage.getItem("userID"), data)
+         this.courseService
+        .registAndTrial(data)
         .subscribe(
           res => {
             this.isSubmitting = false;
@@ -239,57 +191,41 @@ export class TrialConfirmationComponent implements OnInit {
           err => {
             this.isSubmitting = false;
             this.isSuccess = false;
-            this.isError = true;
+           // this.isError = true;
             event.target.disabled = false;
+            let msg =err.error?err.error.ErrorMessage:"Something error ,Please try again!"
+            Swal.fire({title:msg,type: 'error', showConfirmButton: true});
           }
         );
-    }
+    
   }
 
-  /**
-   * Prepare submition data.
-   */
+  // /**
+  //  * Prepare submition data.
+  //  */
   prepareSubmitionData() {
-    if (!this.confirmationData.arrangeFlag) {
-      let data: IData;
-      data = {
-        LearnerId: Number(this.learnerId),
-        RoomId: Number(this.getRoomIdValue()),
-        TeacherId: this.confirmationData.teacherId,
-        OrgId: this.confirmationData.orgId,
-        BeginTime: this.formatDate(this.confirmationData.startStr),
-        EndTime: this.formatDate(this.confirmationData.endStr),
-        PaymentMethod: this.getPaymentIdValue(),
-        Amount: this.coursePrice,
-        StaffId: Number(localStorage.userID),
-        TrialCourseId: this.trialCourseId,
-        IsPayNow: this.isPayNow
-      };
-      return data;
-    } else {
-      const data: any = {};
-      data.LearnerId = Number(this.learnerId);
-      data.TeacherId = this.confirmationData.teacherId;
-      data.RoomId = Number(this.getRoomIdValue());
-      data.OrgId = this.confirmationData.orgId;
-      data.BeginTime = this.formatDate(this.confirmationData.startStr);
-      data.Reason = "reschedule";
-      data.CourseInstanceId = this.confirmationData.courseInstanceId;
-      return data;
-    }
-  }
-
-  getRoomIdValue() {
-    if (this.frequencyRoom.length !== 0) {
-      return this.frequencyRoom[0]["RoomId"];
-    } else {
-      const obj = document.getElementById("ROOMS");
-      return obj["value"];
-    }
+    let data: IData;
+    data = {
+      // LearnerId: Number(this.learnerId),
+      FirstName:this.learner.firstName,
+      LastName:this.learner.lastName,
+      ContactNum:this.learner.contactNum,
+      RoomId: Number(this.confirmationData.roomId),
+      TeacherId: this.teacherId,
+      OrgId: this.confirmationData.orgId,
+      BeginTime: this.formatDate(this.confirmationData.startStr),
+      EndTime: this.formatDate(this.confirmationData.endStr),
+      PaymentMethod: this.getPaymentIdValue(),
+      Amount: this.coursePrice,
+      StaffId: Number(localStorage.userID),
+      TrialCourseId: this.trialCourseId,
+      IsPayNow: this.isPayNow
+    };
+  return data;
   }
 
   getPaymentIdValue() {
-    let id: number;
+    let id: number=0;
     const obj = document.getElementsByClassName("PAYMENTS");
     for (let i = 0; i < obj.length; i++) {
       if (obj[i]["checked"]) {
@@ -333,18 +269,15 @@ export class TrialConfirmationComponent implements OnInit {
       }
     });
   }
-
+  selectTeacher(event) {
+    this.teacherId = Number(event.target.value);
+  }
   /**
    * Close confirmation modal and emit to parents to refresh.
    */
   closeConfirmationModal() {
     this.activeModal.close("Close click");
     this.isClosed.emit(true);
-    if (this.confirmationData.arrangeFlag) {
-      this.router.navigateByUrl(
-        "learner/credit/" + this.confirmationData.LearnerId
-      );
-    }
   }
 
   /**
@@ -352,12 +285,12 @@ export class TrialConfirmationComponent implements OnInit {
    */
   downloadInvoice() {
     const learnerName: IInvoiceLearnerName = {
-      firstName: this.learner.FirstName,
-      lastName: this.learner.LastName
+      firstName: this.learner.firstName,
+      lastName: this.learner.lastName
     };
     const invoice: IInvoice = {
       LessonQuantity: 1,
-      CourseName: this.confirmationData.cateName,
+      CourseName: "course",
       BeginDate: new Date(
         this.confirmationData.startTimeStamp
       ).toLocaleDateString(),
@@ -370,28 +303,34 @@ export class TrialConfirmationComponent implements OnInit {
   }
 }
 
+// startTimeStamp: info.startStr,
+// endTimeStamp: info.endStr,
+// orgId: JSON.parse(localStorage.getitem('OrgId'))[0],
+// roomId:info.resource._resource.id,
+// roomName:info.resource._resource.title
+
 export interface IConfirmData {
-  teacherId: number;
-  teacherName: string;
   startTimeStamp: number;
   endTimeStamp: number;
   orgId: number;
   orgName: string;
-  cateName: string;
-  cateId: number;
-  teacher: object;
+  roomName: string;
+  roomId: number;
   startStr: string;
   endStr: string;
-  LearnerId: number;
-  arrangeFlag: boolean;
-  courseLevel: number;
-  courseInstanceId: number;
+}
+export interface Ilearner {
+  firstName: string;
+  lastName: string;
+  contactNum:string;
 }
 
 export interface IData {
-  LearnerId: number;
-  RoomId: number;
+  FirstName:string;
+  LastName:string;
+  ContactNum:string;
   TeacherId: number;
+  RoomId: number;
   OrgId: number;
   BeginTime: any;
   EndTime: any;

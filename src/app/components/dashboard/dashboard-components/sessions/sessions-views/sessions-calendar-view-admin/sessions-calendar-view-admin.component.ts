@@ -3,6 +3,7 @@ import {OptionsInput} from '@fullcalendar/core';
 import timeslot from '@fullcalendar/resource-timegrid';
 import interactionPlugin from '@fullcalendar/interaction';
 import {CalendarComponent} from 'ng-fullcalendar';
+import { NgbActiveModal } from "@ng-bootstrap/ng-bootstrap";
 declare let $: any;
 import {DatePipe} from '@angular/common';
 import {NgbModal, NgbModule} from '@ng-bootstrap/ng-bootstrap';
@@ -17,6 +18,8 @@ import {SessionRescheduleModalComponent} from '../../session-modals/session-resc
 import {AdminLearnerProfileComponent} from '../../../admin-learner/admin-learner-profile/admin-learner-profile.component';
 import {LearnersService} from '../../../../../../services/http/learners.service';
 import {debounce} from '../../../../../../shared/utils/debounce';
+import { SessionTrialModalComponent } from '../../session-modals/session-trial-modal/session-trial-modal.component';
+import { JsonHubProtocol } from '@aspnet/signalr';
 
 @Component({
   selector: 'app-sessions-calendar-view-admin',
@@ -45,6 +48,7 @@ export class SessionsCalendarViewAdminComponent implements OnInit {
   @ViewChild(CalendarComponent) fullcalendar: CalendarComponent;
   t = null;
   constructor(
+    public activeModal: NgbActiveModal,
     protected sessionService: SessionsService,
     private datePipe: DatePipe, private modalService: NgbModal,
     private fb: FormBuilder,
@@ -62,12 +66,17 @@ export class SessionsCalendarViewAdminComponent implements OnInit {
         this.teacherAvoidDuplicate();
       });
       this.isloading = false;
+      const that = this;
       this.options = {
         themeSystem: 'jquery-ui',
         editable: true,
         eventDurationEditable: false,
         displayEventTime: true,
         firstDay: 1,
+        selectable: true,
+        select(info) {
+          that.selectSlot(info);
+        },
         customButtons: {
           DayPickerButton: {
             text: 'Search',
@@ -128,7 +137,41 @@ export class SessionsCalendarViewAdminComponent implements OnInit {
     });
   }
 
+  selectSlot = (info) =>{
+    const Date = this.datePipe.transform(this.fullcalendar.calendar.getDate(), 'yyyy-MM-dd');
+    const timeDiffer: number = info.end - info.start;
+    console.log(timeDiffer);
 
+    if (!(timeDiffer ==1800000 || timeDiffer ==3600000 || timeDiffer ==2700000)){
+      alert("The course must be 30 minutes, 45 minutes or 1 hour");
+      return;
+    }
+    const modalRef = this.modalService.open(SessionTrialModalComponent, {
+      size: "lg",
+      backdrop: "static",
+      keyboard: false
+    });
+    modalRef.componentInstance.confirmationData = {
+      startTimeStamp: info.start,
+      endTimeStamp: info.end,
+      startStr: info.startStr,
+      endStr: info.endStr,      
+      orgId: JSON.parse(localStorage.getItem('OrgId'))[0],
+      orgName: localStorage.getItem('organisations'),
+      roomId:info.resource._resource.id,
+      roomName:info.resource._resource.title
+    };
+    modalRef.componentInstance.isClosed.subscribe(res => {
+      this.activeModal.close("Close click");
+    });
+    modalRef.result.then(
+      () => {
+        this.getEventByDate(Date);
+      },
+      () => {
+        this.getEventByDate(Date);
+      });
+  }
   clickButton = (model) => {
     if (model.buttonType === 'next' || model.buttonType === 'today' || model.buttonType === 'prev' || model.buttonType === 'testButton') {
       const datefromcalendar = model.data;

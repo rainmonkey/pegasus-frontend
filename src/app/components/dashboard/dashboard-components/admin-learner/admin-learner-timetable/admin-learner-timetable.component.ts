@@ -65,11 +65,12 @@ export class AdminLearnerTimetableComponent implements OnInit {
   putInfo(data) {
     this.courseArray = [];
     for (let i of data) {
-      if (i.IsCanceled){
-      this.courseArray.push({ "title": i.TeacherFirstName +' '+ i.BranchAbbr, "date": i.BeginTime, 'color':'grey' })}else if(i.IsConfirm){
-        this.courseArray.push({ "title": i.TeacherFirstName +' '+ i.BranchAbbr, "date": i.BeginTime, 'color':'green' })
+      var extendedProps = {lessonId:i.LessonId};
+     if (i.IsCanceled){
+      this.courseArray.push({ "title": i.TeacherFirstName +' '+ i.BranchAbbr, "date": i.BeginTime, 'color':'grey' ,"extendedProps":extendedProps})}else if(i.IsConfirm){
+        this.courseArray.push({ "title": i.TeacherFirstName +' '+ i.BranchAbbr, "date": i.BeginTime, 'color':'green',"extendedProps":extendedProps })
       }else{
-        this.courseArray.push({ "title": i.TeacherFirstName +' '+ i.BranchAbbr, "date": i.BeginTime, })
+        this.courseArray.push({ "title": i.TeacherFirstName +' '+ i.BranchAbbr, "date": i.BeginTime,"extendedProps":extendedProps})
       }
     }
     return this.courseArray;
