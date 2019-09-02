@@ -245,7 +245,7 @@ import { GroupcourseComponent } from './components/dashboard/dashboard-component
     SessionCompletedModalComponent,
     GenderPipe,
     RelationshipPipe,
-    RelativeTimePipe,
+    // RelativeTimePipe,
     ColumnTitleFormatPipe,
     MondayDateInWeekByDatePipe,
     CourseClassListComponent,
