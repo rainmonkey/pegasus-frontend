@@ -25,6 +25,7 @@ export class LearnerAddModalComponent implements OnInit, DoCheck {
    // console.log(this.toAddLearnerModal);
   }
   ngOnInit() {
+    
   }
 
 }

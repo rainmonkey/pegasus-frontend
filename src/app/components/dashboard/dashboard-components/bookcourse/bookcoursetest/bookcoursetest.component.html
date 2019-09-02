@@ -1,0 +1,143 @@
+<button (click)="chooseGroup()" class='btn btn-outline-primary' [ngClass]="{'bg-info text-white':isGroupCourse}">Group Course</button>
+<button (click)="chooseCustom()" class='btn btn-outline-primary' [ngClass]="{'bg-info text-white':isCustomCourse}">One in One Course</button>
+
+<div [formGroup]='AddCourseForm' *ngIf="isCustomCourse">
+  <div class="cutomCourseForm_buttion d-flex justify-content-end my-3">
+    <button class="btn_reset mx-3 btn btn-info" (click)="reset()">Reset</button>
+    <button class="btn_delete btn btn-danger" (click)="delete()">Delete</button>
+  </div>
+  <div class="row">
+    <div class="col-sm-6 col-md-6">
+      <div>Category</div>
+      <div>
+        <select formControlName="Category" (change)="getClass($event.target.value)" [(ngModel)]='category'>
+          <option disabled selected value>Select the Course</option>
+          <option *ngFor="let category of Categories" [value]="category.CourseCategoryId" >
+            {{category.CourseCategoryName}}
+          </option>
+        </select>
+      </div>
+    </div>
+
+    <div class="col-sm-6 col-md-6">
+      <div>Course</div>
+      <select formControlName="Course" [(ngModel)]='course'>
+        <option disable selected value>Choose the Course</option>
+        <option *ngFor="let class of Classes" [value]="class.CourseId">
+          {{class.CourseName}}
+        </option>
+        
+      </select>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-6 col-sm-6">
+      <div>Location</div>
+      <div>
+        <select formControlName="Location" (change)="getTeachers()" (change)="getRoom($event.target.value)" [(ngModel)]='location'> 
+          <option disabled selected value>Select Location</option>
+          <option *ngFor="let org of Location" [value]="org.OrgId">
+            {{org.OrgName}}
+          </option>
+        </select>
+      </div>
+    </div>
+    <div class="col-md-6 col-sm-6" *ngIf="category==1">
+      <div>Teacher Level</div>
+      <div>
+        <select formControlName="TeacherLevel" (change)="getTeachers()" [(ngModel)]='level'> 
+          <option disabled selected value>Select Teacher Level</option>
+          <option *ngFor="let level of TeacherLevel" [value]="level.TeacherLevel">
+            {{level.TeacherLevelName}}
+          </option>
+        </select>
+      </div>
+
+    </div>
+   
+  </div> 
+  <div class="row">
+    <div class="col-md-6 col-sm-6">
+      <div>Avaliable Day</div>
+      <select formControlName="DayOfWeek" (change)="getTeachers()" [(ngModel)]='avaliableDay'>
+        <option disabled selected value>Select Day Of Week</option>
+        <option value="1">Monday</option>
+        <option value="2">Tuesday</option>
+        <option value="3">Wednesday</option>
+        <option value="4">Thursday</option>
+        <option value="5">Friday</option>
+        <option value="6">Saturday</option>
+        <option value="7">Sunday</option>
+      </select>
+    </div>
+      
+      <!-- <div class="col-md-6 col-sm-6">
+        <div>Room Nom.</div>
+        <div>
+          <select formControlName="RoomNumber">
+            <option disabled selected value>Choose Room</option>
+
+          </select>
+        </div>
+      </div> -->
+    </div>
+    
+    <div class="row">
+      <div class="col-md-6 col-sm-6">
+        <div>Teacher Name</div>
+        <div>
+          <select formControlName="TeacherName" (change)='selectTeacher($event.target.value)' (change)='haveRoom()' [(ngModel)]='teacherName'>
+            <option disabled selected value>Select Teacher</option>
+            <option *ngFor="let teacher of Teacher" [value]="teacher.TeacherId" >
+              {{teacher.Teacher.FirstName}}
+            </option>
+          </select>
+        </div>
+      </div> 
+      <div class="col-md-6 col-sm-6" *ngIf="haveSpecificRoom" > 
+        <div>Room No.</div>
+        <div>
+          <select formControlName="RoomNumber" [(ngModel)]='roomNumber'>
+            <option disabled selected value>Choose Room</option>
+            <option *ngFor="let room of Rooms" [value]="room.RoomId">
+              {{room.RoomName}}
+            </option>      
+          </select>
+        </div>
+      </div>
+    </div>
+    <div class=" beginDate row">
+      <div class="col-sm-6 col-md-6">
+        <label for='startDate'>Start Date</label>
+        <input class="form-control" formControlName="beginDate" type="date" id="startDate" [(ngModel)]='beginDate'>
+
+      </div>
+      <div class="col-sm-6 col-md-6">
+          <label for="endDate">End Date</label>
+          <input class="form-control" formControlName="endDate" type="date" id="endDate" [(ngModel)]='endDate'>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-3 col-md-3">
+        <label for="customTime">Course Time</label>
+      <div>
+        <ngb-timepicker formControlName="beginTime" [hourStep]='hourStep' [minuteStep]='minuteStep' [(ngModel)]='courseTime'></ngb-timepicker>
+       
+      </div>
+      
+  
+      </div>
+      <div class="col-sm-3 col-md-3 mt-5" *ngIf="location!==undefined && avaliableDay!==undefined && teacherName!==undefined">
+        <div>
+           <button class="btn btn-primary" (click)=open()>Pick Course Time By Calendar</button>
+        </div>    
+      </div>
+    </div>
+    <div class="text-right">
+      <button (click)="submit()"  class="btn_submit btn btn-primary">Submit One On One Class</button>
+      <!-- <small *ngIf="AddCourse==false">You should select all questions</small> -->
+    </div>
+</div>
+<div *ngIf="isGroupCourse">
+    <app-groupcourse [whichLearner]='whichLearner' [addCourseCopy]='addCourseCopy'></app-groupcourse>
+</div>

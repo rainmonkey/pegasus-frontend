@@ -1,0 +1,55 @@
+ <div [formGroup]="GroupCourse"> 
+    <table class="table">
+      <thead> 
+        <tr>
+          <th class="table" style='width: 200px'>Course</th>
+          <th class="table" style='width: 200px'>Schedule</th>
+          <th class="table" style='width: 100px'>Location</th>
+       
+          <th class="table"style='width: 100px'>Teacher</th>
+          <th class="table"style='width: 200px'>Begin Time</th>
+          <th class="table">How to know us</th>
+        </tr>
+      </thead>
+      <tbody>
+       
+          <tr *ngFor="let course of Course">
+             <td>
+                <label class="input-group-text gourpFontSize" >
+                  {{course.Course.CourseName}}
+                <input class="ml-1" type="checkbox" formControlName='groupCourse' [value]="course.GroupCourseInstanceId" [checked]="course.isChecked" (click)="selectCourse($event.target.value,$event.target.checked)">
+                </label>
+              </td>
+              <td>
+                <p *ngFor="let schedule of course.schedule" class="gourpFontSize">
+                  {{schedule.DayOfWeek| weekFormat}}:{{schedule.BeginTime}}-{{schedule.EndTime}}
+                </p>
+              </td>
+              <td>
+                <div class='gourpFontSize' >{{course.Org.OrgName}}</div>
+                <div class="gourpFontSize"><i class="fas fa-street-view"></i>{{course.Room.RoomName}}</div>
+              </td>
+              <td>
+                <div class="input-group-text gourpFontSize">
+                  {{course.Teacher.FirstName}}
+                </div>
+              </td>
+              <td>
+                <input type="date" class='form-control gourpFontSize' formControlName='beginDate' [(ngModel)]='beginDate'>
+              </td>
+              <td>
+                <input type="text" class='form-control gourpFontSize'>
+              </td>
+          </tr>
+
+             
+      </tbody>
+    </table>
+    <div class="text-right">
+      <button class="btn_submit btn btn-primary gourpFontSize" (click)="submit()">
+        Submit Group Course
+      </button>
+      <small *ngIf="!canAddGroup" class="text-danger row justify-content-end gourpFontSize">You Have To Select At Least One Course</small>
+    </div>
+  </div>
+

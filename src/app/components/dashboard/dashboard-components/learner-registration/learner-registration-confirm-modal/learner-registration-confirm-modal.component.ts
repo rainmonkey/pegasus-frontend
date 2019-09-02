@@ -41,6 +41,7 @@ export class LearnerRegistrationConfirmModalComponent implements OnInit {
     if (this.command === 1) {
       // regist new student information may add group course or 121 course in one object
       fun= this.registrationService.postStudent(this.fdObj);
+      
     }else if (this.command === 2) {
       // delete course
       fun= this.registrationService.putStudent(this.learnerId, this.fdObj);

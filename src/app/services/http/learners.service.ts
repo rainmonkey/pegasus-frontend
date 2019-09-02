@@ -100,6 +100,9 @@ export class LearnersService {
   GetTeacherRoomByOrgDayOfWeek(orgId, dayofweek) {
     return this.http.get(this.baseUrl + 'teacher/GetTeacherRoomByOrgDayOfWeek/' + orgId + '/' +  dayofweek);
   }
+   GetTeacherByOrgDayOfWeek(orgId, dayofweek){
+     return this.http.get(this.baseUrl+ 'Teacher/GetTeacherByOrgDayOfWeek/'+orgId+'/'+dayofweek);
+   }
 
 
 }

@@ -1,0 +1,175 @@
+<form [formGroup]="registrationForm" class="container" onkeydown='if(event.keyCode==13) return false;'>
+<div id="courseForm">
+  <ul class="courseForm__nav nav nav-tabs my-3">
+    <li *ngIf='!addCourse'><a class="nav-link disabled">Learner</a></li>
+    <li *ngIf='!addCourse'><a class="nav-link disabled">Guardian</a></li>
+    <li><a class="nav-link active">Course</a></li>
+  </ul>
+  <div>
+    <button (click)="chooseGroupCourse()" class='btn btn-outline-primary' >Group Course</button>
+    <button (click)="chooseCustomCourse()" class='btn btn-outline-primary'>One-on-One Course</button>
+  </div>
+
+  <div class="card" *ngIf="isGroupCourse" >
+    <div class="select-group-course container">
+      <div class="guitar">
+        <table class="table ">
+          <thead>
+            <tr>
+              <!-- <th class="">Please Check</th> -->
+              <th class="table" style='width: 200px'>Course</th>
+              <th class="table" style='width: 200px'>Schedule</th>
+              <th class="table" style='width: 100px'>Location</th>
+              <!-- <th class="table ">Room</th>-->
+              <th class="table"style='width: 100px'>Teacher</th>
+              <th class="table"style='width: 150px'>Begin Time</th>
+              <th class="table">How to know us</th>
+            </tr>
+          </thead>
+          <tbody>
+
+            <tr formArrayName="groupCourse" *ngFor="let groupCourse of groupCourseInstance; let i = index">
+              <td class='input-group'>
+                  <label [for]="i" class="input-group-text gourpFontSize">{{groupCourse.Course.CourseName}}
+                  <input class='ml-1' type="checkbox" [id]='i' [checked]="groupCourse.isChecked" (click)="selectCheckboxes(i, $event)" >
+                  </label>
+              </td>
+
+              <td>
+                <p *ngFor="let schedule of groupCourse.schedule" class='gourpFontSize' gourpFontSize>{{schedule.DayOfWeek | weekFormat}}: {{schedule.BeginTime}}-{{schedule.EndTime}}</p>
+              </td>
+              <td>
+                <div class='gourpFontSize'>{{groupCourse.Org.OrgName}}</div>
+                <div class='gourpFontSize'><i class="fas fa-street-view"></i>{{groupCourse.Room.RoomName}}</div>
+              </td>
+              <!-- <td>{{groupCourse.Room.RoomName}}</td>-->
+              <td class='input-group'>
+                <div class="input-group-text gourpFontSize">
+                {{groupCourse.Teacher.FirstName}}
+                </div>
+              </td>
+              <td><input type="date" [ngModelOptions]="{standalone: true}" [(ngModel)]="groupCourseInstance[i].beginDate" class='form-control gourpFontSize'></td>
+              <td><input type="text" [ngModelOptions]="{standalone: true}" [(ngModel)]="groupCourseInstance[i].comments" class='form-control gourpFontSize'></td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="text-right">
+          <button *ngIf="addCourse == undefined" class="btn_back mx-3 btn btn-info gourpFontSize" (click)="next('parentForm')">Back</button>
+          <button *ngIf="!addCourse" (click)="onSubmit()" class="btn_submit btn btn-primary gourpFontSize" type="submit">Submit</button>
+          <button *ngIf="addCourse" (click)="onSubmit()" class="btn_submit btn btn-primary gourpFontSize" type="submit">Submit Group Courses</button>
+
+          <small *ngIf="!canAddGroup" class='text-danger row justify-content-end gourpFontSize'>You Have To Select At Least One Course</small>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="isCustomCourse" formArrayName="customCourse">
+      <div *ngFor="let course of customCourse.controls; let i=index;" class="card my-3">
+        <div [formGroupName]="i" class="card-body">
+          <div class="customCourseForm__button d-flex justify-content-end my-3">
+            <button class="btn_reset mx-3 btn btn-info" (click)="resetCustomCourse(i)">Reset</button>
+            <button class="btn_delete btn btn-danger" (click)="deleteCustomCourse(i)">Delete</button>
+          </div>
+          <div class="selectCourse-yourLever row">
+            <div class="col-sm-6 col-md-6">
+              <label for="course">Course Category</label>
+              <select class="form-control" formControlName="courseCategory" (change)="selectCategory($event.target.value, i)">
+                <option selected>Choose..</option>
+                <option *ngFor="let courseCategory of setUniCatListArray[i]" [value]="courseCategory.CourseCategoryId">{{courseCategory.CourseCategoryName}}</option>
+              </select>
+            </div>
+          
+            <div class="col-sm-6 col-md-6">
+              <label for="course">Course</label>
+              <select class="form-control" (change)="selectCourse($event.target.value, i)" formControlName="course">
+                <option selected>Choose..</option>
+                <option *ngFor="let course of courseListArray[i].courseItemArray" [value]="course.CourseId">{{course.CourseName}}</option>
+              </select>
+              <div *ngIf="isLoading" class='loaderSmall'></div>
+            </div>
+          </div>
+          <div class="location-teacherLevel row">
+              <div class="col-sm-6 col-md-6">
+                <label for="location">Location</label>
+                <select class="form-control" formControlName="location" id="location" (change)="selectLocation($event.target.value, i)">
+                  <option selected>Choose..</option>
+                  <option *ngFor="let cInstance of locListArray[i].locItemArray;" [value]="cInstance.OrgId">{{cInstance.OrgName}}</option>
+                </select>
+              </div>
+              <div class="col-sm-6 col-md-6" *ngIf="notPiano[i] == 1">
+                <label for="teacherLevel">Teacher Level</label>
+                <select class="form-control" formControlName="teacherLevel" id="teacherLevel" (change)="selectTl($event.target.value, i)">
+                  <option selected>Choose..</option>
+                  <option *ngFor="let tLevel of prepareTeaLevListArray[i].prepareTeaLevItemArray;" [value]="tLevel.levelId">{{tLevel.levelName}}</option>
+                </select>
+              </div>
+            </div>
+            <div class="courseDay-courseHour row">
+                <div class="col-sm-6 col-md-6">
+                  <label for="teacherName">Teacher Name</label>
+                  <select class="form-control" formControlName="teacherName" id="teacherName" (change)='selectTeacher($event.target.value, i)'>
+                    <option selected>Choose..</option>
+                    <option *ngFor="let tName of prepareTeaNameListArray[i].prepareTeaNameItemArray;" [value]="tName.TeacherId">{{tName.TeacherName}}</option>
+                  </select>
+                </div>
+                <div class="col-sm-6 col-md-6 d-none">
+                  <label for="room">Room No.</label>
+                  <select class="form-control" formControlName="room" name="room" id="room">
+                    <option selected>Choose..</option>
+                    <option *ngFor="let cRoom of prepareRoomListArray[i].prepareRoomItemArray" [value]="cRoom.RoomId">{{cRoom.RoomName}}</option>
+                  </select>
+                </div>
+              </div>
+              <div class="beginDate row">
+                  <div class="col-sm-6 col-md-6">
+                    <label for="startDate">Start Date</label>
+                    <input class="form-control" formControlName="beginDate" type="date" id="startDate">
+                  </div>
+                  <div class="col-sm-6 col-md-6">
+                    <label for="endDate">End Date</label>
+                    <input class="form-control" formControlName="endDate" type="date" id="endDate">
+                  </div>
+                </div>
+                <div class="row" formGroupName="schedule">
+                    <div class="col-sm-6 col-md-6">
+                      <label for="customday">Course day</label>
+                      <select class="form-control" formControlName="dayOfWeek" id="customday">
+                        <option value="1">Monday</option>
+                        <option value="2">Tuesday</option>
+                        <option value="3">Wednesday</option>
+                        <option value="4">Thursday</option>
+                        <option value="5">Friday</option>
+                        <option value="6">Saturday</option>
+                        <option value="7">Sunday</option>
+                      </select>
+                    </div>
+                    <div class="col-sm-3 col-md-3">
+                      <label for="customTime">Course Time</label>
+                      <!-- <input class="form-control" type="text"  value="15:30:00" routerLink="/timePicker" routerLinkActive="active"> -->
+                      <ngb-timepicker formControlName="beginTime" [size]="'small'" [hourStep]="hourStep" [minuteStep]="minuteStep"></ngb-timepicker>
+                      <small class="text-danger" *ngIf="this.customCourse?.controls[0]?.get('schedule').get('beginTime').invalid">Please Select a Valid Time</small>
+                    </div>
+                    <div class='col-sm-3 col-md-3 mt-3'  *ngIf="this.teaListOutArray[i]?.teaListToDatePick!== undefined && this.teaListOutArray[i]?.teaListToDatePick?.length !== 0">
+                      <button class='btn btn-primary' (click)="open(i)">Pick Course Time by Calendar</button>
+                    </div>
+                  </div>
+                  <div class="d-flex my-3 justify-content-end">
+                      <button *ngIf="addCourse == undefined" class="mx-3 btn_back btn btn-info" (click)="next('parentForm')">Back</button>
+                  </div>
+                  <div class="text-right">
+                      
+                      <button *ngIf="!addCourse" [disabled]="customCourse.invalid || customCourse.untouched" (click)="onSubmit()" class="btn_submit btn btn-primary" type="submit">Submit</button>
+                      <button *ngIf="addCourse" [disabled]="customCourse.invalid || customCourse.untouched" (click)="onSubmit()" class="btn_submit btn btn-primary" type="submit">Submit One-on-One Course</button>
+                    </div>
+
+        </div>
+      </div>
+  </div>
+</div>
+</form>
+
+
+           
+            
+          

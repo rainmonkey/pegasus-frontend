@@ -162,6 +162,9 @@ import { NotificationPopupComponent } from './components/dashboard/general/notif
 import { TrialInfoComponent } from './components/dashboard/dashboard-components/trial-course/trial-info/trial-info.component';
 import { RegistrationToParentComponent } from './components/dashboard/dashboard-components/admin-learner/registration-To-parent/registration-To-parent.component';
 import { ParentRegistrationFormComponent } from './components/dashboard/dashboard-components/admin-learner/parent-Registration-Form/parent-Registration-Form.component';
+import { BookcourseComponent } from './components/dashboard/dashboard-components/learner-registration/bookcourse/bookcourse.component';
+import { BookcoursetestComponent } from './components/dashboard/dashboard-components/bookcourse/bookcoursetest/bookcoursetest.component';
+import { GroupcourseComponent } from './components/dashboard/dashboard-components/bookcourse/groupcourse/groupcourse.component';
 
 @NgModule({
   declarations: [
@@ -310,6 +313,9 @@ import { ParentRegistrationFormComponent } from './components/dashboard/dashboar
   TrialCalendarComponent,
   NotificationPopupComponent,
   TrialConfirmationComponent,
+  BookcourseComponent,
+  BookcoursetestComponent,
+  GroupcourseComponent,
   ],
   imports: [
     NgbModule,
