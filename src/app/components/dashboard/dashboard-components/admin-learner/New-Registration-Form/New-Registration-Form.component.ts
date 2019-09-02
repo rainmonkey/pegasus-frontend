@@ -29,7 +29,7 @@ export class NewRegistrationFormComponent implements OnInit {
   public learnerOthers = []
   whyP = []
   howP = []
-
+  myDate
   getErrorW = false;
   getErrorH = false;
   showErrorW = false;
@@ -49,6 +49,7 @@ export class NewRegistrationFormComponent implements OnInit {
 
   ngOnInit() {
     console.log(this.now)
+    this.getDate()
     this.registrationForm = this.fb.group(this.formBuild());
     this.getLocationFromServer()
     this.getLookUp()
@@ -64,7 +65,7 @@ export class NewRegistrationFormComponent implements OnInit {
         LastName: [null, Validators.required],
         Gender: ['', Validators.required],
         dob: [null, Validators.required],
-        EnrollDate: [null,Validators.required],
+        EnrollDate: [this.myDate(),Validators.required],
         ContactNum: [null, Validators.required],
         Email: [null, [Validators.required, Validators.email]],
         Address: ['',],
@@ -190,6 +191,18 @@ export class NewRegistrationFormComponent implements OnInit {
           console.log('how know err', err);
         }
       );
+  }
+
+
+  getDate() {
+    this.myDate = () => {
+      const Dates = new Date();
+      const year: number = Dates.getFullYear();
+      const month: any = (Dates.getMonth() + 1) < 10 ? '0' + (Dates.getMonth() + 1) : (Dates.getMonth() + 1);
+      const day: any = Dates.getDate() < 10 ? '0' + Dates.getDate() : Dates.getDate();
+      //      console.log( Dates, year, month,)
+      return year + '-' + month + '-' + day;
+    };
   }
 
   isSelectLevel() {

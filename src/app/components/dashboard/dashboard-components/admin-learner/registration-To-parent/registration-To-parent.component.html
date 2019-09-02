@@ -23,12 +23,12 @@
   <span class='m_um_error_msg errorfont' [style.color]="messageColor">{{infoMessage}}</span>
 <div *ngIf='command == 1'>
   <button *ngIf='submitionFlag' type='button' class='btn btn-outline-dark' (click)='onSubmit()' [disabled]='registrationForm.parentForm.invalid && !newLearner.value.IsUnder18'>Save</button> &nbsp;&nbsp;
-   <button type="button" class="btn btn-outline-dark" (click)="onClose()" [disabled]=' !newLearner.value.IsUnder18 && !submitSuccess'>Close</button>
+   <button type="button" class="btn btn-outline-dark" (click)="onClose()" [disabled]=' !newLearner.value.IsUnder18 || !submitSuccess'>Close</button>
 </div>
 
 <div *ngIf='command ==2'>
     <button *ngIf='submitionFlag' type='button' class='btn btn-outline-dark' (click)='onSubmit()'>Save</button> &nbsp;&nbsp;
-    <button type="button" class="btn btn-outline-dark" (click)="onClose()" [disabled]='registrationForm.parentForm.invalid && !newLearner.value.IsUnder18' >Close</button>
+    <button type="button" class="btn btn-outline-dark" (click)="onClose()" >Close</button>
 </div>
 
 </div>
