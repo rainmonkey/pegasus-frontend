@@ -169,7 +169,7 @@ import { BookcoursetestComponent } from './components/dashboard/dashboard-compon
 import { GroupcourseComponent } from './components/dashboard/dashboard-components/bookcourse/groupcourse/groupcourse.component';
 
 
-// import { RelativeTimePipe } from "./shared/pipes/relative-time.pipe";
+ import { RelativeTimePipe } from "./shared/pipes/relative-time.pipe";
 
 @NgModule({
   declarations: [
@@ -245,7 +245,7 @@ import { GroupcourseComponent } from './components/dashboard/dashboard-component
     SessionCompletedModalComponent,
     GenderPipe,
     RelationshipPipe,
-    // RelativeTimePipe,
+     RelativeTimePipe,
     ColumnTitleFormatPipe,
     MondayDateInWeekByDatePipe,
     CourseClassListComponent,
