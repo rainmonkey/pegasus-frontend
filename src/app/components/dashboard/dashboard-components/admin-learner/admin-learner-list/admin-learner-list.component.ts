@@ -333,7 +333,7 @@ export class AdminLearnerListComponent implements OnInit {
 
   regiModal(command,whichLearner) {
     //@ts-ignore
-    const modalRef = this.modalService.open(LearnerEditModalComponent, { size: 'xl', backdrop: 'static', keyboard: false });
+    const modalRef = this.modalService.open(NewLearnerRegistrationModalComponent, { size: 'xl', backdrop: 'static', keyboard: false });
 
     let that = this;
     modalRef.result.then(
@@ -346,7 +346,7 @@ export class AdminLearnerListComponent implements OnInit {
     )
     modalRef.componentInstance.command = command;
     modalRef.componentInstance.whichLearner = whichLearner;
-    modalRef.componentInstance.signalForInit.subscribe(res => {
+    modalRef.componentInstance.refreshFlag.subscribe(res => {
       if (res == true) {
         that.ngOnInit();
       }

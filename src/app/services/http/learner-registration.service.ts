@@ -88,4 +88,7 @@ export class LearnerRegistrationService {
       catchError(this.errorHandler)
     );
   }
+ getLearner(){
+   return this.http.get(this.baseUrl+'Learner');
+ }
 }
