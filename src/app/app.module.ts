@@ -163,14 +163,14 @@ import { NotificationPopupComponent } from './components/dashboard/general/notif
 import { TrialInfoComponent } from './components/dashboard/dashboard-components/trial-course/trial-info/trial-info.component';
 import { RegistrationToParentComponent } from './components/dashboard/dashboard-components/admin-learner/registration-To-parent/registration-To-parent.component';
 import { ParentRegistrationFormComponent } from './components/dashboard/dashboard-components/admin-learner/parent-Registration-Form/parent-Registration-Form.component';
-<<<<<<< HEAD
+
 import { BookcourseComponent } from './components/dashboard/dashboard-components/learner-registration/bookcourse/bookcourse.component';
 import { BookcoursetestComponent } from './components/dashboard/dashboard-components/bookcourse/bookcoursetest/bookcoursetest.component';
 import { GroupcourseComponent } from './components/dashboard/dashboard-components/bookcourse/groupcourse/groupcourse.component';
 
-=======
-import { RelativeTimePipe } from "./shared/pipes/relative-time.pipe";
->>>>>>> 15f7f80bc9b40b5afa1e769a713aa9e6853bc81a
+
+// import { RelativeTimePipe } from "./shared/pipes/relative-time.pipe";
+
 @NgModule({
   declarations: [
     PageGroupFormComponent,
@@ -304,8 +304,8 @@ import { RelativeTimePipe } from "./shared/pipes/relative-time.pipe";
     StockApplicationFormComponent,
     PayListComponent,
 
-<<<<<<< HEAD
-  //  new registration
+
+
   NewLearnerRegistrationModalComponent,
   NewRegistrationFormComponent,
   RegistrationToParentComponent,
@@ -324,7 +324,7 @@ import { RelativeTimePipe } from "./shared/pipes/relative-time.pipe";
   BookcourseComponent,
   BookcoursetestComponent,
   GroupcourseComponent,
-=======
+
     //  new registration
     NewLearnerRegistrationModalComponent,
     NewRegistrationFormComponent,
@@ -341,7 +341,7 @@ import { RelativeTimePipe } from "./shared/pipes/relative-time.pipe";
     TrialCalendarComponent,
     NotificationPopupComponent,
     TrialConfirmationComponent
->>>>>>> 15f7f80bc9b40b5afa1e769a713aa9e6853bc81a
+
   ],
   imports: [
     NgbModule,
