@@ -13,8 +13,8 @@ import Swal from 'sweetalert2';
   styleUrls: ['./groupcourse.component.css']
 })
 export class GroupcourseComponent implements OnInit {
-  @Input() whichLearner;
-  @Input() addCourseCopy;
+  @Input() whichLearner: { LearnerId: any; };
+  @Input() addCourseCopy: any;
   @Output() toLearnerListEvent: EventEmitter<any> = new EventEmitter;
   isGroupCourse: boolean;
   isCustomCourse: boolean;
@@ -26,7 +26,7 @@ export class GroupcourseComponent implements OnInit {
   
   fd: any=new FormData;
   groupCourseForSubmit: any[];
-  learnerGroupCourse: any[];
+  learnerGroupCourse: any;
   tempGroupCourseObj: any;
   fdobj={};
   constructor(private fb:FormBuilder,private courseservice:CoursesService,
@@ -78,7 +78,7 @@ export class GroupcourseComponent implements OnInit {
     })
     
   }
-  selectCourse(value,check){
+  selectCourse(value: any,check: any){
       
     for(let i=0;i<this.Course.length;i++){
       
@@ -101,12 +101,14 @@ export class GroupcourseComponent implements OnInit {
         this.tempGroupCourseObj['GroupCourseInstanceId']=groupcourse.GroupCourseInstanceId;
         this.tempGroupCourseObj['Comment'] = groupcourse.comments;
         this.tempGroupCourseObj['BeginDate'] = groupcourse.beginDate;
+        this.tempGroupCourseObj['LearnerId']=this.whichLearner.LearnerId;
+       
         this.learnerGroupCourse.push(this.tempGroupCourseObj);
-        tem={...this.tempGroupCourseObj};
-        if(this.whichLearner)
-          tem['LearnerId']=this.whichLearner.LearnerId;
-          console.log(this.whichLearner.LearnerId);
-          this.groupCourseForSubmit.push(tem);
+        // tem={...this.tempGroupCourseObj};
+        // if(this.whichLearner)
+        //   tem['LearnerId']=this.whichLearner.LearnerId;
+        //   console.log(this.whichLearner.LearnerId);
+        //   this.groupCourseForSubmit.push(tem);
         
       }
     }  
@@ -115,19 +117,20 @@ export class GroupcourseComponent implements OnInit {
     this.canAddGroup=true;
     this.confirmGroupCourse();
     let checkGroup=[];
-    this.Course.forEach(element => {
+    this.Course.forEach((element: { isChecked: boolean; }) => {
       if(element.isChecked == true){
         checkGroup.push(1)
       }   
     });
     if(checkGroup.length !==0){
       if(this.learnerGroupCourse){
-        this.fdobj['LearnerGroupCourse']=this.learnerGroupCourse;
+        this.fdobj['LearnerGroupCourses']=this.learnerGroupCourse;
       }
-      this.fd.delete('details');
-      this.fd.append('details',JSON.stringify(this.fdobj));
+      // this.fd.delete('details');
+      // this.fd.append('details',JSON.stringify(this.fdobj));
       this.openConfirm();
-      console.log(this.fdobj);
+      console.log(this.fdobj['LearnerGroupCourses']);
+      console.log(this.fd);
 
     }
     else{
@@ -135,23 +138,63 @@ export class GroupcourseComponent implements OnInit {
     }
 
   }
+  // openConfirm(){
+  //   Swal.fire({
+  //     title:'Are you sure?',
+  //     text:'Do you want to submit the group course?',
+  //     type:'warning',
+  //     showCancelButton:true,
+  //     confirmButtonColor:'#d33',
+  //     confirmButtonText:'Yes, add it'
+  //   },
+  //   function(){
+  //     this.registrationService.addGroupCourse(this.fdobj);
+  //   };
+  // });
   openConfirm(){
     Swal.fire({
       title:'Are you sure?',
-      text:'Do you want to submit the group course?',
+      text:'Do you want to submit the grooup course?',
       type:'warning',
       showCancelButton:true,
-      confirmButtonColor:'#d33',
-      confirmButtonText:'Yes, add it'
+      confirmButtonText:'Yes, add it',
+      cancelButtonText:'Cancel'
+
     }).then((result)=>{
+      console.log(this.fdobj);
       if(result.value){
-        this.registrationService.addGroupCourse(this.fd);
-             
+        this.registrationService.addGroupCourse( this.fdobj).subscribe(
+          val=>{
+            console.log(val);
+            console.log("post success")
+            Swal.fire('Add Successful!')
+          },error=>{
+            Swal.fire("Ops!",
+            "Learner had already add this course")
+            console.log('error');
+          }
+        )
+        
+      }
+      else if(
+        result.dismiss === Swal.DismissReason.cancel
+      ){
+        Swal.fire("Cancel add the course")
       }
 
     })
-
   }
+      
+      
+
+    
+    
+
+  
+    
+  
+   
+  // }
   // openConfirm() {
   //   console.log(this.addCourseCopy)
   //   this.modalRefConfirm = this.modalService.open(LearnerRegistrationConfirmModalComponent,{backdrop:'static', keyboard:false});
