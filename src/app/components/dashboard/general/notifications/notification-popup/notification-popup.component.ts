@@ -2,6 +2,8 @@ import { Subscription } from 'rxjs';
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { DashboardService } from "src/app/services/http/dashboard.service";
 import { element } from '@angular/core/src/render3';
+import { RelativeTimePipe } from '../../../../../shared/pipes/relative-time.pipe';
+
 @Component({
   selector: 'app-notification-popup',
   templateUrl: './notification-popup.component.html',
