@@ -4,6 +4,7 @@ import { CoursesService } from 'src/app/services/http/courses.service';
 import { LearnerRegistrationService } from 'src/app/services/http/learner-registration.service';
 import { LearnerRegistrationConfirmModalComponent } from '../../learner-registration/learner-registration-confirm-modal/learner-registration-confirm-modal.component';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import Swal from 'sweetalert2';
 
 
 @Component({
@@ -122,11 +123,11 @@ export class GroupcourseComponent implements OnInit {
     if(checkGroup.length !==0){
       if(this.learnerGroupCourse){
         this.fdobj['LearnerGroupCourse']=this.learnerGroupCourse;
-        
       }
       this.fd.delete('details');
       this.fd.append('details',JSON.stringify(this.fdobj));
       this.openConfirm();
+      console.log(this.fdobj);
 
     }
     else{
@@ -134,29 +135,46 @@ export class GroupcourseComponent implements OnInit {
     }
 
   }
-  openConfirm() {
-    console.log(this.addCourseCopy)
-    this.modalRefConfirm = this.modalService.open(LearnerRegistrationConfirmModalComponent,{backdrop:'static', keyboard:false});
-    this.modalRefConfirm.componentInstance.fdObj = this.fd;
-    this.modalRefConfirm.componentInstance.fdObj = this.fd;
-    if (this.whichLearner && !this.addCourseCopy){
-      this.modalRefConfirm.componentInstance.command = 2;  //edit
-      this.modalRefConfirm.componentInstance.learnerId = this.whichLearner.LearnerId;
-    } else if (this.addCourseCopy){
-      this.modalRefConfirm.componentInstance.command = 3; //add
-      this.modalRefConfirm.componentInstance.groupCourse = this.groupCourseForSubmit;
-      this.modalRefConfirm.componentInstance.isGroupCourse = this.isGroupCourse;
-      this.modalRefConfirm.componentInstance.learnerId = this.whichLearner.LearnerId;
-      this.modalRefConfirm.componentInstance.addCourse = this.addCourseCopy;
-    }
-    else
-      this.modalRefConfirm.componentInstance.command = 1;   //post
-      this.modalRefConfirm.componentInstance.clickConfirm.subscribe(res=>{
-        console.log(res)
-        if (res == true) {
-          this.toLearnerListEvent.emit(true);
-        }
-      })
+  openConfirm(){
+    Swal.fire({
+      title:'Are you sure?',
+      text:'Do you want to submit the group course?',
+      type:'warning',
+      showCancelButton:true,
+      confirmButtonColor:'#d33',
+      confirmButtonText:'Yes, add it'
+    }).then((result)=>{
+      if(result.value){
+        this.registrationService.addGroupCourse(this.fd);
+             
+      }
+
+    })
+
   }
+  // openConfirm() {
+  //   console.log(this.addCourseCopy)
+  //   this.modalRefConfirm = this.modalService.open(LearnerRegistrationConfirmModalComponent,{backdrop:'static', keyboard:false});
+  //   this.modalRefConfirm.componentInstance.fdObj = this.fd;
+  //   this.modalRefConfirm.componentInstance.fdObj = this.fd;
+  //   if (this.whichLearner && !this.addCourseCopy){
+  //     this.modalRefConfirm.componentInstance.command = 2;  //edit
+  //     this.modalRefConfirm.componentInstance.learnerId = this.whichLearner.LearnerId;
+  //   } else if (this.addCourseCopy){
+  //     this.modalRefConfirm.componentInstance.command = 3; //add
+  //     this.modalRefConfirm.componentInstance.groupCourse = this.groupCourseForSubmit;
+  //     this.modalRefConfirm.componentInstance.isGroupCourse = this.isGroupCourse;
+  //     this.modalRefConfirm.componentInstance.learnerId = this.whichLearner.LearnerId;
+  //     this.modalRefConfirm.componentInstance.addCourse = this.addCourseCopy;
+  //   }
+  //   else
+  //     this.modalRefConfirm.componentInstance.command = 1;   //post
+  //   this.modalRefConfirm.componentInstance.clickConfirm.subscribe(res=>{
+  //       console.log(res)
+  //       if (res == true) {
+  //         this.toLearnerListEvent.emit(true);
+  //       }
+  //     })
+  // }
 
 }

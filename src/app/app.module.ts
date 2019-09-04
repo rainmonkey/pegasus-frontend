@@ -169,7 +169,8 @@ import { BookcoursetestComponent } from './components/dashboard/dashboard-compon
 import { GroupcourseComponent } from './components/dashboard/dashboard-components/bookcourse/groupcourse/groupcourse.component';
 
 
-// import { RelativeTimePipe } from "./shared/pipes/relative-time.pipe";
+import { RelativeTimePipe } from "./shared/pipes/relative-time.pipe";
+import { LearnerAddModalTestComponent } from './components/dashboard/dashboard-components/admin-learner/learner-add-modal-test/learner-add-modal-test.component';
 
 @NgModule({
   declarations: [
@@ -245,7 +246,7 @@ import { GroupcourseComponent } from './components/dashboard/dashboard-component
     SessionCompletedModalComponent,
     GenderPipe,
     RelationshipPipe,
-    // RelativeTimePipe,
+    RelativeTimePipe,
     ColumnTitleFormatPipe,
     MondayDateInWeekByDatePipe,
     CourseClassListComponent,
@@ -340,7 +341,8 @@ import { GroupcourseComponent } from './components/dashboard/dashboard-component
     StockApplicationProcessModalComponent,
     TrialCalendarComponent,
     NotificationPopupComponent,
-    TrialConfirmationComponent
+    TrialConfirmationComponent,
+    LearnerAddModalTestComponent
 
   ],
   imports: [
@@ -429,7 +431,9 @@ import { GroupcourseComponent } from './components/dashboard/dashboard-component
     NewLearnerRegistrationModalComponent,
     TrialCalendarComponent,
     TrialConfirmationComponent,
-    RegistrationToParentComponent
+    RegistrationToParentComponent,
+    LearnerAddModalTestComponent ,
+
 
   ],
   exports: [AppComponent],

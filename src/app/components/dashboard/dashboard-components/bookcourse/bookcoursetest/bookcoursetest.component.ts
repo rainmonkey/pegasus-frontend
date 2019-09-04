@@ -32,9 +32,9 @@ export class BookcoursetestComponent implements OnInit {
   Classes: any;
  
   courseLevel: any;
-  LevelName: any;
+  // LevelName: any;
   Location: any;
-  TempTeacherLevel=[];
+  tempTeacherLevel=[];
    
   
   TeacherLevel=[];
@@ -163,12 +163,12 @@ export class BookcoursetestComponent implements OnInit {
   
     console.log(this.Classes);
     for(let i=0;i<this.Classes.length;i++){
-      this.TempTeacherLevel[i]={"TeacherLevelName":this.Classes[i].TeacherLevelName,"TeacherLevel":this.Classes[i].TeacherLevel}      
+      this.tempTeacherLevel[i]={"TeacherLevelName":this.Classes[i].TeacherLevelName,"TeacherLevel":this.Classes[i].TeacherLevel}      
       
     }
     // this.toDatePickCourseDuration={"Duration":}
     
-    this.TeacherLevel=this.unique(this.TempTeacherLevel);
+    this.TeacherLevel=this.unique(this.tempTeacherLevel);
     console.log(this.TeacherLevel);
    
   },
@@ -199,9 +199,11 @@ export class BookcoursetestComponent implements OnInit {
   }
   selectTeacher(event){
     // console.log(this.Teacher);
+    
+    this.haveSpecificRoom=false;
     this.teaList=this.Teacher;
     this.teaList=this.teaList.filter(item=>item.TeacherId==Number(event));
-    console.log(this.teaList);
+    // console.log(this.teaList);
     for(let i=0 ;i<this.Classes.length;i++){
       if(this.Classes[i].CourseId==this.course){
         this.toDatePickCourseDuration={"DurationName":this.Classes[i].DurationName,"Duration":this.Classes[i].Duration}
@@ -209,17 +211,22 @@ export class BookcoursetestComponent implements OnInit {
     }
     this.teaList=this.teaList.concat(this.toDatePickCourseDuration);
     console.log(this.teaList);
-    
-
-
-  }
-  haveRoom(){
     if(this.teaList[0].RoomId==null){
       return this.haveSpecificRoom=true;
     }
+    console.log(this.haveSpecificRoom);
     console.log(this.teaList[0].RoomId);
     
+
+
   }
+  
+  // haveRoom(){
+   
+  //   console.log(this.haveSpecificRoom);
+  //   console.log(this.teaList[0].RoomId);
+    
+  // }
   getRoom(event){
     this.teacherservice.getRooms().subscribe(res=>{
       this.Rooms=res['Data'];
@@ -298,7 +305,7 @@ export class BookcoursetestComponent implements OnInit {
   submit(){
     this.AddCourse=true;
     if(this.category==null||this.course==null|| this.location==null||this.level==null||
-    this.avaliableDay==null||this.teacherName==null||this.beginDate==null||this.endDate==null||this.courseTime==null){
+    this.avaliableDay==null||this.teacherName==null||this.beginDate==null||this.courseTime==null){
        this.AddCourse=false;
        alert('Please Select All Questions')
     }
@@ -311,6 +318,7 @@ export class BookcoursetestComponent implements OnInit {
         this.fd.delete('details');
         this.fd.append('details',JSON.stringify(this.fdobj));
         this.openConfirm();
+        console.log(this.fd);
       }  
     }
     
@@ -323,9 +331,9 @@ export class BookcoursetestComponent implements OnInit {
     this.oneOnOneCourse=[];
     let tempObj={};
     tempObj['OrgId']=this.location;
-    this.whichLearner?tempObj['CourseId']=this.course:tempObj['CourseId']=parseInt(this.course);
-    this.whichLearner?tempObj['TeacherId']=this.teacherName:tempObj['TeacherId']=parseInt(this.teacherName);
-    this.whichLearner?tempObj['RoomId']=this.roomNumber:tempObj['RoomId']=parseInt(this.roomNumber);
+    tempObj['CourseId']=parseInt(this.course);
+    tempObj['TeacherId']=parseInt(this.teacherName);
+    tempObj['RoomId']=parseInt(this.roomNumber);
     tempObj['BeginDate']=this.beginDate;
     let tempShceduleObj={};
     tempShceduleObj['DayOfWeek']=parseInt(this.avaliableDay);
