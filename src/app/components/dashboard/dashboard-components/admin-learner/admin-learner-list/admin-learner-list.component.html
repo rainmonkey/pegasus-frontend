@@ -98,7 +98,7 @@
       <!--info page pagination-->
       <div class='col-12'>
         <!--pagination is here-->
-        <ngb-pagination [collectionSize]='learnerListLength' [(page)]='currentPage' [pageSize]='pageSize'>
+        <ngb-pagination [collectionSize]='learnerListLength' [(page)]='currentPage' [pageSize]='pageSize' maxSize='10' [boundaryLinks]="true">
         </ngb-pagination>
       </div>
     </div>

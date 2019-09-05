@@ -126,8 +126,7 @@ showInfoMessage(msg, fontColor, gifFlag) {
 
 onClose(command, whichLearner) {
   if (this.submit == true || this.registrationForm.parentForm.dirty == true) {
-    this.refreshFlag.emit(true);
-    this.submitSuccess == true
+    this.refreshFlag.emit(true)
     if (command == 1) {
       //@ts-ignore
       const modalRef = this.modalService.open(RegistrationToParentComponent, { size: 'xl', backdrop: 'static', keyboard: false });

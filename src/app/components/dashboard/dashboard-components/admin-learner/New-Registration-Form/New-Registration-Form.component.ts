@@ -193,14 +193,12 @@ export class NewRegistrationFormComponent implements OnInit {
       );
   }
 
-
   getDate() {
     this.myDate = () => {
       const Dates = new Date();
       const year: number = Dates.getFullYear();
       const month: any = (Dates.getMonth() + 1) < 10 ? '0' + (Dates.getMonth() + 1) : (Dates.getMonth() + 1);
       const day: any = Dates.getDate() < 10 ? '0' + Dates.getDate() : Dates.getDate();
-      //      console.log( Dates, year, month,)
       return year + '-' + month + '-' + day;
     };
   }
