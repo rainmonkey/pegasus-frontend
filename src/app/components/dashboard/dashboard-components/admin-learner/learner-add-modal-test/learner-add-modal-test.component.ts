@@ -1,12 +1,15 @@
+
 import { Component, OnInit, Input, Output, EventEmitter, DoCheck } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
+
 @Component({
-  selector: 'app-learner-add-modal',
-  templateUrl: './learner-add-modal.component.html',
-  styleUrls: ['./learner-add-modal.component.css']
+  selector: 'app-learner-add-modal-test',
+  templateUrl: './learner-add-modal-test.component.html',
+  styleUrls: ['./learner-add-modal-test.component.css']
 })
-export class LearnerAddModalComponent implements OnInit, DoCheck {
+export class LearnerAddModalTestComponent implements OnInit {
+
   addCourse = true;
   toAddLearnerModal = false;
   @Input() whichLearner;
@@ -27,5 +30,4 @@ export class LearnerAddModalComponent implements OnInit, DoCheck {
   ngOnInit() {
     
   }
-
 }

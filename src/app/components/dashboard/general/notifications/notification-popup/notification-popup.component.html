@@ -15,7 +15,7 @@
         <span *ngIf="!msg.ReadMore && msg.SliceMsg" (click)="hiddenRestMsg(i)"
           class="tab__packup align-self-end">Up&nbsp;&uarr;</span>
       </li>
-      <li>{{msg.CreatedAt | relativeTime}}</li>
+      <li>{{msg.CreatedAt|relativeTime}}</li>
     </ul>
   </div>
   <div *ngIf="isCleared" class="tab__content__clear">

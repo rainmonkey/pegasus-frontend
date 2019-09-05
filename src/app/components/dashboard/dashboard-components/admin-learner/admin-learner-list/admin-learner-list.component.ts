@@ -12,6 +12,7 @@ import { LearnerDeleteCourseModalComponent } from '../learner-delete-course-moda
 import { NewLearnerRegistrationModalComponent } from '../New-Learner-Registration-modal/New-Learner-Registration-modal.component';
 import { RegistrationToParentComponent } from '../registration-To-parent/registration-To-parent.component';
 import { LearnerRegistrationFormComponent } from '../../learner-registration/learner-registration-form/learner-registration-form.component'
+import { LearnerAddModalTestComponent } from '../learner-add-modal-test/learner-add-modal-test.component';
 @Component({
   selector: 'app-admin-learner-list',
   templateUrl: './admin-learner-list.component.html',
@@ -176,6 +177,10 @@ export class AdminLearnerListComponent implements OnInit {
         break;
       case 10:
         this.periodCourseChangeModal(command, whichLearner);
+        break;
+      case 11:
+        this.addModalTest(command,whichLearner);
+        break;
 
     }
   }
@@ -289,32 +294,26 @@ export class AdminLearnerListComponent implements OnInit {
         that.ngOnInit();
       }
     })
-    // console.log('jewoiajfoiwjfo',modalRef.componentInstance)
-    //   let that = this;
-    //   modalRef.result.then(
-    //     (res) => {
-    //       that.ngOnInit()
-    //   },
-    //   (err) =>{
-    //     return
-    //   }
-    // )
-    // modalRef.componentInstance.toLearnerListEvent.subscribe(res=>{
-    //   console.log(res)
-    //   if (res == true){
-    //   modalRef.componentInstance.toAddLearnerModal = true;}
-    // let that = this;
-    //   modalRef.result.then(
-    //     function () {
-    //       if (res == true) {
-    //         modalRef.componentInstance.toAddLearnerModal = true;
-    //         // that.activeModal.close('Cross click')
-    //       }
-    //     },
-    //     function () {
-    //       return;
-    //     })
-    //     })
+  }
+  addModalTest(command, whichLearner) {
+    const modalRef = this.modalService.open(LearnerAddModalTestComponent, { windowClass: 'my-class', backdrop: 'static', keyboard: false });
+    let that = this;
+    modalRef.result.then(
+      (res) => {
+        that.ngOnInit()
+      },
+      (err) => {
+        return;
+      }
+    )
+    modalRef.componentInstance.command = command;
+    modalRef.componentInstance.whichLearner = whichLearner;
+    modalRef.componentInstance.signalForInit.subscribe(res => {
+      if (res == true) {
+        that.ngOnInit();
+      }
+    })
+   
   }
   deleteCourseModal(whichLearner) {
     const modalRef = this.modalService.open(LearnerDeleteCourseModalComponent, { windowClass: 'my-class', backdrop: 'static', keyboard: false });

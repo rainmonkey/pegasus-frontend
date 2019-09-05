@@ -163,7 +163,15 @@ import { NotificationPopupComponent } from './components/dashboard/general/notif
 import { TrialInfoComponent } from './components/dashboard/dashboard-components/trial-course/trial-info/trial-info.component';
 import { RegistrationToParentComponent } from './components/dashboard/dashboard-components/admin-learner/registration-To-parent/registration-To-parent.component';
 import { ParentRegistrationFormComponent } from './components/dashboard/dashboard-components/admin-learner/parent-Registration-Form/parent-Registration-Form.component';
+
+import { BookcourseComponent } from './components/dashboard/dashboard-components/learner-registration/bookcourse/bookcourse.component';
+import { BookcoursetestComponent } from './components/dashboard/dashboard-components/bookcourse/bookcoursetest/bookcoursetest.component';
+import { GroupcourseComponent } from './components/dashboard/dashboard-components/bookcourse/groupcourse/groupcourse.component';
+
+
 import { RelativeTimePipe } from "./shared/pipes/relative-time.pipe";
+import { LearnerAddModalTestComponent } from './components/dashboard/dashboard-components/admin-learner/learner-add-modal-test/learner-add-modal-test.component';
+
 @NgModule({
   declarations: [
     PageGroupFormComponent,
@@ -297,6 +305,27 @@ import { RelativeTimePipe } from "./shared/pipes/relative-time.pipe";
     StockApplicationFormComponent,
     PayListComponent,
 
+
+
+  NewLearnerRegistrationModalComponent,
+  NewRegistrationFormComponent,
+  RegistrationToParentComponent,
+  ParentRegistrationFormComponent,
+  TutorsInfomationComponent,
+  StockApplicationReplyModalComponent,
+  StockApplicationDeliverModalComponent,
+  StockApplicationReceiveModalComponent,
+  StockApplicationProcessStatusComponent,
+  TrialFilterComponent,
+  TeacherLevelPipe,
+  StockApplicationProcessModalComponent,
+  TrialCalendarComponent,
+  NotificationPopupComponent,
+  TrialConfirmationComponent,
+  BookcourseComponent,
+  BookcoursetestComponent,
+  GroupcourseComponent,
+
     //  new registration
     NewLearnerRegistrationModalComponent,
     NewRegistrationFormComponent,
@@ -312,7 +341,9 @@ import { RelativeTimePipe } from "./shared/pipes/relative-time.pipe";
     StockApplicationProcessModalComponent,
     TrialCalendarComponent,
     NotificationPopupComponent,
-    TrialConfirmationComponent
+    TrialConfirmationComponent,
+    LearnerAddModalTestComponent
+
   ],
   imports: [
     NgbModule,
@@ -400,7 +431,9 @@ import { RelativeTimePipe } from "./shared/pipes/relative-time.pipe";
     NewLearnerRegistrationModalComponent,
     TrialCalendarComponent,
     TrialConfirmationComponent,
-    RegistrationToParentComponent
+    RegistrationToParentComponent,
+    LearnerAddModalTestComponent ,
+
 
   ],
   exports: [AppComponent],

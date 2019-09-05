@@ -1,0 +1,30 @@
+::ng-deep .my-class .modal-dialog {
+    max-width: 80%;
+    width: 80%;
+  }
+  
+  .img-border{
+    width: 15rem;
+    height: 15rem;
+    text-align: center!important;
+    overflow: hidden;
+  }
+  .img-border img{
+    max-width: 100%;
+    max-height: 60%;
+  }
+  
+  .row {
+    padding: 0px;
+    margin: 0px;
+  }
+  
+  .custom-file-label{
+    padding: 0px;
+    margin: 0px;
+  }
+  
+  .custom-file-input{
+    padding: 0px;
+    margin: 0px;
+  }
