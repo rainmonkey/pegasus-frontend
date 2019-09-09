@@ -995,8 +995,13 @@
                     </div>
 
                     <div class='col-lg-6 col-sm-6'>
-                      <span class='label'>Makeup Lesson Complete: </span>
+                      <span class='label'>Makeup Lesson is Activated: </span>
                       <span class='text' *ngIf='i.IsActive'>{{i.IsActive | IsTemporary}}</span>
+                    </div>
+
+                    <div class='col-lg-6 col-sm-6'>
+                      <span class='label'>Remaining Time: </span>
+                      <span class='text' *ngIf='i.IsActive'>{{i.Remaining}} Quarter(s)</span>
                     </div>
 
                   </div>
