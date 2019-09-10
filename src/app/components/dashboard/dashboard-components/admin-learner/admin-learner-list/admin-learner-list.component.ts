@@ -313,7 +313,7 @@ export class AdminLearnerListComponent implements OnInit {
         that.ngOnInit();
       }
     })
-   
+
   }
   deleteCourseModal(whichLearner) {
     const modalRef = this.modalService.open(LearnerDeleteCourseModalComponent, { windowClass: 'my-class', backdrop: 'static', keyboard: false });
