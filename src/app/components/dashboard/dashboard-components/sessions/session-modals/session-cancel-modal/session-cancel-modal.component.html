@@ -17,8 +17,18 @@
       <p>Please confirm the course has been canceled</p>
       <div>
         <div class="row mb-2">
-          <label class="mt-2">Canceled Reason</label>
-          <input class="form-control" type="text" [(ngModel)]="CancelReason"/>
+          <label class="mt-2">Canceled Reason :</label>
+          <!-- <input class="form-control" type="text" [(ngModel)]="CancelReason"/> -->
+          <select [(ngModel)]="CancelReason">
+            <option disabled selected value>-- select an option --</option>
+            <option value="Sickness">Sickness </option>        
+            <option value="Medical Procedures">Medical Procedures </option>
+            <option value="No Conveyance">No Conveyance</option>
+            <option value="Accident">Accident</option>        
+            <option value="Emergency">Emergency</option>                
+            <option value="Other">Other</option>                        
+          </select>
+
         </div>
       </div>
     </div>

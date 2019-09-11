@@ -32,7 +32,17 @@
         </div>
       </div>
       <div>Reason</div>
-      <input [class.is-invalid]="Reason.invalid && Reason.touched" type="text" class="form-control" formControlName="Reason">
+      <!-- <input [class.is-invalid]="Reason.invalid && Reason.touched" type="text" class="form-control" formControlName="Reason"> -->
+      <select [class.is-invalid]="Reason.invalid && Reason.touched"  class="form-control" formControlName="Reason">
+        <option disabled selected value>-- select an option --</option>
+        <option value="Sickness">Sickness </option>        
+        <option value="Medical Procedures">Medical Procedures </option>
+        <option value="No Conveyance">No Conveyance</option>
+        <option value="Accident">Accident</option>        
+        <option value="Emergency">Emergency</option>                
+        <option value="Other">Other</option>                        
+      </select>
+
       <small class="text-danger" *ngIf="Reason.invalid && Reason.touched">Reason is required.</small>
       <div *ngFor="let ele of learner.One2oneCourseInstance">
         <input #checkbox (change)="checkBoxChange()"  [value]="ele.CourseInstanceId" type="checkbox">
