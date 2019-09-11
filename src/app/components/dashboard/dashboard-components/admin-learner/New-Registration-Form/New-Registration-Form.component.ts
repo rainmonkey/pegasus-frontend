@@ -24,12 +24,12 @@ export class NewRegistrationFormComponent implements OnInit {
   photoObj;
   public learnerPurpose: Array<any>;
   public howKnown: Array<any>;
-
+  now=new Date()
   public othersList = []
   public learnerOthers = []
   whyP = []
   howP = []
-
+  myDate
   getErrorW = false;
   getErrorH = false;
   showErrorW = false;
@@ -48,6 +48,8 @@ export class NewRegistrationFormComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    console.log(this.now)
+    this.getDate()
     this.registrationForm = this.fb.group(this.formBuild());
     this.getLocationFromServer()
     this.getLookUp()
@@ -63,13 +65,13 @@ export class NewRegistrationFormComponent implements OnInit {
         LastName: [null, Validators.required],
         Gender: ['', Validators.required],
         dob: [null, Validators.required],
-        EnrollDate: [null,Validators.required],
+        EnrollDate: [this.myDate(),Validators.required],
         ContactNum: [null, Validators.required],
         Email: [null, [Validators.required, Validators.email]],
-        Address: [null, Validators.required],
+        Address: ['',],
         OrgId: [null, Validators.required],
         LearnerLevel: [null, Validators.required],
-        LevelType: [null],
+        LevelType: [1],
         IsUnder18: [null],
         PaymentPeriod: [null],
         Referrer: [null],
@@ -87,7 +89,7 @@ export class NewRegistrationFormComponent implements OnInit {
         EnrollDate: [this.getDateFormat(this.whichLearner.EnrollDate),Validators.required],
         ContactNum: [this.whichLearner.ContactNum, Validators.required],
         Email: [this.whichLearner.Email, [Validators.required, Validators.email]],
-        Address: [this.whichLearner.Address, Validators.required],
+        Address: [this.whichLearner.Address],
         OrgId: [this.whichLearner.OrgId, Validators.required],
         LearnerLevel: [this.whichLearner.LearnerLevel, Validators.required],
         // LevelType: [this.whichLearner.LevelType],
@@ -189,6 +191,16 @@ export class NewRegistrationFormComponent implements OnInit {
           console.log('how know err', err);
         }
       );
+  }
+
+  getDate() {
+    this.myDate = () => {
+      const Dates = new Date();
+      const year: number = Dates.getFullYear();
+      const month: any = (Dates.getMonth() + 1) < 10 ? '0' + (Dates.getMonth() + 1) : (Dates.getMonth() + 1);
+      const day: any = Dates.getDate() < 10 ? '0' + Dates.getDate() : Dates.getDate();
+      return year + '-' + month + '-' + day;
+    };
   }
 
   isSelectLevel() {

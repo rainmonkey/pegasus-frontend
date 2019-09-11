@@ -17,6 +17,7 @@ export class ParentRegistrationFormComponent implements OnInit {
   constructor(private fb: FormBuilder, ) { }
 
   ngOnInit() {
+    console.log(this.newLearner)
     this.parentRegForm = this.fb.group({
       parentForm: this.fb.array([])
     });
@@ -30,8 +31,8 @@ export class ParentRegistrationFormComponent implements OnInit {
         FirstName: ['', Validators.required],
         LastName: ['', Validators.required],
         Relationship: ['', Validators.required],
-        ContactNum: ['', Validators.required],
-        Email: ['', [Validators.required, Validators.email]]
+        ContactNum: [this.newLearner.value.ContactNum, Validators.required],
+        Email: [this.newLearner.value.Email, [Validators.required, Validators.email]]
       }));
     }
     else if (this.command == 2) {

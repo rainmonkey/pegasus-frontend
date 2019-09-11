@@ -10,6 +10,9 @@ import { LearnerRegistrationModalComponent } from '../../learner-registration/le
 import { LearnerRegistrationConfirmModalComponent } from '../../learner-registration/learner-registration-confirm-modal/learner-registration-confirm-modal.component';
 import { TeachersService } from 'src/app/services/http/teachers.service';
 import { AdminLearnerPeriodCourseChangeModalComponent } from '../../admin-learner/admin-learner-period-course-change-modal/admin-learner-period-course-change-modal.component';
+import { LearnerRegistrationService } from 'src/app/services/http/learner-registration.service';
+import { runInThisContext } from 'vm';
+
 @Component({
   selector: 'app-bookcoursetest',
   templateUrl: './bookcoursetest.component.html',
@@ -61,6 +64,7 @@ export class BookcoursetestComponent implements OnInit {
   fdobj={};
   fd:any = new FormData;
   AddCourse: boolean=true;
+  temp: any;
  
   get customCourses(){
     return this.registrationForm.get('customCourse') as FormArray
@@ -70,7 +74,7 @@ export class BookcoursetestComponent implements OnInit {
   constructor(private fb:FormBuilder,private courseservice:CoursesService,
     private lookupservice:LookUpsService,private learnerservice:LearnersService,
     private teacherservice:TeachersService,
-    private modalService: NgbModal,
+    private modalService: NgbModal,private learnerRegistration:LearnerRegistrationService,
     ) { }
 
   ngOnInit() {
@@ -187,14 +191,35 @@ export class BookcoursetestComponent implements OnInit {
 
   }
   getTeachers(){
-    this.learnerservice.GetTeacherByOrgDayOfWeek(this.AddCourseForm.get('Location').value,
-     this.AddCourseForm.get('DayOfWeek').value).subscribe(res=>{
-            this.Teacher=res["Data"];
-            console.log(this.Teacher)
+    // this.learnerservice.GetTeacherByOrgDayOfWeek(this.AddCourseForm.get('Location').value,
+    //  this.AddCourseForm.get('DayOfWeek').value).subscribe(res=>{
+    //         this.Teacher=res["Data"];
+    //         console.log(this.Teacher)
       
-            },err=>{
-                    console.log(err);
-                   })
+    //         },err=>{
+    //                 console.log(err);
+    //                })
+    
+    console.log(this.course);
+     this.learnerRegistration.getTeacherFilter(this.course).subscribe(res=>{
+       this.temp=res.Data;
+      //  console.log(this.temp);
+       for(let i=0;i<this.temp.length;i++){
+        //  console.log(this.temp[i]);
+        //  console.log(this.temp[i].OrgId);
+         if(this.temp[i].OrgId==this.location){
+           console.log(this.temp[i].Level);
+           for(let j=0;j<this.temp[i].Level.length;j++){
+             if(this.temp[i].Level[j].levelId==this.level){
+               console.log(this.temp[i].Level[j])
+               console.log(this.temp[i].Level[j].teacher)
+               this.Teacher=this.temp[i].Level[j].teacher
+             }
+           }
+         }
+       }
+
+     })
     
   }
   selectTeacher(event){
@@ -221,12 +246,7 @@ export class BookcoursetestComponent implements OnInit {
 
   }
   
-  // haveRoom(){
-   
-  //   console.log(this.haveSpecificRoom);
-  //   console.log(this.teaList[0].RoomId);
-    
-  // }
+
   getRoom(event){
     this.teacherservice.getRooms().subscribe(res=>{
       this.Rooms=res['Data'];

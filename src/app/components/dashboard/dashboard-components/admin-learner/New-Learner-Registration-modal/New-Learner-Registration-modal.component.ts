@@ -14,6 +14,7 @@ export class NewLearnerRegistrationModalComponent implements OnInit {
   public submitionFlag: boolean = true;
   public loadingGifFlag: boolean = false;
   submit=false;
+  newLearnerId
   @Input() command
   @Input() whichLearner;
   @Output() refreshFlag: EventEmitter<any> = new EventEmitter();
@@ -26,7 +27,6 @@ export class NewLearnerRegistrationModalComponent implements OnInit {
     private learnerRegServer: LearnerRegistrationService) { }
 
   ngOnInit() {
-
   }
 
   onSubmit() {
@@ -99,6 +99,8 @@ export class NewLearnerRegistrationModalComponent implements OnInit {
         this.showInfoMessage('Submit success!', '#28a745', false)
         this.submitionFlag = false;
         this.submit= true;
+        this.newLearnerId=res.Data.LearnerId
+        console.log(this.newLearnerId)
       },
       (err) => {
         if (err.error.ErrorMessage == 'Learner has exist.') {
@@ -128,6 +130,7 @@ export class NewLearnerRegistrationModalComponent implements OnInit {
       const modalRef = this.modalService.open(RegistrationToParentComponent, { size: 'xl', backdrop: 'static', keyboard: false });
       modalRef.componentInstance.command = command;
       modalRef.componentInstance.newLearner = this.updateFormObj.registrationForm
+      modalRef.componentInstance.newLearnerId=this.newLearnerId
     }
   }
     else {

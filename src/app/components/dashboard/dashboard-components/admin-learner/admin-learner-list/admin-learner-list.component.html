@@ -10,9 +10,11 @@
       <div class='col-12 t_info_title'>
         Learner Information
         <div>
-          <button type="button" class="btn btn-outline-primary t_info_addnew_btn" (click)='regiModal(1,null)'>+ Learner Registration</button>
+          <button type="button" class="btn btn-outline-primary t_info_addnew_btn" (click)='newRegiModal(1,null)'>New
+            Learner Registration</button>
         </div>
       </div>
+
 
       <!-- page search -->
       <div class='col-6' style="margin-top:-50px;margin-bottom: 10px">
@@ -31,8 +33,10 @@
         </div>
       </div>
 
-
-
+      <div class='col-12'  style="margin-top:-50px;margin-bottom: 10px">
+        <button type="button" style="width:224.09px" class="btn btn-outline-primary t_info_addnew_btn" (click)='regiModal(1,null)'>Old Learner
+        Registration</button>
+      </div>
 
 
       <!--info page table-->
@@ -76,7 +80,7 @@
                 <span class='t_info_table_btn' (click)='openParentModal(2,i)' title='Parent Edit'><span
                     class="fas fa-smile-wink"></span></span>
                 <span class='t_info_table_btn' (click)='popUpModal(11,i)' title='Book a Course test'><span
-                      class="fas fa-folder-plus"></span></span>
+                    class="fas fa-folder-plus"></span></span>
 
               </td>
               <td style='width: 100px; padding-left:0px'>
@@ -100,7 +104,8 @@
       <!--info page pagination-->
       <div class='col-12'>
         <!--pagination is here-->
-        <ngb-pagination [collectionSize]='learnerListLength' [(page)]='currentPage' [pageSize]='pageSize'>
+        <ngb-pagination [collectionSize]='learnerListLength' [(page)]='currentPage' [pageSize]='pageSize' maxSize='10'
+          [boundaryLinks]="true">
         </ngb-pagination>
       </div>
     </div>

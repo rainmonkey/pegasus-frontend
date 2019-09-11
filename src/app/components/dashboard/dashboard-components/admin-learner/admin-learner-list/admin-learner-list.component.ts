@@ -313,7 +313,7 @@ export class AdminLearnerListComponent implements OnInit {
         that.ngOnInit();
       }
     })
-   
+
   }
   deleteCourseModal(whichLearner) {
     const modalRef = this.modalService.open(LearnerDeleteCourseModalComponent, { windowClass: 'my-class', backdrop: 'static', keyboard: false });
@@ -330,9 +330,9 @@ export class AdminLearnerListComponent implements OnInit {
     modalRef.componentInstance.whichLearner = whichLearner;
   }
 
-  regiModal(command,whichLearner) {
+  newRegiModal(command,whichLearner) {
     //@ts-ignore
-    const modalRef = this.modalService.open(LearnerEditModalComponent, { size: 'xl', backdrop: 'static', keyboard: false });
+    const modalRef = this.modalService.open(NewLearnerRegistrationModalComponent, { size: 'xl', backdrop: 'static', keyboard: false });
 
     let that = this;
     modalRef.result.then(
@@ -345,7 +345,30 @@ export class AdminLearnerListComponent implements OnInit {
     )
     modalRef.componentInstance.command = command;
     modalRef.componentInstance.whichLearner = whichLearner;
-    modalRef.componentInstance.signalForInit.subscribe(res => {
+    modalRef.componentInstance.refreshFlag.subscribe(res => {
+      if (res == true) {
+        that.ngOnInit();
+      }
+    })
+
+  }
+
+  regiModal(command,whichLearner) {
+    //@ts-ignore
+    const modalRef = this.modalService.open(LearnerRegistrationFormComponent, { size: 'xl', backdrop: 'static', keyboard: false });
+
+    let that = this;
+    modalRef.result.then(
+      (res) => {
+        that.ngOnInit()
+      },
+      (err) => {
+        return
+      }
+    )
+    modalRef.componentInstance.command = command;
+    modalRef.componentInstance.whichLearner = whichLearner;
+    modalRef.componentInstance.refreshFlag.subscribe(res => {
       if (res == true) {
         that.ngOnInit();
       }
