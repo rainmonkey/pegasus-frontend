@@ -30,7 +30,7 @@
                 {{ i.MissedLesson.beginDate | date: "dd/MM/yyyy, h:mm a" }}
               </td>
               <td>{{ i.CreateAt | date: "dd/MM/yyyy, h:mm a" }}</td>
-              <td>{{ i.ExpiredDate | date: "dd/MM/yyyy, h:mm a" }}</td>
+              <td>{{ i.ExpiredDate | date: "dd/MM/yyyy" }}</td>
               <td>{{ i.Remaining}}</td>              
               <td>{{ i.NewLesson.beginDate | date: "dd/MM/yyyy, h:mm a" }}</td>
               <td>
@@ -42,9 +42,7 @@
                       ? navigateToArrange(j)
                       : alertForNoRemainingCourse()
                   "
-                  style="cursor:pointer"
-                  ><span class="fas fa-calendar-week"></span
-                ></span>
+                  style="cursor:pointer"><span class="fas fa-calendar-week"></span></span>
               </td>
               <td>
                 <span
@@ -55,9 +53,8 @@
                       ? ChangeExpiryDate(i.awaitId,j)
                       : alertForNoRemainingCourse()
                   "
-                  style="cursor:pointer"
-                  ><span class="fas fa-seting"></span
-                ></span>
+                  style="cursor:pointer"><span class="fas fa-adjust"></span>
+                </span>
               </td>
             </tr>
           </tbody>
