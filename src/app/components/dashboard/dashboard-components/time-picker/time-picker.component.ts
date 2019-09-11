@@ -258,11 +258,13 @@ export class TimePickerComponent implements OnInit {
   }
   checkArrangedOrg(x: number, y: number, arrangedObj) {
     let arrangedOrgId = arrangedObj['OrgId'];
-    if (arrangedOrgId == this.learnerOrgId) {
+    if (arrangedOrgId==undefined) return;
+    if ((arrangedOrgId == this.learnerOrgId)) {
       // arranged 前后可选
       this.setDuration('isAvailable', 'ableToPick', x, y)
     } else {
       // arranged 前后一小时不能选
+      console.log(arrangedOrgId,this.learnerOrgId);
       this.aroundArrangedCanNotPick();
       this.setDuration('isAvailable', 'ableToPick', x, y)
     }
