@@ -78,7 +78,13 @@ export class TimePickerComponent implements OnInit {
     if (this.command === 1) {
       this.teacherName = this.teaList[0].TeacherName
     } else {
-      this.teacherName = this.teaList[0].Teacher.FirstName;
+      if(this.teaList[0].TeacherName!==undefined){
+        this.teacherName=this.teaList[0].TeacherName
+      }
+      else{
+        this.teacherName = this.teaList[0].Teacher.FirstName;
+      }
+      
     }
     this.duration = this.teaList[1].Duration;
     this.dayofweek = this.customCourse.DayOfWeek;
