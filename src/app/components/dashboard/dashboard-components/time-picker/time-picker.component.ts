@@ -78,7 +78,13 @@ export class TimePickerComponent implements OnInit {
     if (this.command === 1) {
       this.teacherName = this.teaList[0].TeacherName
     } else {
-      this.teacherName = this.teaList[0].Teacher.FirstName;
+      if(this.teaList[0].TeacherName!==undefined){
+        this.teacherName=this.teaList[0].TeacherName
+      }
+      else{
+        this.teacherName = this.teaList[0].Teacher.FirstName;
+      }
+      
     }
     this.duration = this.teaList[1].Duration;
     this.dayofweek = this.customCourse.DayOfWeek;
@@ -258,11 +264,13 @@ export class TimePickerComponent implements OnInit {
   }
   checkArrangedOrg(x: number, y: number, arrangedObj) {
     let arrangedOrgId = arrangedObj['OrgId'];
-    if (arrangedOrgId == this.learnerOrgId) {
+    if (arrangedOrgId==undefined) return;
+    if ((arrangedOrgId == this.learnerOrgId)) {
       // arranged 前后可选
       this.setDuration('isAvailable', 'ableToPick', x, y)
     } else {
       // arranged 前后一小时不能选
+      console.log(arrangedOrgId,this.learnerOrgId);
       this.aroundArrangedCanNotPick();
       this.setDuration('isAvailable', 'ableToPick', x, y)
     }

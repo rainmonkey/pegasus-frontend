@@ -34,7 +34,7 @@
     <div class="col-md-6 col-sm-6">
       <div>Location</div>
       <div>
-        <select formControlName="Location" (change)="getTeachers()" (change)="getRoom($event.target.value)" [(ngModel)]='location'> 
+        <select formControlName="Location"  (change)="getRoom($event.target.value)" [(ngModel)]='location'> 
           <option disabled selected value>Select Location</option>
           <option *ngFor="let org of Location" [value]="org.OrgId">
             {{org.OrgName}}
@@ -59,7 +59,7 @@
   <div class="row">
     <div class="col-md-6 col-sm-6">
       <div>Avaliable Day</div>
-      <select formControlName="DayOfWeek" (change)="getTeachers()" [(ngModel)]='avaliableDay'>
+      <select formControlName="DayOfWeek"  [(ngModel)]='avaliableDay'>
         <option disabled selected value>Select Day Of Week</option>
         <option value="1">Monday</option>
         <option value="2">Tuesday</option>
@@ -89,7 +89,7 @@
           <select formControlName="TeacherName" (change)='selectTeacher($event.target.value)'  [(ngModel)]='teacherName'>
             <option disabled selected value>Select Teacher</option>
             <option *ngFor="let teacher of Teacher" [value]="teacher.TeacherId" >
-              {{teacher.Teacher.FirstName}}
+              {{teacher.TeacherName}}
             </option>
           </select>
         </div>
