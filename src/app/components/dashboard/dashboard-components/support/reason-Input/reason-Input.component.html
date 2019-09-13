@@ -1,0 +1,17 @@
+<div class="row mb-2">
+  <label class="mt-2" id='reason'>Canceled Reason :</label>
+  <select [(ngModel)]="CancelReason" #selector id='mySelect' >
+    <option disabled selected value>-- select an option --</option>
+    <option value="Sickness">Sickness </option>
+    <option value="Medical Procedures">Medical Procedures </option>
+    <option value="No Conveyance">No Conveyance</option>
+    <option value="Accident">Accident</option>
+    <option value="Emergency">Emergency</option>
+    <option value="Other">Other</option>
+  </select>
+  <input type='text' id='myInput' style='display:none'>
+  <span (click)='changeInput()' class='test'>  
+    <i class="far fa-keyboard" style='font-size:25px; text-align:center; margin-left:5px; margin-top:3px; cursor: pointer;' ></i>
+</span>
+</div>
+

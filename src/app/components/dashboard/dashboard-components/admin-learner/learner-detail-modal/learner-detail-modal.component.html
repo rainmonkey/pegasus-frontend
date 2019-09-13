@@ -61,7 +61,7 @@
 
                   <div class="col-12">
                     <span class="label">DOB: </span>
-                    <span *ngIf ='whichLearner.Dob' class='text'>{{whichLearner.Dob.slice(0,10)}}</span>
+                    <span *ngIf='whichLearner.Dob' class='text'>{{whichLearner.Dob.slice(0,10)}}</span>
                   </div>
 
                   <div class="col-12">
@@ -109,13 +109,13 @@
                     <span class='text'>{{whichLearner.LearnerId}}</span>
                   </div>
 
-               </div>
+                </div>
               </div>
               <div class="col-12">
                 <span class="label">Comment: </span>
                 <span class='text'>{{whichLearner.Comment}}</span>
               </div>
-             </div>
+            </div>
 
 
             <hr>
@@ -308,7 +308,8 @@
                   <div *ngIf='ele.Amendment.length == 0' class="col-12">
                     <div *ngIf='ele.Org'>
                       <span class="label">Location: </span>
-                      <span *ngIf='ele.Org.OrgName&&ele.Room.RoomName' class='text'>{{ele.Org.OrgName}} {{ele.Room.RoomName}}</span>
+                      <span *ngIf='ele.Org.OrgName&&ele.Room.RoomName' class='text'>{{ele.Org.OrgName}}
+                        {{ele.Room.RoomName}}</span>
                     </div>
                   </div>
 
@@ -503,7 +504,7 @@
       </ng-template>
     </ngb-tab>
 
-    <ngb-tab title="Invoice">
+    <!-- <ngb-tab title="Invoice">
       <ng-template ngbTabContent>
         <div *ngIf='learnerInvoiceList == null'>
           No Invoice Record
@@ -572,11 +573,11 @@
                   <div class='col-lg-12 col-sm-12'>
                     <span class='label'>Comment: </span>
                     <span class='text' *ngIf='i.Comment'>{{i.Comment}}</span>
-                  </div>
+                  </div> -->
 
 
-                  <!--fees details  -->
-                  <div class='col-12'>
+    <!--fees details  -->
+    <!-- <div class='col-12'>
                     <button type="button" class="btn btn-outline-primary btn-sm" data-toggle='collapse'
                       data-target="#fees">Fees Details</button>
                     <div id="fees" class="collapse">
@@ -626,7 +627,7 @@
         </ngb-pagination>
 
       </ng-template>
-    </ngb-tab>
+    </ngb-tab> -->
 
     <!-- waiting invoice -->
     <ngb-tab title="Invoice history">
@@ -643,99 +644,111 @@
             <div class='card'>
               <div class="card-body">
                 <div class='row'>
-                    <div class='col-lg-4 col-sm-4'>
-                        <span class='label'>Invoice Number: </span>
-                        <span class='text' *ngIf='i.InvoiceNum'>{{i.InvoiceNum}}</span>
+                  <div class='col-lg-4 col-sm-4'>
+                    <span class='label'>Invoice Number: </span>
+                    <span class='text' *ngIf='i.InvoiceNum'>{{i.InvoiceNum}}</span>
+                  </div>
+
+                  <div class='col-lg-4 col-sm-4'>
+                    <span class='label'>Period: </span>
+                    <span class='text'
+                      *ngIf='i.InvoiceWaitingConfirm.BeginDate && i.InvoiceWaitingConfirm.EndDate'>{{i.InvoiceWaitingConfirm.BeginDate|date:'longDate'}}
+                      ~
+                      {{i.InvoiceWaitingConfirm.EndDate|date:'longDate'}}</span>
+                  </div>
+                  <div *ngIf='false' class='col-lg-4 col-sm-4'>
+                    <span class='label'>Is Paid: </span>
+                    <span class='text'
+                      *ngIf='i.InvoiceWaitingConfirm.IsPaid !== null'>{{i.InvoiceWaitingConfirm.IsPaid|IsTemporary}}</span>
+                  </div>
+                  <div class='col-lg-4 col-sm-4'>
+                    <span class='label'>Total Fee: </span>
+                    <span class='text'
+                      *ngIf='i.InvoiceWaitingConfirm.TotalFee'>${{i.InvoiceWaitingConfirm.TotalFee}}</span>
+                  </div>
+                  <div class='col-lg-8 col-sm-8'>
+                    <span class='label'>Course: </span>
+                    <span class='text'
+                      *ngIf='i.InvoiceWaitingConfirm.CourseName'>{{i.InvoiceWaitingConfirm.CourseName}}</span>
+                  </div>
+
+                  <div class='col-lg-4 col-sm-4'>
+                    <span class='label'>Course Quantity: </span>
+                    <span class='text'
+                      *ngIf='i.InvoiceWaitingConfirm.LessonQuantity'>{{i.InvoiceWaitingConfirm.LessonQuantity}}</span>
+                  </div>
+
+                  <div *ngIf='false' class='col-lg-4 col-sm-4'>
+                    <span class='label'>Owing Fee: </span>
+                    <span class='text'
+                      *ngIf='i.InvoiceWaitingConfirm.OwingFee'>${{i.InvoiceWaitingConfirm.OwingFee}}</span>
+                  </div>
+
+
+                  <div *ngIf='false' class='col-lg-4 col-sm-4'>
+                    <span class='label'>Paid Fee: </span>
+                    <span class='text'
+                      *ngIf='i.InvoiceWaitingConfirm.PaidFee'>${{i.InvoiceWaitingConfirm.PaidFee}}</span>
+                  </div>
+                  <div class='col-lg-12 col-sm-12'>
+                    <span class='label'>Comments: </span>
+                    <span class='text'
+                      *ngIf='i.InvoiceWaitingConfirm.Comment'>{{i.InvoiceWaitingConfirm.Comment}}</span>
+                  </div>
+
+
+                  <!--fees details  -->
+                  <div class='col-12'>
+                    <button type="button" class="btn btn-outline-primary btn-sm" data-toggle='collapse'
+                      data-target="#fees">Fees Details</button>
+                    <div id="fees" class="collapse">
+                      <div class="row">
+                        <div class='col-lg-2 col-sm-6'>
+                          <span class='label'>Course Fee: </span>
+                          <span class='text'
+                            *ngIf='i.InvoiceWaitingConfirm.LessonFee'>${{i.InvoiceWaitingConfirm.LessonFee}}</span>
+                        </div>
+
+                        <div class='col-lg-2 col-sm-6'>
+                          <span class='label'>Concert Fee: </span>
+                          <span class='text'
+                            *ngIf='i.InvoiceWaitingConfirm.ConcertFee'>${{i.InvoiceWaitingConfirm.ConcertFee}}</span>
+                        </div>
+
+                        <div class='col-lg-2 col-sm-6'>
+                          <span class='label'>Note Fee: </span>
+                          <span class='text'
+                            *ngIf='i.InvoiceWaitingConfirm.NoteFee'>${{i.InvoiceWaitingConfirm.NoteFee}}</span>
+                        </div>
+
+                        <div *ngIf='i.Other1Fee !== null && i.Other1Fee !== 0' class='col-lg-2 col-sm-6'>
+                          <span class='label'>Other Fee 1: </span>
+                          <span class='text'>${{i.InvoiceWaitingConfirm.Other1Fee}}</span>
+                        </div>
+
+                        <div *ngIf='i.Other2Fee !== null && i.Other2Fee !== 0' class='col-lg-2 col-sm-6'>
+                          <span class='label'>Other Fee 2: </span>
+                          <span class='text'>${{i.InvoiceWaitingConfirm.Other2Fee}}</span>
+                        </div>
+
+                        <div *ngIf='i.Other3Fee !== null && i.Other3Fee !== 0 ' class='col-lg-2 col-sm-6'>
+                          <span class='label'>Other Fee 3: </span>
+                          <span class='text'>${{i.InvoiceWaitingConfirm.Other3Fee}}</span>
+                        </div>
+
                       </div>
-
-                      <div class='col-lg-4 col-sm-4'>
-                          <span class='label'>Period: </span>
-                          <span class='text' *ngIf='i.InvoiceWaitingConfirm.BeginDate && i.InvoiceWaitingConfirm.EndDate'>{{i.InvoiceWaitingConfirm.BeginDate|date:'shortDate'}} ~
-                            {{i.InvoiceWaitingConfirm.EndDate|date:'shortDate'}}</span>
-                        </div>
-                        <div *ngIf='false' class='col-lg-4 col-sm-4'>
-                          <span class='label'>Is Paid: </span>
-                          <span class='text' *ngIf='i.InvoiceWaitingConfirm.IsPaid !== null'>{{i.InvoiceWaitingConfirm.IsPaid|IsTemporary}}</span>
-                        </div>
-                        <div class='col-lg-4 col-sm-4'>
-                          <span class='label'>Total Fee: </span>
-                          <span class='text' *ngIf='i.InvoiceWaitingConfirm.TotalFee'>${{i.InvoiceWaitingConfirm.TotalFee}}</span>
-                        </div>
-                        <div class='col-lg-8 col-sm-8'>
-                            <span class='label'>Course: </span>
-                            <span class='text' *ngIf='i.InvoiceWaitingConfirm.CourseName'>{{i.InvoiceWaitingConfirm.CourseName}}</span>
-                          </div>
-
-                          <div class='col-lg-4 col-sm-4'>
-                            <span class='label'>Course Quantity: </span>
-                            <span class='text' *ngIf='i.InvoiceWaitingConfirm.LessonQuantity'>{{i.InvoiceWaitingConfirm.LessonQuantity}}</span>
-                          </div>
-
-                              <div *ngIf='false' class='col-lg-4 col-sm-4'>
-                                <span class='label'>Owing Fee: </span>
-                                <span class='text' *ngIf='i.InvoiceWaitingConfirm.OwingFee'>${{i.InvoiceWaitingConfirm.OwingFee}}</span>
-                              </div>
-
-
-                              <div *ngIf='false' class='col-lg-4 col-sm-4'>
-                                <span class='label'>Paid Fee: </span>
-                                <span class='text' *ngIf='i.InvoiceWaitingConfirm.PaidFee'>${{i.InvoiceWaitingConfirm.PaidFee}}</span>
-                              </div>
-                              <div class='col-lg-12 col-sm-12'>
-                                  <span class='label'>Comments: </span>
-                                  <span class='text' *ngIf='i.InvoiceWaitingConfirm.Comment'>{{i.InvoiceWaitingConfirm.Comment}}</span>
-                                </div>
-
-
-                                <!--fees details  -->
-                                <div class='col-12'>
-                                  <button type="button" class="btn btn-outline-primary btn-sm" data-toggle='collapse'
-                                    data-target="#fees">Fees Details</button>
-                                  <div id="fees" class="collapse">
-                                    <div class="row">
-                                      <div class='col-lg-2 col-sm-6'>
-                                        <span class='label'>Course Fee: </span>
-                                        <span class='text' *ngIf='i.InvoiceWaitingConfirm.LessonFee'>${{i.InvoiceWaitingConfirm.LessonFee}}</span>
-                                      </div>
-
-                                      <div class='col-lg-2 col-sm-6'>
-                                        <span class='label'>Concert Fee: </span>
-                                        <span class='text' *ngIf='i.InvoiceWaitingConfirm.ConcertFee'>${{i.InvoiceWaitingConfirm.ConcertFee}}</span>
-                                      </div>
-
-                                      <div class='col-lg-2 col-sm-6'>
-                                        <span class='label'>Note Fee: </span>
-                                        <span class='text' *ngIf='i.InvoiceWaitingConfirm.NoteFee'>${{i.InvoiceWaitingConfirm.NoteFee}}</span>
-                                      </div>
-
-                                      <div *ngIf='i.Other1Fee !== null && i.Other1Fee !== 0' class='col-lg-2 col-sm-6'>
-                                        <span class='label'>Other Fee 1: </span>
-                                        <span class='text'>${{i.InvoiceWaitingConfirm.Other1Fee}}</span>
-                                      </div>
-
-                                      <div *ngIf='i.Other2Fee !== null && i.Other2Fee !== 0' class='col-lg-2 col-sm-6'>
-                                        <span class='label'>Other Fee 2: </span>
-                                        <span class='text'>${{i.InvoiceWaitingConfirm.Other2Fee}}</span>
-                                      </div>
-
-                                      <div *ngIf='i.Other3Fee !== null && i.Other3Fee !== 0 ' class='col-lg-2 col-sm-6'>
-                                        <span class='label'>Other Fee 3: </span>
-                                        <span class='text'>${{i.InvoiceWaitingConfirm.Other3Fee}}</span>
-                                      </div>
-
-                                    </div>
-                                  </div>
-                                </div>
+                    </div>
+                  </div>
 
                 </div>
               </div>
             </div>
           </div>
-          </div>
+        </div>
 
-          <ngb-pagination [collectionSize]="waitingInvoicelength" [(page)]='currentPage' [maxSize]='10'
-            aria-label="Default pagination" [pageSize]='pageSize'>
-          </ngb-pagination>
+        <ngb-pagination [collectionSize]="waitingInvoicelength" [(page)]='currentPage' [maxSize]='10'
+          aria-label="Default pagination" [pageSize]='pageSize'>
+        </ngb-pagination>
       </ng-template>
     </ngb-tab>
 
@@ -975,22 +988,22 @@
                       <span class='text'>{{i.CourseInstance.CourseName}}</span>
                     </div>
 
-                    <div class='col-lg-6 col-sm-6'>
-                      <span class='label'>Teacher: </span>
-                      <span class='text'>{{i.MissedLesson.Teacher}}</span>
-                    </div>
-
-                    <div class='col-lg-6 col-sm-6'>
-                      <span class='label'>Location: </span>
-                      <span class='text'>{{i.MissedLesson.Org}}</span>
-                    </div>
-
-                    <div class='col-lg-6 col-sm-6'>
+                    <div class='col-lg-12 col-sm-12'>
                       <span class='label'>Lesson Begin Date: </span>
                       <span class='text'>{{i.MissedLesson.beginDate| date:'EEE, MMM d, y, h:mm'}}</span>
                     </div>
 
-                    <div *ngIf = 'false' class='col-lg-6 col-sm-6'>
+                    <div class='col-lg-12 col-sm-12'>
+                      <span class='label'>Teacher: </span>
+                      <span class='text'>{{i.MissedLesson.Teacher}}</span>
+                    </div>
+
+                    <div class='col-lg-12 col-sm-12'>
+                      <span class='label'>Location: </span>
+                      <span class='text'>{{i.MissedLesson.Org}}</span>
+                    </div>
+
+                    <div *ngIf='false' class='col-lg-6 col-sm-6'>
                       <span class='label'>Makeup Lesson is Activated: </span>
                       <span class='text' *ngIf='i.IsActive'>{{i.IsActive | IsTemporary}}</span>
                     </div>

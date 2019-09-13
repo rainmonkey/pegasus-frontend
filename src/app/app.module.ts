@@ -171,6 +171,7 @@ import { GroupcourseComponent } from './components/dashboard/dashboard-component
 
 import { RelativeTimePipe } from "./shared/pipes/relative-time.pipe";
 import { LearnerAddModalTestComponent } from './components/dashboard/dashboard-components/admin-learner/learner-add-modal-test/learner-add-modal-test.component';
+import { ReasonInputComponent } from './components/dashboard/dashboard-components/support/reason-Input/reason-Input.component';
 
 @NgModule({
   declarations: [
@@ -342,8 +343,8 @@ import { LearnerAddModalTestComponent } from './components/dashboard/dashboard-c
     TrialCalendarComponent,
     NotificationPopupComponent,
     TrialConfirmationComponent,
-    LearnerAddModalTestComponent
-
+    LearnerAddModalTestComponent,
+    ReasonInputComponent
   ],
   imports: [
     NgbModule,

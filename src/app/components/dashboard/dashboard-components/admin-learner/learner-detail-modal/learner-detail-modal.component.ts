@@ -226,9 +226,7 @@ export class LearnerDetailModalComponent implements OnInit {
         if (i.PaymentType == element['PropValue']) {
           i.paymentTypeName = element['PropName']
         }
-
       })
-
     }
   }
 
