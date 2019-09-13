@@ -41,7 +41,12 @@ export class PublishPanelComponent implements OnInit {
     bodyElement.insertBefore(this.titleNode, bodyElement.firstElementChild);
     bodyElement.classList.add("ck-content");
     bodyElement.style.setProperty("margin", "1rem", "important");
-    return doc.documentElement;
+    const image = bodyElement.getElementsByTagName("img")[0]; //默认第一张图为封面
+    const data: any = {};
+    data.content = doc.documentElement;
+    data.header = this.model.title;
+    data.imgSrc = image.src;
+    return data;
   };
 
   onClick = () => {
@@ -49,7 +54,7 @@ export class PublishPanelComponent implements OnInit {
   };
 
   preview = () => {
-    const doc = this.prepareData();
-    this.node.appendChild(doc);
+    const data = this.prepareData();
+    this.node.appendChild(data.content);
   };
 }
