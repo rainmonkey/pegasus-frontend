@@ -1,0 +1,9 @@
+:host ::ng-deep .ck-editor__editable_inline {
+  min-height: 28rem;
+}
+
+#previewContainer {
+  width: 21rem;
+  margin: 0 auto;
+  background-color: white;
+}
