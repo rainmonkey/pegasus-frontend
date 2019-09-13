@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from "@angular/core";
-import Swal from 'sweetalert2';
+import Swal from "sweetalert2";
 
 import {
   ActivatedRoute,
@@ -94,39 +94,42 @@ export class LearnerCreditDetailsComponent implements OnInit {
       url + "/arrange/" + this.learnerId + "/" + this.courseId
     ]);
   }
-  ChangeExpiryDate(awaitId,index){
+  ChangeExpiryDate(awaitId, index) {
     Swal.fire({
-      title: 'How many days do you want to change?',
-      input: 'number',
+      title: "How many days do you want to change?",
+      input: "number",
       inputAttributes: {
-        autocapitalize: 'off'
+        autocapitalize: "off"
       },
       showCancelButton: true,
-      confirmButtonText: 'Confirm',
+      confirmButtonText: "Confirm",
       showLoaderOnConfirm: true,
-      preConfirm: (QTYofdays) => {
+      preConfirm: QTYofdays => {
         console.log(QTYofdays);
-        this.updateExpiry(awaitId,QTYofdays,index);
+        this.updateExpiry(awaitId, QTYofdays, index);
       },
       allowOutsideClick: () => !Swal.isLoading()
-    }).then((result) => {
-      console.log(result)
-    })
+    }).then(result => {
+      console.log(result);
+    });
   }
-  updateExpiry(awaitId,QTYofdays,index){
+  updateExpiry(awaitId, QTYofdays, index) {
     console.log(awaitId);
     let that = this;
-    this.learnerService.updateExpiryDate(awaitId,QTYofdays).subscribe(
+    this.learnerService.updateExpiryDate(awaitId, QTYofdays).subscribe(
       data => {
         let newLesson = data["Data"];
         that.remainingCourseData[index].ExpiredDate = newLesson.ExpiredDate;
         // this.arrangeDataWaitingFlag = false;
       },
       error => {
-        let errorMsg = error.error||error.error.ErrorMessage?error.error.ErrorMessage:"Something error!";
+        let errorMsg =
+          error.error || error.error.ErrorMessage
+            ? error.error.ErrorMessage
+            : "Something error!";
         // Swal.fire({ title:'Oops', text:errorMsg, type: 'error'});
         alert(errorMsg);
-        console.log(error)
+        console.log(error);
       }
     );
   }
