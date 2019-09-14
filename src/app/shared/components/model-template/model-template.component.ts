@@ -50,7 +50,7 @@ constructor(public activeModal: NgbActiveModal,private learnersService:LearnersS
   }
   onClicked(isAfter){
     Swal.fire({
-      title: 'Are you sure?',
+      title: 'Please confirm it?',
       text: "You won't be able to revert this!",
       type: 'warning',
       showCancelButton: true,
@@ -62,7 +62,8 @@ constructor(public activeModal: NgbActiveModal,private learnersService:LearnersS
       console.log(this.learnerCourseTimeTable);
       console.log(this.learnerCourseTimeTable.event.extendedProps.lessonId);
       let { lessonId } =this.learnerCourseTimeTable.event.extendedProps;
-      this.learnersService.makeUpSplitLesson(lessonId,isAfter).subscribe(
+      let userId = localStorage.getItem('staffId');
+      this.learnersService.makeUpSplitLesson(lessonId,isAfter,userId).subscribe(
         (event) => {
           console.log(event);
           //@ts-ignore
