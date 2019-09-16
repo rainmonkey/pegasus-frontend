@@ -13,7 +13,7 @@
 
 
   <!-- Student Information -->
-  <ngb-tabset>
+  <ngb-tabset #t="ngbTabset">
     <ngb-tab title="Student Information">
       <ng-template ngbTabContent>
         <div style="margin:20px;">
@@ -326,26 +326,26 @@
                   <!-- startDay无编辑 -->
                   <div class="col-12" *ngIf='ele.Amendment.length ==0 && ele.BeginDate'>
                     <span class="label">Course Start Day: </span>
-                    <span class='text'>{{ele.BeginDate.replace('T',' ')}}</span>
+                    <span class='text'>{{ele.BeginDate| date:'EEE, MMM d, y'}}</span>
                   </div>
 
                   <!-- startDay有编辑 -->
                   <div class='col-12' *ngIf='ele.Amendment.length!==0 && ele.BeginDate'>
                     <span class="label">Course Start Day: </span>
-                    <span class='text line-trough'>{{ele.BeginDate.replace('T',' ')}}</span>
-                    <span class='text' *ngIf='ele.permanent'> ===> {{ele.permanent.BeginDate.replace('T',' ')}}</span>
+                    <span class='text line-trough'>{{ele.BeginDate| date:'EEE, MMM d, y'}}</span>
+                    <span class='text' *ngIf='ele.permanent'> ===> {{ele.permanent.BeginDate| date:'EEE, MMM d, y'}}</span>
                   </div>
 
                   <!-- End date 无编辑 -->
                   <div class="col-12" *ngIf='ele.Amendment.length == 0'>
                     <span class="label" *ngIf='ele.EndDate'>Course End Day:</span>
-                    <span class='text' *ngIf='ele.EndDate'>{{ele.EndDate.replace('T',' ')}}</span>
+                    <span class='text' *ngIf='ele.EndDate'>{{ele.EndDate| date:'EEE, MMM d, y'}}</span>
                   </div>
 
                   <!-- end date有编辑 -->
                   <div class='col-12' *ngIf='ele.Amendment.length !== 0 && ele.permanet'>
                     <span class="label">Course End Day: </span>
-                    <span class='text'>{{ele.permanent.EndDate.replace('T', ' ')}}</span>
+                    <span class='text'>{{ele.permanent.EndDate| date:'EEE, MMM d, y'}}</span>
                   </div>
 
                   <div *ngIf='ele.Amendment.length == 0' class="col-12">
@@ -417,7 +417,7 @@
                   <!-- 通用 -->
                   <div class="col-lg-4  col-sm-6">
                     <span class='label'>Payment Date: </span>
-                    <span class='text' *ngIf='i.CreatedAt'>{{i.CreatedAt.replace('T', ' ')}}</span>
+                    <span class='text' *ngIf='i.CreatedAt'>{{i.CreatedAt| date:'EEE, MMM d, y, h:mm'}}</span>
                   </div>
 
                   <div class='col-lg-4  col-sm-6'>
@@ -753,7 +753,7 @@
     </ngb-tab>
 
     <!-- Sessions -->
-    <ngb-tab title="Uncomplete session">
+    <ngb-tab title="uncomplete session">
       <ng-template ngbTabContent>
         <div *ngIf='uncompleteSession.length == 0'>
           No Sessions Record
@@ -763,7 +763,6 @@
           <div
             *ngFor='let i of uncompleteSession | slice: (currentPage-1)* pageSize : (currentPage-1) * pageSize + pageSize'>
             <br>
-
             <div class='card'>
               <div class="card-body">
                 <div class='row'>
@@ -775,8 +774,8 @@
 
                   <div class='col-lg-6  col-sm-6'>
                     <span class='label'>Time: </span>
-                    <span class='text' *ngIf='i.BeginTime && i.EndTime'>{{i.BeginTime.replace('T',' ')}} ~
-                      {{i.EndTime.replace('T', ' ')}}</span>
+                    <span class='text' *ngIf='i.BeginTime && i.EndTime'>{{i.BeginTime| date:'EEE, MMM d, y, h:mm'}} ~
+                      {{i.EndTime| date:'h:mm'}}</span>
                   </div>
 
                   <div class='col-lg-6 col-sm-6'>
@@ -804,8 +803,8 @@
 
                     <span class='label col-lg-3 col-sm-6'>Time: </span>
                     <span class='text col-lg-3 col-sm-6'
-                      *ngIf='i.newLessons.BeginTime && i.newLessons.EndTime'>{{i.newLessons.BeginTime.replace('T', ' ')}}
-                      ~ {{i.newLessons.EndTime.replace('T', ' ')}}</span>
+                      *ngIf='i.newLessons.BeginTime && i.newLessons.EndTime'>{{i.newLessons.BeginTime| date:'EEE, MMM d, y, h:mm'}}
+                      ~ {{i.newLessons.EndTime| date:' h:mm'}}</span>
                   </div>
 
                 </div>
@@ -822,7 +821,7 @@
     </ngb-tab>
 
     <!-- Complete Sessions -->
-    <ngb-tab title="Complete session">
+    <ngb-tab title="Completed session">
       <ng-template ngbTabContent>
         <div *ngIf='compeleteSession.length == 0'>
           No Sessions Record
@@ -844,8 +843,8 @@
 
                   <div class='col-lg-6  col-sm-6'>
                     <span class='label'>Time: </span>
-                    <span class='text' *ngIf='i.BeginTime && i.EndTime'>{{i.BeginTime.replace('T',' ')}} ~
-                      {{i.EndTime.replace('T', ' ')}}</span>
+                    <span class='text' *ngIf='i.BeginTime && i.EndTime'>{{i.BeginTime| date:'EEE, MMM d, y, h:mm'}} ~
+                      {{i.EndTime| date:'h:mm'}}</span>
                   </div>
 
                   <div class='col-lg-6 col-sm-6'>
@@ -874,8 +873,8 @@
 
                     <span class='label col-lg-3 col-sm-6'>Time: </span>
                     <span class='text col-lg-3 col-sm-6'
-                      *ngIf='i.newLessons.BeginTime && i.newLessons.EndTime'>{{i.newLessons.BeginTime.replace('T', ' ')}}
-                      ~ {{i.newLessons.EndTime.replace('T', ' ')}}</span>
+                      *ngIf='i.newLessons.BeginTime && i.newLessons.EndTime'>{{i.newLessons.BeginTime| date:'EEE, MMM d, y, h:mm'}}
+                      ~ {{i.newLessons.EndTime| date:'h:mm'}}</span>
                   </div>
 
                 </div>
@@ -914,8 +913,8 @@
 
                   <div class='col-lg-6  col-sm-6'>
                     <span class='label'>Time: </span>
-                    <span class='text' *ngIf='i.BeginTime && i.EndTime'>{{i.BeginTime.replace('T',' ')}} ~
-                      {{i.EndTime.replace('T', ' ')}}</span>
+                    <span class='text' *ngIf='i.BeginTime && i.EndTime'>{{i.BeginTime| date:'EEE, MMM d, y, h:mm'}} ~
+                      {{i.EndTime| date:'h:mm'}}</span>
                   </div>
 
                   <div class='col-lg-6 col-sm-6'>
@@ -942,8 +941,8 @@
 
                     <span class='label col-lg-3 col-sm-6'>Time:
                       <span
-                        *ngIf='i.newLessons.BeginTime && i.newLessons.EndTime'>{{i.newLessons.BeginTime.replace('T', ' ')}}
-                        ~ {{i.newLessons.EndTime.replace('T', ' ')}}
+                        *ngIf='i.newLessons.BeginTime && i.newLessons.EndTime'>{{i.newLessons.BeginTime| date:'EEE, MMM d, y, h:mm'}}
+                        ~ {{i.newLessons.EndTime| date:'h:mm'}}
                       </span>
                     </span>
                   </div>
@@ -978,9 +977,12 @@
 
                 <div *ngIf='i.MissedLesson'>
                   <div class='row'>
-                    <div class='col-12'>
-                      <span class='header'>Missed Lesson: </span>
-                    </div>
+                    <!-- <div class='col-12'> -->
+                      <div class='col-6 header'>Missed Lesson: </div>
+                      <div class='col-6'>
+                        <button class='mx-3 btn btn-info' (click)="t.select('Timetable')">Click Here To Makeup</button>
+                      </div>
+                    <!-- </div> -->
 
 
                     <div class='col-lg-12 col-sm-12'>
@@ -989,18 +991,13 @@
                     </div>
 
                     <div class='col-lg-12 col-sm-12'>
-                      <span class='label'>Lesson Begin Date: </span>
+                      <span class='label'>Begin Date: </span>
                       <span class='text'>{{i.MissedLesson.beginDate| date:'EEE, MMM d, y, h:mm'}}</span>
                     </div>
 
                     <div class='col-lg-12 col-sm-12'>
-                      <span class='label'>Teacher: </span>
-                      <span class='text'>{{i.MissedLesson.Teacher}}</span>
-                    </div>
-
-                    <div class='col-lg-12 col-sm-12'>
-                      <span class='label'>Location: </span>
-                      <span class='text'>{{i.MissedLesson.Org}}</span>
+                      <span class='label'>Teacher/Location: </span>
+                      <span class='text'>{{i.MissedLesson.Teacher}}/{{i.MissedLesson.Org}}</span>
                     </div>
 
                     <div *ngIf='false' class='col-lg-6 col-sm-6'>
@@ -1008,9 +1005,9 @@
                       <span class='text' *ngIf='i.IsActive'>{{i.IsActive | IsTemporary}}</span>
                     </div>
 
-                    <div class='col-lg-6 col-sm-6'>
-                      <span class='label'>Remaining Time: </span>
-                      <span class='text' *ngIf='i.IsActive'>{{i.Remaining}} Quarter(s)</span>
+                    <div *ngIf='i.Remaining' class='col-lg-6 col-sm-6'>
+                      <span class='label'>Remaining: </span>
+                      <span class='text' *ngIf='i.IsActive'>{{i.Remaining|QuarterToMins}}</span>
                     </div>
 
                   </div>
@@ -1023,21 +1020,27 @@
                     </div>
 
                     <div class='col-lg-6 col-sm-6'>
-                      <span class='label'>Teacher: </span>
-                      <span class='text'>{{i.NewLesson.Teacher}}</span>
-                    </div>
-                    <div class='col-lg-6 col-sm-6'>
-                      <span class='label'>Location: </span>
-                      <span class='text'>{{i.NewLesson.Org}}</span>
+                      <span class='label'>Teacher/Location: </span>
+                      <span class='text'>{{i.NewLesson.Teacher}}/{{i.NewLesson.Org}}</span>
                     </div>
 
                     <div class='col-lg-6 col-sm-6'>
-                      <span class='label'>Begin Date: </span>
-                      <span class='text'>{{i.NewLesson.beginDate.replace('T',' ')}}</span>
+                      <span class='label'>Begin Time: </span>
+                      <span class='text'>{{i.NewLesson.beginDate| date:'EEE, MMM d, y, h:mm'}}</span>
                     </div>
                   </div>
                 </div>
-
+                <div *ngIf='i.SplittedLesson!== null'>
+                  <div *ngIf='i.SplittedLesson.length>0'>Made Up Log(15mins):</div>
+                  <div *ngFor='let splitted of i.SplittedLesson,let idx=index'>
+                    <div class='row'>
+                      <div class='col-2'>{{idx+1}}</div>
+                      <div class='col-10'>
+                        <div class='text col-6'>{{splitted| date:'EEE, MMM d, y, h:mm'}} </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
 
               </div>
             </div>
@@ -1052,7 +1055,7 @@
       </ng-template>
     </ngb-tab>
 
-    <ngb-tab title="Timetable">
+    <ngb-tab title="Timetable" id='Timetable'>
       <ng-template ngbTabContent>
         <br>
         <app-admin-learner-timetable [whichLearner]='whichLearner.LearnerId'></app-admin-learner-timetable>

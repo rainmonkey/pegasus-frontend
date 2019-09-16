@@ -291,9 +291,6 @@ export class LearnerDetailModalComponent implements OnInit {
     modalRef.componentInstance.whichCourse = ele
   }
 
-
-
-
 }
 
 
