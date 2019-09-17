@@ -3,7 +3,7 @@
   <input
     type="text"
     class="my-3 form-control"
-    placeholder="title"
+    placeholder="title (required)"
     id="publishTitle"
     [(ngModel)]="model.title"
     size="60"
@@ -14,10 +14,10 @@
     name="radioBasic"
     [(ngModel)]="model.radio"
   >
-    <label ngbButtonLabel class="btn-primary">
+    <label ngbButtonLabel class="btn-dark">
       <input ngbButton type="radio" [value]="1" /> News
     </label>
-    <label ngbButtonLabel class="btn-primary">
+    <label ngbButtonLabel class="btn-dark">
       <input ngbButton type="radio" [value]="2" /> Ads
     </label>
   </div>

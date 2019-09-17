@@ -2,7 +2,6 @@ import { Component, OnInit } from "@angular/core";
 import * as ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 import UploadAdapter from "./publish-upload";
 import { AdminPublishService } from "../../../../../services/http/admin-publish.service";
-import { UsersService } from "../../../../../services/http/users.service";
 
 @Component({
   selector: "app-publish-panel",
@@ -22,10 +21,7 @@ export class PublishPanelComponent implements OnInit {
   previewFlag: boolean;
   userId;
 
-  constructor(
-    private publishService: AdminPublishService,
-    private usersService: UsersService
-  ) {}
+  constructor(private publishService: AdminPublishService) {}
 
   ngOnInit() {
     this.userId = localStorage.getItem("userID");
@@ -37,7 +33,7 @@ export class PublishPanelComponent implements OnInit {
     };
   };
 
-  prepareData = () => {
+  createNode = () => {
     this.node = document.querySelector("#previewContainer");
     this.titleNode = document.createElement("header");
     this.titleNode.innerHTML =
@@ -50,10 +46,19 @@ export class PublishPanelComponent implements OnInit {
     bodyElement.insertBefore(this.titleNode, bodyElement.firstElementChild);
     bodyElement.classList.add("ck-content");
     bodyElement.style.setProperty("margin", "1rem", "important");
-    const image = bodyElement.getElementsByTagName("img")[0]; // 默认第一张图为封面
+    return doc.documentElement;
+  };
+
+  prepareData = () => {
+    const element = this.createNode();
+    const image = element.querySelector("body").getElementsByTagName("img")[0]; // 默认第一张图为封面
     const data: any = {};
-    if (image && this.model.title) {
-      data.newsData = doc.documentElement.innerHTML;
+    if (!this.model.title) {
+      alert("Please fill the title");
+    } else if (!image) {
+      alert("Please post at least one image");
+    } else {
+      data.newsData = element.innerHTML;
       data.NewsTitle = this.model.title;
       // data.imgSrc = image.src || "";
       data.UserId = +this.userId;
@@ -61,45 +66,28 @@ export class PublishPanelComponent implements OnInit {
       data.Categroy = 1;
       data.IsTop = 1;
       return data;
-    } else {
-      alert("Please fill all the fields");
     }
   };
 
   onClick = () => {
     const data = this.prepareData();
-    this.publishService.postNews(data).subscribe(
-      res => {
-        console.log(res);
-      },
-      err => {
-        console.log(err);
-      }
-    );
+    if (data) {
+      this.publishService.postNews(data).subscribe(
+        res => {
+          console.log(res);
+        },
+        err => {
+          console.log(err);
+        }
+      );
+    }
     console.log(data);
-    // let prepareData =this.prepareData();
-    // console.log(prepareData);
-    // let postObj = {
-    //   NewsTitle:"dd",
-    //   NewsType:1,
-    //   Categroy:1,
-    //   IsTop:1,
-    //   NewsData:"prepareData.imgSrc",
-    //   UserId:Number(localStorage.getItem('userID'))
-    // }
-    // this.usersService.postNews(postObj).subscribe(
-    //   res=>{
-    //     console.log(res);
-    //     },
-    //     error=>{
-    //       console.log(error);
-    //     }
-    // )
   };
 
   preview = () => {
     const data = this.prepareData();
-    console.log(data.content);
-    this.node.appendChild(data.content);
+    this.node.appendChild(
+      this.parser.parseFromString(data.newsData, "text/html").documentElement
+    );
   };
 }
