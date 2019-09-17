@@ -173,6 +173,9 @@ import { BookcoursetestComponent } from "./components/dashboard/dashboard-compon
 import { GroupcourseComponent } from "./components/dashboard/dashboard-components/bookcourse/groupcourse/groupcourse.component";
 
 import { RelativeTimePipe } from "./shared/pipes/relative-time.pipe";
+import { QuarterToMinsPipe } from "./shared/pipes/quarter-to-mins.pipe";
+
+import { ReasonInputComponent } from './components/dashboard/dashboard-components/support/reason-Input/reason-Input.component';
 import { LearnerAddModalTestComponent } from "./components/dashboard/dashboard-components/admin-learner/learner-add-modal-test/learner-add-modal-test.component";
 import { PublishPanelComponent } from "./components/dashboard/dashboard-components/admin-publish/publish-panel/publish-panel.component";
 import { CKEditorModule } from "@ckeditor/ckeditor5-angular";
@@ -204,6 +207,7 @@ import { CKEditorModule } from "@ckeditor/ckeditor5-angular";
     CoursesListComponent,
     OrgFormatPipe,
     WeekFormatPipe,
+    QuarterToMinsPipe,
     LearnerRegistrationFormComponent,
     LearnerRegistrationModalComponent,
     LearnerRegistrationConfirmModalComponent,
@@ -346,6 +350,7 @@ import { CKEditorModule } from "@ckeditor/ckeditor5-angular";
     NotificationPopupComponent,
     TrialConfirmationComponent,
     LearnerAddModalTestComponent,
+    ReasonInputComponent,
     PublishPanelComponent
   ],
   imports: [

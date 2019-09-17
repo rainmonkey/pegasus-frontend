@@ -226,9 +226,7 @@ export class LearnerDetailModalComponent implements OnInit {
         if (i.PaymentType == element['PropValue']) {
           i.paymentTypeName = element['PropName']
         }
-
       })
-
     }
   }
 
@@ -292,9 +290,6 @@ export class LearnerDetailModalComponent implements OnInit {
     const modalRef = this.modalService.open(AmendmentHistoryModalComponent, { size: 'lg', backdrop: 'static', keyboard: false });
     modalRef.componentInstance.whichCourse = ele
   }
-
-
-
 
 }
 

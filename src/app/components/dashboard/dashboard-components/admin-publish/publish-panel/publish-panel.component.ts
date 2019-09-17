@@ -2,6 +2,7 @@ import { Component, OnInit } from "@angular/core";
 import * as ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 import UploadAdapter from "./publish-upload";
 import { AdminPublishService } from "../../../../../services/http/admin-publish.service";
+import { UsersService } from "../../../../../services/http/users.service";
 
 @Component({
   selector: "app-publish-panel",
@@ -21,7 +22,10 @@ export class PublishPanelComponent implements OnInit {
   previewFlag: boolean;
   userId;
 
-  constructor(private publishService: AdminPublishService) {}
+  constructor(
+    private publishService: AdminPublishService,
+    private usersService: UsersService
+  ) {}
 
   ngOnInit() {
     this.userId = localStorage.getItem("userID");
@@ -73,6 +77,24 @@ export class PublishPanelComponent implements OnInit {
       }
     );
     console.log(data);
+    // let prepareData =this.prepareData();
+    // console.log(prepareData);
+    // let postObj = {
+    //   NewsTitle:"dd",
+    //   NewsType:1,
+    //   Categroy:1,
+    //   IsTop:1,
+    //   NewsData:"prepareData.imgSrc",
+    //   UserId:Number(localStorage.getItem('userID'))
+    // }
+    // this.usersService.postNews(postObj).subscribe(
+    //   res=>{
+    //     console.log(res);
+    //     },
+    //     error=>{
+    //       console.log(error);
+    //     }
+    // )
   };
 
   preview = () => {
