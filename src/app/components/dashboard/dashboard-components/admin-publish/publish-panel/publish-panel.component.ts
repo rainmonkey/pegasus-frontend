@@ -1,6 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 import * as ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 import UploadAdapter from "./publish-upload";
+import { AdminPublishService } from "../../../../../services/http/admin-publish.service";
 
 @Component({
   selector: "app-publish-panel",
@@ -11,16 +12,20 @@ export class PublishPanelComponent implements OnInit {
   public Editor = ClassicEditor;
   public model = {
     editorData: "<p>Hello, world!</p>",
-    title: ""
+    title: "",
+    radio: 1
   };
   titleNode;
   node: Node;
   parser = new DOMParser();
   previewFlag: boolean;
+  userId;
 
-  constructor() {}
+  constructor(private publishService: AdminPublishService) {}
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.userId = localStorage.getItem("userID");
+  }
 
   onReady = eventData => {
     eventData.plugins.get("FileRepository").createUploadAdapter = loader => {
@@ -41,20 +46,38 @@ export class PublishPanelComponent implements OnInit {
     bodyElement.insertBefore(this.titleNode, bodyElement.firstElementChild);
     bodyElement.classList.add("ck-content");
     bodyElement.style.setProperty("margin", "1rem", "important");
-    const image = bodyElement.getElementsByTagName("img")[0]; //默认第一张图为封面
+    const image = bodyElement.getElementsByTagName("img")[0]; // 默认第一张图为封面
     const data: any = {};
-    data.content = doc.documentElement;
-    data.header = this.model.title;
-    data.imgSrc = image.src;
-    return data;
+    if (image && this.model.title) {
+      data.newsData = doc.documentElement.innerHTML;
+      data.NewsTitle = this.model.title;
+      // data.imgSrc = image.src || "";
+      data.UserId = +this.userId;
+      data.NewsType = this.model.radio + "";
+      data.Categroy = 1;
+      data.IsTop = 1;
+      return data;
+    } else {
+      alert("Please fill all the fields");
+    }
   };
 
   onClick = () => {
-    console.log(this.prepareData());
+    const data = this.prepareData();
+    this.publishService.postNews(data).subscribe(
+      res => {
+        console.log(res);
+      },
+      err => {
+        console.log(err);
+      }
+    );
+    console.log(data);
   };
 
   preview = () => {
     const data = this.prepareData();
+    console.log(data.content);
     this.node.appendChild(data.content);
   };
 }

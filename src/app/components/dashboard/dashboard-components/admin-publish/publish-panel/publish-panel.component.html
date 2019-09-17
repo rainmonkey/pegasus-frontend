@@ -1,13 +1,26 @@
 <div class="container mt-3">
-  <h3>Publish News</h3>
+  <h3>Publish</h3>
   <input
     type="text"
-    class="mb-3"
+    class="my-3 form-control"
     placeholder="title"
     id="publishTitle"
     [(ngModel)]="model.title"
     size="60"
   />
+  <div
+    class="btn-group btn-group-toggle mb-3"
+    ngbRadioGroup
+    name="radioBasic"
+    [(ngModel)]="model.radio"
+  >
+    <label ngbButtonLabel class="btn-primary">
+      <input ngbButton type="radio" [value]="1" /> News
+    </label>
+    <label ngbButtonLabel class="btn-primary">
+      <input ngbButton type="radio" [value]="2" /> Ads
+    </label>
+  </div>
   <ckeditor
     class="ck-editor__editable_inline"
     [editor]="Editor"
