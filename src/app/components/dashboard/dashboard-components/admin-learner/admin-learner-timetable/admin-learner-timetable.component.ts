@@ -41,6 +41,7 @@ export class AdminLearnerTimetableComponent implements OnInit {
     this.options = {
       plugins: [dayGridPlugin, interactionPlugin],
       selectable: true,
+      firstDay:1,
       eventTextColor: '#ffffff',
       eventClick: (info) => {
         console.log(info)
@@ -67,10 +68,10 @@ export class AdminLearnerTimetableComponent implements OnInit {
     for (let i of data) {
       var extendedProps = {lessonId:i.LessonId};
      if (i.IsCanceled){
-      this.courseArray.push({ "title": i.TeacherFirstName +' '+ i.BranchAbbr, "date": i.BeginTime, 'color':'grey' ,"extendedProps":extendedProps})}else if(i.IsConfirm){
-        this.courseArray.push({ "title": i.TeacherFirstName +' '+ i.BranchAbbr, "date": i.BeginTime, 'color':'green',"extendedProps":extendedProps })
+      this.courseArray.push({ "title": i.TeacherFirstName +' '+ i.BranchAbbr, "date": i.BeginTime,"endtime": i.EndTime,  'color':'grey' ,"extendedProps":extendedProps})}else if(i.IsConfirm){
+        this.courseArray.push({ "title": i.TeacherFirstName +' '+ i.BranchAbbr, "date": i.BeginTime, "endtime": i.EndTime,'color':'green',"extendedProps":extendedProps })
       }else{
-        this.courseArray.push({ "title": i.TeacherFirstName +' '+ i.BranchAbbr, "date": i.BeginTime,"extendedProps":extendedProps})
+        this.courseArray.push({ "title": i.TeacherFirstName +' '+ i.BranchAbbr, "date": i.BeginTime,"endtime": i.EndTime,"extendedProps":extendedProps})
       }
     }
     return this.courseArray;

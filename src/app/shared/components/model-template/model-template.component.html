@@ -23,6 +23,10 @@
         <div class='row justify-content-center'>
           <p>Start at {{learnerCourseTimeTable.event.start|date:'short'}}</p>
         </div>
+        <!-- <div class='row justify-content-center'>
+            <p>end at {{learnerCourseTimeTable.event.endtime|date:'short'}}</p>
+          </div>
+  -->
         <button type="button" class="btn btn-outline-dark" (click)="onClicked(0)">Make Up 15 mins before </button>
         <button type="button" class="btn btn-outline-dark" (click)="onClicked(1)">Make Up 15 mins after</button>
       </div>
