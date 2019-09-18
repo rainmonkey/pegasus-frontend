@@ -21,6 +21,8 @@ export class TestoneComponent implements OnInit {
   public qweqwe: Object;
   public poi: FormGroup;
   public url:any = environment.baseUrl + 'trial';
+
+  public ReasonValue:string = 'no reason';
   @ViewChild('emoji') emoji;
   @Input('emojiClick') click;
   constructor(
@@ -41,7 +43,9 @@ export class TestoneComponent implements OnInit {
     return groupObj;
 
   }
-
+  log(){
+    console.log(this.ReasonValue)
+  }
   getoiois() {
     this.courseService.getoioi().subscribe(
       (res) => {

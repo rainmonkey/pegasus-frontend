@@ -53,22 +53,22 @@ export class PublishPanelComponent implements OnInit {
   onClick = () => {
     let prepareData =this.prepareData();
     console.log(prepareData);
-    let postObj = {
-      NewsTitle:"dd",
-      NewsType:1,
-      Categroy:1,
-      IsTop:1,
-      NewsData:"prepareData.imgSrc",
-      UserId:Number(localStorage.getItem('userID'))
-    }
-    this.usersService.postNews(postObj).subscribe(
-      res=>{
-        console.log(res);
-        },
-        error=>{
-          console.log(error);
-        }
-    )
+    // let postObj = {
+    //   NewsTitle:"dd",
+    //   NewsType:1,
+    //   Categroy:1,
+    //   IsTop:1,
+    //   NewsData:"prepareData.imgSrc",
+    //   UserId:Number(localStorage.getItem('userID'))
+    // }
+    // this.usersService.postNews(postObj).subscribe(
+    //   res=>{
+    //     console.log(res);
+    //     },
+    //     error=>{
+    //       console.log(error);
+    //     }
+    // )
   };
 
   preview = () => {

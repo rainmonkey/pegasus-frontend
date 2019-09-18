@@ -1,15 +1,15 @@
 <div class="row mb-2">
-  <label class="mt-2" id='reason'>Canceled Reason :</label>
-  <select [(ngModel)]="CancelReason" #selector id='mySelect' >
+  <label class="mt-2" id='reason'>Reason:</label>
+  <select (change)='changeSelect($event.target.value)' #selector id='mySelect' >
     <option disabled selected value>-- select an option --</option>
-    <option value="Sickness">Sickness </option>
-    <option value="Medical Procedures">Medical Procedures </option>
+    <option value="Tutor Sick">Tutor Sick </option>
+    <option value="Student Sick">Student Sick </option>
     <option value="No Conveyance">No Conveyance</option>
     <option value="Accident">Accident</option>
     <option value="Emergency">Emergency</option>
-    <option value="Other">Other</option>
+    <option value="Reason of Receptionist">Reason of Receptionist</option>
   </select>
-  <input type='text' id='myInput' style='display:none'>
+  <input type='text' (keyup)='changeText($event.target.value)' id='myInput' style='display:none'>
   <span (click)='changeInput()' class='test'>  
     <i class="far fa-keyboard" style='font-size:25px; text-align:center; margin-left:5px; margin-top:3px; cursor: pointer;' ></i>
 </span>

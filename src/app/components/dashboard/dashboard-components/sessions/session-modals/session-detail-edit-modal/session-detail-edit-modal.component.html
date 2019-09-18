@@ -59,9 +59,9 @@
         </div>
       </div>
       <div class="col-10">
-        <label class="mt-2">Reason</label>
+        <!-- <label class="mt-2">Reason</label> -->
         <!-- <input [class.is-invalid]="Reason.invalid && Reason.touched" class="form-control" type="text" formControlName="Reason" /> -->
-        <select [class.is-invalid]="Reason.invalid && Reason.touched" class="form-control" formControlName="Reason">
+        <!-- <select [class.is-invalid]="Reason.invalid && Reason.touched" class="form-control" formControlName="Reason">
           <option disabled selected value>-- select an option --</option>
           <option value="Sickness">Sickness </option>        
           <option value="Medical Procedures">Medical Procedures </option>
@@ -69,8 +69,8 @@
           <option value="Accident">Accident</option>        
           <option value="Emergency">Emergency</option>                
           <option value="Other">Other</option>                        
-        </select>
-
+        </select> -->
+        <app-reason-Input  class="form-control" formControlName="Reason" ></app-reason-Input>
         <small class="text-danger" *ngIf="Reason.invalid&&Reason.touched">Reason is required</small>
       </div>
     </div>
