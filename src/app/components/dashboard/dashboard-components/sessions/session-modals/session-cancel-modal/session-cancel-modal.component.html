@@ -15,9 +15,12 @@
   <div class="container">
     <div class="d-flex justify-content-center row">
       <p>Please confirm the course has been canceled</p>
+
       <div>
+          <div  class="row mb-2">
+              <label class="mt-2">Reason:</label>
+            </div>        
         <div class="row mb-2">
-          
           <app-reason-Input [(ngModel)]="CancelReason"></app-reason-Input>
         </div>
       </div>

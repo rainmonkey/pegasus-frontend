@@ -32,6 +32,7 @@ export class LearnerRegistrationFormComponent implements OnInit, DoCheck, AfterV
   // receivedChildMessage: any;
   // courseIntanceGroup: FormGroup;
   @Input() whichLearner;
+  @Input() command;
   @Input() addCourse;
   @Output() toLearnerListEvent: EventEmitter<any> = new EventEmitter;
   public beginTime: any;
@@ -345,7 +346,8 @@ export class LearnerRegistrationFormComponent implements OnInit, DoCheck, AfterV
         this.courses121 = res.Data.filter(item => item.CourseType === 1);
         // apply learner level filter
         console.log(this.selectLearnerLevel)
-        this.selectLearnerLevel = this.whichLearner ? this.whichLearner.LearnerLevel : this.selectLearnerLevel;
+        if (!this.selectLearnerLevel)
+          this.selectLearnerLevel = this.whichLearner ? this.whichLearner.LearnerLevel : this.selectLearnerLevel;
 
         let coursePiano = this.courses121.filter(item => item.CourseCategory.CourseCategoryId === 1)
           .filter((item) => item.Level == this.selectLearnerLevel);
