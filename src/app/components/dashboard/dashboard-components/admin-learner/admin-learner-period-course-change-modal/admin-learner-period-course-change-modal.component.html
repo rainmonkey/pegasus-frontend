@@ -16,10 +16,10 @@
           <small class="text-danger" *ngIf="BeginDate.invalid && BeginDate.touched">Please enter the begin date</small>
         </div>
         <div class="col-5">
-          <div>Is Permanent</div>
+          <div>Is Temporary</div>
           <select formControlName="IsTemporary" (change)="IsTemporaryChange()">
-            <option value="0">Yes</option>
-            <option value="1">No</option>
+            <option value="0">No</option>
+            <option value="1">Yes</option>
           </select>
           <small class="text-danger" *ngIf="IsTemporary.invalid && IsTemporary.touched">  Please select isTemporary</small>
         </div>
