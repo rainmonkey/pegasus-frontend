@@ -3,6 +3,7 @@ import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { LearnersService } from 'src/app/services/http/learners.service';
 import { environment } from 'src/environments/environment.prod';
 import { AmendmentHistoryModalComponent } from '../amendment-History-modal/amendment-History-modal.component';
+import { AdminInvoiceEditModalComponent } from '../../admin-transactions/admin-invoice-edit-modal/admin-invoice-edit-modal.component'
 import Swal from 'sweetalert2';
 import { forkJoin } from 'rxjs';
 @Component({
@@ -289,6 +290,15 @@ export class LearnerDetailModalComponent implements OnInit {
   openHistory(ele) {
     const modalRef = this.modalService.open(AmendmentHistoryModalComponent, { size: 'lg', backdrop: 'static', keyboard: false });
     modalRef.componentInstance.whichCourse = ele
+  }
+  openInvoiceEdit(item){
+    const modalRef = this.modalService.open(AdminInvoiceEditModalComponent, {
+      size: "lg",
+      backdrop: "static",
+      keyboard: false
+    });
+    // pass parameters to edit modals
+    modalRef.componentInstance.item = item;
   }
 
 }

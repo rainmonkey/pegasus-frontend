@@ -644,30 +644,31 @@
             <div class='card'>
               <div class="card-body">
                 <div class='row'>
-                  <div class='col-lg-4 col-sm-4'>
+                  <div class='col-lg-3 col-sm-3'>
                     <span class='label'>Invoice Number: </span>
                     <span class='text' *ngIf='i.InvoiceNum'>{{i.InvoiceNum}}</span>
                   </div>
 
-                  <div class='col-lg-8 col-sm-8'>
+                  <div class='col-lg-5 col-sm-5'>
                     <span class='label'>Period: </span>
                     <span class='text'
                       *ngIf='i.InvoiceWaitingConfirm.BeginDate && i.InvoiceWaitingConfirm.EndDate'>{{i.InvoiceWaitingConfirm.BeginDate|date:'longDate'}}
                       ~
                       {{i.InvoiceWaitingConfirm.EndDate|date:'longDate'}}</span>
                   </div>
+                  <div class='col-lg-4 col-sm-4'><button (click)='openInvoiceEdit(i)' class='btn btn-outline-primary btn-sm'>Invoice Editing</button></div>
                   <div *ngIf='false' class='col-lg-4 col-sm-4'>
                     <span class='label'>Is Paid: </span>
                     <span class='text'
                       *ngIf='i.InvoiceWaitingConfirm.IsPaid !== null'>{{i.InvoiceWaitingConfirm.IsPaid|IsTemporary}}</span>
                   </div>
-                  <div class='col-lg-12 col-sm-12'>
+                  <div class='col-lg-8 col-sm-8'>
                     <span class='label'>Course: </span>
                     <span class='text'
                       *ngIf='i.InvoiceWaitingConfirm.CourseName'>{{i.InvoiceWaitingConfirm.CourseName}}</span>
                   </div>
-
-                  <div class='col-lg-4 col-sm-4'>
+                  <div class='col-lg-4 col-sm-4'><button class='btn btn-outline-primary btn-sm'>View Invoice Pdf</button></div>
+                  <div class='col-lg-3 col-sm-3'>
                     <span class='label'>Course Quantity: </span>
                     <span class='text'
                       *ngIf='i.InvoiceWaitingConfirm.LessonQuantity'>{{i.InvoiceWaitingConfirm.LessonQuantity}}</span>
@@ -704,35 +705,35 @@
                     <div id="fees" class="collapse">
                       <div class="row">
                         <div class='col-lg-2 col-sm-6'>
-                          <span class='label'>Course Fee: </span>
+                          <span class='label'>Tuition Fee:</span>
                           <span class='text'
                             *ngIf='i.InvoiceWaitingConfirm.LessonFee'>${{i.InvoiceWaitingConfirm.LessonFee}}</span>
                         </div>
 
                         <div *ngIf='i.InvoiceWaitingConfirm.ConcertFee' class='col-lg-2 col-sm-6'>
-                          <span class='label'>Concert Fee: </span>
+                          <span class='label'>{{i.InvoiceWaitingConfirm.ConcertFeeName}}:</span>
                           <span class='text'
                             *ngIf='i.InvoiceWaitingConfirm.ConcertFee'>${{i.InvoiceWaitingConfirm.ConcertFee}}</span>
                         </div>
 
                         <div *ngIf='i.InvoiceWaitingConfirm.NoteFee' class='col-lg-2 col-sm-6'>
-                          <span class='label'>Note Fee: </span>
+                          <span class='label'>{{i.InvoiceWaitingConfirm.LessonNoteFeeName}}: </span>
                           <span class='text'
                             *ngIf='i.InvoiceWaitingConfirm.NoteFee'>${{i.InvoiceWaitingConfirm.NoteFee}}</span>
                         </div>
 
                         <div *ngIf='i.InvoiceWaitingConfirm.Other1Fee !== null && i.InvoiceWaitingConfirm.Other1Fee !== 0' class='col-lg-2 col-sm-6'>
-                          <span class='label'>Other Fee 1: </span>
+                          <span class='label'>{{i.InvoiceWaitingConfirm.Other1FeeName}}: </span>
                           <span class='text'>${{i.InvoiceWaitingConfirm.Other1Fee}}</span>
                         </div>
 
                         <div *ngIf='i.InvoiceWaitingConfirm.Other2Fee !== null && i.InvoiceWaitingConfirm.Other2Fee !== 0' class='col-lg-2 col-sm-6'>
-                          <span class='label'>Other Fee 2: </span>
+                          <span class='label'>{{i.InvoiceWaitingConfirm.Other2FeeName}}: </span>
                           <span class='text'>${{i.InvoiceWaitingConfirm.Other2Fee}}</span>
                         </div>
 
                         <div *ngIf='i.InvoiceWaitingConfirm.Other3Fee !== null && i.InvoiceWaitingConfirm.Other3Fee !== 0 ' class='col-lg-2 col-sm-6'>
-                          <span class='label'>Other Fee 3: </span>
+                          <span class='label'>{{i.InvoiceWaitingConfirm.Other3FeeName}}: </span>
                           <span class='text'>${{i.InvoiceWaitingConfirm.Other3Fee}}</span>
                         </div>
 
