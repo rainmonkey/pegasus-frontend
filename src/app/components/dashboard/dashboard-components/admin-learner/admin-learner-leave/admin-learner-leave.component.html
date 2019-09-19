@@ -22,7 +22,7 @@
           <small class="text-danger" *ngIf="EndDate.invalid && EndDate.touched">Please enter end date</small>
         </div>
         <div class="col-5">
-          <div>Is Invoice Change</div>
+          <div>Do you want to change invoice?</div>
           <select formControlName="IsInvoiceChange">
             <option disabled selected value>-- select an option --</option>
             <option value="false">No</option>
@@ -45,12 +45,13 @@
       <app-reason-Input class="form-control" formControlName="Reason"></app-reason-Input>
       <small class="text-danger" *ngIf="Reason.invalid && Reason.touched">Reason is required.</small>
       <div *ngFor="let ele of learner.One2oneCourseInstance">
-        <input #checkbox (change)="checkBoxChange()"  [value]="ele.CourseInstanceId" type="checkbox">
+        
         <br>
         <div class="card">
           <div class="card-body">
             <div class="row">
-              <div class="col-6">
+                <input #checkbox (change)="checkBoxChange()"  [value]="ele.CourseInstanceId" type="checkbox">
+              <div class="col-12">
                 <span class="label" style="font-weight: bold">Course: </span>
                 <span class='text'>{{ele.Course.CourseName}}</span>
               </div>
