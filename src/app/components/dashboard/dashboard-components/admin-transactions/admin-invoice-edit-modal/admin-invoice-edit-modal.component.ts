@@ -137,6 +137,9 @@ export class AdminInvoiceEditModalComponent implements OnInit {
       default:
         type = 0;
     }
+    if ( courseId ==null)
+      this.coursePrice = this.item2.LessonFee;
+    else
     this.transactionService.GroupOr121(courseId, type)
       .subscribe(
         res => {
