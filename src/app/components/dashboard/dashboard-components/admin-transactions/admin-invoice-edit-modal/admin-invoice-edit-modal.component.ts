@@ -241,7 +241,13 @@ export class AdminInvoiceEditModalComponent implements OnInit {
       .subscribe(
         (res) => {
           this.activeModal.close();
-          swal.fire("Confirmed")
+
+          swal.fire({
+            title: 'Your Operation Has Been Saved!',
+            type: 'success',
+            showConfirmButton: true,
+          });
+
           this.item2.IsConfirmed = 1
           console.log(this.itemTempPublic)
         },

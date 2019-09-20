@@ -667,7 +667,7 @@
                     <span class='text'
                       *ngIf='i.InvoiceWaitingConfirm.CourseName'>{{i.InvoiceWaitingConfirm.CourseName}}</span>
                   </div>
-                  <div class='col-lg-4 col-sm-4'><button class='btn btn-outline-primary btn-sm'>View Invoice Pdf</button></div>
+                  <div class='col-lg-4 col-sm-4'><button (click)='downloadPDF(i)' class='btn btn-outline-primary btn-sm'>View Invoice Pdf</button></div>
                   <div class='col-lg-3 col-sm-3'>
                     <span class='label'>Course Quantity: </span>
                     <span class='text'
@@ -981,7 +981,7 @@
                     <!-- <div class='col-12'> -->
                       <div class='col-6 header'>Missed Lesson: </div>
                       <div class='col-6'>
-                        <button class='mx-3 btn btn-info' (click)="t.select('Timetable')">Click Here To Makeup</button>
+                        <button *ngIf='i.Remaining' class='mx-3 btn btn-info' (click)="t.select('Timetable')">Click Here To Makeup</button>
                       </div>
                     <!-- </div> -->
 

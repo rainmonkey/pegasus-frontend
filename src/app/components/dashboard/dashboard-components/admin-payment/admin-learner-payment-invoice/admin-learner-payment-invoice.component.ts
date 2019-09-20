@@ -136,7 +136,8 @@ export class AdminLearnerPaymentInvoiceComponent implements OnInit, OnDestroy {
                 type: 'success',
                 showConfirmButton: true,
               });
-              this.router.navigate(['../success'], { relativeTo: this.activatedRouter });
+              //this.router.navigate(['../success'], { relativeTo: this.activatedRouter });
+              this.ngOnInit();
             },
             (error) => {
               this.errorMsg = JSON.parse(error.error);
@@ -331,7 +332,7 @@ export class AdminLearnerPaymentInvoiceComponent implements OnInit, OnDestroy {
         console.log(this.dataInvoice)
         if (!this.dataInvoice) {
           this.noInvoice = true;
-          this.errorMsg  = "no invoice for this student";
+          this.errorMsg  = "No invoice need to pay for this student";
           this.errorAlert = true;
          //alert(this.errorMsg);
   

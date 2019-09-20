@@ -4,6 +4,7 @@ import { LearnersService } from 'src/app/services/http/learners.service';
 import { environment } from 'src/environments/environment.prod';
 import { AmendmentHistoryModalComponent } from '../amendment-History-modal/amendment-History-modal.component';
 import { AdminInvoiceEditModalComponent } from '../../admin-transactions/admin-invoice-edit-modal/admin-invoice-edit-modal.component'
+import { DownloadPDFService , IInvoiceLearnerName, IInvoice } from '../../../../../services/others/download-pdf.service'
 import Swal from 'sweetalert2';
 import { forkJoin } from 'rxjs';
 @Component({
@@ -72,7 +73,8 @@ export class LearnerDetailModalComponent implements OnInit {
   constructor(
     public activeModal: NgbActiveModal,
     private LearnerListService: LearnersService,
-     private modalService: NgbModal, ) {
+     private modalService: NgbModal,
+     private downloadPDFService:DownloadPDFService ) {
   }
   ngOnInit() {
     this.getData()
@@ -299,9 +301,32 @@ export class LearnerDetailModalComponent implements OnInit {
     });
     // pass parameters to edit modals
     modalRef.componentInstance.item = item;
-  }
+    var that = this;
+    modalRef.result.then(
+      (res) => {
+        that.ngOnInit()
+      },
+      (err) => {
+        return
+      }
+    )
 
+  }
+  downloadPDF(allinvoice) {
+    const learnerName = {} as IInvoiceLearnerName;
+    let invoice;
+    learnerName.firstName = allinvoice.Learner.FirstName;
+    learnerName.lastName = allinvoice.Learner.LastName;
+
+    if (allinvoice.Invoice.InvoiceId == 0) {
+      invoice = allinvoice.InvoiceWaitingConfirm;
+    } else {
+      invoice = allinvoice.Invoice;
+    }
+    this.downloadPDFService.downloadPDF(learnerName, invoice);
+  }
 }
+
 
 
 
