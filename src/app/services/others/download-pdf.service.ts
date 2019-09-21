@@ -9,65 +9,73 @@ export class DownloadPDFService {
   constructor() { }
 
   downloadPDF(learnerName: IInvoiceLearnerName, invoice: IInvoice) {
-    let table_header = [['Description', "Quantity", 'Fee']]
+    let table_header = [['DESCRIPTION', "PRICE","QUANTITY", 'AMOUNT']]
     let body = []
     let options = { columnWidth: 'auto' }
     let currentHeight: number = 90
     let interval: number = 10
     let lineSpacing = { NormalSpacing: 12 }
-    let startY = 80
+    let startY = 120
     let doc = new jsPDF({
       unit: 'mm',
     })
     // title
     doc.setFontSize(20);
     doc.setTextColor(0, 0, 0)
-    doc.setFillColor(41, 128, 186)
+    doc.setFillColor(41, 59, 68)
     doc.rect(14, 20, 183, 25, 'F')
     doc.addImage(this.logo, 'PNG', 55, 20);
     // detail
-    doc.setFontSize(12);
-    doc.text(`Invoice To: ${learnerName.firstName}  ${learnerName.lastName}`, 14, 60);
-    doc.text(`From Date ${invoice.BeginDate.slice(0, 10)}`, 140, 60)
+    doc.setFontSize(8);
+    doc.text(`ADDRESS1：`, 14, 60);
+    doc.text(`INVOICE DATE ${invoice.BeginDate.slice(0, 10)}`, 140, 60)
+    doc.text(`ADDRESS: `, 14, 70);
+    doc.text(`INVOICE NUMBER ${invoice.BeginDate.slice(0, 10)}`, 140, 70)
+    doc.text(`PHONE: `, 14, 80);
+    doc.text(`E-MAIL: `, 14, 90);
+
+    doc.text(`BILL To: `, 14, 110);
+    doc.text(`BILL ${learnerName.firstName}  ${learnerName.lastName}`, 14, 120);    
     if (invoice.DueDate) {
       doc.text(`Due Date: ${invoice.DueDate.split("T")[0]}`, 140, 70);
     }
 
-    body.push([invoice.CourseName, invoice.LessonQuantity, invoice.LessonFee])
+    body.push([invoice.CourseName, invoice.LessonFee/invoice.LessonQuantity,
+      invoice.LessonQuantity, invoice.LessonFee])
 
     if (invoice.ConcertFee) {
       currentHeight += interval
       // doc.text(`${invoice.ConcertFeeName}`, 20, currentHeight);
       // doc.text(`$${invoice.ConcertFee}`, 90, currentHeight);
-      body.push([invoice.ConcertFeeName, '', invoice.ConcertFee])
+      body.push([invoice.ConcertFeeName, invoice.ConcertFee,1, invoice.ConcertFee])
     }
 
     if (invoice.NoteFee) {
       currentHeight += interval
       // doc.text(`${invoice.LessonNoteFeeName}`, 20, currentHeight);
       // doc.text(`$${invoice.NoteFee}`, 90, currentHeight);
-      body.push([invoice.LessonNoteFeeName, '', invoice.NoteFee])
+      body.push([invoice.LessonNoteFeeName, invoice.NoteFee, 1, invoice.NoteFee])
     }
 
     if (invoice.Other1Fee) {
       currentHeight += interval
       // doc.text(`${invoice.Other1FeeName}`, 20, currentHeight)
       // doc.text(`$${invoice.Other1Fee}`, 90, currentHeight)
-      body.push([invoice.Other1FeeName, '', invoice.Other1Fee])
+      body.push([invoice.Other1FeeName, invoice.Other1Fee,1, invoice.Other1Fee])
     }
 
     if (invoice.Other2Fee) {
       currentHeight += interval
       // doc.text(`${invoice.Other2FeeName}`, 20, currentHeight)
       // doc.text(`$${invoice.Other2Fee}`, 90, currentHeight)
-      body.push([invoice.Other2FeeName, '', invoice.Other2Fee])
+      body.push([invoice.Other2FeeName,invoice.Other2Fee, 1, invoice.Other2Fee])
     }
 
     if (invoice.Other3Fee) {
       currentHeight += interval
       // doc.text(`${invoice.Other3FeeName}`, 20, currentHeight)
       // doc.text(`$${invoice.Other3Fee}`, 90, currentHeight)
-      body.push([invoice.Other3FeeName, '', invoice.Other3Fee])
+      body.push([invoice.Other3FeeName, invoice.Other3Fee,1, invoice.Other3Fee])
     }
 
 
@@ -89,6 +97,15 @@ export class DownloadPDFService {
 export interface IInvoiceLearnerName {
   firstName: string
   lastName: string
+  Email:string
+}
+export interface IBranch {
+  name: string
+  phone: string
+  email:string
+  gstNum:string
+  bankName:string
+  accountNum:string
 }
 
 export interface IInvoice {

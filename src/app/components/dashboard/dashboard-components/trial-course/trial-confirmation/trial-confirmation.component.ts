@@ -353,7 +353,8 @@ export class TrialConfirmationComponent implements OnInit {
   downloadInvoice() {
     const learnerName: IInvoiceLearnerName = {
       firstName: this.learner.FirstName,
-      lastName: this.learner.LastName
+      lastName: this.learner.LastName,
+      Email:this.learner.Email
     };
     const invoice: IInvoice = {
       LessonQuantity: 1,

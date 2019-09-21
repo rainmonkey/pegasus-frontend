@@ -24,7 +24,7 @@ export class SessionTrialModalComponent implements OnInit {
   @Input() confirmationData: IConfirmData;
   @Output() isClosed = new EventEmitter();
 
-  private learner:Ilearner ={firstName:'',lastName:'',contactNum:''};
+  private learner:Ilearner ={firstName:'',lastName:'',contactNum:'',Email:''};
   private courseName: string;
   private startTimeStr: string;
   private endTimeStr: string;
@@ -286,7 +286,8 @@ export class SessionTrialModalComponent implements OnInit {
   downloadInvoice() {
     const learnerName: IInvoiceLearnerName = {
       firstName: this.learner.firstName,
-      lastName: this.learner.lastName
+      lastName: this.learner.lastName,
+      Email:this.learner.Email
     };
     const invoice: IInvoice = {
       LessonQuantity: 1,
@@ -323,6 +324,7 @@ export interface Ilearner {
   firstName: string;
   lastName: string;
   contactNum:string;
+  Email:string;
 }
 
 export interface IData {
