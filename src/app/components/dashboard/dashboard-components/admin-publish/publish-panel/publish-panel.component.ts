@@ -13,7 +13,8 @@ export class PublishPanelComponent implements OnInit {
   public model = {
     editorData: "<p>Hello, world!</p>",
     title: "",
-    radio: 1
+    radio: 1,
+    top: false
   };
   titleNode;
   node: Node;
@@ -64,7 +65,7 @@ export class PublishPanelComponent implements OnInit {
       data.UserId = +this.userId;
       data.NewsType = this.model.radio + "";
       data.Categroy = 1;
-      data.IsTop = 1;
+      data.IsTop = this.model.top ? 1 : 0;
       return data;
     }
   };
