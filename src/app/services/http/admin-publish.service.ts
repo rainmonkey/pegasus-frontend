@@ -16,4 +16,8 @@ export class AdminPublishService {
   postNews = data => {
     return this.http.post(this.baseUrl + "News", data);
   };
+
+  uploadTitleImage = data => {
+    return this.http.post(this.baseUrl + "News/UploadTitlePhoto", data);
+  };
 }

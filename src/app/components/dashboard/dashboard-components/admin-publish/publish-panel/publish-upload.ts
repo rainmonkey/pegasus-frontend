@@ -1,6 +1,8 @@
+import { AdminPublishService } from "../../../../../services/http/admin-publish.service";
+
 export default class UploadAdapter {
   loader;
-  constructor(loader) {
+  constructor(loader, public adminPublishService: AdminPublishService) {
     this.loader = loader;
   }
 
@@ -8,12 +10,18 @@ export default class UploadAdapter {
     return this.loader.file.then(
       file =>
         new Promise((resolve, reject) => {
-          const myReader = new FileReader();
-          myReader.onloadend = () => {
-            resolve({ default: myReader.result });
-          };
-          myReader.readAsDataURL(file);
+          const data = new FormData();
+          data.append("photo", file);
+          this.adminPublishService.uploadTitleImage(data).subscribe(
+            res => {
+              console.log(res["Data"]);
+              resolve({ default: "http://gradspace.org:5000/" + res["Data"] });
+            },
+            err => reject(err)
+          );
         })
     );
-  }
+  };
+
+  abort = () => {};
 }
