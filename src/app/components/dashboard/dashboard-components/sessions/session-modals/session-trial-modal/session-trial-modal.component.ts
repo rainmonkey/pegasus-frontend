@@ -290,6 +290,7 @@ export class SessionTrialModalComponent implements OnInit {
       Email:this.learner.Email
     };
     const invoice: IInvoice = {
+      InvoiceNum:'',
       LessonQuantity: 1,
       CourseName: "course",
       BeginDate: new Date(

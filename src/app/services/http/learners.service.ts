@@ -41,6 +41,9 @@ export class LearnersService {
   getLearnerById(id) {
     return this.http.get(this.baseUrl + 'learner/GetLearnerById/'+id)
   }
+  getOrgById(id) {
+    return this.http.get(this.baseUrl + 'learner/GetOrgByLearner/'+id)
+  } 
   getLearnerByIdTimePick(id) {
     return this.http.get(this.baseUrl + 'lesson/GetLessonsForLearner/'+id)
   }

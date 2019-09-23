@@ -357,6 +357,7 @@ export class TrialConfirmationComponent implements OnInit {
       Email:this.learner.Email
     };
     const invoice: IInvoice = {
+      InvoiceNum:'',
       LessonQuantity: 1,
       CourseName: this.confirmationData.cateName,
       BeginDate: new Date(
