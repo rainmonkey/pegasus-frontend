@@ -116,6 +116,7 @@ export class MessagerChattingComponent implements OnInit {
         null,
         (err) => {
           console.log('message sent error')
+          console.log(err);
           //message send failed handler
           this.messagerService.sendMessageFailed(createAt.getTime(), this.subscriber['UserId']);
         }
