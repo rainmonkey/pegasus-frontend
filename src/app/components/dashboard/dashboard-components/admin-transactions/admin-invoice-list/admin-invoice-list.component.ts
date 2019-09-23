@@ -214,6 +214,7 @@ export class AdminInvoiceListComponent implements OnInit {
     const learner = this.myArray[(page - 1) * this.pageSize + index];
     const learnerName = {} as IInvoiceLearnerName;
     let invoice;
+    let branch;
     learnerName.firstName = learner.FirstName;
     learnerName.lastName = learner.LastName;
 
@@ -222,6 +223,14 @@ export class AdminInvoiceListComponent implements OnInit {
     } else {
       invoice = learner.Invoice;
     }
-    this.downloadPDFService.downloadPDF(learnerName, invoice);
+    // OrgName: string
+    // Phone: string
+    // Email:string
+    // gstNum:string
+    // BankName:string
+    // BankAccountNo:string
+    // Address:string
+    branch = learner.Org;
+    this.downloadPDFService.downloadPDF(learnerName, invoice,branch);
   }
 }

@@ -8,6 +8,7 @@ import { NgbootstraptableService } from '../../../../../services/others/ngbootst
 import { CoursesService } from 'src/app/services/http/courses.service';
 import { CourseClassDetailModalComponent } from '../course-class-detail-modal/course-class-detail-modal.component';
 import { CourseDeleteModalComponent } from '../course-delete-modal/course-delete-modal.component';
+import { CourseSessionListModalComponent } from '../course-session-list-modal/course-session-list-modal.component'
 
 @Component({
   selector: 'app-course-class-list',
@@ -173,6 +174,23 @@ export class CourseClassListComponent implements OnInit {
     modalRef.componentInstance.whichCourseClass = whichCourseClass;
   }
 
+  openModal(command:Number, whichCourseClass ) {
+    let component; 
+    if (command == 2)
+      component = CourseSessionListModalComponent;
+    // console.log(command,whichCourseClass,component)
+
+    const modalRef = this.modalService.open(component, { size: 'lg' });
+    let that = this;
+    modalRef.result.then((result) => {
+      this.closeResult = `Closed with: ${result}`;
+      that.ngOnInit()
+    }, (reason) => {
+      this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+    });
+    modalRef.componentInstance.command = command;
+    modalRef.componentInstance.whichCourseClass = whichCourseClass;
+  }
   /*
     sort method
   */

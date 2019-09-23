@@ -69,6 +69,9 @@ export class LearnersService {
   getRemainingCourses(LearnerId: number): Observable<any> {
     return this.http.get(this.baseUrl + "session/GetMakeupSessions/" + LearnerId)
   }
+  getGroupMakeupLesson(instanceId: number): Observable<any> {
+    return this.http.get(this.baseUrl + "session/GetGroupMakeupSessions/" + instanceId)
+  }
 
   getArrangedLesson(LearnerId: number): Observable<any> {
     return this.http.get(this.baseUrl + "Lesson/" + "GetArrangedLessonsByLearner/" + LearnerId)

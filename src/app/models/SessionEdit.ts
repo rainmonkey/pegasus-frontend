@@ -4,7 +4,6 @@ export class SessionEdit {
   RoomId: number;
   TeacherId: number;
   OrgId: number;
-  Reason: string;
   BeginTime: Date;
   constructor(LessonId, LearnerId, RoomId, TeacherId, OrgId, Reason, BeginTime) {
     this.LessonId = LessonId;
@@ -12,7 +11,6 @@ export class SessionEdit {
     this.RoomId = RoomId;
     this.TeacherId = TeacherId;
     this.OrgId = OrgId;
-    this.Reason = Reason;
     this.BeginTime = BeginTime;
   }
 }

@@ -44,9 +44,13 @@ import { AdminSalesListComponent } from "./components/dashboard/dashboard-compon
 import { TransactionsPanelComponent } from "./components/dashboard/dashboard-components/admin-transactions/transactions-panel/transactions-panel.component";
 import { CourseClassDetailModalComponent } from "./components/dashboard/dashboard-components/courses/course-class-detail-modal/course-class-detail-modal.component";
 import { CourseClassListComponent } from "./components/dashboard/dashboard-components/courses/course-class-list/course-class-list.component";
+
+import { CourseSessionListModalComponent } from "./components/dashboard/dashboard-components/courses/course-session-list-modal/course-session-list-modal.component";
+
 import { CourseDeleteModalComponent } from "./components/dashboard/dashboard-components/courses/course-delete-modal/course-delete-modal.component";
 import { CourseDetailModalComponent } from "./components/dashboard/dashboard-components/courses/course-detail-modal/course-detail-modal.component";
 import { CoursesListComponent } from "./components/dashboard/dashboard-components/courses/courses-list/courses-list.component";
+import { CancelledLessonListComponent } from "./components/dashboard/dashboard-components/courses/course-class-list/cancelled-lesson-list/cancelled-lesson-list.component";
 import { CoursesPanelComponent } from "./components/dashboard/dashboard-components/courses/courses-panel/courses-panel.component";
 import { DashboardHomeComponent } from "./components/dashboard/dashboard-components/dashboard-home/dashboard-home.component";
 import { InventoryListComponent } from "./components/dashboard/dashboard-components/inventory/inventory-list/inventory-list.component";
@@ -59,6 +63,7 @@ import { SessionCancelModalComponent } from "./components/dashboard/dashboard-co
 import { SessionTrialModalComponent } from "./components/dashboard/dashboard-components/sessions/session-modals/session-trial-modal/session-trial-modal.component";
 import { SessionCompletedModalComponent } from "./components/dashboard/dashboard-components/sessions/session-modals/session-completed-modal/session-completed-modal.component";
 import { SessionDetailEditModalComponent } from "./components/dashboard/dashboard-components/sessions/session-modals/session-detail-edit-modal/session-detail-edit-modal.component";
+import { GroupSessionDetailEditModalComponent } from "./components/dashboard/dashboard-components/courses/course-class-list/session-detail-edit-modal/group-session-detail-edit-modal.component";
 import { SessionDetailModalComponent } from "./components/dashboard/dashboard-components/sessions/session-modals/session-detail-modal/session-detail-modal.component";
 import { SessionTutorReportModalComponent } from "./components/dashboard/dashboard-components/sessions/session-modals/session-tutor-report-modal/session-tutor-report-modal.component";
 import { SessionsPanelComponent } from "./components/dashboard/dashboard-components/sessions/sessions-panel/sessions-panel.component";
@@ -205,6 +210,9 @@ import { CKEditorModule } from "@ckeditor/ckeditor5-angular";
     FooterComponent,
     CoursesPanelComponent,
     CoursesListComponent,
+    CourseClassListComponent,
+    GroupSessionDetailEditModalComponent,
+    CourseSessionListModalComponent,
     OrgFormatPipe,
     WeekFormatPipe,
     QuarterToMinsPipe,
@@ -258,7 +266,7 @@ import { CKEditorModule } from "@ckeditor/ckeditor5-angular";
     RelativeTimePipe,
     ColumnTitleFormatPipe,
     MondayDateInWeekByDatePipe,
-    CourseClassListComponent,
+    CancelledLessonListComponent,
     CourseClassDetailModalComponent,
     DashboardHomeComponent,
     TeacherCourseModalComponent,
@@ -418,7 +426,8 @@ import { CKEditorModule } from "@ckeditor/ckeditor5-angular";
     ChangePasswordModalComponent,
     LearnerRegistrationModalComponent,
     LearnerRegistrationConfirmModalComponent,
-
+    CourseSessionListModalComponent,
+    GroupSessionDetailEditModalComponent,
     StaffDeleteModalComponent,
     StaffDetailModalComponent,
     StaffEditModalComponent,

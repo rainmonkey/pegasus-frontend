@@ -1,0 +1,100 @@
+<!--modal header-->
+<div class="modal-header">
+  <h4 class="modal-title col-4">Session Editing </h4>
+  <button type="button" class="btn btn-sm btn-info tl_mu_btn" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+
+<!--modal body-->
+<div class="modal-body">
+  <form [formGroup]="SessionForm" class="justify-content-between">
+    <div class="form-group row justify-content-center">
+      <div class="col-5">
+        <div>
+          <label class="mt-2">Course Name</label>
+          <input readonly class="form-control" type="text" formControlName="CourseName" />
+        </div>
+      </div>
+      <div class="col-5">
+        <div>
+          <label class="mt-2">Branch</label>
+          <select [class.is-invalid]="Branch.invalid && Branch.touched" class="form-control" type="text" (change)="getTeachers($event.target.value)" (change)="getRooms($event.target.value)"  formControlName="Branch">
+            <!--              <option selected disabled [value]="LessonModel.Branch">{{LessonModel.Branch}}</option>-->
+            <option *ngFor="let branch of BranchSelects" [value]="branch.OrgId">
+              {{branch.OrgName}}
+            </option>
+          </select>
+          <small class="text-danger" *ngIf="Branch.invalid && Branch.touched">Please select the branch</small>
+        </div>
+      </div>
+      <div class="col-5">
+        <div>
+          <label class="mt-2">Teacher</label>
+          <select [class.is-invalid]="Teacher.invalid && Teacher.touched"  class="form-control" type="text" formControlName="Teacher">
+            <!--              <option selected disabled [value]="LessonModel.TeacherFirstName">{{LessonModel.TeacherFirstName}}</option>-->
+            <option *ngFor="let teacher of TeacherSelects" [value]="teacher.TeacherId">{{teacher.TeacherName}}</option>
+          </select>
+          <small class="text-danger" *ngIf="Teacher.invalid && Teacher.touched">Please select the teacher</small>
+        </div>
+      </div>
+      <div class="col-5">
+        <div>
+          <label class="mt-2">Beginning at</label>
+          <input class="form-control" [value]="LessonModel.BeginTime"  type="datetime-local" formControlName="BeginTime" />
+        </div>
+      </div>
+      <div *ngIf='false' class='col-1'>
+        <button class="btn btn-primary mt-4 py-2" *ngIf="Teacher.value && Branch.value" (click)="openTimePicker()">Time Picker</button>
+      </div>
+      <div class="col-10">
+        <div>
+          <label class="mt-2">Room</label>
+          <select [class.is-invalid]="Room.invalid && Room.touched" class="form-control" type="text" formControlName='Room'>
+            <!--              <option selected disabled [value]="LessonModel.Room">{{LessonModel.Room}}</option>-->
+            <option>please select one of these options</option>
+            <option *ngFor="let room of RoomSelects" [value]="room.RoomId">{{room.RoomName}}</option>
+          </select>
+          <small class="text-danger" *ngIf="Room.invalid && Room.touched">Please select the Room</small>
+        </div>
+      </div>
+  </div>
+  </form>
+</div>
+
+<!--modal footer-->
+<div class="modal-footer">
+  <span *ngIf='isEditSuccess' class='text-success'>Save Success </span>
+  <span *ngIf='isEditFail' class='text-danger'>Save Fail </span>
+  <span *ngIf="hasError" class='text-danger'>{{errorMsg}}</span>
+  <div *ngIf="isloading" class="loaderSmall"></div>
+  <button *ngIf="!ConfirmClick" (click)="open(confirmModal)" type="button" class="btn btn-outline-dark" id="save">
+    Confirm
+  </button>
+  <button type="button" class="btn btn-outline-dark" (click)="activeModal.dismiss('Click click')">
+    Close
+  </button>
+</div>
+
+<ng-template #confirmModal let-modal>
+  <div class="modal-header m-2">
+    <h4>Please Confirm</h4>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <!-- modal-body -->
+  <div class="container">
+    <div class="d-flex justify-content-center">
+      <p>Please confirm the new editing</p>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-dark" (click)="ConfrimEdit()" (click)="modal.close('Save')">
+      Confirm
+    </button>
+    <button type="button" class="btn btn-outline-dark" (click)="modal.dismiss('Cross click')">
+      Cancel
+    </button>
+  </div>
+</ng-template>

@@ -52,7 +52,7 @@
               <!--sort-->
               <th scope='col' class='tl_body_table_head' style="width:7rem;">
                 Time</th>
-              <th scope='col' class='tl_body_table_head' style="width:7rem;">Edit & Delete</th>
+              <th scope='col' class='tl_body_table_head' style="width:7rem;">Edit & Delete &List</th>
             </tr>
           </thead>
           <!--table body-->
@@ -65,7 +65,7 @@
                 <ngb-highlight [result]="i.CourseName" [term]="filter.value"></ngb-highlight>
               </td>
               <td>{{i.TeacherName}}</td>
-              <td>{{i.BeginDate | date:'shortDate'}} - {{i.EndDate | date:'shortDate'}}</td>
+              <td>{{i.BeginDate | date:'shortDate'}} - {{i.EndDate | date:'EEE, MMM d, y'}}</td>
               <td>{{i.OrgName}}</td>
               <td>{{i.RoomName}}</td>
               <td>
@@ -75,12 +75,16 @@
                 </span>
               </td>
               <td>
-                <span (click)='detailModal(2,i)' class='tl_body_table_btn' style="margin-right: 2rem;">
+                <span (click)='detailModal(2,i)' class='tl_body_table_btn' style="margin-right: 1rem;">
                   <i class='fas fa-pen'></i>
                 </span>
-                <span (click)='deleteModal(4, i)' class='tl_body_table_btn'>
+                <span (click)='deleteModal(4, i)' class='tl_body_table_btn' style="margin-right: 1rem;">
                   <i class='fas fa-trash-alt'></i>
                 </span>
+                <span (click)='openModal(2, i)' class='tl_body_table_btn'>
+                  <i class="fas fa-list"></i>
+                </span>
+
               </td>
             </tr>
           </tbody>
