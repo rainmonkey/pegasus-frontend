@@ -13,7 +13,7 @@ import { AdminLearnerPaymentProductsComponent } from "./components/dashboard/das
 import { AdminLearnerPaymentRegistrationComponent } from "./components/dashboard/dashboard-components/admin-payment/admin-learner-payment-registration/admin-learner-payment-registration.component";
 import { AdminLearnerPaymentOtherComponent } from "./components/dashboard/dashboard-components/admin-payment/admin-learner-payment-other/admin-learner-payment-other.component";
 import { AdminLearnerPaymentSuccessComponent } from "./components/dashboard/dashboard-components/admin-payment/admin-learner-payment-success/admin-learner-payment-success.component";
-
+import { CourseClassListComponent } from "./components/dashboard/dashboard-components/courses/course-class-list/course-class-list.component";
 import { CoursesListComponent } from "./components/dashboard/dashboard-components/courses/courses-list/courses-list.component";
 import { SessionsListViewComponent } from "./components/dashboard/dashboard-components/sessions/sessions-views/sessions-list-view/sessions-list-view.component";
 import { SessionsPanelComponent } from "./components/dashboard/dashboard-components/sessions/sessions-panel/sessions-panel.component";
@@ -33,7 +33,7 @@ import { SessionsCalendarViewTutorComponent } from "./components/dashboard/dashb
 import { TeacherPanelComponent } from "./components/dashboard/dashboard-components/teachers/teacher-panel/teacher-panel.component";
 import { TeacherInfoComponent } from "./components/dashboard/dashboard-components/teachers/teacher-info/teacher-info.component";
 import { TestoneComponent } from "./components/testcomponent/testone/testone.component";
-import { CourseClassListComponent } from "./components/dashboard/dashboard-components/courses/course-class-list/course-class-list.component";
+
 import { DashboardHomeComponent } from "./components/dashboard/dashboard-components/dashboard-home/dashboard-home.component";
 import { RemindListComponent } from "./components/dashboard/dashboard-components/remind/remind-list/remind-list.component";
 import { RemindPanelComponent } from "./components/dashboard/dashboard-components/remind/remind-panel/remind-panel.component";

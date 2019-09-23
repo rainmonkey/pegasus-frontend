@@ -1,0 +1,63 @@
+<div class="container">
+  <ngb-accordion activeIds="1">
+    <ngb-panel id="1" title="Missed Sessiones">
+      <ng-template ngbPanelContent>
+        <!-- First name: {{this.data.FirstName}} -->
+        <span *ngIf="remainingDataWaitingFlag">Loading...</span>
+        <table
+          *ngIf="!remainingDataWaitingFlag"
+          class="table table-striped"
+          name="remaningTable"
+        >
+          <thead>
+            <tr>
+              <!-- <th scope="col">#</th> -->
+              <th scope="col">Course Name</th>
+              <th scope="col">Original Date</th>
+              <th scope="col">Operated Time</th>
+              <th scope="col">Expiry Date</th>
+              <th scope="col">Reschedule Date</th>
+              <th scope="col">Reschedule</th>
+              <th scope="col">Change Expiry Date</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let i of remainingCourseData; let j = index">
+              <!-- <th scope="row">{{ j + 1 }}</th> -->
+              <td>{{ i.CourseInstance.CourseName }}</td>
+              <td>
+                {{ i.MissedLesson.BeginTime | date: "MMM d, y, h:mm a" }}
+              </td>
+              <td>{{ i.CreateAt | date: "MMM d, y" }}</td>
+              <td>{{ i.ExpiredDate | date: "MMM d, y" }}</td>
+              <td>{{ i.NewLesson.beginDate | date: "MMM d, y, h:mm a" }}</td>
+              <td>
+                <span
+                  class="t_info_table_btn"
+                  title="Reschedule a Session"
+                  (click)="
+                    i.IsActive
+                      ? MakeupGroupSession(j)
+                      : alertForNoRemainingCourse()
+                  "
+                  style="cursor:pointer"><span class="fas fa-calendar-week"></span></span>
+              </td>
+              <td>
+                <span
+                  class="t_info_table_btn"
+                  title="Change Expiry Date"
+                  (click)="
+                    i.IsActive
+                      ? ChangeExpiryDate(i.awaitId,j)
+                      : alertForNoRemainingCourse()
+                  "
+                  style="cursor:pointer"><span class="fas fa-adjust"></span>
+                </span>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </ng-template>
+    </ngb-panel>
+  </ngb-accordion>
+</div>

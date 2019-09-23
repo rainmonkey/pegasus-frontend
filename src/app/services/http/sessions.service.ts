@@ -95,7 +95,13 @@ export class SessionsService {
       SessionModel
     );
   }
-
+  GroupSessionEdit(SessionModel) {
+    console.log(this.httpHeaders);
+    return this.http.put<any>(
+      this.baseUrl + "LessonRearrange/PutGroupMakeupLesson/" + localStorage.getItem("userID"),
+      SessionModel
+    );
+  }
   SessionCompleted(lessonId, reason) {
     console.log(this.httpHeaders);
     // @ts-ignore
@@ -125,6 +131,18 @@ export class SessionsService {
     );
   }
 
+  GetRoomAndBranch() {
+    console.log(this.httpHeaders);
+    return this.http.get<any>(
+      this.baseUrl + "Orgs/OrgAndRoom"
+    );
+  }
+  GetTeacherByOrg(orgId:number) {
+    console.log(this.httpHeaders);
+    return this.http.get<any>(
+      this.baseUrl + "Teacher/GetTeacherByOrg/"+orgId
+    );
+  }
   GetSessionEditRoomTwo(OrgId, StartTime, EndTime) {
     return this.http.get<any>(
       this.baseUrl +
