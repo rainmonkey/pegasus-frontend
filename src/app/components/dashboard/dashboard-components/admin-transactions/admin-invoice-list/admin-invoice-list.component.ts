@@ -217,6 +217,7 @@ export class AdminInvoiceListComponent implements OnInit {
     let branch;
     learnerName.firstName = learner.FirstName;
     learnerName.lastName = learner.LastName;
+    learnerName.Email = learner.Email;
 
     if (learner.Invoice.InvoiceId == 0) {
       invoice = learner.InvoiceWaitingConfirm;

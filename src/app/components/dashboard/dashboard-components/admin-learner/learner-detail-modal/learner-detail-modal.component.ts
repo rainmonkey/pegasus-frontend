@@ -70,6 +70,9 @@ export class LearnerDetailModalComponent implements OnInit {
   public waitingInvoice=[]
   waitingInvoicelength
 
+  //branch
+  public org=[];
+
   constructor(
     public activeModal: NgbActiveModal,
     private LearnerListService: LearnersService,
@@ -97,8 +100,9 @@ export class LearnerDetailModalComponent implements OnInit {
     let learnerSession = this.LearnerListService.getLearnerLesson(this.whichLearner.LearnerId)
     let makeUpSession = this.LearnerListService.getMakeUpLesson(this.whichLearner.LearnerId)
     let waitingInvoice=this.LearnerListService.getWaitingInvoice(this.whichLearner.LearnerId)
+    let org=this.LearnerListService.getOrgById(this.whichLearner.LearnerId);
 
-    forkJoin([learnerListData, lookUpData2, lookUpData3, lookUpData4, lookUpData5, lookUpData7, learnerInvoice, learnerPayment, learnerSession, lookUpData14,makeUpSession,waitingInvoice]).subscribe(
+    forkJoin([learnerListData, lookUpData2, lookUpData3, lookUpData4, lookUpData5, lookUpData7, learnerInvoice, learnerPayment, learnerSession, lookUpData14,makeUpSession,waitingInvoice,org]).subscribe(
       (res) => {
 
         console.log(res)
@@ -133,6 +137,7 @@ export class LearnerDetailModalComponent implements OnInit {
         if(this.waitingInvoice !== null){
           this.waitingInvoicelength=this.waitingInvoice.length
         }
+        this.org = (res[12]['Data']);
         }
       },
 
@@ -325,7 +330,7 @@ export class LearnerDetailModalComponent implements OnInit {
       invoice = allinvoice.Invoice;
     }
 
-    let branch = allinvoice.Learner.Org;
+    let branch = this.org;
     this.downloadPDFService.downloadPDF(learnerName, invoice,branch )
   }
 }
