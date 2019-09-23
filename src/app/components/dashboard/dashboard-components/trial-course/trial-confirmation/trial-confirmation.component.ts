@@ -367,7 +367,9 @@ export class TrialConfirmationComponent implements OnInit {
       Other1FeeName: "Trial Course Extra",
       TotalFee: this.coursePrice + this.extraFee
     };
-    this.downloadPDFService.downloadPDF(learnerName, invoice);
+
+    let branch = this.learner.Org;
+    this.downloadPDFService.downloadPDF(learnerName, invoice,branch )
   }
 }
 

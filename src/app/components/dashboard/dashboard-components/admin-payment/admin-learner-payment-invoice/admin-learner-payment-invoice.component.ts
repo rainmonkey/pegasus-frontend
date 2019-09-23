@@ -262,7 +262,8 @@ export class AdminLearnerPaymentInvoiceComponent implements OnInit, OnDestroy {
     }
     let invoice: IInvoice = this.dataInvoice[index]
     console.log(learnerName, invoice)
-    this.downloadPDFService.downloadPDF(learnerName, invoice)
+    let branch = this.learner.Org;
+    this.downloadPDFService.downloadPDF(learnerName, invoice,branch )
   }
 
 

@@ -323,7 +323,9 @@ export class LearnerDetailModalComponent implements OnInit {
     } else {
       invoice = allinvoice.Invoice;
     }
-    this.downloadPDFService.downloadPDF(learnerName, invoice);
+
+    let branch = allinvoice.Org;
+    this.downloadPDFService.downloadPDF(learnerName, invoice,branch )
   }
 }
 
