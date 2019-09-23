@@ -21,6 +21,11 @@
       <input ngbButton type="radio" [value]="2" /> Ads
     </label>
   </div>
+  <div class="btn-group btn-group-toggle ml-3 mb-3">
+    <label class="btn-primary" ngbButtonLabel>
+      <input type="checkbox" ngbButton [(ngModel)]="model.top" /> Important
+    </label>
+  </div>
   <ckeditor
     class="ck-editor__editable_inline"
     [editor]="Editor"
