@@ -53,6 +53,7 @@ export class PublishPanelComponent implements OnInit {
   prepareData = () => {
     const element = this.createNode();
     const image = element.querySelector("body").getElementsByTagName("img")[0]; // 默认第一张图为封面
+    image.style.setProperty("width", "600px");
     const data: any = {};
     if (!this.model.title) {
       alert("Please fill the title");
