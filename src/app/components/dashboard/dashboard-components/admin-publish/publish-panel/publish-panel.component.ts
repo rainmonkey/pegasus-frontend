@@ -72,16 +72,16 @@ export class PublishPanelComponent implements OnInit {
 
   onClick = () => {
     const data = this.prepareData();
-    // if (data) {
-    //   this.publishService.postNews(data).subscribe(
-    //     res => {
-    //       console.log(res);
-    //     },
-    //     err => {
-    //       console.log(err);
-    //     }
-    //   );
-    // }
+    if (data) {
+      this.publishService.postNews(data).subscribe(
+        res => {
+          console.log(res);
+        },
+        err => {
+          console.log(err);
+        }
+      );
+    }
     console.log(data);
   };
 
