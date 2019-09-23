@@ -30,7 +30,7 @@ export class PublishPanelComponent implements OnInit {
 
   onReady = eventData => {
     eventData.plugins.get("FileRepository").createUploadAdapter = loader => {
-      return new UploadAdapter(loader);
+      return new UploadAdapter(loader, this.publishService);
     };
   };
 
@@ -61,7 +61,7 @@ export class PublishPanelComponent implements OnInit {
     } else {
       data.newsData = element.innerHTML;
       data.NewsTitle = this.model.title;
-      // data.imgSrc = image.src || "";
+      data.TitleUrl = image.src;
       data.UserId = +this.userId;
       data.NewsType = this.model.radio + "";
       data.Categroy = 1;
