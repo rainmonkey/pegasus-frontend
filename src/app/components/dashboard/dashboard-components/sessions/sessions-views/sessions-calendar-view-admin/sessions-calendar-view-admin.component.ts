@@ -118,6 +118,7 @@ export class SessionsCalendarViewAdminComponent implements OnInit {
         maxTime: '21:00',
         scrollTime: '08:00',
         height: window.innerHeight - 110,
+        titleFormat:{ year: 'numeric', month: 'short', day: 'numeric', weekday:'short'} ,
         views: {
           resourceTimeGridDay: {
             buttonText: 'Day',
