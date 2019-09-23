@@ -317,6 +317,7 @@ export class LearnerDetailModalComponent implements OnInit {
     let invoice;
     learnerName.firstName = allinvoice.Learner.FirstName;
     learnerName.lastName = allinvoice.Learner.LastName;
+    learnerName.Email = allinvoice.Learner.Email;
 
     if (allinvoice.Invoice.InvoiceId == 0) {
       invoice = allinvoice.InvoiceWaitingConfirm;
@@ -324,7 +325,7 @@ export class LearnerDetailModalComponent implements OnInit {
       invoice = allinvoice.Invoice;
     }
 
-    let branch = allinvoice.Org;
+    let branch = allinvoice.Learner.Org;
     this.downloadPDFService.downloadPDF(learnerName, invoice,branch )
   }
 }
