@@ -138,7 +138,7 @@ function splitAddress(address:string) {
   const [number, road, Suburb, city] = address.split(',');
   return {
       firstPart:number+','+road,
-      secondPart:Suburb+','+city,        
+      secondPart:Suburb+(city!=null?','+city:'')        
   }
 };
 function formatDate(strdate:string) {

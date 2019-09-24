@@ -86,10 +86,10 @@
 
     <h5 class="text-center">Date</h5>
     <div *ngIf="eventInfo.event.extendedProps.IsChanged==1">
-      <del><h5 class="text-center">{{eventInfo.event.extendedProps.info.BeginTime|date: "yyyy-MM-dd"}}</h5></del>
-      <h5 class="text-center">{{eventInfo.event.extendedProps.newLesson.BeginTime|date: "yyyy-MM-dd"}}</h5>
+      <del><h5 class="text-center">{{eventInfo.event.extendedProps.info.BeginTime|date: "MMM d, y"}}</h5></del>
+      <h5 class="text-center">{{eventInfo.event.extendedProps.newLesson.BeginTime|date: "MMM d, y"}}</h5>
     </div>
-    <h5 class="text-center" *ngIf="eventInfo.event.extendedProps.IsChanged !=1">{{eventInfo.event.extendedProps.info.BeginTime|date: "yyyy-MM-dd"}}</h5>
+    <h5 class="text-center" *ngIf="eventInfo.event.extendedProps.IsChanged !=1">{{eventInfo.event.extendedProps.info.BeginTime|date: "MMM d, y"}}</h5>
 
     <div *ngIf="eventInfo.event.extendedProps.learner">
       <div *ngIf="eventInfo.event.extendedProps.IsCanceled==1 || eventInfo.event.extendedProps.IsConfirm==1">

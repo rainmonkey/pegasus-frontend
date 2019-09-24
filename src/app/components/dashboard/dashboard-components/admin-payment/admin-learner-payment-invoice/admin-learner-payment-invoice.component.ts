@@ -22,6 +22,7 @@ export class AdminLearnerPaymentInvoiceComponent implements OnInit, OnDestroy {
   public dataInvoice: any;
   public learnerId: any;
   learner;
+  public learnerAll: any;
   public addFund;
   // post payment
   public postPayment: ILearnerPay;
@@ -217,15 +218,20 @@ export class AdminLearnerPaymentInvoiceComponent implements OnInit, OnDestroy {
 
   //有bug 页面如果刷新，则无法取到正确的this.learner的值, 采用判断数据类型的方法分类
   downloadPDFReady(index: number) {
-    let learnerName = {} as IInvoiceLearnerName
-    if (typeof this.learner == "string") {
-      learnerName.firstName = this.learner.split(" ")[0]
-      learnerName.lastName = this.learner.split(" ")[1]
-    } else {
-      learnerName.firstName = this.learner.FirstName
-      learnerName.lastName = this.learner.LastName
-      learnerName.Email = this.learner.Email
-    }
+    let learnerName = {} as IInvoiceLearnerName;
+    console.log(this.learner,this.whichLearner);
+    // if (typeof this.learner == "string") {
+    //   learnerName.firstName = this.learner.split(" ")[0]
+    //   learnerName.lastName = this.learner.split(" ")[1]
+    // } else {
+    //   learnerName.firstName = this.learner.FirstName
+    //   learnerName.lastName = this.learner.LastName
+    //   learnerName.Email = this.learner.Email
+    // }
+      learnerName.firstName = this.learnerAll.FirstName
+      learnerName.lastName = this.learnerAll.LastName
+      learnerName.Email = this.learnerAll.Email
+
     let invoice: IInvoice = this.dataInvoice[index]
     console.log(learnerName, invoice)
     let branch = this.org;
@@ -252,12 +258,12 @@ export class AdminLearnerPaymentInvoiceComponent implements OnInit, OnDestroy {
       element.DueDate === null ? element.DueDate = 'none' : element.DueDate = element.DueDate;
       element.LessonQuantity === null ? element.LessonQuantity = 'Quantity of lesson is not available' : element.LessonQuantity = element.LessonQuantity;
       element.CourseName === null ? element.CourseName = 'Course Name is not available' : element.CourseName = element.CourseName;
-      element.LessonFee === null ? element.LessonFee = 'Lesson Fee is not available' : element.LessonFee = element.LessonFee;
+      element.LessonFee === null ? element.LessonFee = 0 : element.LessonFee = element.LessonFee;
       element.BeginDate === null ? element.BeginDate = 'none' : element.BeginDate = element.BeginDate;
       element.ConcertFeeName === null ? element.ConcertFeeName = 'Concert' : element.ConcertFeeName = element.ConcertFeeName;
       element.LessonNoteFeeName === null ? element.LessonNoteFeeName = 'Note' : element.LessonNoteFeeName = element.LessonNoteFeeName;
-      element.NoteFee === null ? element.NoteFee = 'Note fee' : element.NoteFee = element.NoteFee;
-      element.ConcertFee === null ? element.ConcertFee = 'Concert Fee' : element.ConcertFee = element.ConcertFee;
+      element.NoteFee === null ? element.NoteFee = 0 : element.NoteFee = element.NoteFee;
+      element.ConcertFee === null ? element.ConcertFee = 0 : element.ConcertFee = element.ConcertFee;
       console.log(element.CourseName)
     });
   }
@@ -285,6 +291,7 @@ export class AdminLearnerPaymentInvoiceComponent implements OnInit, OnDestroy {
     this.nameSubejct();
     this.getSingleTab();
     this.getOrgs(this.learnerId);
+    this.getLearner(this.learnerId);
   }
 
   getOrgs(id:number){
@@ -300,6 +307,21 @@ export class AdminLearnerPaymentInvoiceComponent implements OnInit, OnDestroy {
       }
     )
   }
+  getLearner(id:number){
+    this.learnersService.getLearnerById(id).subscribe(res => {
+      this.learnerAll = res['Data'];
+    },
+      err =>{
+        Swal.fire({
+          title: 'Error!',
+          text: 'Sorry! Can not get Data from Server！' ,
+          type: 'error',
+        });        
+      }
+    )
+  }
+
+
   payInvoiceService(id) {
     this.errorAlert = false;
     this.errorMsg = '';
@@ -314,7 +336,7 @@ export class AdminLearnerPaymentInvoiceComponent implements OnInit, OnDestroy {
         console.log(this.dataInvoice)
         if (!this.dataInvoice) {
           this.noInvoice = true;
-          this.errorMsg  = "No invoice need to pay for this student";
+          this.errorMsg  = "This student don't need to pay!";
           this.errorAlert = true;
          //alert(this.errorMsg);
   
