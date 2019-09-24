@@ -25,6 +25,7 @@ export class TrialFilterComponent implements OnInit {
   public cateIdFilter: number;
   public cateName: string;
   @Input() arrangeFlag;
+  @Input() arrangeCourse;
   courseDetail: any;
 
   /**@property {Array<string>} filterString -  A list stored the filter tags that selected.*/
@@ -51,8 +52,15 @@ export class TrialFilterComponent implements OnInit {
 
   ngOnInit() {
     if (this.arrangeFlag) {
+      let courseId;
+      if (this.arrangeCourse!=null){
+        courseId = this.arrangeCourse;
+      }
+      else
+        courseId = this.activatedRoute.snapshot.params.courseId;
+
       this.transactionService
-        .GroupOr121(this.activatedRoute.snapshot.params.courseId, 0)
+        .GroupOr121(courseId, 0)
         .subscribe(res => {
           this.courseDetail = res.Data;
           this.AddFilterString(0);

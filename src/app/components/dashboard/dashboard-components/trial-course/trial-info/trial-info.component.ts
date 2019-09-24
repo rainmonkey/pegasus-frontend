@@ -1,4 +1,4 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit ,Input } from "@angular/core";
 import { Router, ActivatedRoute } from "@angular/router";
 
 
@@ -8,10 +8,18 @@ import { Router, ActivatedRoute } from "@angular/router";
   styleUrls: ["./trial-info.component.css"]
 })
 export class TrialInfoComponent implements OnInit {
+  @Input() whichObject;
   arrangeFlag: boolean;
+  arrangeCourse: number=null;
   constructor(private router: Router, private activatedRoute: ActivatedRoute) {}
 
   ngOnInit() {
+    console.log(this.whichObject);
+    if (this.whichObject!=null){
+      this.arrangeFlag = true;
+      this.arrangeCourse = this.whichObject;
+      return;
+    }
     if ((this.activatedRoute.url as any).value[0].path == "arrange") {
       this.arrangeFlag = true;
     } else {

@@ -30,7 +30,10 @@ constructor(public activeModal: NgbActiveModal,private learnersService:LearnersS
       case 'Learner Timetable':
         this.modelTitle = 'Learner\'s Timetable';
         break;
-      default:
+      case 'Lesson Rescheduling':
+        this.modelTitle = 'Lesson\'s Rescheduling';
+        break;
+        default:
       this.modelTitle = '';
     }
   }

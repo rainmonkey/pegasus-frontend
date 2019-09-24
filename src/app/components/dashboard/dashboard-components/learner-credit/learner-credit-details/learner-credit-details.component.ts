@@ -1,4 +1,5 @@
 import { Component, OnInit, Input } from "@angular/core";
+import { ModelTemplateComponent } from "src/app/shared/components/model-template/model-template.component";
 import Swal from "sweetalert2";
 
 import {
@@ -10,6 +11,7 @@ import {
 import { LearnersService } from "../../../../../services/http/learners.service";
 import { NgbootstraptableService } from "../../../../../services/others/ngbootstraptable.service";
 import { GeneralRepoService } from "../../../../../services/repositories/general-repo.service";
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: "app-learner-credit-details",
@@ -31,10 +33,17 @@ export class LearnerCreditDetailsComponent implements OnInit {
     private learnerService: LearnersService,
     private ngTableService: NgbootstraptableService,
     private router: Router,
-    private generalRepoService: GeneralRepoService
+    private generalRepoService: GeneralRepoService,
+    private modalService:NgbModal
   ) {}
 
   ngOnInit() {
+    if (this.whichLearner!=null){
+      this.learnerId = this.whichLearner;
+      this.getRemainingCourses();
+      this.getArrangedLesson();
+      return
+  }
     this.generalRepoService.fisrtName.subscribe(
       data => {
         if (data == "Customer Name") {
@@ -45,6 +54,7 @@ export class LearnerCreditDetailsComponent implements OnInit {
           this.learner = data;
           this.learnerId = this.learner.LearnerId;
         }
+        console.log(this.learnerId);
         this.getRemainingCourses();
         this.getArrangedLesson();
       },
@@ -82,7 +92,24 @@ export class LearnerCreditDetailsComponent implements OnInit {
       this.ngTableService.sorting(this.remainingCourseData, orderBy);
     }
   }
-
+  ToArrange(index){
+    let courseId =
+      this.remainingCourseData[index].CourseInstanceId;
+    const modalRef = this.modalService
+    //@ts-ignore
+    .open(ModelTemplateComponent,{ size:'xl', backdrop: 'static', keyboard: false });
+    let that = this;
+    modalRef.result.then(
+      (res) => {
+        that.ngOnInit();
+      },
+      (err) => {
+        return;
+      }
+    );
+    modalRef.componentInstance.whichObject = courseId;
+    modalRef.componentInstance.whichModal = "Lesson Rescheduling";
+  }
   navigateToArrange(index) {
     this.courseId =
       this.remainingCourseData[index].CourseInstanceId ||
