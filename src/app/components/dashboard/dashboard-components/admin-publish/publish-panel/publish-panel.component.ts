@@ -44,17 +44,21 @@ export class PublishPanelComponent implements OnInit {
     }
     const doc = this.parser.parseFromString(this.model.editorData, "text/html");
 
-    const metaTag = document.createElement("meta");
-    metaTag.name = "viewport";
-    metaTag.content =
-      "width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0";
-    doc.documentElement.querySelector("head").appendChild(metaTag);
+    this.appendMeta(doc);
 
     const bodyElement = doc.documentElement.querySelector("body");
     bodyElement.insertBefore(this.titleNode, bodyElement.firstElementChild);
     bodyElement.classList.add("ck-content");
     bodyElement.style.setProperty("margin", "1rem", "important");
     return doc.documentElement;
+  };
+
+  appendMeta = doc => {
+    const metaTag = document.createElement("meta");
+    metaTag.name = "viewport";
+    metaTag.content =
+      "width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0";
+    doc.documentElement.querySelector("head").appendChild(metaTag);
   };
 
   prepareData = () => {
