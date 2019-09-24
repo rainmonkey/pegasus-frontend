@@ -38,11 +38,14 @@ export class PublishPanelComponent implements OnInit {
     this.node = document.querySelector("#previewContainer");
     this.titleNode = document.createElement("header");
     this.titleNode.innerHTML =
-      "<h4><strong>" + this.model.title + "</strong></h4>";
+      "<h2><strong>" + this.model.title + "</strong></h2>";
     while (this.node.hasChildNodes()) {
       this.node.removeChild(this.node.firstChild);
     }
     const doc = this.parser.parseFromString(this.model.editorData, "text/html");
+
+    this.appendMeta(doc);
+
     const bodyElement = doc.documentElement.querySelector("body");
     bodyElement.insertBefore(this.titleNode, bodyElement.firstElementChild);
     bodyElement.classList.add("ck-content");
@@ -50,9 +53,19 @@ export class PublishPanelComponent implements OnInit {
     return doc.documentElement;
   };
 
+  appendMeta = doc => {
+    const metaTag = document.createElement("meta");
+    metaTag.name = "viewport";
+    metaTag.content =
+      "width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0";
+    doc.documentElement.querySelector("head").appendChild(metaTag);
+  };
+
   prepareData = () => {
     const element = this.createNode();
     const image = element.querySelector("body").getElementsByTagName("img")[0]; // 默认第一张图为封面
+    image.style.setProperty("width", "110%");
+    image.style.setProperty("margin-left", "-2.5rem");
     const data: any = {};
     if (!this.model.title) {
       alert("Please fill the title");
