@@ -30,9 +30,9 @@ export class ChattingService {
    */
   startConnection(userId: number) {
     //build a connection
-   if(this.isBuild){
-     return;
-   }
+    if (this.isBuild) {
+      return;
+    }
     this.hubConnection = new signalR.HubConnectionBuilder()
       .withUrl(this.baseUrlForChatting + 'chat?userId=' + userId)
       .build();
@@ -44,6 +44,7 @@ export class ChattingService {
         this.isReconnecting = false;
         this.processConnectionStatus(true);
         this.listenMessageOneToOne();
+        this.listenMessageConnectedUsers();
       })
       //when connection failed
       .catch(err => {
@@ -115,11 +116,22 @@ export class ChattingService {
       (id, message, messageTime, role) => {
         //接收信息处理
         console.log(id, message, messageTime, role)
-        this.messagerService.processIncomingMessage(id, message, messageTime,role)
+        this.messagerService.processIncomingMessage(id, message, messageTime, role)
       }),
       (err) => {
         console.log(err)
       }
+  }
+
+  listenMessageConnectedUsers() {
+    this.hubConnection.on('OnlineUserList', (connectedUserList) => {
+      let userList = JSON.parse(connectedUserList);
+      console.log(userList);
+    }),
+      (error) => {
+        console.log(error);
+      }
+
   }
 
   /**
