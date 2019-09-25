@@ -53,7 +53,7 @@
                     <p *ngIf="item.ConcertFee!=0">${{item.ConcertFee}}</p>
                     <p *ngIf="item.NoteFee!=0">${{item.NoteFee}}</p>
                     <p *ngIf="item.DueDate === 'none'">Due Date: Not available</p>
-                    <p *ngIf="item.DueDate !== 'none'">Due Date: {{item.DueDate|date:'medium'}}</p>
+                    <p *ngIf="item.DueDate !== 'none'">Due Date: {{item.DueDate|date:'MMM d, y'}}</p>
                     <h6>All Subject in Total: ${{item.TotalFee}}</h6>
                   </div>
                   <!-- comfirm payment modal-->
@@ -127,7 +127,7 @@
                 <p *ngIf="item.ConcertFee!=0">${{item.ConcertFee}}</p>
                 <p *ngIf="item.NoteFee!=0">${{item.NoteFee}}</p>
                 <p *ngIf="item.DueDate === 'none'">Due Date: Not available</p>
-                <p *ngIf="item.DueDate !== 'none'">Due Date: {{item.DueDate|date:'medium'}}</p>
+                <p *ngIf="item.DueDate !== 'none'">Due Date: {{item.DueDate|date:'MMM d, y'}}</p>
                 <h6>All Subject in Total: ${{item.TotalFee}}</h6>
               </div>
               <!-- comfirm payment modal-->

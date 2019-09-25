@@ -125,7 +125,7 @@ export class DownloadPDFService {
     doc.setTextColor(0, 0, 0);
     doc.setFontSize(8);   
     doc.text(`1, Total payment due in 7 days`, 16, startY+=8);      
-    doc.text(`1, Please include the invoice number with your payment`, 16, startY+=6); 
+    doc.text(`2, Please include the invoice number with your payment`, 16, startY+=6); 
 
     doc.text(`ABLE MUSIC STUDIO ${branch.OrgName.toUpperCase()} BANK ACCOUNT DETAIL`, 16, startY+=8);
     doc.text(`BANK:${branch.BankName}`, 16, startY+=6);

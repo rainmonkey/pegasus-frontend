@@ -122,6 +122,7 @@ export class AdminInvoiceListComponent implements OnInit {
 
   onChange(value) {
     this.termId = +value;
+    this.getData();
   }
 
   onSubmit() {
