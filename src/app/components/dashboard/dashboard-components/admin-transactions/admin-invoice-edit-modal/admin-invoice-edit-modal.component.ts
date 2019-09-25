@@ -357,8 +357,25 @@ export class AdminInvoiceEditModalComponent implements OnInit {
       }
       this.noteInUse = !this.noteInUse
     }
+    this.setOwingFee();
   }
-
+  getFee(feeControlName: string, groupName?: string){
+    let fee: number = 0
+    if (groupName) {
+      fee = +this.invoiceEditForm.get(groupName).get(feeControlName).value
+    } else {
+      fee = +this.invoiceEditForm.get(feeControlName).value
+    }
+    return fee;
+  }
+  setOwingFee(){
+    this.owingFeeLocal = this.getFee("Other1Fee","Other1");
+    this.owingFeeLocal += this.getFee("Other2Fee","Other2");   
+    this.owingFeeLocal += this.getFee("Other3Fee","Other3");
+    this.owingFeeLocal += this.getFee("NoteFee","Note");   
+    this.owingFeeLocal += this.getFee("ConcertFee","Concert"); 
+    this.owingFeeLocal += this.getFee("LessonFee");     
+  }
   feeOnChange(feeControlName: string, groupName?: string, ) {
     let fee: number = 0
     if (groupName) {
@@ -369,30 +386,25 @@ export class AdminInvoiceEditModalComponent implements OnInit {
     console.log(fee)
     switch (feeControlName) {
       case "Other1Fee":
-        this.owingFeeLocal = this.owingFeeLocal + fee - this.tempOther1Fee
         this.tempOther1Fee = fee
         break;
       case "Other2Fee":
-        this.owingFeeLocal = this.owingFeeLocal + fee - this.tempOther2Fee
         this.tempOther2Fee = fee
         break;
       case "Other3Fee":
-        this.owingFeeLocal = this.owingFeeLocal + fee - this.tempOther3Fee
         this.tempOther3Fee = fee
         break;
       case "NoteFee":
-        this.owingFeeLocal = this.owingFeeLocal + fee - this.tempNoteFee
         this.tempNoteFee = fee
         break;
       case "ConcertFee":
-        this.owingFeeLocal = this.owingFeeLocal + fee - this.tempConcertFee
         this.tempConcertFee = fee
         break;
       case "LessonFee":
-        this.owingFeeLocal = this.owingFeeLocal + fee - this.tempLessonFee
         this.tempLessonFee = fee
         break;
     }
+    this.setOwingFee();         
   }
 
 }

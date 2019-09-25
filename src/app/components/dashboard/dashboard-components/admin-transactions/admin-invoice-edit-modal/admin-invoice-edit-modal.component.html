@@ -31,7 +31,7 @@
         </div>
         <div>
           <label class="mt-2">Lesson Fee</label>
-          <input class="form-control" type="number" min="0" formControlName="LessonFee" (change)="feeOnChange('LessonFee')" />
+          <input class="form-control" type="number" min="0" formControlName="LessonFee" (keyup)="setOwingFee()" (change)="feeOnChange('LessonFee')" />
         </div>
       </div>
     </div>
@@ -45,7 +45,7 @@
       <div class="col-5">
         <label class="mt-2">Concert Fee</label>
         <input type="checkbox" class="ml-2" id="concertCheckBox" (change)="checkboxOnChange('concertCheckBox')" formControlName="concertCheckBox">
-        <input class="form-control" type="number" min='0' formControlName="ConcertFee" (change)="feeOnChange('ConcertFee','Concert')" />
+        <input class="form-control" type="number" min='0' formControlName="ConcertFee" (keyup)="setOwingFee()" (change)="feeOnChange('ConcertFee','Concert')" />
         <div class="text-danger" *ngIf="invoiceEditForm.controls.Concert.errors?.fillFee">Please fill fee</div>
       </div>
     </div>
@@ -59,7 +59,7 @@
       <div class="col-5">
         <label class="mt-2">Note Fee</label>
         <input type="checkbox" class="ml-2" id="noteCheckBox" (change)="checkboxOnChange('noteCheckBox')" formControlName="noteCheckBox">
-        <input class="form-control" type="number" min='0' formControlName="NoteFee" (change)="feeOnChange('NoteFee','Note')" />
+        <input class="form-control" type="number" min='0' formControlName="NoteFee" (keyup)="setOwingFee()" (change)="feeOnChange('NoteFee','Note')" />
         <div class="text-danger" *ngIf="invoiceEditForm.controls.Note.errors?.fillFee">Please fill fee</div>
       </div>
     </div>
@@ -75,7 +75,7 @@
         </div>
         <div class="col-5">
           <label class="mt-2">Others Fee 1</label>
-          <input class="form-control" type="number" min='0' formControlName="Other1Fee" (change)="feeOnChange('Other1Fee','Other1')" />
+          <input class="form-control" type="number" min='0' formControlName="Other1Fee" (keyup)="setOwingFee()" (change)="feeOnChange('Other1Fee','Other1')" />
           <div class="text-danger" *ngIf="invoiceEditForm.controls.Other1.errors?.fillFee">Please fill fee</div>
         </div>
       </div>
@@ -87,7 +87,8 @@
         </div>
         <div class="col-5">
           <label class="mt-2">Others Fee 2</label>
-          <input class="form-control" type="number" onkeypress="return (/[\d]/.test(String.fromCharCode(event.keyCode)))" min='0' formControlName="Other2Fee" (change)="feeOnChange('Other2Fee','Other2')" />
+          <input class="form-control" type="number" onkeypress="return (/[\d]/.test(String.fromCharCode(event.keyCode)))" min='0' 
+            formControlName="Other2Fee" (keyup)="setOwingFee()" (change)="feeOnChange('Other2Fee','Other2')" />
           <div class="text-danger" *ngIf="invoiceEditForm.controls.Other2.errors?.fillFee">Please fill fee</div>
         </div>
       </div>
@@ -99,7 +100,7 @@
         </div>
         <div class="col-5">
           <label class="mt-2">Other Fee 3</label>
-          <input class="form-control" type="number" min="0" formControlName="Other3Fee" (change)="feeOnChange('Other3Fee','Other3')" />
+          <input class="form-control" type="number" min="0" formControlName="Other3Fee" (keyup)="setOwingFee()" (change)="feeOnChange('Other3Fee','Other3')" />
           <div class="text-danger" *ngIf="invoiceEditForm.controls.Other3.errors?.fillFee">Please fill fee</div>
         </div>
       </div>
