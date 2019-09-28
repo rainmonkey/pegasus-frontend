@@ -88,6 +88,7 @@ export class SessionsCalendarViewAdminComponent implements OnInit {
         ////////
         eventClick: (info) => {
           this.eventInfo = info;
+          console.log(info);
           const modalRef = this.modalService.open(this.methodModal);
           const Date = this.datePipe.transform(this.fullcalendar.calendar.getDate(), 'yyyy-MM-dd');
         },
@@ -114,9 +115,9 @@ export class SessionsCalendarViewAdminComponent implements OnInit {
         allDaySlot: false,
         defaultView: 'resourceTimeGridDay',
         schedulerLicenseKey: 'GPL-My-Project-Is-Open-Source',
-        minTime: '08:00',
-        maxTime: '21:00',
-        scrollTime: '08:00',
+        minTime: '07:00',
+        maxTime: '24:00',
+        scrollTime: '16:00',
         height: window.innerHeight - 110,
         titleFormat:{ year: 'numeric', month: 'short', day: 'numeric', weekday:'short'} ,
         views: {
@@ -144,6 +145,7 @@ export class SessionsCalendarViewAdminComponent implements OnInit {
     console.log(timeDiffer);
 
     if (!(timeDiffer ==1800000 || timeDiffer ==3600000 || timeDiffer ==2700000)){
+      if (timeDiffer ==900000 ) return;
       alert("The course must be 30 minutes, 45 minutes or 1 hour");
       return;
     }

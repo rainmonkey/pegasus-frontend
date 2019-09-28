@@ -10,7 +10,7 @@
       <div class='col-12 t_info_title'>
         Student Information
         <div>
-          <button type="button" class="btn btn-outline-primary t_info_addnew_btn" (click)='newRegiModal(1,null)'>New
+          <button type="button" class="btn btn-outline-primary t_info_addnew_btn" (click)='newRegiModal(1,null)'>
             Student Registration</button>
         </div>
       </div>
@@ -33,7 +33,7 @@
         </div>
       </div>
 
-      <div class='col-12'  style="margin-top:-50px;margin-bottom: 10px">
+      <div *ngIf='false' class='col-12'  style="margin-top:-50px;margin-bottom: 10px">
         <button type="button" style="width:224.09px" class="btn btn-outline-primary t_info_addnew_btn" (click)='regiModal(1,null)'>Old Learner
         Registration</button>
       </div>
@@ -69,17 +69,18 @@
               <td style='width: 100px; padding-right:0px;'>
                 <span class='t_info_table_btn' (click)='popUpModal(1,i)' title='Student Profile'><span
                     class='fa fa-id-card'></span></span>
-                <span class='t_info_table_btn' (click)='popUpModal(2,i)' title='Edit Student Profile'><span
+                <span class='t_info_table_btn' (click)='openParentModal(2,i)' title='Parent Edit'><span
+                  class="fas fa-smile-wink"></span></span>                    
+                <span class='t_info_table_btn' (click)='openRegModal' title='Edit Student Profile'><span
                     class='fas fa-pen'></span></span>
                 <span class='t_info_table_btn' (click)='popUpModal(0,i)' title='Book a Course'><span
                     class="fas fa-folder-plus"></span></span>
                 <span class='t_info_table_btn' (click)='popUpModal(4,i)' title='Quit a Course'><span
                     class="fas fa-folder-minus"></span></span>
-                <span class='t_info_table_btn' (click)='openRegModal(2,i)' title='New Edit'><span
-                    class="fas fa-kiwi-bird"></span></span>
-                <span class='t_info_table_btn' (click)='openParentModal(2,i)' title='Parent Edit'><span
-                    class="fas fa-smile-wink"></span></span>
-                <span class='t_info_table_btn' (click)='popUpModal(11,i)' title='Book a Course test'><span
+                <!-- <span class='t_info_table_btn' (click)='popUpModal(2,i)' title='Old Edit'><span
+                    class="fas fa-kiwi-bird"></span></span> -->
+
+                <span *ngIf="false" class='t_info_table_btn' (click)='popUpModal(11,i)' title='Book a Course test'><span
                     class="fas fa-folder-plus"></span></span>
 
               </td>

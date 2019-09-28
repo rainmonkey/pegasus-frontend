@@ -1,15 +1,4 @@
 <div class="time-picker" *ngIf="availableDayArr">
-  <!-- color meanings -->
-  <div class="d-flex flex-column" style="margin-left: 20px; margin-top: 10px;">
-    <div class="d-inline-flex"><span class="dot dot_blue"></span><span>Teacher's available time.</span></div>
-    <div class="d-inline-flex"><span class="dot dot_red"></span><span>These durations are arranged.</span></div>
-    <div class="d-inline-flex"><span class="dot dot_green"></span><span>The duration you've picked.</span></div>
-    <div class="d-inline-flex"><span class="dot dot_yellow"></span><span>Someone change duration temporarily</span>
-    </div>
-    <div class="d-inline-flex"><span class="dot dot_gray"></span><span>Someone was off.</span></div>
-    <div class="d-inline-flex"><span class="dot dot_pink"></span><span>One hour around the arranged duration can not be
-        picked because of different location.</span></div>
-  </div>
   <div class="weekly-schedule">
     <div class="hour-labels">
       <div class="hour-label" *ngFor="let hour of hours">{{hour}}:00</div>
@@ -56,4 +45,16 @@
       </div>
     </div>
   </div>
+  <!-- color meanings -->
+  <div class="d-flex flex-column" style="margin-left: 20px; margin-top: 10px;">
+    <div class="d-inline-flex"><span class="dot dot_blue"></span><span>Teacher's available time.</span></div>
+    <div class="d-inline-flex"><span class="dot dot_red"></span><span>These durations have been arranged.</span></div>
+    <div class="d-inline-flex"><span class="dot dot_green"></span><span>The duration you've picked.</span></div>
+    <div class="d-inline-flex"><span class="dot dot_yellow"></span><span>Someone change schedule temporarily</span>
+    </div>
+    <div class="d-inline-flex"><span class="dot dot_gray"></span><span>Someone was on leave.</span></div>
+    <div class="d-inline-flex"><span class="dot dot_pink"></span><span>One hour around the arranged duration can not be
+        picked because of different location.</span></div>
+  </div>
+
 </div>

@@ -41,7 +41,8 @@
   <div class="container">
     <div class="row">
       <div class="col-12">
-        Reason: <input class="form-control"  type="text" [(ngModel)]="reason">
+        <!-- Reason: <input class="form-control"  type="text" [(ngModel)]="reason"> -->
+        <app-reason-Input  class="form-control" [(ngModel)]="reason"></app-reason-Input>
       </div>
     </div>
   </div>
@@ -117,6 +118,10 @@
       <h5 class="text-center">Course Name</h5>
       <p class="text-center">{{eventInfo.event.extendedProps.info.CourseName}}</p>
 
+      <app-makeup-lesson [learnerId]=eventInfo.event.extendedProps.info.LearnerId 
+              [lessonId]=eventInfo.event.extendedProps.info.LessonId
+              [courseId]=eventInfo.event.extendedProps.info.courseId ></app-makeup-lesson>
+
     </div>
 
     <div *ngIf="eventInfo.event.extendedProps.learners">
@@ -142,18 +147,18 @@
   <div class="container">
     <div *ngIf="eventInfo.event.extendedProps.IsCanceled!=1 && eventInfo.event.extendedProps.IsConfirm!=1">
       <div class="row">
-        <div class="col-3">
-          <button (click)="openEdit(eventInfo)" (click)="modal.dismiss('Cross click')" class="btn btn-primary btn-block">Edit </button>
+        <div class="col-4">
+          <button (click)="openEdit(eventInfo)" (click)="modal.dismiss('Cross click')" class="btn btn-primary btn-block">Change Lesson</button>
         </div>
-        <div class="col-3">
-          <button class="btn btn-success btn-block" style="padding-left: 6px" (click)="openConfirm(eventInfo)" (click)="modal.dismiss('Cross click')"  >Complete</button>
+        <div class="col-4">
+          <button class="btn btn-success btn-block" style="padding-left: 6px" (click)="openConfirm(eventInfo)" (click)="modal.dismiss('Cross click')"  >Complete Lesson</button>
         </div>
-        <div class="col-3">
-          <button (click)="openDelete(eventInfo)" (click)="modal.dismiss('Cross click')"  class="btn btn-danger btn-block" >Cancel</button>
+        <div class="col-4">
+          <button (click)="openDelete(eventInfo)" (click)="modal.dismiss('Cross click')"  class="btn btn-danger btn-block" >Cancel Lesson</button>
         </div>
-        <div class="col-3">
+        <!-- <div class="col-3">
           <button (click)="openReschedule(eventInfo)" (click)="modal.dismiss('Cross click')" class="btn btn-warning btn-block"><div style="color: #ffffff">Split</div></button>
-        </div>
+        </div> -->
       </div>
     </div>
   </div>

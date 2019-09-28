@@ -52,10 +52,10 @@ export class SessionsCalendarViewTutorComponent implements OnInit {
       },
       height: window.innerHeight - 110,
       displayEventTime: true,
-      maxTime: '22:00',
-      minTime: '08:00',
+      maxTime: '24:00',
+      minTime: '07:00',
       allDaySlot: false,
-      scrollTime: '08:00',
+      scrollTime: '16:00',
       firstDay: 1,
       header: {
         left: 'prev,next today DayPickerButton title',

@@ -20,13 +20,12 @@ export class ReasonInputComponent implements ControlValueAccessor ,Validator  {
   // CancelReason
   // test1
   // @ViewChild('selector') selector
-  private textReason: any = '';
-  private inputReason: any = '';
-  private selectReason: any = '';
+  private textReason: any = '';  //for out put
+  private inputReason: any = ''; //for text input
+  private selectReason: any = 'S:';//for select option
   constructor() { }
 
   ngOnInit() {
-
   }
   writeValue(value: any) {
     if (value !== this.textReason) {
@@ -50,14 +49,18 @@ export class ReasonInputComponent implements ControlValueAccessor ,Validator  {
     //   console.log(this.test1)
   }
   changeText(e){
-    this.textReason = e;
     this.inputReason = e;
-    this.propagateChange(e);
+    // this.getTextReason();
+    this.propagateChange(this.getTextReason());
   }
   changeSelect(e){
-    this.textReason = e;
     this.selectReason = e;
-    this.propagateChange(e);    
+    // this.getTextReason();    
+    this.propagateChange(this.getTextReason());    
+  }
+  getTextReason(){
+    this.textReason = this.selectReason+this.inputReason;
+    return this.textReason;
   }
   public validate(c: FormControl) {
     console.log((!(this.textReason==''||this.textReason==null)) ? null : {
@@ -71,31 +74,6 @@ export class ReasonInputComponent implements ControlValueAccessor ,Validator  {
         },
     };
   }
-  changeInput() {
-  
-      //@ts-ignore
-      if (document.querySelector('#myInput').style.display == 'none') {
-        //@ts-ignore
-        document.querySelector('#mySelect').style.display = 'none'
-        //@ts-ignore
-        document.querySelector('#myInput').removeAttribute('style')
-        // console.log(document.querySelector('#mySelect'))
-        // console.log(document.querySelector('#myInput'))
-        this.textReason = this.inputReason;
-        //@ts-ignore      
-      } else {
-        //@ts-ignore
-        document.querySelector('#myInput').style.display = 'none'
-        //@ts-ignore
-        document.querySelector('#mySelect').removeAttribute('style')
-        // console.log(document.querySelector('#mySelect'))
-        // console.log(document.querySelector('#myInput'))
-        this.textReason = this.selectReason;
-      }
-      this.propagateChange(this.textReason);   
-    }
-    
-
-  }
+}
 
 

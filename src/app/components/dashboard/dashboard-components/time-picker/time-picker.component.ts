@@ -19,7 +19,7 @@ export class TimePickerComponent implements OnInit {
   // properties for rendering in HTML
   public weekdays2 = ['1','2','3','4','5','6','7'];
   public weekdays = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
-  public hours = [8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21];
+  public hours = [8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21,22,23];
   public xIndex: number[] = [0, 1, 2, 3, 4, 5, 6];
   public yIndex: number[] = [];
   public startTimeToEndTime: string;
@@ -49,6 +49,7 @@ export class TimePickerComponent implements OnInit {
   public availableDayArr: any[];
   public errorMessage: string;
   public dayofweek: any;
+  private slotYCount:number=62;
 
   constructor(private timePickerService: TimePickerService) {
   }
@@ -57,7 +58,7 @@ export class TimePickerComponent implements OnInit {
     this.loadingFlag = true;
     // console.log('customCourse', this.customCourse, 'teacherList', this.teaList);
     // define yIndex for rendering in HTML
-    for (let i = 0; i < 54; i++) {
+    for (let i = 0; i < this.slotYCount; i++) {
       this.yIndex.push(i);
     }
     // define property of slot
@@ -65,7 +66,7 @@ export class TimePickerComponent implements OnInit {
       this.slot[i] = [];
       this.learnerName[i] = [];
       this.slotTime[i] = [];
-      for (let j = 0; j < 55; j++) {
+      for (let j = 0; j < 63; j++) {
         this.slot[i][j] = null;
         this.learnerName[i][j] = null;
         this.slotTime[i][j] = `${Math.floor((480 + j * 15) / 60)} : ${(480 + j * 15) % 60 == 0 ? '00' : (480 + j * 15) % 60}`;
@@ -164,7 +165,7 @@ export class TimePickerComponent implements OnInit {
   renderAvailableDay() {
     this.availableDayArr.map((o) => {
       let xIndex = o['DayOfWeek'] - 1;
-      for (let i = 0; i < 54; i++) {
+      for (let i = 0; i < this.slotYCount; i++) {
         this.slot[xIndex][i] = 'isAvailable';
       };
     });
@@ -212,7 +213,7 @@ export class TimePickerComponent implements OnInit {
   mouseout(x: number, y: number) {
     this.availableDayArr.map((o) => {
       let xIndex = o['DayOfWeek'] - 1;
-      for (let i = 0; i < 54; i++) {
+      for (let i = 0; i < this.slotYCount; i++) {
         if (this.slot[xIndex][i] == "ableToPick") {
           this.slot[xIndex][i] = "isAvailable";
         }
@@ -220,7 +221,7 @@ export class TimePickerComponent implements OnInit {
     });
     this.tempChangeArr.map((o) => {
       let xIndex = o['DayOfWeek'] - 1;
-      for (let i = 0; i < 54; i++) {
+      for (let i = 0; i < this.slotYCount; i++) {
         if (this.slot[xIndex][i] == "ableToPick") {
           this.slot[xIndex][i] = "isTempChange"
         }

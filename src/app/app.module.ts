@@ -184,6 +184,7 @@ import { ReasonInputComponent } from './components/dashboard/dashboard-component
 import { LearnerAddModalTestComponent } from "./components/dashboard/dashboard-components/admin-learner/learner-add-modal-test/learner-add-modal-test.component";
 import { PublishPanelComponent } from "./components/dashboard/dashboard-components/admin-publish/publish-panel/publish-panel.component";
 import { CKEditorModule } from "@ckeditor/ckeditor5-angular";
+import { MakeupLessonComponent } from './shared/components/makeup-lesson/makeup-lesson.component';
 
 @NgModule({
   declarations: [
@@ -219,7 +220,7 @@ import { CKEditorModule } from "@ckeditor/ckeditor5-angular";
     LearnerRegistrationFormComponent,
     LearnerRegistrationModalComponent,
     LearnerRegistrationConfirmModalComponent,
-
+    MakeupLessonComponent,
     CommandFormatPipe,
     SessionsPanelComponent,
     SessionsListViewComponent,
@@ -406,6 +407,7 @@ import { CKEditorModule } from "@ckeditor/ckeditor5-angular";
     SessionDetailEditModalComponent,
     CourseClassDetailModalComponent,
     LearnerItemComponent,
+    MakeupLessonComponent,
     ModelTemplateComponent,
     LearnerDeleteModalComponent,
     LearnerDetailModalComponent,

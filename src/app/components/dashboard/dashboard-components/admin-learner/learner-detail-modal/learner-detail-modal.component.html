@@ -417,7 +417,7 @@
                   <!-- 通用 -->
                   <div class="col-lg-4  col-sm-6">
                     <span class='label'>Payment Date: </span>
-                    <span class='text' *ngIf='i.CreatedAt'>{{i.CreatedAt| date:'EEE, MMM d, y, h:mm'}}</span>
+                    <span class='text' *ngIf='i.CreatedAt'>{{i.CreatedAt| date:'MMM d y EEE h:mm a'}}</span>
                   </div>
 
                   <div class='col-lg-4  col-sm-6'>
@@ -656,12 +656,8 @@
                       ~
                       {{i.InvoiceWaitingConfirm.EndDate|date:'longDate'}}</span>
                   </div>
-                  <div class='col-lg-4 col-sm-4'><button (click)='openInvoiceEdit(i)' class='btn btn-outline-primary btn-sm'>Invoice Editing</button></div>
-                  <div *ngIf='false' class='col-lg-4 col-sm-4'>
-                    <span class='label'>Is Paid: </span>
-                    <span class='text'
-                      *ngIf='i.InvoiceWaitingConfirm.IsPaid !== null'>{{i.InvoiceWaitingConfirm.IsPaid|IsTemporary}}</span>
-                  </div>
+                  <div class='col-lg-4 col-sm-4'><button *ngIf='i.InvoiceWaitingConfirm.IsPaid==0'
+                    (click)='openInvoiceEdit(i)' class='btn btn-outline-primary btn-sm'>Invoice Editing</button></div>
                   <div class='col-lg-8 col-sm-8'>
                     <span class='label'>Course: </span>
                     <span class='text'
@@ -678,7 +674,17 @@
                       <span class='text'
                         *ngIf='i.InvoiceWaitingConfirm.TotalFee'>${{i.InvoiceWaitingConfirm.TotalFee}}</span>
                     </div>
-  
+                    <div class='col-lg-4 col-sm-4'>
+                        <span class='label'>Status: </span>                        
+                        <span class='text'
+                          *ngIf='i.InvoiceWaitingConfirm.IsConfirmed==0'>
+                          <i class="fas fa-user-clock" style="color:red"></i> Awaiting Confirmation</span>
+                          <span class='text' *ngIf='i.InvoiceWaitingConfirm.IsConfirmed==1&&
+                          i.Invoice.IsPaid==0'><i class="fas fa-th-list" style="color:blue"></i>
+                          Awaiting Payment</span>
+                          <span class='text' *ngIf='i.InvoiceWaitingConfirm.IsConfirmed==1&&
+                          i.Invoice.IsPaid==1'><i class="fa fa-check" style="color:green"></i>Paid</span>
+                      </div>
                   <div *ngIf='false' class='col-lg-4 col-sm-4'>
                     <span class='label'>Owing Fee: </span>
                     <span class='text'
@@ -691,12 +697,17 @@
                     <span class='text'
                       *ngIf='i.InvoiceWaitingConfirm.PaidFee'>${{i.InvoiceWaitingConfirm.PaidFee}}</span>
                   </div>
-                  <div class='col-lg-12 col-sm-12'>
+                  <div class='col-lg-8 col-sm-8'>
                     <span class='label'>Comments: </span>
                     <span class='text'
                       *ngIf='i.InvoiceWaitingConfirm.Comment'>{{i.InvoiceWaitingConfirm.Comment}}</span>
                   </div>
-
+                  <div class='col-lg-4 col-sm-4'>
+                    <button *ngIf='i.InvoiceWaitingConfirm.IsConfirmed==1&&
+                    i.Invoice.IsPaid==0' (click)="payNow()" class='btn btn-outline-primary btn-sm' >
+                      <i class="fa fa-credit-card" style="margin-right:20px;"></i>Pay Now</button>
+                  </div>
+  
 
                   <!--fees details  -->
                   <div class='col-12'>
@@ -754,7 +765,7 @@
     </ngb-tab>
 
     <!-- Sessions -->
-    <ngb-tab title="Scheduled Sessions">
+    <ngb-tab title="Scheduled Lessons">
       <ng-template ngbTabContent>
         <div *ngIf='uncompleteSession.length == 0'>
           No Sessions Record
@@ -775,7 +786,7 @@
 
                   <div class='col-lg-6  col-sm-6'>
                     <span class='label'>Time: </span>
-                    <span class='text' *ngIf='i.BeginTime && i.EndTime'>{{i.BeginTime| date:'EEE, MMM d, y, h:mm'}} ~
+                    <span class='text' *ngIf='i.BeginTime && i.EndTime'>{{i.BeginTime| date:'MMM d y EEE h:mm a'}} ~
                       {{i.EndTime| date:'h:mm'}}</span>
                   </div>
 
@@ -804,7 +815,7 @@
 
                     <span class='label col-lg-3 col-sm-6'>Time: </span>
                     <span class='text col-lg-3 col-sm-6'
-                      *ngIf='i.newLessons.BeginTime && i.newLessons.EndTime'>{{i.newLessons.BeginTime| date:'EEE, MMM d, y, h:mm'}}
+                      *ngIf='i.newLessons.BeginTime && i.newLessons.EndTime'>{{i.newLessons.BeginTime| date:'MMM d y EEE h:mm a'}}
                       ~ {{i.newLessons.EndTime| date:' h:mm'}}</span>
                   </div>
 
@@ -822,7 +833,7 @@
     </ngb-tab>
 
     <!-- Complete Sessions -->
-    <ngb-tab title="Completed sessions">
+    <ngb-tab title="Completed Lessons">
       <ng-template ngbTabContent>
         <div *ngIf='compeleteSession.length == 0'>
           No Sessions Record
@@ -844,7 +855,7 @@
 
                   <div class='col-lg-6  col-sm-6'>
                     <span class='label'>Time: </span>
-                    <span class='text' *ngIf='i.BeginTime && i.EndTime'>{{i.BeginTime| date:'EEE, MMM d, y, h:mm'}} ~
+                    <span class='text' *ngIf='i.BeginTime && i.EndTime'>{{i.BeginTime| date:'MMM d y EEE h:mm a'}} ~
                       {{i.EndTime| date:'h:mm'}}</span>
                   </div>
 
@@ -874,7 +885,7 @@
 
                     <span class='label col-lg-3 col-sm-6'>Time: </span>
                     <span class='text col-lg-3 col-sm-6'
-                      *ngIf='i.newLessons.BeginTime && i.newLessons.EndTime'>{{i.newLessons.BeginTime| date:'EEE, MMM d, y, h:mm'}}
+                      *ngIf='i.newLessons.BeginTime && i.newLessons.EndTime'>{{i.newLessons.BeginTime| date:'MMM d y EEE h:mm a'}}
                       ~ {{i.newLessons.EndTime| date:'h:mm'}}</span>
                   </div>
 
@@ -892,7 +903,7 @@
     </ngb-tab>
 
     <!-- Cancled session -->
-    <ngb-tab *ngIf='false' title="Cancelled session">
+    <ngb-tab *ngIf='false' title="Cancelled Lessons">
       <ng-template ngbTabContent>
         <div *ngIf='cancledSession.length == 0'>
           No Sessions Record
@@ -914,7 +925,7 @@
 
                   <div class='col-lg-6  col-sm-6'>
                     <span class='label'>Time: </span>
-                    <span class='text' *ngIf='i.BeginTime && i.EndTime'>{{i.BeginTime| date:'EEE, MMM d, y, h:mm'}} ~
+                    <span class='text' *ngIf='i.BeginTime && i.EndTime'>{{i.BeginTime| date:'MMM d y EEE h:mm a'}} ~
                       {{i.EndTime| date:'h:mm'}}</span>
                   </div>
 
@@ -942,7 +953,7 @@
 
                     <span class='label col-lg-3 col-sm-6'>Time:
                       <span
-                        *ngIf='i.newLessons.BeginTime && i.newLessons.EndTime'>{{i.newLessons.BeginTime| date:'EEE, MMM d, y, h:mm'}}
+                        *ngIf='i.newLessons.BeginTime && i.newLessons.EndTime'>{{i.newLessons.BeginTime| date:'MMM d y EEE h:mm a'}}
                         ~ {{i.newLessons.EndTime| date:'h:mm'}}
                       </span>
                     </span>
@@ -962,7 +973,7 @@
     </ngb-tab>
 
     <!-- Make up session -->
-    <ngb-tab title="Missed sessions">
+    <ngb-tab title="Missed Lessons">
       <ng-template ngbTabContent>
         <div *ngIf='makeupSession.length == 0'>
           No Sessions Record
@@ -992,8 +1003,8 @@
                     </div>
 
                     <div class='col-lg-12 col-sm-12'>
-                      <span class='label'>Time: </span>
-                      <span class='text'>{{i.MissedLesson.beginDate| date:'EEE, MMM d, y, h:mm'}}</span>
+                      <span class='label col-lg-1 col-sm-1'>Time: </span>
+                      <span class='text  col-lg-8 col-sm-8'>{{i.MissedLesson.beginDate| date:'MMM d y EEE h:mm a'}}</span>
                     </div>
 
                     <div class='col-lg-12 col-sm-12'>
@@ -1027,20 +1038,20 @@
 
                     <div class='col-lg-6 col-sm-6'>
                       <span class='label'>Begin Time: </span>
-                      <span class='text'>{{i.NewLesson.beginDate| date:'EEE, MMM d, y, h:mm'}}</span>
+                      <span class='text'>{{i.NewLesson.beginDate| date:'MMM d y EEE h:mm a'}}</span>
                     </div>
                   </div>
                 </div>
                 <div *ngIf='i.SplittedLesson!== null'>
-                  <div *ngIf='i.SplittedLesson.length>0'>Made Up Log(15mins):</div>
+                  <div *ngIf='i.SplittedLesson.length>0'>Status:</div>
                   <div *ngFor='let splitted of i.SplittedLesson,let idx=index'>
                     <div class='row'>
-                      <div class='col-2'>{{idx+1}}</div>
-                      <div class='col-6'>
-                        <div class='text col-6'>{{splitted.BeginTime| date:'EEE, MMM d, y, h:mm'}} </div>
-                      </div>
+                      <div class='col-1'>{{idx+1}}</div>
                       <div class='col-4'>
-                        <div class='text col-4'>{{splitted.IsCanceled?'Cancelled':splitted.IsConfirm?'Completed':'Not Completed'| date:'EEE, MMM d, y, h:mm'}} </div>
+                        <div class='text'>{{splitted.BeginTime| date:'MMM d y EEE h:mm a'}} </div>
+                      </div>
+                      <div class='col-3'>
+                        <div class='text'>{{splitted.IsCanceled?'Cancelled':splitted.IsConfirm?'Completed':'Not Completed'}} </div>
                       </div>
                     </div>
                   </div>

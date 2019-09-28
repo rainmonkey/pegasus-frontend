@@ -77,7 +77,8 @@
         </div> -->
         <div class="col-10">
           <div>Reason</div>
-          <input type="text" class="form-control" formControlName="reason">
+          <!-- <input type="text" class="form-control" formControlName="reason"> -->
+          <app-reason-Input  class="form-control" formControlName="reason" ></app-reason-Input>          
           <small class="text-danger" *ngIf="reason.invalid && reason.touched">Please enter reason</small>
         </div>
       </div>

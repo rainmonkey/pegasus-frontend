@@ -30,3 +30,9 @@ label{
 .loader{
     margin: 1rem auto;
 }
+.selectedBtn{
+    box-shadow: 0 0 0 0.2rem #007BFF;
+    color: white;
+    background-color: #007BFF;
+    border-color: #007BFF;
+}

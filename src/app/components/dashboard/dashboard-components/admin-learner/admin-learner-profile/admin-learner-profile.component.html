@@ -11,9 +11,9 @@
 
 <!--modal body-->
 <div class="modal-body">
-
-  <div class='row'>
-    <div class='col-2' *ngFor="let para of localPara">
+  <div *ngIf="!learnerList" class="loaderSmall"></div>
+  <div *ngIf="learnerList" class='row'>
+    <div class='col-2'  *ngFor="let para of localPara">
       <div class='t_s_tabs' (click)='popUpModal(para.parameter, para.title)'>
         <span class='t_s_tabs_title col-12'>{{para.title}}</span>
         <span class='t_s_tabs_img col-12' title=para.title><i class='{{para.class}}'></i></span>

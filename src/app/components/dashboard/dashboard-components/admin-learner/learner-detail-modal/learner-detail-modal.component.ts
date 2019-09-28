@@ -2,6 +2,7 @@ import { Component, OnInit, Input } from '@angular/core';
 import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { LearnersService } from 'src/app/services/http/learners.service';
 import { environment } from 'src/environments/environment.prod';
+import { ModelTemplateComponent } from '../../../../../shared/components/model-template/model-template.component'
 import { AmendmentHistoryModalComponent } from '../amendment-History-modal/amendment-History-modal.component';
 import { AdminInvoiceEditModalComponent } from '../../admin-transactions/admin-invoice-edit-modal/admin-invoice-edit-modal.component'
 import { DownloadPDFService , IInvoiceLearnerName, IInvoice } from '../../../../../services/others/download-pdf.service'
@@ -317,6 +318,26 @@ export class LearnerDetailModalComponent implements OnInit {
     )
 
   }
+  payNow(){
+    this.modalTemplate(1,this.whichLearner,"Invoice Payment")
+  }
+  modalTemplate(command, whichLearner, title) {
+    const modalRef = this.modalService
+    //@ts-ignore
+    .open(ModelTemplateComponent,{ size:'xl', backdrop: 'static', keyboard: false });
+    let that = this;
+    modalRef.result.then(
+      (res) => {
+        that.ngOnInit();
+      },
+      (err) => {
+        return;
+      }
+    );
+    modalRef.componentInstance.whichObject = whichLearner.LearnerId;
+    modalRef.componentInstance.whichModal = title;
+  }
+
   downloadPDF(allinvoice) {
     const learnerName = {} as IInvoiceLearnerName;
     let invoice;

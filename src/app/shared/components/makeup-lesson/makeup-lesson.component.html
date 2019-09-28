@@ -1,0 +1,18 @@
+<div *ngIf="isloading" class="loaderSmall"></div>
+<div *ngIf="!isloading&&lessonQuantity+quarterQuantity>0">
+  <h5 class="text-center">Missed Lessons and Remaning Time</h5>
+</div>
+<div *ngIf="!isloading&&lessonQuantity+quarterQuantity>0" class="row">
+  <div class="col-4">
+    <button (click)="doMakeup(0)" (click)="modal.dismiss('Cross click')" class="btn btn-outline-dark">Makeup
+      Before</button>
+  </div>
+  <div class="col-4">
+    <label *ngIf="lessonQuantity>0">{{lessonQuantity}}*Lesson(s)</label>
+    <label *ngIf="quarterQuantity>0">{{quarterQuantity}}*15min(s)</label>
+  </div>
+  <div class="col-4">
+    <button (click)="doMakeup(1)" (click)="modal.dismiss('Cross click')" class="btn btn-outline-dark">Makeup
+      After</button>
+  </div>
+</div>

@@ -24,14 +24,14 @@ export class SessionsService {
 
   // Session View Admin & Session View Tutor
   getReceptionistRoom() {
-    console.log(this.httpHeaders);
+    // console.log(this.httpHeaders);
     return this.http.get<any>(this.baseUrl + "room/forCalendar", {
       headers: this.httpHeaders
     });
   }
 
   getReceptionistLesson(date) {
-    console.log(this.httpHeaders);
+    // console.log(this.httpHeaders);
     return this.http.get<any>(
       this.baseUrl +
         "lesson/GetLessonsForReceptionist/" +
@@ -43,7 +43,7 @@ export class SessionsService {
   }
 
   getTeacherLesson(teacherId, beginDate) {
-    console.log(this.httpHeaders);
+    // console.log(this.httpHeaders);
     return this.http.get<any>(
       this.baseUrl +
         "lesson/GetLessonsForTeacher/" +
@@ -54,7 +54,7 @@ export class SessionsService {
   }
 
   getReceptionistLessonBetweenDate(beginDate, endDate) {
-    console.log(this.httpHeaders);
+    // console.log(this.httpHeaders);
     return this.http.get<any>(
       this.baseUrl +
         "lesson/GetLessonsBetweenDate/" +
@@ -68,7 +68,7 @@ export class SessionsService {
 
   // Session List
   DeleteSession(lessonId, reason) {
-    console.log(this.httpHeaders);
+    // console.log(this.httpHeaders);
     // @ts-ignore
     return this.http.put<any>(
       this.baseUrl +
@@ -82,28 +82,28 @@ export class SessionsService {
   }
 
   GetTeachherFilter(courseId) {
-    console.log(this.httpHeaders);
+    // console.log(this.httpHeaders);
     return this.http.get<any>(
       this.baseUrl + "teacherfilter/sessionEditFilter/" + courseId
     );
   }
 
   SessionEdit(SessionModel) {
-    console.log(this.httpHeaders);
+    // console.log(this.httpHeaders);
     return this.http.put<any>(
       this.baseUrl + "LessonRearrange/" + localStorage.getItem("userID"),
       SessionModel
     );
   }
   GroupSessionEdit(SessionModel) {
-    console.log(this.httpHeaders);
+    // console.log(this.httpHeaders);
     return this.http.put<any>(
       this.baseUrl + "LessonRearrange/PutGroupMakeupLesson/" + localStorage.getItem("userID"),
       SessionModel
     );
   }
   SessionCompleted(lessonId, reason) {
-    console.log(this.httpHeaders);
+    // console.log(this.httpHeaders);
     // @ts-ignore
     return this.http.put<any>(
       this.baseUrl + "session/Confirm/" + lessonId + "/" + reason
@@ -111,7 +111,7 @@ export class SessionsService {
   }
 
   SessionReSchedule(lessonId, reason) {
-    console.log(this.httpHeaders);
+    // console.log(this.httpHeaders);
     // @ts-ignore
     return this.http.put<any>(
       this.baseUrl +
@@ -125,24 +125,30 @@ export class SessionsService {
   }
 
   GetSessionEditRoom(TeacherId, OrgId, beginTime) {
-    console.log(this.httpHeaders);
+    // console.log(this.httpHeaders);
     return this.http.get<any>(
       this.baseUrl + "Room/" + TeacherId + "/" + OrgId + "/" + beginTime
     );
   }
 
   GetRoomAndBranch() {
-    console.log(this.httpHeaders);
+    // console.log(this.httpHeaders);
     return this.http.get<any>(
       this.baseUrl + "Orgs/OrgAndRoom"
     );
   }
   GetTeacherByOrg(orgId:number) {
-    console.log(this.httpHeaders);
+    // console.log(this.httpHeaders);
     return this.http.get<any>(
       this.baseUrl + "Teacher/GetTeacherByOrg/"+orgId
     );
   }
+  GetRemainingByLearnerAndCourse(learnerId:number,courseInstanceId:number) {
+    // console.log(this.httpHeaders);
+    return this.http.get<any>(
+      this.baseUrl + "session/GetRemainingAmount/"+learnerId+"/"+courseInstanceId
+    );
+  }  
   GetSessionEditRoomTwo(OrgId, StartTime, EndTime) {
     return this.http.get<any>(
       this.baseUrl +

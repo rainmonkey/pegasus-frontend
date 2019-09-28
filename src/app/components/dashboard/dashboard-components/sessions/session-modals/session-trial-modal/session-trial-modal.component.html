@@ -96,16 +96,16 @@
     <!--row 5-->
     <div *ngIf="!confirmationData.arrangeFlag" class="row t_c_row_group" style="margin-bottom: 0.5rem">
       <div class="col-1 t_c_label t_c_price">${{ coursePrice }}</div>
-      <div class="col-2">
-        <button *ngIf='!haspaid' type="button" class="btn btn-info" style="padding: 3px 6px" (click)="displayPayment()">
-          Pay Now
-        </button>
-        <button *ngIf='haspaid' type="button" class="btn btn-info" style="padding: 3px 6px" (click)="displayPayment()">
+      <div class="col-4">
+        <button type="button" class="btn btn-outline-primary" [ngClass]="{'selectedBtn':!haspaid}" style="padding: 3px 6px" (click)="displayPayment()">
           Pay Later
+        </button>/
+        <button type="button" class="btn btn-outline-primary" [ngClass]="{'selectedBtn':haspaid}" style="padding: 3px 6px" (click)="displayPayment()">
+          Pay Now
         </button>
       </div>
       <!--payment methods-->
-      <div *ngIf="haspaid" class="col-9">
+      <div *ngIf="haspaid" class="col-7">
         <span *ngFor="let i of paymentMethods" style="margin-right:2rem">
           <input type="radio" class="PAYMENTS" name="payment" value="{{ i.PropValue }}" id="{{ i.PropValue }}"
             style="margin-right:0.5rem" (click)='selectPaymentMethod($event)' />
@@ -126,10 +126,10 @@
     <button *ngIf="!isSuccess" type="button" class="btn btn-outline-dark" (click)="onSubmit($event)">
       Confirm
     </button>
-    <button *ngIf="isSuccess && !confirmationData.arrangeFlag" type="button" class="btn btn-outline-dark"
+    <!-- <button *ngIf="isSuccess && !confirmationData.arrangeFlag" type="button" class="btn btn-outline-dark"
       (click)="downloadInvoice()">
       Download Invoice
-    </button>
+    </button> -->
     <button *ngIf="!isSuccess" type="button" class="btn btn-outline-dark" (click)="activeModal.close('Close click')">
       Cancel
     </button>
