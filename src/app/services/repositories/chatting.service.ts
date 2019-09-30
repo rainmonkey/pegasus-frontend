@@ -131,7 +131,15 @@ export class ChattingService {
       (error) => {
         console.log(error);
       }
+  }
 
+  listenUserOnline() {
+    this.hubConnection.on('OnlineUserUpdate', (onlineStatus) => {
+      console.log(onlineStatus);
+    }),
+      (error) => {
+        console.log(error);
+      }
   }
 
   /**
