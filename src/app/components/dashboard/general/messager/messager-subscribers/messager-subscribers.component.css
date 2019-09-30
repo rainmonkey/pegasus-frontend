@@ -64,4 +64,15 @@
     height: 50px;
     width: 50px;
     border-radius: 50%;
+    filter: grayscale(100%);
+}
+.online{
+    font-weight: bold;
+    color:rgb(31, 154, 195);
+}
+.m_s_subscribers_photo.online img{
+    box-shadow: 0px 0px 0px 3px rgb(44, 212, 22);
+}
+.online img{
+    filter: grayscale(0%);
 }

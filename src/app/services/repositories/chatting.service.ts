@@ -15,8 +15,11 @@ export class ChattingService {
   public baseUrl: any = environment.baseUrl;
   public reconnectCounter: number = 0;
   public isConnected$ = new Subject();
+  public onlineSubscribers$ = new Subject();
   public isReconnecting = false;
   public isBuild = false;
+  public userList :any;
+  public isReady:boolean = false;
 
 
   constructor(
@@ -40,7 +43,7 @@ export class ChattingService {
     this.hubConnection
       .start()
       .then(() => {
-        // console.log('connection started');
+        console.log('connection started');
         this.isReconnecting = false;
         this.processConnectionStatus(true);
         this.listenMessageOneToOne();
@@ -125,8 +128,9 @@ export class ChattingService {
 
   listenMessageConnectedUsers() {
     this.hubConnection.on('OnlineUserList', (connectedUserList) => {
-      let userList = JSON.parse(connectedUserList);
-      console.log(userList);
+      this.userList = JSON.parse(connectedUserList);
+      console.log(this.userList);
+      this.isReady = true;
     }),
       (error) => {
         console.log(error);
