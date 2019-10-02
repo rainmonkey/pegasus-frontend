@@ -1,3 +1,4 @@
+import { GeneralRepoService } from './../../../../services/repositories/general-repo.service';
 import { Component, OnInit, Output, EventEmitter, AfterViewChecked, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthenticationService } from '../../../../services/auth/authentication.service';
@@ -39,7 +40,8 @@ export class HeaderbarComponent implements OnInit {
     private authenticationService: AuthenticationService,
     public settingService: AppSettingsService,
     private modalService: NgbModal,
-    private dashboardService: DashboardService
+    private dashboardService: DashboardService,
+    private generalRepoService:GeneralRepoService
   ) {
   }
 
@@ -86,12 +88,17 @@ export class HeaderbarComponent implements OnInit {
     event.stopPropagation();
   }
   getMsgNumber(staffId: number) {
-    this.dashboardService.getMessages(staffId).subscribe(
-      res => {
+    // this.dashboardService.getMessages(staffId).subscribe(
+    //   res => {
 
-        this.msgNumber = res['Data'].length;
-      },
-      err => alert("Oops, something went wrong!")
+    //     this.msgNumber = res['Data'].length;
+    //   },
+    //   err => alert("Oops, something went wrong!")
+    // )
+    this.generalRepoService.newNotifiNumer.subscribe(
+      res=>{
+        this.msgNumber=res;
+      }
     )
   }
 }

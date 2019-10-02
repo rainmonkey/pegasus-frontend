@@ -41,7 +41,15 @@ export class TodoListComponent implements OnInit {
     )
   }
   deletetoDoList(i){
-    this.toDoList[i].deleteListBoolean=true;
+    if (this.toDoList[i].deleteListBoolean)
+      this.toDoList[i].deleteListBoolean=false;
+    else
+      this.toDoList[i].deleteListBoolean=true;
   }
-
+  deleteNotification(i){
+    if (this.notification[i].deleteListBoolean)
+      this.notification[i].deleteListBoolean=false;
+    else
+      this.notification[i].deleteListBoolean=true;
+  }
 }

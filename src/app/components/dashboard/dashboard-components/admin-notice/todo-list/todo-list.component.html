@@ -13,8 +13,8 @@
             <!-- popup window -->
             <!-- Item-->
             <div class="item d-flex justify-content-between" *ngFor="let list of notification, let i = index">
-              <div class="info d-flex" *ngIf="!list.deleteListBoolean" (click)='deleteList(i)'>
-                <input type="checkbox" class="checkbox-template" />
+              <div class="info d-flex">
+                <input type="checkbox" class="checkbox-template"  (click)='deleteNotification(i)'/>
                 <div class="icon ml-2"><i class="far fa-envelope"></i></div>
                 <div class="title">
                   <h5>{{list.FirstName}} {{list.LastName}}</h5>
@@ -23,7 +23,7 @@
                   </p>
                 </div>
               </div>
-              <div *ngIf="!list.deleteListBoolean">
+              <div *ngIf="list.deleteListBoolean">
                 <button class='btn mr-2' (click)='deleteList(i,1)'>Delete</button>
                 <button class='btn' (click)='deleteList(i)'>Cancel</button>
               </div>

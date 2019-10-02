@@ -1,8 +1,10 @@
+import { GeneralRepoService } from './../../../../../services/repositories/general-repo.service';
 import { Subscription } from 'rxjs';
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { DashboardService } from "src/app/services/http/dashboard.service";
 import { element } from '@angular/core/src/render3';
 import { RelativeTimePipe } from '../../../../../shared/pipes/relative-time.pipe';
+
 
 @Component({
   selector: 'app-notification-popup',
@@ -28,15 +30,16 @@ export class NotificationPopupComponent implements OnInit {
   public hiddenClearBtn: boolean = true;
   // behavior subject to get closeNotification poperty
   public subscription: Subscription;
-
-  constructor(private dashboardService: DashboardService) { }
+  GeneralRepoService
+  constructor(private dashboardService: DashboardService,
+    private generalRepoService: GeneralRepoService) { }
 
   ngOnInit() {
     this.staffId = +localStorage.getItem("staffId")
     this.getMessages(this.staffId);
     setInterval(() => {
       this.getMessages(this.staffId);
-    }, 1000*120);
+    }, 1000*15);
   }
   getMessages(staffId: number) {
     this.dashboardService.getMessages(staffId).subscribe(
@@ -44,6 +47,7 @@ export class NotificationPopupComponent implements OnInit {
         this.messages = res['Data'].reverse();
         this.msgNumber = res['Data'].length;
         this.sliceMessage(res['Data'])
+        this.generalRepoService.newNotifiNumer.next(this.msgNumber);
         if (this.messages.length === 0) {
           this.isCleared = true;
           this.hiddenClearBtn = false;

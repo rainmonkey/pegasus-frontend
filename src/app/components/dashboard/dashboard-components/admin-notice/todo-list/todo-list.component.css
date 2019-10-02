@@ -1,0 +1,9 @@
+.checkbox-template{
+    margin-top:4px;
+    margin-left:4px;
+    -ms-transform: scale(1.3); /* IE */
+    -moz-transform: scale(1.3); /* FF */
+    -webkit-transform: scale(1.3); /* Safari and Chrome */
+    -o-transform: scale(1.3); /* Opera */
+    transform: scale(1.3);
+}

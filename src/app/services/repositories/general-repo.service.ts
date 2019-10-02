@@ -16,6 +16,7 @@ export class GeneralRepoService {
   baseUrl = environment.baseUrl;
   // search name component
   fisrtName = new BehaviorSubject('Customer Name');
+  newNotifiNumer = new BehaviorSubject(0);
   constructor(private http: HttpClient, ) {
   }
   // get pages authentation
