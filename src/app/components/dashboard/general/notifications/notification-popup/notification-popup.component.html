@@ -13,9 +13,9 @@
                   </li>
                   <li class="tab__content__msg d-flex">
                     <span *ngIf="msg.ReadMore">{{msg.SliceMsg? msg.SliceMsg: msg.Notice}}</span>&nbsp;&nbsp;
-                    <span *ngIf="msg.ReadMore" (click)="readMore(i)" class="tab__read__more">. . .</span>
+                    <span *ngIf="msg.ReadMore" (click)="readMore(i,1)" class="tab__read__more">. . .</span>
                     <span *ngIf="!msg.ReadMore">{{msg.Notice}}</span>
-                    <span *ngIf="!msg.ReadMore && msg.SliceMsg" (click)="hiddenRestMsg(i)"
+                    <span *ngIf="!msg.ReadMore && msg.SliceMsg" (click)="hiddenRestMsg(i,1)"
                       class="tab__packup align-self-end">Up&nbsp;&uarr;</span>
                   </li>
                   <li>{{msg.CreatedAt|relativeTime}}</li>
@@ -34,19 +34,19 @@
         <ng-template ngbTabTitle>Notifications</ng-template>
         <ng-template ngbTabContent>
             <div *ngIf="!isCleared" class="tab__content">
-                <ul *ngFor="let msg of messages; let i = index" (click)="handleIsRead(msg)"
+                <ul *ngFor="let msg of toDoList; let i = index" 
                   [ngClass]="{'isRead': msg.IsRead === 0}">
                   <li>
-                    <span>From {{msg.FirstName}}</span>
+                    <span>From {{msg.ListName}}</span>
                   </li>
                   <li class="tab__content__msg d-flex">
-                    <span *ngIf="msg.ReadMore">{{msg.SliceMsg? msg.SliceMsg: msg.Notice}}</span>&nbsp;&nbsp;
-                    <span *ngIf="msg.ReadMore" (click)="readMore(i)" class="tab__read__more">. . .</span>
-                    <span *ngIf="!msg.ReadMore">{{msg.Notice}}</span>
-                    <span *ngIf="!msg.ReadMore && msg.SliceMsg" (click)="hiddenRestMsg(i)"
+                    <span *ngIf="msg.ReadMore">{{msg.SliceMsg? msg.SliceMsg: msg.ListContent}}</span>&nbsp;&nbsp;
+                    <span *ngIf="msg.ReadMore" (click)="readMore(i,2)" class="tab__read__more">. . .</span>
+                    <span *ngIf="!msg.ReadMore">{{msg.ListContent}}</span>
+                    <span *ngIf="!msg.ReadMore && msg.SliceMsg" (click)="hiddenRestMsg(i,2)"
                       class="tab__packup align-self-end">Up&nbsp;&uarr;</span>
                   </li>
-                  <li>{{msg.CreatedAt|relativeTime}}</li>
+                  <!-- <li>{{msg.CreatedAt|relativeTime}}</li> -->
                 </ul>
               </div>
               <div *ngIf="isCleared" class="tab__content__clear">

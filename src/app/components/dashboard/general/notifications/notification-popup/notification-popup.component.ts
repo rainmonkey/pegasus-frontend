@@ -1,3 +1,4 @@
+import { UsersService } from 'src/app/services/http/users.service';
 import { GeneralRepoService } from './../../../../../services/repositories/general-repo.service';
 import { Subscription } from 'rxjs';
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
@@ -28,15 +29,18 @@ export class NotificationPopupComponent implements OnInit {
   public openRestMsg: boolean = false;
   public isCleared: boolean = false;
   public hiddenClearBtn: boolean = true;
+  public toDoList:any;
   // behavior subject to get closeNotification poperty
   public subscription: Subscription;
   GeneralRepoService
   constructor(private dashboardService: DashboardService,
-    private generalRepoService: GeneralRepoService) { }
+    private generalRepoService: GeneralRepoService,
+    private usersService:UsersService) { }
 
   ngOnInit() {
     this.staffId = +localStorage.getItem("staffId")
     this.getMessages(this.staffId);
+    this.getTodoList();
     setInterval(() => {
       this.getMessages(this.staffId);
     }, 1000*15);
@@ -46,7 +50,7 @@ export class NotificationPopupComponent implements OnInit {
       res => {
         this.messages = res['Data'].reverse();
         this.msgNumber = res['Data'].length;
-        this.sliceMessage(res['Data'])
+        this.sliceMessage(res['Data'],1)
         this.generalRepoService.newNotifiNumer.next(this.msgNumber);
         if (this.messages.length === 0) {
           this.isCleared = true;
@@ -57,23 +61,54 @@ export class NotificationPopupComponent implements OnInit {
       err => alert("Oops, something went wrong!")
     )
   }
-  /* handle long messages */
-  sliceMessage(messages) {
-    messages.map((obj) => {
-      if (obj.Notice.length > 28) {
-        this.sliceMsg = obj.Notice.slice(0, 28);
-        this.restMsg = obj.Notice.slice(28);
-        obj['SliceMsg'] = this.sliceMsg;
-        obj['RestMsg'] = this.restMsg;
-        obj['ReadMore'] = true;
+  getTodoList(){
+    this.usersService.getToDoList().subscribe(
+      res=>{
+        this.toDoList=res['Data']
+        this.sliceMessage(res['Data'],2)
+
+        console.log(this.toDoList)
+      },
+      err=>{
+        alert("Error occur!");
       }
-    })
+    )
   }
-  readMore(i) {
-    this.messages[i]['ReadMore'] = false;
+
+  /* handle long messages */
+  sliceMessage(messages,type) {
+    if (type==1)
+      messages.map((obj) => {
+        if (obj.Notice.length > 28) {
+          this.sliceMsg = obj.Notice.slice(0, 28);
+          this.restMsg = obj.Notice.slice(28);
+          obj['SliceMsg'] = this.sliceMsg;
+          obj['RestMsg'] = this.restMsg;
+          obj['ReadMore'] = true;
+        }
+      })
+      else
+      messages.map((obj) => {
+        if (obj.ListContent.length > 28) {
+          this.sliceMsg = obj.ListContent.slice(0, 28);
+          this.restMsg = obj.ListContent.slice(28);
+          obj['SliceMsg'] = this.sliceMsg;
+          obj['RestMsg'] = this.restMsg;
+          obj['ReadMore'] = true;
+        }
+      })
+    }
+  readMore(i,type) {
+    if (type==1)
+      this.messages[i]['ReadMore'] = false;
+    else
+      this.toDoList[i]['ReadMore'] = false;
   }
-  hiddenRestMsg(i) {
-    this.messages[i]['ReadMore'] = true;
+  hiddenRestMsg(i,type) {
+    if (type==1)
+      this.messages[i]['ReadMore'] = true;
+    else
+      this.toDoList[i]['ReadMore'] = true;
   }
   /* clear btn */
   clearMsg() {
