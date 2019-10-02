@@ -28,12 +28,12 @@
         <!--ngfor-->
         <div *ngFor='let i of TeacherList;trackBy:trackByFunction' class='row m_s_subscribers' (dblclick)='chattingWithHandler($event,i,"Teacher")'>
           <div class='col-3'>
-            <div class='m_s_subscribers_photo'>
+            <div class="{{i.className?'online m_s_subscribers_photo':'m_s_subscribers_photo'}}">
               <img [src]="photoUrl + i.Photo" alt="" onerror="this.src='../../../../../../assets/images/shared/default-employer-profile.png'">
             </div>
           </div>
           <div class='col-9'>
-            <div class='m_s_subscribers_name' title='{{i.FirstName + i.LastName}}'>
+            <div class="{{i.className?'online':'m_s_subscribers_name'}}" title='{{i.FirstName + i.LastName}}'>
               {{i.FirstName}} {{i.LastName}}
             </div>
             <app-messager-notification *ngIf='i.notiNum' [notiNum]='i.notiNum'></app-messager-notification>
@@ -54,12 +54,12 @@
         <!--ngfor-->
         <div *ngFor='let i of LearnerList; trackBy:trackByFunction' class='row m_s_subscribers' (dblclick)='chattingWithHandler($event,i,"Learner")'>
           <div class='col-3'>
-            <div class='m_s_subscribers_photo'>
+            <div class="{{i.className?'online m_s_subscribers_photo':'m_s_subscribers_photo'}}">
               <img [src]="photoUrl + i.Photo" alt="" onerror="this.src='../../../../../../assets/images/shared/default-employer-profile.png'">
             </div>
           </div>
           <div class='col-9'>
-            <div class='m_s_subscribers_name' title='{{i.FirstName + i.LastName}}'>
+            <div class="{{i.className?'online':'m_s_subscribers_name'}}" title='{{i.FirstName + i.LastName}}'>
               {{i.FirstName}} {{i.LastName}}
             </div>
             <div class='col-12 m_s_subscribers_signature'>
@@ -79,12 +79,12 @@
         <!--ngfor-->
         <div *ngFor='let i of StaffList;trackBy:trackByFunction' class='row m_s_subscribers' (dblclick)='chattingWithHandler($event,i,"receptionist")'>
           <div class='col-3'>
-            <div class='m_s_subscribers_photo'>
+            <div class="{{i.className?'online m_s_subscribers_photo':'m_s_subscribers_photo'}}">
               <img [src]="photoUrl + i.Photo" alt="" onerror="this.src='../../../../../../assets/images/shared/default-employer-profile.png'">
             </div>
           </div>
           <div class='col-9'>
-            <div class='m_s_subscribers_name' title='{{i.FirstName + i.LastName}}'>
+            <div class="{{i.className?'online':'m_s_subscribers_name'}}" title='{{i.FirstName + i.LastName}}'>
               {{i.FirstName}} {{i.LastName}}
             </div>
             <app-messager-notification *ngIf='i.notiNum' [notiNum]='i.notiNum'></app-messager-notification>

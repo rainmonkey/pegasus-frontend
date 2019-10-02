@@ -55,8 +55,15 @@ export class MessagerIconComponent implements OnInit {
    * Display messager modal when messager icon clicked.
    */
   displayMessagerModal() {
-    this.isModalDisplayed = true;
-    this.notificationAnimationHandler(false);
+    console.log(this.chattingService.isReady)
+    if(this.chattingService.isReady){
+      console.log('aaa')
+      this.isModalDisplayed = true;
+    }
+    else{
+      return
+    }
+    //this.notificationAnimationHandler(false);
   }
 
   /**

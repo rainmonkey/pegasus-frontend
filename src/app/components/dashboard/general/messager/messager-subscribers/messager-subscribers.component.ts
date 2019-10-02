@@ -2,6 +2,7 @@ import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { MessagerService } from 'src/app/services/repositories/messager.service';
 import { Animations } from '../../../../../../animation/chatting-animation';
 import { environment } from 'src/environments/environment.prod';
+import { ChattingService } from 'src/app/services/repositories/chatting.service';
 
 @Component({
   selector: 'app-messager-subscribers',
@@ -20,13 +21,14 @@ export class MessagerSubscribersComponent implements OnInit {
   public teachersNotiNum: number = 0;
   public staffsNotiNum: number = 0;
   public learnersNotiNum: number = 0;
-  public totalNotiNum:number =0;
+  public totalNotiNum: number = 0;
 
   @Output() onChattingWith = new EventEmitter();
 
   constructor(
-    private messagerService: MessagerService
-  ) {}
+    private messagerService: MessagerService,
+    private chattingService: ChattingService
+  ) { }
 
   ngOnInit() {
 
@@ -39,9 +41,9 @@ export class MessagerSubscribersComponent implements OnInit {
     this.getSubscribers();
   }
 
-  getNotifications(){
+  getNotifications() {
     this.messagerService.staffNoti$.subscribe(
-      (res: number) => {this.staffsNotiNum = res}
+      (res: number) => { this.staffsNotiNum = res }
     )
     this.messagerService.teacherNoti$.subscribe(
       (res: number) => this.teachersNotiNum = res
@@ -50,10 +52,10 @@ export class MessagerSubscribersComponent implements OnInit {
       (res: number) => this.learnersNotiNum = res
     )
     this.messagerService.totalNoti$.subscribe(
-      (res:number)=>this.totalNotiNum = res
+      (res: number) => this.totalNotiNum = res
     )
     this.messagerService.refreshSubs$.subscribe(
-      (res) =>{
+      (res) => {
         this.getSubscribers();
       }
     )
@@ -72,7 +74,51 @@ export class MessagerSubscribersComponent implements OnInit {
     this.StaffList = StaffList;
     this.TeacherList = TeacherList;
     this.LearnerList = LearnerList;
+
+    this.sortSubscribersByOnlineStatus();
     //console.log(this.messagerService.userIdsOfLearners)
+  }
+
+  sortSubscribersByOnlineStatus() {
+    let userList = this.chattingService.userList;
+    if (userList) {
+      for (let i of this.StaffList) {
+        for (let j of userList) {
+          if (i['UserId'] == j.UserId) {
+            console.log('staff')
+            let index = this.StaffList.indexOf(i);
+            let obj = this.StaffList[index];
+            obj['className'] = 'onlineSubs';
+            this.StaffList.splice(index, 1);
+            this.StaffList.unshift(obj);
+          }
+        }
+      }
+      for (let i of this.TeacherList) {
+        for (let j of userList) {
+          if (i['UserId'] == j.UserId) {
+            console.log('teacher')
+            let index = this.TeacherList.indexOf(i);
+            let obj = this.TeacherList[index];
+            obj['className'] = 'onlineSubs';
+            this.TeacherList.splice(index, 1);
+            this.TeacherList.unshift(obj);
+          }
+        }
+      }
+      for (let i of this.LearnerList) {
+        for (let j of userList) {
+          if (i['UserId'] == j.UserId) {
+            console.log('learner')
+            let index = this.LearnerList.indexOf(i);
+            let obj = this.LearnerList[index];
+            obj['className'] = 'onlineSubs';
+            this.LearnerList.splice(index, 1);
+            this.LearnerList.unshift(obj);
+          }
+        }
+      }
+    }
   }
 
   /*
@@ -106,10 +152,10 @@ export class MessagerSubscribersComponent implements OnInit {
    * @param subscriber 
    * @param cate 
    */
-  chattingWithHandler(event, subscriber:object,cate:string) {
+  chattingWithHandler(event, subscriber: object, cate: string) {
     //save the subscriber now chatting with.
     this.messagerService.saveSubscriberNowChattingWith(subscriber);
-    this.messagerService.processNotifications(subscriber['UserId'],-1,cate)
+    this.messagerService.processNotifications(subscriber['UserId'], -1, cate)
     //fire emit to parent component to notice need view switch
     this.onChattingWith.emit(true);
   }
@@ -118,7 +164,7 @@ export class MessagerSubscribersComponent implements OnInit {
    * Track by function.
    * @param index 
    */
-  trackByFunction(index){
+  trackByFunction(index) {
     return index;
   }
 }
