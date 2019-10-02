@@ -110,7 +110,9 @@ export class LearnersService {
    GetTeacherByOrgDayOfWeek(orgId, dayofweek){
      return this.http.get(this.baseUrl+ 'Teacher/GetTeacherByOrgDayOfWeek/'+orgId+'/'+dayofweek);
    }
-
+   GetTeacherByOrg(orgId){
+    return this.http.get(this.baseUrl+ 'Teacher/GetTeacherByOrg/'+orgId);
+  }
 
 
   updateExpiryDate(awaitId,Qty): any {

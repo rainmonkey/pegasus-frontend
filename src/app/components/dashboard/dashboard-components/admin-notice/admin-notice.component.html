@@ -1,0 +1,22 @@
+<div class="container mt-3">
+    <h3>Todo List</h3>
+    <p>Add Todo</p>
+    <form #form="ngForm" >
+      <div><label >To:</label></div>
+      <p>(Hold down the Ctrl to select multiple items)</p>
+      <select *ngIf="staffs" class="custom-select col-6" style="margin-left: 10px;height: 100%" 
+      size="{{staffs.length}}" multiple [(ngModel)]="selectedItem" name="toStaff" required>
+        <option *ngFor="let staff of staffs" [ngValue]="staff">{{staff.FirstName}} {{staff.LastName}}</option>
+      </select>
+
+        <div  style="margin-top: 10px">
+            <label >Description:</label>
+        </div>
+    <div class="col-10">
+      <textarea [(ngModel)]="todoText" rows="5" cols="80" placeholder="Write ...?" required name="notice"></textarea>
+    </div>
+  
+    <button [disabled]="form.invalid" class="btn btn-dark mt-3" (click)="onClick()">Confirm</button>
+  </form>
+  </div>
+  

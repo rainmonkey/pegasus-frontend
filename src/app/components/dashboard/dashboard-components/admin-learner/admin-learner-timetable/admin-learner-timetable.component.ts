@@ -66,13 +66,43 @@ export class AdminLearnerTimetableComponent implements OnInit {
   putInfo(data) {
     this.courseArray = [];
     for (let i of data) {
-      var extendedProps = {lessonId:i.LessonId};
-     if (i.IsCanceled){
-      this.courseArray.push({ "title": i.TeacherFirstName +' '+ i.BranchAbbr, "date": i.BeginTime,"endtime": i.EndTime,  'color':'grey' ,"extendedProps":extendedProps})}else if(i.IsConfirm){
-        this.courseArray.push({ "title": i.TeacherFirstName +' '+ i.BranchAbbr, "date": i.BeginTime, "endtime": i.EndTime,'color':'green',"extendedProps":extendedProps })
-      }else{
-        this.courseArray.push({ "title": i.TeacherFirstName +' '+ i.BranchAbbr, "date": i.BeginTime,"endtime": i.EndTime,"extendedProps":extendedProps})
-      }
+      var extendedProps = {lessonId:i.LessonId,
+                      location:i.BranchAbbr,
+                      teacher:i.TeacherFirstName,
+                      startTime:i.BeginTime,
+                      endTime:i.EndTime,
+                      isCanceled:i.IsCanceled};
+     let eventObject,colorObject={},borderColorObject={};
+     eventObject ={ "title": "Teacher:"+i.TeacherFirstName +'\n'+
+              "Location:"+i.BranchAbbr, 
+              "date": i.BeginTime, "endtime": i.EndTime,
+              "extendedProps":extendedProps};
+    if (i.IsCanceled){
+      colorObject = {'color':'grey'}
+      eventObject.title +='\n'+"Reason:"+i.CancelReson;
+    }
+    else if(i.IsConfirm)
+      colorObject = {'color':'grey'}
+    else{
+      // colorObject = {'color':'grey'}
+    }
+    if (i.IsPaid==0)
+      borderColorObject = {'borderColor':'red','borderWidth': '2px'}
+    this.courseArray.push({...eventObject,...colorObject,...borderColorObject});
+    //  if (i.IsCanceled){
+    //   this.courseArray.push({ "title": "Teacher:"+i.TeacherFirstName +'\n'+
+    //      "Location:"+i.BranchAbbr+'\n'+"Reason:"+i.CancelReson, "date": i.BeginTime,
+    //      "endtime": i.EndTime,  'color':'grey' ,"extendedProps":extendedProps})}
+    //   else if(i.IsConfirm){
+    //     this.courseArray.push({ "title": "Teacher:"+i.TeacherFirstName +'\n'+
+    //     "Location:"+ i.BranchAbbr, "date": i.BeginTime, 
+    //     "endtime": i.EndTime,'color':'green',"extendedProps":extendedProps })
+    //   }
+    //   else{
+    //     this.courseArray.push({ "title": "Teacher:"+i.TeacherFirstName +'\n'
+    //     + "Location:"+i.BranchAbbr, "date": i.BeginTime,
+    //     "endtime": i.EndTime,"extendedProps":extendedProps})
+    //   }
     }
     return this.courseArray;
   }

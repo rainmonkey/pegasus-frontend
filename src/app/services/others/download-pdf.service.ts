@@ -37,7 +37,7 @@ export class DownloadPDFService {
     doc.setFontSize(20);
     doc.text(`ABLE MUSIC STUDIO`,60, 30);
     doc.setFontSize(12);
-    doc.text(`${branch.OrgName.toUpperCase()}`,65, 37);
+    doc.text(`${branch.OrgName.toUpperCase()} BRANCH`,65, 37);
 
     // detail
     doc.setFontSize(8);

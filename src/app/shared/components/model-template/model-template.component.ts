@@ -16,7 +16,7 @@ modelTitle;
 
 // for timetable
 @Input() learnerCourseTimeTable;
-titleArray;
+eventProps;
 
 constructor(public activeModal: NgbActiveModal,private learnersService:LearnersService) {}
   getModalDetail(){
@@ -38,12 +38,14 @@ constructor(public activeModal: NgbActiveModal,private learnersService:LearnersS
     }
   }
   ShowTimeTableDetail(){
-    this.titleArray = this.learnerCourseTimeTable.event.title.split(' ');
+    console.log(this.learnerCourseTimeTable.event.title);
+    this.eventProps = this.learnerCourseTimeTable.event.extendedProps;
     this.modelTitle = 'Learner\'s Course Detail';
   }
 
   ngOnInit() {
     console.log(this.learnerCourseTimeTable)
+    
     if (this.whichModal) {
     this.getModalDetail();
     }

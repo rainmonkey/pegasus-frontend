@@ -1,3 +1,4 @@
+import { AdminNoticeComponent } from './components/dashboard/dashboard-components/admin-notice/admin-notice.component';
 import { Routes, RouterModule } from "@angular/router";
 import { DashboardRestrictGuard } from "./guards/dashboard-restrict.guard";
 import { UserAuthGuard } from "./guards/user-auth.guard";
@@ -50,6 +51,7 @@ import { TutorsInfomationComponent } from "./components/dashboard/dashboard-comp
 import { PayListComponent } from "./components/dashboard/dashboard-components/admin-staff/pay-list/pay-list.component";
 import { TrialInfoComponent } from "./components/dashboard/dashboard-components/trial-course/trial-info/trial-info.component";
 import { PublishPanelComponent } from "./components/dashboard/dashboard-components/admin-publish/publish-panel/publish-panel.component";
+import { TodoListComponent } from './components/dashboard/dashboard-components/admin-notice/todo-list/todo-list.component';
 
 //canActivate: [DashboardRestrictGuard],
 const routes: Routes = [
@@ -261,6 +263,8 @@ const routes: Routes = [
 
       // Below to be rearranged
       { path: "holidays", component: HolidayCalendarComponent },
+      { path: "notice", component: AdminNoticeComponent },
+      { path: "todoList", component: TodoListComponent },
       {
         path: "corporate-order-application",
         component: CoporateOrderApplicationComponent

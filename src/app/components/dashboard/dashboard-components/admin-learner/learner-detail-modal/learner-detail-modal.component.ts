@@ -319,7 +319,7 @@ export class LearnerDetailModalComponent implements OnInit {
 
   }
   payNow(){
-    this.modalTemplate(1,this.whichLearner,"Invoice Payment")
+    this.modalTemplate(1,this.whichLearner,"pay Invoice")
   }
   modalTemplate(command, whichLearner, title) {
     const modalRef = this.modalService

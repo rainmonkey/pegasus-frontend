@@ -34,6 +34,9 @@ export class NotificationPopupComponent implements OnInit {
   ngOnInit() {
     this.staffId = +localStorage.getItem("staffId")
     this.getMessages(this.staffId);
+    setInterval(() => {
+      this.getMessages(this.staffId);
+    }, 1000*120);
   }
   getMessages(staffId: number) {
     this.dashboardService.getMessages(staffId).subscribe(

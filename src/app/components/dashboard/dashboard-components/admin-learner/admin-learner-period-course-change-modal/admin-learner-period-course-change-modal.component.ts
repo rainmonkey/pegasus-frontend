@@ -27,6 +27,7 @@ export class AdminLearnerPeriodCourseChangeModalComponent implements OnInit {
   PeriodCourseChangeForm;
   modalRefTimePicker;
   public fd=new FormData;
+  isSpecifiedTime:number=1;
   
   @Input() whichLearner;
   @Output() toLearnerListEvent: EventEmitter<any> = new EventEmitter;
@@ -123,12 +124,23 @@ export class AdminLearnerPeriodCourseChangeModalComponent implements OnInit {
       console.log(err);
     });
   }
-  
-  
-  
-  
+  changeMode(value){
+    this.Teachers = [];
+    this.isSpecifiedTime = parseInt(value);
+    if (!this.isSpecifiedTime){
+      this.GetTeachersForSpecifiedTime();
+    }
 
-
+  }
+  GetTeachersForSpecifiedTime = () => {
+    this.service.GetTeacherByOrg(this.PeriodCourseChangeForm.get('OrgId').value)
+      .subscribe(res => {
+        this.Teachers = res['Data'];
+        // this.teaList=this.Teachers[0].Teacher;
+      }, err => {
+        console.log(err);
+      });
+  }
   submit = () => {
     if (this.PeriodCourseChangeForm.invalid) {
       this.checkInputVailad();
@@ -214,18 +226,10 @@ export class AdminLearnerPeriodCourseChangeModalComponent implements OnInit {
           console.log('wrong message')
         });
     ;
-    
-    
-
-
-     
-
-    
     //     console.log(this.learner[i].One2oneCourseInstance.course.price);
     //     break;
     //   }
     // }
-    
   }
 
   IsTemporaryChange = () => {
@@ -239,12 +243,13 @@ export class AdminLearnerPeriodCourseChangeModalComponent implements OnInit {
 
   GetTeachers = () => {
     let testlist=[];
+    if (!this.isSpecifiedTime) return;
     if (!this.OrgId.invalid && !this.DayOfWeek.invalid) {
       this.service.GetTeacherRoomByOrgDayOfWeek(this.PeriodCourseChangeForm.get('OrgId').value, this.PeriodCourseChangeForm.get('DayOfWeek').value)
         .subscribe(res => {
           // @ts-ignore
           this.Teachers = res.Data;
-          
+          // this.teaList=this.Teachers[0].Teacher;
           
       }, err => {
         console.log(err);
@@ -276,9 +281,15 @@ export class AdminLearnerPeriodCourseChangeModalComponent implements OnInit {
   
   open(){
     this.modalRefTimePicker=this.modalService.open(LearnerRegistrationModalComponent,{ windowClass: 'my-class'});
-    this.customCourse = {"location":this.OrgId.value,"beginDate":this.BeginDate.value,"DayOfWeek":this.DayOfWeek.value};
+    if (this.isSpecifiedTime)
+      this.customCourse = {"location":this.OrgId.value,"beginDate":this.BeginDate.value,
+        "DayOfWeek":this.DayOfWeek.value};
+      else
+      this.customCourse = {"location":this.OrgId.value,"beginDate":this.BeginDate.value,
+      "DayOfWeek":undefined};      
     console.log(this.BeginDate.value);
     console.log(this.customCourse);
+    console.log(this.teaList);
     this.modalRefTimePicker.componentInstance.customCourse = this.customCourse;
     this.modalRefTimePicker.componentInstance.teaList = this.teaList;//this.teaListOutArray[i].teaListToDatePick;
   // this.timePickArrayNumber = i;

@@ -102,6 +102,9 @@
   font-weight: bold;
   cursor: pointer;
 }
+.nav-item{
+  width: 50%;
+}
 /* media query */
 @media only screen and (min-width: 1441px) {
   .tab__content {

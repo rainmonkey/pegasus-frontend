@@ -1,0 +1,61 @@
+<div class="card-close" style="margin:10px">
+</div>
+<div class="card-header">
+  <h3 class="h4">My To Do List</h3>
+</div>
+<div class="card-body no-padding">
+
+  <ngb-tabset>
+    <ngb-tab title="Todos">
+      <ng-template ngbTabContent>
+        <div class="col-12">
+          <div class="card toDoList" style="margin-left: -15px">
+            <!-- popup window -->
+            <!-- Item-->
+            <div class="item d-flex justify-content-between" *ngFor="let list of notification, let i = index">
+              <div class="info d-flex" *ngIf="!list.deleteListBoolean" (click)='deleteList(i)'>
+                <input type="checkbox" class="checkbox-template" />
+                <div class="icon ml-2"><i class="far fa-envelope"></i></div>
+                <div class="title">
+                  <h5>{{list.FirstName}} {{list.LastName}}</h5>
+                  <p>
+                    {{list.Notice}}
+                  </p>
+                </div>
+              </div>
+              <div *ngIf="!list.deleteListBoolean">
+                <button class='btn mr-2' (click)='deleteList(i,1)'>Delete</button>
+                <button class='btn' (click)='deleteList(i)'>Cancel</button>
+              </div>
+              <!-- <div class="date text-right"><strong>{{dayFormat[i]}}</strong><span>{{monthFormat[i]}}</span></div> -->
+            </div>
+
+          </div>
+        </div>
+      </ng-template>
+    </ngb-tab>
+    <ngb-tab>
+      <ng-template ngbTabTitle>Notifications</ng-template>
+      <ng-template ngbTabContent>
+        <div class="card toDoList">
+          <div class="item d-flex justify-content-between" *ngFor="let list of toDoList, let i = index">
+            <div class="info d-flex" *ngIf="!list.deleteListBoolean" >
+              <input type="checkbox" class="checkbox-template" (click)='deletetoDoList(i)'/>
+              <div class="icon ml-2"><i class="far fa-envelope"></i></div>
+              <div class="title">
+                <h5>{{list.ListName}}</h5>
+                <p>
+                  {{list.ListContent}}
+                </p>
+              </div>
+            </div>
+            <div *ngIf="!list.deleteListBoolean">
+              <button class='btn mr-2' (click)='deleteList(i,1)'>Delete</button>
+              <button class='btn' (click)='deleteList(i)'>Cancel</button>
+            </div>
+          </div>
+        </div>
+      </ng-template>
+    </ngb-tab>
+  </ngb-tabset>
+</div>

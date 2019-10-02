@@ -185,6 +185,8 @@ import { LearnerAddModalTestComponent } from "./components/dashboard/dashboard-c
 import { PublishPanelComponent } from "./components/dashboard/dashboard-components/admin-publish/publish-panel/publish-panel.component";
 import { CKEditorModule } from "@ckeditor/ckeditor5-angular";
 import { MakeupLessonComponent } from './shared/components/makeup-lesson/makeup-lesson.component';
+import { AdminNoticeComponent } from './components/dashboard/dashboard-components/admin-notice/admin-notice.component';
+import { TodoListComponent } from './components/dashboard/dashboard-components/admin-notice/todo-list/todo-list.component';
 
 @NgModule({
   declarations: [
@@ -360,7 +362,9 @@ import { MakeupLessonComponent } from './shared/components/makeup-lesson/makeup-
     TrialConfirmationComponent,
     LearnerAddModalTestComponent,
     ReasonInputComponent,
-    PublishPanelComponent
+    PublishPanelComponent,
+    AdminNoticeComponent,
+    TodoListComponent
   ],
   imports: [
     NgbModule,

@@ -20,12 +20,18 @@ export class ReasonInputComponent implements ControlValueAccessor ,Validator  {
   // CancelReason
   // test1
   // @ViewChild('selector') selector
-  private textReason: any = '';  //for out put
-  private inputReason: any = ''; //for text input
-  private selectReason: any = 'S:';//for select option
+  private textReason: string = 'S:';  //for out put
+  private inputReason: string = ''; //for text input
+  private selectReason: string = 'S:';//for select option
   constructor() { }
 
   ngOnInit() {
+  }
+  ngAfterViewInit() {
+    setTimeout(() => {
+      this.selectReason = "S:";
+      this.changeSelect(this.selectReason)
+    })
   }
   writeValue(value: any) {
     if (value !== this.textReason) {
@@ -38,15 +44,6 @@ export class ReasonInputComponent implements ControlValueAccessor ,Validator  {
   }
   registerOnTouched(fn: any) {
       // this.onTouchedCallback = fn;
-  }
-  test() {
-    // if (this.CancelReason == 'Other') {
-    //   let x = document.getElementById("mySelect").remove()
-    //   this.test1 = document.createElement('input')
-    //   this.test1.type='text'
-    //   document.getElementById("reason").append(this.test1)
-    //   console.log(x)
-    //   console.log(this.test1)
   }
   changeText(e){
     this.inputReason = e;
@@ -63,12 +60,12 @@ export class ReasonInputComponent implements ControlValueAccessor ,Validator  {
     return this.textReason;
   }
   public validate(c: FormControl) {
-    console.log((!(this.textReason==''||this.textReason==null)) ? null : {
+    console.log((!(this.inputReason==''||this.inputReason==null)) ? null : {
       jsonParseError: {
           valid: false,
       },
   })
-    return (!(this.textReason==''||this.textReason==null)) ? null : {
+    return (!(this.inputReason==''||this.inputReason==null)) ? null : {
         jsonParseError: {
             valid: false,
         },

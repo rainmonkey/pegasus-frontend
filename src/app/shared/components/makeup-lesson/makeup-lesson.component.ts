@@ -80,7 +80,7 @@ export class MakeupLessonComponent implements OnInit {
         },
         (err) => {
           let errMsg = err.error.ErrorMessage?err.error.ErrorMessage:"Something error!"
-          Swal.fire('error!', errMsg,'error')
+          Swal.fire('Error!', errMsg,'error');
           }
       )
     }})

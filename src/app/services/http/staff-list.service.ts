@@ -8,28 +8,35 @@ import { environment } from '../../../environments/environment.prod';
 export class StaffListService {
   baseUrl: any = environment.baseUrl;
   httpHeaders: HttpHeaders;
-  token:string
-constructor( private http:HttpClient) { }
+  token: string
+  constructor(private http: HttpClient) { }
 
-getStaffInfo():any{
-  return this.http.get(this.baseUrl + 'staff');
-}
+  getStaffInfo(): any {
+    return this.http.get(this.baseUrl + 'staff');
+  }
 
-deleteStaff(StaffId):any{
-  return this.http.delete(this.baseUrl + 'staff/' + StaffId);
-}
+  deleteStaff(StaffId): any {
+    return this.http.delete(this.baseUrl + 'staff/' + StaffId);
+  }
 
-addNew(data):any{
-  return this.http.post(this.baseUrl +'staff',data)
-}
+  addNew(data): any {
+    return this.http.post(this.baseUrl + 'staff', data)
+  }
 
-update(data,StaffId):any{
-  return this.http.put(this.baseUrl + 'staff/' + StaffId, data)
-}
-getStaffType():any{
-  return this.http.get(this.baseUrl + 'Lookups/13')
-}
-getOrg():any{
-  return this.http.get(this.baseUrl + 'orgs')
-}
+  update(data, StaffId): any {
+    return this.http.put(this.baseUrl + 'staff/' + StaffId, data)
+  }
+  getStaffType(): any {
+    return this.http.get(this.baseUrl + 'Lookups/13')
+  }
+  getOrg(): any {
+    return this.http.get(this.baseUrl + 'orgs')
+  }
+  addNotices(data): any {
+    return this.http.post(this.baseUrl + 'notice', data)
+  }
+  getNotices() {
+    let staffId = localStorage.getItem("staffId");
+    return this.http.get(`${this.baseUrl}Notice/${staffId}`);
+  }
 }
