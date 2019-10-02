@@ -52,4 +52,12 @@ export class TodoListComponent implements OnInit {
     else
       this.notification[i].deleteListBoolean=true;
   }
+  deleteList(index,TodoORNoti){
+    let operateObject
+    if (TodoORNoti==1)
+      operateObject=this.notification;
+    else
+      operateObject=this.toDoList;
+    
+  }
 }
