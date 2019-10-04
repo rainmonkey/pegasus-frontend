@@ -1,7 +1,9 @@
+import { GeneralRepoService } from './../../../../../services/repositories/general-repo.service';
 import { NotificationPopupComponent } from './../../../general/notifications/notification-popup/notification-popup.component';
 import { UsersService } from 'src/app/services/http/users.service';
 import { StaffListService } from 'src/app/services/http/staff-list.service';
 import { Component, OnInit } from '@angular/core';
+// import GeneralRepoService
 
 @Component({
   selector: 'app-todo-list',
@@ -12,7 +14,7 @@ export class TodoListComponent implements OnInit {
   private toDoList:any;
   private notification:any;  
   constructor(private staffListService:StaffListService,
-    private userService:UsersService,) { }
+    private userService:UsersService,private generalRepoService:GeneralRepoService) { }
 
   ngOnInit() {
     this.getNotification();
@@ -22,6 +24,7 @@ export class TodoListComponent implements OnInit {
     this.staffListService.getNotices().subscribe(
       res=>{
         this.notification=res['Data']
+        this.generalRepoService.newNotifiNumer.next(this.notification.length);
         console.log(this.notification)
       },
       err=>{
@@ -53,11 +56,32 @@ export class TodoListComponent implements OnInit {
       this.notification[i].deleteListBoolean=true;
   }
   deleteList(index,TodoORNoti){
-    let operateObject
-    if (TodoORNoti==1)
-      operateObject=this.notification;
-    else
-      operateObject=this.toDoList;
-    
+    if (TodoORNoti==1){
+      let staffId=localStorage.getItem('staffId');
+      console.log(this.notification);
+      let noticeId=this.notification[index].NoticeId;
+      
+      this.staffListService.putNotice(staffId,noticeId,1).subscribe(
+        res=>{
+          this.ngOnInit();
+        },
+        err=>{
+          console.log(err);
+        }
+      )
+    }
+    else//putTodoList
+    {
+      let todoId=this.toDoList[index].ListId;
+      console.log(this.toDoList);
+      this.staffListService.putTodoList(todoId).subscribe(
+        res=>{
+          this.ngOnInit();
+        },
+        err=>{
+          console.log(err);
+        }
+      )
+    }
   }
 }

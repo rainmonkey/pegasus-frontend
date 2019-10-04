@@ -1,6 +1,6 @@
 <div class="tab-container" [class.d-none]="closeNotification" (click)="stopCloseNotification($event)">
   <div class="tab__header">
-    <p class="tab__label">You have {{msgNumber? msgNumber : 0}} new messages</p>
+    <p class="tab__label" (click)='goTodoList()'>You have {{msgNumber? msgNumber : 0}} new messages</p>
   </div>
   <ngb-tabset>
       <ngb-tab title="Todos">
@@ -33,15 +33,15 @@
       <ngb-tab>
         <ng-template ngbTabTitle>Notifications</ng-template>
         <ng-template ngbTabContent>
-            <div *ngIf="!isCleared" class="tab__content">
+            <div *ngIf="!isCleared" class="tab__content2">
                 <ul *ngFor="let msg of toDoList; let i = index" 
                   [ngClass]="{'isRead': msg.IsRead === 0}">
                   <li>
-                    <span>From {{msg.ListName}}</span>
+                    <span>{{msg.ListName}}</span>
                   </li>
                   <li class="tab__content__msg d-flex">
                     <span *ngIf="msg.ReadMore">{{msg.SliceMsg? msg.SliceMsg: msg.ListContent}}</span>&nbsp;&nbsp;
-                    <span *ngIf="msg.ReadMore" (click)="readMore(i,2)" class="tab__read__more">. . .</span>
+                    <span *ngIf="msg.ReadMore" (click)="readMore(i,2)" class="tab__read__more2">...</span>
                     <span *ngIf="!msg.ReadMore">{{msg.ListContent}}</span>
                     <span *ngIf="!msg.ReadMore && msg.SliceMsg" (click)="hiddenRestMsg(i,2)"
                       class="tab__packup align-self-end">Up&nbsp;&uarr;</span>

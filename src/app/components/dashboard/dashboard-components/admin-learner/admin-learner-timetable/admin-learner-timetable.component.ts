@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ViewEncapsulation, Input } from '@angular/core';
+import { Component, OnInit, ViewChild, ViewEncapsulation, Input ,Output,EventEmitter} from '@angular/core';
 import { CalendarComponent } from 'ng-fullcalendar';
 import interactionPlugin from '@fullcalendar/interaction';
 import dayGridPlugin from '@fullcalendar/daygrid';
@@ -16,6 +16,7 @@ import { ModelTemplateComponent } from 'src/app/shared/components/model-template
 })
 export class AdminLearnerTimetableComponent implements OnInit {
   @Input() whichLearner;
+  @Output() changeEvent = new EventEmitter<number>();
   public calendar
   eventsModel;
   options: OptionsInput;
@@ -109,11 +110,12 @@ export class AdminLearnerTimetableComponent implements OnInit {
 
   checkLearner(info) {
     const modalRef = this.modalService.open(ModelTemplateComponent,{ backdrop: 'static', keyboard: false })
-    let that = this;
+    // let that = this;
     modalRef.componentInstance.learnerCourseTimeTable = info;
     modalRef.result.then(
       (res) => {
-        that.ngOnInit()
+        this.ngOnInit()
+        this.changeEvent.emit(1);
       },
     )
   }

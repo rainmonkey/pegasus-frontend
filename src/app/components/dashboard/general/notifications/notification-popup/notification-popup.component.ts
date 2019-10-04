@@ -1,3 +1,4 @@
+import { Router } from '@angular/router';
 import { UsersService } from 'src/app/services/http/users.service';
 import { GeneralRepoService } from './../../../../../services/repositories/general-repo.service';
 import { Subscription } from 'rxjs';
@@ -5,6 +6,7 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { DashboardService } from "src/app/services/http/dashboard.service";
 import { element } from '@angular/core/src/render3';
 import { RelativeTimePipe } from '../../../../../shared/pipes/relative-time.pipe';
+// import Router
 
 
 @Component({
@@ -35,7 +37,8 @@ export class NotificationPopupComponent implements OnInit {
   GeneralRepoService
   constructor(private dashboardService: DashboardService,
     private generalRepoService: GeneralRepoService,
-    private usersService:UsersService) { }
+    private usersService:UsersService,
+    private router:Router) { }
 
   ngOnInit() {
     this.staffId = +localStorage.getItem("staffId")
@@ -44,6 +47,10 @@ export class NotificationPopupComponent implements OnInit {
     setInterval(() => {
       this.getMessages(this.staffId);
     }, 1000*15);
+  }
+  goTodoList(){
+    // console.log('todoList')
+    this.router.navigate(['./todoList']);
   }
   getMessages(staffId: number) {
     this.dashboardService.getMessages(staffId).subscribe(
@@ -58,7 +65,10 @@ export class NotificationPopupComponent implements OnInit {
           this.sendIsCleared.emit(this.isCleared)
         }
       },
-      err => alert("Oops, something went wrong!")
+      err =>{
+        // alert("Oops, something went wrong!")
+        console.log(err);
+      } 
     )
   }
   getTodoList(){
@@ -67,10 +77,11 @@ export class NotificationPopupComponent implements OnInit {
         this.toDoList=res['Data']
         this.sliceMessage(res['Data'],2)
 
-        console.log(this.toDoList)
+        // console.log(this.toDoList)
       },
       err=>{
-        alert("Error occur!");
+        // alert("Error occur!");
+        console.log(err);
       }
     )
   }
@@ -90,8 +101,8 @@ export class NotificationPopupComponent implements OnInit {
       else
       messages.map((obj) => {
         if (obj.ListContent.length > 28) {
-          this.sliceMsg = obj.ListContent.slice(0, 28);
-          this.restMsg = obj.ListContent.slice(28);
+          this.sliceMsg = obj.ListContent.slice(0, 60);
+          this.restMsg = obj.ListContent.slice(60);
           obj['SliceMsg'] = this.sliceMsg;
           obj['RestMsg'] = this.restMsg;
           obj['ReadMore'] = true;
@@ -128,7 +139,9 @@ export class NotificationPopupComponent implements OnInit {
         this.sendMsgNumber.emit(this.msgNumber);
         this.handleEmptyMsg();
       },
-      err => alert("Oops, something went wrong!")
+      err => {
+        // alert("Oops, something went wrong!")
+      }
     )
   }
   /* handle event when msg is empty */

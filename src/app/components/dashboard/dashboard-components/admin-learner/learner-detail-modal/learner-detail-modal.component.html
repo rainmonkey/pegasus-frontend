@@ -1073,7 +1073,8 @@
     <ngb-tab title="Timetable" id='Timetable'>
       <ng-template ngbTabContent>
         <br>
-        <app-admin-learner-timetable [whichLearner]='whichLearner.LearnerId'></app-admin-learner-timetable>
+        <app-admin-learner-timetable (changeEvent)='ngOnInit()'
+        [whichLearner]='whichLearner.LearnerId'></app-admin-learner-timetable>
       </ng-template>
     </ngb-tab>
 

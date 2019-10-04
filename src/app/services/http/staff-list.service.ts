@@ -39,4 +39,11 @@ export class StaffListService {
     let staffId = localStorage.getItem("staffId");
     return this.http.get(`${this.baseUrl}Notice/${staffId}`);
   }
+  putNotice(staffId, noticeId, type) {
+    return this.http.put(`${this.baseUrl}Notice/${staffId}/${noticeId}/${type}`, null);
+  }
+  putTodoList(todoId) {
+    return this.http.put(`${this.baseUrl}TodoList/achieve/${todoId}`, null);
+  }
+
 }

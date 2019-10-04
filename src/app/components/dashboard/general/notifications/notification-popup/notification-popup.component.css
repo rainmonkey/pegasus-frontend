@@ -29,6 +29,9 @@
   position: relative;
   top: 10px;
 }
+.tab__label:hover {
+  cursor: pointer;
+}
 /* style tab content */
 .tab__content {
   max-width: 300px;
@@ -112,4 +115,9 @@
     max-height: 350px;
     min-height: 280px;
   }
+}
+.tab__content2 {
+  max-width: 350px;
+  max-height: 350px;
+  min-height: 200px;
 }
