@@ -787,7 +787,7 @@
                   <div class='col-lg-6  col-sm-6'>
                     <span class='label'>Time: </span>
                     <span class='text' *ngIf='i.BeginTime && i.EndTime'>{{i.BeginTime| date:'MMM d y EEE h:mm a'}} ~
-                      {{i.EndTime| date:'h:mm'}}</span>
+                      {{i.EndTime| date:'h:mm a'}}</span>
                   </div>
 
                   <div class='col-lg-6 col-sm-6'>
@@ -800,9 +800,9 @@
                     <span class='text' *ngIf='i.TeacherFirstName'>{{i.TeacherFirstName}}</span>
                   </div>
 
-                  <div class='col-lg-6 col-sm-6'>
-                    <span class='label'>Trial Course: </span>
-                    <span class='text' *ngIf='i.IsTrial'>{{i.IsTrial | IsTemporary}}</span>
+                  <div *ngIf='i.IsTrial' class='col-lg-6 col-sm-6'>
+                    <span class='label'>*This is a Trial Lesson </span>
+                    <!-- <span class='text' *ngIf='i.IsTrial'>{{i.IsTrial | IsTemporary}}</span> -->
                   </div>
 
                   <div *ngIf='i.IsChanged == 1' class='col-lg-12 col-sm-12'>
