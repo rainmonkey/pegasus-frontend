@@ -871,8 +871,8 @@
 
 
                   <div class='col-lg-6 col-sm-6'>
-                    <span class='label'>Trial Course: </span>
-                    <span class='text' *ngIf='i.IsTrial'>{{i.IsTrial | IsTemporary}}</span>
+                    <span *ngIf='i.IsTrial' class='label'>*This is a Trial Lesson!</span>
+                    <span class='text' *ngIf='false'>{{i.IsTrial | IsTemporary}}</span>
                   </div>
 
                   <div *ngIf='i.IsChanged == 1' class='col-lg-12 col-sm-12'>
