@@ -1,3 +1,4 @@
+import { filter } from 'rxjs/operators';
 import  Swal  from 'sweetalert2';
 import { Subject, Subscription } from 'rxjs';
 import { StaffListService } from 'src/app/services/http/staff-list.service';
@@ -63,5 +64,18 @@ export class AdminNoticeComponent implements OnInit {
       }
     )
   }
-
+  selectSelf(){
+    let staffId = parseInt(localStorage.getItem('staffId'));
+    document.getElementById('selectAll')['checked'] = false;
+    this.selectedItem = this.staffs.filter(e=>{
+      return e.StaffId==staffId;
+    });
+  }
+  selectAll(){
+    let staffId = parseInt(localStorage.getItem('staffId'));
+    document.getElementById('selectSelf')['checked'] = false;
+    this.selectedItem = this.staffs.filter(e=>{
+        return e.StaffId!=staffId;
+    });
+  }  
 }

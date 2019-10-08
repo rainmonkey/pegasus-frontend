@@ -1,7 +1,7 @@
 <div class="card-close" style="margin:10px">
 </div>
 <div class="card-header">
-  <h3 class="h4" style="align-self: center">My ToDo List</h3>
+  <h2 class="h4" style="align-self: center;margin: 10px">My ToDo List</h2>
 </div>
 <div class="card-body no-padding">
 
@@ -9,7 +9,7 @@
     <ngb-tab title="Todos">
       <ng-template ngbTabContent>
         <div class="col-12">
-          <div class="card toDoList" style="margin-left: -15px">
+          <div class="card toDoList" style="margin-left: -15px;margin-top: 20px">
             <!-- popup window -->
             <!-- Item-->
             <div class="item d-flex justify-content-between" *ngFor="let list of notification, let i = index">
@@ -37,7 +37,7 @@
     <ngb-tab>
       <ng-template ngbTabTitle>Notifications</ng-template>
       <ng-template ngbTabContent>
-        <div class="card toDoList">
+        <div class="card toDoList" style="margin-top: 20px">
           <div class="item d-flex justify-content-between" *ngFor="let list of toDoList, let i = index">
             <div class="info d-flex" >
               <input type="checkbox" class="checkbox-template" (click)='deletetoDoList(i)'/>

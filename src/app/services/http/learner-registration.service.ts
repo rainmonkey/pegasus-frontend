@@ -91,4 +91,7 @@ export class LearnerRegistrationService {
  getLearner(){
    return this.http.get(this.baseUrl+'Learner');
  }
+ getCourseByTeacher(teacherId){
+  return this.http.get(this.baseUrl+'Courses/GetCoursesForTeacher/'+teacherId);
+} 
 }

@@ -92,6 +92,67 @@ export class LearnerDeleteCourseModalComponent implements OnInit {
         });
       });
   }
+  onChangeChourse(ele,i){
+    console.log(ele,i);
+    this.getCourseForTeacher(ele.TeacherId);
+
+  }
+  getCourseForTeacher(teacherId){
+    this.endCourse.getCourseByTeacher(teacherId).subscribe(
+      res=>{
+        let course = res['Data'];
+        console.log(res);
+        course = course.map(e=>{
+          console.log(e.CourseId,e.CourseName)
+          //return e.CourseId,e.CourseName
+          return  {id:e.CourseId , name:e.CourseName }
+        })
+        console.log(course);
+        this.changeDialog(course);
+      },
+      err=>{
+        Swal.fire({
+          type: 'error',
+          html: 'Error occur ' + err.toString()
+        })
+        
+      }
+    )
+  }
+  convertOptions(options){
+    let opt={};
+    options.forEach(e=>{
+      console.log(e);
+      opt[e.id]=e.name;
+    })
+    return opt;
+  }
+   changeDialog(options){
+     console.log(options);
+     options = this.convertOptions(options);
+    // this.
+  console.log(options);
+    Swal.fire({
+      title: 'Please Input Start Date and Select another Course',
+      html:'<input type="date" id="swal-input1" class="swal2-input">',
+     input: 'select',
+     inputOptions:options,
+      inputPlaceholder: 'Select a Course',
+     showCancelButton: true,
+     preConfirm: (data) => {
+       console.log(data);
+      return {'course':data,
+        // document.getElementById('swal-input1').value ,
+        'date':document.getElementById('swal-input1')['value']}
+    }
+      }).then(res=>{
+        // Swal.fire({
+        //   type: 'success',
+        //   html: 'You selected: ' + res.value
+        // })
+        console.log(res);
+      })
+  }
   ngOnInit() {
     // this.createForm();
     this.getCourse();

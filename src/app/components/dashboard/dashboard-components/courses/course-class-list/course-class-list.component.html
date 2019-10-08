@@ -65,7 +65,7 @@
                 <ngb-highlight [result]="i.CourseName" [term]="filter.value"></ngb-highlight>
               </td>
               <td>{{i.TeacherName}}</td>
-              <td>{{i.BeginDate | date:'shortDate'}} - {{i.EndDate | date:'shortDate'}}</td>
+              <td>{{i.BeginDate | date: "MMM d, y"}} - {{i.EndDate | date: "MMM d, y"}}</td>
               <td>{{i.OrgName}}</td>
               <td>{{i.RoomName}}</td>
               <td>

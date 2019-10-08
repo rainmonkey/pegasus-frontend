@@ -51,6 +51,7 @@ export class NotificationPopupComponent implements OnInit {
   goTodoList(){
     // console.log('todoList')
     this.router.navigate(['./todoList']);
+    this.closeNotification=true;
   }
   getMessages(staffId: number) {
     this.dashboardService.getMessages(staffId).subscribe(
@@ -88,6 +89,8 @@ export class NotificationPopupComponent implements OnInit {
 
   /* handle long messages */
   sliceMessage(messages,type) {
+    console.log(messages);
+    if (!messages) return;
     if (type==1)
       messages.map((obj) => {
         if (obj.Notice.length > 28) {
