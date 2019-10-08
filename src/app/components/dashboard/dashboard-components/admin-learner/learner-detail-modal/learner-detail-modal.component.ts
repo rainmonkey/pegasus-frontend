@@ -135,6 +135,7 @@ export class LearnerDetailModalComponent implements OnInit {
           this.makeupSessionLength=this.makeupSession.length
 
         this.waitingInvoice=(res[11]['Data'])
+        this.sortInvoice(this.waitingInvoice);
         if(this.waitingInvoice !== null){
           this.waitingInvoicelength=this.waitingInvoice.length
         }
@@ -147,7 +148,11 @@ export class LearnerDetailModalComponent implements OnInit {
       }
     )
   }
-
+  sortInvoice(waitingInvoice){
+    waitingInvoice.sort((a,b)=>{
+      return (b.InvoiceNum+0) - (a.InvoiceNum+0)
+    })
+  }
 
   sortLearnerSession(learnerSessionList) {
     for (let i of learnerSessionList)
