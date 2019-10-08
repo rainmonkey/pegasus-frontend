@@ -133,8 +133,8 @@ export class LearnerDeleteCourseModalComponent implements OnInit {
     // this.
   console.log(options);
     Swal.fire({
-      title: 'Please Input Start Date and Select another Course',
-      html:'<input type="date" id="swal-input1" class="swal2-input">',
+      title: 'Please Input',
+      html:'Change Begin Date:<input type="date" id="swal-input1" class="swal2-input">Select a Course:',
      input: 'select',
      inputOptions:options,
       inputPlaceholder: 'Select a Course',
@@ -146,12 +146,18 @@ export class LearnerDeleteCourseModalComponent implements OnInit {
         'date':document.getElementById('swal-input1')['value']}
     }
       }).then(res=>{
-        // Swal.fire({
-        //   type: 'success',
-        //   html: 'You selected: ' + res.value
-        // })
+       // this.ChangeCourse(res);
         console.log(res);
       })
+  }
+  
+  GetLearner() {
+    this.endCourse.getLearnerById(this.whichLearner.learnerId).subscribe(
+      res=>{
+        this.whichLearner=res['Data'];
+      },
+      err=>{}
+    )
   }
   ngOnInit() {
     // this.createForm();

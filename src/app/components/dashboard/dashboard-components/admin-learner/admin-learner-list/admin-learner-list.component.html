@@ -71,12 +71,11 @@
                     class='fa fa-id-card'></span></span>
                 <span class='t_info_table_btn' (click)='openParentModal(2,i)' title='Parent Edit'><span
                   class="fas fa-smile-wink"></span></span>                    
-                <span class='t_info_table_btn' (click)='openRegModal' title='Edit Student Profile'><span
+                <span class='t_info_table_btn' (click)='openRegModal(2,i)' title='Edit Student Profile'><span
                     class='fas fa-pen'></span></span>
+                    <!-- popUpModal(2,i) -->
                 <span class='t_info_table_btn' (click)='popUpModal(0,i)' title='Book a Course'><span
                     class="fas fa-folder-plus"></span></span>
-                <span class='t_info_table_btn' (click)='popUpModal(4,i)' title='Quit a Course'><span
-                    class="fas fa-folder-minus"></span></span>
                 <!-- <span class='t_info_table_btn' (click)='popUpModal(2,i)' title='Old Edit'><span
                     class="fas fa-kiwi-bird"></span></span> -->
 
@@ -85,9 +84,12 @@
 
               </td>
               <td style='width: 100px; padding-left:0px'>
+                <span class='t_info_table_btn' (click)='popUpModal(4,i)' title='Quit a Course'><span
+                  class="fas fa-folder-minus"></span></span>
+
                 <!--calendar icon功能跳转至 trial course 页面-->
-                <span class='t_info_table_btn' (click)='jumpToTrialCoursePage()' title='Trial Course'
-                  routerLink='/learner/trial' [queryParams]='{LearnerId:i.LearnerId}'><a class="fas fa-vial"></a></span>
+                <!-- <span class='t_info_table_btn' (click)='jumpToTrialCoursePage()' title='Trial Course'
+                  routerLink='/learner/trial' [queryParams]='{LearnerId:i.LearnerId}'><a class="fas fa-vial"></a></span> -->
                 <!--              请假-->
                 <span class='t_info_table_btn' (click)="popUpModal(9,i)" title='Ask for Leave'><span
                     class='fas fa-plane'></span></span>

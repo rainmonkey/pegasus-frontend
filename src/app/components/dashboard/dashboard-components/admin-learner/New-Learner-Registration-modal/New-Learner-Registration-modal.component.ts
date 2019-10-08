@@ -39,12 +39,17 @@ export class NewLearnerRegistrationModalComponent implements OnInit {
       let vailadValue = this.checkInputVailad(valueToSubmit);
       if (vailadValue !== null) {
         // this.sortLearnerOthers()
+        this.patch(vailadValue);        
         this.stringifySubmitStr(vailadValue)
 
       }
     }
   }
-
+  //donot known why backend can't fix error,so patch temperary
+  patch(vailadValue){
+    if (!vailadValue.Address)
+      vailadValue.Address='';
+  }
   checkInputVailad(valueToSubmit) {
     //once click save btn, touch all inputs form with for-loop. In order to trigger Validator
     for (let i in this.updateFormObj.registrationForm.controls) {

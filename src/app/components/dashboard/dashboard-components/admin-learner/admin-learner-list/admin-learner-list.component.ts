@@ -58,7 +58,11 @@ export class AdminLearnerListComponent implements OnInit {
     this.loadingFlag = true;
     this.getDataFromServer();
   }
-
+  ngOnInit2(learner) {
+    this.loadingFlag = true;
+    console.log(learner);
+    this.getOneLearner(learner);
+  }
   //get data from server
   getDataFromServer() {
     console.log('ajfoi')
@@ -81,7 +85,14 @@ export class AdminLearnerListComponent implements OnInit {
       }
     )
   }
-
+  getOneLearner(learner){
+    this.LearnerListService.getLearnerById(learner.LearnerId).subscribe(
+      (res) => {
+        learner = res['Data']
+      },
+      (err)=>{}
+    )
+  }
   /*
     sort method
   */

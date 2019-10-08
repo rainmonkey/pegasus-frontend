@@ -91,7 +91,13 @@ export class LearnerRegistrationService {
  getLearner(){
    return this.http.get(this.baseUrl+'Learner');
  }
+ getLearnerById(id){
+  return this.http.get(this.baseUrl+'Learner/GetLearnerById/'+id);
+}
  getCourseByTeacher(teacherId){
   return this.http.get(this.baseUrl+'Courses/GetCoursesForTeacher/'+teacherId);
-} 
+ } 
+ changeCourse(beginDate,courseId){
+  return this.http.put(this.baseUrl+'Courses/GetCoursesForTeacher/'+beginDate+courseId,'');
+ } 
 }

@@ -82,9 +82,9 @@
                 <span class="label">One-on-One Course: </span>
                 <span class='text'>{{ele.Course.CourseName}}</span>
               </div>
-              <div *ngIf='!ele.EndDate||ele.EndDate>CurrentDate' class='col-4'>
+              <!-- <div *ngIf='!ele.EndDate||ele.EndDate>CurrentDate' class='col-4'>
                   <button (click)='onChangeChourse(ele, j)' class='btn btn-danger'>Change Course</button>
-                </div>
+                </div> -->
               <div class="col-6">
                 <span class="label">Teacher Name: </span>
                 <span class='text'>{{ele.Teacher.FirstName}} {{ele.Teacher.LastName}}</span>
