@@ -110,7 +110,7 @@ export class DownloadPDFService {
     doc.autoTable({
       head: table_header, body, options,
       startY,
-      styles: { fillColor: [200, 200, 200] },
+      styles: { fillColor: [...color]},
       headerStyles: {
         fillColor: [...color],
         textColor: [0,0,0],
