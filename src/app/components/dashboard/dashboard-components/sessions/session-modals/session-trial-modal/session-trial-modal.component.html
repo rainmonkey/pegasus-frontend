@@ -97,10 +97,10 @@
     <div *ngIf="!confirmationData.arrangeFlag" class="row t_c_row_group" style="margin-bottom: 0.5rem">
       <div class="col-1 t_c_label t_c_price">${{ coursePrice }}</div>
       <div class="col-4">
-        <button type="button" class="btn btn-outline-primary" [ngClass]="{'selectedBtn':!haspaid}" style="padding: 3px 6px" (click)="displayPayment()">
+        <button type="button" class="btn btn-outline-primary" [ngClass]="{'selectedBtn':!haspaid}" style="padding: 3px 6px" (click)="displayPayment(false)">
           Pay Later
         </button>/
-        <button type="button" class="btn btn-outline-primary" [ngClass]="{'selectedBtn':haspaid}" style="padding: 3px 6px" (click)="displayPayment()">
+        <button type="button" class="btn btn-outline-primary" [ngClass]="{'selectedBtn':haspaid}" style="padding: 3px 6px" (click)="displayPayment(true)">
           Pay Now
         </button>
       </div>
@@ -124,7 +124,7 @@
     <span *ngIf="isSuccess && confirmationData.arrangeFlag" class="text-success">Course enrolled successfully.</span>
     <div *ngIf="isLoading" class="loaderSmall"></div>
     <button *ngIf="!isSuccess" type="button" class="btn btn-outline-dark" (click)="onSubmit($event)">
-      Confirm
+      Confirm1
     </button>
     <!-- <button *ngIf="isSuccess && !confirmationData.arrangeFlag" type="button" class="btn btn-outline-dark"
       (click)="downloadInvoice()">

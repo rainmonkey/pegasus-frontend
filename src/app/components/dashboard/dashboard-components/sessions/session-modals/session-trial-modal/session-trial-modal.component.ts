@@ -141,15 +141,11 @@ export class SessionTrialModalComponent implements OnInit {
   /**
    * Display payment methods options when user click 'Pay Now' button.
    */
-  displayPayment() {
-    if (this.isPayNow) {
-      this.isPayNow = false;
-    }
+  displayPayment(payNow) {
+    this.isPayNow = payNow;
+    this.haspaid = payNow;
     if (this.haspaid) {
-      this.haspaid = !this.haspaid;
-    } else {
       this.trialService.getPaymentMethods().subscribe(res => {
-        this.haspaid = !this.haspaid;
         this.paymentMethods = res["Data"];
       });
     }
@@ -169,7 +165,7 @@ export class SessionTrialModalComponent implements OnInit {
     if (!(this.learner.firstName)||(this.learner.firstName=='')) return false;
     if (!(this.learner.lastName)||(this.learner.lastName=='')) return false;
     if (!(this.learner.contactNum)||(this.learner.contactNum=='')) return false;
-    //if ((this.isPayNow)&&(this.getPaymentIdValue()==0)) return false;
+    if ((this.isPayNow)&&(this.getPaymentIdValue()==0)) return false;
     return true;
   }
   onSubmit(event) {
@@ -180,7 +176,7 @@ export class SessionTrialModalComponent implements OnInit {
     event.target.disabled = true;
     this.isSubmitting = true;
     const data = this.prepareSubmitionData();
-         this.courseService
+    this.courseService
         .registAndTrial(data)
         .subscribe(
           res => {

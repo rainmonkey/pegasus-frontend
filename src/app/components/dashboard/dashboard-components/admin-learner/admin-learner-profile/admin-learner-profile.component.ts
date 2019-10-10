@@ -98,20 +98,14 @@ export class AdminLearnerProfileComponent implements OnInit {
   }
   // get data from server
   getDataFromServer() {
-    if (!this.learnerId){this.getId = Number(this.whichLearner.LearnerId);}else {
+    if (!this.learnerId)
+    {
+      this.getId = Number(this.whichLearner.LearnerId);
+    }else 
+    {
       this.getId = Number(this.learnerId);
     }
-    this.learnersService.getLearnerById(Number(this.getId)).subscribe(
-      res => {
-        // @ts-ignore
-        this.learnerList = res.Data;
-        console.log(this.learnerList)
-        this.loadingFlag = false;
-      },
-      (err) => {
-        console.log(err); this.errorMessage = "Wrong";
-      }
-    )
+    this.getLearner(Number(this.getId));
     // this.LearnerListService.getLearnerList().subscribe(
     //   (res) => {
     //     //@ts-ignore
@@ -124,7 +118,19 @@ export class AdminLearnerProfileComponent implements OnInit {
     //   }
     // )
   }
-
+  getLearner(learnerId){
+    this.learnersService.getLearnerById(learnerId).subscribe(
+      res => {
+        // @ts-ignore
+        this.learnerList = res.Data;
+        console.log(this.learnerList)
+        this.loadingFlag = false;
+      },
+      (err) => {
+        console.log(err); this.errorMessage = "Wrong";
+      }
+    )
+  }
 
   ///////////////////////////////////////handler of angular-bootstrap modals/////////////////////////////////////
   /*
@@ -177,6 +183,7 @@ export class AdminLearnerProfileComponent implements OnInit {
         that.ngOnInit()
       },
       (err) => {
+        that.ngOnInit();
         return
       }
     )
@@ -191,6 +198,7 @@ export class AdminLearnerProfileComponent implements OnInit {
         that.ngOnInit();
       },
       (err) => {
+        that.ngOnInit();
         return;
       }
     );
@@ -208,6 +216,7 @@ export class AdminLearnerProfileComponent implements OnInit {
         that.ngOnInit();
       },
       (err) => {
+        that.ngOnInit();
         return;
       }
     );
@@ -237,11 +246,13 @@ export class AdminLearnerProfileComponent implements OnInit {
         that.ngOnInit();
       },
       (err) => {
+        that.ngOnInit();
         return;
       }
     )
     modalRef.componentInstance.command = command;
     modalRef.componentInstance.whichLearner = whichLearner;
+  
   }
 
   /*
@@ -264,6 +275,7 @@ export class AdminLearnerProfileComponent implements OnInit {
         this.ngOnInit()
       },
       (err) => {
+        that.ngOnInit();
         return
       }
     )
@@ -285,6 +297,7 @@ export class AdminLearnerProfileComponent implements OnInit {
         that.ngOnInit()
       },
       (err) => {
+        that.ngOnInit();
         return
       }
     )

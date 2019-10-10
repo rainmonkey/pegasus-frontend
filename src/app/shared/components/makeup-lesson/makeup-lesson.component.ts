@@ -1,6 +1,6 @@
 import Swal from 'sweetalert2';
 
-import { Input } from '@angular/core';
+import { Input, Output ,EventEmitter} from '@angular/core';
 import { SessionsService } from './../../../services/http/sessions.service';
 import { Component, OnInit } from '@angular/core';
 import { LearnersService } from './../../../services/http/learners.service';
@@ -16,6 +16,7 @@ export class MakeupLessonComponent implements OnInit {
   @Input() learnerId;
   @Input() courseId;
   @Input() lessonId;
+  @Output() makeupChange= new EventEmitter();
   lessonQuantity:number;
   quarterQuantity:number;
   isLoading=false;
@@ -76,6 +77,7 @@ export class MakeupLessonComponent implements OnInit {
             type: 'success',
             showConfirmButton: true,
           });
+          this.makeupChange.emit(true);
           // this.activeModal.close('Close click')
         },
         (err) => {

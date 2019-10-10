@@ -1,5 +1,5 @@
 <div class="modal-header">
-  <h4 class="modal-title col-4">Learner Profile </h4>
+  <h4 class="modal-title col-4">Student Profile </h4>
   <div class="d-flex">
     <p *ngIf="whichLearner">{{whichLearner.FirstName}}</p>
   </div>
@@ -8,9 +8,11 @@
     <span aria-hidden="true">&times;</span>
   </button>
 </div>
-
+<div *ngIf='loadingFlag' class="modal-body">
+  <div class="loaderLarge"></div>
+</div>
 <!--modal body-->
-<div class="modal-body">
+<div *ngIf="!loadingFlag" class="modal-body">
   <div *ngIf="!learnerList" class="loaderSmall"></div>
   <div *ngIf="learnerList" class='row'>
     <div class='col-2'  *ngFor="let para of localPara">

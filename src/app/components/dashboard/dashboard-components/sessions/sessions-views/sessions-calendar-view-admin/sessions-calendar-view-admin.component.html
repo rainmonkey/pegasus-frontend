@@ -120,7 +120,9 @@
 
       <app-makeup-lesson [learnerId]=eventInfo.event.extendedProps.info.LearnerId 
               [lessonId]=eventInfo.event.extendedProps.info.LessonId
-              [courseId]=eventInfo.event.extendedProps.info.courseId ></app-makeup-lesson>
+              [courseId]=eventInfo.event.extendedProps.info.courseId 
+              (makeupChange)="makeupDone($event)"
+              (makeupChange)="modal.dismiss('Cross click')"></app-makeup-lesson>
 
     </div>
 

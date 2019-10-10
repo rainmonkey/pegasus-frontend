@@ -380,5 +380,8 @@ export class SessionsCalendarViewAdminComponent implements OnInit {
       });
     });
   }
-
+  makeupDone = (e)=>{
+    const Date = this.datePipe.transform(this.fullcalendar.calendar.getDate(), 'yyyy-MM-dd');
+    this.getEventByDate(Date);
+  }
 }
