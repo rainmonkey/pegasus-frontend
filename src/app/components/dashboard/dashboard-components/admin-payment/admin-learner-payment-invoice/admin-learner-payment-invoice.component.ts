@@ -43,6 +43,7 @@ export class AdminLearnerPaymentInvoiceComponent implements OnInit, OnDestroy {
   noInvoice = false;
   // id get from admin learner profile
   // whichLearner;
+  credit:number;
 
   invoiceForm = this.fb.group({
     owing: ['', Validators.required],
@@ -310,6 +311,7 @@ export class AdminLearnerPaymentInvoiceComponent implements OnInit, OnDestroy {
   getLearner(id:number){
     this.learnersService.getLearnerById(id).subscribe(res => {
       this.learnerAll = res['Data'];
+      this.credit = this.learnerAll.credit;
     },
       err =>{
         Swal.fire({
