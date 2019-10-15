@@ -59,6 +59,7 @@ export class CourseClassListComponent implements OnInit {
         this.courseClassLists.forEach(element => {
           element.CourseName = element.Course.CourseName;
           element.CourseType = element.Course.CourseType;
+          element.PromotionName = element.PromotionName;
           element.OrgId = element.Org.OrgId;
           element.OrgName = element.Org.OrgName;
           element.RoomId = element.Room.RoomId;

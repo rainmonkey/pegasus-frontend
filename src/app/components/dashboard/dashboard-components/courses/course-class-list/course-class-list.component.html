@@ -36,7 +36,7 @@
           <thead>
             <tr>
               <th scope='col' class='tl_body_table_head' style="width:1rem;">#</th>
-              <th scope='col' class='tl_body_table_head sorting_item' style="width:16rem;"
+              <th scope='col' class='tl_body_table_head sorting_item' style="width:10rem;"
                 (click)='onSort("CourseName")'>
                 Course Name</th>
               <th scope='col' class='tl_body_table_head sorting_item' style="width:8rem;"
@@ -52,6 +52,8 @@
               <!--sort-->
               <th scope='col' class='tl_body_table_head' style="width:7rem;">
                 Time</th>
+                <th scope='col' class='tl_body_table_head' style="width:5rem;">
+                  Promotion</th>                
               <th scope='col' class='tl_body_table_head' style="width:7rem;">Edit & Delete &List</th>
             </tr>
           </thead>
@@ -74,6 +76,7 @@
                   <span>{{k.BeginTime | slice:0:5}} - {{k.EndTime | slice:0:5}}</span><br>
                 </span>
               </td>
+              <td>{{i.PromotionName}}</td>
               <td>
                 <span (click)='detailModal(2,i)' class='tl_body_table_btn' style="margin-right: 1rem;">
                   <i class='fas fa-pen'></i>
