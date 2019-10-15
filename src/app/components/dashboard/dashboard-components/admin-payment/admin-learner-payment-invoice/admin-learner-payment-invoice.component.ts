@@ -44,6 +44,8 @@ export class AdminLearnerPaymentInvoiceComponent implements OnInit, OnDestroy {
   // id get from admin learner profile
   // whichLearner;
   credit:number;
+  isCredit=false;
+
 
   invoiceForm = this.fb.group({
     owing: ['', Validators.required],
@@ -118,7 +120,8 @@ export class AdminLearnerPaymentInvoiceComponent implements OnInit, OnDestroy {
       LearnerId: item.LearnerId,
       InvoiceId: item.InvoiceId,
       PaymentMethod: this.paymentMethodI.value,
-      Amount: this.invoiceForm.value.owing
+      Amount: this.invoiceForm.value.owing,
+      UseCredit:this.isCredit
     };
   }
 
@@ -171,7 +174,9 @@ export class AdminLearnerPaymentInvoiceComponent implements OnInit, OnDestroy {
     if (this.invoiceForm.controls.paymentMethodI.invalid === true) {
       this.errMsgM = true;
     }
-    if (this.invoiceForm.value.owing <= 0 || (this.invoiceForm.value.owing > this.dataInvoice[j].OwingFee)) {
+    if ((!this.isCredit&&this.invoiceForm.value.owing <= 0 )||
+        (this.isCredit&&this.invoiceForm.value.owing < 0 )||
+       (this.invoiceForm.value.owing + this.isCredit?this.credit:0)> this.dataInvoice[j].OwingFee) {
       this.errMsgO = true;
     }
     if (this.errMsgM || this.errMsgO) {
@@ -290,7 +295,7 @@ export class AdminLearnerPaymentInvoiceComponent implements OnInit, OnDestroy {
       this.payInvoiceService(this.learnerId);
     }
     this.nameSubejct();
-    this.getSingleTab();
+    // this.getSingleTab();
     this.getOrgs(this.learnerId);
     this.getLearner(this.learnerId);
   }
@@ -311,7 +316,7 @@ export class AdminLearnerPaymentInvoiceComponent implements OnInit, OnDestroy {
   getLearner(id:number){
     this.learnersService.getLearnerById(id).subscribe(res => {
       this.learnerAll = res['Data'];
-      this.credit = this.learnerAll.credit;
+      this.credit = this.learnerAll.Credit;
     },
       err =>{
         Swal.fire({
@@ -350,8 +355,10 @@ export class AdminLearnerPaymentInvoiceComponent implements OnInit, OnDestroy {
         }
         console.log(this.dataInvoice)
         if (this.dataInvoice){
-        this.incaseDateIsNull();
-        this.reSearchPrepare();}
+          this.getSingleTab();
+          this.incaseDateIsNull();
+          this.reSearchPrepare();
+        }
       }, error => {
         console.log(error);
         this.noInvoice = true;
@@ -365,7 +372,19 @@ export class AdminLearnerPaymentInvoiceComponent implements OnInit, OnDestroy {
         // });
       });
   }
-
+  useCredit(e,index){
+    console.log(e,index);
+    this.isCredit = e.target.checked;
+    this.patchOwingFee(index)
+  }
+  patchOwingFee(index){
+    let owingFee =Math.abs(this.dataInvoice[index].OwingFee) -
+          (this.isCredit?this.credit:0);
+    owingFee = owingFee<0?0:owingFee;
+    this.invoiceForm.patchValue({
+      owing: Math.abs(owingFee)
+    });
+  }
   ngOnDestroy() {
     this.fistNameSubscription.unsubscribe();
   }

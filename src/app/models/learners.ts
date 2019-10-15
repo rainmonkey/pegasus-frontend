@@ -4,6 +4,7 @@ export interface ILearnerPay {
   InvoiceId: number;
   PaymentMethod: number;
   Amount: number;
+  UseCredit:boolean;
 }
 export interface IOtherPay {
   StaffId: number;

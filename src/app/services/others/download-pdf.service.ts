@@ -67,9 +67,13 @@ export class DownloadPDFService {
     if (learnerName.Email)
       doc.text(`EMAIL:${learnerName.Email}`, 16, 65+7*rowHeight);  
 
-    body.push([invoice.CourseName, '$'+(invoice.LessonFee/invoice.LessonQuantity).toFixed(2),
-      invoice.LessonQuantity, '$'+invoice.LessonFee.toFixed(2)])
+    currentHeight -= interval;
 
+    if (invoice.LessonFee>0) {
+      currentHeight += interval
+      body.push([invoice.CourseName, '$'+(invoice.LessonFee/invoice.LessonQuantity).toFixed(2),
+        invoice.LessonQuantity, '$'+invoice.LessonFee.toFixed(2)])
+    }
     if (invoice.ConcertFee) {
       currentHeight += interval
       // doc.text(`${invoice.ConcertFeeName}`, 20, currentHeight);

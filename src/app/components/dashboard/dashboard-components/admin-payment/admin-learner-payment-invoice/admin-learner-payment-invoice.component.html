@@ -33,10 +33,14 @@
                     <p>Already Paid: ${{item.PaidFee}}</p>
                     <p>Unpaid Amount: ${{item.OwingFee}}</p>
                     <!-- <p>Credit: ${{credit}}}</p> -->
-                    <input class="form-check-input" type="checkbox" value="" id="defaultCheck2">
-                    <label class="form-check-label" for="defaultCheck2">
-                      Credit: ${{credit}}
-                    </label>
+                    <div class="form-check">
+                      <input class="form-check-input" type="checkbox"  (click)='useCredit($event,j)' id="defaultCheck2">
+                    
+                      <label class="form-check-label" for="defaultCheck2">
+                        Credit: ${{credit}}
+                      </label>
+                    </div>
+
                     <div class="row justify-content-start mt-2" [formGroup]="invoiceForm">
                       <h6 class="col-md-3">To Charge: </h6>
                       <p>$</p>
@@ -74,8 +78,8 @@
                         </div>
                         <!-- modal-body -->
                         <div class="d-flex flex-column">
-                          <p class='p-2'>Learner Owing Fee: <span class="badge-info">${{item.OwingFee}}</span></p>
-                          <p class='p-2'>Learner Add Fund: <span class="badge-warning">${{addFund}}</span></p>
+                          <p class='p-2'>Already Paid:: <span class="badge-info">${{item.OwingFee}}</span></p>
+                          <p class='p-2'>Unpaid Amount: <span class="badge-warning">${{addFund}}</span></p>
                         </div>
                         <div class="modal-footer">
                           <button type="button" class="btn btn-dark" (click)="modal.close('Save')">Confirm</button>
@@ -111,12 +115,23 @@
                   <option value=1>Cash</option>
                 </select>
                 <small [class.d-none]="paymentMethodI.valid || paymentMethodI.untouched" class="text-danger">You must select the payment type</small>
-                <p>Learner Paid: ${{item.PaidFee}}</p>
-                <p>Learner Owing Fee: ${{item.OwingFee}}</p>
+                <p>Already Paid: ${{item.PaidFee}}</p>
+                <p>Unpaid Amount:: ${{item.OwingFee}}</p>
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" (click)='useCredit($event,j)' id="defaultCheck2">
+                  
+                    <label class="form-check-label" for="defaultCheck2">
+                      Credit: ${{credit}}
+                    </label>
+                  </div>
+
                 <div class="row  justify-content-start mt-2" [formGroup]="invoiceForm">
-                  <h6 class="col-md-3">Learner Add Fund: </h6>
+                  <h6 class="col-md-3">To Charge: </h6>
                   <p class="mt-1">$</p>
-                  <input type="number" formControlName="owing" min="0" onkeypress='return (/[\d]/.test(String.fromCharCode(event.keyCode)))' placeholder="Please enter the amount.." class="form-control col-md-3 ml-2" [class.is-invalid]="owing.invalid && owing.touched">
+                  <input type="number" formControlName="owing" min="0" 
+                    onkeypress='return (/[\d]/.test(String.fromCharCode(event.keyCode)))' 
+                    placeholder="Please enter the amount.." class="form-control col-md-3 ml-2" 
+                    [class.is-invalid]="owing.invalid && owing.touched">
                   <div class="col-md-1"></div>
                   <!-- open method for confirm payment modal-->
                   <button class="btn btn-primary col-md-3 ml-2" [disabled]="owing.invalid" (click)="validMethodI(contentP, item, j)">Confirm</button>
