@@ -1097,13 +1097,14 @@ export class LearnerRegistrationFormComponent implements OnInit, DoCheck, AfterV
       );
     } else {
       if (this.whichLearner.Parent.length === 0) {
+        
         this.parentForm.push(
           this.fb.group({
             firstName: ['', Validators.required],
             lastName: ['', Validators.required],
             relationship: ['', Validators.required],
-            contactPhone: ['', Validators.required],
-            email: ['', [Validators.required, Validators.email]]
+            contactPhone: [this.whichLearner.ContactNum, Validators.required],
+            email: [this.whichLearner.Email, [Validators.required, Validators.email]]
           })
         );
       } else {
