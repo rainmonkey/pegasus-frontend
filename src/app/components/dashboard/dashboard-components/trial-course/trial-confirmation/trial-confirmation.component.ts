@@ -261,7 +261,7 @@ export class TrialConfirmationComponent implements OnInit {
         EndTime: this.formatDate(this.confirmationData.endStr),
         PaymentMethod: this.getPaymentIdValue(),
         Amount: this.coursePrice,
-        StaffId: Number(localStorage.userID),
+        StaffId: Number(localStorage.staffId),
         TrialCourseId: this.trialCourseId,
         IsPayNow: this.isPayNow
       };
