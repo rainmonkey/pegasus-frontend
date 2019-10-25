@@ -106,6 +106,9 @@
                 (click)='onSort("IsConfirmed")'>
                 Confirmation
               </th>
+              <th scope='col' class='tl_body_table_head' style="width:9rem">
+                Comment
+              </th>              
             </tr>
           </thead>
           <tbody>
@@ -143,6 +146,7 @@
               <td *ngIf="i.IsConfirmed != 0">
                 <i class="fas fa-check"></i>
               </td>
+              <td>{{i.Comment}}</td>
             </tr>
           </tbody>
         </table>

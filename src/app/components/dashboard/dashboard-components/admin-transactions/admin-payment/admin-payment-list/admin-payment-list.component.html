@@ -6,7 +6,7 @@
     </div>
     <!--body search dates-->
     <div class="col-12">
-      <div *ngIf="searchbar == true" style="width:31%; float: left;">
+      <div *ngIf="searchbar == true" style="width:20%; float: left;">
         <div class='t_info_search_bar'>
           <input class="form-control" id='searchingInput' type="text" style="height: 30px;" placeholder="Search..."
             (keydown)='onSearch($event)'>
@@ -17,12 +17,15 @@
           </span>
         </div>
       </div>
-      <div style="width:69%; float: right;">
+      <div style="width:75%; float: right;">
+        <span>
+          <p class="label_p">
+            <input type="checkbox" class="label_p" (change)="searchPeriod=!searchPeriod">Search Option: a period or a
+            day:
+          </p>
+        </span>
         <form style="float:right;" [formGroup]='searchForm'>
-          <span>
-            <p class="label_p">Select a period of date:</p>
-          </span>
-          <div class="input-group input_datebar">
+          <div *ngIf="searchPeriod" class="input-group input_datebar">
             <input class="form-control" style="height: 30px;" placeholder="yyyy-mm-dd" ngbDatepicker
               #begindate="ngbDatepicker" formControlName="BeginDate">
             <div class="input-group-append">
@@ -33,7 +36,7 @@
             </div>
           </div>
           <span>
-            <p class="label_p">To</p>
+            <p *ngIf="searchOption" class="label_p">To</p>
           </span>
           <div class="input-group input_datebar">
             <input class="form-control" style="height: 30px;" placeholder="yyyy-mm-dd" ngbDatepicker
@@ -135,8 +138,70 @@
       </div>
       <!--body pagination-->
       <div class='col-12'>
-        <ngb-pagination #pagination [collectionSize]='adminPaymentListLength' [(page)]='page' [pageSize]='pageSize' (click)="getCurrentPage()">
+        <ngb-pagination #pagination [collectionSize]='adminPaymentListLength' [(page)]='page' [pageSize]='pageSize'
+          (click)="getCurrentPage()">
         </ngb-pagination>
+      </div>
+      <div class="card">
+        <div class="card-body">
+          <div class="row">
+            <div class="col-3">
+                <span class="label" style="font-weight: bold">Total: </span>
+                <span class='text'>{{paymentTotal.total}}</span>
+            </div>  
+            <div class="col-3">
+              <span class="label" style="font-weight: bold">Cash: </span>
+              <span class='text'>{{paymentTotal.inCash}}</span>
+            </div>
+            <div class="col-3">
+              <span class="label" style="font-weight: bold">Eftpos: </span>
+              <span class='text'>{{paymentTotal.eftpos}}</span>
+            </div>
+            <div class="col-3">
+              <span class="label" style="font-weight: bold">Online Transfer: </span>
+              <span class='text'>{{paymentTotal.bankDepoist}}</span>
+            </div>
+          
+          </div>
+        </div>
+      </div>
+      <div *ngIf='adminPaymentListLength>0 && searchPeriod==false' class="card" style="margin-top: 20px">
+        <div class="card-header">Cash Daily Log</div>
+        <div class="card-body">
+          <div class="row">
+            <div class="col-2"></div>
+
+          </div>
+          <div  class="row">
+            
+            <div class="col-3">
+              <span class="label" style="font-weight: bold">Yesterday's:</span>
+              <span class='text'>{{paymentTotal.yesterdayChange}}</span>
+            </div>
+            <div class="col-3">
+              <span class="label" style="font-weight: bold">After Paids:</span>
+              <span class='text'>{{paymentTotal.yesterdayChange+paymentTotal.inCash}}</span>
+            </div>
+            <div class="col-3">
+                <span>
+                  <label class="label" style="font-weight: bold">Trans: </label>
+                  <input style="width: 50%;" type="number" [(ngModel)]="paymentTotal.outCash" (change)="transChange()" (keyup)="transChange()" placeholder="0">
+                </span>
+              </div>    
+              <div class="col-3">
+                  <span class="label" style="font-weight: bold">Today's: </span>
+                  <span class='text'>{{paymentTotal.totalChange}}</span>
+                </div>                      
+          </div>
+          <div class="row">
+            <div class="col-12">
+              <button type="button" class='btn btn-info t_info_addmore_btn' style="width:200px;" (click)="submitDaillyLog()">
+                Submit Daily Log
+              </button>
+            </div>
+          </div>
+
+        </div>
       </div>
     </div>
   </div>

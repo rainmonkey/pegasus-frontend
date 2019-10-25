@@ -7,11 +7,14 @@ import { AdminPaymentProductModalComponent } from '../admin-payment-product-moda
 import { AdminPaymentConfirmModalComponent } from '../admin-payment-confirm-modal/admin-payment-confirm-modal.component';
 import { AdminpaymentlistService } from '../../../../../../services/http/adminpaymentlist.service';
 import { NgbootstraptableService } from '../../../../../../services/others/ngbootstraptable.service';
+
 @Component({
   selector: 'app-admin-payment-list',
   templateUrl: './admin-payment-list.component.html',
   styleUrls: ['./admin-payment-list.component.css']
 })
+
+
 export class AdminPaymentListComponent implements OnInit {
   //loading
   public loadingFlag: boolean = false;
@@ -31,6 +34,10 @@ export class AdminPaymentListComponent implements OnInit {
   public inputEndDate: NgbDateStruct;
   //search by which columns, determine by users
   public queryParams: object = {};
+  public searchPeriod:boolean= false;
+
+  public paymentTotal:any;
+
 
   @ViewChild('pagination') pagination;
 
@@ -45,20 +52,42 @@ export class AdminPaymentListComponent implements OnInit {
   ngOnInit() {
     this.searchForm = this.fb.group(this.formGroupAssemble());
   }
+  init(){
+    this.paymentTotal={
+      yesterdayChange:0,
+      outCash:0,
+      inCash: 0,
+      bankDepoist: 0,
+      eftpos: 0,
+      cheque:0,
+      totalChange:0,
+      total:0
+    };
+  }
   formGroupAssemble() {
     let groupObj: any;
+    let today = new Date();
+    // let today =  new Date().getFullYear()+'-'+
+    //   ("0"+(new Date().getMonth()+1)).slice(-2)+'-'+
+    //   ("0"+new Date().getDate()).slice(-2);
+      // console.log(today);
+    let todayObj = { year: today.getFullYear(), 
+        month: today.getMonth()+1, 
+        day: today.getDate()};
+    
     this.activatedRoute.queryParams.subscribe(
       (res) => {
         if (Object.keys(res).length === 0) {
           groupObj = {
-            BeginDate: [null, Validators.required],
-            EndDate: [null, Validators.required]
+            BeginDate: [todayObj, Validators.required],
+            EndDate: [todayObj, Validators.required]
           }
         } else {
           let begindate = res.begindate.split("-").map((element) => { return parseInt(element) });
           let enddate = res.enddate.split("-").map((element) => { return parseInt(element) });
           this.inputBeginDate = { year: begindate[0], month: begindate[1], day: begindate[2] };
           this.inputEndDate = { year: enddate[0], month: enddate[1], day: enddate[2] };
+          console.log(this.inputBeginDate);
           groupObj = {
             BeginDate: [this.inputBeginDate, Validators.required],
             EndDate: [this.inputEndDate, Validators.required]
@@ -79,8 +108,12 @@ export class AdminPaymentListComponent implements OnInit {
   onSubmit() {
     let valueToSubmit = this.searchForm.value;
     let vailadValue = this.checkInputVailad(valueToSubmit);
+    let begin;
     if (vailadValue !== null) {
-      let begin = vailadValue.BeginDate.year + "-" + vailadValue.BeginDate.month + "-" + vailadValue.BeginDate.day;
+      if (this.searchPeriod ==true )
+        begin = vailadValue.BeginDate.year + "-" + vailadValue.BeginDate.month + "-" + vailadValue.BeginDate.day;
+      else
+        begin = vailadValue.EndDate.year + "-" + vailadValue.EndDate.month + "-" + vailadValue.EndDate.day;
       let end = vailadValue.EndDate.year + "-" + vailadValue.EndDate.month + "-" + vailadValue.EndDate.day;
       const enddate = new NgbDate(vailadValue.EndDate.year, vailadValue.EndDate.month, vailadValue.EndDate.day)
       if (enddate.before(vailadValue.BeginDate)) {
@@ -135,6 +168,8 @@ export class AdminPaymentListComponent implements OnInit {
         this.adminPaymentListLength = res['Data'].length; //length prop is under Data prop
         this.loadingFlag = false;
         this.searchbar = true;
+        this.init();
+        this.getPaymentTotal(this.adminPaymentListCopy);
         this.adminPaymentList.forEach(element => {
           element.LearnerName = element.Learner.FirstName + " " + element.Learner.LastName;
           element.StaffName = element.Staff.FirstName + " " + element.Staff.LastName;
@@ -168,32 +203,59 @@ export class AdminPaymentListComponent implements OnInit {
         console.log(err.error.ErrorMessage);
       }
     )
+    this.getDaillyLog(begindate);
     this.setQueryParams('begindate', begindate);
     this.setQueryParams('enddate', enddate);
   }
-
+  getDaillyLog(begindate){
+    this.adminpaymentlistService.getCashBox(begindate).subscribe(
+      (res) => {
+        this.paymentTotal.yesterdayChange =  res['Data'];
+        this.transChange();
+      },
+      (err) => {
+        this.paymentTotal.yesterdayChange = 0;
+      }
+    )
+  }
+  getPaymentTotal(adminPaymentList){
+    adminPaymentList.forEach(element => {
+      this.paymentTotal.total += element.Amount; 
+      if (element.PaymentMethod==1){
+        this.paymentTotal.inCash+=element.Amount; 
+      }
+      else if(element.PaymentMethod==2){
+        this.paymentTotal.eftpos+=element.Amount; 
+      }
+      else if(element.PaymentMethod==3){
+        this.paymentTotal.bankDepoist+=element.Amount;         
+      }      
+    });
+    this.transChange();
+  }
   getCurrentPage() {
     this.page = this.pagination.page
     this.setQueryParams('page', this.page);
   }
 
   open(num, adminPaymentList) {
-    let that = this;
-    if (num == 0) {
-      const modalRef = this.modalService.open(AdminPaymentProductModalComponent);
-      modalRef.componentInstance.adminPaymentList = adminPaymentList;
-    }
-    else if (num == 1) {
-      const modalRef = this.modalService.open(AdminPaymentConfirmModalComponent);
-      modalRef.componentInstance.adminPaymentList = adminPaymentList;
-      modalRef.componentInstance.refreshFlag.subscribe(
-        (res) => {
-          if (res == true) {
-            that.ngOnInit();
-          }
-        }
-      )
-    }
+    // let that = this;
+    // if (num == 0) {
+    //   const modalRef = this.modalService.open(AdminPaymentProductModalComponent);
+    //   modalRef.componentInstance.adminPaymentList = adminPaymentList;
+    // }
+    // else if (num == 1) {
+    //   const modalRef = this.modalService.open(AdminPaymentConfirmModalComponent);
+    //   modalRef.componentInstance.adminPaymentList = adminPaymentList;
+    //   modalRef.componentInstance.refreshFlag.subscribe(
+    //     (res) => {
+    //       if (res == true) {
+    //         that.ngOnInit();
+    //       }
+    //     }
+    //   )
+    // }
+    return;
   }
 
   /*
@@ -223,7 +285,34 @@ export class AdminPaymentListComponent implements OnInit {
       queryParams: this.queryParams
     });
   }
-
+  transChange(){
+    this.paymentTotal.totalChange=this.paymentTotal.yesterdayChange;
+    this.paymentTotal.totalChange += this.paymentTotal.inCash;
+    this.paymentTotal.totalChange -= this.paymentTotal.outCash;
+  }
+  submitDaillyLog(){
+    let vailadValue = this.searchForm.value;
+    let begindate = vailadValue.EndDate.year + "-" + vailadValue.EndDate.month + "-" + vailadValue.EndDate.day;
+    this.adminpaymentlistService.submitCashBox(this.paymentTotal.outCash,begindate).subscribe(
+      (res) => {
+       // this.paymentTotal.yesterdayChange =  res['Data'];
+        this.transChange();
+      },
+      (err) => {
+        let errMsg;
+        if (err.error)
+          errMsg =  err.error.ErrorMessage
+        else
+          errMsg = 'Error Occurred'
+        Swal.fire({
+          title: 'Oops',
+          type: 'error',
+          text: errMsg,
+          showConfirmButton: true,
+        });
+      }
+    )
+  }
   // Searching
   onSearch(event, initValue?) {
     if (event !== null && !(event.type == 'keydown' && event.key == 'Enter')) {

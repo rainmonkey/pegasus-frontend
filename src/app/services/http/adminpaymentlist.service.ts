@@ -22,4 +22,13 @@ export class AdminpaymentlistService {
   updateConfirm(paymentId, data):any{
     return this.http.put(this.baseUrl + 'Payment/' + paymentId + '/' + data, null);
   }
+  getCashBox(date) {
+    let orgId =  localStorage.getItem('OrgId')[1];
+    return this.http.get(this.baseUrl+'CashBox/' +orgId+ '/'+date);
+  }
+  submitCashBox(cashOut,date){
+    let orgId =  localStorage.getItem('OrgId')[1];
+    let staffId =  localStorage.getItem('staffId');
+    return this.http.post(this.baseUrl+'CashBox/'+orgId+'/'+staffId+'/'+cashOut+ '/'+date,null);
+  }
 }

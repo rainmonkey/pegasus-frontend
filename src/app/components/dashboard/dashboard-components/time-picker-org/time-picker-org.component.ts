@@ -2,9 +2,9 @@ import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core';
 import { TimePickerService } from 'src/app/services/http/time-picker.service';
 
 @Component({
-  selector: 'app-time-picker',
-  templateUrl: './time-picker.component.html',
-  styleUrls: ['./time-picker.component.css']
+  selector: 'app-time-picker-org',
+  templateUrl: './time-picker-org.component.html',
+  styleUrls: ['./time-picker-org.component.css']
 })
 export class TimePickerComponent implements OnInit {
   // get data form one-on-one course of learner-registration-form 
@@ -17,10 +17,11 @@ export class TimePickerComponent implements OnInit {
   // loading
   public loadingFlag: boolean = false;
   // properties for rendering in HTML
-  public weekdays2 = ['1','2','3','4','5','6','7'];
-  public weekdays = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+  // public weekdays2 = ['1','2','3','4','5','6','7'];
+  // public weekdays = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+  public teachers =[{teacherId:1,teacherName:'kevin'},{teacherId:2,teacherName:'kunbo'}];
   public hours = [7,8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21,22,23];
-  public xIndex: number[] = [0, 1, 2, 3, 4, 5, 6];
+  // public xIndex: number[] = [];
   public yIndex: number[] = [];
   public startTimeToEndTime: string;
 
@@ -49,7 +50,7 @@ export class TimePickerComponent implements OnInit {
   public availableDayArr: any[];
   public errorMessage: string;
   public dayofweek: any;
-  private slotYCount:number=69; //from 7 AM to 24PM ,1 hour have 4 slots
+  private slotYCount:number=68; //from 7 AM to 24PM ,1 hour have 4 slots
   private beginSlotPos = 420; //
 
   constructor(private timePickerService: TimePickerService) {
@@ -59,20 +60,6 @@ export class TimePickerComponent implements OnInit {
     this.loadingFlag = true;
     // console.log('customCourse', this.customCourse, 'teacherList', this.teaList);
     // define yIndex for rendering in HTML
-    for (let i = 0; i < this.slotYCount-1; i++) {
-      this.yIndex.push(i);
-    }
-    // define property of slot
-    for (let i = 0; i < 7; i++) {
-      this.slot[i] = [];
-      this.learnerName[i] = [];
-      this.slotTime[i] = [];
-      for (let j = 0; j < this.slotYCount; j++) {
-        this.slot[i][j] = null;
-        this.learnerName[i][j] = null;
-        this.slotTime[i][j] = `${Math.floor((this.beginSlotPos + j * 15) / 60)} : ${(this.beginSlotPos + j * 15) % 60 == 0 ? '00' : (480 + j * 15) % 60}`;
-      }
-    }
     // get data from @Input
     this.learnerOrgId = Number(this.customCourse.location);
     this.startDate = this.customCourse.beginDate;
@@ -94,12 +81,30 @@ export class TimePickerComponent implements OnInit {
     // get data from server 
     this.getTeacherAvailable();
   }
-
+  renderTable(Data){
+    let slotXCount = Data.length;
+    for (let i = 0; i < this.slotYCount; i++) {
+      this.yIndex.push(i);
+    }
+    // define property of slot
+    for (let i = 0; i < slotXCount; i++) {
+      this.slot[i] = [];
+      this.learnerName[i] = [];
+      this.slotTime[i] = [];
+      for (let j = 0; j < this.slotYCount; j++) {
+        this.slot[i][j] = null;
+        this.learnerName[i][j] = null;
+        this.slotTime[i][j] = `${Math.floor((this.beginSlotPos + j * 15) / 60)} 
+          : ${(j * 15) % 60 == 0 ? '00' : ( j * 15) % 60}`;
+      }
+    }
+  }
   /* get teacher available data from TeacherAvailableCheck API in timePickerService */
   getTeacherAvailable() {
     this.timePickerService.getTeacherAvailableCheck(this.teacherId, this.startDate).subscribe(
       (res) => {
         console.log('TeacherAvailableData', res.Data);
+        this.renderTable(res.Data);
         this.setSpecificTime(res.Data);
         this.renderAvailableDay();
         this.renderSlotProp();
@@ -233,7 +238,7 @@ export class TimePickerComponent implements OnInit {
     let outputObj = {};
     outputObj['BeginTime'] = this.startTime;
     outputObj['Index'] = this.teaList[2];
-    outputObj['DayOfWeek'] = this.weekdays[x];
+    outputObj['TeacherId'] = this.teachers[x];
     this.beginTime.emit(outputObj);
   }
   ////////////////////////////// check if teacher's org includes learner's org/////////////////////////////////

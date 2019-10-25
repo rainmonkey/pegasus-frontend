@@ -24,6 +24,7 @@ export class HeaderbarComponent implements OnInit {
   public closeNotification: boolean;
   // for server data
   public staffId: number;
+  public branchName: string;
 
 
   photoUrl: any = environment.photoUrl;
@@ -47,7 +48,13 @@ export class HeaderbarComponent implements OnInit {
 
   ngOnInit() {
     this.getUserDetail();
-    this.staffId = +localStorage.getItem("staffId")
+    this.staffId = +localStorage.getItem("staffId");
+    if ( localStorage.getItem("Role") =='3' ){
+      this.branchName = '--'+localStorage.getItem("organisations");
+    }
+    else
+      this.branchName = '';
+    
     this.getMsgNumber(this.staffId)
     this.getCloseNotification();
   }

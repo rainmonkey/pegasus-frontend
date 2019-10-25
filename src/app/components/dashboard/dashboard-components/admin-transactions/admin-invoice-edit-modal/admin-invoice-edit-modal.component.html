@@ -70,12 +70,12 @@
       <div formGroupName="Other1" class="form-group row justify-content-center">
         <div class="col-5">
           <label class="mt-2">Others 1</label>
-          <input class="form-control" type="text" formControlName="Other1FeeName" />
+          <input [attr.disabled]='item2.Other1FeeName=="Registration Fees"' class="form-control" type="text" formControlName="Other1FeeName" />
           <div class="text-danger" *ngIf="invoiceEditForm.controls.Other1.errors?.fillFeeName">Please fill fee name</div>
         </div>
         <div class="col-5">
           <label class="mt-2">Others Fee 1</label>
-          <input class="form-control" type="number" min='0' formControlName="Other1Fee" (keyup)="setOwingFee()" (change)="feeOnChange('Other1Fee','Other1')" />
+          <input [attr.disabled]='item2.Other1FeeName=="Registration Fees"' class="form-control" type="number" min='0' formControlName="Other1Fee" (keyup)="setOwingFee()" (change)="feeOnChange('Other1Fee','Other1')" />
           <div class="text-danger" *ngIf="invoiceEditForm.controls.Other1.errors?.fillFee">Please fill fee</div>
         </div>
       </div>

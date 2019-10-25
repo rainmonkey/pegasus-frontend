@@ -163,7 +163,9 @@ nav.navbar .dropdown-menu span {
 nav.navbar .dropdown-menu strong {
   font-weight: 700;
 }
-
+.navbar-brand {
+  font-size: 1.1em;
+}
 nav.navbar .dropdown-menu .msg-profile {
   /* width: 45px;
   height: 45px;

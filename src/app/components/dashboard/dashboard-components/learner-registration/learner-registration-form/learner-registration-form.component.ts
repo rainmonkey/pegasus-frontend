@@ -776,6 +776,7 @@ export class LearnerRegistrationFormComponent implements OnInit, DoCheck, AfterV
       this.whichLearner ? tempObj['TeacherId'] = Number(cc.teacherName) : tempObj['TeacherId'] = parseInt(cc.teacherName);
       this.whichLearner ? tempObj['RoomId'] = Number(cc.room) : tempObj['RoomId'] = parseInt(cc.room);
       tempObj['BeginDate'] = cc.beginDate;
+      tempObj['EndDate'] = cc.endDate;
       let tempScheduleObj = {};
       tempScheduleObj['DayOfWeek'] = parseInt(cc.schedule.dayOfWeek);
       tempScheduleObj['BeginTime'] = this.transformTime(cc.schedule.beginTime.hour) + ':' + this.transformTime(cc.schedule.beginTime.minute) + ':' + this.transformTime(cc.schedule.beginTime.second);//this.courseTime;

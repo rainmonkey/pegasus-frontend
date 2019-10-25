@@ -27,7 +27,7 @@ export class AdminPaymentConfirmModalComponent implements OnInit {
       this.loadingGifFlag = true;
       this.submitByMode(this.comment);
     } else {
-      this.submitByMode("confirmed");
+      this.submitByMode("");
     }
   }
   submitByMode(formValue) {
