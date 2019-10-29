@@ -15,4 +15,7 @@ export class TimePickerService {
   getTeacherAvailableCheck(teacherId: number, startDate: any): Observable<any>{
     return this.http.get(this.baseUrl + `TeacherAvailableCheck/${teacherId}/${startDate}`) 
   }
+  getTeacherByOrg(orgId,dayofweek){
+    return this.http.get(this.baseUrl + `Teacher/GetTeacherByOrgDayOfWeek/${orgId}/${dayofweek}`) 
+  }
 }

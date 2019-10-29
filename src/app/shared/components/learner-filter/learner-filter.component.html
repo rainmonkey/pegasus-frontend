@@ -1,0 +1,39 @@
+<div class="card filter-bar">
+    <div class="card-body">
+        <div class="row" (change)='onChange()'>
+            <!-- <div > -->
+              <div class="col-1"></div>
+              <label class="col-2">Branch:</label>
+              <select class="col-3" [(ngModel)]="selectedItem.branchId" >
+                  <option selected value=-1>All</option>
+                  <option *ngFor='let branch of branchs' value={{branch.id}} name="branch" >{{branch.name}}</option>
+                </select>
+            <!-- </div>
+            <div > -->
+               <label class="col-2">Course:</label>
+               <select class="col-3" [(ngModel)]="selectedItem.courseTypeId">
+                  <option selected value=-1>All</option>
+                  <option *ngFor='let courseType of courseTypes' value={{courseType.id}}  name="courseType" >{{courseType.name}}</option>
+                </select>
+                <div class="col-1"></div>
+                <div class="col-1"></div>
+              <!-- </div>
+             <div > -->
+                <label class="col-2">Instrument:</label>
+                <select class="col-3" [(ngModel)]="selectedItem.instrumentId">
+                    <option selected value=-1>All</option>
+                    <option *ngFor='let instrument of instruments' value={{instrument.id}} name="instrument" >{{instrument.name}}</option>
+                  </select>
+                <!-- </div>
+             <div > -->
+               <label class="col-2">Teacher:</label>
+               <select class="col-3" [(ngModel)]="selectedItem.teacherId">
+                  <option selected value=-1>All</option>
+                  <option *ngFor='let teacher of teachers' value={{teacher.id}} name="teacher" >{{teacher.name}}</option>
+                </select>
+                <div class="col-1"></div>
+             <!-- </div> -->
+             <!--  -->
+        </div>
+    </div>  
+</div>

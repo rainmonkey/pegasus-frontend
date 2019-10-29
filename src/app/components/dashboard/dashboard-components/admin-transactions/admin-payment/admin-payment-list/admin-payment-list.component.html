@@ -20,8 +20,8 @@
       <div style="width:75%; float: right;">
         <span>
           <p class="label_p">
-            <input type="checkbox" class="label_p" (change)="searchPeriod=!searchPeriod">Search Option: a period or a
-            day:
+            <input type="checkbox" class="label_p" (change)="searchPeriod=!searchPeriod" 
+            (change)="onSubmit()" >Search Option: a period or a day:
           </p>
         </span>
         <form style="float:right;" [formGroup]='searchForm'>

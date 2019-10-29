@@ -1,0 +1,14 @@
+<div style="margin: 10px;margin-bottom:-20px">
+  <label for="branch:">Select a Branch:</label>
+  <select id="branch" [(ngModel)]='selectedOrg'>
+    <option *ngFor="let org of orgs" value={{org.OrgId}}>
+      {{org.OrgName}}
+    </option>
+  </select>
+</div>
+<div *ngFor="let org of orgs">
+  <div *ngIf="org.OrgId==selectedOrg">
+      <!-- <div [style.visibility]="org.OrgId==selectedOrg ? 'visible' : 'hidden'">     -->
+      <app-sessions-calendar-view-admin [selectedOrg]=org.OrgId></app-sessions-calendar-view-admin>
+  </div>  
+</div>

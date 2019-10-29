@@ -1,4 +1,4 @@
-import {Component, OnInit, ViewChild, ViewEncapsulation} from '@angular/core';
+import {Component, OnInit, ViewChild, ViewEncapsulation, Input} from '@angular/core';
 import {OptionsInput} from '@fullcalendar/core';
 import timeslot from '@fullcalendar/resource-timegrid';
 import interactionPlugin from '@fullcalendar/interaction';
@@ -28,11 +28,13 @@ import { JsonHubProtocol } from '@aspnet/signalr';
   styleUrls: ['./sessions-calendar-view-admin.component.css']
 })
 export class SessionsCalendarViewAdminComponent implements OnInit {
+  @Input() selectedOrg;
   debounce = debounce();
   searchForm: FormGroup; // searchform by formbuilder
   reason: string;  // session edit reason
   isloadingSmall = false;  // when drag the event, it will pop up the window for confirm (this loading icon is for this modal)
   @ViewChild('content') content; // date-pick modal
+  
   @ViewChild('confirmModal') confirmModal;
   @ViewChild('methodModal') methodModal;
   eventInfo;
@@ -45,6 +47,8 @@ export class SessionsCalendarViewAdminComponent implements OnInit {
   sessionEditModel;
   IsConfirmEditSuccess = false;
   learnerProfileLoading = false;
+  orgs:any;
+  
   @ViewChild(CalendarComponent) fullcalendar: CalendarComponent;
   t = null;
   constructor(
@@ -58,10 +62,13 @@ export class SessionsCalendarViewAdminComponent implements OnInit {
     this.searchForm = this.fb.group({
       dateOfLesson: ['']
     })
-    this.sessionService.getReceptionistRoom().subscribe(data => {
+    
+    if (this.selectedOrg==null)
+      this.selectedOrg=JSON.parse(localStorage.getItem("OrgId"))[0];
+    this.sessionService.getReceptionistRoom(this.selectedOrg).subscribe(data => {
       this.resourceData = data.Data;
       const date = this.datePipe.transform(new Date(), 'yyyy-MM-dd');
-      this.sessionService.getReceptionistLesson(date).subscribe(event => {
+      this.sessionService.getReceptionistLesson(date,this.selectedOrg).subscribe(event => {
         this.eventsModel = this.generateEventData(event.Data);
         this.teacherAvoidDuplicate();
       });
@@ -130,7 +137,7 @@ export class SessionsCalendarViewAdminComponent implements OnInit {
           this.fullcalendar.calendar.setOption('height', window.innerHeight - 110);
         },
         header: {
-          left: 'today prev,next DayPickerButton title',
+          left: 'today prev,next DayPickerButton title ',
           center: '',
           right: ''
         },
@@ -138,7 +145,9 @@ export class SessionsCalendarViewAdminComponent implements OnInit {
       };
     });
   }
-
+  ngOnChanges():void {
+    this.ngOnInit();
+  }
   selectSlot = (info) =>{
     const Date = this.datePipe.transform(this.fullcalendar.calendar.getDate(), 'yyyy-MM-dd');
     const timeDiffer: number = info.end - info.start;
@@ -159,7 +168,7 @@ export class SessionsCalendarViewAdminComponent implements OnInit {
       endTimeStamp: info.end,
       startStr: info.startStr,
       endStr: info.endStr,      
-      orgId: JSON.parse(localStorage.getItem('OrgId'))[0],
+      orgId: this.selectedOrg,
       orgName: localStorage.getItem('organisations'),
       roomId:info.resource._resource.id,
       roomName:info.resource._resource.title
@@ -224,7 +233,7 @@ export class SessionsCalendarViewAdminComponent implements OnInit {
       s.title = '';
       s.title += 'Tutor: ' + s.teacher + ' ' + type;
       if (s.IsGroup == false) {
-        s.title += '\nStdudent: ' + s.learner[0].FirstName;
+        s.title += '\nStudent: ' + s.learner[0].FirstName;
       }
     });
     return data;
@@ -236,7 +245,7 @@ export class SessionsCalendarViewAdminComponent implements OnInit {
     })
     this.isloading = true;
     this.fullcalendar.calendar.removeAllEvents();
-    this.sessionService.getReceptionistLesson(date).subscribe(event => {
+    this.sessionService.getReceptionistLesson(date,this.selectedOrg).subscribe(event => {
       this.eventData = this.generateEventData(event.Data);
       this.eventsModel = this.eventData;
       this.isloading = false;
@@ -380,8 +389,11 @@ export class SessionsCalendarViewAdminComponent implements OnInit {
       });
     });
   }
-  makeupDone = (e)=>{
+  refreshData = ()=>{
+    // this.ngOnInit
+    console.log(this.selectedOrg)
     const Date = this.datePipe.transform(this.fullcalendar.calendar.getDate(), 'yyyy-MM-dd');
     this.getEventByDate(Date);
   }
+ 
 }

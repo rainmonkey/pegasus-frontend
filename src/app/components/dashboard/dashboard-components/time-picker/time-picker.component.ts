@@ -104,6 +104,7 @@ export class TimePickerComponent implements OnInit {
         this.renderAvailableDay();
         this.renderSlotProp();
         this.loadingFlag = false;
+        console.log(this.xIndex,this.yIndex);
       },
       (err) => {
         this.backendErrorHandler(err);

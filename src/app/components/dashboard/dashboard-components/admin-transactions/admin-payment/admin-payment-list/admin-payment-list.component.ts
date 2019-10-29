@@ -50,6 +50,7 @@ export class AdminPaymentListComponent implements OnInit {
     private activatedRoute: ActivatedRoute
   ) { }
   ngOnInit() {
+    this.init();
     this.searchForm = this.fb.group(this.formGroupAssemble());
   }
   init(){
@@ -116,7 +117,7 @@ export class AdminPaymentListComponent implements OnInit {
         begin = vailadValue.EndDate.year + "-" + vailadValue.EndDate.month + "-" + vailadValue.EndDate.day;
       let end = vailadValue.EndDate.year + "-" + vailadValue.EndDate.month + "-" + vailadValue.EndDate.day;
       const enddate = new NgbDate(vailadValue.EndDate.year, vailadValue.EndDate.month, vailadValue.EndDate.day)
-      if (enddate.before(vailadValue.BeginDate)) {
+      if (this.searchPeriod ==true && enddate.before(vailadValue.BeginDate)) {
         Swal.fire({
           title: 'End Date must be later than Begin Date!',
           type: 'error',

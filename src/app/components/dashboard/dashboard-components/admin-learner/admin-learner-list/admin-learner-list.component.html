@@ -29,7 +29,12 @@
         </div>
 
         <div class='t_info_search_by'>
-          <span id='searchingSelection' (click)='onSearch(null)'><span class='fas fa-search'></span></span>
+          <span id='searchingSelection' (click)='onSearch(null)'>
+            <span class='fas fa-search'></span>
+            <input type="checkbox" class="t-isAllOption"
+              [(ngModel)]='allStudentsOption' (change)='onSearch(null)'>All Branch
+        </span>
+      <span (click)="isFilter=!isFilter"><i  class="fas fa-filter"></i>Filter</span>
         </div>
       </div>
 
@@ -37,8 +42,13 @@
         <button type="button" style="width:224.09px" class="btn btn-outline-primary t_info_addnew_btn" (click)='regiModal(1,null)'>Old Learner
         Registration</button>
       </div>
-
-
+    </div>
+      <div *ngIf='isFilter' class='row'>
+          <div class='col-12'>
+            <app-learner-filter (filter)='onFilter($event)'></app-learner-filter>
+          </div>
+      </div>
+      <div class='row'>
       <!--info page table-->
       <div class='col-12'>
         <table class='table table-striped'>

@@ -23,19 +23,19 @@ export class SessionsService {
   }
 
   // Session View Admin & Session View Tutor
-  getReceptionistRoom() {
+  getReceptionistRoom(orgId) {
     // console.log(this.httpHeaders);
-    return this.http.get<any>(this.baseUrl + "room/forCalendar", {
+    return this.http.get<any>(this.baseUrl + "room/forCalendar/"+orgId, {
       headers: this.httpHeaders
     });
   }
 
-  getReceptionistLesson(date) {
+  getReceptionistLesson(date,orgId) {
     // console.log(this.httpHeaders);
     return this.http.get<any>(
       this.baseUrl +
         "lesson/GetLessonsForReceptionist/" +
-        localStorage.getItem("userID") +
+        orgId +
         "/" +
         date,
       { headers: this.httpHeaders }
@@ -159,5 +159,10 @@ export class SessionsService {
         "/" +
         EndTime
     );
+  }
+  getOrgs(){
+    return this.http.get<any>(
+      this.baseUrl + "orgs/"
+    );    
   }
 }

@@ -1,13 +1,13 @@
-<div class="time-picker" *ngIf="availableDayArr">
+<div class="time-picker">
   <div class="weekly-schedule">
     <div class="hour-labels">
       <div class="hour-label" *ngFor="let hour of hours">{{hour}}:00</div>
     </div>
     <div class="days">
-      <div class="day" *ngFor="let x of xIndex; let i = index">
+      <div class="day" *ngFor="let teacher of teachers; let i = index">
 
         <div class=day-label [ngClass]="{'bg-success text-dark':x==dayofweek-1}">
-          {{weekdays[x]}}
+          {{teacher.TeacherName}}
           <div class="location" [ngClass]="{'bg-success text-light':x== dayofweek-1}">
             <div *ngFor="let availableObj of availableDayArr">
               <div *ngIf="x == availableObj.DayOfWeek-1">

@@ -6,11 +6,13 @@ import { TimePickerService } from 'src/app/services/http/time-picker.service';
   templateUrl: './time-picker-org.component.html',
   styleUrls: ['./time-picker-org.component.css']
 })
-export class TimePickerComponent implements OnInit {
+export class TimePickerOrgComponent implements OnInit {
   // get data form one-on-one course of learner-registration-form 
-  @Input() command;
-  @Input() customCourse;
-  @Input() teaList;
+  // @Input() command;
+  @Input() course;
+  @Input() orgId;
+  @Input() startDate;
+  @Input() dayOfWeek;
   // transmit begin time picked by user from time-picker to learner-registration-form
   @Output() beginTime = new EventEmitter<any>();
 
@@ -18,10 +20,10 @@ export class TimePickerComponent implements OnInit {
   public loadingFlag: boolean = false;
   // properties for rendering in HTML
   // public weekdays2 = ['1','2','3','4','5','6','7'];
-  // public weekdays = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
-  public teachers =[{teacherId:1,teacherName:'kevin'},{teacherId:2,teacherName:'kunbo'}];
+//   public weekdays = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+  
   public hours = [7,8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21,22,23];
-  // public xIndex: number[] = [];
+  //public xIndex: number[] = [];
   public yIndex: number[] = [];
   public startTimeToEndTime: string;
 
@@ -31,14 +33,13 @@ export class TimePickerComponent implements OnInit {
   public learnerName: any[] = [];
 
   // assign data to local props from @Input
-  public learnerOrgId: number;
-  public teacherName: string;
+
+
   public duration: number;
-  public teacherOrgId: number;
 
   // assign prop for getting data from server as parms
   public teacherId: number;
-  public startDate: any;
+  // public startDate: any;
 
   // prop will be output to parent component (learner-registration-form)
   public startTime: any;
@@ -49,38 +50,46 @@ export class TimePickerComponent implements OnInit {
   public tempChangeArr: any[] = [];
   public availableDayArr: any[];
   public errorMessage: string;
+
   public dayofweek: any;
   private slotYCount:number=68; //from 7 AM to 24PM ,1 hour have 4 slots
   private beginSlotPos = 420; //
+  public teachers:any[]=[];
 
   constructor(private timePickerService: TimePickerService) {
   }
+  getTeachersByOrg(){
+    this.course= {CourseId:1,Duration:1};
+    this.timePickerService.getTeacherByOrg(this.orgId,this.dayOfWeek).subscribe(
+      res =>{
+        this.teachers = res['Data'];
+        this.setxIndex();
+      },
+      err =>{
+        alert(`Server error:${err}!`);
+      }
+    )
+  }
+  setxIndex(){
+    // this.xIndex = this.teachers;
 
+    // for (let i = 0; i < this.teachers.length; i++) {
+    //   this.xIndex.push(i);
+    // }      
+    for (let i = 0; i < this.slotYCount; i++) {
+      this.yIndex.push(i);
+    }  
+  }
   ngOnInit() {
     this.loadingFlag = true;
-    // console.log('customCourse', this.customCourse, 'teacherList', this.teaList);
-    // define yIndex for rendering in HTML
-    // get data from @Input
-    this.learnerOrgId = Number(this.customCourse.location);
-    this.startDate = this.customCourse.beginDate;
-    this.teacherId = this.teaList[0].TeacherId;
-    if (this.command === 1) {
-      this.teacherName = this.teaList[0].TeacherName
-    } else {
-      if(this.teaList[0].TeacherName!==undefined){
-        this.teacherName=this.teaList[0].TeacherName
-      }
-      else{
-        this.teacherName = this.teaList[0].Teacher.FirstName;
-      }
-      
-    }
-    this.duration = this.teaList[1].Duration;
-    this.dayofweek = this.customCourse.DayOfWeek;
+    this.getTeachersByOrg();
 
-    // get data from server 
-    this.getTeacherAvailable();
+
+     this.duration = this.course.Duration;
+  
+    // this.getTeacherAvailable();
   }
+
   renderTable(Data){
     let slotXCount = Data.length;
     for (let i = 0; i < this.slotYCount; i++) {
@@ -237,7 +246,7 @@ export class TimePickerComponent implements OnInit {
   confirm(x: number, y: number) {
     let outputObj = {};
     outputObj['BeginTime'] = this.startTime;
-    outputObj['Index'] = this.teaList[2];
+    // outputObj['Index'] = this.teaList[2]; 
     outputObj['TeacherId'] = this.teachers[x];
     this.beginTime.emit(outputObj);
   }
@@ -246,7 +255,7 @@ export class TimePickerComponent implements OnInit {
     let availableOrgId = availableObj.Orgs.map((o) => o.OrgId);
     /* 判断 availableDay org 是否包含 learner org */
     // availableDay org includes learner org
-    if (availableOrgId.includes(this.learnerOrgId)) {
+    if (availableOrgId.includes(this.orgId)) {
       /* 判断 available org 是否有 arranged */
       this.checkAvailableHasArranged(x, y, availableObj, availableX);
     }
@@ -272,12 +281,12 @@ export class TimePickerComponent implements OnInit {
   checkArrangedOrg(x: number, y: number, arrangedObj) {
     let arrangedOrgId = arrangedObj['OrgId'];
     if (arrangedOrgId==undefined) return;
-    if ((arrangedOrgId == this.learnerOrgId)) {
+    if ((arrangedOrgId == this.orgId)) {
       // arranged 前后可选
       this.setDuration('isAvailable', 'ableToPick', x, y)
     } else {
       // arranged 前后一小时不能选
-      console.log(arrangedOrgId,this.learnerOrgId);
+      console.log(arrangedOrgId,this.orgId);
       this.aroundArrangedCanNotPick();
       this.setDuration('isAvailable', 'ableToPick', x, y)
     }

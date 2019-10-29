@@ -1,12 +1,13 @@
 <div class="container">
-<form [formGroup]="poi">
-  <label>Date:</label>&nbsp;
-  <select formControlName="TermId" style="width: 360px;">
-    <option *ngFor="let i of qweqwe" value="{{i.TermId}}">{{i.BeginDate}} - {{i.EndDate}}</option>
-  </select><br>
-  <button type="submit" (click)="onSubmit()">飞一样的感觉</button>
-</form>
-
+  <form [formGroup]="poi">
+    <label>Date:</label>&nbsp;
+    <select formControlName="TermId" style="width: 360px;">
+      <option *ngFor="let i of qweqwe" value="{{i.TermId}}">{{i.BeginDate}} - {{i.EndDate}}</option>
+    </select><br>
+    <button type="submit" (click)="onSubmit()">飞一样的感觉</button>
+  </form>
+  <app-time-picker-org [course]=1 [orgId]=1 [startDate]='2009-10-20' [dayOfWeek]=2></app-time-picker-org>
+</div>
 
 <!--
 <div>
@@ -25,6 +26,6 @@
 <div class='loaderSmall'>
 </div> -->
 
-<app-reason-Input  [(ngModel)]="ReasonValue"></app-reason-Input>
+<!-- <app-reason-Input  [(ngModel)]="ReasonValue"></app-reason-Input>
 <button class='btn' (click)="log()">ClickMe</button>
-</div>
+</div> -->

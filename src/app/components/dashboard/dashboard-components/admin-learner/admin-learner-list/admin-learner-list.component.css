@@ -89,6 +89,10 @@ table{
     margin-left: 8px;
     color:#55554f;
 }
+.t-isAllOption{
+    margin-left:15px;
+    size:20px
+}
 .t_info_table_btn:hover{
     cursor: pointer;
 }

@@ -15,6 +15,7 @@ import { NgbModule, NgbActiveModal } from "@ng-bootstrap/ng-bootstrap";
 import { FullCalendarModule } from "ng-fullcalendar";
 import { ChartsModule } from "ng2-charts";
 import { routing } from "../app/app-routing.module";
+
 // Components
 import { AppComponent } from "./app.component";
 import { FooterComponent } from "./components/basic/footer/footer.component";
@@ -187,6 +188,9 @@ import { CKEditorModule } from "@ckeditor/ckeditor5-angular";
 import { MakeupLessonComponent } from './shared/components/makeup-lesson/makeup-lesson.component';
 import { AdminNoticeComponent } from './components/dashboard/dashboard-components/admin-notice/admin-notice.component';
 import { TodoListComponent } from './components/dashboard/dashboard-components/admin-notice/todo-list/todo-list.component';
+import { LearnerFilterComponent } from './shared/components/learner-filter/learner-filter.component';
+import { SessionsTopviewsComponent } from './components/dashboard/dashboard-components/sessions/sessions-topviews/sessions-topviews.component';
+import { TimePickerOrgComponent } from './components/dashboard/dashboard-components/time-picker-org/time-picker-org.component';
 
 @NgModule({
   declarations: [
@@ -324,7 +328,7 @@ import { TodoListComponent } from './components/dashboard/dashboard-components/a
     ConflictCheckComponent,
     StockApplicationFormComponent,
     PayListComponent,
-
+    LearnerFilterComponent,
     NewLearnerRegistrationModalComponent,
     NewRegistrationFormComponent,
     RegistrationToParentComponent,
@@ -343,7 +347,7 @@ import { TodoListComponent } from './components/dashboard/dashboard-components/a
     BookcourseComponent,
     BookcoursetestComponent,
     GroupcourseComponent,
-
+    SessionsTopviewsComponent,
     //  new registration
     NewLearnerRegistrationModalComponent,
     NewRegistrationFormComponent,
@@ -364,7 +368,8 @@ import { TodoListComponent } from './components/dashboard/dashboard-components/a
     ReasonInputComponent,
     PublishPanelComponent,
     AdminNoticeComponent,
-    TodoListComponent
+    TodoListComponent,
+    TimePickerOrgComponent
   ],
   imports: [
     NgbModule,

@@ -1,3 +1,4 @@
+import { TeacherCourseModalComponent } from './../../teachers/teacher-course-modal/teacher-course-modal.component';
 import { Component, OnInit } from '@angular/core';
 import { NgbootstraptableService } from 'src/app/services/others/ngbootstraptable.service';
 import { NgbModal, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
@@ -43,6 +44,9 @@ export class AdminLearnerListComponent implements OnInit {
   // save users searched name
   public savedName;
   public savedOpt;
+  //default only list current branch student ,if checked list all student;
+  public allStudentsOption:boolean = false;
+  public isFilter:boolean = false;
   // // sent active modal confirm satuation to admin learner component;
 
   // @Output() activeModalEvent: EventEmitter<any> = new EventEmitter;
@@ -65,19 +69,18 @@ export class AdminLearnerListComponent implements OnInit {
   }
   //get data from server
   getDataFromServer() {
-    console.log('ajfoi')
+    // console.log('ajfoi')
     this.LearnerListService.getLearnerList().subscribe(
       (res) => {
         //@ts-ignore
         this.learnerList = res.Data;
         //@ts-ignore
         this.learnerListCopy = this.learnerList;
+        this.learnerList = this.filterLearner(this.learnerList);
         //@ts-ignore
-        this.learnerListLength = res.Data.length;
+        this.learnerListLength = this.learnerList.length;
         this.loadingFlag = false;
-        if(this.savedName){
-          console.log(this.savedName)
-          this.searchAuto();}
+        this.searchAuto();
       },
       (err) => {
         console.log('b')
@@ -119,16 +122,19 @@ export class AdminLearnerListComponent implements OnInit {
         { searchString, searchBy } = initValue;
 
       this.learnerList = this.ngTable.searching(this.learnerListCopy, searchBy, searchString);
+      this.learnerList = this.filterLearner(this.learnerList);
       this.learnerListLength = this.learnerList.length;
       optionsObj['value'] = searchBy;
     }
   }
   // get memory of user searched name
   searchAuto(){
-    this.learnerList = this.ngTable.searching(this.learnerListCopy, this.savedOpt, this.savedName);
+    if(this.savedName){
+      this.learnerList = this.ngTable.searching(this.learnerListCopy, this.savedOpt, this.savedName);
+      this.savedOpt = this.savedOpt;
+    }
+    this.learnerList = this.filterLearner(this.learnerList);    
     this.learnerListLength = this.learnerList.length;
-    this.savedOpt = this.savedOpt;
-    console.log(this.learnerList)
   }
 
   /*
@@ -428,4 +434,75 @@ export class AdminLearnerListComponent implements OnInit {
       }
     )    
   }
+  getBranch(){
+    let orgIds  = localStorage.getItem("OrgId");
+    return orgIds
+  }
+  filterLearner(learners){
+    if (this.allStudentsOption) return learners;
+    let orgIds = this.getBranch()
+    return learners.filter(learner => {
+      return orgIds.includes(learner.OrgId);
+    });
+  }
+  onFilter(event){
+
+    this.learnerList = this.teacherFiler(event.teacherId,this.learnerListCopy);
+    this.learnerList = this.branchFiler(event.branchId,this.learnerList);
+    this.learnerList = this.courseFiler(event.courseTypeId,this.learnerList);
+    this.learnerList = this.instrumentFiler(event.instrumentId,this.learnerList);
+    this.learnerListLength = this.learnerList.length;
+  }
+  teacherFiler(teacherId,learners){
+    if (teacherId==-1) return learners;
+    return learners.filter(learner => {
+      if (learner.One2oneCourseInstance==undefined &&
+        learner.One2oneCourseInstance==null)
+        return false;
+      // return learner.One2OneCourseInstance.include;
+      return (
+        
+        learner.One2oneCourseInstance.find( 
+             courseInstance  => courseInstance.TeacherId
+                == teacherId
+          ) != undefined);
+    });
+  }
+  branchFiler(branchId,learners){
+    if (branchId==-1) return learners;
+    return learners.filter(learner => {
+      return learner.OrgId==branchId;
+    });
+  }
+  courseFiler(courseTypeId,learners){
+    if (courseTypeId==-1) return learners;
+    
+    return learners.filter(learner => {
+      if (courseTypeId ==1){
+        if (learner.One2oneCourseInstance!=null &&learner.One2oneCourseInstance.length >0)
+        return true;
+      }
+      else{
+        if (learner.LearnerGroupCourse!=null &&learner.LearnerGroupCourse.length>0)
+          return true;
+      }
+      return false;
+    });
+  }
+  instrumentFiler(instrumentId,learners){
+    if (instrumentId==-1) return learners;
+    return learners.filter(learner => {
+      if (learner.One2oneCourseInstance==undefined &&
+        learner.One2oneCourseInstance==null)
+        return false;
+      // if (learner.LearnerId !=10069) return false;
+      return (
+        
+        learner.One2oneCourseInstance.find( 
+             Course  => Course.Course.CourseCategoryId
+                == instrumentId
+          ) != undefined);
+    });
+  }
+
 }

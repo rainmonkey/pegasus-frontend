@@ -52,6 +52,7 @@ import { PayListComponent } from "./components/dashboard/dashboard-components/ad
 import { TrialInfoComponent } from "./components/dashboard/dashboard-components/trial-course/trial-info/trial-info.component";
 import { PublishPanelComponent } from "./components/dashboard/dashboard-components/admin-publish/publish-panel/publish-panel.component";
 import { TodoListComponent } from './components/dashboard/dashboard-components/admin-notice/todo-list/todo-list.component';
+import { SessionsTopviewsComponent } from './components/dashboard/dashboard-components/sessions/sessions-topviews/sessions-topviews.component';
 
 //canActivate: [DashboardRestrictGuard],
 const routes: Routes = [
@@ -170,7 +171,12 @@ const routes: Routes = [
             path: "calendar/tutor",
             component: SessionsCalendarViewTutorComponent,
             canActivate: [UserAuthGuard]
-          }
+          },
+          {
+            path: "calendar/topview",
+            component: SessionsTopviewsComponent,
+            canActivate: [UserAuthGuard]
+          },
         ]
       },
       // Courses Area

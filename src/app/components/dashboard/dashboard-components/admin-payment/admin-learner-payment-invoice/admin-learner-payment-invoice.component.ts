@@ -117,6 +117,7 @@ export class AdminLearnerPaymentInvoiceComponent implements OnInit, OnDestroy {
   postPaymentMethod(item) {
     this.postPayment = {
       StaffId: Number(localStorage.getItem('staffId')),
+      OrgId: Number(JSON.parse(localStorage.getItem('OrgId'))[0]),
       LearnerId: item.LearnerId,
       InvoiceId: item.InvoiceId,
       PaymentMethod: this.paymentMethodI.value,
@@ -182,6 +183,14 @@ export class AdminLearnerPaymentInvoiceComponent implements OnInit, OnDestroy {
     if (this.errMsgM || this.errMsgO) {
       return;
     }
+    if (localStorage.getItem("Role") != '3') {
+      Swal.fire({
+        title: 'Error!',
+        text: 'Sorry! Only Receiptionist Can Do Payment!' ,
+        type: 'error',
+      });   
+    }
+
     this.openP(contentP, item);
     //   if(this.invoiceForm.invalid || this.invoiceForm.value.owing === 0) {
     //     this.errMsgM = true;
