@@ -33,7 +33,7 @@
                     <p>Already Paid: ${{item.PaidFee}}</p>
                     <p>Unpaid Amount: ${{item.OwingFee}}</p>
                     <!-- <p>Credit: ${{credit}}}</p> -->
-                    <div class="form-check">
+                    <div *ngIf='credit>0' class="form-check">
                       <input class="form-check-input" type="checkbox"  (click)='useCredit($event,j)' id="defaultCheck2">
                     
                       <label class="form-check-label" for="defaultCheck2">
@@ -117,7 +117,7 @@
                 <small [class.d-none]="paymentMethodI.valid || paymentMethodI.untouched" class="text-danger">You must select the payment type</small>
                 <p>Already Paid: ${{item.PaidFee}}</p>
                 <p>Unpaid Amount:: ${{item.OwingFee}}</p>
-                <div class="form-check">
+                <div *ngIf='credit>0' class="form-check">
                     <input class="form-check-input" type="checkbox" (click)='useCredit($event,j)' id="defaultCheck2">
                   
                     <label class="form-check-label" for="defaultCheck2">

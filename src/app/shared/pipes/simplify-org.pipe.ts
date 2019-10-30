@@ -8,7 +8,7 @@ export class SimplifyOrgPipe implements PipeTransform {
   transform(value: any, args?: any): any {
     switch(value){
       case 1:
-        return "Central";
+        return "Mt.Albert";
         break;
       case 2:
         return "Epsom";
@@ -17,16 +17,16 @@ export class SimplifyOrgPipe implements PipeTransform {
         return "Henderson";
         break;
       case 4:
-        return "North Shore";
+        return "Sunnynook";
         break;
       case 5:
-        return "AMA Pakuranga";
+        return "AMA";
         break;
       case 6:
-        return "Auckland City";
+        return "City";
         break;
       case 7:
-        return "East Auckland";
+        return "Botany";
         break;
       }
   }
