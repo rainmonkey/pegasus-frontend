@@ -88,27 +88,32 @@ export class DownloadPDFService {
       body.push([invoice.LessonNoteFeeName, '$'+invoice.NoteFee.toFixed(2), 1, '$'+invoice.NoteFee.toFixed(2)])
     }
 
-    if (invoice.Other1Fee) {
-      currentHeight += interval
-      // doc.text(`${invoice.Other1FeeName}`, 20, currentHeight)
-      // doc.text(`$${invoice.Other1Fee}`, 90, currentHeight)
-      body.push([invoice.Other1FeeName, '$'+invoice.Other1Fee.toFixed(2),1, '$'+invoice.Other1Fee.toFixed(2)])
-    }
+    // if (invoice.Other1Fee) {
+    //   currentHeight += interval
+    //   // doc.text(`${invoice.Other1FeeName}`, 20, currentHeight)
+    //   // doc.text(`$${invoice.Other1Fee}`, 90, currentHeight)
+    //   body.push([invoice.Other1FeeName, '$'+invoice.Other1Fee.toFixed(2),1, '$'+invoice.Other1Fee.toFixed(2)])
+    // }
 
-    if (invoice.Other2Fee) {
-      currentHeight += interval
-      // doc.text(`${invoice.Other2FeeName}`, 20, currentHeight)
-      // doc.text(`$${invoice.Other2Fee}`, 90, currentHeight)
-      body.push([invoice.Other2FeeName,'$'+invoice.Other2Fee.toFixed(2), 1, '$'+invoice.Other2Fee.toFixed(2)])
-    }
+    // if (invoice.Other2Fee) {
+    //   currentHeight += interval
+    //   // doc.text(`${invoice.Other2FeeName}`, 20, currentHeight)
+    //   // doc.text(`$${invoice.Other2Fee}`, 90, currentHeight)
+    //   body.push([invoice.Other2FeeName,'$'+invoice.Other2Fee.toFixed(2), 1, '$'+invoice.Other2Fee.toFixed(2)])
+    // }
 
-    if (invoice.Other3Fee) {
-      currentHeight += interval
-      // doc.text(`${invoice.Other3FeeName}`, 20, currentHeight)
-      // doc.text(`$${invoice.Other3Fee}`, 90, currentHeight)
-      body.push([invoice.Other3FeeName, '$'+invoice.Other3Fee.toFixed(2),1, '$'+invoice.Other3Fee.toFixed(2)])
+    // if (invoice.Other3Fee) {
+    //   currentHeight += interval
+    //   // doc.text(`${invoice.Other3FeeName}`, 20, currentHeight)
+    //   // doc.text(`$${invoice.Other3Fee}`, 90, currentHeight)
+    //   body.push([invoice.Other3FeeName, '$'+invoice.Other3Fee.toFixed(2),1, '$'+invoice.Other3Fee.toFixed(2)])
+    // }
+    for (let i=1; i<=18; i++){
+      let col1= 'Other'+i+'FeeName';
+      let col2 = 'Other'+i+'Fee';
+      currentHeight = addItem(invoice,body,interval,currentHeight,col1,col2);
     }
-
+    
 
     doc.setFontSize(16);
     doc.autoTable({
@@ -155,6 +160,13 @@ function splitAddress(address:string) {
       firstPart:number+','+road,
       secondPart:Suburb+(city!=null?','+city:'')        
   }
+};
+function addItem(invoice,body,interval,currentHeight,col1,col2) {
+  if (invoice[col2] !=null && invoice[col2] !=0 )  {
+    currentHeight += interval;
+    body.push([invoice[col1], '$'+invoice[col2].toFixed(2),1, '$'+invoice[col2].toFixed(2)]);
+  }
+  return currentHeight;
 };
 function formatDate(strdate:string) {
   let monthNames = ["January", "February", "March", "April", "May","June","July", "August", "September", "October", "November","December"];

@@ -358,7 +358,7 @@ export class AdminInvoiceEditModalComponent implements OnInit {
   }
 
   validateDisount(){
-    if (this.invoiceEditForm.value.Other17.Other17Fee >0 &&
+    if (this.invoiceEditForm.value.Other17.Other17Fee >0 ||
       this.invoiceEditForm.value.Other18.Other18Fee >0){
         swal.fire({
           title: 'Discount Amount must be negative!',

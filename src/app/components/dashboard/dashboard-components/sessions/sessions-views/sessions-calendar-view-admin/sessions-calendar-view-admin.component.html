@@ -93,8 +93,8 @@
     <h5 class="text-center" *ngIf="eventInfo.event.extendedProps.IsChanged !=1">{{eventInfo.event.extendedProps.info.BeginTime|date: "MMM d, y"}}</h5>
 
     <div *ngIf="eventInfo.event.extendedProps.learner">
-      <div *ngIf="eventInfo.event.extendedProps.IsCanceled==1 ||
-          eventInfo.event.extendedProps.IsConfirm==1 ||
+      <div *ngIf="(eventInfo.event.extendedProps.IsCanceled==1 ||
+          eventInfo.event.extendedProps.IsConfirm==1 )&&
           eventInfo.event.extendedProps.Reason !='undefined'">
         <h5 *ngIf="eventInfo.event.extendedProps.Reason" class="text-center">Reason</h5>
         <p class="text-center">{{eventInfo.event.extendedProps.Reason}}</p>
@@ -130,10 +130,10 @@
     </div>
 
     <div *ngIf="eventInfo.event.extendedProps.learners">
-      <div *ngIf="eventInfo.event.extendedProps.IsCanceled==1 || 
-        eventInfo.event.extendedProps.IsConfirm==1||
+      <div *ngIf="(eventInfo.event.extendedProps.IsCanceled==1 || 
+        eventInfo.event.extendedProps.IsConfirm==1 )&&
         eventInfo.event.extendedProps.Reason !='undefined'">
-        <h5 class="text-center">Reason (Cancel or Complete)</h5>
+        <h5 class="text-center">Reason </h5>
         <p class="text-center">{{eventInfo.event.extendedProps.Reason}}</p>
       </div>
       <h5 class="text-center">Teacher Name</h5>
