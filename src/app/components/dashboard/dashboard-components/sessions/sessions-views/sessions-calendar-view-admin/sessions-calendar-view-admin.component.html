@@ -96,7 +96,7 @@
       <div *ngIf="eventInfo.event.extendedProps.IsCanceled==1 ||
           eventInfo.event.extendedProps.IsConfirm==1 ||
           eventInfo.event.extendedProps.Reason !='undefined'">
-        <h5 class="text-center">Reason (Cancel or Complete)</h5>
+        <h5 *ngIf="eventInfo.event.extendedProps.Reason" class="text-center">Reason</h5>
         <p class="text-center">{{eventInfo.event.extendedProps.Reason}}</p>
       </div>
 
@@ -108,7 +108,8 @@
       <p *ngIf="eventInfo.event.extendedProps.IsChanged !=1" class="text-center">{{eventInfo.event.extendedProps.info.TeacherFirstName}} {{eventInfo.event.extendedProps.info.TeacherLastName}}</p>
 
       <h5 class="text-center">Student(s) Name</h5>
-      <U><p style="cursor:pointer" (click)="openLearnerItem(eventInfo.event.extendedProps.learner[0].LearnerId)" class="text-center">{{eventInfo.event.extendedProps.learner[0].FirstName}}</p></U>
+      <U><p style="cursor:pointer" (click)="openLearnerItem(eventInfo.event.extendedProps.learner[0].LearnerId)" class="text-center">
+        {{eventInfo.event.extendedProps.learner[0].FirstName}} {{eventInfo.event.extendedProps.learner[0].LastName}}</p></U>
 
       <h5 class="text-center">Room name</h5>
       <div *ngIf="eventInfo.event.extendedProps.IsChanged==1">
@@ -140,7 +141,7 @@
       <h5 class="text-center">Student（s） Name</h5>
       <div class="row">
         <div class="col-4" *ngFor="let learner of eventInfo.event.extendedProps.learners">
-          <U><p style="cursor:pointer" (click)="openLearnerItem(learner.LearnerId)">{{learner.FirstName}}</p></U>
+          <U><p style="cursor:pointer" (click)="openLearnerItem(learner.LearnerId)">{{learner.FirstName}} {{learner.LastName}}</p></U>
         </div>
       </div>
       <h5 class="text-center">Room name</h5>

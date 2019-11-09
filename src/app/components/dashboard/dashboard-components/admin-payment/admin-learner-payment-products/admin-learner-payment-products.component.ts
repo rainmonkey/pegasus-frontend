@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from "@angular/core";
+import { Component, OnInit, ViewChild, Input } from "@angular/core";
 import {
   FormBuilder,
   Validators,
@@ -17,6 +17,7 @@ import { ActivatedRoute, ParamMap, Router } from "@angular/router";
 })
 export class AdminLearnerPaymentProductsComponent implements OnInit {
   // learner
+  @Input() whichLearner;
   public learnerId;
   // products
   public productName: any;
@@ -351,13 +352,20 @@ export class AdminLearnerPaymentProductsComponent implements OnInit {
     this.prodMuti.push(this.prods);
     this.prodItems.push(this.prodItem);
 
-    this.activatedRouter.paramMap
-    .subscribe((obs: ParamMap) => {
-      this.learnerId = parseInt(obs.get("id"));
+    if (this.whichLearner){
+      this.learnerId = this.whichLearner;
       this.patchProd();
-      this.errMsgP = false;
-      console.log(this.errMsgP)
-    });
+    }
+    else{
+      this.activatedRouter.paramMap
+      .subscribe((obs: ParamMap) => {
+        this.learnerId = parseInt(obs.get("id"));
+        this.patchProd();
+        this.errMsgP = false;
+        console.log(this.errMsgP)
+      });
+    }
+
     // init types instance of the user interface, waiting select (2)
     this.productsListService.getProdType().subscribe(types => {
       this.typeItem = types["Data"];

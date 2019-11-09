@@ -50,7 +50,7 @@ export class HeaderbarComponent implements OnInit {
     this.getUserDetail();
     this.staffId = +localStorage.getItem("staffId");
     if ( localStorage.getItem("Role") =='3' ){
-      this.branchName = '--'+localStorage.getItem("organisations");
+      this.branchName = localStorage.getItem("organisations");
     }
     else
       this.branchName = '';

@@ -11,6 +11,7 @@
     <app-admin-learner-payment-invoice *ngIf="whichModal == 'pay Invoice'" [whichLearner]= 'whichObject'></app-admin-learner-payment-invoice>
     <app-learner-credit-details *ngIf="whichModal == 'Learner Credit'" [whichLearner]='whichObject'></app-learner-credit-details>
     <app-admin-learner-timetable *ngIf="whichModal == 'Learner Timetable'" [whichLearner]='whichObject'></app-admin-learner-timetable>
+    <app-admin-learner-payment-products *ngIf="whichModal == 'Product Payment'" [whichLearner]='whichObject'></app-admin-learner-payment-products>
     <!-- <app-learner-registration-form [whichLearner]= 'whichLearner' (toLearnerListEvent)='toLearnerListEvent($event)' activeModalEvent='onActiveModalSubmit($event)'></app-learner-registration-form> -->
     <app-trial-info *ngIf="whichModal == 'Lesson Rescheduling'" [whichObject]='whichObject'></app-trial-info>
 

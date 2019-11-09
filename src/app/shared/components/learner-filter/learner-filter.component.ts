@@ -31,6 +31,7 @@ export class LearnerFilterComponent implements OnInit {
   public instruments:IOption[]=[];
   public courseTypes:IOption[]=[];
   public branchs:IOption[]=[];
+  public thisUserbranchs=[];
   public selectedItem:ISelectedItem={
     teacherId:-1,
     branchId:-1,
@@ -59,7 +60,10 @@ export class LearnerFilterComponent implements OnInit {
       }
     )
   }
-
+  getThisBranch(){
+    // this.thisUserbranchs = localStorage.getItem("OrgId");
+    this.thisUserbranchs =JSON.parse(localStorage.getItem("OrgId"));
+  }
   //this.teachersService.getTeachersInfo()
   getData(service,parseData,outData){
     service.subscribe(

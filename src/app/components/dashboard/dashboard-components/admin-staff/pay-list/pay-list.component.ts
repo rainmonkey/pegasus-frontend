@@ -457,6 +457,16 @@ onSearchInfo(event:any){
      } else if (num == 1) {
        const modalRef = this.modalService.open(AdminPaymentConfirmModalComponent);
        modalRef.componentInstance.adminPaymentList = adminPaymentList;
-     }
+       modalRef.result.then(
+        (res) => {
+          this.onSubmit()
+        },
+        (err) => {
+          this.onSubmit();
+          return
+        }
+       )
+     
+    }
    }
 }

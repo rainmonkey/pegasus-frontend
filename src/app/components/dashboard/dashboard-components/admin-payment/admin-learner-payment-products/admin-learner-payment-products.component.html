@@ -11,6 +11,7 @@
                     <option [ngValue]=2>Eftpos</option>
                     <option [ngValue]=3>Online Transfer</option>
                     <option [ngValue]=1>Cash</option>
+                    <option [ngValue]=4>Add To Invoice</option>                    
                   </select>
                 <small [class.d-none]="(paymentMethod.valid || paymentMethod.untouched) && !errMsgP" class="text-danger">You must select the payment type</small>
             </div>
@@ -76,7 +77,8 @@
             </div>
         </div>
         <!-- open method for product modal-->
-        <button class="btn btn-primary" (click)="validMethod(contentProd)">Send this Payment</button><br>
+        <button class="btn btn-primary" (click)="validMethod(contentProd)">Confirm Payment</button>
+        <br>
         <small class="text-danger m-2" *ngIf="errMsgP">Please select the payment method on this transacion</small> <br>
         <small class='text-danger m-2' *ngIf='showErrMsg'>You have to select all required fields</small> <br>
         <small class="text-danger" *ngIf="showErrMsgSub">Do not give any discount more than the selling price!</small>

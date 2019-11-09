@@ -4,7 +4,8 @@
   <div class="d-flex">
     <p> Invoice No.&nbsp; {{item2.InvoiceNum}}</p>
   </div>
-  <button type="button" class="btn btn-sm btn-info tl_mu_btn" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
+  <button type="button" class="btn btn-sm btn-info tl_mu_btn" aria-label="Close"
+    (click)="activeModal.dismiss('Cross click')">
     <span aria-hidden="true">&times;</span>
   </button>
 </div>
@@ -27,11 +28,13 @@
       <div class="col-5">
         <div>
           <label class="mt-2">Lesson Quantity (Price: ${{coursePrice}})</label>
-          <input disabled class="form-control" type="number" min="0" formControlName="LessonQuantity" (change)='changeQuantity()' />
+          <input disabled class="form-control" type="number" min="0" formControlName="LessonQuantity"
+            (change)='changeQuantity()' />
         </div>
         <div>
           <label class="mt-2">Lesson Fee</label>
-          <input class="form-control" type="number" min="0" formControlName="LessonFee" (keyup)="setOwingFee()" (change)="feeOnChange('LessonFee')" />
+          <input class="form-control" type="number" min="0" formControlName="LessonFee" (keyup)="setOwingFee()"
+            (change)="feeOnChange('LessonFee')" />
         </div>
       </div>
     </div>
@@ -40,12 +43,15 @@
       <div class="col-5">
         <label class="mt-2">Concert Term and Date</label>
         <input class="form-control" type="text" formControlName="ConcertFeeName" />
-        <div class="text-danger" *ngIf="invoiceEditForm.controls.Concert.errors?.fillFeeName">Please fill concert term and date</div>
+        <div class="text-danger" *ngIf="invoiceEditForm.controls.Concert.errors?.fillFeeName">Please fill concert term
+          and date</div>
       </div>
       <div class="col-5">
         <label class="mt-2">Concert Fee</label>
-        <input type="checkbox" class="ml-2" id="concertCheckBox" (change)="checkboxOnChange('concertCheckBox')" formControlName="concertCheckBox">
-        <input class="form-control" type="number" min='0' formControlName="ConcertFee" (keyup)="setOwingFee()" (change)="feeOnChange('ConcertFee','Concert')" />
+        <input type="checkbox" class="ml-2" id="concertCheckBox" (change)="checkboxOnChange('concertCheckBox')"
+          formControlName="concertCheckBox">
+        <input class="form-control" type="number" min='0' formControlName="ConcertFee" (keyup)="setOwingFee()"
+          (change)="feeOnChange('ConcertFee','Concert')" />
         <div class="text-danger" *ngIf="invoiceEditForm.controls.Concert.errors?.fillFee">Please fill fee</div>
       </div>
     </div>
@@ -54,12 +60,15 @@
       <div class="col-5">
         <label class="mt-2">Lesson Note Term and Date</label>
         <input class="form-control" type="text" formControlName='LessonNoteFeeName' />
-        <div class="text-danger" *ngIf="invoiceEditForm.controls.Note.errors?.fillFeeName">Please fill note term and date</div>
+        <div class="text-danger" *ngIf="invoiceEditForm.controls.Note.errors?.fillFeeName">Please fill note term and
+          date</div>
       </div>
       <div class="col-5">
         <label class="mt-2">Note Fee</label>
-        <input type="checkbox" class="ml-2" id="noteCheckBox" (change)="checkboxOnChange('noteCheckBox')" formControlName="noteCheckBox">
-        <input class="form-control" type="number" min='0' formControlName="NoteFee" (keyup)="setOwingFee()" (change)="feeOnChange('NoteFee','Note')" />
+        <input type="checkbox" class="ml-2" id="noteCheckBox" (change)="checkboxOnChange('noteCheckBox')"
+          formControlName="noteCheckBox">
+        <input class="form-control" type="number" min='0' formControlName="NoteFee" (keyup)="setOwingFee()"
+          (change)="feeOnChange('NoteFee','Note')" />
         <div class="text-danger" *ngIf="invoiceEditForm.controls.Note.errors?.fillFee">Please fill fee</div>
       </div>
     </div>
@@ -69,39 +78,252 @@
     <div>
       <div formGroupName="Other1" class="form-group row justify-content-center">
         <div class="col-5">
-          <label class="mt-2">Others 1</label>
-          <input [readonly]='item2.Other1FeeName=="Registration Fees"' class="form-control" type="text" formControlName="Other1FeeName" />
-          <div class="text-danger" *ngIf="invoiceEditForm.controls.Other1.errors?.fillFeeName">Please fill fee name</div>
+          <label class="mt-2">Enrollment</label>
+          <input [readonly]='item2.Other1FeeName=="Enrolment Fee"' class="form-control" type="text"
+            formControlName="Other1FeeName" />
+          <div class="text-danger" *ngIf="invoiceEditForm.controls.Other1.errors?.fillFeeName">Please fill fee name
+          </div>
         </div>
         <div class="col-5">
-          <label class="mt-2">Others Fee 1</label>
-          <input [readonly]='item2.Other1FeeName=="Registration Fees"' class="form-control" type="number" min='0' formControlName="Other1Fee" (keyup)="setOwingFee()" (change)="feeOnChange('Other1Fee','Other1')" />
+          <label class="mt-2">Enrollment Fee </label>
+          <input [readonly]='item2.Other1FeeName=="Enrolment Fee"' class="form-control" type="number" min='0'
+            formControlName="Other1Fee" (keyup)="setOwingFee()" (change)="feeOnChange('Other1Fee','Other1')" />
           <div class="text-danger" *ngIf="invoiceEditForm.controls.Other1.errors?.fillFee">Please fill fee</div>
         </div>
       </div>
       <div formGroupName="Other2" class="form-group row justify-content-center">
         <div class="col-5">
-          <label class="mt-2">Others 2</label>
+          <label class="mt-2">Aural</label>
           <input class="form-control" type="text" formControlName="Other2FeeName" />
-          <div class="text-danger" *ngIf="invoiceEditForm.controls.Other2.errors?.fillFeeName">Please fill fee name</div>
+          <div class="text-danger" *ngIf="invoiceEditForm.controls.Other2.errors?.fillFeeName">Please fill fee name
+          </div>
         </div>
         <div class="col-5">
-          <label class="mt-2">Others Fee 2</label>
-          <input class="form-control" type="number" onkeypress="return (/[\d]/.test(String.fromCharCode(event.keyCode)))" min='0' 
-            formControlName="Other2Fee" (keyup)="setOwingFee()" (change)="feeOnChange('Other2Fee','Other2')" />
+          <label class="mt-2">Aural Fee</label>
+          <input type="checkbox" class="ml-2" id="auralCheckBox" (change)="checkboxOnChange('auralCheckBox')"
+          formControlName="auralCheckBox">
+          <input class="form-control" type="number"
+            onkeypress="return (/[\d]/.test(String.fromCharCode(event.keyCode)))" min='0' formControlName="Other2Fee"
+            (keyup)="setOwingFee()" (change)="feeOnChange('Other2Fee','Other2')" />
           <div class="text-danger" *ngIf="invoiceEditForm.controls.Other2.errors?.fillFee">Please fill fee</div>
         </div>
       </div>
       <div formGroupName="Other3" class="form-group row justify-content-center">
         <div class="col-5">
-          <label class="mt-2">Others 3</label>
+          <label class="mt-2">Theory</label>
           <input class="form-control" type="text" formControlName="Other3FeeName" />
-          <div class="text-danger" *ngIf="invoiceEditForm.controls.Other3.errors?.fillFeeName">Please fill fee name</div>
+          <div class="text-danger" *ngIf="invoiceEditForm.controls.Other3.errors?.fillFeeName">Please fill fee name
+          </div>
+        </div>
+        <div class="col-5">
+          <label class="mt-2">Theory Fee</label>
+          <input type="checkbox" class="ml-2" id="theoryCheckBox" (change)="checkboxOnChange('theoryCheckBox')"
+          formControlName="theoryCheckBox">          
+          <input class="form-control" type="number" min="0" formControlName="Other3Fee" (keyup)="setOwingFee()"
+            (change)="feeOnChange('Other3Fee','Other3')" />
+          <div class="text-danger" *ngIf="invoiceEditForm.controls.Other3.errors?.fillFee">Please fill fee</div>
+        </div>
+      </div>
+      <br>
+      <div formGroupName="Other4" class="form-group row justify-content-center">
+        <div class="col-5">
+          <label class="mt-2">Other</label>
+          <!-- <input class="form-control" type="text" formControlName="Other4FeeName" /> -->
+            <select class="form-control" formControlName="Other4FeeName" (change)='internalExamSet($event.target.value,"Other4.Other4Fee")'>
+              <option value="">Please Select</option>
+              <option value="Internal Exam">Internal Exam</option>
+            </select>
+  
+          <div class="text-danger" *ngIf="invoiceEditForm.controls.Other4.errors?.fillFeeName">Please fill fee name
+          </div>
+        </div>
+        <div class="col-5">
+          <label class="mt-2">Other Fee </label>
+          <input class="form-control" type="number" min="0" formControlName="Other4Fee" (keyup)="setOwingFee()"
+            (change)="feeOnChange('Other4Fee','Other4')" />
+          <div class="text-danger" *ngIf="invoiceEditForm.controls.Other4.errors?.fillFee">Please fill fee</div>
+        </div>
+      </div>
+      <div formGroupName="Other5" class="form-group row justify-content-center">
+        <div class="col-5">
+          <label class="mt-2">Others1</label>
+          <!-- <input class="form-control" type="text" formControlName="Other5FeeName" /> -->
+          <select class="form-control" formControlName="Other5FeeName" (change)='internalExamSet($event.target.value,"Other5.Other5Fee")'>
+            <option value="">Please Select</option>
+            <option value="Internal Exam">Internal Exam</option>
+          </select>
+          <div class="text-danger" *ngIf="invoiceEditForm.controls.Other5.errors?.fillFeeName">Please fill fee name
+          </div>
+        </div>
+        <div class="col-5">
+          <label class="mt-2">Other Fee 1</label>
+          <input class="form-control" type="number" min="0" formControlName="Other5Fee" (keyup)="setOwingFee()"
+            (change)="feeOnChange('Other5Fee','Other5')" />
+          <div class="text-danger" *ngIf="invoiceEditForm.controls.Other5.errors?.fillFee">Please fill fee</div>
+        </div>
+      </div>
+      <div formGroupName="Other6" class="form-group row justify-content-center">
+        <div class="col-5">
+          <label class="mt-2">Others2</label>
+          <input class="form-control" type="text" formControlName="Other6FeeName" />
+          <div class="text-danger" *ngIf="invoiceEditForm.controls.Other6.errors?.fillFeeName">Please fill fee name
+          </div>
+        </div>
+        <div class="col-5">
+          <label class="mt-2">Other Fee 2</label>
+          <input class="form-control" type="number" min="0" formControlName="Other6Fee" (keyup)="setOwingFee()"
+            (change)="feeOnChange('Other6Fee','Other6')" />
+          <div class="text-danger" *ngIf="invoiceEditForm.controls.Other6.errors?.fillFee">Please fill fee</div>
+        </div>
+      </div>
+      <div formGroupName="Other7" class="form-group row justify-content-center">
+        <div class="col-5">
+          <label class="mt-2">Others 3</label>
+          <input class="form-control" type="text" formControlName="Other7FeeName" />
+          <div class="text-danger" *ngIf="invoiceEditForm.controls.Other7.errors?.fillFeeName">Please fill fee name
+          </div>
         </div>
         <div class="col-5">
           <label class="mt-2">Other Fee 3</label>
-          <input class="form-control" type="number" min="0" formControlName="Other3Fee" (keyup)="setOwingFee()" (change)="feeOnChange('Other3Fee','Other3')" />
-          <div class="text-danger" *ngIf="invoiceEditForm.controls.Other3.errors?.fillFee">Please fill fee</div>
+          <input class="form-control" type="number" min="0" formControlName="Other7Fee" (keyup)="setOwingFee()"
+            (change)="feeOnChange('Other7Fee','Other7')" />
+          <div class="text-danger" *ngIf="invoiceEditForm.controls.Other7.errors?.fillFee">Please fill fee</div>
+        </div>
+      </div>
+      <div formGroupName="Other8" class="form-group row justify-content-center">
+        <div class="col-5">
+          <label class="mt-2">Others 4</label>
+          <input class="form-control" type="text" formControlName="Other8FeeName" />
+          <div class="text-danger" *ngIf="invoiceEditForm.controls.Other8.errors?.fillFeeName">Please fill fee name
+          </div>
+        </div>
+        <div class="col-5">
+          <label class="mt-2">Other Fee 4</label>
+          <input class="form-control" type="number" min="0" formControlName="Other8Fee" (keyup)="setOwingFee()"
+            (change)="feeOnChange('Other8Fee','Other8')" />
+          <div class="text-danger" *ngIf="invoiceEditForm.controls.Other8.errors?.fillFee">Please fill fee</div>
+        </div>
+      </div>
+      <br>
+      <div  formGroupName="Other9" class="form-group row justify-content-center">
+        <div class="col-5">
+          <label class="mt-2">book 1</label>
+          <input [readonly]='item2.Other9Fee>0' class="form-control" type="text" formControlName="Other9FeeName" />
+          <div class="text-danger" *ngIf="invoiceEditForm.controls.Other9.errors?.fillFeeName">Please fill fee name
+          </div>
+        </div>
+        <div class="col-5">
+          <label class="mt-2">book Fee 1</label>
+          <input [readonly]='item2.Other9Fee>0' class="form-control" type="number" min="0" formControlName="Other9Fee" (keyup)="setOwingFee()"
+            (change)="feeOnChange('Other9Fee','Other9')" />
+          <div class="text-danger" *ngIf="invoiceEditForm.controls.Other9.errors?.fillFee">Please fill fee</div>
+        </div>
+      </div>
+      <div  formGroupName="Other10" class="form-group row justify-content-center">
+        <div class="col-5">
+          <label class="mt-2">book 2</label>
+          <input [readonly]='item2.Other10Fee>0' class="form-control" type="text" formControlName="Other10FeeName" />
+          <div class="text-danger" *ngIf="invoiceEditForm.controls.Other10.errors?.fillFeeName">Please fill fee name
+          </div>
+        </div>
+        <div class="col-5">
+          <label class="mt-2">book Fee 2</label>
+          <input [readonly]='item2.Other10Fee>0' class="form-control" type="number" min="0" formControlName="Other10Fee" (keyup)="setOwingFee()"
+            (change)="feeOnChange('Other10Fee','Other10')" />
+          <div class="text-danger" *ngIf="invoiceEditForm.controls.Other10.errors?.fillFee">Please fill fee</div>
+        </div>
+      </div>
+      <div  formGroupName="Other11" class="form-group row justify-content-center">
+        <div class="col-5">
+          <label class="mt-2">book 3</label>
+          <input [readonly]='item2.Other11Fee>0' class="form-control" type="text" formControlName="Other11FeeName" />
+          <div class="text-danger" *ngIf="invoiceEditForm.controls.Other11.errors?.fillFeeName">Please fill fee name
+          </div>
+        </div>
+        <div class="col-5">
+          <label class="mt-2">book Fee 3</label>
+          <input [readonly]='item2.Other11Fee>0' class="form-control" type="number" min="0" formControlName="Other11Fee" (keyup)="setOwingFee()"
+            (change)="feeOnChange('Other11Fee','Other11')" />
+          <div class="text-danger" *ngIf="invoiceEditForm.controls.Other11.errors?.fillFee">Please fill fee</div>
+        </div>
+      </div>
+      <div  formGroupName="Other12" class="form-group row justify-content-center">
+        <div class="col-5">
+          <label class="mt-2">book 4</label>
+          <input [readonly]='item2.Other12Fee>0' class="form-control" type="text" formControlName="Other12FeeName" />
+          <div class="text-danger" *ngIf="invoiceEditForm.controls.Other12.errors?.fillFeeName">Please fill fee name
+          </div>
+        </div>
+        <div class="col-5">
+          <label class="mt-2">book Fee 4</label>
+          <input [readonly]='item2.Other12Fee>0' class="form-control" type="number" min="0" formControlName="Other12Fee" (keyup)="setOwingFee()"
+            (change)="feeOnChange('Other12Fee','Other12')" />
+          <div class="text-danger" *ngIf="invoiceEditForm.controls.Other12.errors?.fillFee">Please fill fee</div>
+        </div>
+      </div>
+      <div  formGroupName="Other13" class="form-group row justify-content-center">
+        <div class="col-5">
+          <label class="mt-2">book 5</label>
+          <input [readonly]='item2.Other13Fee>0' class="form-control" type="text" formControlName="Other13FeeName" />
+          <div class="text-danger" *ngIf="invoiceEditForm.controls.Other13.errors?.fillFeeName">Please fill fee name
+          </div>
+        </div>
+        <div class="col-5">
+          <label class="mt-2">book Fee5</label>
+          <input [readonly]='item2.Other13Fee>0' class="form-control" type="number" min="0" formControlName="Other13Fee" (keyup)="setOwingFee()"
+            (change)="feeOnChange('Other13Fee','Other13')" />
+          <div class="text-danger" *ngIf="invoiceEditForm.controls.Other13.errors?.fillFee">Please fill fee</div>
+        </div>
+      </div>
+      <br>
+      <div  class="form-group row justify-content-center">
+        <div class="col-2"></div>
+        <div class="col-3">
+          <input class="form-check-input" type="checkbox" (change)="setDiscount(5,$event,'Other14.Other14Fee')" value="" id="Check1">
+          <label class="form-check-label" for="Check1">
+            Discount $5
+          </label>
+        </div>
+        <div class="col-3">
+            <input class="form-check-input" type="checkbox" (change)="setDiscount(10,$event,'Other15.Other15Fee')" value="" id="Check2">
+            <label class="form-check-label" for="Check2">
+                Discount $10
+            </label>
+          </div>
+          <div class="col-3">
+              <input class="form-check-input" type="checkbox" (change)="setDiscount(15,$event,'Other16.Other16Fee')" value="" id="Check3">
+              <label class="form-check-label" for="Check1">
+                  Discount $15
+              </label>
+            </div>   
+            <div class="col-1"></div>                           
+      </div>
+      <div formGroupName="Other17" class="form-group row justify-content-center">
+        <div class="col-5">
+          <label class="mt-2">Discount Item 1</label>
+          <input class="form-control" type="text" formControlName="Other17FeeName" />
+          <div class="text-danger" *ngIf="invoiceEditForm.controls.Other17.errors?.fillFeeName">Please fill fee name
+          </div>
+        </div>
+        <div class="col-5">
+          <label class="mt-2">Discount Amount 1</label>
+          <input class="form-control" type="number" max="0" formControlName="Other17Fee" (keyup)="setOwingFee()"
+            (change)="feeOnChange('Other17Fee','Other17')" />
+          <div class="text-danger" *ngIf="invoiceEditForm.controls.Other17.errors?.fillFee">Please fill fee</div>
+        </div>
+      </div>
+      <div formGroupName="Other18" class="form-group row justify-content-center">
+        <div class="col-5">
+          <label class="mt-2">Discount Item 2</label>
+          <input class="form-control" type="text" formControlName="Other18FeeName" />
+          <div class="text-danger" *ngIf="invoiceEditForm.controls.Other18.errors?.fillFeeName">Please fill fee name
+          </div>
+        </div>
+        <div class="col-5">
+          <label class="mt-2">Discount Amount 2</label>
+          <input class="form-control" type="number" max="0" formControlName="Other18Fee" (keyup)="setOwingFee()"
+            (change)="feeOnChange('Other18Fee','Other18')" />
+          <div class="text-danger" *ngIf="invoiceEditForm.controls.Other18.errors?.fillFee">Please fill fee</div>
         </div>
       </div>
       <div class="form-group row justify-content-center">
@@ -112,7 +334,7 @@
         </div>
       </div>
     </div>
-    <hr />
+
     <div class="form-group row justify-content-center">
       <div class="col-5">
         <label class="mt-2"> All Subject in Total:</label>
@@ -128,6 +350,9 @@
 
 <!--modal footer-->
 <div class="modal-footer">
+    <button *ngIf="false" type="button" class="btn btn-outline-dark" (click)="addBooks()" id="addBooks">
+        Add Books To Invoice
+     </button>
   <button type="button" class="btn btn-outline-dark" (click)="sendMail(confirmModal)" id="save">
     Save
   </button>
@@ -150,7 +375,8 @@
   <!-- modal-body -->
   <div class="container">
     <div class="d-flex justify-content-center">
-      <p class='text-danger' *ngIf="originPrice !== userChosenPrice">The original lesson fee is {{originPrice}}, you have changed to {{userChosenPrice}}, please confirm</p>
+      <p class='text-danger' *ngIf="originPrice !== userChosenPrice">The original lesson fee is {{originPrice}}, you
+        have changed to {{userChosenPrice}}, please confirm</p>
     </div>
     <div class="d-flex justify-content-center">
       <p>Please click send button by update this invoice to database</p>

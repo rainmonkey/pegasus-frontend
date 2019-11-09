@@ -83,6 +83,11 @@ export class AdminLearnerProfileComponent implements OnInit {
     parameter: 12,
     class: 'fas fa-address-book'
   },
+  {
+    title: 'Product Payment',
+    parameter: 13,
+    class: 'fas fa-piano-keyboard'
+  }
   ];
   // @Output() activeModalEvent: EventEmitter<any> = new EventEmitter;
   // activeSubmitted: boolean = false;
@@ -171,6 +176,9 @@ export class AdminLearnerProfileComponent implements OnInit {
       case 12:
         this.modalTemplate(command, whichLearner, title);
         break;
+      case 13:
+          this.modalTemplate(command, whichLearner, title);
+      break;        
     }
   }
 

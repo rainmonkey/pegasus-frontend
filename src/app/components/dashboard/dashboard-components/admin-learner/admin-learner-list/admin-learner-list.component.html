@@ -31,8 +31,9 @@
         <div class='t_info_search_by'>
           <span id='searchingSelection' (click)='onSearch(null)'>
             <span class='fas fa-search'></span>
-            <input type="checkbox" class="t-isAllOption"
-              [(ngModel)]='allStudentsOption' (change)='onSearch(null)'>All Branch
+          <div *ngIf='false'>
+            <input  type="checkbox" class="t-isAllOption"
+              [(ngModel)]='allStudentsOption' (change)='onSearch(null)'>All Branch</div>
         </span>
       <span (click)="isFilter=!isFilter"><i  class="fas fa-filter"></i>Filter</span>
         </div>

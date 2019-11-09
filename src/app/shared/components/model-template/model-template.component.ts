@@ -33,6 +33,9 @@ constructor(public activeModal: NgbActiveModal,private learnersService:LearnersS
       case 'Lesson Rescheduling':
         this.modelTitle = 'Lesson\'s Rescheduling';
         break;
+      case 'Product Payment':
+        this.modelTitle = 'Product Payment';
+        break;        
         default:
       this.modelTitle = '';
     }

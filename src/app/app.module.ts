@@ -400,6 +400,7 @@ import { TimePickerOrgComponent } from './components/dashboard/dashboard-compone
     // },
   ],
   entryComponents: [
+    AdminLearnerPaymentProductsComponent,
     AdminLearnerProfileComponent,
     TrialInfoComponent,
     AmendmentHistoryModalComponent,

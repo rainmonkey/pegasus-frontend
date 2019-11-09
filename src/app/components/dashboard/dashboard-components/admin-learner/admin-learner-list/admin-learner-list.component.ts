@@ -74,9 +74,10 @@ export class AdminLearnerListComponent implements OnInit {
       (res) => {
         //@ts-ignore
         this.learnerList = res.Data;
+        this.learnerList = this.filterLearner(this.learnerList);
         //@ts-ignore
         this.learnerListCopy = this.learnerList;
-        this.learnerList = this.filterLearner(this.learnerList);
+       
         //@ts-ignore
         this.learnerListLength = this.learnerList.length;
         this.loadingFlag = false;
