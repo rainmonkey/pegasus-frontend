@@ -222,7 +222,7 @@ export class SessionsCalendarViewAdminComponent implements OnInit {
       if (teachersNewArray.length == 0) {
         const Type = '(' + s.title + ')';
         if (s.IsGroup == false) {
-          s.title = 'Student: ' + s.learner[0].FirstName + '\n';
+          s.title = 'Student:\n ' + s.learner[0].FirstName + ' ' + s.learner[0].LastName;
         }
         s.title =  Type + s.title
         return data;
@@ -233,7 +233,7 @@ export class SessionsCalendarViewAdminComponent implements OnInit {
       s.title = '';
       s.title += 'Tutor: ' + s.teacher + ' ' + type;
       if (s.IsGroup == false) {
-        s.title += '\nStudent: ' + s.learner[0].FirstName;
+        s.title += '\nStudent:\n ' + s.learner[0].FirstName + ' ' + s.learner[0].LastName;
       }
     });
     return data;
