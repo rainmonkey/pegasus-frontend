@@ -378,7 +378,7 @@ export class AdminInvoiceEditModalComponent implements OnInit {
     return true
     else {
       swal.fire({
-        title: 'Please Add a Discount Reason!',
+        title: 'Please Add a Discount Reason, at least 5 characters!',
         type: 'error',
         showConfirmButton: true,
       });
