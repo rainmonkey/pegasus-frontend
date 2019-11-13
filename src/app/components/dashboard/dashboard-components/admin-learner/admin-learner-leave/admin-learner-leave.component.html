@@ -1,7 +1,8 @@
 <!--modal header-->
 <div class="modal-header">
   <h4 class="modal-title">Student Leave Duration</h4>
-  <button type="button" class='btn btn-sm btn-info tl_dm_btn' aria-label="Close" (click)="activeModal.close('Cross click')">
+  <button type="button" class='btn btn-sm btn-info tl_dm_btn' aria-label="Close"
+    (click)="activeModal.close('Cross click')">
     <span aria-hidden="true">&times;</span>
   </button>
 </div>
@@ -10,47 +11,12 @@
 <form (ngSubmit)="Confirm()" [formGroup]="LearnerLeaveForm">
   <div class='modal-body tl_md_body'>
     <div class="form-group">
-      <div class="row">
-        <div class="col-5">
-          <div>Begin Date</div>
-          <input [class.is-invalid]="BeginDate.invalid && BeginDate.touched" type="date" class="form-control" formControlName="BeginDate">
-          <small class="text-danger" *ngIf="BeginDate.invalid && BeginDate.touched">Please enter begin date</small>
-        </div>
-        <div class="col-5">
-          <div>End Date</div>
-          <input [class.is-invalid]="EndDate.invalid && EndDate.touched" type="date" class="form-control" formControlName="EndDate">
-          <small class="text-danger" *ngIf="EndDate.invalid && EndDate.touched">Please enter end date</small>
-        </div>
-        <div class="col-5">
-          <div>Do you want to change invoice?</div>
-          <select formControlName="IsInvoiceChange">
-            <option disabled selected value>-- select an option --</option>
-            <option value="false">No</option>
-            <option value="true">Yes</option>
-          </select>
-          <small class="text-danger" *ngIf="IsInvoiceChange.invalid && IsInvoiceChange.touched">Please select IsInvoiceChange</small>
-        </div>
-      </div>
-      <div>Reason</div>
-      <!-- <input [class.is-invalid]="Reason.invalid && Reason.touched" type="text" class="form-control" formControlName="Reason"> -->
-      <!-- <select [class.is-invalid]="Reason.invalid && Reason.touched"  class="form-control" formControlName="Reason">
-        <option disabled selected value>-- select an option --</option>
-        <option value="Sickness">Sickness </option>        
-        <option value="Medical Procedures">Medical Procedures </option>
-        <option value="No Conveyance">No Conveyance</option>
-        <option value="Accident">Accident</option>        
-        <option value="Emergency">Emergency</option>                
-        <option value="Other">Other</option>                        
-      </select> -->
-      <app-reason-Input class="form-control" formControlName="Reason"></app-reason-Input>
-      <small class="text-danger" *ngIf="Reason.invalid && Reason.touched">Reason is required.</small>
-      <div *ngFor="let ele of learner.One2oneCourseInstance">
-        
-        <br>
+      <div *ngFor="let ele of learner.One2oneCourseInstance,let i=index;">
         <div class="card">
           <div class="card-body">
             <div class="row">
-                <input #checkbox (change)="checkBoxChange()"  [value]="ele.CourseInstanceId" type="checkbox">
+              <input #checkbox (change)="checkBoxChange($event)" [value]="ele.CourseInstanceId" 
+               type="checkbox">
               <div class="col-12">
                 <span class="label" style="font-weight: bold">Course: </span>
                 <span class='text'>{{ele.Course.CourseName}}</span>
@@ -67,7 +33,7 @@
               </div>
 
               <div class="col-6">
-                <div >
+                <div>
                   <span class="label" style="font-weight: bold">Room: </span>
                   <span class='text'> {{ele.Room.RoomName}}</span>
                 </div>
@@ -86,23 +52,81 @@
               <div class="col-6">
                 <span class="label" style="font-weight: bold">Course Sechdule: </span>
                 <div *ngFor='let sechdule of ele.CourseSchedule'>
-                    <span class='text'> {{sechdule.DayOfWeek|weekFormat}}
-                      {{sechdule.BeginTime}} -- {{sechdule.EndTime}} </span>
+                  <span class='text'> {{sechdule.DayOfWeek|weekFormat}}
+                    {{sechdule.BeginTime}} -- {{sechdule.EndTime}} </span>
                 </div>
               </div>
               <div class="col-12" *ngFor="let amendment of ele.Amendment">
                 <small *ngIf="amendment.IsTemporary == 0" class="text-secondary">
                   The course begin in {{amendment.DayOfWeek|weekFormat}} at {{amendment.BeginTime}}
-                   from {{amendment.BeginDate| date:'yyyy-MM-dd'}} ( Teacher: {{amendment.Teacher.FirstName}} Location : {{amendment.Org.Abbr}} - {{amendment.Room.RoomName}})
+                  from {{amendment.BeginDate| date:'yyyy-MM-dd'}} ( Teacher: {{amendment.Teacher.FirstName}} Location :
+                  {{amendment.Org.Abbr}} - {{amendment.Room.RoomName}})
                 </small>
                 <small *ngIf="amendment.IsTemporary==1" class="text-secondary">
-                  The course begin in {{amendment.DayOfWeek|weekFormat}} at {{amendment.BeginTime}} from {{amendment.BeginDate| date:'yyyy-MM-dd'}} to {{amendment.EndDate| date:'yyyy-MM-dd'}} ( Teacher: {{amendment.Teacher.FirstName}} Location : {{amendment.Org.Abbr}} - {{amendment.Room.RoomName}})
+                  The course begin in {{amendment.DayOfWeek|weekFormat}} at {{amendment.BeginTime}} from
+                  {{amendment.BeginDate| date:'yyyy-MM-dd'}} to {{amendment.EndDate| date:'yyyy-MM-dd'}} ( Teacher:
+                  {{amendment.Teacher.FirstName}} Location : {{amendment.Org.Abbr}} - {{amendment.Room.RoomName}})
                 </small>
+              </div><div >
+                <div class="row" *ngFor="let lessons of lessonsOfCourse[i],let j=index;">
+                  <div class="col-4" *ngFor="let lesson of lessons,let k=index;">
+                    <input #checkboxLesson type="checkbox" [value]="lesson.LessonId" 
+                      name={{lesson.CourseInstanceId}} [attr.lesson-time]="lesson.BeginTime" [checked]="lesson.isChecked">&nbsp;&nbsp;
+                    <label>{{lesson.strDate}}({{j+1}})</label>
+                  </div>
+                  <!-- <div class="col-12"></div> -->
+                </div>
               </div>
             </div>
           </div>
         </div>
       </div>
+
+      <br>
+      <div class="row">
+        <div style='margin-left:14px' (click)="isFilter=!isFilter"><i  class="fas fa-filter"></i>Filter</div>
+      </div>
+      <div class="row">
+        <!-- <div> -->
+          
+          <div *ngIf='isFilter' class="col-5">
+            <div>Begin Date</div>
+            <input [class.is-invalid]="BeginDate.invalid && BeginDate.touched" (input)="setCheckBoxDate()" type="date" class="form-control"
+              formControlName="BeginDate">
+            <small class="text-danger" *ngIf="BeginDate.invalid && BeginDate.touched">Please enter begin date</small>
+          </div>
+          <div *ngIf='isFilter' class="col-5">
+            <div>End Date</div>
+            <input [class.is-invalid]="EndDate.invalid && EndDate.touched" (input)="setCheckBoxDate()" type="date" class="form-control"
+              formControlName="EndDate">
+            <small class="text-danger" *ngIf="EndDate.invalid && EndDate.touched">Please enter end date</small>
+          </div>
+        <!-- </div> -->
+        <div class="col-5">
+          <div>Do you want to change invoice?</div>
+          <select formControlName="IsInvoiceChange">
+            <option disabled selected value>-- select an option --</option>
+            <option value="false">No</option>
+            <option value="true">Yes</option>
+          </select>
+          <small class="text-danger" *ngIf="IsInvoiceChange.invalid && IsInvoiceChange.touched">Please select
+            IsInvoiceChange</small>
+        </div>
+      </div>
+      <div>Reason</div>
+      <!-- <input [class.is-invalid]="Reason.invalid && Reason.touched" type="text" class="form-control" formControlName="Reason"> -->
+      <!-- <select [class.is-invalid]="Reason.invalid && Reason.touched"  class="form-control" formControlName="Reason">
+        <option disabled selected value>-- select an option --</option>
+        <option value="Sickness">Sickness </option>        
+        <option value="Medical Procedures">Medical Procedures </option>
+        <option value="No Conveyance">No Conveyance</option>
+        <option value="Accident">Accident</option>        
+        <option value="Emergency">Emergency</option>                
+        <option value="Other">Other</option>                        
+      </select> -->
+      <app-reason-Input class="form-control" formControlName="Reason"></app-reason-Input>
+      <small class="text-danger" *ngIf="Reason.invalid && Reason.touched">Reason is required.</small>
+
       <small class="text-danger" *ngIf="checkboxArray.length ==0 && hasError">please choose at least one option</small>
     </div>
   </div>
@@ -111,7 +135,7 @@
     <span *ngIf='isCancelSuccess' class='text-success'>Success </span>
     <span *ngIf='isCancelFailed' class='text-danger'>Fail </span>
     <div *ngIf="isloading" class="loaderSmall"></div>
-    <button  *ngIf="!isConfirmClick" type='button' type="submit" class='btn btn-outline-dark'>Confirm</button>
-    <button  type="button" class="btn btn-outline-dark" (click)="activeModal.close('Close click')">Close</button>
+    <button *ngIf="!isConfirmClick" type='button' type="submit" class='btn btn-outline-dark'>Confirm</button>
+    <button type="button" class="btn btn-outline-dark" (click)="activeModal.close('Close click')">Close</button>
   </div>
 </form>

@@ -16,3 +16,10 @@ export class LearnerDayOff {
     this.IsInvoiceChange = IsInvoiceChange;
   }
 }
+
+export interface CancelLessonsModel {
+  UserId: number;
+  Reason: string;
+  LessonIds: Array<number>;
+  IsInvoiceChange: number;
+}

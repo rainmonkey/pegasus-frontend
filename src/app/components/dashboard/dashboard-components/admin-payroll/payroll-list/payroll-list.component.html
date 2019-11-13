@@ -29,7 +29,7 @@
           <td>{{i.TeacherFirstName}}</td>
           <td>{{i.TeacherLastName}}</td>
           <td>${{i.Wage}}</td>
-          <td><a style="cursor: pointer;"><button (click)="openTeacherTransactionModel(teacherTransaction,i.TeacherId)" class="btn btn-primary" style="width: 70px; height: 20px; font-size: 12px; line-height: 6px" >details</button></a><br></td>
+          <td><a style="cursor: pointer;"><button (click)="openTeacherTransactionModel(teacherTransaction,i.TeacherId)" class="btn btn-primary" style="width: 70px; height: 20px; font-size: 12px; line-height: 6px" >Details</button></a><br></td>
         </tr>
 
         </tbody>
@@ -65,6 +65,7 @@
         <td>{{i.TeacherFirstName}}</td>
         <td>{{i.LessonBeginTime}}</td>
         <td>{{i.LessonEndTime}}</td>
+        <td>{{i.Duration}} mins</td>        
         <td>${{i.WageAmount}}</td>
       </tr>
       </tbody>

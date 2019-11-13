@@ -61,6 +61,10 @@ export class LearnersService {
     return this.http.post(this.baseUrl + 'LearnerDayOff', dayOffModel);
   }
 
+  cancelLessons(cancelLessonsModel) {
+    return this.http.put(this.baseUrl + 'session', cancelLessonsModel);
+  }
+
   GetOrgRoom() {
     return this.http.get(this.baseUrl + 'Orgs/OrgAndRoom');
   }
@@ -121,5 +125,7 @@ export class LearnersService {
   makeUpSplitLesson(lessonId,isAfter,userId): any {
     return this.http.put(this.baseUrl + 'Session/MakeUpSplitLesson/' + lessonId+'/'+isAfter+'/'+userId,'');
   }
-
+  getLessonsByCourseInstanceId(courseInstanceId): any {
+    return this.http.get(this.baseUrl + 'lesson/GetLessonsByCourseInstance/' + courseInstanceId);
+  }
 }

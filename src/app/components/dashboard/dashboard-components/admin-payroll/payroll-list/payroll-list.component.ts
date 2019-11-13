@@ -28,8 +28,9 @@ export class PayrollListComponent implements OnInit {
   public detailsTitleArray = [
     '#',
     'Teacher',
-    'Lesson Begin Date',
-    'Lesson End Date',
+    'Lesson Begin Time',
+    'Lesson End Time',
+    'Duration',    
     'Wage Amout'
   ]
   public teacherTransactionList: any;
@@ -77,9 +78,15 @@ export class PayrollListComponent implements OnInit {
     this.payrollservice.getTeacherTransaction(teacherId, this.searchBeginDate, this.searchEndDate).subscribe(res => {
       this.teacherTransactionList = res.Data;
       this.teacherTransactionListLength = res.Data.length;
+      this.getDuration();
     }, err => {
       console.log(err);
     });
   }
-
+  getDuration = () =>{
+    this.teacherTransactionList.forEach(element => {
+       let diffMs = Date.parse(element.LessonEndTime) - Date.parse(element.LessonBeginTime);
+       element.Duration = Math.round(((diffMs % 86400000) % 3600000) / 60000);
+    });
+  }
 }
