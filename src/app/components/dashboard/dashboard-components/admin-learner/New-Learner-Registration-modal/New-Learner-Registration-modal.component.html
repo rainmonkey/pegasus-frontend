@@ -1,21 +1,22 @@
 <div class='modal-header'>
-    <h4 class='modal-title'>Student Registration
-    </h4>
-    <button type="button" class='btn btn-sm btn-info t_dm_close_btn' aria-label="Close"
-      (click)="onClose(command,whichLearner)">
-      <span aria-hidden="true">&times;</span>
-    </button>
-  </div>
+  <h4 class='modal-title'>Student Registration
+  </h4>
+  <button type="button" class='btn btn-sm btn-info t_dm_close_btn' aria-label="Close"
+    (click)="onClose(command,whichLearner)">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
 
-  <div class='modal-body'>
-<app-New-Registration-Form #updateForm [command]='command' [whichLearner]='whichLearner'></app-New-Registration-Form>
-  </div>
+<div class='modal-body'>
+  <app-New-Registration-Form #updateForm [command]='command' [whichLearner]='whichLearner'></app-New-Registration-Form>
+</div>
 
-  
 
-  <!--modal footer-->
-  <div class='modal-footer'>
-      <span class='m_um_error_msg errorfont' [style.color]="messageColor">{{infoMessage}}</span>
-      <button *ngIf='submitionFlag' [disabled]="loadingGifFlag" type='button' class='btn btn-outline-dark' (click)='onSubmit()'>Save</button>
-      <button type="button" class="btn btn-outline-dark" (click)="onClose(command, whichLearner)">Close</button>
-    </div>
+
+<!--modal footer-->
+<div class='modal-footer'>
+  <span class='m_um_error_msg errorfont' [style.color]="messageColor">{{infoMessage}}</span>
+  <button *ngIf='submitionFlag' [disabled]="loadingGifFlag" type='button' class='btn btn-outline-dark'
+    (click)='onSubmit()'>Save</button>
+  <button type="button" class="btn btn-outline-dark" (click)="onClose(command, whichLearner)">Close</button>
+</div>

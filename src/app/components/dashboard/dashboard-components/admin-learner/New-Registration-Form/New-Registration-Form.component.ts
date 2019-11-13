@@ -73,7 +73,7 @@ export class NewRegistrationFormComponent implements OnInit {
         LearnerLevel: [null, Validators.required],
         LevelType: [1],
         IsUnder18: [null],
-        PaymentPeriod: [null,, Validators.required],
+        PaymentPeriod: [null, Validators.required],
         Referrer: [null],
         Comment: [null],
 
