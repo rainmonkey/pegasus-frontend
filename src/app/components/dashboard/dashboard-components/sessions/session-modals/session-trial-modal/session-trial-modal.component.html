@@ -54,8 +54,8 @@
       <div class="col-6">
         <div class="row t_c_item">
           <span class="col-5 t_c_label" style="text-align: center">Teacher</span>
-          <select name="" id="" class="col-7" value='teachers[0].teacherId' (input)="selectTeacher($event)">
-            <option *ngFor="let i of teachers" value="{{ i.teacherId }}">
+          <select name="" id="" class="col-7" value='teachers[0].TeacherId' (input)="selectTeacher($event)">
+            <option *ngFor="let i of teachers" value="{{ i.TeacherId }}">
               {{ i.FirstName }} {{ i.LastName }}
             </option>
           </select>
