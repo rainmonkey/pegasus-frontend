@@ -69,11 +69,11 @@ export class NewRegistrationFormComponent implements OnInit {
         ContactNum: [null, Validators.required],
         Email: [null, [Validators.required, Validators.email]],
         Address: ['',],
-        OrgId: [null, Validators.required],
+        OrgId: [JSON.parse(localStorage.getItem('OrgId'))[0], Validators.required],
         LearnerLevel: [null, Validators.required],
         LevelType: [1],
         IsUnder18: [null],
-        PaymentPeriod: [null, Validators.required],
+        PaymentPeriod: [1, Validators.required],
         Referrer: [null],
         Comment: [null],
 

@@ -16,7 +16,7 @@
           <div class="card-body">
             <div class="row">
               <input #checkbox (change)="checkBoxChange($event)" [value]="ele.CourseInstanceId" 
-               type="checkbox">
+               type="checkbox">Select All/Unselect All
               <div class="col-12">
                 <span class="label" style="font-weight: bold">Course: </span>
                 <span class='text'>{{ele.Course.CourseName}}</span>
@@ -84,7 +84,7 @@
 
       <br>
       <div class="row">
-        <div style='margin-left:14px' (click)="isFilter=!isFilter"><i  class="fas fa-filter"></i>Filter</div>
+        <div style='margin-left:14px' (click)="isFilter=!isFilter"><i  class="fas fa-filter"></i>Period Time Cancellation</div>
       </div>
       <div class="row">
         <!-- <div> -->

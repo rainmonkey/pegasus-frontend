@@ -151,7 +151,8 @@ export class DownloadPDFService {
     doc.text(`BANK:${branch.BankName}`, 16, startY+=6);
     doc.text(`Account Number:${branch.BankAccountNo}`, 16, startY+=6);    
     doc.text(`If you have any questions about this invoice, please contact us immediately.`, 30, startY+=6);    
-    doc.save(`${learnerName.firstName}  ${learnerName.lastName}'s invoice`);
+    // doc.save(`${learnerName.firstName}  ${learnerName.lastName}'s invoice`);
+    doc.output('dataurlnewwindow'); 
   }
 }
 function splitAddress(address:string) {

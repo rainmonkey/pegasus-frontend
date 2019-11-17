@@ -63,6 +63,7 @@
               <th *ngFor='let i of columnsToShow1' scope='col' (click)='onSort(i)' counter='0' style='width: 110px'
                 class='t_sort_title'>
                 {{AddSpaceInString(i)}}</th>
+              <th scope='col' style='width: 150px; padding-right:0px'> Status</th>
               <th scope='col' style='width: 100px; padding-right:0px'> Profile & Enrollment</th>
               <th scope='col' style='width: 100px; padding-left: 0px;'>Trial Session& Change Schedule</th>
             </tr>
@@ -77,6 +78,9 @@
                 <app-learner-item [learner]=i [whichName]=j></app-learner-item>
               </td>
               <td *ngFor='let j of columnsToShow1' style='width: 110px'>{{i[j]}}</td>
+              <td style='width: 150px'>
+                <span  *ngFor='let k of i.InstrumentIcon' ><img [src]='k' height="20" width="20" /></span>
+              </td>
               <td style='width: 100px; padding-right:0px;'>
                 <span class='t_info_table_btn' (click)='popUpModal(1,i)' title='Student Profile'><span
                     class='fa fa-id-card'></span></span>

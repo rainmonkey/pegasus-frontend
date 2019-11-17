@@ -1,4 +1,3 @@
-import { TeacherCourseModalComponent } from './../../teachers/teacher-course-modal/teacher-course-modal.component';
 import { Component, OnInit } from '@angular/core';
 import { NgbootstraptableService } from 'src/app/services/others/ngbootstraptable.service';
 import { NgbModal, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
@@ -14,6 +13,7 @@ import { NewLearnerRegistrationModalComponent } from '../New-Learner-Registratio
 import { RegistrationToParentComponent } from '../registration-To-parent/registration-To-parent.component';
 import { LearnerRegistrationFormComponent } from '../../learner-registration/learner-registration-form/learner-registration-form.component'
 import { LearnerAddModalTestComponent } from '../learner-add-modal-test/learner-add-modal-test.component';
+import { instrumentIcon } from 'src/environments/environment.prod';
 @Component({
   selector: 'app-admin-learner-list',
   templateUrl: './admin-learner-list.component.html',
@@ -74,6 +74,7 @@ export class AdminLearnerListComponent implements OnInit {
       (res) => {
         //@ts-ignore
         this.learnerList = res.Data;
+        this.addColStatus(this.learnerList );
         this.learnerList = this.filterLearner(this.learnerList);
         //@ts-ignore
         this.learnerListCopy = this.learnerList;
@@ -505,5 +506,26 @@ export class AdminLearnerListComponent implements OnInit {
           ) != undefined);
     });
   }
-
+  addColStatus(leaners){
+    leaners.forEach(learner => {
+      let courseIcon=[];
+      learner.One2oneCourseInstance.forEach(courseInstance=>{
+        if (courseInstance.EndDate==null
+          ||courseInstance.EndDate > new Date().toISOString())
+          courseIcon.push(this.getCourseIcon(courseInstance.Course.CourseCategoryId));
+      })
+      // learner.One2oneCourseInstance.CourseId
+      // learner.One2oneCourseInstance.Course.CourseCategoryId
+      // learner.One2oneCourseInstance.EndDate
+      if (learner.LearnerGroupCourse.length >0){
+        courseIcon.push(this.getCourseIcon(0));
+      }
+      // courseIcon.
+      // learner.InstrumentIcon
+      learner.InstrumentIcon = courseIcon.filter((x, i, a) => a.indexOf(x) == i)
+    });
+  }
+  getCourseIcon(CourseCategoryId){
+    return '../../../../../..'+instrumentIcon[CourseCategoryId].url;
+  }
 }

@@ -738,7 +738,7 @@ export class AdminInvoiceEditModalComponent implements OnInit {
     if (value == "")
       this.invoiceEditForm.get(item).patchValue(0);
     else if (value == "Internal Exam")
-      this.invoiceEditForm.get(item).patchValue(5);
+      this.invoiceEditForm.get(item).patchValue(15);
   }
   setDiscount(i,event,item){
     // event.target.checked

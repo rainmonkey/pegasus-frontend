@@ -454,11 +454,11 @@
             </div>
             <div class="beginDate row">
               <div class="col-sm-6 col-md-6">
-                <label for="startDate">Start Date</label>
+                <label for="startDate">Start Day</label>
                 <input class="form-control" formControlName="beginDate" type="date" id="startDate">
               </div>
               <div class="col-sm-6 col-md-6">
-                <label for="endDate">End Date</label>
+                <label for="endDate">End Day</label>
                 <input class="form-control" formControlName="endDate" type="date" id="endDate">
               </div>
             </div>
@@ -477,7 +477,7 @@
                 </select>
               </div>
               <div class="col-sm-3 col-md-3">
-                <label for="customTime">Course Time</label>
+                <label for="customTime">Course Time  =>13:00</label>
                 <!-- <input class="form-control" type="text"  value="15:30:00" routerLink="/timePicker" routerLinkActive="active"> -->
                 <ngb-timepicker formControlName="beginTime" [size]="'small'" [hourStep]="hourStep"
                   [minuteStep]="minuteStep"></ngb-timepicker>
@@ -487,7 +487,7 @@
               </div>
               <div class='col-sm-3 col-md-3 mt-3'
                 *ngIf="this.teaListOutArray[i]?.teaListToDatePick!== undefined && this.teaListOutArray[i]?.teaListToDatePick?.length !== 0">
-                <button class='btn btn-primary' (click)="open(1,i)">Pick Course Time by Calendar</button>
+                <button class='btn btn-primary' (click)="open(1,i)">Pick Time</button>
               </div>
             </div>
             <div class="d-flex my-3 justify-content-end">

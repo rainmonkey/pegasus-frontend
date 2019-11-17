@@ -34,29 +34,27 @@ export class OrgFormatPipe implements PipeTransform {
     else {
       switch (value) {
         case 1:
-          return "Central Auckland Branch";
+          return "Mt.Albert";
           break;
         case 2:
-          return "Epsom Branch";
+          return "Epsom";
           break;
         case 3:
-          return "Henderson Branch";
+          return "Henderson";
           break;
         case 4:
-          return "North Shore Branch";
+          return "Sunnynook";
           break;
         case 5:
-          return "AMA Pakuranga Branch";
+          return "AMA";
           break;
         case 6:
-          return "Auckland City Branch";
+          return "City";
           break;
         case 7:
-          return "East Auckland Branch";
+          return "Botany";
           break;
       }
     }
   }
-
-
 }
