@@ -11,15 +11,17 @@ export const environment = {
   };
 
   
-export const instrumentIcon =[
-  {id:0,name:'Group',url:'../../../../../../Group.png'},
-  {id:1,name:'Piano',url:'../../../../../../Piano.svg'},
-  {id:2,name:'Drum',url:'../../../../../../Drum.png'},
-  {id:3,name:'Guitar',url:'../../../../../../Guitar.png'},
-  {id:4,name:'Violin',url:'../../../../../../Violin.png'},
-  {id:5,name:'Cello',url:'../../../../../../Cello.png'},
-  {id:6,name:'Singing',url:'../../../../../../voice.png'},
-  {id:7,name:'Theory',url:'../../../../../../Theory.png'},
-  {id:8,name:'Aural',url:'../../../../../../Aural.svg'},
-  {id:7,name:'Others',url:'../../../../../../Others.svg'},
-]
+
+  export const instrumentIcon =[
+    {id:0,name:'Group',url:'assets/images/shared/group.png'},
+    {id:1,name:'Piano',url:'assets/images/shared/piano.svg'},
+    {id:2,name:'Drum',url:'assets/images/shared/drum.png'},
+    {id:3,name:'Guitar',url:'assets/images/shared/guitar.png'},
+    {id:4,name:'Violin',url:'assets/images/shared/violin.png'},
+    {id:5,name:'Cello',url:'assets/images/shared/cello.png'},
+    {id:6,name:'Singing',url:'assets/images/shared/voice.png'},
+    {id:7,name:'Theory',url:'assets/images/shared/theory.png'},
+    {id:8,name:'Aural',url:'assets/images/shared/aural.svg'},
+    {id:7,name:'Others',url:'assets/images/shared/others.svg'},
+  ]
+    

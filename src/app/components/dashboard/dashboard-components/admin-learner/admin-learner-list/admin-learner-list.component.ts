@@ -526,6 +526,6 @@ export class AdminLearnerListComponent implements OnInit {
     });
   }
   getCourseIcon(CourseCategoryId){
-    return '../../../../../..'+instrumentIcon[CourseCategoryId].url;
+    return '../../../../../../'+instrumentIcon[CourseCategoryId].url;
   }
 }
