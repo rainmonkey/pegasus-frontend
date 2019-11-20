@@ -88,7 +88,8 @@ export class AdminLearnerPaymentProductsComponent implements OnInit {
       OrgId: JSON.parse(localStorage.getItem('OrgId'))[0],
       Amount: this.sellPrice,
       LearnerId: this.learnerId,
-      SoldTransaction: this.postProdsIdArray
+      SoldTransaction: this.postProdsIdArray,
+      InvoiceNum:this.whichLearner?this.whichLearner.invoiceNum:null
     };
   }
   getProductId() {
@@ -328,8 +329,9 @@ export class AdminLearnerPaymentProductsComponent implements OnInit {
       this.productList.removeAt(index);
     });
     this.productList.push(this.productListGroup);
+    let paymentMethod = this.whichLearner?4:null;
     this.productListForm.patchValue({
-      paymentMethod: null
+      paymentMethod: paymentMethod
     });
   }
 
@@ -353,7 +355,7 @@ export class AdminLearnerPaymentProductsComponent implements OnInit {
     this.prodItems.push(this.prodItem);
 
     if (this.whichLearner){
-      this.learnerId = this.whichLearner;
+      this.learnerId = this.whichLearner.learnerId;
       this.patchProd();
     }
     else{

@@ -13,6 +13,9 @@ export class TransactionService {
   getLearnerInvo(staffId,termId): any {
     return this.http.get(this.baseUrl + 'InvoiceWaitingConfirms/' + staffId+'/'+termId);
   }
+  getInvoByLearner(learnerId): any {
+    return this.http.get(this.baseUrl + 'InvoiceWaitingConfirms/' + learnerId);
+  }
   update(data): any {
     return this.http.put(this.baseUrl + 'InvoiceWaitingConfirms/', data);
   }

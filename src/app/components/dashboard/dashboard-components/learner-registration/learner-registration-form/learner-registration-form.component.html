@@ -476,10 +476,10 @@
                   <option value="7">Sunday</option>
                 </select>
               </div>
-              <div class="col-sm-3 col-md-3">
-                <label for="customTime">Course Time  =>13:00</label>
+              <div class="col-sm-3 col-md-3"  >
+                <label for="customTime">Course Time</label><label *ngIf='timeDisplay!=""'>=>{{timeDisplay}}</label>
                 <!-- <input class="form-control" type="text"  value="15:30:00" routerLink="/timePicker" routerLinkActive="active"> -->
-                <ngb-timepicker formControlName="beginTime" [size]="'small'" [hourStep]="hourStep"
+                <ngb-timepicker (ngModelChange)='handleTime($event)' formControlName="beginTime" [size]="'small'" [hourStep]="hourStep"
                   [minuteStep]="minuteStep"></ngb-timepicker>
                 <small class="text-danger"
                   *ngIf="this.customCourse?.controls[0]?.get('schedule').get('beginTime').invalid">Please Select a Valid

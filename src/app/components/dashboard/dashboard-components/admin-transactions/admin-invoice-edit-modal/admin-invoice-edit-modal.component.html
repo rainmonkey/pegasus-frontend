@@ -9,9 +9,10 @@
     <span aria-hidden="true">&times;</span>
   </button>
 </div>
-
+<div *ngIf='isLoading' class="loaderLarge">
+</div>
 <!--modal body-->
-<div class="modal-body">
+<div *ngIf='!isLoading' class="modal-body">
   <form [formGroup]="invoiceEditForm" class="justify-content-between">
     <div class="form-group row justify-content-center">
       <div class="col-5">
@@ -350,7 +351,7 @@
 
 <!--modal footer-->
 <div class="modal-footer">
-    <button *ngIf="false" type="button" class="btn btn-outline-dark" (click)="addBooks()" id="addBooks">
+    <button type="button" class="btn btn-outline-dark" (click)="addBooks()" id="addBooks">
         Add Books To Invoice
      </button>
   <button type="button" class="btn btn-outline-dark" (click)="sendMail(confirmModal)" id="save">

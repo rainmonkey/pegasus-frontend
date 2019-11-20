@@ -143,6 +143,7 @@ export class LearnerRegistrationFormComponent implements OnInit, DoCheck, AfterV
   teaList;
   teaListOutArray = [];
   teaListToDatePick = [];
+  timeDisplay:string ='';
   // getter method: simplify the way to capture form controls
   get firstName() { return this.registrationForm.get('learnerForm').get('firstName'); }
   get lastName() { return this.registrationForm.get('learnerForm').get('lastName'); }
@@ -1139,6 +1140,17 @@ export class LearnerRegistrationFormComponent implements OnInit, DoCheck, AfterV
 
     this.learnerForm.get("isUnder18").patchValue(isUnder18);
   }
+  handleTime(e) {
+    console.log(e.hour,e.minute);
+    let minute = e.minute==0?'00':e.minute;
+    if (e.hour>12){
+      let hour = e.hour-12;
+      this.timeDisplay=hour+':'+minute+'PM';
+    }
+    else
+      this.timeDisplay=e.hour+':'+minute+'AM'
+  }
+
 
   setOneToOneForm() {
     if (!this.whichLearner) {

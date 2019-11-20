@@ -65,7 +65,7 @@ export class AdminInvoiceEditModalComponent implements OnInit {
   tempOther17Fee: number = 0
   tempOther18Fee: number = 0
   item2: any;
-
+  isLoading:Boolean =false;
   totalFee: number
 
   // activated modal tranfer data
@@ -369,20 +369,24 @@ export class AdminInvoiceEditModalComponent implements OnInit {
       }
 
     if (this.invoiceEditForm.value.Comment !=null &&
-    this.invoiceEditForm.value.Comment.length >5 ) return true;
+      this.invoiceEditForm.value.Comment.length >5 ) return true;
+
     if ((this.invoiceEditForm.value.Other14<0)||
-      (this.invoiceEditForm.value.Other15<0)||
-      (this.invoiceEditForm.value.Other16<0)||
-      (this.invoiceEditForm.value.Other17<0)||
-      (this.invoiceEditForm.value.Other18<0))
-    return true
+        (this.invoiceEditForm.value.Other15<0)||
+        (this.invoiceEditForm.value.Other16<0)||
+        (this.invoiceEditForm.value.Other17<0)||
+        (this.invoiceEditForm.value.Other18<0))
+        {
+          swal.fire({
+            title: 'Please Add a Discount Reason, at least 5 characters!',
+            type: 'error',
+            showConfirmButton: true,
+          });
+          return false
+        }
     else {
-      swal.fire({
-        title: 'Please Add a Discount Reason, at least 5 characters!',
-        type: 'error',
-        showConfirmButton: true,
-      });
-      return false;
+
+      return true;
     }
   }
   // post data to server side
@@ -759,14 +763,32 @@ export class AdminInvoiceEditModalComponent implements OnInit {
     let that = this;
     modalRef.result.then(
       (res) => {
-        that.ngOnInit();
+        this.refreshData();
+           
       },
       (err) => {
-        that.ngOnInit();
+        // that.ngOnInit();
         return;
       }
     );
-    modalRef.componentInstance.whichObject = this.item2.LearnerId;
+    modalRef.componentInstance.whichObject = {learnerId:this.item2.LearnerId,invoiceNum:this.item2.InvoiceNum};
     modalRef.componentInstance.whichModal = 'Product Payment';
+  }
+  refreshData(){
+    this.isLoading = true;
+    this.transactionService.getInvoByLearner(this.item2.LearnerId).subscribe(
+      res=>{
+        const invoices=res['Data'];
+        const InvoiceNum = this.item2.InvoiceNum;
+        const item = invoices.
+          find(e=>e.InvoiceNum==InvoiceNum);
+          this.item = item;
+          this.ngOnInit(); 
+          this.isLoading = false;
+      }
+      ,
+      err=>{
+        this.isLoading = false;
+      })
   }
 }
