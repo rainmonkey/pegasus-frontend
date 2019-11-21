@@ -37,15 +37,15 @@
           <!--table header-->
           <thead>
             <tr>
-              <th scope='col' style='width: 50px'>#</th>
-              <th *ngFor='let i of columnsToShow' scope='col' (click)='onSort(i)' counter='0' style='width: 110px'
+              <th scope='col' style='width: 30px'>#</th>
+              <th *ngFor='let i of columnsToShow' scope='col' (click)='onSort(i)' counter='0' style='width: 90px'
                 class='t_sort_title'>
                 {{i | columnTitleFormat}}</th>
-              <th scope='col' (click)='onSort("Email")' counter='0' style='width: 140px' class='t_sort_title'>
+              <th scope='col' (click)='onSort("Email")' counter='0' style='width: 200px' class='t_sort_title'>
                 Email</th>
                 <th scope='col'  style='width: 90px' class='t_sort_title'>
                   Level</th>                
-              <th scope='col' style='width: 150px'></th>
+              <th scope='col' style='width: 120px'></th>
             </tr>
           </thead>
           <!--table body-->
