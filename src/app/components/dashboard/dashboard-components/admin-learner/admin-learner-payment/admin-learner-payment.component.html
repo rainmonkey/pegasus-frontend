@@ -1,0 +1,68 @@
+<div *ngIf='loadingFlag'>
+  <div class="loaderLarge"></div>
+</div>
+
+<div *ngIf='!loadingFlag'>
+  <div class='container'>
+    <div class='col-12 t_info_title'>
+      Student Information
+      <!-- <div>
+        <button type="button" class="btn btn-outline-primary t_info_addnew_btn" (click)='newRegiModal(1,null)'>
+          Student Registration</button>
+      </div> -->
+    </div>
+
+    <div class='row'>
+      <!--info page table-->
+      <div class='col-12'>
+        <div class="row" (change)='onChange()'>
+          <label class="col-2">Payment:</label>
+          <select class="col-3" [(ngModel)]="paymentStatus">
+            <option selected value=-1>All</option>
+            <option *ngFor='let payment of payments' value={{payment.id}} name="payment" >{{payment.name}}</option>
+          </select>
+        </div>
+        <input type="checkbox"   [(ngModel)]="selectAll" (click)="checkSelectAllClick()">Select All
+        
+        <table class='table table-striped'>
+          <!--table header-->
+          <thead>
+            <tr>
+              <!-- <th scope='col' style='width: 50px'>#</th> -->
+              <th *ngFor='let i of columnsToShow' scope='col'  counter='0' style='width: 60px'>
+                {{AddSpaceInString(i)}}</th>
+              <th *ngFor='let i of columnsToShow' scope='col'  counter='0' style='width: 60px'>
+                {{AddSpaceInString(i)}}</th>
+              <th *ngFor='let i of columnsToShow' scope='col'  counter='0' style='width: 60px'>
+                {{AddSpaceInString(i)}}</th>     
+                             
+
+              <!-- <th scope='col' style='width: 150px; padding-right:0px'> Status</th>
+              <th scope='col' style='width: 100px; padding-right:0px'> Profile & Enrollment</th>
+              <th scope='col' style='width: 100px; padding-left: 0px;'>Trial Session& Change Schedule</th> -->
+            </tr>
+          </thead>
+          <!--table body-->
+          <tbody>
+            <!--pagination is here-->
+            <tr
+              *ngFor='let i of learnerInvoList; let index = index'>
+              <!-- <th scope="row">{{index + 1}}</th> -->
+              <td>{{i.Learner.FirstName}} {{i.Learner.LastName}}</td>
+              <td>{{i.Invoice.IsPaid?"Paid":"UnPaid"}}</td>    
+              <td>
+                <input type="checkbox"  id={{i.Learner.Email}} [(ngModel)]="checkboxModel[index]" (click)="checkClick(index)">
+              </td>     
+              
+              
+            </tr>
+          </tbody>
+        </table>
+
+        <button type="button" class="btn btn-outline-primary t_info_addnew_btn" (click)='sendEmail()'>
+            Send Email</button>
+      </div>
+
+    </div>    
+  </div>
+</div>

@@ -21,6 +21,8 @@ import { SessionsPanelComponent } from "./components/dashboard/dashboard-compone
 import { CoursesPanelComponent } from "./components/dashboard/dashboard-components/courses/courses-panel/courses-panel.component";
 import { AdminLearnerPanelComponent } from "./components/dashboard/dashboard-components/admin-learner/admin-learner-panel/admin-learner-panel.component";
 import { AdminLearnerListComponent } from "./components/dashboard/dashboard-components/admin-learner/admin-learner-list/admin-learner-list.component";
+import { AdminLearnerPaymentComponent } from "./components/dashboard/dashboard-components/admin-learner/admin-learner-payment/admin-learner-payment.component";
+
 import { InventoryPanelComponent } from "./components/dashboard/dashboard-components/inventory/inventory-panel/inventory-panel.component";
 import { InventoryListComponent } from "./components/dashboard/dashboard-components/inventory/inventory-list/inventory-list.component";
 import { PayrollPanelComponent } from "./components/dashboard/dashboard-components/admin-payroll/payroll-panel/payroll-panel.component";
@@ -217,6 +219,11 @@ const routes: Routes = [
             component: LearnerRegistrationFormComponent,
             canActivate: [UserAuthGuard]
           },
+          {
+            path: "payment",
+            component: AdminLearnerPaymentComponent,
+            canActivate: [UserAuthGuard]
+          },          
           { path: "trial", component: TrialInfoComponent },
           {
             path: "credit",
