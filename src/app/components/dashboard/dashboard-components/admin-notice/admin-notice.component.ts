@@ -18,7 +18,7 @@ import { Component, OnInit } from '@angular/core';
 })
 
 export class AdminNoticeComponent implements OnInit {
-  private staffs:any;
+  staffs:any;
   selectedItem:any;
   todoText:string;
   // notice:INotice;

@@ -23,6 +23,7 @@ export class AdminLearnerLeaveComponent implements OnInit {
   selectedLessons = [];
   public isCancelSuccess = false;
   public isCancelFailed = false;
+  public isFilter = false;
   @ViewChildren('checkbox') checkbox
   @ViewChildren('checkboxLesson') checkboxLesson
   constructor(public activeModal: NgbActiveModal,

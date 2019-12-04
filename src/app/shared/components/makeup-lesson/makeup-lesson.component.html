@@ -1,8 +1,8 @@
-<div *ngIf="isloading" class="loaderSmall"></div>
-<div *ngIf="!isloading&&lessonQuantity+quarterQuantity>0">
+<div *ngIf="isLoading" class="loaderSmall"></div>
+<div *ngIf="!isLoading&&lessonQuantity+quarterQuantity>0">
   <h5 class="text-center">Missed Lessons and Remaining Time</h5>
 </div>
-<div *ngIf="!isloading&&lessonQuantity+quarterQuantity>0" class="row">
+<div *ngIf="!isLoading&&lessonQuantity+quarterQuantity>0" class="row">
   <div class="col-4">
     <button (click)="doMakeup(0)" (click)="modal.dismiss('Cross click')" class="btn btn-outline-dark">Makeup
       Before</button>
