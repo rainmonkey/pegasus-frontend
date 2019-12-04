@@ -43,19 +43,26 @@
             </tr>
           </thead>
           <!--table body-->
-          <tbody>
+          <tbody *ngFor='let i of learnerInvoList; let index = index'>
             <!--pagination is here-->
-            <tr
-              *ngFor='let i of learnerInvoList; let index = index'>
-              <!-- <th scope="row">{{index + 1}}</th> -->
-              <td>{{i.Learner.FirstName}} {{i.Learner.LastName}}</td>
-              <td>{{i.Invoice.IsPaid?"Paid":"UnPaid"}}</td>    
-              <td>
-                <input type="checkbox"  id={{i.Learner.Email}} [(ngModel)]="checkboxModel[index]" (click)="checkClick(index)">
-              </td>     
-              
-              
+            <!-- <tr *ngIf="index%3 == 0"> -->
+              <tr>
+                <!-- <th scope="row">{{index + 1}}</th> -->
+                <td>{{i.Learner.FirstName}} {{i.Learner.LastName}}</td>
+                <td>{{i.Invoice.IsPaid?"Paid":"UnPaid"}}</td>    
+                <td>
+                  <input type="checkbox"  id={{i.Learner.Email}} [(ngModel)]="checkboxModel[index]" (click)="checkClick(index)">
+                </td>     
+<!--                 
+                <td>{{learnerInvoList[index+1].Learner.FirstName}} {{learnerInvoList[index+1].Learner.LastName}}</td>
+                <td>{{learnerInvoList[index+1].Invoice.IsPaid?"Paid":"UnPaid"}}</td>    
+                <td>
+                  <input type="checkbox"  id={{learnerInvoList[index+1].Learner.Email}} [(ngModel)]="checkboxModel[index+1]" (click)="checkClick(index+1)">
+                </td>    -->
+                             
             </tr>
+
+
           </tbody>
         </table>
 

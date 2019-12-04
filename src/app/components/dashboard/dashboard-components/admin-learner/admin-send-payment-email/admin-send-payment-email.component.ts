@@ -59,12 +59,7 @@ export class AdminSendPaymentEmailComponent implements OnInit {
         let contents = this.emailForm.value.contents;
         console.log("debug", contents);
 
-        let para1 = {
-        MailTo : email,
-          MailTitle : title,
-          MailContent : contents,
-          MailToName : firstName      
-        };
+
 
 
         const learnerName = {} as IInvoiceLearnerName;
@@ -75,11 +70,25 @@ export class AdminSendPaymentEmailComponent implements OnInit {
 
 
         let para2 = this.downloadPDFService.downloadPDF_blob(learnerName, this.learnlist[i].Invoice, this.learnlist[i].Learner.Org);
+        console.log("debug", para2);
+        let para1 = {
+          // MailTo : email,
+          MailTo : "edwin.zhu02@gmail.com",
+          MailTitle : title,
+          MailContent : contents,
+          MailToName : name,
+          // Attachment:  para2     
+        };
+
+        let submit = new FormData();
+        submit.append('Mail', JSON.stringify(para1));
+        submit.append('Attachment', para2);
+       
 
         console.log(para2);
 
 
-        this.emailService.postEmail(para1, para2).subscribe((res) => {
+        this.emailService.postEmail(submit, para2).subscribe((res) => {
           Swal.fire({
             title: 'Server error!',
             type: 'error',

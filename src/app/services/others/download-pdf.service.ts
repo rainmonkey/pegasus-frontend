@@ -299,8 +299,8 @@ export class DownloadPDFService {
     doc.text(`Account Number:${branch.BankAccountNo}`, 16, startY+=6);    
     doc.text(`If you have any questions about this invoice, please contact us immediately.`, 30, startY+=6);    
     // doc.save(`${learnerName.firstName}  ${learnerName.lastName}'s invoice`);
-    var re  = doc.output('arraybuffer'); 
-    
+    // var re  = doc.output('arraybuffer'); 
+    var re  = doc.output('blob');
     return re;
   }  
 }

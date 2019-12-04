@@ -8,7 +8,7 @@ import { environment } from '../../../environments/environment.prod';
 })
 export class PostEmailServiceService {
 
-  baseUrl = environment.photoUrl;
+  baseUrl = "http://192.168.178.175:5000/api/";
   httpHeaders: HttpHeaders;
   token: string;
 
@@ -22,10 +22,10 @@ export class PostEmailServiceService {
   }
 
   postEmail(para1, para2){
-    let data;
-    data.Mail = para1;
-    data.Attachment = para2;
-    return this.http.post(this.baseUrl + "/api/SendMail", data);
+    // let data;
+    // data.Mail = para1;
+    // data.Attachment = para2;
+    return this.http.post(this.baseUrl + "SendMail", para1);
   }
 
 
