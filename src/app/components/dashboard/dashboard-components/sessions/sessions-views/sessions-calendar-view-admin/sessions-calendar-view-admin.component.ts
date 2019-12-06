@@ -296,6 +296,8 @@ export class SessionsCalendarViewAdminComponent implements OnInit {
   ConfirmEdit = () => {
     this.isloadingSmall = true;
     this.sessionEditModel.reason = this.reason;
+    console.log(this.reason);
+    console.log(this.sessionEditModel);
     this.sessionService.SessionEdit(this.sessionEditModel).subscribe(res => {
       this.IsConfirmEditSuccess = true;
       this.isloadingSmall = false;
