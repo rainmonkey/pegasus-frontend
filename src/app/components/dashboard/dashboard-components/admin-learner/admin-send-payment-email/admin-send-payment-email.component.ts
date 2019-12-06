@@ -19,9 +19,6 @@ import { PostEmailServiceService } from "../../../../../services/http/post-email
 export class AdminSendPaymentEmailComponent implements OnInit {
 
   private emailForm: FormGroup;
-
-  private selectAttachment = true;
-
   public errorMessage: string;
 
 @Input() learnlist;
@@ -39,7 +36,8 @@ export class AdminSendPaymentEmailComponent implements OnInit {
     this.emailForm = this.fb.group({
       title: [''],
       contents: [''],
-      attachment: ['']
+      attachment: [''],
+      selectAttachment: new FormControl()
     });
   }
 
@@ -60,7 +58,6 @@ export class AdminSendPaymentEmailComponent implements OnInit {
         // console.log("debug", contents);
  
         const learnerName = {} as IInvoiceLearnerName;
-        // let invoice;
         learnerName.firstName = firstName;
         learnerName.lastName = firstName;
         learnerName.Email = email;
@@ -77,7 +74,7 @@ export class AdminSendPaymentEmailComponent implements OnInit {
 
         let submit = new FormData();
         submit.append('Mail', JSON.stringify(para1));
-        if(this.selectAttachment){
+        if(this.emailForm.value.selectAttachment){
           submit.append('Attachment', para2);
         }
         

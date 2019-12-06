@@ -48,7 +48,6 @@ export class AdminLearnerPaymentComponent implements OnInit {
 
   //get data from server
   getDataFromServer() {
-    // console.log('ajfoi')
     // this.isLoad = true;
     this.transactionService.getLearnerInvo(localStorage.getItem("userID"), this.termId).subscribe(
       res => {
@@ -56,27 +55,11 @@ export class AdminLearnerPaymentComponent implements OnInit {
         this.learnerInvoListLength = res.Data.length; // length prop is under Data prop
 
         this.learnerInvoListCopy = this.learnerInvoList;
-
-    
-
-        // this.temLearnerList = res.Data;
-        // this.temLearnerListLength = res.Data.length;
         this.loadingFlag = false;
-        // make array for sort
-        // this.makeArray();
-        // if (searchValue) {
-        //   this.isSearchingFlag = true;
-        //   this.myArray = this.ngTable.searching(
-        //     this.myArray,
-        //     "FirstName",
-        //     searchValue
-        //   );
-        //   this.learnerListLength = this.myArray.length;
-        // }
       },
       error => {
         this.loadingFlag = false;
-        // this.errorMsg = JSON.parse(error.error);
+
         console.log("Error!", JSON.parse(error.error));
 
         Swal.fire({
@@ -84,7 +67,6 @@ export class AdminLearnerPaymentComponent implements OnInit {
           title: "Oops...",
           text: error.error.ErrorMessage
         });
-        // this.errorAlert = false;
       }
     );
   }
@@ -101,11 +83,7 @@ export class AdminLearnerPaymentComponent implements OnInit {
       for(let i=0; i<this.learnerInvoListLength; i++){
         this.checkboxModel[i] = true;
       }
-    }
-
-      // for(let i=0; i<this.learnerInvoListLength; i++){
-      //   this.checkboxModel[i] = !this.checkboxModel[i];
-      // }    
+    } 
   }
 
   checkClick(index){
@@ -115,7 +93,6 @@ export class AdminLearnerPaymentComponent implements OnInit {
   sendEmail(){
 
     const modalRef = this.modalService.open(AdminSendPaymentEmailComponent, { size: 'lg',  centered: true, windowClass: 'my-class', backdrop: 'static', keyboard: false });
-
 
     let that = this;
     modalRef.result.then(
@@ -135,17 +112,10 @@ export class AdminLearnerPaymentComponent implements OnInit {
         that.ngOnInit();
       }
     });
-
-    // for(let i=0; i< this.checkboxModel.length; i++){
-    //   if(this.checkboxModel[i]){
-    //     console.log(i);
-    //   }      
-    // }
   }
 
 onChange(learners)
 {
-  // if (this.paymentStatus==-1) return;
   this.selectAll = false;
   for(let i=0; i<this.learnerInvoListLength; i++){
     this.checkboxModel[i] = false;
@@ -167,8 +137,6 @@ onChange(learners)
   else if(-1 == this.paymentStatus){
     this.learnerInvoList = this.learnerInvoListCopy;
   }
-
-  // console.log("xxx");
 }
 
 
