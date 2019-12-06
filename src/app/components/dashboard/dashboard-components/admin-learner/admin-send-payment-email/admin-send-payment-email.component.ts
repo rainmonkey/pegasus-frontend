@@ -20,7 +20,7 @@ export class AdminSendPaymentEmailComponent implements OnInit {
 
   private emailForm: FormGroup;
 
-  private selectAttachment: boolean;
+  private selectAttachment = true;
 
   public errorMessage: string;
 
@@ -51,50 +51,44 @@ export class AdminSendPaymentEmailComponent implements OnInit {
 
     for(let i=0; i<this.selectArray.length; i++){
       if(true == this.selectArray[i]){
-        let email = this.learnlist[i].Learner.Email;
-        let firstName = this.learnlist[i].Learner.FirstName;
-        let lastName = this.learnlist[i].Learner.LastName;
+        var email = this.learnlist[i].Learner.Email;
+        var firstName = this.learnlist[i].Learner.FirstName;
+        var lastName = this.learnlist[i].Learner.LastName;
         var name = firstName + " " + lastName;
-        let title = this.emailForm.value.title;
-        let contents = this.emailForm.value.contents;
-        console.log("debug", contents);
-
-
-
-
+        var title = "<h3>" + this.emailForm.value.title + "</h3>";
+        var contents = "<p>Hello " + firstName + "</p><p>" + this.emailForm.value.contents + "</p>";
+        // console.log("debug", contents);
+ 
         const learnerName = {} as IInvoiceLearnerName;
         // let invoice;
         learnerName.firstName = firstName;
         learnerName.lastName = firstName;
         learnerName.Email = email;
 
-
         let para2 = this.downloadPDFService.downloadPDF_blob(learnerName, this.learnlist[i].Invoice, this.learnlist[i].Learner.Org);
-        console.log("debug", para2);
+
         let para1 = {
-          // MailTo : email,
-          MailTo : "edwin.zhu02@gmail.com",
+          MailTo : email,
+          // MailTo : "edwin.zhu02@gmail.com",
           MailTitle : title,
           MailContent : contents,
           MailToName : name,
-          // Attachment:  para2     
         };
 
         let submit = new FormData();
         submit.append('Mail', JSON.stringify(para1));
-        submit.append('Attachment', para2);
-       
+        if(this.selectAttachment){
+          submit.append('Attachment', para2);
+        }
+        
 
-        console.log(para2);
-
-
-        this.emailService.postEmail(submit, para2).subscribe((res) => {
+        this.emailService.postEmail(submit).subscribe((res) => {
           Swal.fire({
             title: 'Server error!',
             type: 'error',
             showConfirmButton: true,
           });
-console.log(res);
+          console.log(res);
           this.activeModal.close();
         },
         (err) => {
@@ -114,18 +108,4 @@ console.log(res);
       this.errorMessage = 'Error! Please check your input.'
     }
   }  
-
-  // http://gradspace.org:5000/api/SendMail
-
-  // Post:(formdata)
-  //   para1:Mail :string 
-    
-  //   {
-  //     "MailTo": "edwin.zhu02@gmail.com",
-  //     "MailTitle": "hello",
-  //     "MailContent": "Your invoice is due, Please payment on time.",
-  //     "MailToName": "edwin"
-  //   }
-  
-  //   para2:Attachment: file	  
 }

@@ -6,6 +6,7 @@ import { NgbModal, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { TransactionService } from "../../../../../services/http/transaction.service";
 import { CoursesService } from "../../../../../services/http/courses.service";
 import { AdminSendPaymentEmailComponent } from '../admin-send-payment-email/admin-send-payment-email.component';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-admin-learner-payment',
@@ -22,7 +23,7 @@ export class AdminLearnerPaymentComponent implements OnInit {
 
   private termId: number;
 
-  private loadingFlag: boolean = false;
+  private loadingFlag: boolean;
 
   private paymentStatus=-1
 
@@ -78,11 +79,11 @@ export class AdminLearnerPaymentComponent implements OnInit {
         // this.errorMsg = JSON.parse(error.error);
         console.log("Error!", JSON.parse(error.error));
 
-        // Swal.fire({
-        //   type: "error",
-        //   title: "Oops...",
-        //   text: error.error.ErrorMessage
-        // });
+        Swal.fire({
+          type: "error",
+          title: "Oops...",
+          text: error.error.ErrorMessage
+        });
         // this.errorAlert = false;
       }
     );
@@ -101,6 +102,10 @@ export class AdminLearnerPaymentComponent implements OnInit {
         this.checkboxModel[i] = true;
       }
     }
+
+      // for(let i=0; i<this.learnerInvoListLength; i++){
+      //   this.checkboxModel[i] = !this.checkboxModel[i];
+      // }    
   }
 
   checkClick(index){
@@ -141,7 +146,7 @@ export class AdminLearnerPaymentComponent implements OnInit {
 onChange(learners)
 {
   // if (this.paymentStatus==-1) return;
-  this.selectAll = true;
+  this.selectAll = false;
   for(let i=0; i<this.learnerInvoListLength; i++){
     this.checkboxModel[i] = false;
   }
@@ -185,11 +190,11 @@ onChange(learners)
         this.getDataFromServer();
       },
       error => {
-        // Swal.fire({
-        //   type: "error",
-        //   title: "Oops...",
-        //   text: error.error.ErrorMessage
-        // });
+        Swal.fire({
+          type: "error",
+          title: "Oops...",
+          text: error.error.ErrorMessage
+        });
       }
     );
   }

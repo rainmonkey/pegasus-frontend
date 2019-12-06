@@ -1,7 +1,7 @@
 
 <!--modal header-->
 <div class='modal-header'>
-  <h4 class='modal-title'><span class='t_dm_title'></span></h4>
+  <h4 class='modal-title'><span class='t_dm_title'>Send Email</span></h4>
   <button type="button" class='btn btn-sm btn-info t_dm_close_btn' aria-label="Close"
     (click)="activeModal.close('Cross click')">
     <span aria-hidden="true">&times;</span>
@@ -12,22 +12,36 @@
 <form [formGroup]="emailForm" (ngSubmit)="onSubmit()">
 
   <div>
-    <label for="title">
+    <label for="title" class="form-label">
       Title: 
     </label>
-    <input id="title" type="text" formControlName="title">
+    <input id="title" type="text" class="title  col-12" formControlName="title">
   </div>
 
   <div>
-    <label for="contents">
+    <label for="contents" class="form-label">
       Contents: 
     </label>
-    <textarea id="contents" formControlName="contents"></textarea>
+    <textarea id="contents" formControlName="contents" maxlength="1000" class='l-comment col-12'></textarea>
   </div>
+  <br>
+  <input type="checkbox" class="selectAll" [(ngModel)]="selectAttachment" (click)="checkAttachmentClick()">
+  <label class="check-label">
+    Attach Invoices
+  </label>
 
-  <input type="checkbox" [(ngModel)]="selectAttachment" (click)="checkAttachmentClick()">Attach Invoices
 
-  <button class="button" type="submit">Send</button>
+
+  <!-- <span class="form-check col-2">
+    <input class="form-check-input" type="checkbox" value="" id="selectAll" (click)='selectAll()'>
+    <label class="form-check-label" for="selectAll">
+      All
+    </label>
+  </span> -->
+
+
+
+  <button class="submit btn btn-outline-dark" type="submit">Send</button>
 </form>
 
 
