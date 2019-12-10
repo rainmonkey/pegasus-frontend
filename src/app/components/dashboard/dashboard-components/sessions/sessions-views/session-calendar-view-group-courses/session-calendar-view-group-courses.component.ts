@@ -106,31 +106,14 @@ export class SessionCalendarViewGroupCoursesComponent implements OnInit {
           },
           ////////
           eventClick: (info) => {
-            // this.eventInfo = info;
-            // console.log(info);
-            // const modalRef = this.modalService.open(this.methodModal);
-            // const Date = this.datePipe.transform(this.fullcalendar.calendar.getDate(), 'yyyy-MM-dd');
+            const dateCu = this.datePipe.transform(this.fullcalendar.calendar.getDate(), 'yyyy-MM-dd');
             this.clickedBranch = info.event.extendedProps.Org.OrgId;
             console.log(this.clickedBranch);
-            // this.router.navigate(['../topview'],{relativeTo: this.activatedRouter});
+            this.router.navigate(['../topview', {id: this.clickedBranch, date: dateCu}],{relativeTo: this.activatedRouter});
           },
           ////////
           eventDrop: (info) => { // when event drag , need to send put request to change the time of this event
-            // this.IsConfirmEditSuccess = false;
-            // this.reason = '';
-            // const Date = this.datePipe.transform(this.fullcalendar.calendar.getDate(), 'yyyy-MM-dd');
-            // const newStartTime = this.datePipe.transform(info.event.start, 'yyyy-MM-dd HH:mm');
-            // const newEndTime = this.datePipe.transform(info.event.end, 'yyyy-MM-dd HH:mm');
-            // const RoomId = info['newResource'] == null ? info.event.extendedProps.info.RoomId : parseInt(info['newResource'].id);
-            // this.sessionEditModel = new SessionEdit(info.event.extendedProps.info.LessonId,
-            //   info.event.extendedProps.info.LearnerId, RoomId, info.event.extendedProps.info.TeacherId,
-            // info.event.extendedProps.info.OrgId, null, newStartTime);
-            // const modalRef = this.modalService.open(this.confirmModal);
-            // modalRef.result.then(() => {
-            //   this.getEventByDate(Date);
-            // }, () => {
-            //   this.getEventByDate(Date);
-            // });
+
           },
           resources: this.calendarResourceData,
           events: this.calendarEventData,
