@@ -33,6 +33,7 @@ import { AdminPaymentListComponent } from "./components/dashboard/dashboard-comp
 import { AdminSalesListComponent } from "./components/dashboard/dashboard-components/admin-transactions/admin-sales-list/admin-sales-list.component";
 import { SessionsCalendarViewAdminComponent } from "./components/dashboard/dashboard-components/sessions/sessions-views/sessions-calendar-view-admin/sessions-calendar-view-admin.component";
 import { SessionsCalendarViewTutorComponent } from "./components/dashboard/dashboard-components/sessions/sessions-views/sessions-calendar-view-tutor/sessions-calendar-view-tutor.component";
+import { SessionCalendarViewGroupCoursesComponent } from './components/dashboard/dashboard-components/sessions/sessions-views/session-calendar-view-group-courses/session-calendar-view-group-courses.component';
 import { TeacherPanelComponent } from "./components/dashboard/dashboard-components/teachers/teacher-panel/teacher-panel.component";
 import { TeacherInfoComponent } from "./components/dashboard/dashboard-components/teachers/teacher-info/teacher-info.component";
 import { TestoneComponent } from "./components/testcomponent/testone/testone.component";
@@ -179,6 +180,11 @@ const routes: Routes = [
             component: SessionsTopviewsComponent,
             canActivate: [UserAuthGuard]
           },
+          {
+            path: "calendar/groupcourses",
+            component: SessionCalendarViewGroupCoursesComponent,
+            canActivate: [UserAuthGuard]
+          },          
         ]
       },
       // Courses Area
