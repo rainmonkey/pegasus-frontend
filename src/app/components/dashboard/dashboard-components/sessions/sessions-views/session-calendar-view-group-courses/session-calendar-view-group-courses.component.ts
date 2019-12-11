@@ -5,6 +5,7 @@ import interactionPlugin from '@fullcalendar/interaction';
 import {CalendarComponent} from 'ng-fullcalendar';
 
 import { CoursesService } from '../../../../../../services/http/courses.service';
+import { SessionsService } from '../../../../../../services/http/sessions.service';
 
 import Swal from 'node_modules/sweetalert2/dist/sweetalert2.all.min.js';
 
@@ -36,9 +37,12 @@ export class SessionCalendarViewGroupCoursesComponent implements OnInit {
 
   private clickedBranch: any;
 
+  private isOneToOne: any;
+
   private isloading = false;
 
   constructor(private coursesService:CoursesService,
+    private sessionService:SessionsService,
     private router: Router,
     private activatedRouter: ActivatedRoute,
     private modalService: NgbModal,
@@ -46,6 +50,11 @@ export class SessionCalendarViewGroupCoursesComponent implements OnInit {
     private datePipe: DatePipe) { }
 
   ngOnInit() {
+
+    this.activatedRouter.paramMap.subscribe(data => {
+      this.isOneToOne = data['params'].onetoone;
+      console.log(this.isOneToOne);
+    })      
 
     this.searchForm = this.fb.group({
       dateOfLesson: ['']
@@ -66,92 +75,89 @@ export class SessionCalendarViewGroupCoursesComponent implements OnInit {
       this.calendarResourceData = outData;
 
 
-      this.coursesService.getCourseClasses().subscribe(data => {
+      if(this.isOneToOne == null || this.isOneToOne == undefined){    //group courses
 
-        console.log(data);
+        this.coursesService.getCourseClasses().subscribe(data => {
+
+          console.log(data);
+    
+          let courses = data['Data'];
+          let outData = courses;
+          outData.forEach(element => {
+            element['start'] = element['BeginDate'];
+            element['end'] = element['EndDate'];
+            element['resourceId'] = element['Org']['OrgId'];
+            element['title'] = "GroupCourseInstanceId: " + element['GroupCourseInstanceId'] + ", " + element['Course']['CourseName']  + ", " + element['BeginDate']  + " -> " + element['EndDate'];
+            // element['color'] = "red";
+            element['borderColor'] = "red";
+
+            element['OrgId'] = element['Org']['OrgId'];
+          });
+    
+          this.calendarEventData = outData;
+    
+          console.log(outData);
+          this.isloading = false;
   
-        let courses = data['Data'];
-        let outData = courses;
-        outData.forEach(element => {
-          element['start'] = element['BeginDate'];
-          element['end'] = element['EndDate'];
-          element['resourceId'] = element['Org']['OrgId'];
-          element['title'] = "GroupCourseInstanceId: " + element['GroupCourseInstanceId'] + ", " + element['Course']['CourseName']  + ", " + element['BeginDate']  + " -> " + element['EndDate'];
-          // element['color'] = "red";
-          element['borderColor'] = "red";
+          this.setUpFullCalendar();
+   
+        }, err => {
+          // this.isloadingSmall = false;
+          this.isloading = false;
+          Swal.fire({
+            type: 'error',
+            title: 'Oops...',
+            text: err.error.ErrorMessage
+          });
         });
-  
-        this.calendarEventData = outData;
-  
-        console.log(outData);
-        this.isloading = false;
 
-        this.calendarOptions = {
-          themeSystem: 'jquery-ui',
-          editable: true,
-          eventDurationEditable: false,
-          displayEventTime: true,
-          firstDay: 1,
-          selectable: true,
-          select(info) {
-            // that.selectSlot(info);
-          },
-          customButtons: {
-            DayPickerButton: {
-              text: 'Search',
-              click: () => {
-                this.modalService.open(this.datePicker);
-              }
-            }
-          },
-          ////////
-          eventClick: (info) => {
-            const dateCu = this.datePipe.transform(this.fullcalendar.calendar.getDate(), 'yyyy-MM-dd');
-            this.clickedBranch = info.event.extendedProps.Org.OrgId;
-            console.log(this.clickedBranch);
-            this.router.navigate(['../topview', {id: this.clickedBranch, date: dateCu}],{relativeTo: this.activatedRouter});
-          },
-          ////////
-          eventDrop: (info) => { // when event drag , need to send put request to change the time of this event
+      }
+      else{   //one to one courses
 
-          },
-          resources: this.calendarResourceData,
-          events: this.calendarEventData,
-          allDaySlot: false,
-          defaultView: 'resourceTimeGridDay',
-          schedulerLicenseKey: 'GPL-My-Project-Is-Open-Source',
-          minTime: '07:00',
-          maxTime: '24:00',
-          scrollTime: '16:00',
-          height: window.innerHeight - 110,
-          titleFormat:{ year: 'numeric', month: 'short', day: 'numeric', weekday:'short'} ,
-          views: {
-            resourceTimeGridDay: {
-              buttonText: 'Day',
-              slotDuration: '00:15'
-            }
-          },
-          windowResize: () => {
-            this.fullcalendar.calendar.setOption('height', window.innerHeight - 110);
-            // this.fullcalendar.calendar.setOption('width', window.innerWidth - 110);
-          },
-          header: {
-            left: 'today prev,next DayPickerButton title ',
-            center: '',
-            right: ''
-          },
-          plugins: [timeslot, interactionPlugin]
-        };  
-      }, err => {
-        // this.isloadingSmall = false;
-        this.isloading = false;
-        Swal.fire({
-          type: 'error',
-          title: 'Oops...',
-          text: err.error.ErrorMessage
+        let Dates = new Date();
+
+        const year: number = Dates.getFullYear();
+        const month: any = (Dates.getMonth() + 1) < 10 ? '0' + (Dates.getMonth() + 1) : (Dates.getMonth() + 1);
+        const day: any = Dates.getDate() < 10 ? '0' + Dates.getDate() : Dates.getDate();
+
+        let date = year + '-' + month + '-' + day
+        let datetoshow = this.datePipe.transform(date, 'yyyy-MM-dd');
+
+        this.sessionService.getLessonsForSchool(datetoshow).subscribe(data => {
+          console.log(data);
+
+          let courses = data['Data'];
+          let outData = courses;
+          outData.forEach(element => {
+            element['start'] = element['BeginTime'];
+            element['end'] = element['EndTime'];
+            element['resourceId'] = element['org']['OrgId'];
+            element['title'] = element['org']['OrgName']  + ", " + element['BeginTime']  + " -> " + element['EndTime'];
+            element['color'] = "blue";
+            // element['borderColor'] = "red";
+
+            element['OrgId'] = element['org']['OrgId'];
+          });
+
+
+          this.calendarEventData = outData;
+  
+          console.log(outData);
+          this.isloading = false;
+  
+          this.setUpFullCalendar();
+
+        }, err => {
+          // this.isloadingSmall = false;
+          this.isloading = false;
+          Swal.fire({
+            type: 'error',
+            title: 'Oops...',
+            text: err.error.ErrorMessage
+          });
         });
-      });
 
+      }
     },
     err => {
       this.isloading = false;
@@ -162,6 +168,65 @@ export class SessionCalendarViewGroupCoursesComponent implements OnInit {
       });
     });
  
+  }
+
+  setUpFullCalendar(){
+    this.calendarOptions = {
+      themeSystem: 'jquery-ui',
+      editable: true,
+      eventDurationEditable: false,
+      displayEventTime: true,
+      firstDay: 1,
+      selectable: true,
+      select(info) {
+        // that.selectSlot(info);
+      },
+      customButtons: {
+        DayPickerButton: {
+          text: 'Search',
+          click: () => {
+            this.modalService.open(this.datePicker);
+          }
+        }
+      },
+      ////////
+      eventClick: (info) => {
+        const dateCu = this.datePipe.transform(this.fullcalendar.calendar.getDate(), 'yyyy-MM-dd');
+        this.clickedBranch = info.event.extendedProps.OrgId;
+        console.log(this.clickedBranch);
+        this.router.navigate(['../topview', {id: this.clickedBranch, date: dateCu}],{relativeTo: this.activatedRouter});
+      },
+      ////////
+      eventDrop: (info) => { // when event drag , need to send put request to change the time of this event
+
+      },
+      resources: this.calendarResourceData,
+      events: this.calendarEventData,
+      allDaySlot: false,
+      defaultView: 'resourceTimeGridDay',
+      schedulerLicenseKey: 'GPL-My-Project-Is-Open-Source',
+      minTime: '07:00',
+      maxTime: '24:00',
+      scrollTime: '16:00',
+      height: window.innerHeight - 110,
+      titleFormat:{ year: 'numeric', month: 'short', day: 'numeric', weekday:'short'} ,
+      views: {
+        resourceTimeGridDay: {
+          buttonText: 'Day',
+          slotDuration: '00:15'
+        }
+      },
+      windowResize: () => {
+        this.fullcalendar.calendar.setOption('height', window.innerHeight - 110);
+        // this.fullcalendar.calendar.setOption('width', window.innerWidth - 110);
+      },
+      header: {
+        left: 'today prev,next DayPickerButton title ',
+        center: '',
+        right: ''
+      },
+      plugins: [timeslot, interactionPlugin]
+    }; 
   }
 
 
@@ -193,74 +258,62 @@ export class SessionCalendarViewGroupCoursesComponent implements OnInit {
     this.fullcalendar.calendar.gotoDate(datetoshow);
   }
 
-  getGroupCourse(){
-    this.coursesService.getCourseClasses().subscribe(data => {
+  // getGroupCourse(){
+  //   this.coursesService.getCourseClasses().subscribe(data => {
 
-      console.log(data);
+  //     console.log(data);
 
-      let courses = data['Data'];
-      let outData = courses;
-      outData.forEach(element => {
-        element['start'] = element['BeginDate'];
-        element['end'] = element['EndDate'];
-        element['resourceId'] = element['Org']['OrgId'];
-        element['title'] = "GroupCourseInstanceId: " + element['GroupCourseInstanceId'] + ", " + element['Course']['CourseName']  + ", " + element['BeginDate']  + " -> " + element['EndDate'];
-        // element['color'] = "red";
-        element['borderColor'] = "red";
-      });
+  //     let courses = data['Data'];
+  //     let outData = courses;
+  //     outData.forEach(element => {
+  //       element['start'] = element['BeginDate'];
+  //       element['end'] = element['EndDate'];
+  //       element['resourceId'] = element['Org']['OrgId'];
+  //       element['title'] = "GroupCourseInstanceId: " + element['GroupCourseInstanceId'] + ", " + element['Course']['CourseName']  + ", " + element['BeginDate']  + " -> " + element['EndDate'];
+  //       // element['color'] = "red";
+  //       element['borderColor'] = "red";
+  //     });
 
-      this.calendarEventData = outData;
+  //     this.calendarEventData = outData;
 
-      console.log(outData);
-  }, err => {
-    // this.isloadingSmall = false;
-    Swal.fire({
-      type: 'error',
-      title: 'Oops...',
-      text: err.error.ErrorMessage
-    });
-  });
-  }
-
-  getOrgs()
-  {
-    this.coursesService.getOrgs().subscribe((res) => {
-
-      var dataObj: [];
-      let outData = [];
-      console.log(res);
-
-      dataObj = res['Data'];
-
-      dataObj.forEach(e => {
-        outData.push({
-          id: e['OrgId'], 
-          title: e['OrgName']});
-      });
-
-      // for(let i=0; i<dataObj.length; i++){
-      //   this.calendarResourceData.push({id: dataObj[i].OrgId, title: dataObj[i].OrgName});
-      // }
-      return outData;
-    },
-    err => {
-      Swal.fire({
-        type: 'error',
-        title: 'Oops...',
-        text: err.error.ErrorMessage
-      });
-    });
-  }
-
-  // parseTeacher(data){
-  //   let outData=[];
-  //   data.forEach(e => {
-  //     outData.push({
-  //        id:Number(e.TeacherId),
-  //        name:e.FirstName+' '+e.LastName
-  //      })
+  //     console.log(outData);
+  // }, err => {
+  //   // this.isloadingSmall = false;
+  //   Swal.fire({
+  //     type: 'error',
+  //     title: 'Oops...',
+  //     text: err.error.ErrorMessage
   //   });
-  //   return outData;
+  // });
   // }
 
+  // getOrgs()
+  // {
+  //   this.coursesService.getOrgs().subscribe((res) => {
+
+  //     var dataObj: [];
+  //     let outData = [];
+  //     console.log(res);
+
+  //     dataObj = res['Data'];
+
+  //     dataObj.forEach(e => {
+  //       outData.push({
+  //         id: e['OrgId'], 
+  //         title: e['OrgName']});
+  //     });
+
+  //     // for(let i=0; i<dataObj.length; i++){
+  //     //   this.calendarResourceData.push({id: dataObj[i].OrgId, title: dataObj[i].OrgName});
+  //     // }
+  //     return outData;
+  //   },
+  //   err => {
+  //     Swal.fire({
+  //       type: 'error',
+  //       title: 'Oops...',
+  //       text: err.error.ErrorMessage
+  //     });
+  //   });
+  // }
 }

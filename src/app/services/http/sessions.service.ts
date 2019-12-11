@@ -42,6 +42,14 @@ export class SessionsService {
     );
   }
 
+  getLessonsForSchool(date){
+    return this.http.get<any>(
+      this.baseUrl +
+        "Lesson/GetLessonsForSchool/" + date,
+      { headers: this.httpHeaders }
+    );
+  }
+
   getTeacherLesson(teacherId, beginDate) {
     // console.log(this.httpHeaders);
     return this.http.get<any>(
