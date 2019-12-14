@@ -53,8 +53,8 @@ export class AdminSendPaymentEmailComponent implements OnInit {
         var firstName = this.learnlist[i].Learner.FirstName;
         var lastName = this.learnlist[i].Learner.LastName;
         var name = firstName + " " + lastName;
-        var title = "<h3>" + this.emailForm.value.title + "</h3>";
-        var contents = "<p>Hello " + firstName + "</p><p>" + this.emailForm.value.contents + "</p>";
+        var title = this.emailForm.value.title;
+        var contents = "<h3>Hello " + firstName + "</h3><br><p>" + this.emailForm.value.contents + "</p>";
         // console.log("debug", contents);
  
         const learnerName = {} as IInvoiceLearnerName;
@@ -80,29 +80,29 @@ export class AdminSendPaymentEmailComponent implements OnInit {
         
 
         this.emailService.postEmail(submit).subscribe((res) => {
+
+          console.log(res);
+          this.activeModal.close();
+        },
+        (err) => {
           Swal.fire({
             title: 'Server error!',
             type: 'error',
             showConfirmButton: true,
           });
-          console.log(res);
-          this.activeModal.close();
-        },
-        (err) => {
-          this.backendErrorHandler(err);
         });
       }
     }
 
   }  
 
-  backendErrorHandler(err) {
-    console.warn(err)
-    if (err.error.ErrorMessage != null) {
-      this.errorMessage = err.error.ErrorMessage;
-    }
-    else {
-      this.errorMessage = 'Error! Please check your input.'
-    }
-  }  
+  // backendErrorHandler(err) {
+  //   console.warn(err)
+  //   if (err.error.ErrorMessage != null) {
+  //     this.errorMessage = err.error.ErrorMessage;
+  //   }
+  //   else {
+  //     this.errorMessage = 'Error! Please check your input.'
+  //   }
+  // }  
 }

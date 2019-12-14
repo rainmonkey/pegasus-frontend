@@ -16,6 +16,8 @@ import { ActivatedRoute, ParamMap, Router } from "@angular/router";
 import { FormBuilder, FormGroup} from '@angular/forms';
 import { DatePipe } from '@angular/common';
 
+import {debounce} from '../../../../../../shared/utils/debounce';
+
 // import { SessionsCalendarViewAdminComponent } from '../sessions-calendar-view-admin/sessions-calendar-view-admin.component';
 
 @Component({
@@ -32,6 +34,7 @@ export class SessionCalendarViewGroupCoursesComponent implements OnInit {
   private calendarOptions: OptionsInput;
   private calendarResourceData: any;
   private calendarEventData = [];
+  private eventsModel: any;
 
   private searchForm: FormGroup; // searchform by formbuilder
 
@@ -40,6 +43,8 @@ export class SessionCalendarViewGroupCoursesComponent implements OnInit {
   private isOneToOne: any;
 
   private isloading = false;
+
+  debounce = debounce();
 
   constructor(private coursesService:CoursesService,
     private sessionService:SessionsService,
@@ -75,89 +80,30 @@ export class SessionCalendarViewGroupCoursesComponent implements OnInit {
       this.calendarResourceData = outData;
 
 
+      let Dates = new Date();
+
+      const year: number = Dates.getFullYear();
+      const month: any = (Dates.getMonth() + 1) < 10 ? '0' + (Dates.getMonth() + 1) : (Dates.getMonth() + 1);
+      const day: any = Dates.getDate() < 10 ? '0' + Dates.getDate() : Dates.getDate();
+
+      let date = year + '-' + month + '-' + day;
+      let datetoshow = this.datePipe.transform(date, 'yyyy-MM-dd');
+
+      this.setUpFullCalendar();      
+
       if(this.isOneToOne == null || this.isOneToOne == undefined){    //group courses
 
-        this.coursesService.getCourseClasses().subscribe(data => {
+        this.generateGroupCoursesEventData(datetoshow);
 
-          console.log(data);
-    
-          let courses = data['Data'];
-          let outData = courses;
-          outData.forEach(element => {
-            element['start'] = element['BeginDate'];
-            element['end'] = element['EndDate'];
-            element['resourceId'] = element['Org']['OrgId'];
-            element['title'] = "GroupCourseInstanceId: " + element['GroupCourseInstanceId'] + ", " + element['Course']['CourseName']  + ", " + element['BeginDate']  + " -> " + element['EndDate'];
-            // element['color'] = "red";
-            element['borderColor'] = "red";
-
-            element['OrgId'] = element['Org']['OrgId'];
-          });
-    
-          this.calendarEventData = outData;
-    
-          console.log(outData);
-          this.isloading = false;
-  
-          this.setUpFullCalendar();
-   
-        }, err => {
-          // this.isloadingSmall = false;
-          this.isloading = false;
-          Swal.fire({
-            type: 'error',
-            title: 'Oops...',
-            text: err.error.ErrorMessage
-          });
-        });
 
       }
       else{   //one to one courses
 
-        let Dates = new Date();
-
-        const year: number = Dates.getFullYear();
-        const month: any = (Dates.getMonth() + 1) < 10 ? '0' + (Dates.getMonth() + 1) : (Dates.getMonth() + 1);
-        const day: any = Dates.getDate() < 10 ? '0' + Dates.getDate() : Dates.getDate();
-
-        let date = year + '-' + month + '-' + day
-        let datetoshow = this.datePipe.transform(date, 'yyyy-MM-dd');
-
-        this.sessionService.getLessonsForSchool(datetoshow).subscribe(data => {
-          console.log(data);
-
-          let courses = data['Data'];
-          let outData = courses;
-          outData.forEach(element => {
-            element['start'] = element['BeginTime'];
-            element['end'] = element['EndTime'];
-            element['resourceId'] = element['org']['OrgId'];
-            element['title'] = element['org']['OrgName']  + ", " + element['BeginTime']  + " -> " + element['EndTime'];
-            element['color'] = "blue";
-            // element['borderColor'] = "red";
-
-            element['OrgId'] = element['org']['OrgId'];
-          });
-
-
-          this.calendarEventData = outData;
-  
-          console.log(outData);
-          this.isloading = false;
-  
-          this.setUpFullCalendar();
-
-        }, err => {
-          // this.isloadingSmall = false;
-          this.isloading = false;
-          Swal.fire({
-            type: 'error',
-            title: 'Oops...',
-            text: err.error.ErrorMessage
-          });
-        });
+        this.generateOneToOneCoursesEventData(datetoshow);
 
       }
+
+      this.fullcalendar.calendar.gotoDate(datetoshow);
     },
     err => {
       this.isloading = false;
@@ -232,11 +178,22 @@ export class SessionCalendarViewGroupCoursesComponent implements OnInit {
 
   calendarClickButton = (model) => {
     if (model.buttonType === 'next' || model.buttonType === 'today' || model.buttonType === 'prev' || model.buttonType === 'testButton') {
-      // const datefromcalendar = model.data;
-      // const date = this.datePipe.transform(datefromcalendar, 'yyyy-MM-dd');
-      // this.debounce(() => {
-      //   this.getEventByDate(date);
-      // }, 500);
+      const datefromcalendar = model.data;
+      const date = this.datePipe.transform(datefromcalendar, 'yyyy-MM-dd');
+      this.debounce(() => {
+        if(this.isOneToOne == null || this.isOneToOne == undefined){    //group courses
+
+          this.generateGroupCoursesEventData(date);
+    
+        }
+        else{   //one to one courses
+    
+          this.generateOneToOneCoursesEventData(date);
+    
+        }
+
+        
+      }, 500);
     }
 
   }
@@ -253,67 +210,103 @@ export class SessionCalendarViewGroupCoursesComponent implements OnInit {
     const year = this.searchForm.get('dateOfLesson').value.year;
     const month = this.searchForm.get('dateOfLesson').value.month;
     const day = this.searchForm.get('dateOfLesson').value.day;
-    const date = year + '-' + month + '-' + day
+    const date = year + '-' + month + '-' + day;
     const datetoshow = this.datePipe.transform(date, 'yyyy-MM-dd');
+
+
+    this.fullcalendar.calendar.removeAllEvents();
+
+    if(this.isOneToOne == null || this.isOneToOne == undefined){    //group courses
+
+      this.generateGroupCoursesEventData(datetoshow);
+
+    }
+    else{   //one to one courses
+
+      this.generateOneToOneCoursesEventData(datetoshow);
+
+    }
+
+
     this.fullcalendar.calendar.gotoDate(datetoshow);
   }
 
-  // getGroupCourse(){
-  //   this.coursesService.getCourseClasses().subscribe(data => {
+  generateGroupCoursesEventData(datetoshow){
+    this.isloading = true;
+    this.sessionService.getGroupLessonsForSchool(datetoshow).subscribe(data => {
 
-  //     console.log(data);
+      console.log(data);
 
-  //     let courses = data['Data'];
-  //     let outData = courses;
-  //     outData.forEach(element => {
-  //       element['start'] = element['BeginDate'];
-  //       element['end'] = element['EndDate'];
-  //       element['resourceId'] = element['Org']['OrgId'];
-  //       element['title'] = "GroupCourseInstanceId: " + element['GroupCourseInstanceId'] + ", " + element['Course']['CourseName']  + ", " + element['BeginDate']  + " -> " + element['EndDate'];
-  //       // element['color'] = "red";
-  //       element['borderColor'] = "red";
-  //     });
+      let courses = data['Data'];
+      let outData = courses;
+      outData.forEach(element => {
+        element['start'] = element['BeginTime'];
+        element['end'] = element['EndTime'];
+        element['resourceId'] = element['OrgId'];
+        element['title'] = element['Course']['CourseName'];
+        // element['color'] = "red";
+        element['borderColor'] = "red";
 
-  //     this.calendarEventData = outData;
+        // element['OrgId'] = element['Org']['OrgId'];
+      });
 
-  //     console.log(outData);
-  // }, err => {
-  //   // this.isloadingSmall = false;
-  //   Swal.fire({
-  //     type: 'error',
-  //     title: 'Oops...',
-  //     text: err.error.ErrorMessage
-  //   });
-  // });
-  // }
+      this.calendarEventData = outData;
+      this.eventsModel = this.calendarEventData;
 
-  // getOrgs()
-  // {
-  //   this.coursesService.getOrgs().subscribe((res) => {
+      console.log(outData);
+      this.isloading = false;
 
-  //     var dataObj: [];
-  //     let outData = [];
-  //     console.log(res);
+      // this.fullcalendar.calendar.gotoDate(datetoshow);
 
-  //     dataObj = res['Data'];
 
-  //     dataObj.forEach(e => {
-  //       outData.push({
-  //         id: e['OrgId'], 
-  //         title: e['OrgName']});
-  //     });
+    }, err => {
+      this.isloading = false;
+      Swal.fire({
+        type: 'error',
+        title: 'Oops...',
+        text: err.error.ErrorMessage
+      });
+    });
+  }
 
-  //     // for(let i=0; i<dataObj.length; i++){
-  //     //   this.calendarResourceData.push({id: dataObj[i].OrgId, title: dataObj[i].OrgName});
-  //     // }
-  //     return outData;
-  //   },
-  //   err => {
-  //     Swal.fire({
-  //       type: 'error',
-  //       title: 'Oops...',
-  //       text: err.error.ErrorMessage
-  //     });
-  //   });
-  // }
+
+generateOneToOneCoursesEventData(datetoshow){
+  this.isloading = true;
+  this.sessionService.getLessonsForSchool(datetoshow).subscribe(data => {
+    console.log(data);
+
+    let courses = data['Data'];
+    let outData = courses;
+    outData.forEach(element => {
+
+
+      element['start'] = element['beginTime'];
+      element['end'] = element['endTime'];
+      element['resourceId'] = element['org']['OrgId'];
+      element['title'] = element['org']['OrgName'];
+      element['color'] = "blue";
+      // element['borderColor'] = "red";
+
+      element['OrgId'] = element['org']['OrgId'];
+    });
+
+
+    this.calendarEventData = outData;
+    this.eventsModel = this.calendarEventData;
+    
+    console.log(outData);
+    this.isloading = false;
+
+    // this.fullcalendar.calendar.gotoDate(datetoshow);
+
+  }, err => {
+    this.isloading = false;
+    Swal.fire({
+      type: 'error',
+      title: 'Oops...',
+      text: err.error.ErrorMessage
+    });
+  });
+  }
+
 }
