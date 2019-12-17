@@ -9,6 +9,7 @@ import { Component, OnInit } from '@angular/core';
 })
 export class SessionsTopviewsComponent implements OnInit {
  orgs:any;
+ selectedOrg:number;
 
   constructor(private sessionsService: SessionsService) { }
 

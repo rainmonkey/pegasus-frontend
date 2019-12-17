@@ -60,11 +60,6 @@ export class ReasonInputComponent implements ControlValueAccessor ,Validator  {
     return this.textReason;
   }
   public validate(c: FormControl) {
-    console.log((!(this.inputReason==''||this.inputReason==null)) ? null : {
-      jsonParseError: {
-          valid: false,
-      },
-  })
     return (!(this.inputReason==''||this.inputReason==null)) ? null : {
         jsonParseError: {
             valid: false,

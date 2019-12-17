@@ -5,6 +5,7 @@ export class SessionEdit {
   TeacherId: number;
   OrgId: number;
   BeginTime: Date;
+  Reason:string;
   constructor(LessonId, LearnerId, RoomId, TeacherId, OrgId, Reason, BeginTime) {
     this.LessonId = LessonId;
     this.LearnerId = LearnerId;
@@ -12,5 +13,6 @@ export class SessionEdit {
     this.TeacherId = TeacherId;
     this.OrgId = OrgId;
     this.BeginTime = BeginTime;
+    this.Reason = Reason;
   }
 }

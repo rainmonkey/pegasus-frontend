@@ -280,12 +280,14 @@
                 <div class="row">
                   <div class="col-9">
                     <span class="label">Course: </span>
-                    <span class='text'>{{ele.Course.CourseName}}</span>
+                    <span class='text' [ngStyle]="{'text-decoration':ele.EndDate?'line-through':null}">
+                      {{ele.Course.CourseName}}
+                    </span>
                   </div>
 
                   <!-- Amendent History Button-->
                   <div class='col-3'>
-                    <button type="button" class="btn btn-outline-info btn-sm" (click)='openHistory(ele)'>Amendment
+                    <button type="button" class="btn btn-outline-info btn-sm" (click)='openHistory(ele)'>Change
                       History</button>
                   </div>
 
@@ -371,7 +373,7 @@
 
                   <!-- Amendment Reason -->
                   <div *ngIf='ele.Amendment.length !== 0' class='col-12'>
-                    <span class='label'>Amendment Reason: </span>
+                    <span class='label'>Change Reason: </span>
                     <span class='text' *ngIf='ele.permanent'>{{ele.permanent.Reason}}</span>
                   </div>
 

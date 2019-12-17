@@ -44,7 +44,7 @@ export class MessagerIconComponent implements OnInit {
     if (state) {
       this.interval = setInterval(() => {
         this.notificationsTrigger = !this.notificationsTrigger;
-      }, 500)
+      }, 10000)
     }
     else {
       this.interval.clearInterval();
